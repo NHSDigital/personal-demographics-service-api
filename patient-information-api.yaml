@@ -1,0 +1,748 @@
+openapi: "3.0.0"
+info:
+  version: 0.0.3
+  title: Patient Information API
+  description: A RESTful API for finding patients and accessing patients' personal details held nationally by NHS Digital. This API is the authoritative source for this information for the NHS in England.
+
+paths:
+  /Patient:
+    get:
+      summary: Find patients
+      description: |
+        Find patients matching the given parameters using a case-insensitive search. Four types of searches are supported:
+        # Search types
+        This endpoint will search for a patient using one of four search types. The choice of search is automatic and will cascade as necessary until results are found.
+        
+        ## Simple
+        The fastest match, requires family_name, first_name, gender, birth_date
+        Returns either a single matching patient or nothing. A limited set of parameters can be provided, all of which must exactly match the current information held.
+        
+        ## Advanced
+        Can return multiple matching patients if the information provided matches the current information held. Supports searching against additional information fields. Wildcards (\*) in name and postcode fields are supported. Wildcards must be preceeded by at least two characters, i.e. 'Br\*' is valid, but '\*cDougal' is not
+        
+        ## Advanced Historic
+        Identical to advanced except it also searches historic data.
+        
+        ## Weighted
+        Returns a percentage match weight for each potentially matching patient. Always searches historical data. Requires at least one of the following combinations of search parameters:
+        
+          - family_name, first_name, gender, birth_date (or range)
+          - family_name, gender, birth_date (or range), postcode
+          - first_name, gender, birth_date (or range), postcode
+      parameters:
+        - name: family_name
+          description: The patient's family name (surname)
+          example: Smith
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: first_name
+          description: the patient's first given name
+          example: Jane
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: other_names
+          description: Any other given name(s). Ignored if provided in simple searches.
+          example: Jenny
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: gender
+          example: female
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Gender'
+        - name: birth_date
+          in: query
+          description: Birth date in the format yyyy-mm-dd. Required for simple searches. Other search types must provide either a birth date or a birth date range
+          example: "2018-03-20"
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: birth_date_range_start
+          in: query
+          description: Date in the format yyyy-mm-dd. Ranges can be used instead of searching a specific date. Do not use in simple searches
+          required: false
+          example: "2018-03-20"
+          schema:
+            type: string
+            format: date
+        - name: birth_date_range_end
+          in: query
+          description: Date in the format yyyy-mm-dd. Ranges can be used instead of searching a specific date. Do not use in simple searches
+          required: false
+          example: "2018-03-20"
+          schema:
+            type: string
+            format: date            
+        - name: death_date
+          in: query
+          description: Date of death in the format yyyy-mm-dd
+          required: false
+          example: "2018-03-20"
+          schema:
+            type: string
+            format: date
+            example: 2018-03-20
+        - name: death_date_range_start
+          in: query
+          description: Date in the format yyyy-mm-dd. Ranges can be used instead of searching a specific date. Do not use in simple searches
+          required: false
+          example: "2018-03-20"
+          schema:
+            type: string
+            format: date
+            example: 2018-03-25
+        - name: death_date_range_end
+          in: query
+          description: Date in the format yyyy-mm-dd. Ranges can be used instead of searching a specific date. Do not use in simple searches
+          required: false
+          example: "2018-03-20"
+          schema:
+            type: string
+            format: date
+        - name: postcode
+          description: White spaces in postcodes are significant, i.e. LS16AE will not match LS1 6AE
+          example: LS1 6AE
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: practice__ods
+          description: The ODS code of the patient's registered general practice. Do not use in simple searches
+          example: Y00001
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: gp_ods
+          description: The ODS code of the patient's registered general practitioner (GP). Do not use in simple searches
+          example: G1234567
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: An array of matched patients. Empty if none found. Returns percentage match weight for each returned patient for weighted searches
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                    - $ref: '#/components/schemas/Patient'
+                    - type: object
+                      required:
+                        - match_weight
+                        - patient
+                      properties:
+                        match_weight:
+                          type: integer
+                          example: 78
+                        patient:
+                          $ref: '#/components/schemas/Patient'
+    post:
+      description: Used to create an NHS Number for a new patient. Should only be used if the patient cannot be found using any of the search options.
+      summary: Create an NHS Number
+      requestBody:
+        required: true
+        content:
+          application/json:  
+            schema:
+              $ref: '#/components/schemas/PatientNew'
+      responses:
+        '200':
+          description: NHS Number allocated
+          content:
+            application/json:  
+              schema:
+                $ref: '#/components/schemas/Patient'
+        '409':
+          description: Matching patient already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  patient:
+                    description: The path to the matched patient
+                    type: string
+                    format: path
+                    example: /Patient/4505577104
+  /Patient/{nhs_number}:
+    parameters:
+      - $ref: '#/components/parameters/NhsNumber'
+    get:
+      description: Returns current information for the patient with the given NHS Number
+      summary: Retrieve patient information
+      responses:
+        '200':
+          description: Information successfully returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        '404':
+          description: Patient not found
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      description: Updates a patient record
+      summary: Update patient information
+      requestBody:
+        required: true
+        content:
+          application/json:  
+            schema:
+              $ref: '#/components/schemas/Patient'
+      responses:
+        '200':
+          description: Patient updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+    patch:
+      description: Updates specific patient information. Updates are specified using JSON Patch. Update or insert general practice registration using the GeneralPracticeWrite model.
+      summary: Partial update patient information
+      externalDocs:
+        description: IETF RFC 7396
+        url: https://tools.ietf.org/html/rfc7396
+      requestBody:
+        required: true
+        content:
+          application/json:  
+            schema:
+              type: object
+              required:
+                - patient
+              properties:
+                correction:
+                  description: Set to true if the update is correcting previously incorrect data
+                  type: boolean
+                  default: false
+                patient:
+                  $ref: '#/components/schemas/Patient'
+          # TODO examples, especially of an add name etc.
+      responses:
+        '200':
+          description: Patient updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+  /Patient/{nhs_number}/_version/{version_number}:
+    parameters:
+      - $ref: '#/components/parameters/NhsNumber'
+      - name: version_number
+        description: The version of the patient information to return
+        in: path
+        required: true
+        schema:
+          type: integer
+          example: 2
+    get:
+      description: Returns a specific version of the patient's information
+      summary: Retrieve a version of patient information
+      responses:
+        '200':
+          description: Patient version successfully returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        '404':
+          description: Patient version not found
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'                
+  /Patient/{nhs_number}/RelatedPerson:
+    parameters:
+      - $ref: '#/components/parameters/NhsNumber'
+    get:
+      description: Returns people associated with or related to the Patient, e.g. family relations, contacts and guardians etc.
+      summary: Return related people
+      parameters:
+          # TODO - included as an example. More to go here
+        - name: relationship_type
+          description: Return related people with the given relationship type
+          in: query
+          required: false
+          schema:
+            type: string
+            #TODO enum: [...]
+      responses:
+        200: 
+          description: A list of related people
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RelatedPerson'
+    post:
+      description: Create a new person related to/associated with the patient
+      summary: Create a related person
+      responses:
+        200: 
+          description: The new related person
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelatedPerson'
+  /Patient/{nhs_number}/RelatedPerson/{id}:
+    parameters:
+      - $ref: '#/components/parameters/NhsNumber'
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    put:
+      description: Update the details of a related person
+      summary: Update related person
+      # TODO requestBody: ...
+      responses:
+        200: 
+          description: The updated related person
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RelatedPerson'
+    delete:
+      description: Create a new person related to/associated with the patient
+      summary: Remove a related person
+      responses:
+        200: 
+          description: Successfully removed related person
+  /Patient/{nhs_number}/ReasonableAdjustment:
+    parameters:
+      - $ref: '#/components/parameters/NhsNumber'
+    get:
+      description: Returns any reasonable adjustments which have been registered for this patient
+      summary: Retrieve reasonable adjustments
+      responses:
+        '200':
+          description: A list of reasonable adjustments
+#  /Patient/{nhs_number}/RelatedPerson:
+components:
+  parameters:
+    NhsNumber:
+      name: nhs_number
+      in: path
+      description: The patient's NHS Number
+      required: true
+      schema:
+        $ref: '#/components/schemas/NhsNumber'
+  schemas:
+    NhsNumber:
+      description: The primary identifier of a patient. NHS Number is unique within the NHS in England and Wales
+      type: string
+      example: '4505577104'
+      format: '^\d{10}$'
+    Gender:
+      type: string
+      enum: [not_known, male, female, not_specified]
+    JsonPatch:
+      type: array
+      items:
+        type: object
+        required:
+          - op
+          - path
+        properties:
+          op:
+            type: string
+            enum: [remove,add,replace]
+          path:
+            description: The location of the information to remove, add or replace. The '-' character must be used to add new items to arrays, e.g. names, addresses
+            type: string
+            format: jsonpointer
+            externalDocs:
+              description: IETF RFC 6901 JavaScript Object Notation (JSON) Pointer
+              url: https://tools.ietf.org/html/rfc6901
+          value:
+            description: The information to be added or replaced
+            type: string
+            format: json
+    GeneralPracticeBase:
+      description: The patient's registered general practice
+      type: object
+      required:
+        - business_effective
+      properties:
+        business_effective:
+          type: object
+          required:
+            - start
+          properties:
+            start:
+              $ref: '#/components/schemas/Date'
+            end:
+              $ref: '#/components/schemas/Date'
+    GeneralPracticeWrite:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/GeneralPracticeBase'
+        - type: object
+          properties:
+            practice_ods_code:
+              description: The ODS code of the patient's general practice
+              type: string
+    GeneralPracticeRead:
+      description: Historic general practice registration data may register the patient against a practice or an individual practitioner
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/GeneralPracticeBase'
+        - type: object
+          required:
+            - type
+            - url
+            - ods_code
+          properties:
+            type:
+              description: Indicates whether the patient is registered to a practice or an individual practitioner
+              type: string
+              enum: [practice,practitioner]
+            url:
+              description: The location of the registered practice or practitioner resource
+              type: string
+              format: url
+            ods_code:
+              description: The ODS code of the registered practice or practitioner
+              type: string
+      example:
+        business_effective:
+          start: '2019-03-24'
+        type: practice
+        url: /Organization/Y00001
+        ods_code: Y00001
+    Pharmacy:
+      type: object
+      required:
+        - ods_code
+      properties:
+        ods_code:
+          description: The ODS code of the pharmacy
+          type: string
+      example:
+        ods_code: '8HA03'
+    PharmacyRead:
+      allOf:
+        - $ref: "#/components/schemas/Pharmacy"
+        - type: object
+          properties:
+            url:
+              description: The location of the pharmacy resource
+              type: string
+              format: url
+      example:
+        url: '/Organization/8HA03'
+        ods_code: '8HA03'
+    PharmacyList:
+      type: object
+      properties:
+        nominated:
+          $ref: "#/components/schemas/Pharmacy"
+        medical_appliance:
+          $ref: "#/components/schemas/Pharmacy"
+        dispensing_doctor:
+          $ref: "#/components/schemas/Pharmacy"
+    PharmacyListRead:
+      type: object
+      properties:
+        nominated:
+          $ref: "#/components/schemas/PharmacyRead"
+        medical_appliance:
+          $ref: "#/components/schemas/PharmacyRead"
+        dispensing_doctor:
+          $ref: "#/components/schemas/PharmacyRead"
+    PatientNew:
+      type: object
+      required:
+          - names
+          - gender
+          - birth_date
+          - addresses
+      properties:
+        names:
+          description: One 'usual' name must be provided
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/PersonName'
+        gender:
+            $ref: '#/components/schemas/Gender'
+        birth_date:
+          $ref: '#/components/schemas/Date'
+        addresses:
+          $ref: '#/components/schemas/PersonAddress'
+        contact_points:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactPoint'
+        contact_preference:
+          $ref: '#/components/schemas/ContactPreference'
+        language_preference:
+          $ref: '#/components/schemas/LanguagePreference'
+        general_practice:
+          $ref: '#/components/schemas/GeneralPracticeWrite'
+        pharmacies:
+          $ref: '#/components/schemas/PharmacyList'
+    Patient:
+      type: object
+      required:
+        - nhs_number
+        - reasonable_adjustments
+        - consent
+        - general_practice
+        - pharmacy
+        - related_person
+        - birth
+        - self
+        - version
+      properties:
+        self:
+          type: string
+          format: path
+          description: The path to the current version of this patient resource
+          example:  /Patient/44505577104
+        version:
+          type: integer
+          description: The NHS Digital assigned version of the patient resource
+          example: 2
+        previous_version:
+          type: string
+          format: path
+          description: The path to the previous version of the Patient if one exists
+          example: /Patient/44505577104/_version/1
+        nhs_number:
+          $ref: '#/components/schemas/NhsNumber'
+        reasonable_adjustments:
+          type: string
+          description: Path to reasonable adjustments for this patient
+          format: path
+          example: /Patient/44505577104/ReasonableAdjustment
+        consent:
+          type: string
+          description: Path to consent information for this patient
+          format: path
+          example: /Patient/44505577104/Consent
+        related_person:
+          type: string
+          description: Path to people associated with to this patient
+          format: path
+          example: /Patient/44505577104/RelatedPerson
+        birth:
+          type: string
+          description: Path to birth information for this patient
+          format: path
+          example: /Patient/44505577104/Birth
+        names:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonName'
+        gender:
+          $ref: '#/components/schemas/Gender'
+        birth_date:
+          $ref: '#/components/schemas/Date'
+        death_date:
+          $ref: '#/components/schemas/Date'
+        addresses:
+          $ref: '#/components/schemas/PersonAddress'
+        contact_points:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactPoint'
+        general_practice:
+          $ref: '#/components/schemas/GeneralPracticeRead'
+        pharmacies:
+          $ref: '#/components/schemas/PharmacyListRead'
+    RelatedPerson:
+      type: object
+      # TODO required: ...
+      properties:
+        self:
+          description: The location of this related person resource
+          type: string
+          format: path
+          example: /Patient/44505577104/RelatedPerson/1
+        patient:
+          description: The patient the person is related to
+          type: string
+          format: url
+          example: /Patient/44505577104
+        business_effective:
+          $ref: '#/components/schemas/DateRange'
+        role: # TODO relationship type and role need investigating, see API notes
+          type: string
+        relationship_type:
+          type: string
+        ranking:
+          type: integer
+        next_of_kin:
+          type: boolean
+          default: false
+        copy_correspondence:
+          type: boolean
+          default: false
+        callback_consent:
+          type: boolean
+          default: false
+        personal_details:
+          description: If the related person is a patient then their personal details are available on the linked patient resource, otherwise they are included
+          oneOf:
+            - type: object
+              required:
+                - patient
+              properties:
+                patient:
+                  description: The path to the patient resource
+                  type: string
+                  format: path
+                  example: /Patient/44505577104
+                nhs_number:
+                  $ref: '#/components/schemas/NhsNumber'
+            - type: object
+              properties:
+                name:
+                  $ref: '#/components/schemas/PersonName'
+                usual_address:
+                  $ref: '#/components/schemas/Address'
+                contact_points:
+                  $ref: '#/components/schemas/ContactPoint'
+                contact_preference:
+                  $ref: '#/components/schemas/ContactPreference'
+                language_preference:
+                  $ref: '#/components/schemas/LanguagePreference'
+    PersonName:
+      type: object
+      properties:
+        use:
+          type: string
+          enum: [usual,preferred,alias,bachelor,maiden,birth,other]
+        business_effective:
+          $ref: '#/components/schemas/DateRange'
+        title:
+          type: string
+          example: Mrs
+        first_name:
+          type: string
+          example: Jane
+        other_names:
+          type: string
+          example: Jenny
+        family_name:
+          type: string
+          example: Smith
+        suffix:
+          type: string
+          example: MBE
+    Address:
+      type: object
+      properties:
+        business_effective:
+          $ref: '#/components/schemas/DateRange'
+        lines:
+          type: array
+          items:
+            type: string
+        postcode:
+          type: string
+          example: 'LS1 6AE'
+        paf_key:
+          type: string
+    PersonAddress:
+      type: object
+      properties:
+        no_fixed_address:
+          description: Set to true if the patient has no fixed, usual address. Usual address should be null if this is true.
+          type: boolean
+          default: false
+        usual:
+          $ref: '#/components/schemas/Address'
+        correspondence:
+          $ref: '#/components/schemas/Address'
+        temporary:
+          $ref: '#/components/schemas/Address'
+        other:
+          $ref: '#/components/schemas/Address'
+    ContactPoint:
+      description: A telecommunication address
+      type: object
+      properties:
+        business_effective:
+          $ref: '#/components/schemas/DateRange'
+        system:
+          type: string
+          enum: [phone,fax,email,pager,url,sms,other]
+        value:
+          type: string
+        use:
+          type: string
+          enum: [home,work,temp,old,mobile]
+        rank:
+          description: Preferred order of use. 1 is highest
+          type: integer
+    ContactPreference:
+      type: object
+      properties:
+        method:
+          type: string
+          enum: [letter,visit,telephone,email,minicom,via_proxy,sign_language,no_telephone]
+        times:
+          type: string
+        written_format:
+          type: string
+          enum: [large_print,braille,audio_tape]
+    LanguagePreference:
+      type: object
+      required:
+        - language
+        - interpreter_required
+      properties:
+        language:
+          type: string
+          example: French
+        interpreter_required:
+          type: boolean
+    Date:
+      description: A date in the format yyyy-mm-dd
+      example: '2010-10-22'
+      type: string
+      format: date
+    DateRange:
+      description: A date range
+      type: object
+      properties:
+        start:
+          $ref: '#/components/schemas/Date'
+        end:
+          $ref: '#/components/schemas/Date'
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
