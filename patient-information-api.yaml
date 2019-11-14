@@ -7,7 +7,7 @@ info:
 paths:
   /Patient:
     get:
-      summary: Find patients
+      summary: Search for patients
       description: |
         Find patients matching the given parameters using a case-insensitive search. Four types of searches are supported:
         # Search types
@@ -150,7 +150,7 @@ paths:
                           $ref: '#/components/schemas/Patient'
     post:
       description: Used to create an NHS Number for a new patient. Should only be used if the patient cannot be found using any of the search options.
-      summary: Create an NHS Number
+      summary: Create a new patient
       requestBody:
         required: true
         content:
@@ -181,7 +181,7 @@ paths:
       - $ref: '#/components/parameters/NhsNumber'
     get:
       description: Returns current information for the patient with the given NHS Number
-      summary: Retrieve patient information
+      summary: Retrieve a patient's record
       responses:
         '200':
           description: Information successfully returned
@@ -199,7 +199,7 @@ paths:
                 $ref: '#/components/schemas/Error'
     put:
       description: Updates a patient record
-      summary: Update patient information
+      summary: Update a patient's record
       requestBody:
         required: true
         content:
@@ -215,7 +215,7 @@ paths:
                 $ref: '#/components/schemas/Patient'
     patch:
       description: Updates specific patient information. Updates are specified using JSON Patch. Update or insert general practice registration using the GeneralPracticeWrite model.
-      summary: Partial update patient information
+      summary: Update a patient's record
       externalDocs:
         description: IETF RFC 7396
         url: https://tools.ietf.org/html/rfc7396
@@ -254,7 +254,7 @@ paths:
           example: 2
     get:
       description: Returns a specific version of the patient's information
-      summary: Retrieve a version of patient information
+      summary: Retrieve a specific version of a patient's record
       responses:
         '200':
           description: Patient version successfully returned
@@ -275,7 +275,7 @@ paths:
       - $ref: '#/components/parameters/NhsNumber'
     get:
       description: Returns people associated with or related to the Patient, e.g. family relations, contacts and guardians etc.
-      summary: Return related people
+      summary: Return people related to the patient
       parameters:
           # TODO - included as an example. More to go here
         - name: relationship_type
@@ -296,7 +296,7 @@ paths:
                   $ref: '#/components/schemas/RelatedPerson'
     post:
       description: Create a new person related to/associated with the patient
-      summary: Create a related person
+      summary: Add a related person to the patient's record
       responses:
         200: 
           description: The new related person
@@ -326,7 +326,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/RelatedPerson'
     delete:
-      description: Create a new person related to/associated with the patient
+      description: Delete a person related to/associated with the patient
       summary: Remove a related person
       responses:
         200: 
@@ -336,11 +336,10 @@ paths:
       - $ref: '#/components/parameters/NhsNumber'
     get:
       description: Returns any reasonable adjustments which have been registered for this patient
-      summary: Retrieve reasonable adjustments
+      summary: Retrieve a patient's reasonable adjustments
       responses:
         '200':
           description: A list of reasonable adjustments
-#  /Patient/{nhs_number}/RelatedPerson:
 components:
   parameters:
     NhsNumber:
