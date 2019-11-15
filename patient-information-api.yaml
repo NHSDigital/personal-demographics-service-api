@@ -477,11 +477,6 @@ components:
           type: integer
           description: The NHS Digital assigned version of the patient resource
           example: 2
-        previous_version:
-          type: string
-          format: path
-          description: The path to the previous version of the Patient if one exists
-          example: /Patient/44505577104/_version/1
         nhs_number:
           $ref: '#/components/schemas/NhsNumber'
         reasonable_adjustments:
