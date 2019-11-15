@@ -29,6 +29,8 @@ paths:
           - family_name, first_name, gender, birth_date (or range)
           - family_name, gender, birth_date (or range), postcode
           - first_name, gender, birth_date (or range), postcode
+      tags:
+        - patients
       parameters:
         - name: family_name
           description: The patient's family name (surname)
@@ -151,6 +153,8 @@ paths:
     post:
       description: Used to create an NHS Number for a new patient. Should only be used if the patient cannot be found using any of the search options.
       summary: Create a new patient
+      tags:
+        - patients
       requestBody:
         required: true
         content:
@@ -182,6 +186,8 @@ paths:
     get:
       description: Returns current information for the patient with the given NHS Number
       summary: Retrieve a patient's record
+      tags:
+        - patients
       responses:
         '200':
           description: Information successfully returned
@@ -200,6 +206,8 @@ paths:
     patch:
       description: Updates specific patient information. Updates are specified using JSON Patch. Update or insert general practice registration using the GeneralPracticeWrite model.
       summary: Update a patient's record
+      tags:
+        - patients
       externalDocs:
         description: IETF RFC 7396
         url: https://tools.ietf.org/html/rfc7396
@@ -239,6 +247,8 @@ paths:
     get:
       description: Returns a specific version of the patient's information
       summary: Retrieve a specific version of a patient's record
+      tags:
+        - patients
       responses:
         '200':
           description: Patient version successfully returned
@@ -260,6 +270,8 @@ paths:
     get:
       description: Returns people associated with or related to the Patient, e.g. family relations, contacts and guardians etc.
       summary: Return people related to the patient
+      tags:
+        - related people
       parameters:
           # TODO - included as an example. More to go here
         - name: relationship_type
@@ -281,6 +293,8 @@ paths:
     post:
       description: Create a new person related to/associated with the patient
       summary: Add a related person to the patient's record
+      tags:
+        - related people
       responses:
         200: 
           description: The new related person
@@ -299,7 +313,8 @@ paths:
     put:
       description: Update the details of a related person
       summary: Update related person
-      # TODO requestBody: ...
+      tags:
+        - related people
       responses:
         200: 
           description: The updated related person
@@ -312,6 +327,8 @@ paths:
     delete:
       description: Delete a person related to/associated with the patient
       summary: Remove a related person
+      tags:
+        - related people
       responses:
         200: 
           description: Successfully removed related person
@@ -321,6 +338,8 @@ paths:
     get:
       description: Returns any reasonable adjustments which have been registered for this patient
       summary: Retrieve a patient's reasonable adjustments
+      tags:
+        - reasonable adjustments
       responses:
         '200':
           description: A list of reasonable adjustments
