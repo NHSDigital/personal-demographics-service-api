@@ -197,22 +197,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    put:
-      description: Updates a patient record
-      summary: Update a patient's record
-      requestBody:
-        required: true
-        content:
-          application/json:  
-            schema:
-              $ref: '#/components/schemas/Patient'
-      responses:
-        '200':
-          description: Patient updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Patient'
     patch:
       description: Updates specific patient information. Updates are specified using JSON Patch. Update or insert general practice registration using the GeneralPracticeWrite model.
       summary: Update a patient's record
