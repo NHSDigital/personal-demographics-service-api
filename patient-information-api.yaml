@@ -234,36 +234,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Patient'
-  /Patient/{nhs_number}/_version/{version_number}:
-    parameters:
-      - $ref: '#/components/parameters/NhsNumber'
-      - name: version_number
-        description: The version of the patient information to return
-        in: path
-        required: true
-        schema:
-          type: integer
-          example: 2
-    get:
-      description: Returns a specific version of the patient's information
-      summary: Retrieve a specific version of a patient's record
-      tags:
-        - patients
-      responses:
-        '200':
-          description: Patient version successfully returned
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Patient'
-        '404':
-          description: Patient version not found
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'                
   /Patient/{nhs_number}/RelatedPerson:
     parameters:
       - $ref: '#/components/parameters/NhsNumber'
