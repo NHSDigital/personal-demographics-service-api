@@ -357,7 +357,7 @@ components:
       format: '^\d{10}$'
     Gender:
       type: string
-      enum: [not_known, male, female, not_specified]
+      enum: [search_all, male, female]
     GeneralPracticeBase:
       description: The patient's registered general practice
       type: object
