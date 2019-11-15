@@ -1,6 +1,6 @@
 openapi: "3.0.0"
 info:
-  version: 0.0.3
+  version: 0.1.0
   title: Patient Information API
   description: A RESTful API for finding patients and accessing patients' personal details held nationally by NHS Digital. This API is the authoritative source for this information for the NHS in England.
 
@@ -58,7 +58,7 @@ paths:
           in: query
           required: true
           schema:
-            $ref: '#/components/schemas/Gender'
+            $ref: '#/components/schemas/GenderSearchType'
         - name: birth_date
           in: query
           description: Birth date in the format yyyy-mm-dd. Required for simple searches. Other search types must provide either a birth date or a birth date range
@@ -204,7 +204,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     patch:
-      description: Updates specific patient information. Updates are specified using JSON Patch. Update or insert general practice registration using the GeneralPracticeWrite model.
+      description: Updates specific patient information. Updates are specified using JSON Merge Patch. Update or insert general practice registration using the GeneralPracticeWrite model.
       summary: Update a patient's record
       tags:
         - patients
@@ -252,7 +252,7 @@ paths:
             type: string
             #TODO enum: [...]
       responses:
-        200: 
+        200:
           description: A list of related people
           content:
             application/json:
@@ -280,6 +280,27 @@ paths:
         required: true
         schema:
           type: string
+    get:
+      description: Returns a person associated with or related to the Patient, e.g. family relations, contacts and guardians etc.
+      summary: Return a person related to the patient
+      tags:
+        - related people
+      parameters:
+        - name: relationship_type
+          description: Return related people with the given relationship type
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        200: 
+          description: A list of related people
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RelatedPerson'
     put:
       description: Update the details of a related person
       summary: Update related person
@@ -313,6 +334,92 @@ paths:
       responses:
         '200':
           description: A list of reasonable adjustments
+    post:
+      summary: Add a new reasonable adjustments
+      tags:
+        - reasonable adjustments
+      responses:
+        '200':
+          description: A reasonable adjustment
+  /Patient/{nhs_number}/ReasonableAdjustment/{adjustment_id}:
+    parameters:
+      - $ref: '#/components/parameters/NhsNumber'
+      - in: path
+        name: adjustment_id
+        schema:
+          type: string
+        description: ID of a reasonable adjustment
+        example: '12345'
+        required: true
+    get:
+      summary: Retrieve a specific reasonable adjustments
+      tags:
+        - reasonable adjustments
+      responses:
+        '200':
+          description: A reasonable adjustment
+    put:
+      summary: Update a specific reasonable adjustments
+      tags:
+        - reasonable adjustments
+      responses:
+        '200':
+          description: A reasonable adjustment
+    delete:
+      summary: Delete a specific reasonable adjustments
+      tags:
+        - reasonable adjustments
+      responses:
+        '200':
+          description: A reasonable adjustment
+  /Patient/{nhs_number}/Address:
+    parameters:
+      - $ref: '#/components/parameters/NhsNumber'
+    get:
+      summary: List a patient's addresses
+      tags:
+        - addresses
+      responses:
+        200:
+          description: Successful request
+    post:
+      summary: Add a new address to the patient
+      tags:
+        - addresses
+      responses:
+        200:
+          description: Successful request
+  /Patient/{nhs_number}/Address/{address_id}:
+    parameters:
+      - $ref: '#/components/parameters/NhsNumber'
+      - in: path
+        name: address_id
+        schema:
+          type: string
+        description: ID of patient's address
+        example: '12345'
+        required: true
+    get:
+      summary: Show a specific address
+      tags:
+        - addresses
+      responses:
+        200:
+          description: Successful request
+    put:
+      summary: Update a patient's address
+      tags:
+        - addresses
+      responses:
+        200:
+          description: Successful request
+    delete:
+      summary: Remove an address from a patient
+      tags:
+        - addresses
+      responses:
+        200:
+          description: Successful request
 components:
   parameters:
     NhsNumber:
@@ -328,9 +435,12 @@ components:
       type: string
       example: '4505577104'
       format: '^\d{10}$'
+    GenderSearchType:
+      type: string
+      enum: [search_all, male, female]
     Gender:
       type: string
-      enum: [any, male, female]
+      enum: [not_known, male, female, not_specified]
     GeneralPracticeBase:
       description: The patient's registered general practice
       type: object
