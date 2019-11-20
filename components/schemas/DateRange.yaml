@@ -1,0 +1,7 @@
+description: A date range
+type: object
+properties:
+  start:
+    $ref: "Date.yaml"
+  end:
+    $ref: "Date.yaml"

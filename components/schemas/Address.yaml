@@ -1,0 +1,13 @@
+type: object
+properties:
+  business_effective:
+    $ref: "DateRange.yaml"
+  lines:
+    type: array
+    items:
+      type: string
+  postcode:
+    type: string
+    example: "LS1 6AE"
+  paf_key:
+    type: string

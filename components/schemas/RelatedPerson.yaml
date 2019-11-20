@@ -1,0 +1,56 @@
+type: object
+# TODO required: ...
+properties:
+  self:
+    description: The location of this related person resource
+    type: string
+    format: path
+    example: /Patient/44505577104/RelatedPerson/1
+  patient:
+    description: The patient the person is related to
+    type: string
+    format: url
+    example: /Patient/44505577104
+  business_effective:
+    $ref: "DateRange.yaml"
+  role: # TODO relationship type and role need investigating, see API notes
+    type: string
+  relationship_type:
+    type: string
+  ranking:
+    type: integer
+  next_of_kin:
+    type: boolean
+    default: false
+  copy_correspondence:
+    type: boolean
+    default: false
+  callback_consent:
+    type: boolean
+    default: false
+  personal_details:
+    description: If the related person is a patient then their personal details are available on the linked patient resource, otherwise they are included
+    oneOf:
+      - type: object
+        required:
+          - patient
+        properties:
+          patient:
+            description: The path to the patient resource
+            type: string
+            format: path
+            example: /Patient/44505577104
+          nhs_number:
+            $ref: "NhsNumber.yaml"
+      - type: object
+        properties:
+          name:
+            $ref: "PersonName.yaml"
+          usual_address:
+            $ref: "Address.yaml"
+          contact_points:
+            $ref: "ContactPoint.yaml"
+          contact_preference:
+            $ref: "ContactPreference.yaml"
+          language_preference:
+            $ref: "LanguagePreference.yaml"

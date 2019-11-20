@@ -1,0 +1,8 @@
+type: object
+allOf:
+  - $ref: "GeneralPracticeBase.yaml"
+  - type: object
+    properties:
+      practice_ods_code:
+        description: The ODS code of the patient's general practice
+        type: string

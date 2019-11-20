@@ -1,0 +1,20 @@
+type: object
+properties:
+  method:
+    type: string
+    enum:
+      [
+        letter,
+        visit,
+        telephone,
+        email,
+        minicom,
+        via_proxy,
+        sign_language,
+        no_telephone,
+      ]
+  times:
+    type: string
+  written_format:
+    type: string
+    enum: [large_print, braille, audio_tape]

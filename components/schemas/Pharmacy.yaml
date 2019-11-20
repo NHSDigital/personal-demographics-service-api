@@ -1,0 +1,9 @@
+type: object
+required:
+  - ods_code
+properties:
+  ods_code:
+    description: The ODS code of the pharmacy
+    type: string
+example:
+  ods_code: "8HA03"

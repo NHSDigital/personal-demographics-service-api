@@ -1,0 +1,31 @@
+type: object
+required:
+  - names
+  - gender
+  - birth_date
+  - addresses
+properties:
+  names:
+    description: One 'usual' name must be provided
+    type: array
+    minItems: 1
+    items:
+      $ref: "PersonName.yaml"
+  gender:
+    $ref: "Gender.yaml"
+  birth_date:
+    $ref: "Date.yaml"
+  addresses:
+    $ref: "PersonAddress.yaml"
+  contact_points:
+    type: array
+    items:
+      $ref: "ContactPoint.yaml"
+  contact_preference:
+    $ref: "ContactPreference.yaml"
+  language_preference:
+    $ref: "LanguagePreference.yaml"
+  general_practice:
+    $ref: "GeneralPracticeWrite.yaml"
+  pharmacies:
+    $ref: "PharmacyList.yaml"

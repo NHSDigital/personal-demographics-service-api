@@ -1,0 +1,11 @@
+allOf:
+  - $ref: "Pharmacy.yaml"
+  - type: object
+    properties:
+      url:
+        description: The location of the pharmacy resource
+        type: string
+        format: url
+example:
+  url: "/Organization/8HA03"
+  ods_code: "8HA03"

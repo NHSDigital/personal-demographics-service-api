@@ -1,0 +1,22 @@
+type: object
+properties:
+  use:
+    type: string
+    enum: [usual, preferred, alias, bachelor, maiden, birth, other]
+  business_effective:
+    $ref: "DateRange.yaml"
+  title:
+    type: string
+    example: Mrs
+  first_name:
+    type: string
+    example: Jane
+  other_names:
+    type: string
+    example: Jenny
+  family_name:
+    type: string
+    example: Smith
+  suffix:
+    type: string
+    example: MBE

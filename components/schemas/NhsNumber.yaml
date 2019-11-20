@@ -1,0 +1,4 @@
+description: The primary identifier of a patient. NHS Number is unique within the NHS in England and Wales
+type: string
+example: "4505577104"
+format: '^\d{10}$'

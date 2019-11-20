@@ -1,0 +1,14 @@
+description: The patient's registered general practice
+type: object
+required:
+  - business_effective
+properties:
+  business_effective:
+    type: object
+    required:
+      - start
+    properties:
+      start:
+        $ref: "Date.yaml"
+      end:
+        $ref: "Date.yaml"
