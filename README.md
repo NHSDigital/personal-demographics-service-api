@@ -28,3 +28,14 @@ docker run -p 80:8080 \
     -v ${pwd}\components\:/usr/share/nginx/html/components \
     swaggerapi/swagger-ui
 ```
+
+### Speccy
+
+Use [speccy](http://speccy.io/) to combine (resolve) the specification into a single file:
+
+```
+npm install -g speccy
+speccy resolve patient-information-api.yaml -o patient-information-api-ONEFILE.yaml
+```
+
+:bulb: This is useful when uploading to Apigee. (There may be a way to provide a multi-file spec, update this doc if you find out.)
