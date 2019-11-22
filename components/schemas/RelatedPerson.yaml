@@ -6,6 +6,10 @@ properties:
     type: string
     format: path
     example: /Patient/44505577104/RelatedPerson/1
+  _version:
+    type: string
+    description: The NHS Digital assigned version of the patient resource
+    example: "2"
   patient:
     description: The patient the person is related to
     type: string

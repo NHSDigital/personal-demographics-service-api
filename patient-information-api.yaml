@@ -12,20 +12,20 @@ paths:
         Find patients matching the given parameters using a case-insensitive search. Four types of searches are supported:
         # Search types
         This endpoint will search for a patient using one of four search types. The choice of search is automatic and will cascade as necessary until results are found.
-        
+
         ## Simple
         The fastest match, requires family_name, first_name, gender, birth_date
         Returns either a single matching patient or nothing. A limited set of parameters can be provided, all of which must exactly match the current information held.
-        
+
         ## Advanced
         Can return multiple matching patients if the information provided matches the current information held. Supports searching against additional information fields. Wildcards (\*) in name and postcode fields are supported. Wildcards must be preceeded by at least two characters, i.e. 'Br\*' is valid, but '\*cDougal' is not
-        
+
         ## Advanced Historic
         Identical to advanced except it also searches historic data.
-        
+
         ## Weighted
         Returns a percentage match weight for each potentially matching patient. Always searches historical data. Requires at least one of the following combinations of search parameters:
-        
+
           - family_name, first_name, gender, birth_date (or range)
           - family_name, gender, birth_date (or range), postcode
           - first_name, gender, birth_date (or range), postcode
@@ -82,7 +82,7 @@ paths:
           example: "2018-03-20"
           schema:
             type: string
-            format: date            
+            format: date
         - name: death_date
           in: query
           description: Date of death in the format yyyy-mm-dd
@@ -159,14 +159,14 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:  
+          application/json:
             schema:
               $ref: 'components/schemas/PatientNew.yaml'
       responses:
         '200':
           description: NHS Number allocated
           content:
-            application/json:  
+            application/json:
               schema:
                 $ref: 'components/schemas/Patient.yaml'
         '409':
@@ -192,6 +192,9 @@ paths:
       responses:
         '200':
           description: Information successfully returned
+          headers:
+            ETag:
+              $ref: 'components/schemas/ETag.yaml'
           content:
             application/json:
               schema:
@@ -212,10 +215,12 @@ paths:
       externalDocs:
         description: IETF RFC 7396
         url: https://tools.ietf.org/html/rfc7396
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
       requestBody:
         required: true
         content:
-          application/json:  
+          application/json:
             schema:
               type: object
               required:
@@ -231,10 +236,17 @@ paths:
       responses:
         '200':
           description: Patient updated
+          headers:
+            ETag:
+              $ref: 'components/schemas/ETag.yaml'
           content:
             application/json:
               schema:
                 $ref: 'components/schemas/Patient.yaml'
+        '412':
+          $ref: '#/components/responses/412PreconditionFailed'
+        '400':
+          $ref: '#/components/responses/400MissingIfMatchHeader'
   /Patient/{nhs_number}/RelatedPerson:
     parameters:
       - $ref: '#/components/parameters/NhsNumber'
@@ -253,7 +265,7 @@ paths:
             type: string
             #TODO enum: [...]
       responses:
-        200:
+        '200':
           description: A list of related people
           content:
             application/json:
@@ -267,8 +279,11 @@ paths:
       tags:
         - related people
       responses:
-        200: 
+        '200':
           description: The new related person
+          headers:
+            ETag:
+              $ref: 'components/schemas/ETag.yaml'
           content:
             application/json:
               schema:
@@ -294,8 +309,11 @@ paths:
           schema:
             type: string
       responses:
-        200: 
+        '200':
           description: A list of related people
+          headers:
+            ETag:
+              $ref: 'components/schemas/ETag.yaml'
           content:
             application/json:
               schema:
@@ -305,25 +323,40 @@ paths:
     put:
       description: Update the details of a related person
       summary: Update related person
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
       tags:
         - related people
       responses:
-        200: 
+        '200':
           description: The updated related person
+          headers:
+            ETag:
+              $ref: 'components/schemas/ETag.yaml'
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: 'components/schemas/RelatedPerson.yaml'
+        '412':
+          $ref: '#/components/responses/412PreconditionFailed'
+        '400':
+          $ref: '#/components/responses/400MissingIfMatchHeader'
     delete:
       description: Delete a person related to/associated with the patient
       summary: Remove a related person
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
       tags:
         - related people
       responses:
-        200: 
+        '200':
           description: Successfully removed related person
+        '412':
+          $ref: '#/components/responses/412PreconditionFailed'
+        '400':
+          $ref: '#/components/responses/400MissingIfMatchHeader'
   /Patient/{nhs_number}/ReasonableAdjustment:
     parameters:
       - $ref: '#/components/parameters/NhsNumber'
@@ -342,6 +375,9 @@ paths:
       responses:
         '200':
           description: A reasonable adjustment
+          headers:
+            ETag:
+              $ref: 'components/schemas/ETag.yaml'
   /Patient/{nhs_number}/ReasonableAdjustment/{adjustment_id}:
     parameters:
       - $ref: '#/components/parameters/NhsNumber'
@@ -359,20 +395,38 @@ paths:
       responses:
         '200':
           description: A reasonable adjustment
+          headers:
+            ETag:
+              $ref: 'components/schemas/ETag.yaml'
     put:
       summary: Update a specific reasonable adjustments
       tags:
         - reasonable adjustments
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
       responses:
         '200':
           description: A reasonable adjustment
+          headers:
+            ETag:
+              $ref: 'components/schemas/ETag.yaml'
+        '412':
+          $ref: '#/components/responses/412PreconditionFailed'
+        '400':
+          $ref: '#/components/responses/400MissingIfMatchHeader'
     delete:
       summary: Delete a specific reasonable adjustments
       tags:
         - reasonable adjustments
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
       responses:
         '200':
           description: A reasonable adjustment
+        '412':
+          $ref: '#/components/responses/412PreconditionFailed'
+        '400':
+          $ref: '#/components/responses/400MissingIfMatchHeader'
   /Patient/{nhs_number}/Address:
     parameters:
       - $ref: '#/components/parameters/NhsNumber'
@@ -381,15 +435,18 @@ paths:
       tags:
         - addresses
       responses:
-        200:
+        '200':
           description: Successful request
     post:
       summary: Add a new address to the patient
       tags:
         - addresses
       responses:
-        200:
+        '200':
           description: Successful request
+          headers:
+            ETag:
+              $ref: 'components/schemas/ETag.yaml'
   /Patient/{nhs_number}/Address/{address_id}:
     parameters:
       - $ref: '#/components/parameters/NhsNumber'
@@ -405,22 +462,40 @@ paths:
       tags:
         - addresses
       responses:
-        200:
+        '200':
           description: Successful request
+          headers:
+            ETag:
+              $ref: 'components/schemas/ETag.yaml'
     put:
       summary: Update a patient's address
       tags:
         - addresses
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
       responses:
-        200:
+        '200':
           description: Successful request
+          headers:
+            ETag:
+              $ref: 'components/schemas/ETag.yaml'
+        '412':
+          $ref: '#/components/responses/412PreconditionFailed'
+        '400':
+          $ref: '#/components/responses/400MissingIfMatchHeader'
     delete:
       summary: Remove an address from a patient
       tags:
         - addresses
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
       responses:
-        200:
+        '200':
           description: Successful request
+        '412':
+          $ref: '#/components/responses/412PreconditionFailed'
+        '400':
+          $ref: '#/components/responses/400MissingIfMatchHeader'
 components:
   parameters:
     NhsNumber:
@@ -430,6 +505,37 @@ components:
       required: true
       schema:
         $ref: 'components/schemas/NhsNumber.yaml'
+    IfMatch:
+      in: header
+      name: If-Match
+      description: |
+        Latest known version identifier enclosed in quotes.
+
+        Send the value of this resource's `ETag` response header (or `_version` property) as received.
+      required: true
+      schema:
+        type: string
+        format: '^\"[[:print:]]+\"$' # Printable characters enclosed in quotes. See: https://tools.ietf.org/html/rfc7230#section-3.2.6
+        example: '"2"'
   schemas:
     Patient:
       $ref: 'components/schemas/Patient.yaml'
+  responses:
+    412PreconditionFailed:
+      description: |
+        Precondition failed
+
+        The version identifier submitted in the `If-Match` header was not the latest version of the resource.
+      content:
+        application/json:
+          schema:
+            $ref: 'components/schemas/Error.yaml'
+    400MissingIfMatchHeader:
+      description: |
+        Client Error
+
+        Missing `If-Match` header
+      content:
+        application/json:
+          schema:
+            $ref: 'components/schemas/Error.yaml'

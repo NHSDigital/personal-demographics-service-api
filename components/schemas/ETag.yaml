@@ -1,0 +1,8 @@
+schema:
+  type: string
+  format: '^\"[[:print:]]+\"$' # Printable characters enclosed in quotes. See: https://tools.ietf.org/html/rfc7230#section-3.2.6
+  example: '"2"'
+description: |
+  Record version identifier enclosed in quotes.
+  
+  Corresponds to `_version` attribute in body.
