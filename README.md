@@ -29,13 +29,19 @@ docker run -p 80:8080 \
     swaggerapi/swagger-ui
 ```
 
+Speccy's `serve` subcommand provides similar functionality (see below) but requires you restart the service before changes are reflected.
+
 ### Speccy
 
-Use [speccy](http://speccy.io/) to combine (resolve) the specification into a single file:
+> [Speccy](http://speccy.io/) *A handy toolkit for OpenAPI, with a linter to enforce quality rules, documentation rendering, and resolution.*
 
-```
-npm install -g speccy
-speccy resolve patient-information-api.yaml -o patient-information-api-ONEFILE.yaml
-```
+Speccy does the lifting for the following npm scripts:
 
-:bulb: This is useful when uploading to Apigee. (There may be a way to provide a multi-file spec, update this doc if you find out.)
+ * `test` -- Lints the definition
+ * `publish` -- Outputs the specification as a **single file** into the `publish/` directory
+ * `serve` -- Serves a preview of the specification in human-readable format
+ * `release` -- copy the latest file from `publish/` to `public/`
+
+(Workflow detailed in a [post](https://developerjack.com/blog/2018/maintaining-large-design-first-api-specs/) on the *developerjack* blog.)
+
+:bulb: `publish` command is useful when uploading to Apigee which requires the spec as a single file. (There may be a way to provide a multi-file spec, update this doc if you find out.)
