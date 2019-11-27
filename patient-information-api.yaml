@@ -44,7 +44,7 @@ paths:
           description: The patient's family name (surname)
           example: Smith
           in: query
-          required: true
+          required: false
           schema:
             type: string
         - name: given_name
@@ -65,7 +65,7 @@ paths:
           description: Gender with which the patient most strongly identifies.
           example: female
           in: query
-          required: true
+          required: false
           schema:
             $ref: 'components/schemas/Gender.yaml'
         - name: birth_date
