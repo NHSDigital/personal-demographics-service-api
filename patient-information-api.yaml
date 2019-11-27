@@ -259,6 +259,255 @@ paths:
           $ref: '#/components/responses/412PreconditionFailed'
         '400':
           $ref: '#/components/responses/400MissingIfMatchHeader'
+  /Patient/{nhs_number}/RelatedPerson:
+    parameters:
+      - $ref: '#/components/parameters/NhsNumber'
+    get:
+      description: Returns people associated with or related to the Patient, e.g. family relations, contacts and guardians etc.
+      summary: Return people related to the patient
+      tags:
+        - related people
+      parameters:
+          # TODO - included as an example. More to go here
+        - name: relationship_type
+          description: Return related people with the given relationship type
+          in: query
+          required: false
+          schema:
+            type: string
+            #TODO enum: [...]
+      responses:
+        '200':
+          description: A list of related people
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'components/schemas/RelatedPerson.yaml'
+    post:
+      description: Create a new person related to/associated with the patient
+      summary: Add a related person to the patient's record
+      tags:
+        - related people
+      responses:
+        '200':
+          description: The new related person
+          headers:
+            ETag:
+              $ref: 'components/schemas/ETag.yaml'
+          content:
+            application/json:
+              schema:
+                $ref: 'components/schemas/RelatedPerson.yaml'
+  /Patient/{nhs_number}/RelatedPerson/{id}:
+    parameters:
+      - $ref: '#/components/parameters/NhsNumber'
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      description: Returns a person associated with or related to the Patient, e.g. family relations, contacts and guardians etc.
+      summary: Return a person related to the patient
+      tags:
+        - related people
+      parameters:
+        - name: relationship_type
+          description: Return related people with the given relationship type
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of related people
+          headers:
+            ETag:
+              $ref: 'components/schemas/ETag.yaml'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'components/schemas/RelatedPerson.yaml'
+    put:
+      description: Update the details of a related person
+      summary: Update related person
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
+      tags:
+        - related people
+      responses:
+        '200':
+          description: The updated related person
+          headers:
+            ETag:
+              $ref: 'components/schemas/ETag.yaml'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'components/schemas/RelatedPerson.yaml'
+        '412':
+          $ref: '#/components/responses/412PreconditionFailed'
+        '400':
+          $ref: '#/components/responses/400MissingIfMatchHeader'
+    delete:
+      description: Delete a person related to/associated with the patient
+      summary: Remove a related person
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
+      tags:
+        - related people
+      responses:
+        '200':
+          description: Successfully removed related person
+        '412':
+          $ref: '#/components/responses/412PreconditionFailed'
+        '400':
+          $ref: '#/components/responses/400MissingIfMatchHeader'
+  /Patient/{nhs_number}/ReasonableAdjustment:
+    parameters:
+      - $ref: '#/components/parameters/NhsNumber'
+    get:
+      description: Returns any reasonable adjustments which have been registered for this patient
+      summary: Retrieve a patient's reasonable adjustments
+      tags:
+        - reasonable adjustments
+      responses:
+        '200':
+          description: A list of reasonable adjustments
+    post:
+      summary: Add a new reasonable adjustments
+      tags:
+        - reasonable adjustments
+      responses:
+        '200':
+          description: A reasonable adjustment
+          headers:
+            ETag:
+              $ref: 'components/schemas/ETag.yaml'
+  /Patient/{nhs_number}/ReasonableAdjustment/{adjustment_id}:
+    parameters:
+      - $ref: '#/components/parameters/NhsNumber'
+      - in: path
+        name: adjustment_id
+        schema:
+          type: string
+        description: ID of a reasonable adjustment
+        example: '12345'
+        required: true
+    get:
+      summary: Retrieve a specific reasonable adjustments
+      tags:
+        - reasonable adjustments
+      responses:
+        '200':
+          description: A reasonable adjustment
+          headers:
+            ETag:
+              $ref: 'components/schemas/ETag.yaml'
+    put:
+      summary: Update a specific reasonable adjustments
+      tags:
+        - reasonable adjustments
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
+      responses:
+        '200':
+          description: A reasonable adjustment
+          headers:
+            ETag:
+              $ref: 'components/schemas/ETag.yaml'
+        '412':
+          $ref: '#/components/responses/412PreconditionFailed'
+        '400':
+          $ref: '#/components/responses/400MissingIfMatchHeader'
+    delete:
+      summary: Delete a specific reasonable adjustments
+      tags:
+        - reasonable adjustments
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
+      responses:
+        '200':
+          description: A reasonable adjustment
+        '412':
+          $ref: '#/components/responses/412PreconditionFailed'
+        '400':
+          $ref: '#/components/responses/400MissingIfMatchHeader'
+  /Patient/{nhs_number}/Address:
+    parameters:
+      - $ref: '#/components/parameters/NhsNumber'
+    get:
+      summary: List a patient's addresses
+      tags:
+        - addresses
+      responses:
+        '200':
+          description: Successful request
+    post:
+      summary: Add a new address to the patient
+      tags:
+        - addresses
+      responses:
+        '200':
+          description: Successful request
+          headers:
+            ETag:
+              $ref: 'components/schemas/ETag.yaml'
+  /Patient/{nhs_number}/Address/{address_id}:
+    parameters:
+      - $ref: '#/components/parameters/NhsNumber'
+      - in: path
+        name: address_id
+        schema:
+          type: string
+        description: ID of patient's address
+        example: '12345'
+        required: true
+    get:
+      summary: Show a specific address
+      tags:
+        - addresses
+      responses:
+        '200':
+          description: Successful request
+          headers:
+            ETag:
+              $ref: 'components/schemas/ETag.yaml'
+    put:
+      summary: Update a patient's address
+      tags:
+        - addresses
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
+      responses:
+        '200':
+          description: Successful request
+          headers:
+            ETag:
+              $ref: 'components/schemas/ETag.yaml'
+        '412':
+          $ref: '#/components/responses/412PreconditionFailed'
+        '400':
+          $ref: '#/components/responses/400MissingIfMatchHeader'
+    delete:
+      summary: Remove an address from a patient
+      tags:
+        - addresses
+      parameters:
+        - $ref: '#/components/parameters/IfMatch'
+      responses:
+        '200':
+          description: Successful request
+        '412':
+          $ref: '#/components/responses/412PreconditionFailed'
+        '400':
+          $ref: '#/components/responses/400MissingIfMatchHeader'
 components:
   parameters:
     NhsNumber:
