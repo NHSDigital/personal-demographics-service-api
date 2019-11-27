@@ -265,6 +265,7 @@ paths:
     get:
       description: Returns people associated with or related to the Patient, e.g. family relations, contacts and guardians etc.
       summary: Return people related to the patient
+      operationId: get-related-people
       tags:
         - related people
       parameters:
@@ -288,6 +289,7 @@ paths:
     post:
       description: Create a new person related to/associated with the patient
       summary: Add a related person to the patient's record
+      operationId: add-related-person
       tags:
         - related people
       responses:
@@ -306,11 +308,13 @@ paths:
       - name: id
         in: path
         required: true
+        description: "The patient's NHS number"
         schema:
           type: string
     get:
       description: Returns a person associated with or related to the Patient, e.g. family relations, contacts and guardians etc.
       summary: Return a person related to the patient
+      operationId: get-related-person
       tags:
         - related people
       parameters:
@@ -335,6 +339,7 @@ paths:
     put:
       description: Update the details of a related person
       summary: Update related person
+      operationId: update-related-person
       parameters:
         - $ref: '#/components/parameters/IfMatch'
       tags:
@@ -358,6 +363,7 @@ paths:
     delete:
       description: Delete a person related to/associated with the patient
       summary: Remove a related person
+      operationId: delete-related-person
       parameters:
         - $ref: '#/components/parameters/IfMatch'
       tags:
@@ -375,6 +381,7 @@ paths:
     get:
       description: Returns any reasonable adjustments which have been registered for this patient
       summary: Retrieve a patient's reasonable adjustments
+      operationId: get-reasonable-adjustments
       tags:
         - reasonable adjustments
       responses:
@@ -382,6 +389,7 @@ paths:
           description: A list of reasonable adjustments
     post:
       summary: Add a new reasonable adjustments
+      operationId: add-reasonable-adjustment
       tags:
         - reasonable adjustments
       responses:
@@ -402,6 +410,7 @@ paths:
         required: true
     get:
       summary: Retrieve a specific reasonable adjustments
+      operationId: get-reasonable-adjustment
       tags:
         - reasonable adjustments
       responses:
@@ -412,6 +421,7 @@ paths:
               $ref: 'components/schemas/ETag.yaml'
     put:
       summary: Update a specific reasonable adjustments
+      operationId: update-reasonable-adjustment
       tags:
         - reasonable adjustments
       parameters:
@@ -428,6 +438,7 @@ paths:
           $ref: '#/components/responses/400MissingIfMatchHeader'
     delete:
       summary: Delete a specific reasonable adjustments
+      operationId: delete-reasonable-adjustment
       tags:
         - reasonable adjustments
       parameters:
@@ -444,6 +455,7 @@ paths:
       - $ref: '#/components/parameters/NhsNumber'
     get:
       summary: List a patient's addresses
+      operationId: get-addresses
       tags:
         - addresses
       responses:
@@ -451,6 +463,7 @@ paths:
           description: Successful request
     post:
       summary: Add a new address to the patient
+      operationId: add-address
       tags:
         - addresses
       responses:
@@ -471,6 +484,7 @@ paths:
         required: true
     get:
       summary: Show a specific address
+      operationId: get-address
       tags:
         - addresses
       responses:
@@ -481,6 +495,7 @@ paths:
               $ref: 'components/schemas/ETag.yaml'
     put:
       summary: Update a patient's address
+      operationId: update-address
       tags:
         - addresses
       parameters:
@@ -497,6 +512,7 @@ paths:
           $ref: '#/components/responses/400MissingIfMatchHeader'
     delete:
       summary: Remove an address from a patient
+      operationId: delete-address
       tags:
         - addresses
       parameters:

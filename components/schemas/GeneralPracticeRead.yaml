@@ -1,24 +1,31 @@
 description: Historic general practice registration data may register the patient against a practice or an individual practitioner
 type: object
-allOf:
-  - $ref: "GeneralPracticeBase.yaml"
-  - type: object
+required:
+  - type
+  - url
+  - ods_code
+  - business_effective
+properties:
+  type:
+    description: Indicates whether the patient is registered to a practice or an individual practitioner
+    type: string
+    enum: [practice, practitioner]
+  url:
+    description: The location of the registered practice or practitioner resource
+    type: string
+    format: url
+  ods_code:
+    description: The ODS code of the registered practice or practitioner
+    type: string
+  business_effective:
+    type: object
     required:
-      - type
-      - url
-      - ods_code
+      - start
     properties:
-      type:
-        description: Indicates whether the patient is registered to a practice or an individual practitioner
-        type: string
-        enum: [practice, practitioner]
-      url:
-        description: The location of the registered practice or practitioner resource
-        type: string
-        format: url
-      ods_code:
-        description: The ODS code of the registered practice or practitioner
-        type: string
+      start:
+        $ref: "Date.yaml"
+      end:
+        $ref: "Date.yaml"
 example:
   business_effective:
     start: "2019-03-24"

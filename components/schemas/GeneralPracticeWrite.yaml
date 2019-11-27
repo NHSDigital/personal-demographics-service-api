@@ -1,8 +1,16 @@
 type: object
-allOf:
-  - $ref: "GeneralPracticeBase.yaml"
-  - type: object
+required:
+  - business_effective
+properties:
+  business_effective:
+    type: object
+    required:
+      - start
     properties:
-      practice_ods_code:
-        description: The ODS code of the patient's general practice
-        type: string
+      start:
+        $ref: "Date.yaml"
+      end:
+        $ref: "Date.yaml"
+  practice_ods_code:
+    description: The ODS code of the patient's general practice
+    type: string
