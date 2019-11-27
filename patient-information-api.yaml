@@ -160,7 +160,6 @@ paths:
                         patient:
                           $ref: 'components/schemas/Patient.yaml'
     post:
-      deprecated: true
       description: Used to create an NHS Number for a new patient. Should only be used if the patient cannot be found using any of the search options.
       operationId: create-patient
       summary: Create a new patient
