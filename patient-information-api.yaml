@@ -3,11 +3,19 @@ info:
   version: 0.1.0
   title: Patient Information API
   description: A RESTful API for finding patients and accessing patients' personal details held nationally by NHS Digital. This API is the authoritative source for this information for the NHS in England.
+  contact:
+    name: 'Patient Information API Support'
+    url: 'https://tbc.api.nhs.net'
+    email: 'tbc-api-support@nhs.net'
+
+tags:
+  - name: patients
 
 paths:
   /Patient:
     get:
       summary: Search for patients
+      operationId: search-patients
       description: |
         Find patients matching the given parameters using a case-insensitive search. Four types of searches are supported:
         # Search types
@@ -54,6 +62,7 @@ paths:
           schema:
             type: string
         - name: gender
+          description: Gender with which the patient most strongly identifies.
           example: female
           in: query
           required: true
@@ -153,6 +162,7 @@ paths:
     post:
       deprecated: true
       description: Used to create an NHS Number for a new patient. Should only be used if the patient cannot be found using any of the search options.
+      operationId: create-patient
       summary: Create a new patient
       tags:
         - patients
@@ -187,6 +197,7 @@ paths:
     get:
       description: Returns current information for the patient with the given NHS Number
       summary: Retrieve a patient's record
+      operationId: get-patient
       tags:
         - patients
       responses:
@@ -210,6 +221,7 @@ paths:
     patch:
       description: Updates specific patient information. Updates are specified using JSON Merge Patch. Update or insert general practice registration using the GeneralPracticeWrite model.
       summary: Update a patient's record
+      operationId: update-patient-partial
       tags:
         - patients
       externalDocs:
