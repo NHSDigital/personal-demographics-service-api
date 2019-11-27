@@ -8,6 +8,15 @@ Temporary repository of API definitions for the API management project.
 
 WIP: Still working on finding a great set of tools for working with these files. Please contribute!
 
+### Make commands
+There's some make commands that alias some of the below functionality:
+ * `develop` -- runs the development swagger ui (with hot reloading)
+ * `test` -- Lints the definition
+ * `publish` -- Outputs the specification as a **single file** into the `publish/` directory
+ * `serve` -- Serves a preview of the specification in human-readable format
+ * `release` -- copy the latest file from `publish/` to `public/`
+
+
 ### VS Code Plugins
 
  * **openapi-lint** will resolve links and validate an entire specs with the 'OpenAPI Resolve and Validate' command
