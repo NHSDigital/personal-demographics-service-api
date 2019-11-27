@@ -58,7 +58,7 @@ paths:
           in: query
           required: true
           schema:
-            $ref: 'components/schemas/GenderSearchType.yaml'
+            $ref: 'components/schemas/Gender.yaml'
         - name: birth_date
           in: query
           description: Birth date in the format yyyy-mm-dd. Required for simple searches. Other search types must provide either a birth date or a birth date range

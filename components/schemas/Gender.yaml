@@ -1,2 +1,2 @@
 type: string
-enum: [not_known, male, female, not_specified]
+enum: [male, female, other, unknown]
