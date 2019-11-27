@@ -8,7 +8,7 @@ properties:
   title:
     type: string
     example: Mrs
-  first_name:
+  given_name:
     type: string
     example: Jane
   other_names:

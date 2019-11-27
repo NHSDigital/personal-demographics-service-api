@@ -39,7 +39,7 @@ paths:
           required: true
           schema:
             type: string
-        - name: first_name
+        - name: given_name
           description: the patient's first given name
           example: Jane
           in: query
