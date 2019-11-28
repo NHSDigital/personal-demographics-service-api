@@ -187,14 +187,14 @@ paths:
               schema:
                 $ref: 'components/schemas/Error.yaml'
     patch:
-      description: Updates specific patient information. Updates are specified using JSON Merge Patch. Update or insert general practice registration using the GeneralPracticeWrite model.
+      description: Updates specific patient information. Updates are specified JSON Merge Patch.
       summary: Update a patient's record
       operationId: update-patient-partial
       tags:
         - patients
       externalDocs:
-        description: IETF RFC 7396
-        url: https://tools.ietf.org/html/rfc7396
+        description: IETF RFC 6902 JavaScript Object Notation (JSON) Patch
+        url: https://tools.ietf.org/html/rfc6902
       parameters:
         - $ref: '#/components/parameters/IfMatch'
       requestBody:
@@ -204,14 +204,14 @@ paths:
             schema:
               type: object
               required:
-                - patient
+                - patches
               properties:
                 correction:
                   description: Set to true if the update is correcting previously incorrect data
                   type: boolean
                   default: false
-                patient:
-                  $ref: 'components/schemas/Patient.yaml'
+                patches:
+                  $ref: 'components/schemas/JsonPatch.yaml'
           # TODO examples, especially of an add name etc.
       responses:
         '200':
@@ -223,10 +223,10 @@ paths:
             application/json:
               schema:
                 $ref: 'components/schemas/Patient.yaml'
-        '412':
-          $ref: '#/components/responses/412PreconditionFailed'
         '400':
           $ref: '#/components/responses/400MissingIfMatchHeader'
+        '412':
+          $ref: '#/components/responses/412PreconditionFailed'
   /Patient/{nhs_number}/RelatedPerson:
     parameters:
       - $ref: '#/components/parameters/NhsNumber'
