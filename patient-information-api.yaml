@@ -200,7 +200,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          application/json-patch+json:
             schema:
               type: object
               required:
@@ -212,7 +212,37 @@ paths:
                   default: false
                 patches:
                   $ref: 'components/schemas/JsonPatch.yaml'
-          # TODO examples, especially of an add name etc.
+            examples:
+              add-name:
+                summary: Add a new name to the patient
+                value:
+                  patches:
+                    - op: 'add'
+                      path: 'names/-'
+                      value:
+                        use: preferred
+                        business_effective:
+                          start: 2019-12-31
+                        title: Dr
+                        given_name: Joe
+                        family_name: Bloggs
+                        other_names: Horatio Maximus
+                        suffix: PhD
+              update-name:
+                summary: Update the second given name entry
+                value:
+                  correction: true
+                  patches:
+                    - op: 'replace'
+                      path: 'names/1/given_name'
+                      value: 'Jonathan'
+              delete-name:
+                summary: Remove a name no longer in use
+                value:
+                  correction: true
+                  patches:
+                    - op: 'remove'
+                      path: 'names/0'
       responses:
         '200':
           description: Patient updated
