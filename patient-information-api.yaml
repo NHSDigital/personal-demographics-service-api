@@ -16,8 +16,10 @@ paths:
     get:
       summary: Search for patients
       operationId: search-patients
+      externalDocs:
+        description: ODS codes and documentation
+        url: https://digital.nhs.uk/services/organisation-data-service
       description: |
-        Find patients matching the given parameters using a case-insensitive search. Four types of searches are supported:
         # Search types
         This endpoint will search for a patient using one of four search types. The choice of search is automatic and will cascade as necessary until results are found.
 
@@ -33,7 +35,6 @@ paths:
 
         ## Weighted
         Returns a percentage match weight for each potentially matching patient. Always searches historical data. Requires at least one of the following combinations of search parameters:
-
           - family_name, first_name, gender, birth_date (or range)
           - family_name, gender, birth_date (or range), postcode
           - first_name, gender, birth_date (or range), postcode
@@ -125,20 +126,15 @@ paths:
           required: false
           schema:
             type: string
-        - name: practice_ods
+        - name: practice_code
           description: The ODS code of the patient's registered general practice. Do not use in simple searches
           example: Y00001
           in: query
           required: false
           schema:
             type: string
-        - name: gp_ods
-          description: The ODS code of the patient's registered general practitioner (GP). Do not use in simple searches
-          example: G1234567
-          in: query
-          required: false
-          schema:
-            type: string
+            format: ods_code
+            pattern: '^[A-Z]\d{5}$'
       responses:
         '200':
           description: An array of matched patients. Empty if none found. Returns percentage match weight for each returned patient for weighted searches
@@ -147,49 +143,18 @@ paths:
               schema:
                 type: array
                 items:
-                  oneOf:
-                    - $ref: 'components/schemas/Patient.yaml'
-                    - type: object
-                      required:
-                        - match_weight
-                        - patient
-                      properties:
-                        match_weight:
-                          type: integer
-                          example: 78
-                        patient:
-                          $ref: 'components/schemas/Patient.yaml'
-    post:
-      description: Used to create an NHS Number for a new patient. Should only be used if the patient cannot be found using any of the search options.
-      operationId: create-patient
-      summary: Create a new patient
-      tags:
-        - patients
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: 'components/schemas/PatientNew.yaml'
-      responses:
-        '200':
-          description: NHS Number allocated
-          content:
-            application/json:
-              schema:
-                $ref: 'components/schemas/Patient.yaml'
-        '409':
-          description: Matching patient already exists
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  patient:
-                    description: The path to the matched patient
-                    type: string
-                    format: path
-                    example: /Patient/4505577104
+                  type: object
+                  required:
+                    - match_weight
+                    - patient
+                  properties:
+                    match_weight:
+                      type: number
+                      example: 78.5
+                      minimum: 0
+                      maximum: 100
+                    patient:
+                      $ref: 'components/schemas/Patient.yaml'
   /Patient/{nhs_number}:
     parameters:
       - $ref: '#/components/parameters/NhsNumber'
@@ -209,10 +174,14 @@ paths:
             application/json:
               schema:
                 $ref: 'components/schemas/Patient.yaml'
+        '400':
+          description: Bad NHS number supplied
+          content:
+            application/json:
+              schema:
+                $ref: 'components/schemas/Error.yaml'
         '404':
           description: Patient not found
-        default:
-          description: unexpected error
           content:
             application/json:
               schema:
