@@ -1,4 +1,0 @@
-description: A date in the format yyyy-mm-dd
-example: "2010-10-22"
-type: string
-format: date

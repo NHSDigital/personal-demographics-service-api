@@ -2,6 +2,12 @@ description: A date range
 type: object
 properties:
   start:
-    $ref: "Date.yaml"
+    description: A date in the format yyyy-mm-dd
+    example: "2010-10-22"
+    type: string
+    format: date
   end:
-    $ref: "Date.yaml"
+    description: A date in the format yyyy-mm-dd
+    example: "2010-10-22"
+    type: string
+    format: date

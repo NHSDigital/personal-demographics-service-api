@@ -48,9 +48,15 @@ properties:
   gender:
     $ref: "Gender.yaml"
   birth_date:
-    $ref: "Date.yaml"
+    description: A date in the format yyyy-mm-dd
+    example: "2010-10-22"
+    type: string
+    format: date
   death_date:
-    $ref: "Date.yaml"
+    description: A date in the format yyyy-mm-dd
+    example: "2010-10-22"
+    type: string
+    format: date
   addresses:
     $ref: "PersonAddress.yaml"
   contact_points:
