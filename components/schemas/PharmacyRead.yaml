@@ -1,13 +1,28 @@
 required:
 - ods_code
 properties:
-  url:
-    description: The location of the pharmacy resource
+  _id:
     type: string
-    format: url
+    example: '123'
+  _links:
+    type: object
+    properties:
+      self:
+        type: string
+        format: url
+        example: /Patient/1234567890/Pharmacy/123
+      organization:
+        type: string
+        format: url
+        description: The location of the registered practice or practitioner resource
+        example: /Organization/8HA03
   ods_code:
     description: The ODS code of the pharmacy
     type: string
+  type:
+    description: Type of pharmacy link
+    type: string
+    enum: [nominated, medical_appliance, dispensing_doctor]
 example:
   url: "/Organization/8HA03"
   ods_code: "8HA03"

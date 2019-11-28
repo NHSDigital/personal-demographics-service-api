@@ -6,12 +6,26 @@ required:
   - ods_code
   - business_effective
 properties:
+  _id:
+    type: string
+    example: '123'
+  _links:
+    type: object
+    properties:
+      self:
+        type: string
+        format: url
+        example: /Patient/1234567890/GeneralPractice/123
+      organization:
+        type: string
+        format: url
+        description: The location of the registered practice or practitioner resource
+        example: /Organization/Y00001
   type:
     description: Indicates whether the patient is registered to a practice or an individual practitioner
     type: string
     enum: [practice, practitioner]
   url:
-    description: The location of the registered practice or practitioner resource
     type: string
     format: url
   ods_code:
@@ -33,8 +47,11 @@ properties:
         type: string
         format: date
 example:
+  _id: 123
+  _links:
+    self: /Patient/1234567890/GeneralPractice/123
+    organization:  /Organization/Y00001
   business_effective:
     start: "2019-03-24"
   type: practice
-  url: /Organization/Y00001
   ods_code: Y00001

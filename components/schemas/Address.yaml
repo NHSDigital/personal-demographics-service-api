@@ -1,7 +1,23 @@
 type: object
 properties:
+  _id:
+    type: string
+    readOnly: true
+    example: '123'
+  _links:
+    type: object
+    readOnly: true
+    properties:
+      self:
+        type: string
+        format: url
+        example: '/Patient/1234567890/Address/123'
   business_effective:
     $ref: "DateRange.yaml"
+  type:
+    type: string
+    description: Type of address
+    enum: [usual, correspondence, temporary, other]
   lines:
     type: array
     items:

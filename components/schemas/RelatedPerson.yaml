@@ -1,20 +1,26 @@
 type: object
 # TODO required: ...
 properties:
-  self:
-    description: The location of this related person resource
+  _id:
     type: string
-    format: path
-    example: /Patient/44505577104/RelatedPerson/1
+    example: '123'
+  _links:
+    type: object
+    properties:
+      self:
+        type: string
+        format: url
+        description: The location of this related person resource
+        example: /Patient/44505577104/RelatedPerson/1
+      patient:
+        description: The patient the person is related to
+        type: string
+        format: url
+        example: /Patient/44505577104
   _version:
     type: string
     description: The NHS Digital assigned version of the patient resource
     example: "2"
-  patient:
-    description: The patient the person is related to
-    type: string
-    format: url
-    example: /Patient/44505577104
   business_effective:
     $ref: "DateRange.yaml"
   role: # TODO relationship type and role need investigating, see API notes

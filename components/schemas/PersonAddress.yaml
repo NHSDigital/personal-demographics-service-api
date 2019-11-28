@@ -4,11 +4,7 @@ properties:
     description: Set to true if the patient has no fixed, usual address. Usual address should be null if this is true.
     type: boolean
     default: false
-  usual:
-    $ref: "Address.yaml"
-  correspondence:
-    $ref: "Address.yaml"
-  temporary:
-    $ref: "Address.yaml"
-  other:
-    $ref: "Address.yaml"
+  addresses:
+    type: array
+    items:
+      $ref: "Address.yaml"

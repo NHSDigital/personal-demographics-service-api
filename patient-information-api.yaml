@@ -178,13 +178,16 @@ paths:
                           suffix: PhD
                       gender: male
                       birth_date: 1900-01-01
-                      addresses:
-                        - business_effective:
-                            start: 1900-01-01
-                          lines:
-                            - 1 Odd Avenue
-                            - London
-                            - SW1 1AA
+                      address:
+                        no_fixed_address: false
+                        addresses:
+                          - business_effective:
+                              start: '1900-01-01'
+                            type: usual
+                            lines:
+                              - 1 Odd Avenue
+                              - London
+                              - SW1 1AA
                       contact_points:
                         - business_effective:
                             start: 1900-01-01
@@ -201,6 +204,24 @@ paths:
                       pharmacies:
                         - url: /Organization/8HA03
                           ods_code: 8HA03
+                          type: nominated
+        '400':
+          description: Invalid search params
+          content:
+            application/json:
+              schema:
+                $ref: 'components/schemas/Error.yaml'
+              examples:
+                not-enough:
+                  summary: Too few search params
+                  value:
+                    code: invalid_search_params
+                    message: 'Not enough search parameters were provided to be able to make a search'
+                bad-dob:
+                  summary: Bad date of birth format
+                  value:
+                    code: invalid_search_params
+                    message: 'Date of birth has invalid format: 01-01-1900 is not in YYYY-MM-DD format'
 
   /Patient/{nhs_number}:
     parameters:
@@ -227,12 +248,18 @@ paths:
             application/json:
               schema:
                 $ref: 'components/schemas/Error.yaml'
+              example:
+                code: 'invalid_nhs_number'
+                message: 'NHS number is not in the correct format, or is not a real NHS number'
         '404':
           description: Patient not found
           content:
             application/json:
               schema:
                 $ref: 'components/schemas/Error.yaml'
+              example:
+                code: 'not_found'
+                message: 'Patient with NHS number 1234567890 could not be found'
     patch:
       description: Updates specific patient information. Updates are specified JSON Merge Patch.
       summary: Update a patient's record
@@ -603,6 +630,9 @@ components:
         application/json:
           schema:
             $ref: 'components/schemas/Error.yaml'
+          example:
+            code: version_mismatch
+            message: 'This resource has changed since you last read. Please re-read and try again with the new version number.'
     400MissingIfMatchHeader:
       description: |
         Client Error
@@ -612,3 +642,6 @@ components:
         application/json:
           schema:
             $ref: 'components/schemas/Error.yaml'
+          example:
+            code: version_not_supplied
+            message: 'IfMatch header must be supplied to update this resource'
