@@ -7,3 +7,5 @@ jobs:
       - checkout
       - run: npm install
       - run: make release
+      - store_artifacts:
+          path: ./public/patient-information-api.yaml
