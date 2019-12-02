@@ -10,3 +10,4 @@ jobs:
       - run: make release
       - store_artifacts:
           path: ./public/patient-information-api.json
+      - run: curl -X POST "https://${BB_AUTH_STRING}@api.bitbucket.org/2.0/repositories/laurencesmith/apim-definitions/downloads" --form files=@"./public/patient-information-api.json"
