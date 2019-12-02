@@ -159,7 +159,7 @@ paths:
                 items:
                   - match_weight: 100.0
                     patient:
-                      $ref: 'components/examples/Patient.yaml' 
+                      $ref: 'components/examples/Patient.yaml'
         '400':
           description: Invalid search params
           content:
@@ -198,8 +198,7 @@ paths:
               schema:
                 $ref: 'components/schemas/Patient.yaml'
               example:
-                patient:
-                  $ref: 'components/examples/Patient.yaml'
+                $ref: 'components/examples/Patient.json'
         '400':
           description: Bad NHS number supplied
           content:
