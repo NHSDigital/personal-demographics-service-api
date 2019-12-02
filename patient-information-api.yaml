@@ -578,9 +578,6 @@ components:
   schemas:
     Patient:
       $ref: 'components/schemas/Patient.yaml'
-  examples:
-    Patient:
-      $ref: 'components/examples/Patient.yaml'
   responses:
     412PreconditionFailed:
       description: |

@@ -1,47 +1,46 @@
-patient:
-  _version: 1
-  _links:
-    self: /Patient/44505577104
-    reasonable_adjustments: /Patient/44505577104/ReasonableAdjustment
-    consent: /Patient/44505577104/Consent
-    related_people: /Patient/44505577104/RelatedPerson
-    birth: /Patient/44505577104/Birth
-  nhs_number: 44505577104
-  names:
-    - use: usual
-      business_effective:
-        start: 1900-01-01
-      title: Dr
-      given_name: Ignacius
-      other_names: Hercule
-      family_name: Strangelove
-      suffix: PhD
-  gender: male
-  birth_date: 1900-01-01
-  address:
-    no_fixed_address: false
-    addresses:
-      - business_effective:
-          start: '1900-01-01'
-        type: usual
-        lines:
-          - 1 Odd Avenue
-          - London
-          - SW1 1AA
-  contact_points:
+_version: 1
+_links:
+  self: /Patient/44505577104
+  reasonable_adjustments: /Patient/44505577104/ReasonableAdjustment
+  consent: /Patient/44505577104/Consent
+  related_people: /Patient/44505577104/RelatedPerson
+  birth: /Patient/44505577104/Birth
+nhs_number: 44505577104
+names:
+  - use: usual
+    business_effective:
+      start: 1900-01-01
+    title: Dr
+    given_name: Ignacius
+    other_names: Hercule
+    family_name: Strangelove
+    suffix: PhD
+gender: male
+birth_date: 1900-01-01
+address:
+  no_fixed_address: false
+  addresses:
     - business_effective:
-        start: 1900-01-01
-      system: fax
-      value: 020 34 567 890
-      use: home
-      rank: 1
-  general_practice:
-    - business_effective:
-        start: 1900-01-01
-      type: practice
-      url: /Organization/Y00001
-      ods_code: Y00001
-  pharmacies:
-    - url: /Organization/8HA03
-      ods_code: 8HA03
-      type: nominated
+        start: '1900-01-01'
+      type: usual
+      lines:
+        - 1 Odd Avenue
+        - London
+        - SW1 1AA
+contact_points:
+  - business_effective:
+      start: 1900-01-01
+    system: fax
+    value: 020 34 567 890
+    use: home
+    rank: 1
+general_practice:
+  - business_effective:
+      start: 1900-01-01
+    type: practice
+    url: /Organization/Y00001
+    ods_code: Y00001
+pharmacies:
+  - url: /Organization/8HA03
+    ods_code: 8HA03
+    type: nominated
