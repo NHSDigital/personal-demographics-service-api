@@ -142,7 +142,7 @@ paths:
             application/json:
               schema:
                 type: array
-                items:
+                patients:
                   type: object
                   required:
                     - match_weight
@@ -156,9 +156,10 @@ paths:
                     patient:
                       $ref: 'components/schemas/Patient.yaml'
               example:
-                items:
+                patients:
                   - match_weight: 100.0
-                    $ref: 'components/examples/Patient.yaml' 
+                    patient:
+                      $ref: 'components/examples/Patient.yaml' 
         '400':
           description: Invalid search params
           content:
@@ -197,7 +198,8 @@ paths:
               schema:
                 $ref: 'components/schemas/Patient.yaml'
               example:
-                $ref: 'components/examples/Patient.yaml'
+                patient:
+                  $ref: 'components/examples/Patient.yaml'
         '400':
           description: Bad NHS number supplied
           content:
@@ -576,6 +578,9 @@ components:
   schemas:
     Patient:
       $ref: 'components/schemas/Patient.yaml'
+  examples:
+    Patient:
+      $ref: 'components/examples/Patient.yaml'
   responses:
     412PreconditionFailed:
       description: |
