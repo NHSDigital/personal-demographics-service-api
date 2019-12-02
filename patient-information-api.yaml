@@ -142,7 +142,7 @@ paths:
             application/json:
               schema:
                 type: array
-                patients:
+                items:
                   type: object
                   required:
                     - match_weight
@@ -156,7 +156,7 @@ paths:
                     patient:
                       $ref: 'components/schemas/Patient.yaml'
               example:
-                patients:
+                items:
                   - match_weight: 100.0
                     patient:
                       $ref: 'components/examples/Patient.yaml' 
