@@ -7,7 +7,7 @@ info:
     Use this API to find patients and to retrieve and update their personal details held nationally by NHS Digital. This API is the authoritative source for this information for the NHS in England.
     ## API status
     This API is in Alpha - expect significant breaking changes.
-    
+
     We are working towards making this API fully compliant with FHIR.
     ## Versioning
     When an API changes in a way that is backwards-incompatible, we increase the version number of the API. More details to follow.
@@ -16,7 +16,7 @@ info:
     ## Testing
     This API is currently only available for sandbox testing. You can test the following scenarios:
     <table><tr><th>Scenario</th><th>Request</th><th>Response</th></tr><tr><td>Patient exists</td><td>nhs_number=9111111111</td><td>HTTP Status 200 with patient data in the response body</td></tr><tr><td>Patient doesn't exist</td><td>nhs_number=&lt;any other valid NHS Number&gt;</td><td>HTTP Status 404 with error details in the response body</td></tr><tr><td>Invalid NHS Number</td><td>nhs_number=&lt;any invalid NHS Number&gt;</td><td>HTTP Status 400 with error details in the response body</td></tr></table>
-    
+
     ## Assurance
     Details to follow.
   contact:
@@ -214,7 +214,7 @@ paths:
               schema:
                 $ref: 'components/schemas/Patient.yaml'
               example:
-                $ref: 'components/examples/Patient.json'
+                $ref: 'components/examples/Patient.yaml'
         '400':
           description: Bad NHS number supplied
           content:
