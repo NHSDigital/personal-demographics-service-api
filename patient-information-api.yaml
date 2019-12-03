@@ -506,6 +506,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/NhsNumber'
     get:
+      description: List address information belonging to a patient.
       summary: List a patient's addresses
       operationId: get-addresses
       tags:
@@ -514,6 +515,7 @@ paths:
         '200':
           description: Successful request
     post:
+      description: Create a new address for a patient.
       summary: Add a new address to the patient
       operationId: add-address
       tags:
@@ -535,6 +537,7 @@ paths:
         example: '12345'
         required: true
     get:
+      description: Show information on a specific address of a patient.
       summary: Show a specific address
       operationId: get-address
       tags:
@@ -546,6 +549,7 @@ paths:
             ETag:
               $ref: 'components/schemas/ETag.yaml'
     put:
+      description: Update address information for a patient.
       summary: Update a patient's address
       operationId: update-address
       tags:
@@ -563,6 +567,7 @@ paths:
         '400':
           $ref: '#/components/responses/400MissingIfMatchHeader'
     delete:
+      description: Delete an address belonging to a patient.
       summary: Remove an address from a patient
       operationId: delete-address
       tags:
@@ -581,7 +586,7 @@ components:
     NhsNumber:
       name: nhs_number
       in: path
-      description: The patient's NHS Number
+      description: The patient's NHS Number.
       required: true
       schema:
         $ref: 'components/schemas/NhsNumber.yaml'
@@ -617,7 +622,7 @@ components:
       description: |
         Client Error
 
-        Missing `If-Match` header
+        Missing `If-Match` header.
       content:
         application/json:
           schema:
