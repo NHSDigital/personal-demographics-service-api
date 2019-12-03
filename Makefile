@@ -1,3 +1,8 @@
+install: install-node
+
+install-node:
+	npm install
+
 test:
 	npm run test
 

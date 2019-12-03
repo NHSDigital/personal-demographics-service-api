@@ -6,7 +6,14 @@ Temporary repository of API definitions for the API management project.
 
 ## Development
 
-WIP: Still working on finding a great set of tools for working with these files. Please contribute!
+### Requirements
+* make
+* nodejs + npm/yarn
+
+### Install
+```
+$ make install
+```
 
 ### Make commands
 There's some make commands that alias some of the below functionality:
