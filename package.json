@@ -5,8 +5,7 @@
   "scripts": {
     "test": "speccy lint patient-information-api.yaml",
     "publish": "mkdir -p dist && node_modules/.bin/speccy resolve patient-information-api.yaml -i | node_modules/.bin/js-yaml > dist/patient-information-api.json",
-    "serve": "node_modules/.bin/speccy serve patient-information-api.yaml",
-    "release": "mkdir -p public && cp dist/patient-information-api.json public/patient-information-api.json"
+    "serve": "node_modules/.bin/speccy serve patient-information-api.yaml"
   },
   "author": "NHS Digital",
   "license": "ISC",

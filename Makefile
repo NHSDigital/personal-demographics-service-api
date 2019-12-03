@@ -8,6 +8,3 @@ serve:
 	npm run serve
 
 develop: serve
-
-release: publish
-	npm run release
