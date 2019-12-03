@@ -153,7 +153,7 @@ paths:
             pattern: '^[A-Z]\d{5}$'
       responses:
         '200':
-          description: An array of matched patients. Empty if none found. Returns percentage match weight for each returned patient for weighted searches
+          description: An array of matched patients. Empty if none found. Returns percentage match weight for each returned patient for weighted searches.
           content:
             application/json:
               schema:
@@ -177,7 +177,7 @@ paths:
                     patient:
                       $ref: 'components/examples/Patient.yaml'
         '400':
-          description: Invalid search params
+          description: Invalid search params supplied.
           content:
             application/json:
               schema:
@@ -332,7 +332,7 @@ paths:
                 items:
                   $ref: 'components/schemas/RelatedPerson.yaml'
     post:
-      description: Create a new person related to/associated with the patient
+      description: Create a new person related to/associated with the patient.
       summary: Add a related person to the patient's record
       operationId: add-related-person
       tags:
@@ -382,7 +382,7 @@ paths:
                 items:
                   $ref: 'components/schemas/RelatedPerson.yaml'
     put:
-      description: Update the
+      description: Update a person associated with or related to the Patient.
       summary: Update related
       operationId: update-related-person
       parameters:
@@ -406,7 +406,7 @@ paths:
         '400':
           $ref: '#/components/responses/400MissingIfMatchHeader'
     delete:
-      description: Delete a person related to/associated with the patient
+      description: Delete a person related to/associated with the patient.
       summary: Remove a related person
       operationId: delete-related-person
       parameters:
@@ -424,7 +424,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/NhsNumber'
     get:
-      description: Returns any reasonable adjustments which have been registered for this patient
+      description: List any reasonable adjustments which have been registered for a patient.
       summary: Retrieve a patient's reasonable adjustments
       operationId: get-reasonable-adjustments
       tags:
@@ -454,7 +454,8 @@ paths:
         example: '12345'
         required: true
     get:
-      summary: Retrieve a specific reasonable adjustments
+      description: Show a specific reasonable adjustment that has been registered for a patient.
+      summary: Retrieve a specific reasonable adjustment
       operationId: get-reasonable-adjustment
       tags:
         - reasonable adjustments
@@ -465,7 +466,8 @@ paths:
             ETag:
               $ref: 'components/schemas/ETag.yaml'
     put:
-      summary: Update a specific reasonable adjustments
+      description: Update a specific reasonable adjustment for a patient.
+      summary: Update a specific reasonable adjustment
       operationId: update-reasonable-adjustment
       tags:
         - reasonable adjustments
@@ -482,7 +484,8 @@ paths:
         '400':
           $ref: '#/components/responses/400MissingIfMatchHeader'
     delete:
-      summary: Delete a specific reasonable adjustments
+      description: Delete a specific reasonable adjustment for a patient.
+      summary: Delete a specific reasonable adjustment
       operationId: delete-reasonable-adjustment
       tags:
         - reasonable adjustments
