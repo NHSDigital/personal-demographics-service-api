@@ -18,4 +18,4 @@ jobs:
       - run: echo $APIGEE_ACCESS_TOKEN
       - run: echo $APIGEE_SPEC_ID
       - run: |
-          curl -X PUT 'https://api.enterprise.apigee.com/v1/organizations/emea-demo8/specs/doc/'$APIGEE_SPEC_ID'/content' -H 'Authorization: Bearer '$APIGEE_ACCESS_TOKEN'' --data '@dist/patient-information-api.json'
+          curl -X PUT 'https://api.enterprise.apigee.com/v1/organizations/emea-demo8/specs/doc/'$APIGEE_SPEC_ID'/content' -H 'Authorization: Bearer '$APIGEE_ACCESS_TOKEN'' -H 'Content-Type: text/plain' --data '@dist/patient-information-api.json'
