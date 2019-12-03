@@ -14,4 +14,5 @@ jobs:
       - run: curl -X POST "https://${BB_AUTH_STRING}@api.bitbucket.org/2.0/repositories/laurencesmith/apim-definitions/downloads" --form files=@"/tmp/patient-information-api-${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}-${CIRCLE_SHA1}.json"
       - run: |
           export APIGEE_ACCESS_TOKEN=`curl -H "Content-Type: application/x-www-form-urlencoded;charset=utf-8" -H "Accept: application/json;charset=utf-8" -H "Authorization: Basic ZWRnZWNsaTplZGdlY2xpc2VjcmV0" -X POST https://login.apigee.com/oauth/token -d 'username='$APIGEE_USER'&password='$APIGEE_PASS'&grant_type=password' | jq -r .access_token`
-      - run: curl -X PUT https://api.enterprise.apigee.com/v1/organizations/emea-demo8/specs/doc/$APIGEE_SPEC_ID/content -H "Authorization: Bearer "$APIGEE_ACCESS_TOKEN --data=@./dist/patient-information-api.json
+      - run: |
+          curl -X PUT https://api.enterprise.apigee.com/v1/organizations/emea-demo8/specs/doc/$APIGEE_SPEC_ID/content -H "Authorization: Bearer "$APIGEE_ACCESS_TOKEN --data=@./dist/patient-information-api.json
