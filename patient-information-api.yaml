@@ -24,6 +24,10 @@ info:
     url: 'https://tbc.api.nhs.net'
     email: 'tbc-api-support@nhs.net'
 
+servers:
+  - url: https://emea-demo8-test.apigee.net/v1
+    description: Mock test server
+
 tags:
   - name: patients
 

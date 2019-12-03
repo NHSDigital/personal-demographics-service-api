@@ -25,31 +25,31 @@ properties:
         type: string
         format: path
         description: The path to the current version of this patient resource
-        example: /Patient/44505577104
+        example: /Patient/9111111111
         readOnly: true
       reasonable_adjustments:
         type: string
         description: Path to reasonable adjustments for this patient
         format: path
-        example: /Patient/44505577104/ReasonableAdjustment
+        example: /Patient/9111111111/ReasonableAdjustment
         readOnly: true
       consent:
         type: string
         description: Path to consent information for this patient
         format: path
-        example: /Patient/44505577104/Consent
+        example: /Patient/9111111111/Consent
         readOnly: true
       related_people:
         type: string
         description: Path to people associated with to this patient
         format: path
-        example: /Patient/44505577104/RelatedPerson
+        example: /Patient/9111111111/RelatedPerson
         readOnly: true
       birth:
         type: string
         description: Path to birth information for this patient
         format: path
-        example: /Patient/44505577104/Birth
+        example: /Patient/9111111111/Birth
         readOnly: true
   nhs_number:
     $ref: "NhsNumber.yaml"
