@@ -1,2 +1,3 @@
 type: string
+description: Gender with which the patient most strongly identifies.
 enum: [male, female, other, unknown]
