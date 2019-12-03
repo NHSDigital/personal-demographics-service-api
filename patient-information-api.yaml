@@ -198,7 +198,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/NhsNumber'
     get:
-      description: Returns current information for the patient with the given NHS Number
+      description: Returns current information for the patient with the given NHS Number.
       summary: Retrieve a patient's record
       operationId: get-patient
       tags:
@@ -234,7 +234,7 @@ paths:
                 code: 'not_found'
                 message: 'Patient with NHS number 1234567890 could not be found'
     patch:
-      description: Updates specific patient information. Updates are specified JSON Merge Patch.
+      description: Updates specific patient information. Updates are specified JSON Patch.
       summary: Update a patient's record
       operationId: update-patient-partial
       tags:
