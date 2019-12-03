@@ -11,10 +11,13 @@ jobs:
       - store_artifacts:
           path: ./dist/patient-information-api.json
       - run: cp ./dist/patient-information-api.json /tmp/patient-information-api-${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}-${CIRCLE_SHA1}.json
-      - run: curl -X POST "https://${BB_AUTH_STRING}@api.bitbucket.org/2.0/repositories/laurencesmith/apim-definitions/downloads" --form files=@"/tmp/patient-information-api-${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}-${CIRCLE_SHA1}.json"
+      - run: curl --fail -X POST "https://${BB_AUTH_STRING}@api.bitbucket.org/2.0/repositories/laurencesmith/apim-definitions/downloads" --form files=@"/tmp/patient-information-api-${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}-${CIRCLE_SHA1}.json"
       - run: |
-          export APIGEE_ACCESS_TOKEN=`curl -H "Content-Type: application/x-www-form-urlencoded;charset=utf-8" -H "Accept: application/json;charset=utf-8" -H "Authorization: Basic ZWRnZWNsaTplZGdlY2xpc2VjcmV0" -X POST https://login.apigee.com/oauth/token -d 'username='$APIGEE_USER'&password='$APIGEE_PASS'&grant_type=password' | jq -r .access_token`
-      - run: echo $APIGEE_ACCESS_TOKEN
-      - run: echo $APIGEE_SPEC_ID
+          curl --fail -H "Content-Type: application/x-www-form-urlencoded;charset=utf-8" -H "Accept: application/json;charset=utf-8" -H "Authorization: Basic ZWRnZWNsaTplZGdlY2xpc2VjcmV0" -X POST https://login.apigee.com/oauth/token -d 'username='$APIGEE_USER'&password='$APIGEE_PASS'&grant_type=password' | jq -r .access_token > /tmp/access_token
+      - run: echo 'export APIGEE_ACCESS_TOKEN=$(cat /tmp/access_token)' >> $BASH_ENV
       - run: |
-          curl -X PUT 'https://api.enterprise.apigee.com/v1/organizations/emea-demo8/specs/doc/'$APIGEE_SPEC_ID'/content' -H 'Authorization: Bearer '$APIGEE_ACCESS_TOKEN'' --data '@dist/patient-information-api.json'
+          curl --fail -X PUT 'https://apigee.com/dapi/api/organizations/emea-demo8/specs/doc/'$APIGEE_SPEC_ID'/content' -H 'Authorization: Bearer '$APIGEE_ACCESS_TOKEN'' -H 'Content-Type: text/plain' --data '@dist/patient-information-api.json'
+      - run: |
+          curl --fail -X PUT "https://apigee.com/portals/api/sites/emea-demo8-nhsdportal/apidocs/$APIGEE_PORTAL_API_ID" -H 'Authorization: Bearer '$APIGEE_ACCESS_TOKEN'' -H 'Content-Type: application/json' --data $'{\n  "specId": "patient-information-api-automated-latest",\n  "imageUrl": null,\n  "orgName": "emea-demo8"\n}'
+      - run: |
+          curl --fail -X PUT "https://apigee.com/portals/api/sites/emea-demo8-nhsdportal/apidocs/$APIGEE_PORTAL_API_ID/snapshot" -H "Authorization: Bearer $APIGEE_ACCESS_TOKEN"
