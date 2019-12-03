@@ -12,3 +12,6 @@ jobs:
           path: ./public/patient-information-api.json
       - run: cp ./public/patient-information-api.json /tmp/patient-information-api-${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}-${CIRCLE_SHA1}.json
       - run: curl -X POST "https://${BB_AUTH_STRING}@api.bitbucket.org/2.0/repositories/laurencesmith/apim-definitions/downloads" --form files=@"/tmp/patient-information-api-${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}-${CIRCLE_SHA1}.json"
+      - run: curl https://login.apigee.com/resources/scripts/sso-cli/ssocli-bundle.zip -o "ssocli-bundle.zip"
+      - run: unzip ssocli-bundle.zip -o ssocli-bundle
+      - run: export APIGEE_ACCESS_TOKEN=`ssocli-bundle/get_token -u ${APIGEE_USER} -p ${APIGEE_PASS}`
