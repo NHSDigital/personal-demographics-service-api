@@ -18,6 +18,6 @@ jobs:
       - run: |
           curl -X PUT 'https://apigee.com/dapi/api/organizations/emea-demo8/specs/doc/'$APIGEE_SPEC_ID'/content' -H 'Authorization: Bearer '$APIGEE_ACCESS_TOKEN'' -H 'Content-Type: text/plain' --data '@dist/patient-information-api.json'
       - run: |
-          curl -X PUT "https://apigee.com/portals/api/sites/emea-demo8-nhsdportal/apidocs/$APIGEE_PORTAL_API_ID" -H 'Authorization: Bearer '$APIGEE_ACCESS_TOKEN'' --data $'{\n  "specId": "patient-information-api-automated-latest",\n  "imageUrl": null,\n  "orgName": "emea-demo8"\n}
+          curl -X PUT "https://apigee.com/portals/api/sites/emea-demo8-nhsdportal/apidocs/$APIGEE_PORTAL_API_ID" -H 'Authorization: Bearer '$APIGEE_ACCESS_TOKEN'' --data $'{\n  "specId": "patient-information-api-automated-latest",\n  "imageUrl": null,\n  "orgName": "emea-demo8"\n}'
       - run: |
           curl -X PUT "https://apigee.com/portals/api/sites/emea-demo8-nhsdportal/apidocs/$APIGEE_PORTAL_API_ID/snapshot" -H "Authorization: Bearer $APIGEE_ACCESS_TOKEN"
