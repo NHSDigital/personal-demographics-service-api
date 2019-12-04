@@ -5,11 +5,22 @@ jobs:
     - image: circleci/node
     steps:
       - checkout
-      - run: npm install
-      - run: make test
-      - run: make publish
+      - run:
+          name: Install npm packages
+          command: npm install
+      - run:
+          name: Lint spec
+          command: make test
+      - run:
+          name: Compile spec
+          run: make publish
       - store_artifacts:
           path: ./dist/patient-information-api.json
-      - run: cp ./dist/patient-information-api.json /tmp/patient-information-api-${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}-${CIRCLE_SHA1}.json
-      - run: curl --fail -X POST "https://${BB_AUTH_STRING}@api.bitbucket.org/2.0/repositories/laurencesmith/apim-definitions/downloads" --form files=@"/tmp/patient-information-api-${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}-${CIRCLE_SHA1}.json"
-      - run: scripts/deploy.sh
+      - run:
+          name: Upload artifacts to bitbucket
+          command: |
+            cp ./dist/patient-information-api.json /tmp/patient-information-api-${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}-${CIRCLE_SHA1}.json
+            curl --fail -X POST "https://${BB_AUTH_STRING}@api.bitbucket.org/2.0/repositories/laurencesmith/apim-definitions/downloads" --form files=@"/tmp/patient-information-api-${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}-${CIRCLE_SHA1}.json"
+      - run:
+          name: Deploy to Apigee (if master)
+          command: scripts/deploy.sh
