@@ -13,7 +13,7 @@ jobs:
           command: make test
       - run:
           name: Compile spec
-          run: make publish
+          command: make publish
       - store_artifacts:
           path: ./dist/patient-information-api.json
       - run:
