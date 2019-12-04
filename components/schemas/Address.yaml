@@ -18,12 +18,18 @@ properties:
     type: string
     description: Type of address
     enum: [usual, correspondence, temporary, other]
+    example: usual
   lines:
     type: array
     items:
       type: string
+    example:
+      - 4 Baker Street
+      - Leeds
+      - LS1 6AE
   postcode:
     type: string
     example: "LS1 6AE"
   paf_key:
     type: string
+    example: TODO
