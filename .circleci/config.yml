@@ -6,8 +6,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install npm packages
-          command: npm install
+          name: Install dependencies
+          command: |
+            apt install python3 default-jre default-jdk
+            make install
       - run:
           name: Lint spec
           command: make test
