@@ -4,16 +4,29 @@ info:
   title: Patient Information API
   description: |
     ## Overview
-    Use this API to:
+    Use this API to access the [Personal Demographics Service (PDS)](https://digital.nhs.uk/services/demographics) - the national electronic database of NHS patient details such as name, address, date of birth and NHS Number.
+    
+    You can:
     * search for patients
-    * retrieve patients' personal details held nationally by NHS Digital
-    * update patients' personal details held nationally by NHS Digital
+    * get patients' personal details
+    * update patients' personal details
 
-    You cannot current use this API to:
-    * register births
-    * register new patients
+    You cannot currently use this API to:
+    * register births (not required for GPs)
+    * register new patients (GPs should do this via [NHAIS](https://digital.nhs.uk/services/nhais/nhais-developer-document-library))
 
-    This API is the authoritative source for this information for the NHS in England.
+    You can currently access the following data:
+    * NHS Number
+    * name
+    * gender
+    * birth 
+    * addresses
+    * contact details
+    * registered GP
+    * preferred pharmacy
+    * reasonable adjustments
+    * consent information
+    * related people
 
     ## API status
     This API is in Alpha - expect significant breaking changes.
@@ -34,6 +47,12 @@ info:
 
     ## Assurance
     Details to follow.
+    
+    ## Endpoints
+    To see details for specific endpoints, select from the list on the left hand side of the page:
+    * search for patient: /Patient GET
+    * get patient's personal details: /Patient/{nhs_number} GET
+    * details to follow for other endpoints
   contact:
     name: 'Patient Information API Support'
     url: 'https://tbc.api.nhs.net'
