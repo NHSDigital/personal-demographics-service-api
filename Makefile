@@ -14,7 +14,7 @@ test:
 	npm run test
 
 validate: generate-examples
-	java -jar bin/org.hl7.fhir.validator.jar dist/examples/Patient.json -version 4.0.1
+	java -jar bin/org.hl7.fhir.validator.jar dist/examples/Patient.json -version 4.0.1 | tee /tmp/validation.txt
 
 publish:
 	npm run publish

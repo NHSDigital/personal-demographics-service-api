@@ -18,6 +18,8 @@ jobs:
       - run:
           name: Check resources are valid FHIR 4.0.1
           command: make validate || true
+      - store_artifacts:
+          path: /tmp/validation.txt
       - run:
           name: Compile spec
           command: make publish
