@@ -9,11 +9,11 @@ jobs:
           name: Install dependencies
           command: |
             sudo apt install default-jre default-jdk
-            make install
             curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
             python3 get-pip.py
             rm get-pip.py
             pip install --user pipenv
+            make install
       - run:
           name: Lint spec
           command: make test
