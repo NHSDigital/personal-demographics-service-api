@@ -12,6 +12,9 @@ jobs:
           name: Lint spec
           command: make test
       - run:
+          name: Check resources are valid FHIR 4.0.1
+          command: make validate || true
+      - run:
           name: Compile spec
           command: make publish
       - store_artifacts:
