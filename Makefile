@@ -13,7 +13,7 @@ install-fhir-validator:
 test:
 	npm run test
 
-validate:
+validate: generate-examples
 	java -jar bin/org.hl7.fhir.validator.jar dist/examples/Patient.json -version 4.0.1
 
 publish:
