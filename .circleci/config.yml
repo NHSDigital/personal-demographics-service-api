@@ -12,7 +12,7 @@ jobs:
             curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
             python3 get-pip.py
             rm get-pip.py
-            pip install --user pipenv
+            sudo pip install pipenv
             make install
       - run:
           name: Lint spec
