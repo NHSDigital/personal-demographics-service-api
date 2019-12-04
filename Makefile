@@ -1,4 +1,4 @@
-install: install-node install-python install-fhire-validator
+install: install-node install-python install-fhir-validator
 
 install-python:
 	pipenv install
