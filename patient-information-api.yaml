@@ -43,6 +43,7 @@ info:
     You can test this API in:
     * our sandbox environment
     * our integration test environment (coming soon)
+    
     For sandbox test scenarios and test data, refer to the documentation for individual endpoints.
 
     ## Assurance
@@ -50,9 +51,10 @@ info:
     
     ## Endpoints
     To see details for specific endpoints, select from the list on the left hand side of the page:
-    * search for patient: /Patient GET
-    * get patient's personal details: /Patient/{nhs_number} GET
-    * details to follow for other endpoints
+    * /Patient GET: search for patient
+    * /Patient/{nhs_number} GET: get patient's personal details
+    * /Patient/{nhs_number> PATCH: update patient's personal details
+    * details for other endpoints to follow
   contact:
     name: 'Patient Information API Support'
     url: 'https://tbc.api.nhs.net'
@@ -238,11 +240,13 @@ paths:
     get:
       description: |
         ## Overview
-        Returns current information for the patient with the given NHS Number.
+        Returns personal details for the patient with the given NHS Number.
         
         ## Sandbox test scenarios
-        You can test the following scenarios in our sandbox environment (see "Try this API" on the right hand side of the page):
+        You can test the following scenarios in our sandbox environment:
         <table><tr><th>Scenario</th><th>Request</th><th>Response</th></tr><tr><td>Patient exists</td><td>nhs_number=9111111111</td><td>HTTP Status 200 with patient data in the response body</td></tr><tr><td>Patient doesn't exist</td><td>nhs_number=&lt;any other valid NHS Number&gt;</td><td>HTTP Status 404 with error details in the response body</td></tr><tr><td>Invalid NHS Number</td><td>nhs_number=&lt;any invalid NHS Number&gt;</td><td>HTTP Status 400 with error details in the response body</td></tr></table>
+        
+        You can try this out using the "Try it now" feature on the right hand side of this page.
         
       summary: Retrieve a patient's record
       operationId: get-patient
