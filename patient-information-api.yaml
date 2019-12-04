@@ -27,8 +27,10 @@ info:
     This API is user-restricted. It uses OAuth 2.0 to authorise both the calling system and end user. More details to follow.
 
     ## Testing
-    This API is currently only available for sandbox testing. You can test the following scenarios:
-    <table><tr><th>Scenario</th><th>Request</th><th>Response</th></tr><tr><td>Patient exists</td><td>nhs_number=9111111111</td><td>HTTP Status 200 with patient data in the response body</td></tr><tr><td>Patient doesn't exist</td><td>nhs_number=&lt;any other valid NHS Number&gt;</td><td>HTTP Status 404 with error details in the response body</td></tr><tr><td>Invalid NHS Number</td><td>nhs_number=&lt;any invalid NHS Number&gt;</td><td>HTTP Status 400 with error details in the response body</td></tr></table>
+    You can test this API in:
+    * our sandbox environment
+    * our integration test environment (coming soon)
+    For sandbox test scenarios and test data, refer to the documentation for individual endpoints.
 
     ## Assurance
     Details to follow.
@@ -53,20 +55,20 @@ paths:
         description: ODS codes and documentation
         url: https://digital.nhs.uk/services/organisation-data-service
       description: |
-        # Search types
+        ## Search types
         This endpoint will search for a patient using one of four search types. The choice of search is automatic and will cascade as necessary until results are found.
 
-        ## Simple
+        ### Simple
         The fastest match, requires family_name, first_name, gender, birth_date
         Returns either a single matching patient or nothing. A limited set of parameters can be provided, all of which must exactly match the current information held.
 
-        ## Advanced
+        ### Advanced
         Can return multiple matching patients if the information provided matches the current information held. Supports searching against additional information fields. Wildcards (\*) in name and postcode fields are supported. Wildcards must be preceeded by at least two characters, i.e. 'Br\*' is valid, but '\*cDougal' is not
 
-        ## Advanced Historic
+        ### Advanced Historic
         Identical to advanced except it also searches historic data.
 
-        ## Weighted
+        ### Weighted
         Returns a percentage match weight for each potentially matching patient. Always searches historical data. Requires at least one of the following combinations of search parameters:
           - family_name, first_name, gender, birth_date (or range)
           - family_name, gender, birth_date (or range), postcode
@@ -215,7 +217,14 @@ paths:
     parameters:
       - $ref: '#/components/parameters/NhsNumber'
     get:
-      description: Returns current information for the patient with the given NHS Number.
+      description: |
+        ## Overview
+        Returns current information for the patient with the given NHS Number.
+        
+        ## Sandbox test scenarios
+        You can test the following scenarios in our sandbox environment (see "Try this API" on the right hand side of the page):
+        <table><tr><th>Scenario</th><th>Request</th><th>Response</th></tr><tr><td>Patient exists</td><td>nhs_number=9111111111</td><td>HTTP Status 200 with patient data in the response body</td></tr><tr><td>Patient doesn't exist</td><td>nhs_number=&lt;any other valid NHS Number&gt;</td><td>HTTP Status 404 with error details in the response body</td></tr><tr><td>Invalid NHS Number</td><td>nhs_number=&lt;any invalid NHS Number&gt;</td><td>HTTP Status 400 with error details in the response body</td></tr></table>
+        
       summary: Retrieve a patient's record
       operationId: get-patient
       tags:
