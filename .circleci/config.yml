@@ -10,10 +10,7 @@ jobs:
           command: |
             sudo apt update
             sudo apt install default-jre default-jdk npm
-            curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-            python3 get-pip.py
-            rm get-pip.py
-            sudo pip install pipenv
+            pip install --user pipenv
             make install
       - run:
           name: Lint spec
