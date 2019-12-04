@@ -8,7 +8,10 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            sudo apt install python3 default-jre default-jdk
+            sudo apt update
+            sudo apt install software-properties-common
+            sudo add-apt-repository ppa:deadsnakes/ppa
+            sudo apt install python3.8 default-jre default-jdk
             make install
       - run:
           name: Lint spec
