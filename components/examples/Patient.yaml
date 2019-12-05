@@ -17,6 +17,7 @@ names:
     suffix: PhD
 gender: male
 birth_date: 1900-01-01
+death_date: 2000-01-01
 address:
   no_fixed_address: false
   addresses:
