@@ -22,8 +22,6 @@ publish:
 serve:
 	npm run serve
 
-develop: serve
-
 generate-examples: publish
 	mkdir -p dist/examples
 	pipenv run python scripts/generate_examples.py < dist/patient-information-api.json > dist/examples/Patient.json
