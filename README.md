@@ -21,7 +21,8 @@ There's some make commands that alias some of the below functionality:
  * `publish` -- Outputs the specification as a **single file** into the `publish/` directory
  * `serve` -- Serves a preview of the specification in human-readable format
  * `release` -- copy the latest file from `publish/` to `public/`
- * `develop` -- alias for `serve`
+ * `generate-examples` -- generate example objects from the specification
+ * `validate` -- validate generated examples against FHIR R4
 
 
 ### VS Code Plugins

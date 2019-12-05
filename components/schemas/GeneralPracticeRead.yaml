@@ -25,12 +25,11 @@ properties:
     description: Indicates whether the patient is registered to a practice or an individual practitioner
     type: string
     enum: [practice, practitioner]
-  url:
-    type: string
-    format: url
+    example: practice
   ods_code:
     description: The ODS code of the registered practice or practitioner
     type: string
+    example: TODO
   business_effective:
     type: object
     required:

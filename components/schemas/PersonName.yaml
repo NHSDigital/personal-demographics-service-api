@@ -3,6 +3,7 @@ properties:
   use:
     type: string
     enum: [usual, preferred, alias, bachelor, maiden, birth, other]
+    example: usual
   business_effective:
     $ref: "DateRange.yaml"
   title:

@@ -2,15 +2,24 @@ version: 2
 jobs:
   build:
     docker:
-    - image: circleci/node
+    - image: circleci/python:3.8
     steps:
       - checkout
       - run:
-          name: Install npm packages
-          command: npm install
+          name: Install dependencies
+          command: |
+            sudo apt update
+            sudo apt install default-jre default-jdk npm
+            pip install --user pipenv
+            make install
       - run:
           name: Lint spec
           command: make test
+      - run:
+          name: Check resources are valid FHIR 4.0.1
+          command: make validate || true
+      - store_artifacts:
+          path: /tmp/validation.txt
       - run:
           name: Compile spec
           command: make publish

@@ -9,6 +9,11 @@ required:
   - self
   - version
 properties:
+  resourceType:
+    type: string
+    description: FHIR resource type
+    default: "Patient"
+    readOnly: true
   _id:
     $ref: "NhsNumber.yaml"
     readOnly: true

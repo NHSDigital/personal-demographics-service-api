@@ -16,11 +16,15 @@ properties:
   system:
     type: string
     enum: [phone, fax, email, pager, url, sms, other]
+    example: phone
   value:
     type: string
+    example: '01632960587'
   use:
     type: string
     enum: [home, work, temp, old, mobile]
+    example: home
   rank:
     description: Preferred order of use. 1 is highest
     type: integer
+    example: 1
