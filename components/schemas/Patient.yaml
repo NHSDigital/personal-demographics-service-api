@@ -1,5 +1,6 @@
 type: object
 required:
+  - identifier
   - reasonable_adjustments
   - consent
   - general_practice
@@ -14,15 +15,45 @@ properties:
     description: FHIR resource type
     default: "Patient"
     readOnly: true
-  _id:
+  id:
     $ref: "NhsNumber.yaml"
     readOnly: true
-  _version:
+  meta:
+    type: object
+    description: Metadata about this resource
+    properties: 
+      versionId:
+        type: string
+        description: The NHS Digital assigned version of the patient resource
+        readOnly: true
+        example: "2"
+  name:
+    type: array
+    items:
+      $ref: "PersonName.yaml"
+  gender:
+    $ref: "Gender.yaml"
+  birthDate:
+    description: A date in the format yyyy-mm-dd
+    example: "2010-10-22"
     type: string
-    description: The NHS Digital assigned version of the patient resource
-    readOnly: true
-    example: "2"
-  _links:
+    format: date
+  deceasedDateTime:
+    description: A datetime in the format yyyy-mm-ddTHH:MM:SSZ
+    example: "2010-10-22T00:00:00Z"
+    type: string
+    format: date
+  address:
+    $ref: "PersonAddress.yaml"
+  telecom:
+    type: array
+    items:
+      $ref: "ContactPoint.yaml"
+  general_practice:
+    $ref: "GeneralPracticeRead.yaml"
+  pharmacies:
+    $ref: "PharmacyListRead.yaml"
+  _links: # need to figure out what to do with this!!
     type: object
     readOnly: true
     properties:
@@ -56,32 +87,3 @@ properties:
         format: path
         example: /Patient/9000000009/Birth
         readOnly: true
-  nhs_number:
-    $ref: "NhsNumber.yaml"
-    readOnly: true
-  names:
-    type: array
-    items:
-      $ref: "PersonName.yaml"
-  gender:
-    $ref: "Gender.yaml"
-  birth_date:
-    description: A date in the format yyyy-mm-dd
-    example: "2010-10-22"
-    type: string
-    format: date
-  death_date:
-    description: A date in the format yyyy-mm-dd
-    example: "2010-10-22"
-    type: string
-    format: date
-  addresses:
-    $ref: "PersonAddress.yaml"
-  contact_points:
-    type: array
-    items:
-      $ref: "ContactPoint.yaml"
-  general_practice:
-    $ref: "GeneralPracticeRead.yaml"
-  pharmacies:
-    $ref: "PharmacyListRead.yaml"
