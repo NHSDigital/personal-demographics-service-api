@@ -5,7 +5,7 @@ info:
   description: |
     ## Overview
     Use this API to access the [Personal Demographics Service (PDS)](https://digital.nhs.uk/services/demographics) - the national electronic database of NHS patient details such as name, address, date of birth and NHS Number.
-    
+
     You can:
     * search for patients
     * get patients' personal details
@@ -19,7 +19,7 @@ info:
     * NHS Number
     * name
     * gender
-    * birth 
+    * birth
     * addresses
     * contact details
     * registered GP
@@ -43,12 +43,12 @@ info:
     You can test this API in:
     * our sandbox environment
     * our integration test environment (coming soon)
-    
+
     For sandbox test scenarios and test data, refer to the documentation for individual endpoints.
 
     ## Assurance
     Details to follow.
-    
+
     ## Endpoints
     To see details for specific endpoints, select from the list on the left hand side of the page:
     * /Patient GET: search for patient
@@ -215,7 +215,7 @@ paths:
                 items:
                   - match_weight: 100.0
                     patient:
-                      $ref: 'components/examples/Patient.yaml'
+                      $ref: 'components/examples/Patient.json'
         '400':
           description: Invalid search params supplied.
           content:
@@ -241,13 +241,13 @@ paths:
       description: |
         ## Overview
         Returns personal details for the patient with the given NHS Number.
-        
+
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
         <table><tr><th>Scenario</th><th>Request</th><th>Response</th></tr><tr><td>Patient exists</td><td>nhs_number=9111111111</td><td>HTTP Status 200 with patient data in the response body</td></tr><tr><td>Patient doesn't exist</td><td>nhs_number=&lt;any other valid NHS Number&gt;</td><td>HTTP Status 404 with error details in the response body</td></tr><tr><td>Invalid NHS Number</td><td>nhs_number=&lt;any invalid NHS Number&gt;</td><td>HTTP Status 400 with error details in the response body</td></tr></table>
-        
+
         You can try this out using the "Try it now" feature on the right hand side of this page.
-        
+
       summary: Retrieve a patient's record
       operationId: get-patient
       tags:
@@ -263,7 +263,7 @@ paths:
               schema:
                 $ref: 'components/schemas/Patient.yaml'
               example:
-                $ref: 'components/examples/Patient.yaml'
+                $ref: 'components/examples/Patient.json'
         '400':
           description: Bad NHS number supplied
           content:
