@@ -1,0 +1,71 @@
+{
+  "_version": 1,
+  "_links": {
+    "self": "/Patient/9111111111",
+    "reasonable_adjustments": "/Patient/9111111111/ReasonableAdjustment",
+    "consent": "/Patient/9111111111/Consent",
+    "related_people": "/Patient/9111111111/RelatedPerson",
+    "birth": "/Patient/9111111111/Birth"
+  },
+  "nhs_number": 9111111111,
+  "names": [
+    {
+      "use": "usual",
+      "business_effective": {
+        "start": "1900-01-01T00:00:00.000Z"
+      },
+      "title": "Dr",
+      "given_name": "Ignacius",
+      "other_names": "Hercule",
+      "family_name": "Strangelove",
+      "suffix": "PhD"
+    }
+  ],
+  "gender": "male",
+  "birth_date": "1900-01-01T00:00:00.000Z",
+  "death_date": "2000-01-01T00:00:00.000Z",
+  "address": {
+    "no_fixed_address": false,
+    "addresses": [
+      {
+        "business_effective": {
+          "start": "1900-01-01"
+        },
+        "type": "usual",
+        "lines": [
+          "1 Odd Avenue",
+          "London",
+          "SW1 1AA"
+        ]
+      }
+    ]
+  },
+  "contact_points": [
+    {
+      "business_effective": {
+        "start": "1900-01-01T00:00:00.000Z"
+      },
+      "system": "fax",
+      "value": "020 34 567 890",
+      "use": "home",
+      "rank": 1
+    }
+  ],
+  "general_practice": [
+    {
+      "business_effective": {
+        "start": "1900-01-01T00:00:00.000Z"
+      },
+      "type": "practice",
+      "url": "/Organization/Y00001",
+      "ods_code": "Y00001"
+    }
+  ],
+  "pharmacies": [
+    {
+      "url": "/Organization/8HA03",
+      "ods_code": "8HA03",
+      "type": "nominated"
+    }
+  ]
+}
