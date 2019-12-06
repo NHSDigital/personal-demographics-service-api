@@ -28,8 +28,9 @@ jobs:
       - run:
           name: Upload artifacts to bitbucket
           command: |
-            cp ./dist/patient-information-api.json /tmp/patient-information-api-${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}-${CIRCLE_SHA1}.json
-            curl --fail -X POST "https://${BB_AUTH_STRING}@api.bitbucket.org/2.0/repositories/laurencesmith/apim-definitions/downloads" --form files=@"/tmp/patient-information-api-${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}-${CIRCLE_SHA1}.json"
+            CIRCLE_BRANCH_SLASHES_REMOVED=$(echo $CIRCLE_BRANCH | tr / -)
+            cp ./dist/patient-information-api.json /tmp/patient-information-api-${CIRCLE_BRANCH_SLASHES_REMOVED}-${CIRCLE_BUILD_NUM}-${CIRCLE_SHA1}.json
+            curl --fail -X POST "https://${BB_AUTH_STRING}@api.bitbucket.org/2.0/repositories/laurencesmith/apim-definitions/downloads" --form files=@"/tmp/patient-information-api-${CIRCLE_BRANCH_SLASHES_REMOVED}-${CIRCLE_BUILD_NUM}-${CIRCLE_SHA1}.json"
       - run:
           name: Deploy to Apigee (if master)
           command: scripts/deploy.sh
