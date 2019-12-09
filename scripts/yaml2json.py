@@ -6,7 +6,9 @@ import datetime
 
 
 def date_converter(o):
-    if isinstance(o, datetime.date) or isinstance(o, datetime.datetime):
+    if isinstance(o, datetime.datetime):
+        return o.replace(tzinfo=datetime.timezone.utc).isoformat()
+    elif isinstance(o, datetime.date):
         return o.isoformat()
 
 
