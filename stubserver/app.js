@@ -6,11 +6,16 @@ const Inert = require('inert')
 const Joi = require('@hapi/joi')
 const Boom = require('boom')
 const fs = require('fs')
-
+const NhsNumberValidator = require('nhs-number-validator')
 
 const EXAMPLE_PATIENT = JSON.parse(fs.readFileSync('mocks/Patient.json'))
 
-const nhsNumberSchema = Joi.string().pattern(/^\d{10}$/)
+const nhsNumberSchema = Joi.string().custom(function (value) {
+    if (NhsNumberValidator.validate(value)) {
+        return value
+    }
+    throw new Error('Invalid NHS Number')
+}, 'NHS Number Validator')
 
 const init = async () => {
     const server = Hapi.server({

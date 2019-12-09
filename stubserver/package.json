@@ -13,6 +13,7 @@
     "@hapi/hapi": "^18.4.0",
     "@hapi/joi": "^16.1.8",
     "apigeetool": "^0.14.2",
-    "inert": "^5.1.3"
+    "inert": "^5.1.3",
+    "nhs-number-validator": "^1.1.1"
   }
 }
