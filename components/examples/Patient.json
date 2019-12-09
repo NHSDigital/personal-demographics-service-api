@@ -1,71 +1,118 @@
 {
-  "_version": 1,
-  "_links": {
-    "self": "/Patient/9000000009",
-    "reasonable_adjustments": "/Patient/9000000009/ReasonableAdjustment",
-    "consent": "/Patient/9000000009/Consent",
-    "related_people": "/Patient/9000000009/RelatedPerson",
-    "birth": "/Patient/9000000009/Birth"
+  "resourceType": "Patient",
+  "id": "9000000009",
+  "meta": {
+    "versionId": "2"
   },
-  "nhs_number": 9000000009,
-  "names": [
+  "name": [
     {
       "use": "usual",
-      "business_effective": {
-        "start": "1900-01-01T00:00:00.000Z"
+      "text": "Mrs Jane Adele Smith MBE",
+      "period": {
+        "start": "2010-10-22",
+        "end": "2010-10-22"
       },
-      "title": "Dr",
-      "given_name": "Ignacius",
-      "other_names": "Hercule",
-      "family_name": "Strangelove",
-      "suffix": "PhD"
+      "given": [
+        "Jane",
+        "Adele"
+      ],
+      "family": "Smith",
+      "prefix": "Mrs",
+      "suffix": "MBE"
     }
   ],
-  "gender": "male",
-  "birth_date": "1900-01-01T00:00:00.000Z",
-  "death_date": "2000-01-01T00:00:00.000Z",
-  "address": {
-    "no_fixed_address": false,
-    "addresses": [
-      {
-        "business_effective": {
-          "start": "1900-01-01"
-        },
-        "type": "usual",
-        "lines": [
-          "1 Odd Avenue",
-          "London",
-          "SW1 1AA"
-        ]
-      }
-    ]
-  },
-  "contact_points": [
+  "gender": "female",
+  "birthDate": "2010-10-22",
+  "deceasedDateTime": "2010-10-22T00:00:00+00:00",
+  "address": [
     {
-      "business_effective": {
-        "start": "1900-01-01T00:00:00.000Z"
+      "id": "123",
+      "period": {
+        "start": "2010-10-22",
+        "end": "2010-10-22"
       },
-      "system": "fax",
-      "value": "020 34 567 890",
+      "use": "home",
+      "type": "both",
+      "line": [
+        "4 Baker Street",
+        "Leeds",
+        "LS1 6AE"
+      ],
+      "city": "Leeds",
+      "district": "West Yorkshire",
+      "postalCode": "LS1 6AE",
+      "country": "United Kingdom"
+    }
+  ],
+  "contact": [
+    {
+      "id": "123",
+      "period": {
+        "start": "2010-10-22",
+        "end": "2010-10-22"
+      },
+      "relationship": [
+        {
+          "text": "Emergency Contact",
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0131",
+              "version": "2.9",
+              "code": "C",
+              "display": "Emergency Contact"
+            }
+          ]
+        }
+      ],
+      "name": {
+        "use": "usual",
+        "text": "Mrs Jane Adele Smith MBE",
+        "period": {
+          "start": "2010-10-22",
+          "end": "2010-10-22"
+        },
+        "given": [
+          "Jane",
+          "Adele"
+        ],
+        "family": "Smith",
+        "prefix": "Mrs",
+        "suffix": "MBE"
+      },
+      "telecom": [
+        {
+          "id": "123",
+          "period": {
+            "start": "2010-10-22",
+            "end": "2010-10-22"
+          },
+          "system": "phone",
+          "value": "01632960587",
+          "use": "home",
+          "rank": 1
+        }
+      ]
+    }
+  ],
+  "telecom": [
+    {
+      "id": "123",
+      "period": {
+        "start": "2010-10-22",
+        "end": "2010-10-22"
+      },
+      "system": "phone",
+      "value": "01632960587",
       "use": "home",
       "rank": 1
     }
   ],
-  "general_practice": [
+  "generalPractitioner": [
     {
-      "business_effective": {
-        "start": "1900-01-01T00:00:00.000Z"
-      },
-      "type": "practice",
-      "url": "/Organization/Y00001",
-      "ods_code": "Y00001"
-    }
-  ],
-  "pharmacies": [
-    {
-      "url": "/Organization/8HA03",
-      "ods_code": "8HA03",
-      "type": "nominated"
+      "id": "Y12345",
+      "type": "Organization",
+      "reference": "/Organization/Y12345",
+      "display": "F. B. Quux and Co. GP Surgery"
     }
   ]
 }

@@ -1,14 +1,4 @@
 type: object
-required:
-  - identifier
-  - reasonable_adjustments
-  - consent
-  - general_practice
-  - pharmacy
-  - related_person
-  - birth
-  - self
-  - version
 properties:
   resourceType:
     type: string

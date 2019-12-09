@@ -97,23 +97,16 @@ paths:
       tags:
         - patients
       parameters:
-        - name: family_name
+        - name: family
           description: The patient's family name (surname)
           example: Smith
           in: query
           required: false
           schema:
             type: string
-        - name: given_name
-          description: the patient's first given name
+        - name: given
+          description: The patient's given name(s)
           example: Jane
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: other_names
-          description: Any other given name(s). Ignored if provided in simple searches.
-          example: Jenny
           in: query
           required: false
           schema:
@@ -125,7 +118,7 @@ paths:
           required: false
           schema:
             $ref: 'components/schemas/Gender.yaml'
-        - name: birth_date
+        - name: birthdate
           in: query
           description: Birth date in the format yyyy-mm-dd. Required for simple searches. Other search types must provide either a birth date or a birth date range
           example: "2018-03-20"
@@ -133,23 +126,7 @@ paths:
           schema:
             type: string
             format: date
-        - name: birth_date_range_start
-          in: query
-          description: Date in the format yyyy-mm-dd. Ranges can be used instead of searching a specific date. Do not use in simple searches
-          required: false
-          example: "2018-03-20"
-          schema:
-            type: string
-            format: date
-        - name: birth_date_range_end
-          in: query
-          description: Date in the format yyyy-mm-dd. Ranges can be used instead of searching a specific date. Do not use in simple searches
-          required: false
-          example: "2018-03-20"
-          schema:
-            type: string
-            format: date
-        - name: death_date
+        - name: death-date
           in: query
           description: Date of death in the format yyyy-mm-dd
           required: false
@@ -158,32 +135,24 @@ paths:
             type: string
             format: date
             example: 2018-03-20
-        - name: death_date_range_start
-          in: query
-          description: Date in the format yyyy-mm-dd. Ranges can be used instead of searching a specific date. Do not use in simple searches
-          required: false
-          example: "2018-03-20"
-          schema:
-            type: string
-            format: date
-            example: 2018-03-25
-        - name: death_date_range_end
-          in: query
-          description: Date in the format yyyy-mm-dd. Ranges can be used instead of searching a specific date. Do not use in simple searches
-          required: false
-          example: "2018-03-20"
-          schema:
-            type: string
-            format: date
-        - name: postcode
+        - name: address-postcode
           description: White spaces in postcodes are significant, i.e. LS16AE will not match LS1 6AE
           example: LS1 6AE
           in: query
           required: false
           schema:
             type: string
-        - name: practice_code
+        - name: organisation
           description: The ODS code of the patient's registered general practice. Do not use in simple searches
+          example: Y00001
+          in: query
+          required: false
+          schema:
+            type: string
+            format: ods_code
+            pattern: '^[A-Z]\d{5}$'
+        - name: general-practitioner
+          description: The ODS code of the patient's registered general practioner. Do not use in simple searches
           example: Y00001
           in: query
           required: false
@@ -197,24 +166,50 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  required:
-                    - match_weight
-                    - patient
-                  properties:
-                    match_weight:
-                      type: number
-                      example: 78.5
-                      minimum: 0
-                      maximum: 100
-                    patient:
-                      $ref: 'components/schemas/Patient.yaml'
+                type: object
+                properties:
+                  resourceType:
+                    type: string
+                    description: FHIR Resource Type
+                    default: Bundle
+                  type:
+                    type: string
+                    description: FHIR Bundle Type
+                    default: searchset
+                  timestamp:
+                    type: integer
+                    description: Time the search was performed
+                    example: 1575908416
+                  total:
+                    type: integer
+                    description: Number of resources returned in search
+                    example: 1
+                  entry:
+                    type: array
+                    description: Patient search results
+                    items:
+                      type: object
+                      properties:
+                        search:
+                          type: object
+                          properties:
+                            score:
+                              description: Search score from 0.0 to 1.0
+                              type: number
+                              minimum: 0.0
+                              maximum: 1.1
+                              example: 1.0
+                        resource:
+                          $ref: 'components/schemas/Patient.yaml'
               example:
-                items:
-                  - match_weight: 100.0
-                    patient:
+                resourceType: Bundle
+                type: searchset
+                timestamp: 1575908416
+                total: 1
+                entry:
+                  - search:
+                      score: 1.0
+                    resource:
                       $ref: 'components/examples/Patient.json'
         '400':
           description: Invalid search params supplied.
