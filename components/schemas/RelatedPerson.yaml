@@ -11,12 +11,12 @@ properties:
         type: string
         format: url
         description: The location of this related person resource
-        example: /Patient/9111111111/RelatedPerson/1
+        example: /Patient/9000000009/RelatedPerson/1
       patient:
         description: The patient the person is related to
         type: string
         format: url
-        example: /Patient/9111111111
+        example: /Patient/9000000009
   _version:
     type: string
     description: The NHS Digital assigned version of the patient resource
@@ -49,7 +49,7 @@ properties:
             description: The path to the patient resource
             type: string
             format: path
-            example: /Patient/9111111111
+            example: /Patient/9000000009
           nhs_number:
             $ref: "NhsNumber.yaml"
       - type: object

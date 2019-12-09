@@ -244,7 +244,7 @@ paths:
 
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
-        <table><tr><th>Scenario</th><th>Request</th><th>Response</th></tr><tr><td>Patient exists</td><td>nhs_number=9111111111</td><td>HTTP Status 200 with patient data in the response body</td></tr><tr><td>Patient doesn't exist</td><td>nhs_number=&lt;any other valid NHS Number&gt;</td><td>HTTP Status 404 with error details in the response body</td></tr><tr><td>Invalid NHS Number</td><td>nhs_number=&lt;any invalid NHS Number&gt;</td><td>HTTP Status 400 with error details in the response body</td></tr></table>
+        <table><tr><th>Scenario</th><th>Request</th><th>Response</th></tr><tr><td>Patient exists</td><td>nhs_number=9000000009</td><td>HTTP Status 200 with patient data in the response body</td></tr><tr><td>Patient doesn't exist</td><td>nhs_number=&lt;any other valid NHS Number&gt;</td><td>HTTP Status 404 with error details in the response body</td></tr><tr><td>Invalid NHS Number</td><td>nhs_number=&lt;any invalid NHS Number&gt;</td><td>HTTP Status 400 with error details in the response body</td></tr></table>
 
         You can try this out using the "Try it now" feature on the right hand side of this page.
 

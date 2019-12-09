@@ -1,4 +1,4 @@
-description: The primary identifier of a patient. NHS Number is unique within the NHS in England and Wales
+description: The primary identifier of a patient. NHS Number is unique within the NHS in England and Wales. Must be a [valid NHS Number](https://www.datadictionary.nhs.uk/data_dictionary/attributes/n/nhs/nhs_number_de.asp?shownav=1).
 type: string
-example: "9111111111"
+example: "9000000009"
 format: '^\d{10}$'

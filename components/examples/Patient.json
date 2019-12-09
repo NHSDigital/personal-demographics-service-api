@@ -1,13 +1,13 @@
 {
   "_version": 1,
   "_links": {
-    "self": "/Patient/9111111111",
-    "reasonable_adjustments": "/Patient/9111111111/ReasonableAdjustment",
-    "consent": "/Patient/9111111111/Consent",
-    "related_people": "/Patient/9111111111/RelatedPerson",
-    "birth": "/Patient/9111111111/Birth"
+    "self": "/Patient/9000000009",
+    "reasonable_adjustments": "/Patient/9000000009/ReasonableAdjustment",
+    "consent": "/Patient/9000000009/Consent",
+    "related_people": "/Patient/9000000009/RelatedPerson",
+    "birth": "/Patient/9000000009/Birth"
   },
-  "nhs_number": 9111111111,
+  "nhs_number": 9000000009,
   "names": [
     {
       "use": "usual",
