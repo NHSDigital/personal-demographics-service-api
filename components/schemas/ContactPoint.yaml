@@ -11,7 +11,7 @@ properties:
   #       type: string
   #       format: url
   #       example: '/Patient/1234567890/ContactPoint/123'
-  business_effective:
+  period:
     $ref: "DateRange.yaml"
   system:
     type: string

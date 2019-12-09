@@ -30,7 +30,7 @@ properties:
   name:
     type: array
     items:
-      $ref: "PersonName.yaml"
+      $ref: "HumanName.yaml"
   gender:
     $ref: "Gender.yaml"
   birthDate:
@@ -45,15 +45,24 @@ properties:
     format: date
   address:
     $ref: "PersonAddress.yaml"
+  contact:
+    type: array
+    items:
+      $ref: "RelatedPerson.yaml"
   telecom:
     type: array
     items:
       $ref: "ContactPoint.yaml"
-  general_practice:
-    $ref: "GeneralPracticeRead.yaml"
-  pharmacies:
-    $ref: "PharmacyListRead.yaml"
-  # _links: # need to figure out what to do with this!!
+  generalPractitioner:
+    type: array
+    items:
+      $ref: "GeneralPractitionerReference.yaml"
+
+  # TODO: find a way to relate this to patients properly
+  # pharmacies:
+  #   $ref: "PharmacyListRead.yaml"
+
+  # _links: # TODO: need to figure out what to do with this!!
   #   type: object
   #   readOnly: true
   #   properties:
