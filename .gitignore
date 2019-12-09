@@ -4,3 +4,5 @@ dist/
 public/
 
 .#*
+
+__pycache__/
