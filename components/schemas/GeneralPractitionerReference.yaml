@@ -9,6 +9,7 @@ properties:
   id:
     description: The ODS code of the registered practice or practitioner
     type: string
+    pattern: ^[0-9A-Z]+$
     example: Y12345
   type:
     description: Indicates whether the patient is registered to a practice, an individual practitioner, or a practitioner role
