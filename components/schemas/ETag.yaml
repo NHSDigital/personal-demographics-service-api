@@ -4,5 +4,5 @@ schema:
   example: '"2"'
 description: |
   Record version identifier enclosed in quotes.
-  
-  Corresponds to `_version` attribute in body.
+
+  Corresponds to `meta.versionId` attribute in body.
