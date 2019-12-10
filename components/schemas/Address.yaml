@@ -1,25 +1,30 @@
 type: object
 properties:
-  _id:
+  id:
     type: string
     readOnly: true
     example: '123'
-  _links:
-    type: object
-    readOnly: true
-    properties:
-      self:
-        type: string
-        format: url
-        example: '/Patient/1234567890/Address/123'
-  business_effective:
+  # _links:
+  #   type: object
+  #   readOnly: true
+  #   properties:
+  #     self:
+  #       type: string
+  #       format: url
+  #       example: '/Patient/1234567890/Address/123'
+  period:
     $ref: "DateRange.yaml"
+  use:
+    type: string
+    description: Purpose of this address
+    enum: [home, work, temp, old, billing] # TODO: how do we map usual, correspondence, temporary, other?
+    example: home
   type:
     type: string
     description: Type of address
-    enum: [usual, correspondence, temporary, other]
-    example: usual
-  lines:
+    enum: [postal, physical, both]
+    example: both
+  line:
     type: array
     items:
       type: string
@@ -27,9 +32,22 @@ properties:
       - 4 Baker Street
       - Leeds
       - LS1 6AE
-  postcode:
+  city:
+    type: string
+    description: City, town, village, etc. that the address is located in.
+    example: Leeds
+  district:
+    type: string
+    description: County the address is located in.
+    example: West Yorkshire
+  postalCode:
     type: string
     example: "LS1 6AE"
-  paf_key:
+  country: # TODO: is this required?
     type: string
-    example: TODO
+    description: The country the address is located in.
+    example: "United Kingdom"
+  # TODO: this needs and extension
+  # paf_key:
+  #   type: string
+  #   example: TODO

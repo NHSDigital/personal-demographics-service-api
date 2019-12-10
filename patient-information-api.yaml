@@ -97,23 +97,16 @@ paths:
       tags:
         - patients
       parameters:
-        - name: family_name
+        - name: family
           description: The patient's family name (surname)
           example: Smith
           in: query
           required: false
           schema:
             type: string
-        - name: given_name
-          description: the patient's first given name
+        - name: given
+          description: The patient's given name(s)
           example: Jane
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: other_names
-          description: Any other given name(s). Ignored if provided in simple searches.
-          example: Jenny
           in: query
           required: false
           schema:
@@ -125,7 +118,7 @@ paths:
           required: false
           schema:
             $ref: 'components/schemas/Gender.yaml'
-        - name: birth_date
+        - name: birthdate
           in: query
           description: Birth date in the format yyyy-mm-dd. Required for simple searches. Other search types must provide either a birth date or a birth date range
           example: "2018-03-20"
@@ -133,23 +126,7 @@ paths:
           schema:
             type: string
             format: date
-        - name: birth_date_range_start
-          in: query
-          description: Date in the format yyyy-mm-dd. Ranges can be used instead of searching a specific date. Do not use in simple searches
-          required: false
-          example: "2018-03-20"
-          schema:
-            type: string
-            format: date
-        - name: birth_date_range_end
-          in: query
-          description: Date in the format yyyy-mm-dd. Ranges can be used instead of searching a specific date. Do not use in simple searches
-          required: false
-          example: "2018-03-20"
-          schema:
-            type: string
-            format: date
-        - name: death_date
+        - name: death-date
           in: query
           description: Date of death in the format yyyy-mm-dd
           required: false
@@ -158,32 +135,24 @@ paths:
             type: string
             format: date
             example: 2018-03-20
-        - name: death_date_range_start
-          in: query
-          description: Date in the format yyyy-mm-dd. Ranges can be used instead of searching a specific date. Do not use in simple searches
-          required: false
-          example: "2018-03-20"
-          schema:
-            type: string
-            format: date
-            example: 2018-03-25
-        - name: death_date_range_end
-          in: query
-          description: Date in the format yyyy-mm-dd. Ranges can be used instead of searching a specific date. Do not use in simple searches
-          required: false
-          example: "2018-03-20"
-          schema:
-            type: string
-            format: date
-        - name: postcode
+        - name: address-postcode
           description: White spaces in postcodes are significant, i.e. LS16AE will not match LS1 6AE
           example: LS1 6AE
           in: query
           required: false
           schema:
             type: string
-        - name: practice_code
+        - name: organisation
           description: The ODS code of the patient's registered general practice. Do not use in simple searches
+          example: Y00001
+          in: query
+          required: false
+          schema:
+            type: string
+            format: ods_code
+            pattern: '^[A-Z]\d{5}$'
+        - name: general-practitioner
+          description: The ODS code of the patient's registered general practioner. Do not use in simple searches
           example: Y00001
           in: query
           required: false
@@ -197,24 +166,50 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  required:
-                    - match_weight
-                    - patient
-                  properties:
-                    match_weight:
-                      type: number
-                      example: 78.5
-                      minimum: 0
-                      maximum: 100
-                    patient:
-                      $ref: 'components/schemas/Patient.yaml'
+                type: object
+                properties:
+                  resourceType:
+                    type: string
+                    description: FHIR Resource Type
+                    default: Bundle
+                  type:
+                    type: string
+                    description: FHIR Bundle Type
+                    default: searchset
+                  timestamp:
+                    type: integer
+                    description: Time the search was performed
+                    example: 1575908416
+                  total:
+                    type: integer
+                    description: Number of resources returned in search
+                    example: 1
+                  entry:
+                    type: array
+                    description: Patient search results
+                    items:
+                      type: object
+                      properties:
+                        search:
+                          type: object
+                          properties:
+                            score:
+                              description: Search score from 0.0 to 1.0
+                              type: number
+                              minimum: 0.0
+                              maximum: 1.1
+                              example: 1.0
+                        resource:
+                          $ref: 'components/schemas/Patient.yaml'
               example:
-                items:
-                  - match_weight: 100.0
-                    patient:
+                resourceType: Bundle
+                type: searchset
+                timestamp: 1575908416
+                total: 1
+                entry:
+                  - search:
+                      score: 1.0
+                    resource:
                       $ref: 'components/examples/Patient.json'
         '400':
           description: Invalid search params supplied.
@@ -314,15 +309,15 @@ paths:
                 value:
                   patches:
                     - op: 'add'
-                      path: 'names/-'
+                      path: 'name/-'
                       value:
-                        use: preferred
-                        business_effective:
+                        use: usual
+                        period:
                           start: 2019-12-31
-                        title: Dr
-                        given_name: Joe
-                        family_name: Bloggs
-                        other_names: Horatio Maximus
+                        text: Dr Joe H. M. Bloggs PhD
+                        prefix: Dr
+                        given: [Joe, Horation, Maximus]
+                        family: Bloggs
                         suffix: PhD
               update-name:
                 summary: Update the second given name entry
@@ -330,7 +325,7 @@ paths:
                   correction:
                   patches:
                     - op: 'replace'
-                      path: 'names/1/given_name'
+                      path: 'name/1/given'
                       value: 'Jonathan'
               delete-name:
                 summary: Remove a name no longer in use
@@ -338,7 +333,7 @@ paths:
                   correction:
                   patches:
                     - op: 'remove'
-                      path: 'names/0'
+                      path: 'name/0'
       responses:
         '200':
           description: Patient updated
@@ -353,279 +348,6 @@ paths:
           $ref: '#/components/responses/400MissingIfMatchHeader'
         '412':
           $ref: '#/components/responses/412PreconditionFailed'
-  /Patient/{nhs_number}/RelatedPerson:
-    parameters:
-      - $ref: '#/components/parameters/NhsNumber'
-    get:
-      description: Returns people associated with or related to the Patient, e.g. family relations, contacts and guardians etc.
-      summary: Return people related to the patient
-      operationId: get-related-people
-      tags:
-        - related people
-      parameters:
-          # TODO - included as an example. More to go here
-        - name: relationship_type
-          description: Return
-          in: query
-          required: false
-          schema:
-            type: string
-            #TODO enum: [...]
-      responses:
-        '200':
-          description: A list
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: 'components/schemas/RelatedPerson.yaml'
-    post:
-      description: Create a new person related to/associated with the patient.
-      summary: Add a related person to the patient's record
-      operationId: add-related-person
-      tags:
-        - related people
-      responses:
-        '200':
-          description: The new related person
-          headers:
-            ETag:
-              $ref: 'components/schemas/ETag.yaml'
-          content:
-            application/json:
-              schema:
-                $ref: 'components/schemas/RelatedPerson.yaml'
-  /Patient/{nhs_number}/RelatedPerson/{id}:
-    parameters:
-      - $ref: '#/components/parameters/NhsNumber'
-      - name: id
-        in: path
-        required: true
-        description: "The patient's NHS number"
-        schema:
-          type: string
-    get:
-      description: Returns a person associated with or related to the Patient, e.g. family relations, contacts and guardians etc.
-      summary: Return a person related to the patient
-      operationId: get-related-person
-      tags:
-        - related people
-      parameters:
-        - name: relationship_type
-          description: Return
-          in: query
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: A list
-          headers:
-            ETag:
-              $ref: 'components/schemas/ETag.yaml'
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: 'components/schemas/RelatedPerson.yaml'
-    put:
-      description: Update a person associated with or related to the Patient.
-      summary: Update related
-      operationId: update-related-person
-      parameters:
-        - $ref: '#/components/parameters/IfMatch'
-      tags:
-        - related people
-      responses:
-        '200':
-          description: The updated related person
-          headers:
-            ETag:
-              $ref: 'components/schemas/ETag.yaml'
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: 'components/schemas/RelatedPerson.yaml'
-        '412':
-          $ref: '#/components/responses/412PreconditionFailed'
-        '400':
-          $ref: '#/components/responses/400MissingIfMatchHeader'
-    delete:
-      description: Delete a person related to/associated with the patient.
-      summary: Remove a related person
-      operationId: delete-related-person
-      parameters:
-        - $ref: '#/components/parameters/IfMatch'
-      tags:
-        - related people
-      responses:
-        '200':
-          description: Successfully removed related person
-        '412':
-          $ref: '#/components/responses/412PreconditionFailed'
-        '400':
-          $ref: '#/components/responses/400MissingIfMatchHeader'
-  /Patient/{nhs_number}/ReasonableAdjustment:
-    parameters:
-      - $ref: '#/components/parameters/NhsNumber'
-    get:
-      description: List any reasonable adjustments which have been registered for a patient.
-      summary: Retrieve a patient's reasonable adjustments
-      operationId: get-reasonable-adjustments
-      tags:
-        - reasonable adjustments
-      responses:
-        '200':
-          description: A list
-    post:
-      summary: Add a new reasonable adjustments
-      operationId: add-reasonable-adjustment
-      tags:
-        - reasonable adjustments
-      responses:
-        '200':
-          description: A reasonable adjustment
-          headers:
-            ETag:
-              $ref: 'components/schemas/ETag.yaml'
-  /Patient/{nhs_number}/ReasonableAdjustment/{adjustment_id}:
-    parameters:
-      - $ref: '#/components/parameters/NhsNumber'
-      - in: path
-        name: adjustment_id
-        schema:
-          type: string
-        description: ID of a reasonable adjustment
-        example: '12345'
-        required: true
-    get:
-      description: Show a specific reasonable adjustment that has been registered for a patient.
-      summary: Retrieve a specific reasonable adjustment
-      operationId: get-reasonable-adjustment
-      tags:
-        - reasonable adjustments
-      responses:
-        '200':
-          description: A reasonable adjustment
-          headers:
-            ETag:
-              $ref: 'components/schemas/ETag.yaml'
-    put:
-      description: Update a specific reasonable adjustment for a patient.
-      summary: Update a specific reasonable adjustment
-      operationId: update-reasonable-adjustment
-      tags:
-        - reasonable adjustments
-      parameters:
-        - $ref: '#/components/parameters/IfMatch'
-      responses:
-        '200':
-          description: A reasonable adjustment
-          headers:
-            ETag:
-              $ref: 'components/schemas/ETag.yaml'
-        '412':
-          $ref: '#/components/responses/412PreconditionFailed'
-        '400':
-          $ref: '#/components/responses/400MissingIfMatchHeader'
-    delete:
-      description: Delete a specific reasonable adjustment for a patient.
-      summary: Delete a specific reasonable adjustment
-      operationId: delete-reasonable-adjustment
-      tags:
-        - reasonable adjustments
-      parameters:
-        - $ref: '#/components/parameters/IfMatch'
-      responses:
-        '200':
-          description: A reasonable adjustment
-        '412':
-          $ref: '#/components/responses/412PreconditionFailed'
-        '400':
-          $ref: '#/components/responses/400MissingIfMatchHeader'
-  /Patient/{nhs_number}/Address:
-    parameters:
-      - $ref: '#/components/parameters/NhsNumber'
-    get:
-      description: List address information belonging to a patient.
-      summary: List a patient's addresses
-      operationId: get-addresses
-      tags:
-        - addresses
-      responses:
-        '200':
-          description: Successful request
-    post:
-      description: Create a new address for a patient.
-      summary: Add a new address to the patient
-      operationId: add-address
-      tags:
-        - addresses
-      responses:
-        '200':
-          description: Successful request
-          headers:
-            ETag:
-              $ref: 'components/schemas/ETag.yaml'
-  /Patient/{nhs_number}/Address/{address_id}:
-    parameters:
-      - $ref: '#/components/parameters/NhsNumber'
-      - in: path
-        name: address_id
-        schema:
-          type: string
-        description: ID of patient's address
-        example: '12345'
-        required: true
-    get:
-      description: Show information on a specific address of a patient.
-      summary: Show a specific address
-      operationId: get-address
-      tags:
-        - addresses
-      responses:
-        '200':
-          description: Successful request
-          headers:
-            ETag:
-              $ref: 'components/schemas/ETag.yaml'
-    put:
-      description: Update address information for a patient.
-      summary: Update a patient's address
-      operationId: update-address
-      tags:
-        - addresses
-      parameters:
-        - $ref: '#/components/parameters/IfMatch'
-      responses:
-        '200':
-          description: Successful request
-          headers:
-            ETag:
-              $ref: 'components/schemas/ETag.yaml'
-        '412':
-          $ref: '#/components/responses/412PreconditionFailed'
-        '400':
-          $ref: '#/components/responses/400MissingIfMatchHeader'
-    delete:
-      description: Delete an address belonging to a patient.
-      summary: Remove an address from a patient
-      operationId: delete-address
-      tags:
-        - addresses
-      parameters:
-        - $ref: '#/components/parameters/IfMatch'
-      responses:
-        '200':
-          description: Successful request
-        '412':
-          $ref: '#/components/responses/412PreconditionFailed'
-        '400':
-          $ref: '#/components/responses/400MissingIfMatchHeader'
 components:
   parameters:
     NhsNumber:

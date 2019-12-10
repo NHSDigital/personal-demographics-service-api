@@ -4,7 +4,7 @@
   "description": "OAS (Swagger v3) API Definition for Patient Information",
   "scripts": {
     "test": "speccy lint patient-information-api.yaml",
-    "publish": "mkdir -p dist && node_modules/.bin/speccy resolve patient-information-api.yaml -i | node_modules/.bin/js-yaml > dist/patient-information-api.json",
+    "publish": "mkdir -p dist && node_modules/.bin/speccy resolve patient-information-api.yaml -i | pipenv run python scripts/yaml2json.py > dist/patient-information-api.json",
     "serve": "node_modules/.bin/speccy serve patient-information-api.yaml"
   },
   "author": "NHS Digital",

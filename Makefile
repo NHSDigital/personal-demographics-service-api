@@ -19,7 +19,7 @@ validate: generate-examples
 publish:
 	npm run publish
 
-serve:
+serve: generate-examples
 	npm run serve
 
 generate-examples: publish

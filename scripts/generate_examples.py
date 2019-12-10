@@ -7,8 +7,10 @@ def generate_example(schema_dict, path):
 
     for property_name, property_value in schema_dict.items():
         if property_value['type'] == 'array':
-            if property_value['items']['type'] == 'object':
-                example[property_name] = generate_example(property_value['items']['properties'], property_name)
+            if 'oneOf' in property_value['items']:
+                example[property_name] = [generate_example(t['properties'], property_name) for t in property_value['items']['oneOf']]
+            elif property_value['items']['type'] == 'object':
+                example[property_name] = [generate_example(property_value['items']['properties'], property_name)]
             else:
                 if ('example' not in property_value) and ('default' not in property_value):
                     property_path = '.'.join(path)

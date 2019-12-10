@@ -1,17 +1,17 @@
 description: A telecommunication address
 type: object
 properties:
-  _id:
+  id:
     type: string
     example: '123'
-  _links:
-    type: object
-    properties:
-      self:
-        type: string
-        format: url
-        example: '/Patient/1234567890/ContactPoint/123'
-  business_effective:
+  # _links:
+  #   type: object
+  #   properties:
+  #     self:
+  #       type: string
+  #       format: url
+  #       example: '/Patient/1234567890/ContactPoint/123'
+  period:
     $ref: "DateRange.yaml"
   system:
     type: string
