@@ -2,31 +2,32 @@ type: object
 properties:
   use:
     type: string
+    description: How this name should be used. 
     # enum: [usual, preferred, alias, bachelor, maiden, birth, other]
     enum: [usual, official, temp, nickname, anonymous, old, maiden]
     example: usual
   text:
     type: string
-    description: Text representation of the name
+    description: Text representation of the name, as it would appear in official correspondence e.g. a letter.
     example: Mrs Jane Adele Smith MBE
   period:
     $ref: "DateRange.yaml"
   given:
     type: array
-    description: Any given names
+    description: Given names, including any middle names.
     example: [Jane, Adele]
     items:
       type: string
       example: Jane
   family:
     type: string
-    description: Family name (often called Surname)
+    description: Family name (often called Surname).
     example: Smith
   prefix:
     type: string
-    description: Name prefix or titles
+    description: Name prefixes, titles, and prenominals.
     example: Mrs
   suffix:
     type: string
-    description: Name suffices
+    description: Name suffices and postnominals.
     example: MBE

@@ -1,4 +1,4 @@
-description: Historic general practice registration data may register the patient against a practice or an individual practitioner
+description: GP Practice or Paractitoiner with whom the patient is or was registered. 
 type: object
 required:
   - type
@@ -7,21 +7,21 @@ required:
   - business_effective
 properties:
   id:
-    description: The ODS code of the registered practice or practitioner
+    description: The ODS code of the registered practice or practitioner.
     type: string
     pattern: ^[0-9A-Z]+$
     example: Y12345
   type:
-    description: Indicates whether the patient is registered to a practice, an individual practitioner, or a practitioner role
+    description: Indicates whether the patient is registered to a practice, an individual practitioner, or a practitioner role.
     type: string
     enum: [Practitioner, PractionerRole, Organization]
     example: Organization
   reference:
-    description: Relative link to practitioner resource
+    description: Relative link to practitioner resource.
     type: string
     example: /Organization/Y12345
   display:
-    description: Display friendly name of organisation or practitioner
+    description: Display friendly name of organisation or practitioner.
     type: string
     example: F. B. Quux and Co. GP Surgery
 example:

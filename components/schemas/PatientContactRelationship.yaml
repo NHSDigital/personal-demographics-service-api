@@ -2,8 +2,8 @@ type: object
 properties:
   text:
     type: string
-    description: Text representation of code(s)
-    example: foo.bar
+    description: Text representation of code(s).
+    example: C - Emergency Contact
   coding:
     type: array
     items:
@@ -11,17 +11,17 @@ properties:
       properties:
         system:
           type: string
-          description: URI of the coding system specification
+          description: URI of the coding system specification.
           example: http://terminology.hl7.org/CodeSystem/v2-0131
         version:
           type: string
-          description: Version of the coding system in use
+          description: Version of the coding system in use.
           example: "2.9"
         code:
           type: string
-          description: Symbol in syntax defined by the system
+          description: Symbol in syntax defined by the system.
           example: C
         display:
           type: string
-          description: Representation defined by the system
+          description: Human-friendly display representation defined by the system.
           example: Emergency Contact

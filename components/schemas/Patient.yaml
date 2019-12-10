@@ -2,7 +2,7 @@ type: object
 properties:
   resourceType:
     type: string
-    description: FHIR resource type
+    description: FHIR resource type.
     default: "Patient"
     readOnly: true
   id:
@@ -10,26 +10,27 @@ properties:
     readOnly: true
   meta:
     type: object
-    description: Metadata about this resource
+    description: Metadata about this resource.
     properties: 
       versionId:
         type: string
-        description: The NHS Digital assigned version of the patient resource
+        description: The NHS Digital assigned version of the patient resource.
         readOnly: true
         example: "2"
   name:
     type: array
+    description: List of names associated with the patient.
     items:
       $ref: "HumanName.yaml"
   gender:
     $ref: "Gender.yaml"
   birthDate:
-    description: A date in the format yyyy-mm-dd
+    description: A date in the format yyyy-mm-dd.
     example: "2010-10-22"
     type: string
     format: date
   deceasedDateTime:
-    description: A datetime in the format yyyy-mm-ddTHH:MM:SS+HH:MM
+    description: A datetime in the format yyyy-mm-ddTHH:MM:SS+HH:MM.
     example: "2010-10-22T00:00:00+00:00"
     type: string
     format: date
@@ -37,14 +38,17 @@ properties:
     $ref: "PersonAddress.yaml"
   contact:
     type: array
+    description: List of related people (e.g. emergency contacts).
     items:
       $ref: "RelatedPerson.yaml"
   telecom:
     type: array
+    description: List of contact methods.
     items:
       $ref: "ContactPoint.yaml"
   generalPractitioner:
     type: array
+    description: List of associated GPs or GP surgeries.
     items:
       $ref: "GeneralPractitionerReference.yaml"
 
