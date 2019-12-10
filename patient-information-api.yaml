@@ -309,15 +309,15 @@ paths:
                 value:
                   patches:
                     - op: 'add'
-                      path: 'names/-'
+                      path: 'name/-'
                       value:
-                        use: preferred
-                        business_effective:
+                        use: usual
+                        period:
                           start: 2019-12-31
-                        title: Dr
-                        given_name: Joe
-                        family_name: Bloggs
-                        other_names: Horatio Maximus
+                        text: Dr Joe H. M. Bloggs PhD
+                        prefix: Dr
+                        given: [Joe, Horation, Maximus]
+                        family: Bloggs
                         suffix: PhD
               update-name:
                 summary: Update the second given name entry
@@ -325,7 +325,7 @@ paths:
                   correction:
                   patches:
                     - op: 'replace'
-                      path: 'names/1/given_name'
+                      path: 'name/1/given'
                       value: 'Jonathan'
               delete-name:
                 summary: Remove a name no longer in use
@@ -333,7 +333,7 @@ paths:
                   correction:
                   patches:
                     - op: 'remove'
-                      path: 'names/0'
+                      path: 'name/0'
       responses:
         '200':
           description: Patient updated
