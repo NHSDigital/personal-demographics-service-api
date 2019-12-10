@@ -50,4 +50,7 @@ properties:
   # TODO: this needs and extension
   # paf_key:
   #   type: string
-  #   example: TODO
+  #   format: paf_key
+  #   pattern: ^[0-9]{8}$
+  #   length: 8
+  #   example: "12345678"
