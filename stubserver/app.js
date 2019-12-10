@@ -49,7 +49,7 @@ const init = async () => {
             }
 
             // Validate NHS number is for our test patient
-            if (request.params.nhsNumber != EXAMPLE_PATIENT.nhs_number) {
+            if (request.params.nhsNumber != EXAMPLE_PATIENT.id) {
                 const error = Boom.notFound()
                 error.output.payload = {
                     code: "not_found",
