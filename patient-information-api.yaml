@@ -28,20 +28,23 @@ info:
     * related people
 
     ## API status
-    This API is in Alpha and changing frequently - expect significant breaking changes.
+    This API is in [Alpha](/reference-guide#api-status) - expect significant breaking changes.
     
     It is currently only available for sandbox testing, not for integration testing or production use.
     
-    We are extremely keen to receive feedback on the API - please get in touch.
-    For example if there are data fields missing that you think you need.
+    We are extremely keen to receive feedback on the API,
+    for example if there are data fields missing that you think you need.
+    Please [get in touch](/help-and-support) with any comments or suggestions.
     
-    On the roadmap:
+    The following items are on our roadmap, in rough priority order:
     - addition of data fields that are dependent on upcoming UK Core FHIR profiles.
     - complete sandbox service (currently only GET /Patient/{nhs_number}
+    - move from Alpha to Beta
     - authorisation using OAuth 2.0 and NHS Identity
     - integration test service
     - assurance process
-    - production service
+    - production service (Beta)
+    - exit Beta (once we are sure the service is fit for purpose)
 
     We are working towards making this API fully compliant with FHIR.
 
@@ -49,7 +52,8 @@ info:
     This API is [RESTful](https://emea-demo8-nhsdportal.apigee.io/introduction-to-apis#basic-rest).
 
     This API is compliant with the
-    [FHIR standard for health care data exchange](https://emea-demo8-nhsdportal.apigee.io/introduction-to-apis#fhir-rest).
+    [FHIR](https://emea-demo8-nhsdportal.apigee.io/introduction-to-apis#fhir-rest)
+    standard for health care data exchange.
     Specifically, it complies with [FHIR R4](https://hl7.org/fhir/R4/).
 
     ## Authorisation
