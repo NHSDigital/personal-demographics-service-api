@@ -70,10 +70,9 @@ info:
 
     ## Endpoints
     To see details for specific endpoints, select from the list on the left hand side of the page:
-    * /Patient GET: search for patient
-    * /Patient/{nhs_number} GET: get patient's personal details
-    * /Patient/{nhs_number> PATCH: update patient's personal details
-    * details for other endpoints to follow
+    * `GET /Patient` - search for patient
+    * `GET /Patient/{nhs_number}` - get patient's personal details
+    * `PATCH /Patient/{nhs_number}` - update patient's personal details
   contact:
     name: 'Patient Information API Support'
     url: 'https://tbc.api.nhs.net'
