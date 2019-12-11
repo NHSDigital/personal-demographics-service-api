@@ -14,7 +14,7 @@ properties:
   type:
     description: Indicates whether the patient is registered to a practice, an individual practitioner, or a practitioner role.
     type: string
-    enum: [Practitioner, PractionerRole, Organization]
+    enum: [Practitioner, Organization]
     example: Organization
   reference:
     description: Relative link to practitioner resource.
