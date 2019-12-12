@@ -16,12 +16,12 @@ properties:
     $ref: "DateRange.yaml"
   use:
     type: string
-    description: Purpose of this address
+    description: Purpose of this address.
     enum: [home, work, temp, old, billing] # TODO: how do we map usual, correspondence, temporary, other?
     example: home
   type:
     type: string
-    description: Type of address
+    description: Type of address. Postal-only (aka correspondence) addresses can be used to communicate, but are not where the person associated with this address can be usually found.
     enum: [postal, physical, both]
     example: both
   line:
@@ -50,4 +50,7 @@ properties:
   # TODO: this needs and extension
   # paf_key:
   #   type: string
-  #   example: TODO
+  #   format: paf_key
+  #   pattern: ^[0-9]{8}$
+  #   length: 8
+  #   example: "12345678"

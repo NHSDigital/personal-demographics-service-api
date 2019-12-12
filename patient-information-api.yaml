@@ -249,7 +249,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'components/schemas/Error.yaml'
+                $ref: 'components/schemas/OperationOutcome.yaml'
               examples:
                 not-enough:
                   summary: Too few search params
@@ -302,7 +302,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'components/schemas/Error.yaml'
+                $ref: 'components/schemas/OperationOutcome.yaml'
               example:
                 code: 'invalid_nhs_number'
                 message: 'NHS number is not in the correct format, or is not a real NHS number'
@@ -311,7 +311,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'components/schemas/Error.yaml'
+                $ref: 'components/schemas/OperationOutcome.yaml'
               example:
                 code: 'not_found'
                 message: 'Patient with NHS number 1234567890 could not be found'
@@ -419,7 +419,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: 'components/schemas/Error.yaml'
+            $ref: 'components/schemas/OperationOutcome.yaml'
           example:
             code: version_mismatch
             message: 'This resource has changed since you last read. Please re-read and try again with the new version number.'
@@ -431,7 +431,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: 'components/schemas/Error.yaml'
+            $ref: 'components/schemas/OperationOutcome.yaml'
           example:
             code: version_not_supplied
             message: 'IfMatch header must be supplied to update this resource'

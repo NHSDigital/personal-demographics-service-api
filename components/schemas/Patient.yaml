@@ -2,7 +2,7 @@ type: object
 properties:
   resourceType:
     type: string
-    description: FHIR resource type
+    description: FHIR resource type.
     default: "Patient"
     readOnly: true
   id:
@@ -10,26 +10,27 @@ properties:
     readOnly: true
   meta:
     type: object
-    description: Metadata about this resource
+    description: Metadata about this resource.
     properties: 
       versionId:
         type: string
-        description: The NHS Digital assigned version of the patient resource
+        description: The NHS Digital assigned version of the patient resource.
         readOnly: true
         example: "2"
   name:
     type: array
+    description: List of names associated with the patient.
     items:
       $ref: "HumanName.yaml"
   gender:
     $ref: "Gender.yaml"
   birthDate:
-    description: A date in the format yyyy-mm-dd
+    description: A date in the format yyyy-mm-dd.
     example: "2010-10-22"
     type: string
     format: date
   deceasedDateTime:
-    description: A datetime in the format yyyy-mm-ddTHH:MM:SS+HH:MM
+    description: A datetime in the format yyyy-mm-ddTHH:MM:SS+HH:MM.
     example: "2010-10-22T00:00:00+00:00"
     type: string
     format: date
@@ -37,52 +38,25 @@ properties:
     $ref: "PersonAddress.yaml"
   contact:
     type: array
+    description: List of related people (e.g. emergency contacts).
     items:
       $ref: "RelatedPerson.yaml"
   telecom:
     type: array
+    description: List of contact methods.
     items:
       $ref: "ContactPoint.yaml"
   generalPractitioner:
     type: array
+    description: List of associated GPs or GP surgeries.
     items:
       $ref: "GeneralPractitionerReference.yaml"
+  communication:
+    type: array
+    description: Languages that may be used to communicate with this patient.
+    items:
+      $ref: "Communication.yaml"
 
   # TODO: find a way to relate this to patients properly
   # pharmacies:
   #   $ref: "PharmacyListRead.yaml"
-
-  # _links: # TODO: need to figure out what to do with this!!
-  #   type: object
-  #   readOnly: true
-  #   properties:
-  #     self:
-  #       type: string
-  #       format: path
-  #       description: The path to the current version of this patient resource
-  #       example: /Patient/9000000009
-  #       readOnly: true
-  #     reasonable_adjustments:
-  #       type: string
-  #       description: Path to reasonable adjustments for this patient
-  #       format: path
-  #       example: /Patient/9000000009/ReasonableAdjustment
-  #       readOnly: true
-  #     consent:
-  #       type: string
-  #       description: Path to consent information for this patient
-  #       format: path
-  #       example: /Patient/9000000009/Consent
-  #       readOnly: true
-  #     related_people:
-  #       type: string
-  #       description: Path to people associated with to this patient
-  #       format: path
-  #       example: /Patient/9000000009/RelatedPerson
-  #       readOnly: true
-  #     birth:
-  #       type: string
-  #       description: Path to birth information for this patient
-  #       format: path
-  #       example: /Patient/9000000009/Birth
-  #       readOnly: true

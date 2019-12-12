@@ -1,0 +1,56 @@
+description: Historic general practice registration data may register the patient against a practice or an individual practitioner
+type: object
+required:
+  - type
+  - url
+  - ods_code
+  - business_effective
+properties:
+  id:
+    type: string
+    example: 'Y00001'
+  type:
+    description: Indicates whether the patient is registered to a practice or an individual practitioner
+    type: string
+    enum: [practice, practitioner]
+    example: practice
+  ods_code:
+    description: The ODS code of the registered practice or practitioner
+    type: string
+    example: Y00001
+  business_effective:
+    type: object
+    required:
+      - start
+    properties:
+      start:
+        description: A date in the format yyyy-mm-dd
+        example: "2010-10-22"
+        type: string
+        format: date
+      end:
+        description: A date in the format yyyy-mm-dd
+        example: "2010-10-22"
+        type: string
+        format: date
+  # _links:
+  #   type: object
+  #   properties:
+  #     self:
+  #       type: string
+  #       format: url
+  #       example: /Patient/1234567890/GeneralPractice/123
+  #     organization:
+  #       type: string
+  #       format: url
+  #       description: The location of the registered practice or practitioner resource
+  #       example: /Organization/Y00001
+example:
+  _id: 123
+  _links:
+    self: /Patient/1234567890/GeneralPractice/123
+    organization:  /Organization/Y00001
+  business_effective:
+    start: "2019-03-24"
+  type: practice
+  ods_code: Y00001

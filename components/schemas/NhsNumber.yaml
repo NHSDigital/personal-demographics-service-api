@@ -1,4 +1,4 @@
-description: The primary identifier of a patient, unique within NHS England, and Wales. Must pass [check digit validity](https://www.datadictionary.nhs.uk/data_dictionary/attributes/n/nhs/nhs_number_de.asp).
+description: The primary identifier of a patient, unique within NHS England, and Wales. 10 digits. Must pass [check digit validity](https://www.datadictionary.nhs.uk/data_dictionary/attributes/n/nhs/nhs_number_de.asp).
 type: string
 example: "9000000009"
 format: '^\d{10}$'

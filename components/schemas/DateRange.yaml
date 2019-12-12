@@ -2,12 +2,12 @@ description: A date range
 type: object
 properties:
   start:
-    description: A date in the format yyyy-mm-dd
+    description: Start date in the format yyyy-mm-dd
     example: "2010-10-22"
     type: string
     format: date
   end:
-    description: A date in the format yyyy-mm-dd
+    description: End date (if any) in the format yyyy-mm-dd
     example: "2010-10-22"
     type: string
     format: date
