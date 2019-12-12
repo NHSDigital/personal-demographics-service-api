@@ -1,0 +1,28 @@
+description: Individual Medical Practitioner, for example a GP.
+type: object
+properties:
+  resourceType:
+    description: FHIR resourceType.
+    default: Practitioner
+    readOnly: true
+  name:
+    $ref: 'HumanName.yaml'
+  telecom:
+    type: array
+    description: Contact information for a practitioner.
+    items:
+      $ref: 'ContactPoint.yaml'
+  address:
+    type: array
+    description: Addresses at which this practitioner is registered or can be contacted.
+    items:
+      $ref: 'Address.yaml'
+  gender:
+    $ref: 'Gender.yaml'
+  communication:
+    type: array
+    description: Languages that this practitioner is capable of communicating in.
+    items:
+      $ref: "Communication.yaml"
+  # TODO: do we need to model qualifications here as well?
+  # TODO: do we need identifiers for individual practitioners?

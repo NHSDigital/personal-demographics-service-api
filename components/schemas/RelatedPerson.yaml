@@ -16,14 +16,10 @@ properties:
   #       type: string
   #       format: url
   #       example: /Patient/9000000009
-  # TODO: do we need this on related person?
-  # _version:
-  #   type: string
-  #   description: The NHS Digital assigned version of the patient resource
-  #   example: "2"
   period:
     $ref: "DateRange.yaml"
   relationship: # TODO relationship type and role need investigating, see API notes
+    description: Details of contact's relationship with the patient.
     type: array
     items:
       $ref: "PatientContactRelationship.yaml"
@@ -31,6 +27,7 @@ properties:
     $ref: "HumanName.yaml"
   telecom:
     type: array
+    description: Contact points at which the contact may be reached.
     items:
       $ref: "ContactPoint.yaml"
   # TODO: model all of the below
