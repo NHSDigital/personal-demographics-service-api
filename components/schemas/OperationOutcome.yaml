@@ -1,6 +1,11 @@
 type: object
 description: Outcome of an operation that does not result in a resource or bundle being returned (e.g. error, async/batch submission)
 properties:
+  resourceType:
+    type: string
+    description: FHIR Resource Type
+    default: OperationOutcome
+    readOnly: true
   issue:
     type: array
     description: List of issues that have occurred.
