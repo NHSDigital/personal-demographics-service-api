@@ -29,15 +29,3 @@ example:
   type: organization
   display: F. B. Quux and Co. GP Surgery
   reference: /Organization/Y12345
-  # _links:
-  #   type: object
-  #   properties:
-  #     self:
-  #       type: string
-  #       format: url
-  #       example: /Patient/1234567890/GeneralPractice/123
-  #     organization:
-  #       type: string
-  #       format: url
-  #       description: The location of the registered practice or practitioner resource
-  #       example: /Organization/Y00001
