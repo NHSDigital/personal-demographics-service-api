@@ -2,6 +2,7 @@ description: Individual Medical Practitioner, for example a GP.
 type: object
 properties:
   resourceType:
+    type: string
     description: FHIR resourceType.
     default: Practitioner
     readOnly: true
