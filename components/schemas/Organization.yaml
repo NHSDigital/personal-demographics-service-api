@@ -1,8 +1,9 @@
 description: Medical Organization, for example a GP surgery.
 type: object
 properties:
-  type:
-    $ref: 'codeable/OrganizationType.yaml'
+  # TODO: make this
+  # type:
+  #   $ref: 'codeable/OrganizationType.yaml'
   name:
     type: string
     description: Name used for the organization.
@@ -24,22 +25,23 @@ properties:
     description: Addresses used by this organization.
     items:
       $ref: 'Address.yaml'
-  contact:
-    type: array
-    description: Representatives for the organization and their contact points.
-    items:
-      type: object
-      description: A representative of the organization who may be contacted on their behalf
-      purpose:
-        $ref: 'codeable/ContactEntityType.yaml'
-      name:
-        $ref: 'HumanName.yaml'
-      telecom:
-        type: array
-        description: Contact details for this person.
-        items:
-          $ref: 'ContactPoint.yaml'
-      address:
-        $ref: 'Address.yaml'
+  # contact:
+  #   type: array
+  #   description: Representatives for the organization and their contact points.
+  #   items:
+  #     type: object
+  #     description: A representative of the organization who may be contacted on their behalf
+  #     # TODO: create
+  #     # purpose:
+  #     #   $ref: 'codeable/ContactEntityType.yaml'
+  #     name:
+  #       $ref: 'HumanName.yaml'
+  #     telecom:
+  #       type: array
+  #       description: Contact details for this person.
+  #       items:
+  #         $ref: 'ContactPoint.yaml'
+  #     address:
+  #       $ref: 'Address.yaml'
 
   

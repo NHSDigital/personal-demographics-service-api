@@ -219,15 +219,33 @@ paths:
                 $ref: 'components/schemas/OperationOutcome.yaml'
               examples:
                 not-enough:
-                  summary: Too few search params
+                  summary: too few search params
                   value:
-                    code: invalid_search_params
-                    message: 'Not enough search parameters were provided to be able to make a search'
+                    code: msg_no_match
+                    issue:
+                    - severity: error
+                      code: not_found
+                      details:
+                        text: 'patient with nhs number 1234567890 could not be found'
+                        coding:
+                          - system: https://my.spec.nhs.net/mycodingsystem
+                            version: 1
+                            code: patientnotfound
+                            display: 'patient with nhs number 1234567890 could not be found'
                 bad-dob:
-                  summary: Bad date of birth format
+                  summary: bad date of birth format
                   value:
-                    code: invalid_search_params
-                    message: 'Date of birth has invalid format: 01-01-1900 is not in YYYY-MM-DD format'
+                    code: msg_no_match
+                    issue:
+                    - severity: error
+                      code: not_found
+                      details:
+                        text: 'patient with nhs number 1234567890 could not be found'
+                        coding:
+                          - system: https://my.spec.nhs.net/mycodingsystem
+                            version: 1
+                            code: patientnotfound
+                            display: 'patient with nhs number 1234567890 could not be found'
 
   /Patient/{nhs_number}:
     parameters:
@@ -266,8 +284,16 @@ paths:
               schema:
                 $ref: 'components/schemas/OperationOutcome.yaml'
               example:
-                code: 'invalid_nhs_number'
-                message: 'NHS number is not in the correct format, or is not a real NHS number'
+                issue:
+                - severity: error
+                  code: MSG_INVALID_ID
+                  details:
+                    text: 'NHS Number 1234567890 is not a valid NHS number'
+                    coding:
+                      - system: https://my.spec.nhs.net/mycodingsystem
+                        version: 1
+                        code: invalidNHSNumber
+                        display: 'NHS Number 1234567890 is not a valid NHS number'
         '404':
           description: Patient not found
           content:
@@ -275,8 +301,17 @@ paths:
               schema:
                 $ref: 'components/schemas/OperationOutcome.yaml'
               example:
-                code: 'not_found'
-                message: 'Patient with NHS number 1234567890 could not be found'
+                code: MSG_NO_MATCH
+                issue:
+                - severity: error
+                  code: not_found
+                  details:
+                    text: 'Patient with NHS number 1234567890 could not be found'
+                    coding:
+                      - system: https://my.spec.nhs.net/mycodingsystem
+                        version: 1
+                        code: patientNotFound
+                        display: 'Patient with NHS number 1234567890 could not be found'
     patch:
       description: Updates specific patient information. Updates are specified JSON Patch.
       summary: Update a patient's record
@@ -372,6 +407,12 @@ components:
   schemas:
     Patient:
       $ref: 'components/schemas/Patient.yaml'
+    OperationOutcome:
+      $ref: 'components/schemas/OperationOutcome.yaml'
+    Organization:
+      $ref: 'components/schemas/Organization.yaml'
+    Practitioner:
+      $ref: 'components/schemas/Practitioner.yaml'
   responses:
     412PreconditionFailed:
       description: |
@@ -383,8 +424,17 @@ components:
           schema:
             $ref: 'components/schemas/OperationOutcome.yaml'
           example:
-            code: version_mismatch
-            message: 'This resource has changed since you last read. Please re-read and try again with the new version number.'
+            resourceType: OperationOutcome
+            issue:
+              - severity: error
+                code: MSG_VERSION_AWARE_CONFLICT
+                details:
+                  text: 'This resource has changed since you last read. Please re-read and try again with the new version number.'
+                  coding:
+                    - system: https://my.spec.nhs.net/mycodingsystem
+                      version: 1
+                      code: versionMismatch
+                      display: 'This resource has changed since you last read. Please re-read and try again with the new version number.'
     400MissingIfMatchHeader:
       description: |
         Client Error
@@ -395,5 +445,14 @@ components:
           schema:
             $ref: 'components/schemas/OperationOutcome.yaml'
           example:
-            code: version_not_supplied
-            message: 'IfMatch header must be supplied to update this resource'
+            resourceType: OperationOutcome
+            issue:
+              - severity: error
+                code: MSG_VERSION_AWARE
+                details:
+                  text: 'IfMatch header must be supplied to update this resource'
+                  coding:
+                    - system: https://my.spec.nhs.net/mycodingsystem
+                      version: 1
+                      code: versionNotSupplied
+                      display: 'IfMatch header must be supplied to update this resource'
