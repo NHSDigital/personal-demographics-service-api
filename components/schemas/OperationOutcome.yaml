@@ -14,9 +14,11 @@ properties:
           type: string
           enum: [fatal, error, warning, information]
           description: Severity of the error.
+          example: error
         code:
           type: string
           description: FHIR error code.
+          example: invalid
           enum:
             - invalid
             - structure
