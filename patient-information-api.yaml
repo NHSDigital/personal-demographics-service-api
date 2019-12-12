@@ -399,14 +399,14 @@ components:
       in: header
       name: If-Match
       description: |
-        Latest known version identifier enclosed in quotes.
+        Latest known version identifier enclosed in quotes preceded by W/.
 
-        Send the value of this resource's `ETag` response header (or `_version` property) as received.
+        Send the value of this resource's `ETag` response header (or `meta.versionId` property) as received.
       required: true
       schema:
         type: string
-        format: '^\"[[:print:]]+\"$' # Printable characters enclosed in quotes. See: https://tools.ietf.org/html/rfc7230#section-3.2.6
-        example: '"2"'
+        format: '^W\/\"[[:print:]]+\"$' # Printable characters enclosed in quotes. See: https://tools.ietf.org/html/rfc7230#section-3.2.6
+        example: W/"2"
   schemas:
     Patient:
       $ref: 'components/schemas/Patient.yaml'
