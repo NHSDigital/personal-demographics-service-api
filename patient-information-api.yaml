@@ -345,33 +345,15 @@ paths:
               add-name:
                 summary: Add a new name to the patient
                 value:
-                  patches:
-                    - op: 'add'
-                      path: 'name/-'
-                      value:
-                        use: usual
-                        period:
-                          start: 2019-12-31
-                        text: Dr Joe H. M. Bloggs PhD
-                        prefix: Dr
-                        given: [Joe, Horation, Maximus]
-                        family: Bloggs
-                        suffix: PhD
+                  $ref: 'components/examples/requests/PatientPatch/add-name.json'
               update-name:
                 summary: Update the second given name entry
                 value:
-                  correction:
-                  patches:
-                    - op: 'replace'
-                      path: 'name/1/given'
-                      value: 'Jonathan'
+                  $ref: 'components/examples/requests/PatientPatch/update-name.json'
               delete-name:
                 summary: Remove a name no longer in use
                 value:
-                  correction:
-                  patches:
-                    - op: 'remove'
-                      path: 'name/0'
+                  $ref: 'components/examples/requests/PatientPatch/delete-name.json'
       responses:
         '200':
           description: Patient updated
@@ -434,4 +416,4 @@ components:
             $ref: 'components/schemas/OperationOutcome.yaml'
           example:
             code: version_not_supplied
-            message: 'IfMatch header must be supplied to update this resource'
+            message: 'If-Match header must be supplied to update this resource'

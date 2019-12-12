@@ -1,0 +1,10 @@
+{
+  "correction": null,
+  "patches": [
+    {
+      "op": "replace",
+      "path": "name/1/given",
+      "value": "Jonathan"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "patches": [
+    {
+      "op": "add",
+      "path": "name/-",
+      "value": {
+        "use": "usual",
+        "period": {
+          "start": "2019-12-31"
+        },
+        "text": "Dr Joe H. M. Bloggs PhD",
+        "prefix": "Dr",
+        "given": [
+          "Joe",
+          "Horation",
+          "Maximus"
+        ],
+        "family": "Bloggs",
+        "suffix": "PhD"
+      }
+    }
+  ]
+}
