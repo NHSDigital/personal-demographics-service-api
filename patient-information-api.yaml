@@ -94,6 +94,9 @@ paths:
         description: ODS codes and documentation
         url: https://digital.nhs.uk/services/organisation-data-service
       description: |
+        ## Overview
+        Find a patient whose NHS Number is not known.
+
         ## Search types
         This endpoint will search for a patient using one of four search types. The choice of search is automatic and will cascade as necessary until results are found.
 
@@ -112,6 +115,18 @@ paths:
           - family_name, first_name, gender, birth_date (or range)
           - family_name, gender, birth_date (or range), postcode
           - first_name, gender, birth_date (or range), postcode
+
+        ## Sandbox test scenarios
+        You can test the following scenarios in our sandbox environment:
+
+        | Scenario                       | Request                                                      | Response                                   |
+        | ------------------------------ | ------------------------------------------------------------ | ------------------------------------------ |
+        | Search for our example patient | `?family=Smith&given=Jane&gender=female&birthdate=2010-10-22` | HTTP Status 200 with single search result. |
+        | Valid but unsuccessful search  | Send any valid search query parameters                       | HTTP Status 200 with no search results     |
+        | Invalid date format            | Send `birthdate` or `death-date` query parameters with values not in format `YYYY-MM-DD` | HTTP Status 400 with problem description   |
+        | Too few search parameters      | Send no valid query parameters                               | HTTP Status 400 with problem description   |
+
+        You can try this out using the "Try this API" feature on the right hand side of this page.
       tags:
         - patients
       parameters:
@@ -257,7 +272,12 @@ paths:
 
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
-        <table><tr><th>Scenario</th><th>Request</th><th>Response</th></tr><tr><td>Patient exists</td><td>nhs_number=9000000009</td><td>HTTP Status 200 with patient data in the response body</td></tr><tr><td>Patient doesn't exist</td><td>nhs_number=&lt;any other valid NHS Number&gt;</td><td>HTTP Status 404 with error details in the response body</td></tr><tr><td>Invalid NHS Number</td><td>nhs_number=&lt;any invalid NHS Number&gt;</td><td>HTTP Status 400 with error details in the response body</td></tr></table>
+
+        | Scenario              | Request                                         | Response                                      |
+        | --------------------- | ----------------------------------------------- | --------------------------------------------- |
+        | Patient exists        | `Patient/9000000009`                            | HTTP Status 200 with patient data in response |
+        | Patient doesn't exist | `Patient/9111231130` (or any other NHS Number)  | HTTP Status 404 with problem description      |
+        | Invalid NHS Number    | `Patient/9000000000` (or any invalid NHS Number)| HTTP Status 400 with problem description      |
 
         You can try this out using the "Try this API" feature on the right hand side of this page.
 
