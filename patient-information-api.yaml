@@ -175,7 +175,7 @@ paths:
           required: false
           schema:
             type: string
-        - name: organisation
+        - name: organization
           description: The ODS code of the patient's registered general practice. Do not use in simple searches
           example: Y00001
           in: query
