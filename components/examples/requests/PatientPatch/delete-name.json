@@ -1,9 +1,9 @@
 {
-  "correction": null,
+  "correction": false,
   "patches": [
     {
       "op": "remove",
-      "path": "name/0"
+      "path": "/name/0"
     }
   ]
 }

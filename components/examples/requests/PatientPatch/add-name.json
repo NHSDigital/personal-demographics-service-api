@@ -1,8 +1,9 @@
 {
+  "correction": false,
   "patches": [
     {
       "op": "add",
-      "path": "name/-",
+      "path": "/name/-",
       "value": {
         "use": "usual",
         "period": {
