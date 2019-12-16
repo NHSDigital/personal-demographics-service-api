@@ -1,10 +1,13 @@
-install: install-node install-python install-fhir-validator
+install: install-node install-python install-fhir-validator install-hooks
 
 install-python:
 	poetry install
 
 install-node:
 	npm install
+
+install-hooks:
+	cp scripts/pre-commit .git/hooks/pre-commit
 
 install-fhir-validator:
 	mkdir -p bin
