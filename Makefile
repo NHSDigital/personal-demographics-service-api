@@ -20,7 +20,7 @@ validate: generate-examples
 	java -jar bin/org.hl7.fhir.validator.jar dist/examples/Patient.json -version 4.0.1 | tee /tmp/validation.txt
 
 publish:
-	npm run publish
+	npm run publish 2> /dev/null
 
 serve: generate-examples
 	npm run serve
