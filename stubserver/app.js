@@ -37,23 +37,54 @@ const checkNhsNumber = function (request) {
     // But don't know how to customise the returned JSON when done this way
     const validationResult = nhsNumberSchema.validate(request.params.nhsNumber)
     if (validationResult.error) {
-        const error = Boom.badRequest()
-        error.output.payload = {
-            code: "invalid_nhs_number",
-            message: "NHS number is not in the correct format, or is not a real NHS number"
-        }
-        throw error
+        throw Boom.badRequest(
+            `NHS Number ${request.params.nhsNumber} is not a valid NHS number`,
+            {operationOutcomeCode: "value", apiErrorCode: "invalidNHSNumber"})
     }
 
     // Validate NHS number is for our test patient
     if (request.params.nhsNumber != EXAMPLE_PATIENT.id) {
-        const error = Boom.notFound()
-        error.output.payload = {
-            code: "not_found",
-            message: `Patient with NHS number ${request.params.nhsNumber} could not be found`
-        }
-        throw error
+        throw Boom.notFound(
+            `Patient with NHS number ${request.params.nhsNumber} could not be found`,
+            {operationOutcomeCode: "not_found", apiErrorCode: "patientNotFound"}
+        )
     }
+}
+
+const preResponse = function (request, h) {
+    const response = request.response
+    // Don't reformat non-error responses, and don't reformat system (>=500) errors
+    if (!response.isBoom || response.isServer) {
+        return h.continue
+    }
+
+    /* Reformat errors to FHIR spec
+     Expects request.response is a Boom object with following properties:
+      * Boom Standard:
+        * message: human-readable error message
+        * output.statusCode: HTTP status code
+      * Custom:
+        * data.operationOutcomeCode: from the [IssueType ValueSet](https://www.hl7.org/fhir/valueset-issue-type.html)
+        * data.apiErrorCode: Our own code defined for each particular error. Refer to OAS.
+    */
+    const error = response
+    const fhirError = {
+        resourceType: "OperationOutcome",
+        issue: [{
+            severity: "error",
+            code: error.data.operationOutcomeCode,
+            details: {
+                coding: [{
+                    system: "https://my.spec.nhs.net/mycodingsystem",
+                    version: 1,
+                    code: error.data.apiErrorCode,
+                    display: error.message
+                }]
+            }
+        }]
+    }
+
+    return h.response(fhirError).code(error.output.statusCode)
 }
 
 const init = async () => {
@@ -67,6 +98,7 @@ const init = async () => {
             }
         }
     })
+    server.ext('onPreResponse', preResponse);
 
     await server.register(Inert)
 
@@ -109,12 +141,9 @@ const init = async () => {
             // TODO: birthdate range
             ["birthdate", "death-date"].forEach(dateParam => {
                 if (request.query[dateParam] && dateSchema.validate(request.query[dateParam]).error) {
-                    const error = Boom.badRequest()
-                    error.output.payload = {
-                        code: "invalid_search_params",
-                        message: `${dateParam} has invalid format: ${request.query[dateParam]} is not in YYYY-MM-DD format`
-                    }
-                    throw error
+                    throw Boom.badRequest(
+                        `${dateParam} has invalid format: ${request.query[dateParam]} is not in YYYY-MM-DD format`,
+                        {operationOutcomeCode: "value", apiErrorCode: "invalidDateFormat"})
                 }
 
             });
@@ -129,12 +158,9 @@ const init = async () => {
                 }
             }
             if (!hasAnySearchParam) {
-                const error = Boom.badRequest()
-                error.output.payload = {
-                    code: "invalid_search_params",
-                    message: "Not enough search parameters were provided to be able to make a search"
-                }
-                throw error
+                throw Boom.badRequest(
+                    "Not enough search parameters were provided to be able to make a search",
+                    {operationOutcomeCode: "required", apiErrorCode: "tooFewSearchParams"})
             }
 
             // Build our empty search response
@@ -196,70 +222,35 @@ const init = async () => {
             if (
                 !request.headers["if-match"] ||
                 !(request.headers["if-match"].startsWith('W/"') && request.headers["if-match"].endsWith('"'))) {
-                const error = Boom.badRequest()
-                error.output.payload = {
-                    "resourceType": "OperationOutcome",
-                    "issue": [
-                        {
-                            "severity": "error",
-                            "code": "MSG_VERSION_AWARE",
-                            "details": {
-                                "text": "If-Match header must be supplied to update this resource",
-                                "coding": [
-                                    {
-                                        "system": "https://my.spec.nhs.net/mycodingsystem",
-                                        "version": 1,
-                                        "code": "versionNotSupplied",
-                                        "display": "If-Match header must be supplied to update this resource"
-                                    }
-                                ]
-                            }
-                        }
-                    ]
-                }
-                throw error
+                throw Boom.badRequest(
+                    "If-Match header must be supplied to update this resource",
+                    {operationOutcomeCode: "required", apiErrorCode: "versionNotSupplied"}
+                )
             }
 
             // Check If-Match header is correct version
             const ifMatch = request.headers["if-match"].slice(3, -1) // Strip the W/"..."
             if (ifMatch != EXAMPLE_PATIENT.meta.versionId) {
-                const error = Boom.preconditionFailed()
-                error.output.payload = {
-                    "resourceType": "OperationOutcome",
-                    "issue": [
-                        {
-                            "severity": "error",
-                            "code": "MSG_VERSION_AWARE_CONFLICT",
-                            "details": {
-                                "text": "This resource has changed since you last read. Please re-read and try again with the new version number.",
-                                "coding": [
-                                    {
-                                        "system": "https://my.spec.nhs.net/mycodingsystem",
-                                        "version": 1,
-                                        "code": "versionMismatch",
-                                        "display": "This resource has changed since you last read. Please re-read and try again with the new version number."
-                                    }
-                                ]
-                            }
-                        }
-                    ]
-                }
-                throw error
+                throw Boom.preconditionFailed(
+                    "This resource has changed since you last read. Please re-read and try again with the new version number.",
+                    {operationOutcomeCode: "conflict", apiErrorCode: "versionMismatch"})
             }
 
             // Check Content-Type header
             if (!request.headers["content-type"]
                 || request.headers["content-type"].toLowerCase() !== "application/json-patch+json") {
-                    // TODO: What's the proper error here?
-                    const error = Boom.unsupportedMediaType("Must be application/json-patch+json")
-                    throw error
+                // TODO: What's the proper error here?
+                throw Boom.unsupportedMediaType(
+                    "Must be application/json-patch+json",
+                    {operationOutcomeCode: "value", apiErrorCode: "unsupportedMediaType"})
             }
 
             // Verify at least one patch object has been submitted
-            if (!request.payload.patches ) {
+            if (!request.payload.patches || request.payload.patches.length === 0) {
                 // TODO: Proper error message
-                const error = Boom.badRequest("Haven't submitted any patches")
-                throw error
+                throw Boom.badRequest(
+                    "No patches submitted",
+                    {operationOutcomeCode: "required", apiErrorCode: "noPatchesSubmitted"})
             }
 
             // Apply the submitted patches
@@ -267,9 +258,11 @@ const init = async () => {
             try {
                 patchedPatient = jsonpatch.applyPatch(EXAMPLE_PATIENT, request.payload.patches, true, false).newDocument
             }
-            catch(e) {
-                const error = Boom.badRequest(e.message.slice(0, e.message.indexOf('\n'))) // Just the first line; rest is tons of extraneous detail
-                throw error
+            catch (e) {
+                const patchingError = e.message.slice(0, e.message.indexOf('\n')) // Just the first line; rest is tons of extraneous detail
+                throw Boom.badRequest(
+                    `Invalid patch: ${patchingError}`,
+                    {operationOutcomeCode: "value", apiErrorCode: "invalidPatchOperation"})
             }
             patchedPatient.meta.versionId++
 

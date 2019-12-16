@@ -1,10 +1,6 @@
 type: object
 description: Internal error code.
 properties:
-  text:
-    type: string
-    description: Text representation of error code(s).
-    example: Invalid params.
   coding:
     type: array
     items:

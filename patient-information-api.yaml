@@ -254,32 +254,29 @@ paths:
                 not-enough:
                   summary: too few search params
                   value:
-                    code: msg_no_match
+                    resourceType: OperationOutcome
                     issue:
-                    - severity: error
-                      code: not_found
-                      details:
-                        text: 'patient with nhs number 1234567890 could not be found'
-                        coding:
-                          - system: https://my.spec.nhs.net/mycodingsystem
-                            version: 1
-                            code: patientnotfound
-                            display: 'patient with nhs number 1234567890 could not be found'
+                      - severity: error
+                        code: required
+                        details:
+                          coding:
+                            - system: "https://my.spec.nhs.net/mycodingsystem"
+                              version: 1
+                              code: tooFewSearchParams
+                              display: Not enough search parameters were provided to be able to make a search
                 bad-dob:
                   summary: bad date of birth format
                   value:
-                    code: msg_no_match
+                    resourceType: OperationOutcome
                     issue:
-                    - severity: error
-                      code: not_found
-                      details:
-                        text: 'patient with nhs number 1234567890 could not be found'
-                        coding:
-                          - system: https://my.spec.nhs.net/mycodingsystem
-                            version: 1
-                            code: patientnotfound
-                            display: 'patient with nhs number 1234567890 could not be found'
-
+                      - severity: error
+                        code: value
+                        details:
+                          coding:
+                            - system: "https://my.spec.nhs.net/mycodingsystem"
+                              version: 1
+                              code: invalidDateFormat
+                              display: "birthdate has invalid format: 2000 is not in YYYY-MM-DD format"
   /Patient/{nhs_number}:
     parameters:
       - $ref: '#/components/parameters/NhsNumber'
@@ -322,16 +319,16 @@ paths:
               schema:
                 $ref: 'components/schemas/OperationOutcome.yaml'
               example:
+                resourceType: OperationOutcome
                 issue:
-                - severity: error
-                  code: MSG_INVALID_ID
-                  details:
-                    text: 'NHS Number 1234567890 is not a valid NHS number'
-                    coding:
-                      - system: https://my.spec.nhs.net/mycodingsystem
-                        version: 1
-                        code: invalidNHSNumber
-                        display: 'NHS Number 1234567890 is not a valid NHS number'
+                  - severity: error
+                    code: value
+                    details:
+                      coding:
+                        - system: "https://my.spec.nhs.net/mycodingsystem"
+                          version: 1
+                          code: invalidNHSNumber
+                          display: NHS Number 9000000000 is not a valid NHS number
         '404':
           description: Patient not found
           content:
@@ -339,17 +336,16 @@ paths:
               schema:
                 $ref: 'components/schemas/OperationOutcome.yaml'
               example:
-                code: MSG_NO_MATCH
+                resourceType: OperationOutcome
                 issue:
-                - severity: error
-                  code: not_found
-                  details:
-                    text: 'Patient with NHS number 1234567890 could not be found'
-                    coding:
-                      - system: https://my.spec.nhs.net/mycodingsystem
-                        version: 1
-                        code: patientNotFound
-                        display: 'Patient with NHS number 1234567890 could not be found'
+                  - severity: error
+                    code: not_found
+                    details:
+                      coding:
+                        - system: "https://my.spec.nhs.net/mycodingsystem"
+                          version: 1
+                          code: patientNotFound
+                          display: Patient with NHS number 9111231130 could not be found
     patch:
       description: |
         ## Overview
@@ -417,9 +413,100 @@ paths:
               schema:
                 $ref: 'components/schemas/Patient.yaml'
         '400':
-          $ref: '#/components/responses/400MissingIfMatchHeader'
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: 'components/schemas/OperationOutcome.yaml'
+              examples:
+                missing-if-match:
+                  summary: Missing If-Match header
+                  value:
+                    resourceType: OperationOutcome
+                    issue:
+                      - severity: error
+                        code: required
+                        details:
+                          coding:
+                            - system: "https://my.spec.nhs.net/mycodingsystem"
+                              version: 1
+                              code: versionNotSupplied
+                              display: If-Match header must be supplied to update this resource
+                invalid-nhs-number:
+                  summary: Invalid NHS number supplied
+                  value:
+                    resourceType: OperationOutcome
+                    issue:
+                      - severity: error
+                        code: value
+                        details:
+                          coding:
+                            - system: "https://my.spec.nhs.net/mycodingsystem"
+                              version: 1
+                              code: invalidNHSNumber
+                              display: NHS Number 9000000000 is not a valid NHS number
+                no-patches-submitted:
+                  summary: No patches submitted
+                  value:
+                    resourceType: OperationOutcome
+                    issue:
+                      - severity: error
+                        code: required
+                        details:
+                          coding:
+                            - system: "https://my.spec.nhs.net/mycodingsystem"
+                              version: 1
+                              code: noPatchesSubmitted
+                              display: No patches submitted
+                invalid-patch-operation:
+                  summary: Invalid patch operation(s)
+                  value:
+                    resourceType: OperationOutcome
+                    issue:
+                      - severity: error
+                        code: value
+                        details:
+                          coding:
+                            - system: "https://my.spec.nhs.net/mycodingsystem"
+                              version: 1
+                              code: invalidPatchOperation
+                              display: "Invalid patch: Cannot perform the operation at a path that does not exist"
+        '404':
+          description: Patient not found
+          content:
+            application/json:
+              schema:
+                $ref: 'components/schemas/OperationOutcome.yaml'
+              example:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: not_found
+                    details:
+                      coding:
+                        - system: "https://my.spec.nhs.net/mycodingsystem"
+                          version: 1
+                          code: patientNotFound
+                          display: Patient with NHS number 9111231130 could not be found
         '412':
           $ref: '#/components/responses/412PreconditionFailed'
+        '415':
+          description: Unsupported media type
+          content:
+            application/json:
+              schema:
+                $ref: 'components/schemas/OperationOutcome.yaml'
+              example:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: value
+                    details:
+                      coding:
+                        - system: "https://my.spec.nhs.net/mycodingsystem"
+                          version: 1
+                          code: unsupportedMediaType
+                          display: Must be application/json-patch+json
 components:
   parameters:
     NhsNumber:
@@ -464,32 +551,10 @@ components:
             resourceType: OperationOutcome
             issue:
               - severity: error
-                code: MSG_VERSION_AWARE_CONFLICT
+                code: conflict
                 details:
-                  text: 'This resource has changed since you last read. Please re-read and try again with the new version number.'
                   coding:
-                    - system: https://my.spec.nhs.net/mycodingsystem
+                    - system: "https://my.spec.nhs.net/mycodingsystem"
                       version: 1
                       code: versionMismatch
-                      display: 'This resource has changed since you last read. Please re-read and try again with the new version number.'
-    400MissingIfMatchHeader:
-      description: |
-        Client Error
-
-        Missing `If-Match` header.
-      content:
-        application/json:
-          schema:
-            $ref: 'components/schemas/OperationOutcome.yaml'
-          example:
-            resourceType: OperationOutcome
-            issue:
-              - severity: error
-                code: MSG_VERSION_AWARE
-                details:
-                  text: 'If-Match header must be supplied to update this resource'
-                  coding:
-                    - system: https://my.spec.nhs.net/mycodingsystem
-                      version: 1
-                      code: versionNotSupplied
-                      display: 'If-Match header must be supplied to update this resource'
+                      display: This resource has changed since you last read. Please re-read and try again with the new version number.
