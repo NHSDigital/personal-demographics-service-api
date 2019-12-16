@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "apim-definitions"
+version = "0.0.1-alpha"
+description = "FHIR PDS API Definitions"
+
+license = "MIT"
+
+authors = [
+    "Laurence Pakenham-Smith <laurence.smith2@nhs.net>",
+    "Alex Hawdon <alex.hawdon1@nhs.net>",
+    "Tony Heap <tony.heap1@nhs.net>"
+]
+
+readme = 'README.md'
+
+repository = ""
+homepage = ""
+
+keywords = ["healthcare", "uk", "nhs", "demographics"]
+
+
+[tool.poetry.dependencies]
+pyyaml = "^5.2"
+
+
+[tool.poetry.dev-dependencies]
+
+
+[tool.poetry.scripts]

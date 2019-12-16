@@ -1,10 +1,13 @@
-install: install-node install-python install-fhir-validator
+install: install-node install-python install-fhir-validator install-hooks
 
 install-python:
-	pipenv install
+	poetry install
 
 install-node:
 	npm install
+
+install-hooks:
+	cp scripts/pre-commit .git/hooks/pre-commit
 
 install-fhir-validator:
 	mkdir -p bin
@@ -17,11 +20,11 @@ validate: generate-examples
 	java -jar bin/org.hl7.fhir.validator.jar dist/examples/Patient.json -version 4.0.1 | tee /tmp/validation.txt
 
 publish:
-	npm run publish
+	npm run publish 2> /dev/null
 
 serve: generate-examples
 	npm run serve
 
 generate-examples: publish
 	mkdir -p dist/examples
-	pipenv run python scripts/generate_examples.py < dist/patient-information-api.json > dist/examples/Patient.json
+	poetry run python scripts/generate_examples.py < dist/patient-information-api.json > dist/examples/Patient.json
