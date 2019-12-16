@@ -9,10 +9,18 @@ Temporary repository of API definitions for the API management project.
 ### Requirements
 * make
 * nodejs + npm/yarn
+* [poetry](https://github.com/python-poetry/poetry)
 
 ### Install
 ```
 $ make install
+```
+
+#### Updating hooks
+There are some pre-commit hooks you can install to ensure you can't commit invalid spec changes by accident. These are run
+in CI as well, but it's useful to run them locally too.
+```
+$ make install-hooks
 ```
 
 ### Make commands
