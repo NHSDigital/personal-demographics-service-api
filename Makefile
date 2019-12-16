@@ -1,7 +1,7 @@
 install: install-node install-python install-fhir-validator
 
 install-python:
-	pipenv install
+	poetry install
 
 install-node:
 	npm install
@@ -24,4 +24,4 @@ serve: generate-examples
 
 generate-examples: publish
 	mkdir -p dist/examples
-	pipenv run python scripts/generate_examples.py < dist/patient-information-api.json > dist/examples/Patient.json
+	poetry run python scripts/generate_examples.py < dist/patient-information-api.json > dist/examples/Patient.json

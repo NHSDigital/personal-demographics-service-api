@@ -10,7 +10,7 @@ jobs:
           command: |
             sudo apt update
             sudo apt install default-jre default-jdk npm
-            pip install --user pipenv
+            pip install --user poetry
             make install
       - run:
           name: Lint spec
