@@ -246,7 +246,7 @@ const init = async () => {
             }
 
             // Verify at least one patch object has been submitted
-            if (!request.payload.patches || request.payload.patches.length === 0) {
+            if (!request.payload || !request.payload.patches || request.payload.patches.length === 0) {
                 // TODO: Proper error message
                 throw Boom.badRequest(
                     "No patches submitted",
