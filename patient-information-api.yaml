@@ -65,6 +65,8 @@ info:
 
     For sandbox test scenarios and test data, refer to the documentation for individual endpoints.
 
+    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67) - collection containing the example test scenarios.
+
     ## Assurance
     Details to follow.
 
@@ -395,7 +397,7 @@ paths:
                 value:
                   $ref: 'components/examples/requests/PatientPatch/add-name.json'
               update-name:
-                summary: Update the second given name entry
+                summary: Update the first given name entry
                 value:
                   $ref: 'components/examples/requests/PatientPatch/update-name.json'
               delete-name:
