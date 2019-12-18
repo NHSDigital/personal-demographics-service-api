@@ -66,7 +66,7 @@ info:
     * our [sandbox environment](/testing#sandbox-testing)
     * our [integration test environment](/testing#integration-testing) (coming soon)
 
-    For sandbox test scenarios and test data, refer to the documentation for individual endpoints.
+    For more details on sandbox testing, see the documentation for each endpoint.
 
     [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
 
@@ -125,8 +125,8 @@ paths:
           - family_name, gender, birth_date (or range), postcode
           - first_name, gender, birth_date (or range), postcode
 
-        ## Sandbox test scenarios
-        You can test the following scenarios in our sandbox environment:
+        ## Sandbox testing
+        You can test the following scenarios in our [sandbox environment](/testing#sandbox-testing):
 
         | Scenario                       | Request                                                      | Response                                   |
         | ------------------------------ | ------------------------------------------------------------ | ------------------------------------------ |
@@ -135,8 +135,12 @@ paths:
         | Invalid date format            | `birthdate` or `death-date` query parameters with values not in format `YYYY-MM-DD` | HTTP Status 400 with problem description   |
         | Too few search parameters      | Any invalid combination of query parameters                  | HTTP Status 400 with problem description   |
 
-        You can try this out using the "Try this API" feature on the right hand side of this page.
-      tags:
+        You can try the sandbox using
+        - the "Try this API" feature on the right hand side of this page
+        - our Postman collection (using the "Run in Postman" link below)
+        
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
+     tags:
         - patients
       parameters:
         - name: family
