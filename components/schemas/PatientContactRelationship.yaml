@@ -1,9 +1,5 @@
 type: object
 properties:
-  text:
-    type: string
-    description: Text representation of code(s).
-    example: C - Emergency Contact
   coding:
     type: array
     items:

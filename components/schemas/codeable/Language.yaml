@@ -1,9 +1,5 @@
 type: object
 properties:
-  text:
-    type: string
-    description: Text representation of code(s)
-    example: English (Great Britain)
   coding:
     type: array
     items:
@@ -75,8 +71,8 @@ properties:
             - te
             - zh
             - zh-CN
-            - zh-HK	
-            - zh-SG	
+            - zh-HK
+            - zh-SG
             - zh-TW
         display:
           type: string
@@ -84,58 +80,58 @@ properties:
           example: English (Region=United Kingdom)
           enum:
             - Arabic
-            - Bengali	
-            - Czech	
-            - Danish	
-            - German	
-            - German (Austria)	
-            - German (Switzerland)	
-            - German (Germany)	
-            - Greek	
-            - English	
-            - English (Australia)	
-            - English (Canada)	
-            - English (Great Britain)	
-            - English (India)	
-            - English (New Zealand)	
-            - English (Singapore)	
-            - English (United States)	
-            - Spanish	
-            - Spanish (Argentina)	
-            - Spanish (Spain)	
-            - Spanish (Uruguay)	
-            - Finnish	
-            - French	
-            - French (Belgium)	
-            - French (Switzerland)	
-            - French (France)	
-            - Frisian	
-            - Frisian (Netherlands)	
-            - Hindi	
-            - Croatian	
-            - Italian	
-            - Italian (Switzerland)	
-            - Italian (Italy)	
-            - Japanese	
-            - Korean	
-            - Dutch	
-            - Dutch (Belgium)	
-            - Dutch (Netherlands)	
-            - Norwegian	
-            - Norwegian (Norway)	
-            - Punjabi	
-            - Polish	
-            - Portuguese	
-            - Portuguese (Brazil)	
-            - Russian	
-            - Russian (Russia)	
-            - Serbian	
-            - Serbian (Serbia)	
-            - Swedish	
-            - Swedish (Sweden)	
-            - Telegu	
-            - Chinese	
-            - Chinese (China)	
-            - Chinese (Hong Kong)	
-            - Chinese (Singapore)	
+            - Bengali
+            - Czech
+            - Danish
+            - German
+            - German (Austria)
+            - German (Switzerland)
+            - German (Germany)
+            - Greek
+            - English
+            - English (Australia)
+            - English (Canada)
+            - English (Great Britain)
+            - English (India)
+            - English (New Zealand)
+            - English (Singapore)
+            - English (United States)
+            - Spanish
+            - Spanish (Argentina)
+            - Spanish (Spain)
+            - Spanish (Uruguay)
+            - Finnish
+            - French
+            - French (Belgium)
+            - French (Switzerland)
+            - French (France)
+            - Frisian
+            - Frisian (Netherlands)
+            - Hindi
+            - Croatian
+            - Italian
+            - Italian (Switzerland)
+            - Italian (Italy)
+            - Japanese
+            - Korean
+            - Dutch
+            - Dutch (Belgium)
+            - Dutch (Netherlands)
+            - Norwegian
+            - Norwegian (Norway)
+            - Punjabi
+            - Polish
+            - Portuguese
+            - Portuguese (Brazil)
+            - Russian
+            - Russian (Russia)
+            - Serbian
+            - Serbian (Serbia)
+            - Swedish
+            - Swedish (Sweden)
+            - Telegu
+            - Chinese
+            - Chinese (China)
+            - Chinese (Hong Kong)
+            - Chinese (Singapore)
             - Chinese (Taiwan)

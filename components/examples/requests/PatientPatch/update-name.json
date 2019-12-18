@@ -5,11 +5,6 @@
       "op": "replace",
       "path": "/name/0/given/0",
       "value": "Anne"
-    },
-    {
-      "op": "replace",
-      "path": "/name/0/text",
-      "value": "Mrs Anne Adele Smith MBE"
     }
   ]
 }

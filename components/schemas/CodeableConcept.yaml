@@ -1,9 +1,5 @@
 type: object
 properties:
-  text:
-    type: string
-    description: Text representation of code(s)
-    example: foo.bar
   coding:
     type: array
     items:

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ea365034-55e9-4a31-9c68-1294c5b14e46",
+		"_postman_id": "333d79ed-d015-48f9-b886-c3ebac5b3a22",
 		"name": "Patient Demographics Sandbox",
 		"description": "Sandbox example requests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -172,7 +172,7 @@
 					"response": []
 				}
 			],
-			"protocolProfileBehavior": {}
+			"protocolProfileBehavior": []
 		},
 		{
 			"name": "Retrieve a patient's record",
@@ -235,7 +235,7 @@
 					"response": []
 				}
 			],
-			"protocolProfileBehavior": {}
+			"protocolProfileBehavior": []
 		},
 		{
 			"name": "Update a patient's record",
@@ -258,7 +258,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"correction\": false,\r\n  \"patches\": [\r\n    {\r\n      \"op\": \"add\",\r\n      \"path\": \"/name/-\",\r\n      \"value\": {\r\n        \"use\": \"usual\",\r\n        \"period\": {\r\n          \"start\": \"2019-12-31\"\r\n        },\r\n        \"text\": \"Dr Joe H. M. Bloggs PhD\",\r\n        \"prefix\": \"Dr\",\r\n        \"given\": [\r\n          \"Joe\",\r\n          \"Horation\",\r\n          \"Maximus\"\r\n        ],\r\n        \"family\": \"Bloggs\",\r\n        \"suffix\": \"PhD\"\r\n      }\r\n    }\r\n  ]\r\n}"
+							"raw": "{\r\n  \"correction\": false,\r\n  \"patches\": [\r\n    {\r\n      \"op\": \"add\",\r\n      \"path\": \"/name/-\",\r\n      \"value\": {\r\n        \"use\": \"usual\",\r\n        \"period\": {\r\n          \"start\": \"2019-12-31\"\r\n        },\r\n        \"prefix\": \"Dr\",\r\n        \"given\": [\r\n          \"Joe\",\r\n          \"Horation\",\r\n          \"Maximus\"\r\n        ],\r\n        \"family\": \"Bloggs\",\r\n        \"suffix\": \"PhD\"\r\n      }\r\n    }\r\n  ]\r\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/Patient/9000000009",
@@ -291,7 +291,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"correction\": true,\r\n  \"patches\": [\r\n    {\r\n      \"op\": \"replace\",\r\n      \"path\": \"/name/0/given/0\",\r\n      \"value\": \"Anne\"\r\n    },\r\n    {\r\n      \"op\": \"replace\",\r\n      \"path\": \"/name/0/text\",\r\n      \"value\": \"Mrs Anne Adele Smith MBE\"\r\n    }\r\n  ]\r\n}"
+							"raw": "{\r\n  \"correction\": true,\r\n  \"patches\": [\r\n    {\r\n      \"op\": \"replace\",\r\n      \"path\": \"/name/0/given/0\",\r\n      \"value\": \"Anne\"\r\n    }\r\n  ]\r\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/Patient/9000000009",
@@ -490,7 +490,7 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {}
+			"protocolProfileBehavior": []
 		}
 	],
 	"event": [
@@ -517,11 +517,11 @@
 	],
 	"variable": [
 		{
-			"id": "e86e0a28-7fa6-4aa1-9ab2-7150b48780d8",
+			"id": "9640aab0-b478-4ba0-98cd-4a4332728fa6",
 			"key": "base_url",
 			"value": "https://emea-demo8-test.apigee.net/v1",
 			"type": "string"
 		}
 	],
-	"protocolProfileBehavior": {}
+	"protocolProfileBehavior": []
 }

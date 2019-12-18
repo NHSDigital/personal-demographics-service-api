@@ -7,7 +7,6 @@
   "name": [
     {
       "use": "usual",
-      "text": "Mrs Jane Adele Smith MBE",
       "period": {
         "start": "2010-10-22",
         "end": "2010-10-22"
@@ -53,7 +52,6 @@
       },
       "relationship": [
         {
-          "text": "Emergency Contact",
           "coding": [
             {
               "system": "http://terminology.hl7.org/CodeSystem/v2-0131",
@@ -66,7 +64,6 @@
       ],
       "name": {
         "use": "usual",
-        "text": "Mrs Jane Adele Smith MBE",
         "period": {
           "start": "2010-10-22",
           "end": "2010-10-22"

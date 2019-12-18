@@ -2,14 +2,10 @@ type: object
 properties:
   use:
     type: string
-    description: How this name should be used. 
+    description: How this name should be used.
     # enum: [usual, preferred, alias, bachelor, maiden, birth, other]
     enum: [usual, official, temp, nickname, anonymous, old, maiden]
     example: usual
-  text:
-    type: string
-    description: Text representation of the name, as it would appear in official correspondence e.g. a letter.
-    example: Mrs Jane Adele Smith MBE
   period:
     $ref: "DateRange.yaml"
   given:
