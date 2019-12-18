@@ -103,7 +103,7 @@ paths:
         Search for a patient.
 
         ## Search types
-        This endpoint will search for a patient using one of four search types. The choice of search is automatic and will cascade as necessary until results are found.
+        This endpoint will search for a patient using one of four search types. The choice of search is automatic and will cascade as necessary until results are found. Searches are case-insensitive.
 
         ### Simple search
         The fastest match, requires family_name, first_name, gender, birth_date.
@@ -361,9 +361,9 @@ paths:
       description: |
         ## Overview
         Updates specific patient information.
-        
+
         This is a 'patch' operation, meaning you can update specific parts of the patient record (such as a name or an address), as opposed to having to update the entire record.
-        
+
         ## Patient record versioning
         To update a patient's record you must have retrieved it first.
         When you retrieve a patient record, you get a version number for the record (in the `ETag` header and in the `versionId` field in the response).
