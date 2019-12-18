@@ -1,4 +1,4 @@
-description: A telecommunication address
+description: A telecommunication address.
 type: object
 properties:
   # id:
@@ -29,7 +29,7 @@ properties:
     enum: [home, work, temp, old, mobile]
     example: home
   rank:
-    description: Preferred order of use. 1 is highest
+    description: Preferred order of use. 1 is highest.
     type: integer
     example: 1
     minimum: 1
