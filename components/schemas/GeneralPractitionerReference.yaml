@@ -1,4 +1,4 @@
-description: GP Practice or Paractitoiner with whom the patient is or was registered. 
+description: GP Practice or Practitioner with whom the patient is or was registered. 
 type: object
 required:
   - type
