@@ -140,14 +140,14 @@ paths:
         - patients
       parameters:
         - name: family
-          description: The patient's family name (surname)
+          description: The patient's family name (surname).
           example: Smith
           in: query
           required: false
           schema:
             type: string
         - name: given
-          description: The patient's given name(s)
+          description: The patient's given name(s).
           example: Jane
           in: query
           required: false
@@ -162,7 +162,7 @@ paths:
             $ref: 'components/schemas/Gender.yaml'
         - name: birthdate
           in: query
-          description: Birth date in the format yyyy-mm-dd. Required for simple searches. Other search types must provide either a birth date or a birth date range
+          description: Birth date in the format `yyyy-mm-dd`. Required for simple searches. Other search types must provide either a birth date or a birth date range.
           example: "2010-10-22"
           required: false
           schema:
@@ -170,7 +170,7 @@ paths:
             format: date
         - name: death-date
           in: query
-          description: Date of death in the format yyyy-mm-dd
+          description: Date of death in the format `yyyy-mm-dd`.
           required: false
           example: "2018-03-20"
           schema:
@@ -178,14 +178,14 @@ paths:
             format: date
             example: "2018-03-20"
         - name: address-postcode
-          description: White spaces in postcodes are significant, i.e. LS16AE will not match LS1 6AE
+          description: White spaces in postcodes are significant, i.e. LS16AE will not match LS1 6AE.
           example: LS1 6AE
           in: query
           required: false
           schema:
             type: string
         - name: organization
-          description: The ODS code of the patient's registered general practice. Do not use in simple searches
+          description: The ODS code of the patient's registered general practice. Do not use in simple searches.
           example: Y00001
           in: query
           required: false
@@ -194,7 +194,7 @@ paths:
             format: ods_code
             pattern: '^[A-Z]\d{5}$'
         - name: general-practitioner
-          description: The ODS code of the patient's registered general practioner. Do not use in simple searches
+          description: The ODS code of the patient's registered general practioner. Do not use in simple searches.
           example: Y00001
           in: query
           required: false
@@ -204,7 +204,7 @@ paths:
             pattern: '^[A-Z]\d{5}$'
       responses:
         '200':
-          description: An array of matched patients. Empty if none found. Returns percentage match weight for each returned patient for weighted searches.
+          description: A completed search, containing zero, one or many matching patients.
           content:
             application/json:
               schema:
@@ -212,23 +212,25 @@ paths:
                 properties:
                   resourceType:
                     type: string
-                    description: FHIR Resource Type
+                    description: FHIR Resource Type.
                     default: Bundle
                   type:
                     type: string
-                    description: FHIR Bundle Type
+                    description: FHIR Bundle Type.
                     default: searchset
                   timestamp:
                     type: integer
-                    description: Time the search was performed
+                    description: Time the search was performed.
                     example: 1575908416
                   total:
                     type: integer
-                    description: Number of resources returned in search
+                    description: Number of resources returned in search.
                     example: 1
                   entry:
                     type: array
-                    description: Patient search results
+                    description: |
+                      An list of matched patients. Empty if none found. For a simple search there is never more than one match.
+                      For a weighted search, the patients are ordered by match weight, best first (based on the `score` field).
                     items:
                       type: object
                       properties:
@@ -236,7 +238,7 @@ paths:
                           type: object
                           properties:
                             score:
-                              description: Search score from 0.0 to 1.0
+                              description: Search score from 0.0 to 1.0.
                               type: number
                               minimum: 0.0
                               maximum: 1.0
@@ -254,7 +256,7 @@ paths:
                     resource:
                       $ref: 'components/examples/Patient.json'
         '400':
-          description: Invalid search params supplied.
+          description: Invalid search paramaters supplied.
           content:
             application/json:
               schema:
@@ -311,7 +313,7 @@ paths:
         - patients
       responses:
         '200':
-          description: Information successfully returned
+          description: Information successfully returned.
           headers:
             ETag:
               $ref: 'components/schemas/ETag.yaml'
@@ -322,7 +324,7 @@ paths:
               example:
                 $ref: 'components/examples/Patient.json'
         '400':
-          description: Invalid NHS number supplied
+          description: Invalid NHS number supplied.
           content:
             application/json:
               schema:
@@ -339,7 +341,7 @@ paths:
                           code: invalidNHSNumber
                           display: NHS Number 9000000000 is not a valid NHS number
         '404':
-          description: Patient not found
+          description: Patient not found.
           content:
             application/json:
               schema:
@@ -404,7 +406,7 @@ paths:
                 - patches
               properties:
                 correction:
-                  description: Set to true if the update is correcting previously incorrect data
+                  description: Set to true if the update is correcting previously incorrect data.
                   type: boolean
                   default: false
                 patches:
@@ -424,7 +426,7 @@ paths:
                   $ref: 'components/examples/requests/PatientPatch/delete-name.json'
       responses:
         '200':
-          description: Patient updated
+          description: Patient updated.
           headers:
             ETag:
               $ref: 'components/schemas/ETag.yaml'
@@ -433,7 +435,7 @@ paths:
               schema:
                 $ref: 'components/schemas/Patient.yaml'
         '400':
-          description: Client Error
+          description: Client error.
           content:
             application/json:
               schema:
@@ -492,7 +494,7 @@ paths:
                               code: invalidPatchOperation
                               display: "Invalid patch: Cannot perform the operation at a path that does not exist"
         '404':
-          description: Patient not found
+          description: Patient not found.
           content:
             application/json:
               schema:
@@ -511,7 +513,7 @@ paths:
         '412':
           $ref: '#/components/responses/412PreconditionFailed'
         '415':
-          description: Unsupported media type
+          description: Unsupported media type.
           content:
             application/json:
               schema:
@@ -540,7 +542,7 @@ components:
       in: header
       name: If-Match
       description: |
-        Latest known version identifier enclosed in quotes preceded by W/.
+        Latest known version identifier enclosed in quotes preceded by `W/`.
 
         Send the value of this resource's `ETag` response header (or `meta.versionId` property) as received.
       required: true
@@ -560,7 +562,7 @@ components:
   responses:
     412PreconditionFailed:
       description: |
-        Precondition failed
+        Precondition failed.
 
         The version identifier submitted in the `If-Match` header was not the latest version of the resource.
       content:
