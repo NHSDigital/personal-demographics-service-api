@@ -1,5 +1,5 @@
 type: object
-description: Communication method.
+description: Method for communicating with a Patient.
 properties:
   language:
     $ref: 'codeable/Language.yaml'

@@ -19,7 +19,7 @@ properties:
     type: string
     description: Purpose of this address.
     enum: [home, work, temp, old, billing] # TODO: how do we map usual, correspondence, temporary, other?
-    example: home
+    example: work
   type:
     type: string
     description: Type of address. Postal-only (aka correspondence) addresses can be used to communicate, but are not where the person associated with this address can be usually found.

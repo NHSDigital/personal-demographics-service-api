@@ -7,7 +7,9 @@ properties:
     default: Practitioner
     readOnly: true
   name:
-    $ref: 'HumanName.yaml'
+    type: array
+    items:
+      $ref: 'HumanName.yaml'
   telecom:
     type: array
     description: Contact information for a practitioner.
@@ -24,6 +26,6 @@ properties:
     type: array
     description: Languages that this practitioner is capable of communicating in.
     items:
-      $ref: "Communication.yaml"
+      $ref: "codeable/Language.yaml"
   # TODO: do we need to model qualifications here as well?
   # TODO: do we need identifiers for individual practitioners?

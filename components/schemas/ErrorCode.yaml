@@ -13,7 +13,7 @@ properties:
         version:
           type: string
           description: Version of the coding system in use.
-          example: 1
+          example: '1'
         code:
           type: string
           description: Symbol in syntax defined by the system.
