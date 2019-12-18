@@ -17,7 +17,7 @@ test:
 	npm run test
 
 validate: generate-examples
-	java -jar bin/org.hl7.fhir.validator.jar dist/examples/Patient.json -version 4.0.1 | tee /tmp/validation.txt
+	java -jar bin/org.hl7.fhir.validator.jar dist/examples/resources/* -version 4.0.1 -ig https://nhsconnect.github.io/FHIR-R4-Core-IG-Prototype | tee /tmp/validation.txt
 
 publish:
 	npm run publish 2> /dev/null
@@ -27,4 +27,4 @@ serve: generate-examples
 
 generate-examples: publish
 	mkdir -p dist/examples
-	poetry run python scripts/generate_examples.py < dist/patient-information-api.json > dist/examples/Patient.json
+	poetry run python scripts/generate_examples.py dist/patient-information-api.json dist/examples
