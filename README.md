@@ -37,7 +37,7 @@ There's some make commands that alias some of the below functionality:
 
  * **openapi-lint** will resolve links and validate an entire specs with the 'OpenAPI Resolve and Validate' command
  * **OpenAPI (Swagger) Editor** provides sidebar navigation
- 
+
 
 ### Emacs Plugins
 
@@ -65,3 +65,12 @@ The swagger ui unfortunately doesn't render `$ref`s in examples correctly, so us
 
 #### Apigee Portal
 The Apigee portal will not automatically pull examples from schemas, so they must be specified manually.
+
+### Postman Collection
+
+`Patient Demographics Sandbox.postman_collection` must be kept in sync with the OAS and Sandbox manually.
+
+Procedure:
+ * Import the collection into Postman
+ * Update requests and export the collection back into the repo
+ * Re-generate the [Run in Postman button](https://learning.getpostman.com/docs/postman-for-publishers/run-in-postman/creating-run-button/) Markdown button link and update the OAS
