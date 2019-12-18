@@ -1,4 +1,4 @@
-description: Medical Organization, for example a GP surgery.
+description: Medical organisation, for example a GP surgery.
 type: object
 properties:
   # TODO: make this
@@ -6,23 +6,23 @@ properties:
   #   $ref: 'codeable/OrganizationType.yaml'
   name:
     type: string
-    description: Name used for the organization.
+    description: Name used for the organisation.
     example: 'Very Good GP Surgery Ltd'
   alias:
     type: array
-    description: List of other names used by this organization.
+    description: List of other names used by the organisation.
     items:
       type: string
-      description: An alternate name used for the organization.
+      description: An alternate name used for the organisation.
       example: 'Pretty Good GP Surgery Ltd'
   telecom:
     type: array
-    description: Contact details for this organization.
+    description: Contact details for the organisation.
     items:
       $ref: 'ContactPoint.yaml'
   address:
     type: array
-    description: Addresses used by this organization.
+    description: Addresses used by the organisation.
     items:
       $ref: 'Address.yaml'
   # contact:
