@@ -1,4 +1,4 @@
-description: Historic general practice registration data may register the patient against a practice or an individual practitioner
+description: Historic general practice registration data may register the patient against a practice or an individual practitioner.
 type: object
 required:
   - type
@@ -10,12 +10,12 @@ properties:
     type: string
     example: 'Y00001'
   type:
-    description: Indicates whether the patient is registered to a practice or an individual practitioner
+    description: Indicates whether the patient is registered to a practice or an individual practitioner.
     type: string
     enum: [practice, practitioner]
     example: practice
   ods_code:
-    description: The ODS code of the registered practice or practitioner
+    description: The ODS code of the registered practice or practitioner.
     type: string
     example: Y00001
   business_effective:
@@ -24,12 +24,12 @@ properties:
       - start
     properties:
       start:
-        description: A date in the format yyyy-mm-dd
+        description: A date in the format `yyyy-mm-dd`.
         example: "2010-10-22"
         type: string
         format: date
       end:
-        description: A date in the format yyyy-mm-dd
+        description: A date in the format `yyyy-mm-dd`.
         example: "2010-10-22"
         type: string
         format: date
