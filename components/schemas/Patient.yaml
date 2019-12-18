@@ -25,12 +25,12 @@ properties:
   gender:
     $ref: "Gender.yaml"
   birthDate:
-    description: A date in the format yyyy-mm-dd.
+    description: A date in the format `yyyy-mm-dd`.
     example: "2010-10-22"
     type: string
     format: date
   deceasedDateTime:
-    description: A datetime in the format yyyy-mm-ddTHH:MM:SS+HH:MM.
+    description: A datetime in the format `yyyy-mm-ddTHH:MM:SS+HH:MM`.
     example: "2010-10-22T00:00:00+00:00"
     type: string
     format: date
