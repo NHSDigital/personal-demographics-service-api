@@ -138,9 +138,9 @@ paths:
         You can try the sandbox using
         - the "Try this API" feature on the right hand side of this page
         - our Postman collection (using the "Run in Postman" link below)
-        
+
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
-     tags:
+      tags:
         - patients
       parameters:
         - name: family
