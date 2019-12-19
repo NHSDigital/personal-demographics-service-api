@@ -25,12 +25,12 @@ properties:
   gender:
     $ref: "Gender.yaml"
   birthDate:
-    description: A date in the format `yyyy-mm-dd`.
+    description: Date of birth. A date in the format `yyyy-mm-dd`.
     example: "2010-10-22"
     type: string
     format: date
   deceasedDateTime:
-    description: A datetime in the format `yyyy-mm-ddTHH:MM:SS+HH:MM`.
+    description: Date and time of death, if applicable and known. A datetime in the format `yyyy-mm-ddTHH:MM:SS+HH:MM`.
     example: "2010-10-22T00:00:00+00:00"
     type: string
     format: date
@@ -53,7 +53,7 @@ properties:
       $ref: "GeneralPractitionerReference.yaml"
   communication:
     type: array
-    description: Languages that may be used to communicate with this patient.
+    description: List of languages that may be used to communicate with this patient.
     items:
       $ref: "Communication.yaml"
 
