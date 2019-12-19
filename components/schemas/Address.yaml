@@ -1,4 +1,5 @@
 type: object
+description: An address associated with a person.
 properties:
   id:
     type: string
