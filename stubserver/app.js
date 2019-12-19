@@ -11,6 +11,7 @@ const NhsNumberValidator = require('nhs-number-validator')
 const jsonpatch = require('fast-json-patch')
 
 const EXAMPLE_PATIENT = JSON.parse(fs.readFileSync('mocks/Patient.json'))
+const CONTENT_TYPE = 'application/fhir+json; fhirVersion=4.0'
 
 const nhsNumberSchema = Joi.string().custom(function (value) {
     if (NhsNumberValidator.validate(value)) {
@@ -51,11 +52,37 @@ const checkNhsNumber = function (request) {
     }
 }
 
+
+/**
+ * Helper method to prepare a response for a FHIR resource JSON object
+ *
+ * @param {*} h hapi response toolkit
+ * @param {*} resource FHIR resource object having meta.versionId property
+ * @returns hapi response
+ */
+const createFhirResponse = function(h, resource) {
+    return h.response(resource)
+        .etag(resource.meta.versionId, { weak: true })
+}
+
 const preResponse = function (request, h) {
     const response = request.response
+
     // Don't reformat non-error responses, and don't reformat system (>=500) errors
-    if (!response.isBoom || response.isServer) {
+    if (!response.isBoom ) {
+        // Set Content-Type on all responses
+        response.type(CONTENT_TYPE)
         return h.continue
+    }
+
+    const error = response
+
+    // Generically present all errors not explicitly thrown by
+    // us as internal server errors
+    if (!error.data) {
+        error.data = {}
+        error.data['apiErrorCode'] = "internalServerError"
+        error.data['operationOutcomeCode'] = "exception"
     }
 
     /* Reformat errors to FHIR spec
@@ -67,7 +94,6 @@ const preResponse = function (request, h) {
         * data.operationOutcomeCode: from the [IssueType ValueSet](https://www.hl7.org/fhir/valueset-issue-type.html)
         * data.apiErrorCode: Our own code defined for each particular error. Refer to OAS.
     */
-    const error = response
     const fhirError = {
         resourceType: "OperationOutcome",
         issue: [{
@@ -84,7 +110,9 @@ const preResponse = function (request, h) {
         }]
     }
 
-    return h.response(fhirError).code(error.output.statusCode)
+    return h.response(fhirError)
+        .code(error.output.statusCode)
+        .type(CONTENT_TYPE)
 }
 
 const init = async () => {
@@ -107,9 +135,7 @@ const init = async () => {
         path: '/Patient/{nhsNumber}',
         handler: (request, h) => {
             checkNhsNumber(request)
-
-            return h.response(EXAMPLE_PATIENT)
-                .etag(EXAMPLE_PATIENT.meta.versionId, { weak: true })
+            return createFhirResponse(h, EXAMPLE_PATIENT)
         }
     })
 
@@ -266,9 +292,7 @@ const init = async () => {
             }
             patchedPatient.meta.versionId++
 
-            return h.response(patchedPatient)
-                .etag(patchedPatient.meta.versionId, { weak: true })
-
+            return createFhirResponse(h, patchedPatient)
         }
     })
 

@@ -65,11 +65,11 @@ info:
     You can test this API in:
     * our [sandbox environment](/testing#sandbox-testing) for initial developer testing
     * our [integration test environment](/testing#integration-testing) for formal integration testing (coming soon)
-    
+
     Our sandbox environment is a very basic simulation of the live service. It only covers a limited set of scenarios and is stateless, so does not actually persist any updates.
-    
+
     For more details on sandbox testing, or to try out the sandbox using our "Try this API" feature, see the documentation for each endpoint.
-    
+
     Alternatively, you can try out the sandbox using our Postman collection:
 
     [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
@@ -140,7 +140,7 @@ paths:
         | Too few search parameters      | Any invalid combination of query parameters                  | HTTP Status 400 with problem description   |
 
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
-        
+
         Alternatively, you can try out the sandbox using our Postman collection:
 
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
@@ -214,7 +214,7 @@ paths:
         '200':
           description: A completed search, containing zero, one or many matching patients.
           content:
-            application/json:
+            application/fhir+json:
               schema:
                 type: object
                 properties:
@@ -266,7 +266,7 @@ paths:
         '400':
           description: Invalid search paramaters supplied.
           content:
-            application/json:
+            application/fhir+json:
               schema:
                 $ref: 'components/schemas/OperationOutcome.yaml'
               examples:
@@ -314,7 +314,7 @@ paths:
         | Invalid NHS Number    | `nhs_number`=`9000000000` (or any invalid NHS Number)| HTTP Status 400 with problem description      |
 
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
-        
+
         Alternatively, you can try out the sandbox using our Postman collection:
 
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
@@ -330,7 +330,7 @@ paths:
             ETag:
               $ref: 'components/schemas/ETag.yaml'
           content:
-            application/json:
+            application/fhir+json:
               schema:
                 $ref: 'components/schemas/Patient.yaml'
               example:
@@ -338,7 +338,7 @@ paths:
         '400':
           description: Invalid NHS number supplied.
           content:
-            application/json:
+            application/fhir+json:
               schema:
                 $ref: 'components/schemas/OperationOutcome.yaml'
               example:
@@ -355,7 +355,7 @@ paths:
         '404':
           description: Patient not found.
           content:
-            application/json:
+            application/fhir+json:
               schema:
                 $ref: 'components/schemas/OperationOutcome.yaml'
               example:
@@ -401,7 +401,7 @@ paths:
         | Invalid patch operation(s)          | Send body with invalid JSON patches in `patches` attribute   | HTTP Status 400 with problem description         |
 
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
-        
+
         Alternatively, you can try out the sandbox using our Postman collection:
 
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
@@ -453,13 +453,13 @@ paths:
             ETag:
               $ref: 'components/schemas/ETag.yaml'
           content:
-            application/json:
+            application/fhir+json:
               schema:
                 $ref: 'components/schemas/Patient.yaml'
         '400':
           description: Client error.
           content:
-            application/json:
+            application/fhir+json:
               schema:
                 $ref: 'components/schemas/OperationOutcome.yaml'
               examples:
@@ -518,7 +518,7 @@ paths:
         '404':
           description: Patient not found.
           content:
-            application/json:
+            application/fhir+json:
               schema:
                 $ref: 'components/schemas/OperationOutcome.yaml'
               example:
@@ -537,7 +537,7 @@ paths:
         '415':
           description: Unsupported media type.
           content:
-            application/json:
+            application/fhir+json:
               schema:
                 $ref: 'components/schemas/OperationOutcome.yaml'
               example:
@@ -588,7 +588,7 @@ components:
 
         The version identifier submitted in the `If-Match` header was not the latest version of the resource.
       content:
-        application/json:
+        application/fhir+json:
           schema:
             $ref: 'components/schemas/OperationOutcome.yaml'
           example:
