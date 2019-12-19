@@ -313,7 +313,11 @@ paths:
         | Patient doesn't exist | `nhs_number`=`9111231130` (or any other valid NHS Number)  | HTTP Status 404 with problem description      |
         | Invalid NHS Number    | `nhs_number`=`9000000000` (or any invalid NHS Number)| HTTP Status 400 with problem description      |
 
-        You can try this out using the "Try this API" feature on the right hand side of this page.
+        You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
+        
+        Alternatively, you can try out the sandbox using our Postman collection:
+
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
 
       summary: Retrieve a patient's record
       operationId: get-patient
@@ -387,7 +391,7 @@ paths:
 
         | Scenario                            | Request                                                      | Response                                         |
         | ----------------------------------- | ------------------------------------------------------------ | ------------------------------------------------ |
-        | Successful update                   | `nhs_number`=`9000000009`<br />Body: One of the provided examples<br />Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json-patch+json` | HTTP Status 200 with updated patient in response |
+        | Successful update                   | `nhs_number`=`9000000009`<br />Body: One of the provided examples<br />Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json-patch+json` | HTTP Status 200 with updated patient in response (but note that the update won't be persisted) |
         | Patient doesn't exist               | `nhs_number`=`9111231130` (or any other valid NHS Number)    | HTTP Status 404 with problem description         |
         | Invalid NHS Number                  | `nhs_number`=`9000000000` (or any invalid NHS Number)        | HTTP Status 400 with problem description         |
         | Missing resource version identifier | `If-Match` header missing or set to format other than `W/"<version>"` | HTTP Status 400 with problem description         |
@@ -395,6 +399,14 @@ paths:
         | Wrong content type                  | `Content-Type` header missing or other than `application/json-patch+json` | HTTP Status 415 with problem description         |
         | No patches sent                     | Send body with no `patches` attribute                        | HTTP Status 400 with problem description         |
         | Invalid patch operation(s)          | Send body with invalid JSON patches in `patches` attribute   | HTTP Status 400 with problem description         |
+
+        You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
+        
+        Alternatively, you can try out the sandbox using our Postman collection:
+
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
+
+
       summary: Update a patient's record
       operationId: update-patient-partial
       tags:
