@@ -10,6 +10,7 @@ from docopt import docopt
 import json
 import os
 import os.path
+from jsonpath_rw import parse
 
 
 def generate_resource_example(schema_dict, path):
@@ -41,7 +42,6 @@ def generate_resource_example(schema_dict, path):
     return example
 
 
-
 if __name__ == "__main__":
     arguments = docopt(__doc__, version='0')
 
@@ -50,10 +50,21 @@ if __name__ == "__main__":
         spec = json.loads(f.read())
 
     # Create default dir structure
-    for i in ['resources', 'requests', 'responses']:
+    for i in ['resources', 'responses']:
         os.makedirs(os.path.join(arguments['OUT_DIR'], i), exist_ok=True)
 
     # Generate resources
     for component_name, component_spec in spec['components']['schemas'].items():
         with open(os.path.join(arguments['OUT_DIR'], 'resources', component_name + '.json'), 'w') as f:
             f.write(json.dumps(generate_resource_example(component_spec['properties'], [component_name])))
+
+    # Pull out responses
+    match_expr = parse('paths.*.*.(response|(responses.*)).content.*.(example|(examples.*.value))')
+
+    for example in match_expr.find(spec):
+        if 'patch' in str(example.full_path):
+            # PATCHes are not FHIR resources, so we should not be validating them
+            continue
+
+        with open(os.path.join(arguments['OUT_DIR'], 'responses', str(example.full_path).replace('/', '_') + '.json'), 'w') as f:
+            f.write(json.dumps(example.value))

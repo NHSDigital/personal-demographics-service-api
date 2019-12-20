@@ -108,7 +108,7 @@
     {
       "id": "Y12345",
       "type": "Organization",
-      "reference": "/Organization/Y12345",
+      "reference": "Organization/Y12345",
       "display": "F. B. Quux and Co. GP Surgery"
     }
   ]

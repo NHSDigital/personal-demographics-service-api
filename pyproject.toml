@@ -27,6 +27,7 @@ keywords = ["healthcare", "uk", "nhs", "demographics"]
 python = "^3.8"
 pyyaml = "^5.2"
 docopt = "^0.6.2"
+jsonpath-rw = "^1.4.0"
 
 
 [tool.poetry.dev-dependencies]
