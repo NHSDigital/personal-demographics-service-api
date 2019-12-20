@@ -228,7 +228,8 @@ paths:
                     default: searchset
                   timestamp:
                     type: string
-                    description: Time the search was performed
+                    description: Time the search was performed.
+                    format: datetime
                     example: '2019-12-25T12:00:00+00:00'
                   total:
                     type: integer
@@ -244,7 +245,7 @@ paths:
                       properties:
                         fullUrl:
                           type: string
-                          description: Absolute URL of the resource described in this item
+                          description: Absolute URL of the resource described in this item.
                           example: 'https://beta.api.digital.nhs.uk/Patient/9000000009'
                         search:
                           type: object
