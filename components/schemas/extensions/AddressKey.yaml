@@ -1,0 +1,41 @@
+type: object
+description: Unique identifier for an address
+properties:
+  url:
+    type: string
+    description: Definition of extension
+    default: https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-AddressKey
+    readOnly: true
+  extension:
+    type: array
+    description: Specification of address key system and address key value
+    items:
+      oneOf:
+        - type: object
+          description: Type of address key
+          properties:
+            url:
+              type: string
+              description: path of specification
+              default: type
+              readOnly: true
+            valueCoding:
+              type: object
+              description: URL of specification of address key format
+              properties:
+                system:
+                  type: string
+                  description: URL of specification system, value set, or documentation
+                  example: "https://example.com"
+        - type: object
+          description: Value of address key
+          properties:
+            url:
+              type: string
+              description: path of specification
+              default: value
+              readOnly: true
+            valueString:
+              type: string
+              description: Address key in format described by type
+              example: '123456ABC'

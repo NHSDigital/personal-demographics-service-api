@@ -44,14 +44,12 @@ properties:
   postalCode:
     type: string
     example: "LS1 6AE"
-  country: # TODO: is this required?
+  country:
     type: string
     description: The country the address is located in.
     example: "United Kingdom"
-  # TODO: this needs and extension
-  # paf_key:
-  #   type: string
-  #   format: paf_key
-  #   pattern: ^[0-9]{8}$
-  #   length: 8
-  #   example: "12345678"
+  extension:
+    type: array
+    description: FHIR extension elements
+    items:
+      $ref: 'extensions/AddressKey.yaml'

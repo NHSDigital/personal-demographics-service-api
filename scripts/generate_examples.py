@@ -13,15 +13,15 @@ import os.path
 from jsonpath_rw import parse
 
 
-def generate_resource_example(schema_dict, path):
+def generate_resource_example(schema_dict, path=[]):
     example = {}
 
     for property_name, property_value in schema_dict.items():
         if property_value['type'] == 'array':
             if 'oneOf' in property_value['items']:
-                example[property_name] = [generate_resource_example(['properties'], property_name) for t in property_value['items']['oneOf']]
+                example[property_name] = [generate_resource_example(t['properties'], path + [property_name]) for t in property_value['items']['oneOf']]
             elif property_value['items']['type'] == 'object':
-                example[property_name] = [generate_resource_example(property_value['items']['properties'], property_name)]
+                example[property_name] = [generate_resource_example(property_value['items']['properties'], path + [property_name])]
             else:
                 if {'example', 'default'} & set(property_value.get('items', {}).keys()):
                     items = property_value['items']
@@ -32,7 +32,7 @@ def generate_resource_example(schema_dict, path):
                 else:
                     example[property_name] = property_value.get('example', property_value.get('default'))
         elif property_value['type'] == 'object':
-            example[property_name] = generate_resource_example(property_value['properties'], property_name)
+            example[property_name] = generate_resource_example(property_value['properties'], path + [property_name])
         else:
             if ('example' not in property_value) and ('default' not in property_value):
                 property_path = '.'.join(path)
