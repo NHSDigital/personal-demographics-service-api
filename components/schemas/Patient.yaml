@@ -33,7 +33,7 @@ properties:
     description: Date and time of death, if applicable and known. A datetime in the format `yyyy-mm-ddTHH:MM:SS+HH:MM`.
     example: "2010-10-22T00:00:00+00:00"
     type: string
-    format: date
+    format: date-time
   address:
     $ref: "PersonAddress.yaml"
   contact:
