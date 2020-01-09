@@ -1,3 +1,5 @@
+SHELL=/bin/bash -euo pipefail
+
 install: install-node install-python install-fhir-validator install-hooks
 
 install-python:
@@ -17,7 +19,7 @@ test:
 	npm run test
 
 validate: generate-examples
-	java -jar bin/org.hl7.fhir.validator.jar dist/examples/Patient.json -version 4.0.1 | tee /tmp/validation.txt
+	java -jar bin/org.hl7.fhir.validator.jar dist/examples/**/* -version 4.0.1 | tee /tmp/validation.txt
 
 publish:
 	npm run publish 2> /dev/null
@@ -25,6 +27,9 @@ publish:
 serve: generate-examples
 	npm run serve
 
-generate-examples: publish
+clean:
+	rm -rf dist/examples
+
+generate-examples: publish clean
 	mkdir -p dist/examples
-	poetry run python scripts/generate_examples.py < dist/patient-information-api.json > dist/examples/Patient.json
+	poetry run python scripts/generate_examples.py dist/patient-information-api.json dist/examples

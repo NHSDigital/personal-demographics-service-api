@@ -227,9 +227,10 @@ paths:
                     description: FHIR Bundle Type.
                     default: searchset
                   timestamp:
-                    type: integer
+                    type: string
                     description: Time the search was performed.
-                    example: 1575908416
+                    format: datetime
+                    example: '2019-12-25T12:00:00+00:00'
                   total:
                     type: integer
                     description: Number of resources returned in search.
@@ -242,6 +243,10 @@ paths:
                     items:
                       type: object
                       properties:
+                        fullUrl:
+                          type: string
+                          description: Absolute URL of the resource described in this item.
+                          example: 'https://beta.api.digital.nhs.uk/Patient/9000000009'
                         search:
                           type: object
                           properties:
@@ -256,10 +261,11 @@ paths:
               example:
                 resourceType: Bundle
                 type: searchset
-                timestamp: 1575908416
+                timestamp: '2019-12-25T12:00:00+00:00'
                 total: 1
                 entry:
-                  - search:
+                  - fullUrl: 'https://beta.api.digital.nhs.uk/Patient/9000000009'
+                    search:
                       score: 1.0
                     resource:
                       $ref: 'components/examples/Patient.json'
@@ -280,7 +286,7 @@ paths:
                         details:
                           coding:
                             - system: "https://my.spec.nhs.net/mycodingsystem"
-                              version: 1
+                              version: '1'
                               code: tooFewSearchParams
                               display: Not enough search parameters were provided to be able to make a search
                 bad-dob:
@@ -293,7 +299,7 @@ paths:
                         details:
                           coding:
                             - system: "https://my.spec.nhs.net/mycodingsystem"
-                              version: 1
+                              version: '1'
                               code: invalidDateFormat
                               display: "birthdate has invalid format: 2000 is not in YYYY-MM-DD format"
   /Patient/{nhs_number}:
@@ -349,7 +355,7 @@ paths:
                     details:
                       coding:
                         - system: "https://my.spec.nhs.net/mycodingsystem"
-                          version: 1
+                          version: '1'
                           code: invalidNHSNumber
                           display: NHS Number 9000000000 is not a valid NHS number
         '404':
@@ -362,11 +368,11 @@ paths:
                 resourceType: OperationOutcome
                 issue:
                   - severity: error
-                    code: not_found
+                    code: not-found
                     details:
                       coding:
                         - system: "https://my.spec.nhs.net/mycodingsystem"
-                          version: 1
+                          version: '1'
                           code: patientNotFound
                           display: Patient with NHS number 9111231130 could not be found
     patch:
@@ -473,7 +479,7 @@ paths:
                         details:
                           coding:
                             - system: "https://my.spec.nhs.net/mycodingsystem"
-                              version: 1
+                              version: '1'
                               code: versionNotSupplied
                               display: If-Match header must be supplied to update this resource
                 invalid-nhs-number:
@@ -486,7 +492,7 @@ paths:
                         details:
                           coding:
                             - system: "https://my.spec.nhs.net/mycodingsystem"
-                              version: 1
+                              version: '1'
                               code: invalidNHSNumber
                               display: NHS Number 9000000000 is not a valid NHS number
                 no-patches-submitted:
@@ -499,7 +505,7 @@ paths:
                         details:
                           coding:
                             - system: "https://my.spec.nhs.net/mycodingsystem"
-                              version: 1
+                              version: '1'
                               code: noPatchesSubmitted
                               display: No patches submitted
                 invalid-patch-operation:
@@ -512,7 +518,7 @@ paths:
                         details:
                           coding:
                             - system: "https://my.spec.nhs.net/mycodingsystem"
-                              version: 1
+                              version: '1'
                               code: invalidPatchOperation
                               display: "Invalid patch: Cannot perform the operation at a path that does not exist"
         '404':
@@ -525,11 +531,11 @@ paths:
                 resourceType: OperationOutcome
                 issue:
                   - severity: error
-                    code: not_found
+                    code: not-found
                     details:
                       coding:
                         - system: "https://my.spec.nhs.net/mycodingsystem"
-                          version: 1
+                          version: '1'
                           code: patientNotFound
                           display: Patient with NHS number 9111231130 could not be found
         '412':
@@ -548,7 +554,7 @@ paths:
                     details:
                       coding:
                         - system: "https://my.spec.nhs.net/mycodingsystem"
-                          version: 1
+                          version: '1'
                           code: unsupportedMediaType
                           display: Must be application/json-patch+json
 components:
@@ -599,6 +605,6 @@ components:
                 details:
                   coding:
                     - system: "https://my.spec.nhs.net/mycodingsystem"
-                      version: 1
+                      version: '1'
                       code: versionMismatch
                       display: This resource has changed since you last read. Please re-read and try again with the new version number.

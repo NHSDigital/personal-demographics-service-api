@@ -19,7 +19,7 @@ properties:
   reference:
     description: Relative link to practitioner resource.
     type: string
-    example: /Organization/Y12345
+    example: Organization/Y12345
   display:
     description: Display friendly name of organisation or practitioner.
     type: string
@@ -28,4 +28,4 @@ example:
   id: Y12345
   type: organization
   display: F. B. Quux and Co. GP Surgery
-  reference: /Organization/Y12345
+  reference: Organization/Y12345

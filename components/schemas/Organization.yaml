@@ -4,6 +4,11 @@ properties:
   # TODO: make this
   # type:
   #   $ref: 'codeable/OrganizationType.yaml'
+  resourceType:
+    type: string
+    description: FHIR resource type
+    default: Organization
+    readOnly: true
   name:
     type: string
     description: Name used for the organisation.
