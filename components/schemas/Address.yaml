@@ -32,22 +32,9 @@ properties:
     example:
       - 4 Baker Street
       - Leeds
-      - LS1 6AE
-  city:
-    type: string
-    description: City, town, village, etc. that the address is located in.
-    example: Leeds
-  district:
-    type: string
-    description: County the address is located in.
-    example: West Yorkshire
   postalCode:
     type: string
     example: "LS1 6AE"
-  country:
-    type: string
-    description: The country the address is located in.
-    example: "United Kingdom"
   extension:
     type: array
     description: FHIR extension elements
