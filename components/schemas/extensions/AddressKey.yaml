@@ -26,7 +26,13 @@ properties:
                 system:
                   type: string
                   description: URL of specification system, value set, or documentation
-                  example: "https://example.com"
+                  default: "https://simplifier.net/guide/UKCoreDecember2019/CodeSystemUKCore-AddressKeyType"
+                  readOnly: true
+                code:
+                  type: string
+                  description: Code system to be used
+                  default: "PAF"
+                  readOnly: true
         - type: object
           description: Value of address key
           properties:
@@ -37,5 +43,8 @@ properties:
               readOnly: true
             valueString:
               type: string
-              description: Address key in format described by type
-              example: '123456ABC'
+              description: Address key in PAF format
+              minLength: 8
+              maxLength: 8
+              pattern: '^[0-9]{8}$'
+              example: '12345678'
