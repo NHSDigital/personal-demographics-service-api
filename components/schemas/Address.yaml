@@ -5,14 +5,6 @@ properties:
     type: string
     readOnly: true
     example: '123'
-  # _links:
-  #   type: object
-  #   readOnly: true
-  #   properties:
-  #     self:
-  #       type: string
-  #       format: url
-  #       example: '/Patient/1234567890/Address/123'
   period:
     $ref: "DateRange.yaml"
   use:
