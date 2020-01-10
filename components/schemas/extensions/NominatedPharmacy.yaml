@@ -13,7 +13,7 @@ properties:
       reference:
         type: string
         description: 'Absolute URL of a FHIR Organization Resource.'
-        example: 'https://myfhirserver.com/Organization/12345'
+        example: '#Y12345'
       # TODO: find out why this breaks validator
       # type:
       #   type: string
