@@ -8,6 +8,25 @@ properties:
   id:
     $ref: "NhsNumber.yaml"
     readOnly: true
+  identifier:
+    type: array
+    description: Identifier and system of identification used for this Patient.
+    items:
+      type: object
+      properties:
+        system:
+          type: string
+          format: url
+          description: System identifier belongs to.
+          default: https://fhir.nhs.uk/Id/nhs-number
+          readOnly: true
+        value:
+          $ref: "NhsNumber.yaml"
+        extension:
+          type: array
+          description: FHIR extensions.
+          items:
+            $ref: "extensions/NHSNumberVerificationStatus.yaml"
   meta:
     type: object
     description: Metadata about this resource.
@@ -56,7 +75,8 @@ properties:
     description: List of languages that may be used to communicate with this patient.
     items:
       $ref: "Communication.yaml"
-
-  # TODO: find a way to relate this to patients properly
-  # pharmacies:
-  #   $ref: "PharmacyListRead.yaml"
+  extension:
+    type: array
+    description: FHIR extensions to the Patient resource.
+    items:
+      $ref: "extensions/NominatedPharmacy.yaml"

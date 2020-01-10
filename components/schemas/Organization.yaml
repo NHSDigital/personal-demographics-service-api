@@ -1,9 +1,11 @@
 description: Medical organisation, for example a GP surgery.
 type: object
 properties:
-  # TODO: make this
-  # type:
-  #   $ref: 'codeable/OrganizationType.yaml'
+  type:
+    type: array
+    description: Organization types this organization belongs to.
+    items:
+      $ref: 'codeable/OrganizationType.yaml'
   resourceType:
     type: string
     description: FHIR resource type
@@ -12,14 +14,14 @@ properties:
   name:
     type: string
     description: Name used for the organisation.
-    example: 'Very Good GP Surgery Ltd'
+    example: 'Very Good Medical Corp Ltd'
   alias:
     type: array
     description: List of other names used by the organisation.
     items:
       type: string
       description: An alternate name used for the organisation.
-      example: 'Pretty Good GP Surgery Ltd'
+      example: 'Pretty Good MedCorp Ltd'
   telecom:
     type: array
     description: Contact details for the organisation.
@@ -30,23 +32,4 @@ properties:
     description: Addresses used by the organisation.
     items:
       $ref: 'Address.yaml'
-  # contact:
-  #   type: array
-  #   description: Representatives for the organization and their contact points.
-  #   items:
-  #     type: object
-  #     description: A representative of the organization who may be contacted on their behalf
-  #     # TODO: create
-  #     # purpose:
-  #     #   $ref: 'codeable/ContactEntityType.yaml'
-  #     name:
-  #       $ref: 'HumanName.yaml'
-  #     telecom:
-  #       type: array
-  #       description: Contact details for this person.
-  #       items:
-  #         $ref: 'ContactPoint.yaml'
-  #     address:
-  #       $ref: 'Address.yaml'
-
   

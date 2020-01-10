@@ -1,0 +1,41 @@
+type: object
+description: Pharmacy nominated for a Patient.
+properties:
+  url:
+    type: string
+    description: Definition of extension
+    default: https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-AddressKey
+    readOnly: true
+  valueReference:
+    type: object
+    description: Reference to a Pharmacy Organization.
+    properties:
+      reference:
+        type: string
+        description: 'Absolute URL of a FHIR Organization Resource.'
+        example: 'https://myfhirserver.com/Organization/12345'
+      # TODO: find out why this breaks validator
+      # type:
+      #   type: string
+      #   description: 'Type of FHIR resource referred to'
+      #   default: 'Organization'
+      #   readOnly: true
+      display:
+        type: string
+        description: 'Text representation of resource.'
+        example: 'Spoonful of Sugar Pharmacy (Leeds) Ltd'
+      identifier:
+        type: object
+        description: ODS Organisation or Site Code.
+        properties:
+          system:
+            type: string
+            description: ODS code system URL.
+            example: https://fhir.nhs.uk/Id/ods-organization-code
+            enum:
+              - https://fhir.nhs.uk/Id/ods-organization-code
+              - https://fhir.nhs.uk/Id/ods-site-code
+          value:
+            type: string
+            description: ODS code.
+            example: Y12345 # TODO: put correct format in
