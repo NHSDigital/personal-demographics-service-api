@@ -1,0 +1,10 @@
+type: object
+description: Status indicating if NHS number is present and verified.
+properties:
+  url:
+    type: string
+    description: URL of the extension definition.
+    default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus
+    readOnly: true
+  valueCodeableConcept:
+    $ref: "../codeable/NHSNumberVerificationStatus.yaml"

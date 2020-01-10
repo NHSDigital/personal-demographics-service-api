@@ -1,8 +1,0 @@
-type: object
-properties:
-  nominated:
-    $ref: "Pharmacy.yaml"
-  medical_appliance:
-    $ref: "Pharmacy.yaml"
-  dispensing_doctor:
-    $ref: "Pharmacy.yaml"
