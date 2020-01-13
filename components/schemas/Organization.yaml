@@ -1,6 +1,10 @@
 description: Medical organisation, for example a GP surgery.
 type: object
 properties:
+  id:
+    type: string
+    description: Logical ID of this organization.
+    example: Y12345
   type:
     type: array
     description: Organization types this organization belongs to.
