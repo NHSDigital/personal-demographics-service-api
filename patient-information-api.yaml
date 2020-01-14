@@ -341,6 +341,9 @@ paths:
                 $ref: 'components/schemas/Patient.yaml'
               example:
                 $ref: 'components/examples/Patient.json'
+            application/json:
+              example:
+                $ref: 'components/examples/PatientAlternative.json'
         '400':
           description: Invalid NHS number supplied.
           content:
