@@ -80,9 +80,3 @@ properties:
     description: FHIR extensions to the Patient resource.
     items:
       $ref: "extensions/NominatedPharmacy.yaml"
-  contained:
-    type: array
-    description: Resources related to this patient.
-    items:
-      oneOf:
-        - $ref: "Organization.yaml"
