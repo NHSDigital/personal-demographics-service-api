@@ -59,7 +59,7 @@ properties:
     type: array
     description: List of related people (e.g. emergency contacts).
     items:
-      $ref: "RelatedPerson.yaml"
+      $ref: "Contact.yaml"
   telecom:
     type: array
     description: List of contact methods.
@@ -80,9 +80,3 @@ properties:
     description: FHIR extensions to the Patient resource.
     items:
       $ref: "extensions/NominatedPharmacy.yaml"
-  contained:
-    type: array
-    description: Resources related to this patient.
-    items:
-      oneOf:
-        - $ref: "Organization.yaml"

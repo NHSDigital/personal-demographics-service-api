@@ -4,7 +4,7 @@ properties:
   url:
     type: string
     description: Definition of extension
-    default: https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-AddressKey
+    default: https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-NominatedPharmacy
     readOnly: true
   valueReference:
     type: object
@@ -13,13 +13,7 @@ properties:
       reference:
         type: string
         description: 'Absolute URL or internal reference to a FHIR Organization Resource.'
-        example: '#Y12345'
-      # TODO: find out why this breaks validator
-      # type:
-      #   type: string
-      #   description: 'Type of FHIR resource referred to'
-      #   default: 'Organization'
-      #   readOnly: true
+        example: '/Organization/Y12345'
       display:
         type: string
         description: 'Text representation of resource.'

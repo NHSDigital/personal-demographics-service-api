@@ -1,0 +1,19 @@
+type: object
+properties:
+  id:
+    type: string
+    example: '123'
+  period:
+    $ref: "DateRange.yaml"
+  relationship:
+    description: Details of contact's relationship with the patient.
+    type: array
+    items:
+      $ref: "codeable/RelatedPersonRelationshipType.yaml"
+  name:
+    $ref: "HumanName.yaml"
+  telecom:
+    type: array
+    description: Contact points at which the contact may be reached.
+    items:
+      $ref: "ContactPoint.yaml"
