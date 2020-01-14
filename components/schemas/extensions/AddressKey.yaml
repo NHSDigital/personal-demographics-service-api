@@ -10,7 +10,7 @@ properties:
     type: array
     description: Specification of address key system and address key value
     items:
-      oneOf:
+      anyOf:
         - type: object
           description: Type of address key
           properties:

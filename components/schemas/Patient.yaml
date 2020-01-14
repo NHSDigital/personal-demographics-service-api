@@ -59,7 +59,7 @@ properties:
     type: array
     description: List of related people (e.g. emergency contacts).
     items:
-      $ref: "RelatedPerson.yaml"
+      $ref: "Contact.yaml"
   telecom:
     type: array
     description: List of contact methods.

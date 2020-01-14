@@ -20,6 +20,8 @@ def generate_resource_example(schema_dict, path=[]):
         if property_value['type'] == 'array':
             if 'oneOf' in property_value['items']:
                 example[property_name] = [generate_resource_example(t['properties'], path + [property_name]) for t in property_value['items']['oneOf']]
+            elif 'anyOf' in property_value['items']:
+                example[property_name] = [generate_resource_example(t['properties'], path + [property_name]) for t in property_value['items']['anyOf']]
             elif property_value['items']['type'] == 'object':
                 example[property_name] = [generate_resource_example(property_value['items']['properties'], path + [property_name])]
             else:
