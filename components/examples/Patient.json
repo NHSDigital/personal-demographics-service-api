@@ -160,83 +160,15 @@
   ],
   "extension": [
     {
-      "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-AddressKey",
+      "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-NominatedPharmacy",
       "valueReference": {
-        "reference": "#Y12345",
+        "reference": "Organization/Y12345",
         "display": "Spoonful of Sugar Pharmacy (Leeds) Ltd",
         "identifier": {
           "system": "https://fhir.nhs.uk/Id/ods-organization-code",
           "value": "Y12345"
         }
       }
-    }
-  ],
-  "contained": [
-    {
-      "id": "Y12345",
-      "type": [
-        {
-          "coding": [
-            {
-              "system": "https://nhsconnect.github.io/FHIR-R4-Core-IG-Prototype/CodeSystem-UKCore-HumanLanguage.html",
-              "version": "4.0.1",
-              "code": "prov",
-              "display": "Healthcare Provider"
-            }
-          ]
-        }
-      ],
-      "resourceType": "Organization",
-      "name": "Very Good Medical Corp Ltd",
-      "alias": [
-        "Pretty Good MedCorp Ltd"
-      ],
-      "telecom": [
-        {
-          "period": {
-            "start": "2010-10-22",
-            "end": "2010-10-22"
-          },
-          "system": "phone",
-          "value": "01632960587",
-          "use": "work",
-          "rank": 1
-        }
-      ],
-      "address": [
-        {
-          "id": "123",
-          "period": {
-            "start": "2010-10-22",
-            "end": "2010-10-22"
-          },
-          "use": "work",
-          "type": "both",
-          "line": [
-            "4 Baker Street",
-            "Leeds"
-          ],
-          "postalCode": "LS1 6AE",
-          "extension": [
-            {
-              "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-AddressKey",
-              "extension": [
-                {
-                  "url": "type",
-                  "valueCoding": {
-                    "system": "https://simplifier.net/guide/UKCoreDecember2019/CodeSystemUKCore-AddressKeyType",
-                    "code": "PAF"
-                  }
-                },
-                {
-                  "url": "value",
-                  "valueString": "12345678"
-                }
-              ]
-            }
-          ]
-        }
-      ]
     }
   ]
 }
