@@ -13,7 +13,7 @@ properties:
       reference:
         type: string
         description: 'Absolute URL or internal reference to a FHIR Organization Resource.'
-        example: 'Organization/Y12345'
+        example: 'https://directory.spineservices.nhs.uk/STU3/Organization/Y12345'
       display:
         type: string
         description: 'Text representation of resource.'
@@ -32,4 +32,4 @@ properties:
           value:
             type: string
             description: ODS code.
-            example: Y12345 # TODO: put correct format in
+            example: Y12345
