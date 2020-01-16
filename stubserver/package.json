@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js --use_strict",
-    "deploy": "rm -rf dist/ && mkdir -p dist/mocks/ && cp *.js *.json *.yaml dist/ && cp -L mocks/*.json dist/mocks/ && node_modules/.bin/apigeetool deployhostedtarget -e test -u henry.iwanejko1@nhs.net -p testP4SSWORD! -o emea-demo8 --api Patient-Information --preserve-policies --import-only --directory dist/"
+    "deploy": "rm -rf dist/ && mkdir -p dist/mocks/ && cp *.js *.json *.yaml dist/ && cp -L mocks/*.json dist/mocks/ && node_modules/.bin/apigeetool deployhostedtarget -e test -u henry.iwanejko1@nhs.net -p testP4SSWORD! -o emea-demo8 --api Patient-Information --preserve-policies --directory dist/"
   },
   "author": "NHS Digital",
   "license": "ISC",
