@@ -12,5 +12,8 @@
   "homepage": "https://bitbucket.org/laurencesmith/apim-definitions#readme",
   "dependencies": {
     "speccy": "^0.11.0"
+  },
+  "devDependencies": {
+    "apigeetool": "^0.14.2"
   }
 }

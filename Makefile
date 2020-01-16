@@ -6,7 +6,7 @@ install-python:
 	poetry install
 
 install-node:
-	npm install
+	npm install --dev
 
 install-hooks:
 	cp scripts/pre-commit .git/hooks/pre-commit
@@ -14,9 +14,6 @@ install-hooks:
 install-fhir-validator:
 	mkdir -p bin
 	test -f bin/org.hl7.fhir.validator.jar || curl https://fhir.github.io/latest-ig-publisher/org.hl7.fhir.validator.jar > bin/org.hl7.fhir.validator.jar
-
-install-apigeetool:
-	npm i apigeetool
 
 test:
 	npm run test
