@@ -1,32 +1,14 @@
 #!/bin/bash
 
-if [[ -v $APIGEE_USER ]]; then
-    echo "APIGEE_USER is not set!"
-    exit 1
-fi
+set -u
 
-if [[ -v $APIGEE_PASS ]]; then
-    echo "APIGEE_PASS is not set!"
-    exit 1
-fi
-
-if [[ -v $APIGEE_SPEC_ID ]]; then
-    echo "APIGEE_SPEC_ID is not set!"
-    exit 1
-fi
-
-if [[ -v $APIGEE_PORTAL_API_ID ]]; then
-    echo "APIGEE_PORTAL_API_ID is not set!"
-    exit 1
-fi
-
-
-if [ $CIRCLE_BRANCH = "master" ]; then
+if [ $CIRCLE_BRANCH = "apm-175-deploy-automation" ]; then
     curl --fail -H "Content-Type: application/x-www-form-urlencoded;charset=utf-8" -H "Accept: application/json;charset=utf-8" -H "Authorization: Basic ZWRnZWNsaTplZGdlY2xpc2VjcmV0" -X POST https://login.apigee.com/oauth/token -d 'username='$APIGEE_USER'&password='$APIGEE_PASS'&grant_type=password' | jq -r .access_token > /tmp/access_token
     APIGEE_ACCESS_TOKEN=$(cat /tmp/access_token)
     curl --fail -X PUT "https://apigee.com/dapi/api/organizations/emea-demo8/specs/doc/$APIGEE_SPEC_ID/content" -H "Authorization: Bearer $APIGEE_ACCESS_TOKEN" -H 'Content-Type: text/plain' --data '@dist/patient-information-api.json'
     curl --fail -X PUT "https://apigee.com/portals/api/sites/emea-demo8-nhsdportal/apidocs/$APIGEE_PORTAL_API_ID/snapshot" -H "Authorization: Bearer $APIGEE_ACCESS_TOKEN"
     curl --fail -X POST "https://apigee.com/portals/api/sites/emea-demo8-nhsdportal/resource-entitlements/apis/$APIGEE_PORTAL_API_ID" -H "Authorization: Bearer $APIGEE_ACCESS_TOKEN" -H 'Content-Type: application/json' --data $'{"isPublic": true, "authEntitled": false, "explicitAudiences": [], "orgname": "emea-demo8"}'
+    apigeetool deployhostedtarget -e test -u $APIGEE_USER -p $APIGEE_PASS -o emea-demo8 --api Patient-Information --preserve-policies --import-only --directory dist/
 else
     echo "On non-master branch $CIRCLE_BRANCH, will not deploy"
 fi
