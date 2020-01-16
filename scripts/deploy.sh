@@ -8,7 +8,7 @@ if [ $CIRCLE_BRANCH = "apm-175-deploy-automation" ]; then
     curl --fail -X PUT "https://apigee.com/dapi/api/organizations/emea-demo8/specs/doc/$APIGEE_SPEC_ID/content" -H "Authorization: Bearer $APIGEE_ACCESS_TOKEN" -H 'Content-Type: text/plain' --data '@dist/patient-information-api.json'
     curl --fail -X PUT "https://apigee.com/portals/api/sites/emea-demo8-nhsdportal/apidocs/$APIGEE_PORTAL_API_ID/snapshot" -H "Authorization: Bearer $APIGEE_ACCESS_TOKEN"
     curl --fail -X POST "https://apigee.com/portals/api/sites/emea-demo8-nhsdportal/resource-entitlements/apis/$APIGEE_PORTAL_API_ID" -H "Authorization: Bearer $APIGEE_ACCESS_TOKEN" -H 'Content-Type: application/json' --data $'{"isPublic": true, "authEntitled": false, "explicitAudiences": [], "orgname": "emea-demo8"}'
-    node_modules/.bin/apigeetool deployhostedtarget -e test -u $APIGEE_USER -p $APIGEE_PASS -o emea-demo8 --api Patient-Information --preserve-policies --import-only --directory dist/
+    cd stubserver && npm install && npm run deploy && cd ..
 else
     echo "On non-master branch $CIRCLE_BRANCH, will not deploy"
 fi

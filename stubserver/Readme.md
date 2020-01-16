@@ -15,6 +15,9 @@ npm run serve
 
 ## Deployment
 
+Set $APIGEE_USER
+Set $APIGEE_PASS
+
 ```
 npm run deploy
 ```
