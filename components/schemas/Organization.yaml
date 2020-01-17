@@ -5,6 +5,11 @@ properties:
     type: string
     description: Logical ID of this organization.
     example: Y12345
+  reference:
+    type: string
+    format: url
+    description: URL or internal reference to a FHIR ORganization Resources
+    example: 'https://directory.spineservices.nhs.uk/STU3/Organization/Y12345'
   type:
     type: array
     description: Organization types this organization belongs to.
@@ -15,25 +20,3 @@ properties:
     description: FHIR resource type
     default: Organization
     readOnly: true
-  name:
-    type: string
-    description: Name used for the organisation.
-    example: 'Very Good Medical Corp Ltd'
-  alias:
-    type: array
-    description: List of other names used by the organisation.
-    items:
-      type: string
-      description: An alternate name used for the organisation.
-      example: 'Pretty Good MedCorp Ltd'
-  telecom:
-    type: array
-    description: Contact details for the organisation.
-    items:
-      $ref: 'ContactPoint.yaml'
-  address:
-    type: array
-    description: Addresses used by the organisation.
-    items:
-      $ref: 'Address.yaml'
-  
