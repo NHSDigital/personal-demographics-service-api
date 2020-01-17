@@ -139,8 +139,7 @@
     {
       "id": "Y12345",
       "type": "Organization",
-      "reference": "Organization/Y12345",
-      "display": "F. B. Quux and Co. GP Surgery"
+      "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y12345"
     }
   ],
   "communication": [
@@ -162,13 +161,34 @@
     {
       "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-NominatedPharmacy",
       "valueReference": {
-        "reference": "Organization/Y12345",
-        "display": "Spoonful of Sugar Pharmacy (Leeds) Ltd",
+        "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y12345",
         "identifier": {
           "system": "https://fhir.nhs.uk/Id/ods-organization-code",
           "value": "Y12345"
         }
       }
+    },
+    {
+      "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus",
+      "extension": [
+        {
+          "url": "deathNotificationStatus",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://simplifier.net/UKCore/CodeSystem-UKCore-DeathNotificationStatus",
+                "version": "1.0.0",
+                "code": "2",
+                "display": "Formal - death notice received from Registrar of Deaths"
+              }
+            ]
+          }
+        },
+        {
+          "url": "systemEffectiveDate",
+          "valueDateTime": "2010-10-22T00:00:00+00:00"
+        }
+      ]
     }
   ]
 }

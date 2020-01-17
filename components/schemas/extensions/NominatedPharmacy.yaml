@@ -14,10 +14,6 @@ properties:
         type: string
         description: 'Absolute URL or internal reference to a FHIR Organization Resource.'
         example: 'https://directory.spineservices.nhs.uk/STU3/Organization/Y12345'
-      display:
-        type: string
-        description: 'Text representation of resource.'
-        example: 'Spoonful of Sugar Pharmacy (Leeds) Ltd'
       identifier:
         type: object
         description: ODS Organisation or Site Code.

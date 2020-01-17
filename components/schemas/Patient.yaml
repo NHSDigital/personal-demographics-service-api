@@ -79,4 +79,6 @@ properties:
     type: array
     description: FHIR extensions to the Patient resource.
     items:
-      $ref: "extensions/NominatedPharmacy.yaml"
+      anyOf:
+        - $ref: "extensions/NominatedPharmacy.yaml"
+        - $ref: "extensions/DeathNotificationStatus.yaml"
