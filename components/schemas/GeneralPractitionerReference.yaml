@@ -19,13 +19,4 @@ properties:
   reference:
     description: Relative link to practitioner resource.
     type: string
-    example: Organization/Y12345
-  display:
-    description: Display friendly name of organisation or practitioner.
-    type: string
-    example: F. B. Quux and Co. GP Surgery
-example:
-  id: Y12345
-  type: organization
-  display: F. B. Quux and Co. GP Surgery
-  reference: Organization/Y12345
+    example: "https://directory.spineservices.nhs.uk/STU3/Organization/Y12345"
