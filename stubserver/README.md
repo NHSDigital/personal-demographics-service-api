@@ -23,7 +23,7 @@ You need to set:
 - Apigee Spec ID
 - Apigee Portal API ID
 
-To set environment varaibles:
+To set environment variables:
 
 ```
 export APIGEE_USER=<USERNAME>
