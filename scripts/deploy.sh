@@ -8,7 +8,7 @@ if [ $CIRCLE_BRANCH = "master" ]; then
     curl --fail -X PUT "https://apigee.com/dapi/api/organizations/emea-demo8/specs/doc/$APIGEE_SPEC_ID/content" -H "Authorization: Bearer $APIGEE_ACCESS_TOKEN" -H 'Content-Type: text/plain' --data '@dist/patient-information-api.json'
     curl --fail -X PUT "https://apigee.com/portals/api/sites/emea-demo8-nhsdportal/apidocs/$APIGEE_PORTAL_API_ID/snapshot" -H "Authorization: Bearer $APIGEE_ACCESS_TOKEN"
     curl --fail -X POST "https://apigee.com/portals/api/sites/emea-demo8-nhsdportal/resource-entitlements/apis/$APIGEE_PORTAL_API_ID" -H "Authorization: Bearer $APIGEE_ACCESS_TOKEN" -H 'Content-Type: application/json' --data $'{"isPublic": true, "authEntitled": false, "explicitAudiences": [], "orgname": "emea-demo8"}'
-    cd stubserver && npm deploy && cd ..
+    cd stubserver && npm deploy
 else
     echo "On non-master branch $CIRCLE_BRANCH, will not deploy"
 fi
