@@ -2,7 +2,7 @@
 
 set -u
 
-if [ $CIRCLE_BRANCH = "master" ]; then
+if [ $CIRCLE_BRANCH = "apm-175-deploy-automation" ]; then
     curl --fail -H "Content-Type: application/x-www-form-urlencoded;charset=utf-8" -H "Accept: application/json;charset=utf-8" -H "Authorization: Basic ZWRnZWNsaTplZGdlY2xpc2VjcmV0" -X POST https://login.apigee.com/oauth/token -d 'username='$APIGEE_USER'&password='$APIGEE_PASS'&grant_type=password' | jq -r .access_token > /tmp/access_token
     APIGEE_ACCESS_TOKEN=$(cat /tmp/access_token)
     curl --fail -X PUT "https://apigee.com/dapi/api/organizations/emea-demo8/specs/doc/$APIGEE_SPEC_ID/content" -H "Authorization: Bearer $APIGEE_ACCESS_TOKEN" -H 'Content-Type: text/plain' --data '@dist/patient-information-api.json'
