@@ -1,5 +1,5 @@
-# apim-definitions
-Temporary repository of API definitions for the API management project.
+# personal-demographics-service-api
+Specs and tooling for Personal Demographics Service FHIR API.
 
 ## APIs
 * Patient Information API
