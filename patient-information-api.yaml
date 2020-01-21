@@ -11,14 +11,17 @@ info:
 
     You can:
     * search for patients
-    * get patients' personal details
-    * update patients' personal details
+    * get patient details
+    * update patient details
 
     You cannot currently use this API to:
-    * register births (not required for GPs)
-    * register new patients (GPs should do this via [NHAIS](https://digital.nhs.uk/services/nhais/nhais-developer-document-library))
+    * check that you have the right NHS Number for a patient
+    * create a new record for a birth
+    * receive birth notifications
+    * create a record for a new patient
+    * register a new patient at a GP Practice - instead, use [National Health Application and Infrastructure Services (NHAIS)](https://digital.nhs.uk/services/nhais/nhais-developer-document-library)
 
-    You can currently access the following data:
+    You can access the following data:
     * NHS Number
     * name
     * gender
@@ -26,26 +29,27 @@ info:
     * addresses
     * contact details
     * registered GP
-    * preferred pharmacy
-    * consent information
-    * related people
+    * nominated pharmacy (other related pharmacies coming soon)
+    * consent information (coming soon)
+    * related people (coming soon)
 
     ## API status
-    This API is in [Alpha](/reference-guide#api-status) - expect significant breaking changes.
+    This API is in [alpha](/reference-guide#api-status) - expect significant breaking changes.
 
     It is currently only available for sandbox testing, not for integration testing or production use.
 
     The following items are on our roadmap, in rough priority order:
-    - addition of data fields that are dependent on upcoming UK Core FHIR profiles.
-    - complete sandbox service (currently only GET /Patient/{nhs_number}
-    - move from Alpha to Beta
-    - authorisation using OAuth 2.0 and NHS Identity
-    - integration test service
+    - addition of data fields for consent information, related people and more information on nominated pharmacies
+    - change status from alpha to beta
+    - authorisation for NHS staff using OAuth 2.0 and NHS Identity
+    - integration testing service (target date - end of February 2020)
     - assurance process
-    - production service (Beta)
-    - exit Beta (once we are sure the service is fit for purpose)
+    - production service - beta (target date - end of March 2020)
+    - unattended access - without smartcard - similar to the PDS SMSP API (target date to be confirmed)
+    - access for citizens using NHS Login (target date to be confirmed)
+    - exit beta (target date - end of September 2020, subject to availability of beta testers)
 
-    We are extremely keen to receive feedback on the API,
+    We are extremely keen to receive feedback on the API during alpha and beta,
     for example if there are data fields missing that you think you need.
     Please [get in touch](/help-and-support) with any comments or suggestions.
 
@@ -59,7 +63,11 @@ info:
 
     ## Authorisation
     This API is [user-restricted](https://emea-demo8-nhsdportal.apigee.io/security-and-authorisation#user-restricted-apis).
-    It uses OAuth 2.0 to authorise both the calling system and end user. More details to follow.
+    It uses OAuth 2.0 to authorise both the calling system and end user.
+    
+    In can currently only be accessed by NHS staff, using NHS Identity. In due course we plan to add the following:
+    - access for citizens, using NHS Login
+    - unattended access - without smartcard - similar to the PDS SMSP API
 
     ## Testing
     You can test this API in:
@@ -75,7 +83,9 @@ info:
     [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
 
     ## Assurance
-    Details to follow.
+    We are hoping to make the assurance process as lightweight and as self-service as possible.
+    
+    More details to follow.
 
     ## Endpoints
     To see details for specific endpoints, select from the list on the left hand side of the page:
@@ -83,7 +93,7 @@ info:
     * `GET /Patient/{nhs_number}` - get patient's personal details
     * `PATCH /Patient/{nhs_number}` - update patient's personal details
   contact:
-    name: 'Patient Information API Support'
+    name: 'Personal Demographics Service FHIR API Support'
     url: 'https://tbc.api.nhs.net'
     email: 'tbc-api-support@nhs.net'
 
