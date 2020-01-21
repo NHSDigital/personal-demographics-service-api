@@ -4,7 +4,7 @@
 openapi: "3.0.0"
 info:
   version: 0.1.0
-  title: Personal Demographics Service API
+  title: Personal Demographics Service (FHIR) API
   description: |
     ## Overview
     Use this API to access the [Personal Demographics Service (PDS)](https://digital.nhs.uk/services/demographics) - the national electronic database of NHS patient details such as name, address, date of birth and NHS Number.
@@ -25,9 +25,9 @@ info:
     * NHS Number
     * name
     * gender
-    * birth
-    * addresses
-    * contact details
+    * addresses and contact details
+    * birth information
+    * death information
     * registered GP
     * nominated pharmacy (other related pharmacies coming soon)
     * consent information (coming soon)
@@ -40,14 +40,14 @@ info:
 
     The following items are on our roadmap, in rough priority order:
     - addition of data fields for consent information, related people and more information on nominated pharmacies
-    - change status from alpha to beta
+    - move from alpha into beta
     - authorisation for NHS staff using OAuth 2.0 and NHS Identity
-    - integration testing service (target date - end of February 2020)
+    - integration testing service (target date: end of February 2020)
     - assurance process
-    - production service - beta (target date - end of March 2020)
+    - production service - beta (target date: end of March 2020)
     - unattended access - without smartcard - similar to the PDS SMSP API (target date to be confirmed)
     - access for citizens using NHS Login (target date to be confirmed)
-    - exit beta (target date - end of September 2020, subject to availability of beta testers)
+    - exit beta (target date: end of September 2020, subject to availability of beta testers)
 
     We are extremely keen to receive feedback on the API during alpha and beta,
     for example if there are data fields missing that you think you need.
