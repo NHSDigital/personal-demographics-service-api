@@ -207,7 +207,7 @@ const init = async () => {
             }
             let simpleMatch = true
             for (let p of Object.keys(simpleSearchParams)) {
-                if (request.query[p].toLowerCase() !== simpleSearchParams[p].toLowerCase()) {
+                if (!request.query[p] || request.query[p].toLowerCase() !== simpleSearchParams[p].toLowerCase()) {
                     simpleMatch = false
                     break
                 }
