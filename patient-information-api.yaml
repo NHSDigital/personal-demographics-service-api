@@ -44,7 +44,8 @@ info:
     - authorisation for NHS staff using OAuth 2.0 and NHS Identity
     - integration testing service (target date: end of February 2020)
     - assurance process
-    - production service - beta (target date: end of March 2020)
+    - production service - beta - search for patient and retrieve patient details (target date: end of March 2020)
+    - production service - beta - update patient (target date: end of April 2020)
     - unattended access - without smartcard - similar to the PDS SMSP API (target date to be confirmed)
     - access for citizens using NHS Login (target date to be confirmed)
     - exit beta (target date: end of September 2020, subject to availability of beta testers)
