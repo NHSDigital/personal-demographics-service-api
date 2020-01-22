@@ -160,7 +160,6 @@ const init = async () => {
                 "death-date": true,
                 "address-postcode": true,
                 organisation: true,
-                "general-practicioner": true,
             };
 
             // If provided, validate birthdate, death-date params
