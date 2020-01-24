@@ -1,5 +1,5 @@
 type: object
-description: Status of death notification.
+description: Wrapper object for death notification details.
 properties:
   url:
     type: string
@@ -8,25 +8,25 @@ properties:
     readOnly: true
   extension:
     type: array
-    description: Code of death notification status and system effective dates.
+    description: Array containing exactly one death notification status code object and exactly one effective date object.
     items:
       anyOf:
         - type: object
-          description: Death notification status code.
+          description: Wrapper object for death notification status code.
           properties:
             url:
               type: string
-              description: Key of this object.
+              description: Key of this object. Always `deathNotificationStatus`.
               default: deathNotificationStatus
               readOnly: true
             valueCodeableConcept:
               $ref: "../codeable/DeathNotificationStatus.yaml"
         - type: object
-          description: Effective dates.
+          description: Wrapper object for death notification effective date.
           properties:
             url:
               type: string
-              description: Key of this object.
+              description: Key of this object. Always `systemEffectiveDate`.
               default: systemEffectiveDate
               readOnly: true
             valueDateTime:
