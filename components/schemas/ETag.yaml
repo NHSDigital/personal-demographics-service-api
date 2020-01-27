@@ -3,6 +3,6 @@ schema:
   format: '^W/\"[[:print:]]+\"$' # Printable characters enclosed in quotes. See: https://tools.ietf.org/html/rfc7230#section-3.2.6
   example: W/"2"
 description: |
-  Record version identifier enclosed in quotes and preceded by 'W/'. For example, `W/"2"`.
+  Record version identifier enclosed in quotes and preceded by 'W/'.
 
   Corresponds to `meta.versionId` attribute in body.

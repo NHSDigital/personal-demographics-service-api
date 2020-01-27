@@ -67,7 +67,7 @@ properties:
       $ref: "ContactPoint.yaml"
   generalPractitioner:
     type: array
-    description: General practioner responsible for this patient.
+    description: List of associated GPs or GP surgeries.
     items:
       $ref: "GeneralPractitionerReference.yaml"
   communication:
@@ -77,7 +77,7 @@ properties:
       $ref: "Communication.yaml"
   extension:
     type: array
-    description: Wrapper in FHIR extension format for Nominated Pharmacy and Death Notification Status.
+    description: FHIR extensions to the Patient resource.
     items:
       anyOf:
         - $ref: "extensions/NominatedPharmacy.yaml"

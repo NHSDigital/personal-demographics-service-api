@@ -3,47 +3,47 @@ description: Unique identifier for an address
 properties:
   url:
     type: string
-    description: URL of specification of the AddressKey extension.
+    description: Definition of extension
     default: https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-AddressKey
     readOnly: true
   extension:
     type: array
-    description: "Specification of address key system and address key value. Contains exactly two items: one describing the code system the Address Key uses, and the other specifying the value of the Address Key."
+    description: Specification of address key system and address key value
     items:
       anyOf:
         - type: object
-          description: Coding system of the address key.
+          description: Type of address key
           properties:
             url:
               type: string
-              description: Always 'type'.
+              description: path of specification
               default: type
               readOnly: true
             valueCoding:
               type: object
-              description: Specification of Address Key format.
+              description: URL of specification of address key format
               properties:
                 system:
                   type: string
-                  description: URL of Code System that describes available Address Key formats.
+                  description: URL of specification system, value set, or documentation
                   default: "https://simplifier.net/guide/UKCoreDecember2019/CodeSystemUKCore-AddressKeyType"
                   readOnly: true
                 code:
                   type: string
-                  description: Address Key system. Always 'PAF'.
+                  description: Code system to be used
                   default: "PAF"
                   readOnly: true
         - type: object
-          description: Value of the address key.
+          description: Value of address key
           properties:
             url:
               type: string
-              description: Always 'value'.
+              description: path of specification
               default: value
               readOnly: true
             valueString:
               type: string
-              description: Address key in PAF format. An 8 digit number that includes any leading zeroes.
+              description: Address key in PAF format
               minLength: 8
               maxLength: 8
               pattern: '^[0-9]{8}$'
