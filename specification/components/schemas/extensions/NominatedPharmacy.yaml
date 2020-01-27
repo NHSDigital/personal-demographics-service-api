@@ -3,16 +3,16 @@ description: Pharmacy nominated for a Patient.
 properties:
   url:
     type: string
-    description: Definition of extension
+    description: URL of specification of UKCore-NominatedPharmacy FHIR extension.
     default: https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-NominatedPharmacy
     readOnly: true
   valueReference:
     type: object
-    description: Reference to a Pharmacy Organization.
+    description: Reference to a Pharmacy Organization Resource.
     properties:
       reference:
         type: string
-        description: 'Absolute URL or internal reference to a FHIR Organization Resource.'
+        description: Absolute URL of the linked FHIR Organization Resource.
         example: 'https://directory.spineservices.nhs.uk/STU3/Organization/Y12345'
       identifier:
         type: object
@@ -20,11 +20,11 @@ properties:
         properties:
           system:
             type: string
-            description: ODS code system URL.
+            description: URL of the ODS code system definition.
             example: https://fhir.nhs.uk/Id/ods-organization-code
             enum:
               - https://fhir.nhs.uk/Id/ods-organization-code
-              - https://fhir.nhs.uk/Id/ods-site-code
+              - https://fhir.nhs.uk/Id/ods-site-code #TODO: double check this is included
           value:
             type: string
             description: ODS code.
