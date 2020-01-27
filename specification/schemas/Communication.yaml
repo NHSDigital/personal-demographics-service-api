@@ -1,0 +1,9 @@
+type: object
+description: Method for communicating with a Patient.
+properties:
+  language:
+    $ref: 'codeable/Language.yaml'
+  preferred:
+    type: boolean
+    description: Indicates if this is a preferred language.
+    example: true

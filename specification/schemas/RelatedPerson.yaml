@@ -1,0 +1,86 @@
+type: object
+properties:
+  id:
+    type: string
+    description: Logical (system) ID of this RelatedPerson.
+    example: 'ABC123'
+  identifier:
+    type: array
+    description: Identifier and system of identification used for this RelatedPerson.
+    items:
+      type: object
+      properties:
+        system:
+          type: string
+          format: url
+          description: System identifier belongs to.
+          default: https://fhir.nhs.uk/Id/nhs-number
+          readOnly: true
+        value:
+          $ref: "NhsNumber.yaml"
+        extension:
+          type: array
+          description: FHIR extensions.
+          items:
+            $ref: "extensions/NHSNumberVerificationStatus.yaml"
+  patient:
+    type: object
+    description: Patient to which this person is related.
+    properties:
+      reference:
+        type: string
+        description: URL or FHIR Path of Patient resource.
+        example: '/Patient/9000000009'
+      type:
+        type: string
+        description: Type the reference refers to.
+        example: 'Patient'
+  relationship:
+    description: Details of contact's relationship with the patient.
+    type: array
+    items:
+      $ref: "codeable/RelatedPersonRelationshipType.yaml"
+  name:
+    $ref: "HumanName.yaml"
+  telecom:
+    type: array
+    description: Contact points at which the contact may be reached.
+    items:
+      $ref: "ContactPoint.yaml"
+  gender:
+    $ref: "Gender.yaml"
+  birthDate:
+    description: Date of birth. A date in the format `yyyy-mm-dd`.
+    example: "2010-10-22"
+    type: string
+    format: date
+  address:
+    type: array
+    items:
+      $ref: "Address.yaml"
+  period:
+    $ref: "DateRange.yaml"
+  communication:
+    type: array
+    items:
+      $ref: "Communication.yaml"
+  extension:
+    type: array
+    items:
+      oneOf:
+        - $ref: "extensions/ContactRank.yaml"
+        - $ref: "extensions/CopyCorrespondenceIndicator.yaml"
+    
+  # TODO: model all of the below
+  # ranking:
+  #   type: integer
+  #   example: 1
+  # next_of_kin:
+  #   type: boolean
+  #   default: false
+  # copy_correspondence:
+  #   type: boolean
+  #   default: false
+  # callback_consent:
+  #   type: boolean
+  #   default: false

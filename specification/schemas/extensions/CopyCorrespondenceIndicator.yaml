@@ -1,0 +1,13 @@
+type: object
+description: Flag indicating if this person should be copied in on any contact with the Patient.
+properties:
+  url:
+    type: string
+    format: url
+    description: URL to FHIR Extension Specification.
+    default: "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-CopyCorrespondenceIndicator"
+    readOnly: true
+  valueBoolean:
+    type: boolean
+    description: Flag indicating if this person should be copied in on correspondence.
+    example: false
