@@ -11,5 +11,7 @@
 
 ## Merge Checklist
 * [ ] Is this PR linked to a ticket in JIRA or Github issues?
+* [ ] Does the spec pass `make test`?
+* [ ] Does the spec pass `make validate`?
 * [ ] Does the branch build in CI?
 * [ ] If there are any changes to the CI process, have they been verified?

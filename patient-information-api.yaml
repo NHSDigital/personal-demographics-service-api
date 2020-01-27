@@ -39,10 +39,9 @@ info:
     It is currently only available for sandbox testing, not for integration testing or production use.
 
     The following items are on our roadmap, in rough priority order:
-    - addition of data fields that are dependent on upcoming UK Core FHIR profiles.
-    - complete sandbox service (currently only GET /Patient/{id}
-    - move from Alpha to Beta
-    - authorisation using OAuth 2.0 and NHS Identity
+    - addition of data fields for consent information, related people and more information on nominated pharmacies
+    - move from alpha into beta
+    - authorisation for NHS staff using OAuth 2.0 and NHS Identity
     - integration testing service (target date: end of February 2020)
     - assurance process
     - production service - beta - search for patient and retrieve patient details (target date: end of March 2020)
@@ -92,8 +91,8 @@ info:
     ## Endpoints
     To see details for specific endpoints, select from the list on the left hand side of the page:
     * `GET /Patient` - search for patient
-    * `GET /Patient/{id}` - get patient's personal details
-    * `PATCH /Patient/{id}` - update patient's personal details
+    * `GET /Patient/{nhs_number}` - get patient's personal details
+    * `PATCH /Patient/{nhs_number}` - update patient's personal details
   contact:
     name: 'Personal Demographics Service FHIR API Support'
     url: 'https://tbc.api.nhs.net'
@@ -160,21 +159,21 @@ paths:
         - patients
       parameters:
         - name: family
-          description: "The patient's family name (surname)."
+          description: The patient's family name (surname).
           example: Smith
           in: query
           required: false
           schema:
             type: string
         - name: given
-          description: "The patient's given name(s)."
+          description: The patient's given name(s).
           example: Jane
           in: query
           required: false
           schema:
             type: string
         - name: gender
-          description: "Gender the patient identifies as."
+          description: Gender with which the patient most strongly identifies.
           example: female
           in: query
           required: false
@@ -182,7 +181,7 @@ paths:
             $ref: 'components/schemas/Gender.yaml'
         - name: birthdate
           in: query
-          description: "Birth date in the format `yyyy-mm-dd`. Required for simple searches. Other search types must provide either a birth date or a birth date range."
+          description: Birth date in the format `yyyy-mm-dd`. Required for simple searches. Other search types must provide either a birth date or a birth date range.
           example: "2010-10-22"
           required: false
           schema:
@@ -190,7 +189,7 @@ paths:
             format: date
         - name: death-date
           in: query
-          description: "Date of death in the format `yyyy-mm-dd`."
+          description: Date of death in the format `yyyy-mm-dd`.
           required: false
           example: "2018-03-20"
           schema:
@@ -198,31 +197,24 @@ paths:
             format: date
             example: "2018-03-20"
         - name: address-postcode
-          description: "White spaces in postcodes are significant, i.e. LS16AE will not match LS1 6AE."
+          description: White spaces in postcodes are significant, i.e. LS16AE will not match LS1 6AE.
           example: LS1 6AE
           in: query
           required: false
           schema:
             type: string
         - name: organization
-          description: "The ODS code of the patient's registered general practice. Do not use in simple searches."
-          example: Y00001
-          in: query
-          required: false
-          schema:
-            type: string
-            format: ods_code # TODO refer out to ODS docs for correct format?
-        - name: general-practitioner
-          description: "The ODS code of the patient's registered general practioner. Do not use in simple searches."
+          description: The ODS code of the patient's registered general practice. Do not use in simple searches.
           example: Y00001
           in: query
           required: false
           schema:
             type: string
             format: ods_code
+            pattern: '^[A-Z]\d{5}$'
       responses:
         '200':
-          description: "A completed search, containing zero, one or many matching patients."
+          description: A completed search, containing zero, one or many matching patients.
           content:
             application/fhir+json:
               schema:
@@ -298,7 +290,7 @@ paths:
                             - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
                               version: '1'
                               code: tooFewSearchParams
-                              display: Not enough search parameters were provided to be able to make a search.
+                              display: Not enough search parameters were provided to be able to make a search
                 bad-dob:
                   summary: bad date of birth format
                   value:
@@ -311,10 +303,10 @@ paths:
                             - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
                               version: '1'
                               code: invalidDateFormat
-                              display: "birthdate has invalid format: 2000 is not in YYYY-MM-DD format."
-  /Patient/{id}:
+                              display: "birthdate has invalid format: 2000 is not in YYYY-MM-DD format"
+  /Patient/{nhs_number}:
     parameters:
-      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/NhsNumber'
     get:
       description: |
         ## Overview
@@ -367,7 +359,7 @@ paths:
                         - system: "https://my.spec.nhs.net/mycodingsystem"
                           version: '1'
                           code: invalidNHSNumber
-                          display: NHS Number 9000000000 is not a valid NHS number.
+                          display: NHS Number 9000000000 is not a valid NHS number
         '404':
           description: Patient not found.
           content:
@@ -384,7 +376,7 @@ paths:
                         - system: "https://my.spec.nhs.net/mycodingsystem"
                           version: '1'
                           code: patientNotFound
-                          display: Patient with NHS number 9111231130 could not be found.
+                          display: Patient with NHS number 9111231130 could not be found
     patch:
       description: |
         ## Overview
@@ -491,7 +483,7 @@ paths:
                             - system: "https://my.spec.nhs.net/mycodingsystem"
                               version: '1'
                               code: versionNotSupplied
-                              display: If-Match header must be supplied to update this resource.
+                              display: If-Match header must be supplied to update this resource
                 invalid-nhs-number:
                   summary: Invalid NHS number supplied
                   value:
@@ -504,7 +496,7 @@ paths:
                             - system: "https://my.spec.nhs.net/mycodingsystem"
                               version: '1'
                               code: invalidNHSNumber
-                              display: NHS Number 9000000000 is not a valid NHS number.
+                              display: NHS Number 9000000000 is not a valid NHS number
                 no-patches-submitted:
                   summary: No patches submitted
                   value:
@@ -517,7 +509,7 @@ paths:
                             - system: "https://my.spec.nhs.net/mycodingsystem"
                               version: '1'
                               code: noPatchesSubmitted
-                              display: No patches submitted.
+                              display: No patches submitted
                 invalid-patch-operation:
                   summary: Invalid patch operation(s)
                   value:
@@ -530,7 +522,7 @@ paths:
                             - system: "https://my.spec.nhs.net/mycodingsystem"
                               version: '1'
                               code: invalidPatchOperation
-                              display: "Invalid patch: Cannot perform the operation at a path that does not exist."
+                              display: "Invalid patch: Cannot perform the operation at a path that does not exist"
         '404':
           description: Patient not found.
           content:
@@ -547,7 +539,7 @@ paths:
                         - system: "https://my.spec.nhs.net/mycodingsystem"
                           version: '1'
                           code: patientNotFound
-                          display: Patient with NHS number 9111231130 could not be found.
+                          display: Patient with NHS number 9111231130 could not be found
         '412':
           $ref: '#/components/responses/412PreconditionFailed'
         '415':
@@ -566,11 +558,11 @@ paths:
                         - system: "https://my.spec.nhs.net/mycodingsystem"
                           version: '1'
                           code: unsupportedMediaType
-                          display: Must be 'application/json-patch+json'.
+                          display: Must be application/json-patch+json
 components:
   parameters:
-    Id:
-      name: id
+    NhsNumber:
+      name: nhs_number
       in: path
       description: The patient's NHS Number.
       required: true

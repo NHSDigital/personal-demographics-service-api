@@ -3,7 +3,6 @@ description: An address associated with a person.
 properties:
   id:
     type: string
-    description: Unique system identifier for this address.
     readOnly: true
     example: '123'
   period:
@@ -20,7 +19,6 @@ properties:
     example: both
   line:
     type: array
-    description: All lines of address excluding postal code.
     items:
       type: string
     example:
@@ -28,10 +26,9 @@ properties:
       - Leeds
   postalCode:
     type: string
-    description: Postal code of the address.
     example: "LS1 6AE"
   extension:
     type: array
-    description: Postal address file (PAF) key associated with this address formatted as a FHIR extension. Empty if no PAF key for the address is known, or an object specifying the code system of the address key and the value of the address key. 
+    description: FHIR extension elements
     items:
       $ref: 'extensions/AddressKey.yaml'

@@ -1,15 +1,15 @@
 {
-  "name": "api-spec-tooling",
+  "name": "apim-definitions",
   "version": "0.0.1",
   "description": "OAS (Swagger v3) API Definition for Patient Information",
   "scripts": {
-    "test": "speccy lint specification/patient-demographics-api.yaml",
-    "publish": "mkdir -p dist && node_modules/.bin/speccy resolve specification/patient-demographics-api.yaml -i | poetry run python scripts/yaml2json.py > dist/patient-information-api.json",
-    "serve": "node_modules/.bin/speccy serve specification/patient-demographics-api.yaml"
+    "test": "speccy lint patient-information-api.yaml",
+    "publish": "mkdir -p dist && node_modules/.bin/speccy resolve patient-information-api.yaml -i | poetry run python scripts/yaml2json.py > dist/patient-information-api.json",
+    "serve": "node_modules/.bin/speccy serve patient-information-api.yaml"
   },
   "author": "NHS Digital",
-  "license": "MIT",
-  "homepage": "https://github.com/NHSDigital/personal-demographics-service-api",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/laurencesmith/apim-definitions#readme",
   "dependencies": {
     "speccy": "^0.11.0"
   },
