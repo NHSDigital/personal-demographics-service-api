@@ -70,6 +70,11 @@ info:
     - access for citizens, using NHS Login
     - unattended access - without smartcard - similar to the PDS SMSP API
 
+    ## Related APIs
+    The following APIs are also related to this API:
+
+    [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) - use this to get full details for the organisations related to the patient, such as their registered GP or nominated pharmacy.
+
     ## Testing
     You can test this API in:
     * our [sandbox environment](/testing#sandbox-testing) for initial developer testing
