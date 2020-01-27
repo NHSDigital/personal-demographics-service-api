@@ -1,0 +1,49 @@
+type: object
+description: Type of Organization.
+properties:
+  coding:
+    type: array
+    items:
+      type: object
+      properties:
+        system:
+          type: string
+          description: URI of the coding system specification
+          example: https://nhsconnect.github.io/FHIR-R4-Core-IG-Prototype/CodeSystem-UKCore-HumanLanguage.html
+        version:
+          type: string
+          description: Version of the coding system in use
+          example: 4.0.1
+        code:
+          type: string
+          description: Symbol in syntax defined by the system
+          example: prov
+          enum:
+            - prov
+            - dept
+            - team
+            - govt
+            - pay
+            - edu
+            - reli
+            - crs
+            - cg
+            - bus
+            - other
+        display:
+          type: string
+          description: Representation defined by the system
+          example: Healthcare Provider
+          enum:
+            - Healthcare Provider
+            - Hospital Department
+            - Organizational team
+            - Government
+            - Insurance Company
+            - Payer
+            - Educational Institute
+            - Religious Institution
+            - Clinical Research Sponsor
+            - Community Group
+            - Non-Healthcare Business or Corporation
+            - Other

@@ -1,0 +1,84 @@
+type: object
+properties:
+  resourceType:
+    type: string
+    description: FHIR resource type.
+    default: "Patient"
+    readOnly: true
+  id:
+    $ref: "NhsNumber.yaml"
+    readOnly: true
+  identifier:
+    type: array
+    description: Identifier and system of identification used for this Patient.
+    items:
+      type: object
+      properties:
+        system:
+          type: string
+          format: url
+          description: System identifier belongs to.
+          default: https://fhir.nhs.uk/Id/nhs-number
+          readOnly: true
+        value:
+          $ref: "NhsNumber.yaml"
+        extension:
+          type: array
+          description: FHIR extensions.
+          items:
+            $ref: "extensions/NHSNumberVerificationStatus.yaml"
+  meta:
+    type: object
+    description: Metadata about this resource.
+    properties: 
+      versionId:
+        type: string
+        description: The NHS Digital assigned version of the patient resource.
+        readOnly: true
+        example: "2"
+  name:
+    type: array
+    description: List of names associated with the patient.
+    items:
+      $ref: "HumanName.yaml"
+  gender:
+    $ref: "Gender.yaml"
+  birthDate:
+    description: Date of birth. A date in the format `yyyy-mm-dd`.
+    example: "2010-10-22"
+    type: string
+    format: date
+  deceasedDateTime:
+    description: Date and time of death, if applicable and known. A datetime in the format `yyyy-mm-ddTHH:MM:SS+HH:MM`.
+    example: "2010-10-22T00:00:00+00:00"
+    type: string
+    format: date-time
+  address:
+    $ref: "PersonAddress.yaml"
+  contact:
+    type: array
+    description: List of related people (e.g. emergency contacts).
+    items:
+      $ref: "Contact.yaml"
+  telecom:
+    type: array
+    description: List of contact methods.
+    items:
+      $ref: "ContactPoint.yaml"
+  generalPractitioner:
+    type: array
+    description: List of associated GPs or GP surgeries.
+    items:
+      $ref: "GeneralPractitionerReference.yaml"
+  communication:
+    type: array
+    description: List of languages that may be used to communicate with this patient.
+    items:
+      $ref: "Communication.yaml"
+  extension:
+    type: array
+    description: FHIR extensions to the Patient resource.
+    items:
+      anyOf:
+        - $ref: "extensions/NominatedPharmacy.yaml"
+        - $ref: "extensions/DeathNotificationStatus.yaml"

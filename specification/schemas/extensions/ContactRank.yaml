@@ -1,0 +1,14 @@
+type: object
+description: Rank indicating order in which contacts should be tried.
+properties:
+  url:
+    type: string
+    format: url
+    description: URL to FHIR Extension Specification.
+    default: "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactRank"
+    readOnly: true
+  valuePositiveInt:
+    type: integer
+    minimum: 1
+    description: Rank expressed as positive integer (1 being the highest).
+    example: 1

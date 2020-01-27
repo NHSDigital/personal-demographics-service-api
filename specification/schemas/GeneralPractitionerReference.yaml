@@ -1,0 +1,22 @@
+description: GP Practice or Practitioner with whom the patient is or was registered. 
+type: object
+required:
+  - type
+  - url
+  - ods_code
+  - business_effective
+properties:
+  id:
+    description: The ODS code of the registered practice or practitioner.
+    type: string
+    pattern: ^[0-9A-Z]+$
+    example: Y12345
+  type:
+    description: Indicates whether the patient is registered to a practice, an individual practitioner, or a practitioner role.
+    type: string
+    enum: [Practitioner, Organization]
+    example: Organization
+  reference:
+    description: Relative link to practitioner resource.
+    type: string
+    example: "https://directory.spineservices.nhs.uk/STU3/Organization/Y12345"

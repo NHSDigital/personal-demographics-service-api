@@ -1,0 +1,34 @@
+type: object
+description: An address associated with a person.
+properties:
+  id:
+    type: string
+    readOnly: true
+    example: '123'
+  period:
+    $ref: "DateRange.yaml"
+  use:
+    type: string
+    description: Purpose of this address.
+    enum: [home, work, temp, old, billing] # TODO: how do we map usual, correspondence, temporary, other?
+    example: work
+  type:
+    type: string
+    description: Type of address. Postal-only (aka correspondence) addresses can be used to communicate, but are not where the person associated with this address can be usually found.
+    enum: [postal, physical, both]
+    example: both
+  line:
+    type: array
+    items:
+      type: string
+    example:
+      - 4 Baker Street
+      - Leeds
+  postalCode:
+    type: string
+    example: "LS1 6AE"
+  extension:
+    type: array
+    description: FHIR extension elements
+    items:
+      $ref: 'extensions/AddressKey.yaml'
