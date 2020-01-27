@@ -3,20 +3,20 @@ description: Unique identifier for an address.
 properties:
   url:
     type: string
-    description: Definition of extension.
+    description: URL of specification of the AddressKey extension.
     default: https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-AddressKey
     readOnly: true
   extension:
     type: array
-    description: Specification of address key system and address key value.
+    description: "Specification of address key system and address key value. Contains exactly two items: one describing the code system the Address Key uses, and the other specifying the value of the Address Key."
     items:
       anyOf:
         - type: object
-          description: Type of address key.
+          description: Coding system of the address key.
           properties:
             url:
               type: string
-              description: Type key, indicating that this extension describes the type of address key in use.
+              description: Always 'type'.
               default: type
               readOnly: true
             valueCoding:
@@ -25,21 +25,21 @@ properties:
               properties:
                 system:
                   type: string
-                  description: URL of specification system, value set, or documentation.
+                  description: URL of Code System that describes available Address Key formats.
                   default: "https://simplifier.net/guide/UKCoreDecember2019/CodeSystemUKCore-AddressKeyType"
                   readOnly: true
                 code:
                   type: string
-                  description: Code system to be used.
+                  description: Address Key system. Always 'PAF'.
                   default: "PAF"
                   example: "PAF"
                   readOnly: true
         - type: object
-          description: Value of address key.
+          description: Value of the address key.
           properties:
             url:
               type: string
-              description: Value key, indicating that his extension describes the value of the address key in use.
+              description: Always 'value'.
               default: value
               example: value
               readOnly: true

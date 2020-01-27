@@ -3,7 +3,7 @@ description: Wrapper object for death notification details.
 properties:
   url:
     type: string
-    description: Definition of extension.
+    description: Definition of death notification extension.
     default: https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus
     readOnly: true
   extension:
