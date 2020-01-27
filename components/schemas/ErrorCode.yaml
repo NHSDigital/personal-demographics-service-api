@@ -9,7 +9,7 @@ properties:
         system:
           type: string
           description: URI of the coding system specification.
-          example: https://my.spec.nhs.net/mycodingsystem
+          example: https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode
         version:
           type: string
           description: Version of the coding system in use.

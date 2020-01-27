@@ -287,7 +287,7 @@ paths:
                         code: required
                         details:
                           coding:
-                            - system: "https://my.spec.nhs.net/mycodingsystem"
+                            - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
                               version: '1'
                               code: tooFewSearchParams
                               display: Not enough search parameters were provided to be able to make a search
@@ -300,7 +300,7 @@ paths:
                         code: value
                         details:
                           coding:
-                            - system: "https://my.spec.nhs.net/mycodingsystem"
+                            - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
                               version: '1'
                               code: invalidDateFormat
                               display: "birthdate has invalid format: 2000 is not in YYYY-MM-DD format"
