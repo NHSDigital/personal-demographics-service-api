@@ -12,4 +12,5 @@
 ## Merge Checklist
 * [ ] Is this PR linked to a ticket in JIRA or Github issues?
 * [ ] Does the branch build in CI?
-* [ ] If there are any changes to the CI process, have they been verified?
+* [ ] If there are any changes to the CI process, have they been verified (with evidence)?
+* [ ] If any new libraries are added, are their licenses compatible with the project license?
