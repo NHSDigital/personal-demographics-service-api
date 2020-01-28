@@ -13,6 +13,9 @@ jobs:
             pip install --user poetry
             make install
       - run:
+          name: Check licenses
+          command: make check-licenses
+      - run:
           name: Lint spec
           command: make test
       - run:
