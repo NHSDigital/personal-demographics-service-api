@@ -7,7 +7,7 @@ install-python:
 
 install-node:
 	npm install --dev
-	cd stubserver && npm install
+	cd sandbox && npm install
 
 install-hooks:
 	cp scripts/pre-commit .git/hooks/pre-commit

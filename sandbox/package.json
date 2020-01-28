@@ -1,7 +1,7 @@
 {
-  "name": "pds-api-stubserver",
+  "name": "pds-api-sandbox",
   "version": "0.0.1",
-  "description": "Patient Information API Stub/Mock Server",
+  "description": "Patient Information API Sandbox Server",
   "main": "app.js",
   "scripts": {
     "start": "node app.js --use_strict",
