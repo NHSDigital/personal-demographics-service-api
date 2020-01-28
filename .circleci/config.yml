@@ -27,7 +27,7 @@ jobs:
           name: Compile spec
           command: make publish
       - store_artifacts:
-          path: ./dist/patient-information-api.json
+          path: ./dist/patient-demographics-service-api.json
       - run:
           name: Deploy to Apigee (if master)
           command: scripts/deploy.sh

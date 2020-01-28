@@ -33,7 +33,7 @@ clean:
 
 generate-examples: publish clean
 	mkdir -p dist/examples
-	poetry run python scripts/generate_examples.py dist/patient-information-api.json dist/examples
+	poetry run python scripts/generate_examples.py dist/patient-demographics-service-api.json dist/examples
 
 check-licenses:
 	npm run check-licenses

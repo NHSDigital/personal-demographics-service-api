@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "description": "OAS (Swagger v3) API Definition for Patient Information",
   "scripts": {
-    "test": "speccy lint patient-information-api.yaml",
-    "publish": "mkdir -p dist && node_modules/.bin/speccy resolve patient-information-api.yaml -i | poetry run python scripts/yaml2json.py > dist/patient-information-api.json",
-    "serve": "node_modules/.bin/speccy serve patient-information-api.yaml",
+    "test": "speccy lint specification/patient-demographics-service-api.yaml",
+    "publish": "mkdir -p dist && node_modules/.bin/speccy resolve specification/patient-demographics-service-api.yaml -i | poetry run python scripts/yaml2json.py > dist/patient-demographics-service-api.json",
+    "serve": "node_modules/.bin/speccy serve specification/patient-demographics-service-api.yaml",
     "check-licenses": "node_modules/.bin/license-checker --failOn GPL --failOn LGPL"
   },
   "author": "NHS Digital",
