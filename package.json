@@ -9,7 +9,7 @@
     "check-licenses": "node_modules/.bin/license-checker --failOn GPL --failOn LGPL"
   },
   "author": "NHS Digital",
-  "license": "ISC",
+  "license": "MIT",
   "homepage": "https://bitbucket.org/laurencesmith/apim-definitions#readme",
   "dependencies": {
     "speccy": "^0.11.0"
