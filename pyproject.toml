@@ -17,7 +17,7 @@ authors = [
 
 readme = 'README.md'
 
-repository = ""
+repository = "https://github.com/NHSDigital/personal-demographics-service-api"
 homepage = ""
 
 keywords = ["healthcare", "uk", "nhs", "demographics"]
@@ -33,6 +33,7 @@ jsonpath-rw = "^1.4.0"
 [tool.poetry.dev-dependencies]
 flake8 = "^3.7.9"
 black = "^19.10b0"
+pip-licenses = "^2.0.1"
 
 
 [tool.poetry.scripts]

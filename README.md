@@ -1,8 +1,13 @@
 # personal-demographics-service-api
 Specs and tooling for Personal Demographics Service FHIR API.
 
-## APIs
-* Patient Information API
+## Contributing
+Contributions to this project are welcome from anyone, providing they conform to the [guidelines for contribution](https://github.com/NHSDigital/personal-demographics-service-api/blob/master/CONTRIBUTING.md) and [community code of conduct](https://github.com/NHSDigital/personal-demographics-service-api/blob/master/CODE_OF_CONDUCT.md).
+
+### Licensing
+This code is dual licensed under the MIT license and the OGL (Open Government License). Any new work added to this repository must conform to the conditions of these licenses. In particular this means that this project may not depend on GPL- or AGPL-licensed libraries, as these would violated the terms of those libraries' licenses.
+
+The contents of this repository are protected by Crown Copyright (C).
 
 ## Development
 

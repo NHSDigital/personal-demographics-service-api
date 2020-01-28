@@ -1,9 +1,0 @@
-type: array
-description: List of addresses associated with a person.
-items:
-  $ref: "Address.yaml"
-# TODO: find a way to model no fixed address
-# no_fixed_address: 
-#   description: Set to true if the patient has no fixed, usual address. Usual address should be null if this is true.
-#   type: boolean
-#   default: false

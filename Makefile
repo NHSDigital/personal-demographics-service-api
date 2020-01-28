@@ -7,7 +7,7 @@ install-python:
 
 install-node:
 	npm install --dev
-	cd stubserver && npm install
+	cd sandbox && npm install
 
 install-hooks:
 	cp scripts/pre-commit .git/hooks/pre-commit
@@ -33,4 +33,9 @@ clean:
 
 generate-examples: publish clean
 	mkdir -p dist/examples
-	poetry run python scripts/generate_examples.py dist/patient-information-api.json dist/examples
+	poetry run python scripts/generate_examples.py dist/patient-demographics-service-api.json dist/examples
+
+check-licenses:
+	npm run check-licenses
+	scripts/check_python_licenses.sh
+
