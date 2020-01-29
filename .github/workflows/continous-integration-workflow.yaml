@@ -1,0 +1,46 @@
+name: Build Jobs
+
+on:
+  push:
+    branches:
+      - 'APM-247-github-actions'
+
+jobs:
+  build:
+    name: Deploy Revision
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install default-jre default-jdk npm
+          pip install --user poetry
+          make install
+
+      - name: Check licenses
+        run: make check-licenses
+
+      - name: Lint Spec
+        run: make test
+
+      - name: Check resources are valid FHIR 4.0.1
+        run: make validate
+
+      - name: Store artifact
+        uses: actions/upload-artifact@v1
+        with:
+          path: /tmp/validation.txt
+
+      - name: Compile spec
+        run: make publish
+
+      - name: Store artifact
+        uses: actions/upload-artifact@v1
+        with:
+          path: ./dist/patient-demographics-service-api.json
+
+      - name: Deploy to Apigee (if master)
+        run: scripts/deploy.sh
