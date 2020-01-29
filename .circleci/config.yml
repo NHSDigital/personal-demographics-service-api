@@ -26,6 +26,9 @@ jobs:
       - run:
           name: Compile spec
           command: make publish
+      - run:
+          name: Tag and release
+          command: scripts/tag-versions.sh
       - store_artifacts:
           path: ./dist/patient-demographics-service-api.json
       - run:
