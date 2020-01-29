@@ -13,12 +13,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install dependencies
-        run: sudo apt update
-        run: sudo apt install default-jre default-jdk npm
-        run: pip install --user poetry
-        run: which poetry
-        run: make install
+      - run: sudo apt update
+      - run: sudo apt install default-jre default-jdk npm
+      - run: pip install --user poetry
+      - run: which poetry
+      - run: make install
 
       - name: Check licenses
         run: make check-licenses
