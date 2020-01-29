@@ -101,7 +101,7 @@ const preResponse = function (request, h) {
             code: error.data.operationOutcomeCode,
             details: {
                 coding: [{
-                    system: "https://my.spec.nhs.net/mycodingsystem",
+                    system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
                     version: 1,
                     code: error.data.apiErrorCode,
                     display: error.message

@@ -361,7 +361,7 @@ paths:
                     code: value
                     details:
                       coding:
-                        - system: "https://my.spec.nhs.net/mycodingsystem"
+                        - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
                           version: '1'
                           code: invalidNHSNumber
                           display: NHS Number 9000000000 is not a valid NHS number
@@ -378,7 +378,7 @@ paths:
                     code: not-found
                     details:
                       coding:
-                        - system: "https://my.spec.nhs.net/mycodingsystem"
+                        - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
                           version: '1'
                           code: patientNotFound
                           display: Patient with NHS number 9111231130 could not be found
@@ -485,7 +485,7 @@ paths:
                         code: required
                         details:
                           coding:
-                            - system: "https://my.spec.nhs.net/mycodingsystem"
+                            - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
                               version: '1'
                               code: versionNotSupplied
                               display: If-Match header must be supplied to update this resource
@@ -498,7 +498,7 @@ paths:
                         code: value
                         details:
                           coding:
-                            - system: "https://my.spec.nhs.net/mycodingsystem"
+                            - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
                               version: '1'
                               code: invalidNHSNumber
                               display: NHS Number 9000000000 is not a valid NHS number
@@ -511,7 +511,7 @@ paths:
                         code: required
                         details:
                           coding:
-                            - system: "https://my.spec.nhs.net/mycodingsystem"
+                            - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
                               version: '1'
                               code: noPatchesSubmitted
                               display: No patches submitted
@@ -524,7 +524,7 @@ paths:
                         code: value
                         details:
                           coding:
-                            - system: "https://my.spec.nhs.net/mycodingsystem"
+                            - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
                               version: '1'
                               code: invalidPatchOperation
                               display: "Invalid patch: Cannot perform the operation at a path that does not exist"
@@ -541,7 +541,7 @@ paths:
                     code: not-found
                     details:
                       coding:
-                        - system: "https://my.spec.nhs.net/mycodingsystem"
+                        - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
                           version: '1'
                           code: patientNotFound
                           display: Patient with NHS number 9111231130 could not be found
@@ -560,7 +560,7 @@ paths:
                     code: value
                     details:
                       coding:
-                        - system: "https://my.spec.nhs.net/mycodingsystem"
+                        - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
                           version: '1'
                           code: unsupportedMediaType
                           display: Must be application/json-patch+json
@@ -611,7 +611,7 @@ components:
                 code: conflict
                 details:
                   coding:
-                    - system: "https://my.spec.nhs.net/mycodingsystem"
+                    - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
                       version: '1'
                       code: versionMismatch
                       display: This resource has changed since you last read. Please re-read and try again with the new version number.
