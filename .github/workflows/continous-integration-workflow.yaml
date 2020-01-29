@@ -19,6 +19,7 @@ jobs:
           sudo apt install default-jre default-jdk npm
           pip install --user poetry
           make install
+        shell: bash
 
       - name: Check licenses
         run: make check-licenses
