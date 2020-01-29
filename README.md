@@ -1,5 +1,11 @@
 # personal-demographics-service-api
-Specs and tooling for Personal Demographics Service FHIR API.
+The specification for a RESTful HL7® FHIR® API to the *Personal Demographics Service*.
+
+* `specification/` [Open API Specification](https://swagger.io/docs/specification/about/) describing the endpoints, methods, and messages exchanged by the API. Used to generate interactive documentation; the contract between the API and its consumers.
+* `sandbox/` A NodeJS application implementing a mock implementation of the service. Used as a back-end service to the interactive documentation to illustrate interactions and concepts. Not intended to provide an exhaustive/faithful environment suitable for full development and testing.
+* `scripts/` Utilities helpful to developers of this specification.
+
+Documentation for application developers – consumers of the API this project describes – can be found on the [NHS Digital Developer Hub](https://emea-demo8-nhsdportal.apigee.io/).
 
 ## Contributing
 Contributions to this project are welcome from anyone, providing they conform to the [guidelines for contribution](https://github.com/NHSDigital/personal-demographics-service-api/blob/master/CONTRIBUTING.md) and [community code of conduct](https://github.com/NHSDigital/personal-demographics-service-api/blob/master/CODE_OF_CONDUCT.md).
