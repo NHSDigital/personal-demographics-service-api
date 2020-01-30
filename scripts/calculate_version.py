@@ -1,3 +1,21 @@
+#!/usr/bin/env python
+
+"""
+calculate_versions.py
+
+A script that calculates a semver-compliant version string from a git
+repository's commit messages, using commands embedded in commit messages.
+
+Commands can be included in commit messages like '+major APM-123 Do thing'
+
+Commands:
+    +major                 Increment the major version
+    +minor                 Increment the minor version
+    +setstatus <status>    Set the prerelease status to <status>
+    +clearstatus           Clear the prerelease status
+    +startversioning       Reset version to v1.0.0-alpha
+"""
+
 import git
 import semver
 import os.path
@@ -29,6 +47,18 @@ def is_status_set_command(c):
 
 is_major_inc = commit_message_contains('+major')
 is_minor_inc = commit_message_contains('+minor')
+
+
+def without_empty(commits):
+    pairs = zip(commits, commits[1:])
+
+    for fst, snd in pairs:
+        if fst.tree != snd.tree:
+            # This means 'fst' isn't empty
+            yield fst
+
+    # Have to remember to yield the last one
+    yield commits[-1]
 
 
 def calculate_version(base_major=1, base_minor=0, base_revision=0, base_pre='alpha'):
@@ -71,6 +101,7 @@ def calculate_version(base_major=1, base_minor=0, base_revision=0, base_pre='alp
 
     # Now increment patch number for every commit since the last patch
     commits = list(itertools.takewhile(lambda c: not is_minor_inc(c), commits))
+    commits = list(without_empty(commits))
     patch = len(commits)
 
     return 'v' + str(semver.VersionInfo(major, minor, patch, pre))
