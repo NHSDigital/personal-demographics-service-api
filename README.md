@@ -1,11 +1,17 @@
 # personal-demographics-service-api
-Specs and tooling for Personal Demographics Service FHIR API.
+This is a RESTful HL7® FHIR® API specification for the *Personal Demographics Service*.
+
+* `specification/` This [Open API Specification](https://swagger.io/docs/specification/about/) describes the endpoints, methods and messages exchanged by the API. Use it to generate interactive documentation; the contract between the API and its consumers.
+* `sandbox/` This NodeJS application implements a mock implementation of the service. Use it as a back-end service to the interactive documentation to illustrate interactions and concepts. It is not intended to provide an exhaustive/faithful environment suitable for full development and testing.
+* `scripts/` Utilities helpful to developers of this specification.
+
+Consumers of the API will find developer documentation on the [NHS Digital Developer Hub](https://emea-demo8-nhsdportal.apigee.io/).
 
 ## Contributing
-Contributions to this project are welcome from anyone, providing they conform to the [guidelines for contribution](https://github.com/NHSDigital/personal-demographics-service-api/blob/master/CONTRIBUTING.md) and [community code of conduct](https://github.com/NHSDigital/personal-demographics-service-api/blob/master/CODE_OF_CONDUCT.md).
+Contributions to this project are welcome from anyone, providing that they conform to the [guidelines for contribution](https://github.com/NHSDigital/personal-demographics-service-api/blob/master/CONTRIBUTING.md) and the [community code of conduct](https://github.com/NHSDigital/personal-demographics-service-api/blob/master/CODE_OF_CONDUCT.md).
 
 ### Licensing
-This code is dual licensed under the MIT license and the OGL (Open Government License). Any new work added to this repository must conform to the conditions of these licenses. In particular this means that this project may not depend on GPL- or AGPL-licensed libraries, as these would violated the terms of those libraries' licenses.
+This code is dual licensed under the MIT license and the OGL (Open Government License). Any new work added to this repository must conform to the conditions of these licenses. In particular this means that this project may not depend on GPL-licensed or AGPL-licensed libraries, as these would violate the terms of those libraries' licenses.
 
 The contents of this repository are protected by Crown Copyright (C).
 
@@ -22,14 +28,15 @@ $ make install
 ```
 
 #### Updating hooks
-There are some pre-commit hooks you can install to ensure you can't commit invalid spec changes by accident. These are run
-in CI as well, but it's useful to run them locally too.
+You can install some pre-commit hooks to ensure you can't commit invalid spec changes by accident. These are also run
+in CI, but it's useful to run them locally too.
+
 ```
 $ make install-hooks
 ```
 
 ### Make commands
-There's some make commands that alias some of the below functionality:
+There are `make` commands that alias some of this functionality:
  * `test` -- Lints the definition
  * `publish` -- Outputs the specification as a **single file** into the `publish/` directory
  * `serve` -- Serves a preview of the specification in human-readable format
@@ -40,8 +47,8 @@ There's some make commands that alias some of the below functionality:
 
 ### VS Code Plugins
 
- * **openapi-lint** will resolve links and validate an entire specs with the 'OpenAPI Resolve and Validate' command
- * **OpenAPI (Swagger) Editor** provides sidebar navigation
+ * [openapi-lint](https://marketplace.visualstudio.com/items?itemName=mermade.openapi-lint) resolves links and validates entire spec with the 'OpenAPI Resolve and Validate' command
+ * [OpenAPI (Swagger) Editor](https://marketplace.visualstudio.com/items?itemName=42Crunch.vscode-openapi) provides sidebar navigation
 
 
 ### Emacs Plugins
@@ -61,15 +68,15 @@ Speccy does the lifting for the following npm scripts:
 
 (Workflow detailed in a [post](https://developerjack.com/blog/2018/maintaining-large-design-first-api-specs/) on the *developerjack* blog.)
 
-:bulb: `publish` command is useful when uploading to Apigee which requires the spec as a single file. (There may be a way to provide a multi-file spec, update this doc if you find out.)
+:bulb: The `publish` command is useful when uploading to Apigee which requires the spec as a single file.
 
 ### Caveats
 
 #### Swagger UI
-The swagger ui unfortunately doesn't render `$ref`s in examples correctly, so using `speccy serve` is recommended instead.
+Swagger UI unfortunately doesn't correctly render `$ref`s in examples, so use `speccy serve` instead.
 
 #### Apigee Portal
-The Apigee portal will not automatically pull examples from schemas, so they must be specified manually.
+The Apigee portal will not automatically pull examples from schemas, you must specify them manually.
 
 ### Postman Collection
 
