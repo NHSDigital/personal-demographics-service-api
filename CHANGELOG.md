@@ -2,6 +2,7 @@
 
 ## 2020-01-31
 * Removed ods-site-code as a possible value for code system to identify a nominated pharmacy on Patient.
+* Fix some mistakes in the README that referred to a nonexistent directory: `publish` -> `dist`
 
 ## 2020-01-30
 * Added automatic version calculation
