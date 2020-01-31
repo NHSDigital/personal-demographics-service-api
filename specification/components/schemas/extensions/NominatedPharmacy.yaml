@@ -21,10 +21,8 @@ properties:
           system:
             type: string
             description: ODS code system URL.
-            example: https://fhir.nhs.uk/Id/ods-organization-code
-            enum:
-              - https://fhir.nhs.uk/Id/ods-organization-code
-              - https://fhir.nhs.uk/Id/ods-site-code
+            default: https://fhir.nhs.uk/Id/ods-organization-code
+            readOnly: true
           value:
             type: string
             description: ODS code.
