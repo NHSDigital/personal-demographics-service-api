@@ -38,9 +38,8 @@ $ make install-hooks
 ### Make commands
 There are `make` commands that alias some of this functionality:
  * `test` -- Lints the definition
- * `publish` -- Outputs the specification as a **single file** into the `publish/` directory
+ * `publish` -- Outputs the specification as a **single file** into the `dist/` directory
  * `serve` -- Serves a preview of the specification in human-readable format
- * `release` -- copy the latest file from `publish/` to `public/`
  * `generate-examples` -- generate example objects from the specification
  * `validate` -- validate generated examples against FHIR R4
 
@@ -62,9 +61,8 @@ There are `make` commands that alias some of this functionality:
 Speccy does the lifting for the following npm scripts:
 
  * `test` -- Lints the definition
- * `publish` -- Outputs the specification as a **single file** into the `publish/` directory
+ * `publish` -- Outputs the specification as a **single file** into the `dist/` directory
  * `serve` -- Serves a preview of the specification in human-readable format
- * `release` -- copy the latest file from `publish/` to `public/`
 
 (Workflow detailed in a [post](https://developerjack.com/blog/2018/maintaining-large-design-first-api-specs/) on the *developerjack* blog.)
 

@@ -1,5 +1,8 @@
 # Changelog
 
+## 2020-01-31
+* Fix some mistakes in the README that referred to a nonexistent directory: `publish` -> `dist`
+
 ## 2020-01-30
 * Added automatic version calculation
 * `make publish` now adds version into output oas file
