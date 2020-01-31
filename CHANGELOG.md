@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2020-01-31
+* Updated pull request template
 * Updated CONTRIBUTING.md
 * Added a make target to update examples
 * Removed a documentation reference to ods-site-code
