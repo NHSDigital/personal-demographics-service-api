@@ -16,7 +16,7 @@ properties:
         example: 'https://directory.spineservices.nhs.uk/STU3/Organization/Y12345'
       identifier:
         type: object
-        description: ODS Organisation or Site Code.
+        description: ODS Organisation Code.
         properties:
           system:
             type: string

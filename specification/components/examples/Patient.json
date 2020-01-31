@@ -53,10 +53,13 @@
       "use": "work",
       "type": "both",
       "line": [
-        "4 Baker Street",
-        "Leeds"
+        "NHS Digital",
+        "Whitehall II",
+        "Whitehall Quay",
+        "Leeds",
+        "West Yorkshire"
       ],
-      "postalCode": "LS1 6AE",
+      "postalCode": "LS1 4HG",
       "extension": [
         {
           "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-AddressKey",

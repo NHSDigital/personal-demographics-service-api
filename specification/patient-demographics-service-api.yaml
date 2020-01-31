@@ -104,7 +104,7 @@ info:
     email: 'tbc-api-support@nhs.net'
 
 servers:
-  - url: https://emea-demo8-test.apigee.net/v1
+  - url: https://emea-demo8-test.apigee.net/personal-demographics
     description: Sandbox service
 
 tags:

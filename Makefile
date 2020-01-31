@@ -35,6 +35,10 @@ generate-examples: publish clean
 	mkdir -p dist/examples
 	poetry run python scripts/generate_examples.py dist/patient-demographics-service-api.json dist/examples
 
+update-examples: generate-examples
+	jq -rM . <dist/examples/resources/Patient.json >specification/components/examples/Patient.json
+	make publish
+
 check-licenses:
 	npm run check-licenses
 	scripts/check_python_licenses.sh
