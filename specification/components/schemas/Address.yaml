@@ -22,11 +22,14 @@ properties:
     items:
       type: string
     example:
-      - 4 Baker Street
+      - NHS Digital
+      - Whitehall II
+      - Whitehall Quay
       - Leeds
+      - West Yorkshire
   postalCode:
     type: string
-    example: "LS1 6AE"
+    example: "LS1 4HG"
   extension:
     type: array
     description: FHIR extension elements
