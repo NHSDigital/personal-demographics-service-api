@@ -245,7 +245,7 @@ paths:
                   entry:
                     type: array
                     description: |
-                      An list of matched patients. Empty if none found. For a simple search there is never more than one match.
+                      A list of matched patients. Empty if none found. For a simple search there is never more than one match.
                       For a weighted search, the patients are ordered by match weight, best first (based on the `score` field).
                     items:
                       type: object
