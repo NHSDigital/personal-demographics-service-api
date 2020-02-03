@@ -3,11 +3,24 @@ properties:
   use:
     type: string
     description: How this name should be used.
-    # enum: [usual, preferred, alias, bachelor, maiden, birth, other]
     enum: [usual, official, temp, nickname, anonymous, old, maiden]
     example: usual
   period:
-    $ref: "DateRange.yaml"
+    type: object
+    description: The dates between which this name was associated with this person.
+    required:
+      - start
+    properties:
+      start:
+        type: string
+        format: date
+        description: Date which this person was first known by this name, in format `yyyy-mm-dd`.
+        example: 2020-01-01
+      end:
+        type: string
+        format: date
+        description: Date at which person was no longer known by this name, in format `yyyy-mm-dd`.
+        example: 2020-12-31
   given:
     type: array
     description: Given names, including any middle names.

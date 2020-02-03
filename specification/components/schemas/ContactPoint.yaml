@@ -1,19 +1,21 @@
 description: A telecommunication address.
 type: object
 properties:
-  # id:
-  #   type: string
-  #   example: '123'
-  #   description: 
-  # _links:
-  #   type: object
-  #   properties:
-  #     self:
-  #       type: string
-  #       format: url
-  #       example: '/Patient/1234567890/ContactPoint/123'
   period:
-    $ref: "DateRange.yaml"
+    type: object
+    description: The dates between which this person could be communicated with via this contact method.
+    properties:
+      start:
+        type: string
+        format: date
+        description: Date which this person was first able to be contacted by this method, in format `yyyy-mm-dd`.
+        example: 2020-01-01
+        # required: true
+      end:
+        type: string
+        format: date
+        description: Date at which person was no longer able to be contacted by this method, in format `yyyy-mm-dd`.
+        example: 2020-12-31
   system:
     description: Means of communication, such as by phone, text, email, etc.
     type: string

@@ -6,7 +6,21 @@ properties:
     readOnly: true
     example: '123'
   period:
-    $ref: "DateRange.yaml"
+    type: object
+    description: The dates between which this address is linked to this patient.
+    required:
+      - start
+    properties:
+      start:
+        type: string
+        format: date
+        description: Date which patient became associated with this address, in format `yyyy-mm-dd`.
+        example: 2020-01-01
+      end:
+        type: string
+        format: date
+        description: Date at which patient is no longer associated with this address, in format `yyyy-mm-dd`.
+        example: 2020-12-31
   use:
     type: string
     description: Purpose of this address.
