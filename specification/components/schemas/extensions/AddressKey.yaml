@@ -1,49 +1,51 @@
 type: object
-description: Unique identifier for an address
+description: Unique identifier for an address.
 properties:
   url:
     type: string
-    description: Definition of extension
+    description: Definition of extension.
     default: https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-AddressKey
     readOnly: true
   extension:
     type: array
-    description: Specification of address key system and address key value
+    description: Specification of address key system and address key value.
     items:
       anyOf:
         - type: object
-          description: Type of address key
+          description: Type of address key.
           properties:
             url:
               type: string
-              description: path of specification
+              description: Type key, indicating that this extension describes the type of address key in use.
               default: type
               readOnly: true
             valueCoding:
               type: object
-              description: URL of specification of address key format
+              description: URL of specification of address key format.
               properties:
                 system:
                   type: string
-                  description: URL of specification system, value set, or documentation
+                  description: URL of specification system, value set, or documentation.
                   default: "https://simplifier.net/guide/UKCoreDecember2019/CodeSystemUKCore-AddressKeyType"
                   readOnly: true
                 code:
                   type: string
-                  description: Code system to be used
+                  description: Code system to be used.
                   default: "PAF"
+                  example: "PAF"
                   readOnly: true
         - type: object
-          description: Value of address key
+          description: Value of address key.
           properties:
             url:
               type: string
-              description: path of specification
+              description: Value key, indicating that his extension describes the value of the address key in use.
               default: value
+              example: value
               readOnly: true
             valueString:
               type: string
-              description: Address key in PAF format
+              description: Address key in PAF format. An 8 digit number including leading zeroes, formatted as a string.
               minLength: 8
               maxLength: 8
               pattern: '^[0-9]{8}$'

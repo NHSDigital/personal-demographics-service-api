@@ -33,6 +33,7 @@ properties:
     example: both
   line:
     type: array
+    description: All lines of the address except the postal code.
     items:
       type: string
     example:
@@ -43,9 +44,10 @@ properties:
       - West Yorkshire
   postalCode:
     type: string
+    description: Postal code of this address.
     example: "LS1 4HG"
   extension:
     type: array
-    description: FHIR extension elements
+    description: FHIR extension elements.
     items:
       $ref: 'extensions/AddressKey.yaml'

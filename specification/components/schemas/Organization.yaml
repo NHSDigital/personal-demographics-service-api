@@ -8,15 +8,15 @@ properties:
   reference:
     type: string
     format: url
-    description: URL or internal reference to a FHIR ORganization Resources
+    description: URL or internal reference to a FHIR Organization Resources.
     example: 'https://directory.spineservices.nhs.uk/STU3/Organization/Y12345'
   type:
     type: array
-    description: Organization types this organization belongs to.
+    description: Organization types this Organization belongs to.
     items:
       $ref: 'codeable/OrganizationType.yaml'
   resourceType:
     type: string
-    description: FHIR resource type
+    description: FHIR resource type.
     default: Organization
     readOnly: true

@@ -105,7 +105,7 @@ info:
 
 servers:
   - url: https://emea-demo8-test.apigee.net/personal-demographics
-    description: Sandbox service
+    description: Sandbox service.
 
 tags:
   - name: patients
@@ -116,7 +116,7 @@ paths:
       summary: Search for patient
       operationId: search-patient
       externalDocs:
-        description: ODS codes and documentation
+        description: ODS codes and documentation.
         url: https://digital.nhs.uk/services/organisation-data-service
       description: |
         ## Overview
@@ -425,7 +425,7 @@ paths:
       tags:
         - patients
       externalDocs:
-        description: IETF RFC
+        description: IETF RFC 6902, which defines json-patch.
         url: https://tools.ietf.org/html/rfc6902
       parameters:
         - $ref: '#/components/parameters/IfMatch'

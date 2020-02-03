@@ -8,15 +8,15 @@ properties:
       properties:
         system:
           type: string
-          description: URI of the coding system specification
+          description: URI of the coding system specification.
           example: https://nhsconnect.github.io/FHIR-R4-Core-IG-Prototype/CodeSystem-UKCore-HumanLanguage.html
         version:
           type: string
-          description: Version of the coding system in use
+          description: Version of the coding system in use.
           example: 4.0.1
         code:
           type: string
-          description: Symbol in syntax defined by the system
+          description: Symbol in syntax defined by the system.
           example: prov
           enum:
             - prov
@@ -32,7 +32,7 @@ properties:
             - other
         display:
           type: string
-          description: Representation defined by the system
+          description: Representation defined by the system.
           example: Healthcare Provider
           enum:
             - Healthcare Provider
