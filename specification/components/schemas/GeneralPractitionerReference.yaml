@@ -1,22 +1,12 @@
-description: GP Practice or Practitioner with whom the patient is or was registered. 
+description: General practice (not practitioner) with which the patient is or was registered. 
 type: object
-required:
-  - type
-  - url
-  - ods_code
-  - business_effective
 properties:
   id:
-    description: The ODS code of the registered practice or practitioner.
+    description: Organisation code for the registered general practice, as held in the [Organisation Data Service](https://developer.nhs.uk/apis/ods/).
     type: string
     pattern: ^[0-9A-Z]+$
     example: Y12345
-  type:
-    description: Indicates whether the patient is registered to a practice, an individual practitioner, or a practitioner role.
-    type: string
-    enum: [Practitioner, Organization]
-    example: Organization
   reference:
-    description: Relative link to practitioner resource.
+    description: URL for the FHIR Organization resource for the registered general practice. See [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details.
     type: string
     example: "https://directory.spineservices.nhs.uk/STU3/Organization/Y12345"
