@@ -209,7 +209,7 @@ paths:
           schema:
             type: string
         - name: organization
-          description: The ODS code of the patient's registered general practice. Do not use in simple searches.
+          description: The organisation code of the patient's registered general practice, as held in the [Organisation Data Service](https://developer.nhs.uk/apis/ods/).
           example: Y00001
           in: query
           required: false
