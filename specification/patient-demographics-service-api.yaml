@@ -590,10 +590,6 @@ components:
       $ref: 'components/schemas/Patient.yaml'
     OperationOutcome:
       $ref: 'components/schemas/OperationOutcome.yaml'
-    Organization:
-      $ref: 'components/schemas/Organization.yaml'
-    Practitioner:
-      $ref: 'components/schemas/Practitioner.yaml'
   responses:
     412PreconditionFailed:
       description: |
