@@ -5,7 +5,7 @@
   "scripts": {
     "test": "speccy lint specification/patient-demographics-service-api.yaml",
     "publish": "mkdir -p dist && node_modules/.bin/speccy resolve specification/patient-demographics-service-api.yaml -i | poetry run python scripts/yaml2json.py | poetry run python scripts/set_version.py > dist/patient-demographics-service-api.json",
-    "serve": "node_modules/.bin/speccy serve specification/patient-demographics-service-api.yaml",
+    "serve": "node_modules/.bin/speccy serve dist/patient-demographics-service-api.json",
     "check-licenses": "node_modules/.bin/license-checker --failOn GPL --failOn LGPL"
   },
   "author": "NHS Digital",

@@ -25,7 +25,7 @@ validate: generate-examples
 publish:
 	npm run publish 2> /dev/null
 
-serve: generate-examples
+serve: update-examples
 	npm run serve
 
 clean:
