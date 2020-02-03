@@ -1,5 +1,8 @@
 # Changelog
 
+## 2020-02-03
+* Updated API spec to clarify meanings of nominated pharmacies and registered GPs
+
 ## 2020-01-31
 * Updated pull request template
 * Updated CONTRIBUTING.md
