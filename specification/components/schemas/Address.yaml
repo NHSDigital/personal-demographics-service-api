@@ -3,10 +3,25 @@ description: An address associated with a person.
 properties:
   id:
     type: string
+    description: Unique system identifier for this address.
     readOnly: true
     example: '123'
   period:
-    $ref: "DateRange.yaml"
+    type: object
+    description: The dates between which this address is linked to this patient.
+    required:
+      - start
+    properties:
+      start:
+        type: string
+        format: date
+        description: Date which patient became associated with this address, in format `yyyy-mm-dd`.
+        example: 2020-01-01
+      end:
+        type: string
+        format: date
+        description: Date at which patient is no longer associated with this address, in format `yyyy-mm-dd`.
+        example: 2020-12-31
   use:
     type: string
     description: Purpose of this address.
@@ -19,6 +34,7 @@ properties:
     example: both
   line:
     type: array
+    description: All lines of the address except the postal code.
     items:
       type: string
     example:
@@ -29,9 +45,10 @@ properties:
       - West Yorkshire
   postalCode:
     type: string
-    example: "LS1 4HG"
+    description: Postal code of the address.
+    example: "LS1 6AE"
   extension:
     type: array
-    description: FHIR extension elements
+    description: Postal address file (PAF) key associated with this address formatted as a FHIR extension. Empty if no PAF key for the address is known, or an object specifying the code system of the address key and the value of the address key. 
     items:
       $ref: 'extensions/AddressKey.yaml'

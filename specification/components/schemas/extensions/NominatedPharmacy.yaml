@@ -3,12 +3,12 @@ description: Wrapper object for the patient's nominated pharmacy.
 properties:
   url:
     type: string
-    description: URL of the FHIR extension definition for the patient's nominated pharmacy.
+    description: URL of specification of UKCore-NominatedPharmacy FHIR extension.
     default: https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-NominatedPharmacy
     readOnly: true
   valueReference:
     type: object
-    description: Another wrapper object for the patient's nominated pharmacy.
+    description: Reference to a Pharmacy Organization Resource.
     properties:
       reference:
         type: string

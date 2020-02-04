@@ -3,22 +3,24 @@ description: Human language.
 properties:
   coding:
     type: array
+    description: Exactly one language code.
+    maxItems: 1
     items:
       type: object
       properties:
         system:
           type: string
-          description: URI of the coding system specification
+          description: URL of the Language Code System. Always uses the 'UKCore-HumanLanguage' Code System.
           example: https://nhsconnect.github.io/FHIR-R4-Core-IG-Prototype/CodeSystem-UKCore-HumanLanguage.html
         version:
           type: string
-          description: Version of the coding system in use
+          description: Version of the language code system.
           example: 1.0.0
         code:
           type: string
-          description: Symbol in syntax defined by the system
+          description: Language code.
           example: en
         display:
           type: string
-          description: Representation defined by the system
+          description: Display-friendly representation of the language code.
           example: English
