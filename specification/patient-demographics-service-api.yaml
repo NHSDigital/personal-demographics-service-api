@@ -32,21 +32,32 @@ info:
     * nominated pharmacy (other related pharmacies coming soon)
     * consent information (coming soon)
     * related people (coming soon)
+    
+    Currently, this API can only be accessed by healthcare professionals, authenticated with an NHS smartcard or equivalent.
+    Unauthenticated access and citizen access are on the roadmap.
 
-    ## API status
+    ## Related APIs
+    The following APIs also give access to the Personal Demographics Service:
+    - [Personal Demographics Service (SMSP) API](#) - use this if you want to get PDS data without an authenticated end used (no smartcard required). It is, however, read-only and searches are limited to a single result.
+    - [Personal Demographics Service (HL7 V3) API](#) - use this if you want to use functions that are not yet available on the FHIR API.
+
+    Once our roadmap is complete, the above APIs will become redundant.
+
+    The following APIs are also related to this API:
+    - [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) - use this to get full details for the organisations related to the patient, such as their registered GP or nominated pharmacy.
+
+    ## API status and roadmap
     This API is in [alpha](/reference-guide#api-status) - expect significant breaking changes.
 
     It is currently only available for sandbox testing, not for integration testing or production use.
 
     The following items are on our roadmap, in rough priority order:
     - addition of data fields for consent information, related people and more information on nominated pharmacies
-    - move from alpha into beta
-    - authorisation for NHS staff using OAuth 2.0 and NHS Identity
     - integration testing service (target date: end of February 2020)
     - assurance process
     - production service - beta - search for patient and retrieve patient details (target date: end of March 2020)
     - production service - beta - update patient (target date: end of April 2020)
-    - unattended access - without smartcard - similar to the PDS SMSP API (target date to be confirmed)
+    - unauthenticated access - without NHS smartcard - similar to the PDS SMSP API (target date to be confirmed)
     - access for citizens using NHS Login (target date to be confirmed)
     - exit beta (target date: end of September 2020, subject to availability of beta testers)
 
@@ -86,11 +97,6 @@ info:
     - access for citizens, using NHS Login
     - unattended access - without smartcard - similar to the PDS SMSP API
     
-    ## Related APIs
-    The following APIs are also related to this API:
-
-    [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) - use this to get full details for the organisations related to the patient, such as their registered GP or nominated pharmacy.
-
     ## Testing
     You can test this API in:
     * our [sandbox environment](/testing#sandbox-testing) for initial developer testing
