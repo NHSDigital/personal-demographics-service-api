@@ -55,21 +55,37 @@ info:
     Please [get in touch](/help-and-support) with any comments or suggestions.
 
     ## Technology
-    This API is [RESTful](https://emea-demo8-nhsdportal.apigee.io/introduction-to-apis#basic-rest).
+    This API is [RESTful](/introduction-to-apis#basic-rest).
 
-    This API is compliant with the
-    [FHIR](https://emea-demo8-nhsdportal.apigee.io/introduction-to-apis#fhir-rest)
-    standard for health care data exchange.
-    Specifically, it complies with [FHIR R4](https://hl7.org/fhir/R4/).
+    It also conforms to the [FHIR](/introduction-to-apis#fhir-rest) global standard for health care data exchange.
+    Specifically, it is aligned with (FHIR UK Core)[https://digital.nhs.uk/services/fhir-uk-core], which is built on FHIR Release 4.
+    
+    You don’t need to know much about FHIR to use this API - FHIR APIs are just RESTful APIs that follow specific rules.
+    In particular:
+    - resource names are capitalised and singular, for example the `/Patient` not `/patients`
+    - array names are singular, for example `line` not `lines` for address lines
+    - data items that are country-specific and thus not included in the FHIR global base resources are usually wrapped in an `extension` object
+
+    This API is available on the Internet, although access using NHS smartcards (see below)
+    currently requires a connection to the [Health and Social Care Network (HSCN)](https://digital.nhs.uk/services/health-and-social-care-network).
 
     ## Authorisation
-    This API is [user-restricted](https://emea-demo8-nhsdportal.apigee.io/security-and-authorisation#user-restricted-apis).
-    It uses OAuth 2.0 to authorise both the calling system and end user.
+    This API is [user-restricted](/security-and-authorisation#user-restricted-apis),
+    meaning an end user must be present and authenticated to use it.
+
+    The end user must be:
+    - a healthcare professional
+    - strongly authenticated, using either an NHS smartcard or a modern alternative
+
+    The API uses Open ID Connect to authenticate the end user and OAuth 2.0 to authorise the calling system.
+    It supports the following security patterns:
+    * [user-restricted RESTful API - using NHS Identity - combined authentication and authorisation](/security-and-authorisation#user-restricted-restful-api-using-nhs-identity-combined-authentication-and-authorisation)
+    * [user-restricted RESTful API - using NHS Identity - separate authentication and authorisation](/security-and-authorisation#user-restricted-restful-api-using-nhs-identity-separate-authentication-and-authorisation)
     
-    In can currently only be accessed by NHS staff, using NHS Identity. In due course we plan to add the following:
+    In due course we plan to add the following:
     - access for citizens, using NHS Login
     - unattended access - without smartcard - similar to the PDS SMSP API
-
+    
     ## Related APIs
     The following APIs are also related to this API:
 
