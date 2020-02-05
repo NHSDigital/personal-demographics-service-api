@@ -147,9 +147,23 @@ paths:
         ## Search types
         This endpoint will search for a patient using one of four search types. The choice of search is automatic and will cascade as necessary until results are found. Searches are case-insensitive.
 
+        When searching aim to provide as much information as available to increase the likelihood of a single match.  When using weighted search the score should always be taken into consideration as a low score will indicate a low probability of the match being correct.
+        The number of results will be restricted, so try not to be too broad with wildcards. 
+
         ### Simple search
-        The fastest match, requires family_name, first_name, gender, birth_date.
+        The exact match search which requires a minimum of family, gender, birthdate.  Additionally if given_name, death-date or othergiven is supplied a simple trace will initially be performed. # TODO othergiven  
         Returns either a single matching patient or nothing. A limited set of parameters can be provided, all of which must exactly match the current information held.
+        This trace will always be attempted first if there are no wildcards supplied in the required parameters.
+
+        #### Minimum fields
+        * gender
+        * family
+        * birthdate
+
+        #### Additional fields
+        * given
+        * death-date
+        * other_given # TODO check on other given
 
         ### Advanced search
         Can return multiple matching patients if the information provided matches the current information held.
@@ -157,15 +171,50 @@ paths:
         Wildcards (\*) in name and postcode fields are supported.
         Wildcards must be preceeded by at least two characters, i.e. 'Br\*' is valid, but '\*cDougal' is not.
         Multiple wildcards are allowed, for example 'Br\*w\*' will match 'Brown' and 'Brower'.
+        A miniumum of 2 characters must be supplied for the family_name, for example Br will match Brown.
+        # TODO how to refer to the family and given names as using "family" and "given" doesn't flow well in the narrative
+
+        Ranges can be specified for birth_date and deceased_date using a subset of the FHIR date searching specifiers https://www.hl7.org/fhir/search.html#date the specifiers allowed are:
+        
+        | Specifier | Description |
+        | --- | --- |
+        | eq | the value matches exactly, this is the default |
+        | ge | the value for the parameter in the resource is greater than or equal to the provided value |
+        | le | the value for the parameter in the resource is less than or equal to the provided value |
+
+        Any time value in the resource is ignored for matching purposes. 
+
+        #### Minimum fields
+        * gender
+        * first two characters of family name (may use wildcards)
+
+        #### Additional fields
+        * birthdate (can be range)
+        * death-date (can be range)
+        * given (may use wildcards)
+        * other_given (may use wildcards)
+        * general-practitioner
+        * Postcode (may use wildcards)
+        * address_key # TODO check on this one
 
         ### Advanced historic search
         Identical to advanced except it also searches historic patient data, for example previous names or addresses.
 
         ### Weighted search
-        Returns a percentage match weight for each potentially matching patient. Always searches historical data. Requires at least one of the following combinations of search parameters:
-          - family_name, first_name, gender, birth_date (or range)
-          - family_name, gender, birth_date (or range), postcode
-          - first_name, gender, birth_date (or range), postcode
+        Returns a percentage match weight for each potentially matching patient. The scoring is based on Jaro Winkler scoring for names and postcodes and date proximity for birthdate.
+        The search is inexact as names will be normalised and then traced based on phonetic matching.
+        All matching results will be scored and then filtered to return a maximum of the top 50 scored results.  This search behaves differently as the parameters supplied are used in data groups with the best scoring results returned. 
+        Names will be transposed if no matches are found on the first pass.       
+        Ranges are not allowed.
+        Querying of historic is optional based on the _history parameter.
+        The query parameter _weighted must be supplied for this search to be attempted.
+
+        #### Parameter Groups
+        * family_name, first_name, gender, birth_date (or range)
+        * family_name, gender, birth_date (or range), postcode
+        * first_name, gender, birth_date (or range), postcode
+
+        # TODO need more info about weighted and how the weightings are done.  Include more info about the soundex and matching
 
         ## Sandbox testing
         You can test the following scenarios in our [sandbox environment](/testing#sandbox-testing):
@@ -185,15 +234,45 @@ paths:
       tags:
         - patients
       parameters:
+        - name: _unique-match
+          description: The search will return a result only if there is a single exact match result.  Otherwise the search will return no results for either no results or multiple results found.
+          example: true
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: _history
+          description: The search will look for matches in historic information such as previous names and addresses.
+          example: true
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: _weighted
+          description: The search will perform phonetic matching on names using soundex, transpose names and will score the results.  
+          example: true
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
         - name: family
-          description: "The patient's family name (surname)."
-          example: Smith
+          description: "The patient's family name (surname). If this is wildcarded only Advanced traces will be performed."
+          examples: 
+            simple:
+              value: Smith
+              summary: Will match the exact name for simple trace and weighted search
+            wildcarded:
+              value: 'Sm\*t\*'
+              summary: Wildcards must contain at least two characters, this will match Smith, Smythe
           in: query
           required: false
           schema:
             type: string
         - name: given
-          description: "The patient's given name(s)."
+          description: "The patient's given name(s).  If this is wildcarded only Advanced traces will be performed." # TODO how to specify upto 4 other given names for simple
           example: Jane
           in: query
           required: false
@@ -209,14 +288,20 @@ paths:
         - name: birthdate
           in: query
           description: "Birth date in the format `yyyy-mm-dd`. Required for simple searches. Other search types must provide either a birth date or a birth date range."
-          example: "2010-10-22"
+          examples:
+            simple: 
+              value: '2010-10-22'
+              description: Exact match date
+            range:
+              value: 'ge2010-10-22'
+              description: Matches 2010-10-22 or 2010-10-23
           required: false
           schema:
             type: string
             format: date
         - name: death-date
           in: query
-          description: "Date of death in the format `yyyy-mm-dd`."
+          description: "Date of death in the format `yyyy-mm-dd`.  Optional for a simple search, if a range is provded an advance trace will be performed."
           required: false
           example: "2018-03-20"
           schema:
@@ -224,14 +309,14 @@ paths:
             format: date
             example: "2018-03-20"
         - name: address-postcode
-          description: "White spaces in postcodes are significant, i.e. LS16AE will not match LS1 6AE."
+          description: "White spaces in postcodes are significant, i.e. LS16AE will not match LS1 6AE.  Postcodes can be wildcarded for advanced trace."
           example: LS1 6AE
           in: query
           required: false
           schema:
             type: string
-        - name: organization
-          description: The organisation code of the patient's registered general practice, as held in the [Organisation Data Service](https://developer.nhs.uk/apis/ods/).
+        - name: general-practitioner
+          description: "The ODS code of the patient's registered general practitioner. Used in advanced trace only."
           example: Y00001
           in: query
           required: false
@@ -267,7 +352,7 @@ paths:
                     type: array
                     description: |
                       A list of matched patients. Empty if none found. For a simple search there is never more than one match.
-                      For a weighted search, the patients are ordered by match weight, best first (based on the `score` field).
+                      For a weighted search, the patients are ordered by match weight, best first (based on the `score` field). A maximum of 50 patients will be returned.
                     items:
                       type: object
                       properties:
@@ -279,7 +364,7 @@ paths:
                           type: object
                           properties:
                             score:
-                              description: Search score from 0.0 to 1.0.
+                              description: Search score from 0.0 to 1.0.  For simple or advanced trace the score will always be 1.0
                               type: number
                               minimum: 0.0
                               maximum: 1.0
