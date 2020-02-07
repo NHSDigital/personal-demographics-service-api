@@ -18,12 +18,20 @@ jobs:
         with:
           python-version: 3.8
 
-      - run: sudo apt update
-      - run: sudo apt install default-jre default-jdk npm
-      - run: python -m pip install --upgrade pip setuptools wheel
-      - run: pip install poetry
-      - run: which poetry
-      - run: make install
+      - name: Update apt repositories
+        run: sudo apt update
+
+      - name: Install Java and Node
+        run: sudo apt install default-jre default-jdk npm
+
+      - name: Upgrade python packaging tools
+        run: python -m pip install --upgrade pip setuptools wheel
+
+      - name: Install poetry
+        run: pip install poetry
+
+      - name: Install repo
+        run: make install
 
       - name: Check licenses
         run: make check-licenses
@@ -37,6 +45,7 @@ jobs:
       - name: Store artifact
         uses: actions/upload-artifact@v1
         with:
+          name: validation.txt
           path: /tmp/validation.txt
 
       - name: Compile spec
