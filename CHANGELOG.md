@@ -1,5 +1,8 @@
 # Changelog
 
+## 2020-02-06
+* Updated API spec overview documentation to clarify FHIR extensions and other bits and bobs based on user feedback
+
 ## 2020-02-03
 * Updated API spec to make description formats consistent
 * Updated API spec to clarify meanings of nominated pharmacies and registered GPs
