@@ -42,18 +42,13 @@ jobs:
       - name: Check resources are valid FHIR 4.0.1
         run: make validate
 
-      - name: Store artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: validation.txt
-          path: /tmp/validation.txt
-
       - name: Compile spec
         run: make publish
 
-      - name: Store artifact
+      - name: Store distributable schema
         uses: actions/upload-artifact@v1
         with:
+          name: patient-demographics-service-api.json
           path: ./dist/patient-demographics-service-api.json
 
       - name: Deploy to Apigee (if master)
