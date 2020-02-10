@@ -56,7 +56,6 @@ jobs:
 
       - name: Deploy to Apigee (master only)
         env:
-          CIRCLE_BRANCH: $GITHUB_REF
           APIGEE_USER: ${{ secrets.APIGEE_USER }}
           APIGEE_PASS: ${{ secrets.APIGEE_PASS }}
           APIGEE_PORTAL_API_ID: ${{ secrets.APIGEE_PORTAL_API_ID }}
