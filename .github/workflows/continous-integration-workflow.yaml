@@ -46,7 +46,7 @@ jobs:
         run: make publish
 
       - name: Set SPEC_VERSION env var
-        run: eval $(poetry run python scripts/calculate_version.py)
+        run: echo ::set-env name=SPEC_VERSION::$(poetry run python scripts/calculate_version.py)
 
       - name: Inspect SPEC_VERSION
         run: echo $SPEC_VERSION
