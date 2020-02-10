@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Deploy Revision
+    name: 
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -51,5 +51,14 @@ jobs:
           name: patient-demographics-service-api.json
           path: ./dist/patient-demographics-service-api.json
 
-      - name: Deploy to Apigee (if master)
+      - name: Echo GITHUB_REF
+        run: echo $GITHUB_REF
+
+      - name: Deploy to Apigee (master only)
+        env:
+          CIRCLE_BRANCH: $GITHUB_REF
+          APIGEE_USER: ${{ secrets.APIGEE_USER }}
+          APIGEE_PASS: ${{ secrets.APIGEE_PASS }}
+          APIGEE_PORTAL_API_ID: ${{ secrets.APIGEE_PORTAL_API_ID }}
+          APIGEE_SPEC_ID: ${{ secrets.APIGEE_SPEC_ID }}
         run: scripts/deploy.sh
