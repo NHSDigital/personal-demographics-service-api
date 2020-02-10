@@ -45,11 +45,11 @@ jobs:
       - name: Compile spec
         run: make publish
 
-      - name: Set SPEC_VERSION env var
-        run: export SPEC_VERSION=$(poetry run python scripts/calculate_version.py)
+      - name: Tag and Release
+        run: scripts/tag-versions.sh
 
       - name: Inspect SPEC_VERSION
-        run: echo $SPEC_VERSION
+        run: echo $VERSION
 
       - name: Store distributable schema
         uses: actions/upload-artifact@v1
