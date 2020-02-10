@@ -54,9 +54,6 @@ jobs:
           name: patient-demographics-service-api-${{ env.SPEC_VERSION }}+${{ github.run_id }}.json
           path: ./dist/patient-demographics-service-api.json
 
-      - name: Echo GITHUB_REF
-        run: echo $GITHUB_REF
-
       - name: Deploy to Apigee (master only)
         env:
           APIGEE_USER: ${{ secrets.APIGEE_USER }}
