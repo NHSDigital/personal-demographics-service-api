@@ -4,7 +4,7 @@ set -euo pipefail
 
 VERSION=$(poetry run python scripts/calculate_version.py)
 
-if [ $CIRCLE_BRANCH = 'master' ]; then
+if [ ${GITHUB_REF##*/} = 'master' ]; then
     git config credential.helper 'cache --timeout 120'
     git config user.email "<email>"
     git config user.name "Marvin (Automated)"
