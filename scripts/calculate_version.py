@@ -108,4 +108,4 @@ def calculate_version(base_major=1, base_minor=0, base_revision=0, base_pre='alp
 
 
 if __name__ == '__main__':
-    print(calculate_version())
+    print("export SPEC_VERSION=" + calculate_version())

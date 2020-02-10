@@ -2,7 +2,9 @@
 
 set -euo pipefail
 
-VERSION=$(poetry run python scripts/calculate_version.py)
+eval $(poetry run python scripts/calculate_version.py)
+
+echo $SPEC_VERSION
 
 # if [ $CIRCLE_BRANCH = 'master' ]; then
 #     git config credential.helper 'cache --timeout 120'
