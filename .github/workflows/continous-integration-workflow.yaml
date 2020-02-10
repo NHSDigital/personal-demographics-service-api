@@ -54,7 +54,7 @@ jobs:
       - name: Store distributable schema
         uses: actions/upload-artifact@v1
         with:
-          name: patient-demographics-service-api-${{ env.SPEC_VERSION }}.json
+          name: patient-demographics-service-api-${{ env.SPEC_VERSION }}+${{ github.run_id }}.json
           path: ./dist/patient-demographics-service-api.json
 
       - name: Echo GITHUB_REF
