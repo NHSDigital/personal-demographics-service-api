@@ -1,5 +1,8 @@
 # Changelog
 
+## 2020-02-10
+* Updated API spec search documentation
+
 ## 2020-02-06
 * Updated API spec overview documentation to clarify FHIR extensions and other bits and bobs based on user feedback
 
