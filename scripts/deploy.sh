@@ -10,5 +10,5 @@ if [ $GITHUB_REF = "master" ]; then
     curl --fail -X POST "https://apigee.com/portals/api/sites/emea-demo8-nhsdportal/resource-entitlements/apis/$APIGEE_PORTAL_API_ID" -H "Authorization: Bearer $APIGEE_ACCESS_TOKEN" -H 'Content-Type: application/json' --data $'{"isPublic": true, "authEntitled": false, "explicitAudiences": [], "orgname": "emea-demo8"}'
     cd sandbox && npm run deploy
 else
-    echo "On non-master branch $GITHUB_REF, will not deploy"
+    echo "On non-master branch ${GITHUB_REF##*/}, will not deploy"
 fi
