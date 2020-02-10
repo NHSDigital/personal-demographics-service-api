@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -45,11 +45,12 @@ jobs:
       - name: Compile spec
         run: make publish
 
-      - name: Set SPEC_VERSION env var
-        run: export SPEC_VERSION=`poetry run python scripts/calculate_version.py`
+      # - name: Set SPEC_VERSION env var
+      #   run: export SPEC_VERSION=`poetry run python scripts/calculate_version.py`
 
       - name: Inspect SPEC_VERSION
-        run: echo $SPEC_VERSION
+        # run: echo $SPEC_VERSION
+        run: poetry run python scripts/calculate_version.py
 
       - name: Store distributable schema
         uses: actions/upload-artifact@v1
