@@ -17,6 +17,14 @@ jobs:
         with:
           python-version: 3.8
 
+      - name: Cache node modules
+        uses: actions/cache@v1
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
       - name: Update apt repositories
         run: sudo apt update
 
@@ -29,6 +37,30 @@ jobs:
       - name: Install poetry
         run: pip install poetry
 
+      - name: Cache node modules
+        uses: actions/cache@v1
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Cache poetry modules
+        uses: actions/cache@v1
+        env:
+          cache-name: cache-poetry-modules
+        with:
+          path: ~/.cache/pypoetry
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Cache node modules
+        uses: actions/cache@v1
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+      # TODO: do we want to split this out and skip in case of cache hits?
       - name: Install repo
         run: make install
 
