@@ -1,0 +1,63 @@
+name: Build Jobs
+
+on:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Install Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+
+      - name: Update apt repositories
+        run: sudo apt update
+
+      - name: Install Java and Node
+        run: sudo apt install default-jre default-jdk npm
+
+      - name: Upgrade python packaging tools
+        run: python -m pip install --upgrade pip setuptools wheel
+
+      - name: Install poetry
+        run: pip install poetry
+
+      - name: Install repo
+        run: make install
+
+      - name: Check licenses
+        run: make check-licenses
+
+      - name: Lint Spec
+        run: make test
+
+      - name: Check resources are valid FHIR 4.0.1
+        run: make validate
+
+      - name: Compile spec
+        run: make publish
+
+      - name: Set SPEC_VERSION env var
+        run: echo ::set-env name=SPEC_VERSION::$(poetry run python scripts/calculate_version.py)
+
+      - name: Store distributable schema
+        uses: actions/upload-artifact@v1
+        with:
+          name: patient-demographics-service-api-${{ env.SPEC_VERSION }}+${{ github.run_id }}.json
+          path: ./dist/patient-demographics-service-api.json
+
+      - name: Deploy to Apigee (master only)
+        env:
+          APIGEE_USER: ${{ secrets.APIGEE_USER }}
+          APIGEE_PASS: ${{ secrets.APIGEE_PASS }}
+          APIGEE_PORTAL_API_ID: ${{ secrets.APIGEE_PORTAL_API_ID }}
+          APIGEE_SPEC_ID: ${{ secrets.APIGEE_SPEC_ID }}
+        run: scripts/deploy.sh

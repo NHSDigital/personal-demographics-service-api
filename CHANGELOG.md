@@ -1,5 +1,8 @@
 # Changelog
 
+## 2020-02-11
+* Moved the CI/CD pipeline from circleci to github actions
+
 ## 2020-02-10
 * Updated API spec search documentation
 
