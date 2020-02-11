@@ -2,6 +2,7 @@
 
 ## 2020-02-11
 * Moved the CI/CD pipeline from circleci to github actions
+* Fixed a bug in CI pipeline that stopped version being correctly calculated
 
 ## 2020-02-10
 * Updated API spec search documentation

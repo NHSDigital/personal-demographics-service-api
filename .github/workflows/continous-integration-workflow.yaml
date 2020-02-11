@@ -9,6 +9,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Install Python 3.8
         uses: actions/setup-python@v1
@@ -35,9 +37,6 @@ jobs:
 
       - name: Lint Spec
         run: make test
-
-      - name: Setup debugger
-        uses: mxschmitt/action-tmate@v1.0.2
 
       - name: Check resources are valid FHIR 4.0.1
         run: make validate
