@@ -10,23 +10,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # This causes all history to be fetched, which is required for calculate-version to function
 
       - name: Install Python 3.8
         uses: actions/setup-python@v1
         with:
           python-version: 3.8
 
-      - name: Cache node modules
-        uses: actions/cache@v1
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
       - name: Update apt repositories
         run: sudo apt update
+
+      # WARNING: if you add a new apt package you MUST update this cache step or it will not be installed!
+      - name: Cache Java and NPM installs
+        uses: actions/cache@v1
+        env:
+          cache-name: cache-apt-packages
+          jre-jdk-version: 2:1.11-68ubuntu1~18.04.1
+          npm-version: 3.5.2-0ubuntu4
+        with:
+          path: /var/cache/apt/archives
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ env.jre-jdk-version }}-${{ env.npm-version }}
 
       - name: Install Java and Node
         run: sudo apt install default-jre default-jdk npm
@@ -45,10 +48,10 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Cache poetry modules
+      - name: Cache poetry packages
         uses: actions/cache@v1
         env:
-          cache-name: cache-poetry-modules
+          cache-name: cache-poetry-packages
         with:
           path: ~/.cache/pypoetry
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/poetry.lock') }}
@@ -60,6 +63,7 @@ jobs:
         with:
           path: ~/.npm
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
       # TODO: do we want to split this out and skip in case of cache hits?
       - name: Install repo
         run: make install
