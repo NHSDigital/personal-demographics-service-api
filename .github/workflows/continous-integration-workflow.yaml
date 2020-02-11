@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      
+
       - name: Install Python 3.8
         uses: actions/setup-python@v1
         with:
@@ -36,9 +36,11 @@ jobs:
       - name: Lint Spec
         run: make test
 
-      # TODO: there's a weird bug here where this fails on merge commits to master
-      # - name: Check resources are valid FHIR 4.0.1
-      #   run: make validate
+      - name: Setup debugger
+        uses: mxschmitt/action-tmate@v1.0.2
+
+      - name: Check resources are valid FHIR 4.0.1
+        run: make validate
 
       - name: Compile spec
         run: make publish
