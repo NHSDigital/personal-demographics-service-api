@@ -54,6 +54,7 @@ jobs:
           path: ./dist/patient-demographics-service-api.json
 
       - name: Deploy to Apigee (master only)
+        if: github.ref == 'refs/heads/master'
         env:
           APIGEE_USER: ${{ secrets.APIGEE_USER }}
           APIGEE_PASS: ${{ secrets.APIGEE_PASS }}
