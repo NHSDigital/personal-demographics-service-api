@@ -10,7 +10,7 @@ const fs = require('fs')
 const NhsNumberValidator = require('nhs-number-validator')
 const jsonpatch = require('fast-json-patch')
 
-const EXAMPLE_PATIENT = JSON.parse(fs.readFileSync('mocks/Patient.json'))
+const EXAMPLE_PATIENT = JSON.parse(fs.readFileSync('mocks/Patient-Jane-Smith.json'))
 const CONTENT_TYPE = 'application/fhir+json; fhirVersion=4.0'
 
 const nhsNumberSchema = Joi.string().custom(function (value) {
@@ -201,11 +201,10 @@ const init = async () => {
                 entry: []
             }
 
-            var containsSearchParameters = function(searchParameters) {
+            let containsSpecifiedSearchParameters = function(searchParameters) {
                 for (let p of Object.keys(searchParameters)) {
                     if (!request.query[p] || request.query[p].toLowerCase() !== searchParameters[p].toLowerCase()) {
                         return false
-                        break
                     }
                 }
                 return true
@@ -218,16 +217,22 @@ const init = async () => {
                 gender: "female",
                 birthdate: "2010-10-22",
             }
-            let simpleMatch = containsSearchParameters(simpleSearchParams)
+            let simpleMatch = containsSpecifiedSearchParameters(simpleSearchParams)
             
-            // Perform a 'Wildcard search'
+            // Perform a 'simple wildcard search'
             const wildcardSearchParams = {
                 family: "Smi*",
                 given: "Jane",
                 gender: "female",
                 birthdate: "2010-10-22"
             }
-            let wildcardMatch = containsSearchParameters(wildcardSearchParams)
+            let wildcardMatch = containsSpecifiedSearchParameters(wildcardSearchParams)
+
+            const maxResultMatch = function() {
+                if (simpleMatch && request.query["_max_results"] > 0) {
+                    return true
+                }
+            }
 
             // If so, try it
             if (simpleMatch) {
@@ -243,7 +248,7 @@ const init = async () => {
                 response.total = 1
                 response.entry.push({
                     search: {
-                        score: 0.853
+                        score: 0.8343
                     },
                     resource: EXAMPLE_PATIENT,
                 })

@@ -188,6 +188,7 @@ paths:
         | Scenario                       | Request                                                      | Response                                   |
         | ------------------------------ | ------------------------------------------------------------ | ------------------------------------------ |
         | Successful simple search       | `family`=`Smith`, `given`=`Jane`, `gender`=`female`, `birthdate`=`2010-10-22` | HTTP Status 200 with single search result. |
+        | Successful simple wildcard search     | `family`=`Smi*`, `given`=`Jane`, `gender`=`female`, `birthdate`=`2010-10-22` | HTTP Status 200 with single search result. |
         | Unsuccessful search            | Any other valid search query parameters                      | HTTP Status 200 with no search results     |
         | Invalid date format            | `birthdate` or `death-date` query parameters with values not in format `YYYY-MM-DD` | HTTP Status 400 with problem description   |
         | Too few search parameters      | Any invalid combination of query parameters                  | HTTP Status 400 with problem description   |
@@ -372,7 +373,7 @@ paths:
                     search:
                       score: 1.0
                     resource:
-                      $ref: 'components/examples/Patient.json'
+                      $ref: 'components/examples/Patient-Jane-Smith.json'
         '400':
           description: Invalid search paramaters supplied.
           content:
@@ -444,7 +445,7 @@ paths:
               schema:
                 $ref: 'components/schemas/Patient.yaml'
               example:
-                $ref: 'components/examples/Patient.json'
+                $ref: 'components/examples/Patient-Jane-Smith.json'
         '400':
           description: Invalid NHS number supplied.
           content:

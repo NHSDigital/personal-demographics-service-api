@@ -36,7 +36,7 @@ generate-examples: publish clean
 	poetry run python scripts/generate_examples.py dist/patient-demographics-service-api.json dist/examples
 
 update-examples: generate-examples
-	jq -rM . <dist/examples/resources/Patient.json >specification/components/examples/Patient.json
+	jq -rM . <dist/examples/resources/Patient-Jane-Smith.json >specification/components/examples/Patient-Jane-Smith.json
 	make publish
 
 check-licenses:

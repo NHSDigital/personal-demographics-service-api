@@ -1,0 +1,198 @@
+{
+    "resourceType": "Patient",
+    "id": "9000000009",
+    "identifier": [
+      {
+        "system": "https://fhir.nhs.uk/Id/nhs-number",
+        "value": "9000000010",
+        "extension": [
+          {
+            "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                  "version": "1.0.0",
+                  "code": "01",
+                  "display": "Number present and verified"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "meta": {
+      "versionId": "2"
+    },
+    "name": [
+      {
+        "use": "usual",
+        "period": {
+          "start": "2020-01-01",
+          "end": "2020-12-31"
+        },
+        "given": [
+          "John"
+        ],
+        "family": "Symthe",
+        "prefix": "Mr",
+        "suffix": "MBE"
+      }
+    ],
+    "gender": "male",
+    "birthDate": "2012-10-22",
+    "deceasedDateTime": "2012-10-22T00:00:00+00:00",
+    "address": [
+      {
+        "id": "123",
+        "period": {
+          "start": "2020-01-01",
+          "end": "2020-12-31"
+        },
+        "use": "work",
+        "type": "both",
+        "line": [
+          "NHS Digital",
+          "Whitehall II",
+          "Whitehall Quay",
+          "Leeds",
+          "West Yorkshire"
+        ],
+        "postalCode": "LS1 4HG",
+        "extension": [
+          {
+            "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-AddressKey",
+            "extension": [
+              {
+                "url": "type",
+                "valueCoding": {
+                  "system": "https://simplifier.net/guide/UKCoreDecember2019/CodeSystemUKCore-AddressKeyType",
+                  "code": "PAF"
+                }
+              },
+              {
+                "url": "value",
+                "valueString": "12345678"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "contact": [
+      {
+        "id": "123",
+        "period": {
+          "start": "2020-01-01",
+          "end": "2020-12-31"
+        },
+        "relationship": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131",
+                "version": "2.9",
+                "code": "C",
+                "display": "Emergency Contact"
+              }
+            ]
+          }
+        ],
+        "name": {
+          "use": "usual",
+          "period": {
+            "start": "2020-01-01",
+            "end": "2020-12-31"
+          },
+          "given": [
+            "John"
+          ],
+          "family": "Symthe",
+          "prefix": "Mr",
+          "suffix": "MBE"
+        },
+        "telecom": [
+          {
+            "period": {
+              "start": "2020-01-01",
+              "end": "2020-12-31"
+            },
+            "system": "phone",
+            "value": "01632960587",
+            "use": "work",
+            "rank": 1
+          }
+        ]
+      }
+    ],
+    "telecom": [
+      {
+        "period": {
+          "start": "2020-01-01",
+          "end": "2020-12-31"
+        },
+        "system": "phone",
+        "value": "01632960587",
+        "use": "work",
+        "rank": 1
+      }
+    ],
+    "generalPractitioner": [
+      {
+        "id": "Y12345",
+        "type": "Organization",
+        "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y12345"
+      }
+    ],
+    "communication": [
+      {
+        "language": {
+          "coding": [
+            {
+              "system": "https://nhsconnect.github.io/FHIR-R4-Core-IG-Prototype/CodeSystem-UKCore-HumanLanguage.html",
+              "version": "1.0.0",
+              "code": "en",
+              "display": "English"
+            }
+          ]
+        },
+        "preferred": true
+      }
+    ],
+    "extension": [
+      {
+        "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-NominatedPharmacy",
+        "valueReference": {
+          "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y12345",
+          "identifier": {
+            "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+            "value": "Y12345"
+          }
+        }
+      },
+      {
+        "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus",
+        "extension": [
+          {
+            "url": "deathNotificationStatus",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://simplifier.net/UKCore/CodeSystem-UKCore-DeathNotificationStatus",
+                  "version": "1.0.0",
+                  "code": "2",
+                  "display": "Formal - death notice received from Registrar of Deaths"
+                }
+              ]
+            }
+          },
+          {
+            "url": "systemEffectiveDate",
+            "valueDateTime": "2010-10-22T00:00:00+00:00"
+          }
+        ]
+      }
+    ]
+  }
+  
