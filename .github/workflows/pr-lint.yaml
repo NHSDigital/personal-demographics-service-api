@@ -5,10 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Echo ref
-        run: echo {{ github.ref }}
+        run: echo ${{ github.ref }}
 
       - name: Check ticket name is in pull request
-        run: echo {{ github.ref }} | grep -i -e -q "apm-[0-9]+"
-
-      - name: Check ticket name is in pull request
-        run: echo {{ github.ref }} | grep -i -E -q "apm-[0-9]+"
+        run: echo ${{ github.ref }} | grep -i -E -q "apm-[0-9]+"
