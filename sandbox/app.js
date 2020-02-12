@@ -153,6 +153,10 @@ const init = async () => {
             // TODO: This can be provided to a PatientSearcher to use to implement a more
             // 'proper' search
             const searchMap = {
+                "_exact-match": true,
+                "_history": true,
+                "_fuzzy-match": true,
+                "_max-results": true,
                 family: '$.name[?(@.use="usual")].family', // Usual family name
                 given: true,
                 gender: true,
@@ -197,6 +201,16 @@ const init = async () => {
                 entry: []
             }
 
+            var containsSearchParameters = function(searchParameters) {
+                for (let p of Object.keys(searchParameters)) {
+                    if (!request.query[p] || request.query[p].toLowerCase() !== searchParameters[p].toLowerCase()) {
+                        return false
+                        break
+                    }
+                }
+                return true
+            }
+
             // Perform a 'simple search'
             const simpleSearchParams = {
                 family: "Smith",
@@ -204,19 +218,32 @@ const init = async () => {
                 gender: "female",
                 birthdate: "2010-10-22",
             }
-            let simpleMatch = true
-            for (let p of Object.keys(simpleSearchParams)) {
-                if (!request.query[p] || request.query[p].toLowerCase() !== simpleSearchParams[p].toLowerCase()) {
-                    simpleMatch = false
-                    break
-                }
+            let simpleMatch = containsSearchParameters(simpleSearchParams)
+            
+            // Perform a 'Wildcard search'
+            const wildcardSearchParams = {
+                family: "Smi*",
+                given: "Jane",
+                gender: "female",
+                birthdate: "2010-10-22"
             }
+            let wildcardMatch = containsSearchParameters(wildcardSearchParams)
+
             // If so, try it
             if (simpleMatch) {
                 response.total = 1
                 response.entry.push({
                     search: {
                         score: 1.0
+                    },
+                    resource: EXAMPLE_PATIENT,
+                })
+            }
+            else if (wildcardMatch) {
+                response.total = 1
+                response.entry.push({
+                    search: {
+                        score: 0.853
                     },
                     resource: EXAMPLE_PATIENT,
                 })
