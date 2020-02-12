@@ -77,6 +77,25 @@ jobs:
           name: patient-demographics-service-api-${{ env.SPEC_VERSION }}+${{ github.run_id }}.json
           path: ./dist/patient-demographics-service-api.json
 
+      - name: Test creating releases
+        if: github.ref == 'refs/heads/apm-247-improve-ci'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.SPEC_VERSION }}
+          release_name: ${{ env.SPEC_VERSION }}
+          draft: true
+
+      - name: Create release (master only)
+        if: github.ref == 'refs/heads/master'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.SPEC_VERSION }}
+          release_name: ${{ env.SPEC_VERSION }}
+
       - name: Deploy to Apigee (master only)
         if: github.ref == 'refs/heads/master'
         env:
