@@ -39,7 +39,7 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-build-cache-poetry-packages-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-build-cache-npm-packages-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install repo
         run: make install
