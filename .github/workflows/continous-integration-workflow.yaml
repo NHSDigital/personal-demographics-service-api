@@ -17,23 +17,9 @@ jobs:
         with:
           python-version: 3.8
 
-      # WARNING: if you add a new apt package you MUST update this cache step or it will not be installed!
-      # TODO: make sure this can save properly
-      # - name: Cache Java and NPM installs
-      #   uses: actions/cache@v1
-      #   env:
-      #     cache-name: cache-apt-packages
-      #     jre-jdk-version: 2:1.11-68ubuntu1~18.04.1
-      #     npm-version: 3.5.2-0ubuntu4
-      #   with:
-      #     path: /var/cache/apt/archives
-      #     key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ env.jre-jdk-version }}-${{ env.npm-version }}
-
-      # TODO: skip on cache hit?
       - name: Update apt repositories
         run: sudo apt update
 
-      # TODO: skip on cache hit
       - name: Install Java and Node
         run: sudo apt-get install --yes default-jre default-jdk npm
 
