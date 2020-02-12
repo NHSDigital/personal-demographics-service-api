@@ -1,0 +1,8 @@
+name: Lint PR
+on: pull_request
+jobs:
+  pr_lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check ticket name is in pull request
+        run: echo {{ env.GITHUB_REF }} | grep -i -E -q "apm-[0-9]+"
