@@ -53,7 +53,6 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
-      # TODO: do we want to split this out and skip in case of cache hits?
       - name: Install repo
         run: make install
 
