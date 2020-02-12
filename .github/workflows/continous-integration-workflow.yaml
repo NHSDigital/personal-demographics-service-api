@@ -87,7 +87,7 @@ jobs:
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
           asset_path: ./dist/patient-demographics-service-api.json
-          asset-name: patient-demographics-service-api.json
+          asset_name: patient-demographics-service-api.json
           asset_content_type: application/json
 
       - name: Deploy to Apigee (master only)
