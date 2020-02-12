@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Echo ref
-        run: echo ${{ context.payload.pull_request.head.ref }}
+        run: echo ${{ github.event.pull_request.head.ref }}
 
       - name: Check ticket name is in pull request
-        run: echo ${{ context.payload.pull_request.head.ref }} | grep -i -E -q "apm-[0-9]+"
+        run: echo ${{ github.event.pull_request.head.ref }} | grep -i -E -q "apm-[0-9]+"
