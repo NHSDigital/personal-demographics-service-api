@@ -70,6 +70,7 @@ jobs:
           path: ./dist/patient-demographics-service-api.json
 
       - name: Create release (master only)
+        id: create-release
         if: github.ref == 'refs/heads/master'
         uses: actions/create-release@v1
         env:
@@ -77,6 +78,17 @@ jobs:
         with:
           tag_name: ${{ env.SPEC_VERSION }}
           release_name: ${{ env.SPEC_VERSION }}
+
+      - name: Upload spec release asset
+        if: github.ref == 'refs/heads/master'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./dist/patient-demographics-service-api.json
+          asset-name: patient-demographics-service-api.json
+          asset_content_type: application/json
 
       - name: Deploy to Apigee (master only)
         if: github.ref == 'refs/heads/master'
