@@ -9,3 +9,11 @@ jobs:
 
       - name: Check ticket name is in pull request
         run: echo ${{ github.event.pull_request.head.ref }} | grep -i -E -q "apm-[0-9]+"
+
+      - name: Grab ticket name
+        env:
+          GITHUB_REF: ${{ github.event.pull_request.head.ref }}
+        run: echo ::set-env name=TICKET_NAME::$(echo $GITHUB_REF | grep -i -o 'apm-[0-9]\+' | tr '[:lower:]' '[:upper:]')
+
+      - name: Echo ticket name
+        run: echo ${{ env.TICKET_NAME }}
