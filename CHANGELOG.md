@@ -1,5 +1,9 @@
 # Changelog
 
+## 2020-02-13
+* Fix caching process, which was breaking on master
+* Auto-link JIRA tickets in pull requests
+
 ## 2020-02-12
 * Cache libraries during builds
 * Tag and release successful master builds, and upload release assets
