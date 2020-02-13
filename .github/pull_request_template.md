@@ -12,4 +12,4 @@ Add any other relevant notes or explanations here. **Remove this line if you hav
 
 * [ ] I have reviewed the changes in this PR and they fill all or part of the acceptance criteria of the ticket, and the code is in a mergeable state.
 * [ ] If there were infrastructure, operational, or build changes, I have made sure there is sufficient evidence that the changes will work.
-* [ ] I have updated the changelog if it has not already been updated. 
+* [ ] I have ensured the changelog has been updated by the submitter, if necessary.
