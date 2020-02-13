@@ -188,7 +188,7 @@ paths:
         | Scenario                       | Request                                                      | Response                                   |
         | ------------------------------ | ------------------------------------------------------------ | ------------------------------------------ |
         | Successful simple search       | `family`=`Smith`, `given`=`Jane`, `gender`=`female`, `birthdate`=`2010-10-22` | HTTP Status 200 with single search result. |
-        | Successful simple wildcard search     | `family`=`Smi*`, `given`=`Jane`, `gender`=`female`, `birthdate`=`2010-10-22` | HTTP Status 200 with single search result. |
+        | Successful wildcarded paramater search       | `family`=`Sm*`, `gender`=`female`, `birthdate`=`2010-10-22` | HTTP Status 200 with search result of two. |
         | Unsuccessful search            | Any other valid search query parameters                      | HTTP Status 200 with no search results     |
         | Invalid date format            | `birthdate` or `death-date` query parameters with values not in format `YYYY-MM-DD` | HTTP Status 400 with problem description   |
         | Too few search parameters      | Any invalid combination of query parameters                  | HTTP Status 400 with problem description   |
