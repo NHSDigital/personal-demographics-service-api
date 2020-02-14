@@ -10,12 +10,12 @@
   },
   "author": "NHS Digital",
   "license": "MIT",
-  "homepage": "https://bitbucket.org/laurencesmith/apim-definitions#readme",
+  "homepage": "https://github.com/NHSDigital/personal-demographics-service-api",
   "dependencies": {
     "speccy": "^0.11.0"
   },
   "devDependencies": {
-    "license-checker": "^25.0.1",
-    "apigeetool": "^0.14.2"
+    "apigeetool": "^0.14.2",
+    "license-checker": "^25.0.1"
   }
 }
