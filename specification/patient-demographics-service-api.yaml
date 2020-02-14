@@ -153,6 +153,10 @@ paths:
           * date of death (range)
           * registered GP Practice
 
+        If the _fuzzy-match query parameter has not been supplied the parameters must include:
+          * family name (minimum of 2 characters, maybe wildcarded)
+          * gender
+          * date of birth (range)
 
         ## Historic data search
         By default the endpoint only searches current information. You can request to search historic information, such as maiden names or previous addresses using the _history query parameter.
@@ -217,7 +221,7 @@ paths:
             type: boolean
             default: false
         - name: _fuzzy-match
-          description: The search will perform phonetic matching on names using soundex, transpose names and will score the results.  
+          description: The search will perform phonetic matching on names using soundex, transpose names and will score the results.  If the fields death-date or general-practitioner are provided they will be ignored in this search.  This search is performed using a combination of parameters if an invalid combination is supplied INVALID_COMBINATION will be returned.
           example: true
           in: query
           required: false
