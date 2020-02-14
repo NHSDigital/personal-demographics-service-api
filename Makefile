@@ -43,3 +43,11 @@ check-licenses:
 	npm run check-licenses
 	scripts/check_python_licenses.sh
 
+deploy-proxy:
+	mkdir -p dist
+	rm -rf dist/apiproxy
+	cp -R apiproxy/ dist/
+	mkdir -p dist/apiproxy/resources/hosted/mocks
+	cp stubserver/*.js stubserver/*.json stubserver/*.yaml dist/apiproxy/resources/hosted/
+	cp -L stubserver/mocks/*.json dist/apiproxy/resources/hosted/mocks/
+	node_modules/.bin/apigeetool deployproxy --environments "test,prod" --api apm-312 --directory dist/ --verbose
