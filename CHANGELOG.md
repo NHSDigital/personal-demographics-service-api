@@ -1,5 +1,17 @@
 # Changelog
 
+## 2020-02-13
+* Fix caching process, which was breaking on master
+* Auto-link JIRA tickets in pull requests
+
+## 2020-02-12
+* Cache libraries during builds
+* Tag and release successful master builds, and upload release assets
+
+## 2020-02-11
+* Moved the CI/CD pipeline from circleci to github actions
+* Fixed a bug in CI pipeline that stopped version being correctly calculated
+
 ## 2020-02-10
 * Updated API spec search documentation
 

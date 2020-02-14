@@ -1,0 +1,96 @@
+name: Build Jobs
+
+on: push
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # This causes all history to be fetched, which is required for calculate-version to function
+
+      - name: Install Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+
+      - name: Update apt repositories
+        run: sudo apt update
+
+      - name: Install Java and Node
+        run: sudo apt-get install --yes default-jre default-jdk npm
+
+      - name: Upgrade python packaging tools
+        run: python -m pip install --upgrade pip setuptools wheel
+
+      - name: Install poetry
+        run: pip install poetry
+
+      - name: Cache poetry packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/pypoetry
+          key: ${{ runner.os }}-build-cache-poetry-packages-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-cache-npm-packages-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install repo
+        run: make install
+
+      - name: Check licenses
+        run: make check-licenses
+
+      - name: Lint Spec
+        run: make test
+
+      - name: Check resources are valid FHIR 4.0.1
+        run: make validate
+
+      - name: Compile spec
+        run: make publish
+
+      - name: Set SPEC_VERSION env var
+        run: echo ::set-env name=SPEC_VERSION::$(poetry run python scripts/calculate_version.py)
+
+      - name: Store distributable schema
+        uses: actions/upload-artifact@v1
+        with:
+          name: patient-demographics-service-api-${{ env.SPEC_VERSION }}+${{ github.run_id }}.json
+          path: ./dist/patient-demographics-service-api.json
+
+      - name: Create release (master only)
+        id: create-release
+        if: github.ref == 'refs/heads/master'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.SPEC_VERSION }}
+          release_name: ${{ env.SPEC_VERSION }}
+
+      - name: Upload spec release asset
+        if: github.ref == 'refs/heads/master'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./dist/patient-demographics-service-api.json
+          asset_name: patient-demographics-service-api.json
+          asset_content_type: application/json
+
+      - name: Deploy to Apigee (master only)
+        if: github.ref == 'refs/heads/master'
+        env:
+          APIGEE_USER: ${{ secrets.APIGEE_USER }}
+          APIGEE_PASS: ${{ secrets.APIGEE_PASS }}
+          APIGEE_PORTAL_API_ID: ${{ secrets.APIGEE_PORTAL_API_ID }}
+          APIGEE_SPEC_ID: ${{ secrets.APIGEE_SPEC_ID }}
+        run: scripts/deploy.sh
