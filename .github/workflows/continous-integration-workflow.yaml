@@ -102,5 +102,5 @@ jobs:
           APIGEE_PASSWORD: ${{ secrets.APIGEE_PASS }}
           APIGEE_APIPROXY: ${{ secrets.APIGEE_APIPROXY }}
           APIGEE_ORGANIZATION: ${{ secrets.APIGEE_ORGANIZATION }}
-          APIGEE_ENVIRONMENTS: 'test,prod'
+          APIGEE_ENVIRONMENTS: ${{ secrets.APIGEE_ENVIRONMENTS }}
         run: make deploy-proxy
