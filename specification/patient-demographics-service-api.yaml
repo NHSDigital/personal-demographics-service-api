@@ -153,7 +153,7 @@ paths:
           * date of death (range)
           * registered GP Practice
 
-        If the _fuzzy-match query parameter has not been supplied the parameters must include:
+        If a _fuzzy-match has not been specified the parameters must include:
           * family name (minimum of 2 characters, maybe wildcarded)
           * gender
           * date of birth (range)
@@ -176,14 +176,15 @@ paths:
         ## Result scoring
         Every result includes a score from 0 to 1. Scores less than 1 can happen when parameters supplied do not match exactly to the values on the patient record.
         Results are sorted best-first.
-        You can request to only return exact matches (score = 1) using the _exact-match parameter.
+        You can request to only return exact matches (score = 1) using the _exact-match parameter.  
+        # More details on scoring to be added as part of APM-271
 
         ## Number of results returned
-        By default, the endpoint will return a maximum of 50 results. If there are more than 50 matching patient records, the endpoint will return no results and the error response TBC.
+        By default, the endpoint will return a maximum of 50 results. If there are more than 50 matching patient records, the endpoint will return no results and the error response TOO_MANY_MATCHES.
         You can choose to limit the number of results returned using the _length parameter.
 
         ## Clinical safety and IG
-        TBC guidance around safe & private use of search.
+        TBC guidance around safe & private use of search. # APM-326
 
 
         ## Sandbox testing
@@ -201,6 +202,7 @@ paths:
         Alternatively, you can try out the sandbox using our Postman collection:
 
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
+        # APM-311 raised for response codes
       tags:
         - patients
       parameters:
@@ -409,7 +411,7 @@ paths:
                             - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
                               version: '1'
                               code: INVALID_COMBINATION
-                              display: "Invalid combindation for fields"
+                              display: "Invalid combination for fields"
   /Patient/{id}:
     parameters:
       - $ref: '#/components/parameters/Id'
