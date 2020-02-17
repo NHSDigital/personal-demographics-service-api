@@ -4,7 +4,7 @@
     <Response/>
   </PreFlow>
   <HTTPProxyConnection>
-    <BasePath>/apm-312</BasePath>
+    <BasePath>/personal-demographics</BasePath>
     <VirtualHost>secure</VirtualHost>
   </HTTPProxyConnection>
   <RouteRule name="sandbox">
