@@ -1,23 +1,21 @@
 {
-  "name": "pds-api-sandbox",
-  "version": "0.0.1",
-  "description": "Patient Information API Sandbox Server",
-  "main": "app.js",
-  "scripts": {
-    "start": "node app.js --use_strict",
-    "deploy": "rm -rf dist/ && mkdir -p dist/mocks/ && cp *.js *.json *.yaml dist/ && cp -L mocks/*.json dist/mocks/ && node_modules/.bin/apigeetool deployhostedtarget -e test -u $APIGEE_USER -p $APIGEE_PASS -o emea-demo8 --api Patient-Information --preserve-policies --directory dist/"
-  },
-  "author": "NHS Digital",
-  "license": "MIT",
-  "dependencies": {
-    "@hapi/hapi": "^18.4.0",
-    "@hapi/joi": "^16.1.8",
-    "apigeetool": "^0.14.2",
-    "fast-json-patch": "^3.0.0-1",
-    "inert": "^5.1.3",
-    "nhs-number-validator": "^1.1.1"
-  },
-  "devDependencies": {
-    "eslint": "^6.7.2"
-  }
+    "name": "pds-api-sandbox",
+    "version": "0.0.1",
+    "description": "Patient Information API Sandbox Server",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js --use_strict"
+    },
+    "author": "NHS Digital",
+    "license": "MIT",
+    "dependencies": {
+        "@hapi/hapi": "^18.4.0",
+        "@hapi/joi": "^16.1.8",
+        "fast-json-patch": "^3.0.0-1",
+        "inert": "^5.1.3",
+        "nhs-number-validator": "^1.1.1"
+    },
+    "devDependencies": {
+        "eslint": "^6.7.2"
+    }
 }
