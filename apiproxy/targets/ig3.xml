@@ -1,0 +1,10 @@
+<TargetEndpoint name="default">
+  <HTTPTargetConnection>
+    <SSLInfo>
+      <Enabled>true</Enabled>
+    </SSLInfo>
+    <LoadBalancer>
+      <Server name="ig3" />
+    </LoadBalancer>
+  </HTTPTargetConnection>
+</TargetEndpoint>

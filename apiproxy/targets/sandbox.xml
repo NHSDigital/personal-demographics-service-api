@@ -1,0 +1,16 @@
+<TargetEndpoint name="sandbox">
+    <Description/>
+    <FaultRules/>
+    <Flows/>
+    <PostFlow name="PostFlow">
+        <Request/>
+        <Response/>
+    </PostFlow>
+    <PreFlow name="PreFlow">
+        <Request/>
+        <Response/>
+    </PreFlow>
+    <HostedTarget>
+        <Properties/>
+    </HostedTarget>
+</TargetEndpoint>
