@@ -71,30 +71,7 @@ module.exports.search = function() {
     // const dateRangeSearchParams = {
     //     //TBC
     // }
-
-    const wildcardSearchParams = {
-        family: "Sm*",
-        gender: "female",
-        birthdate: "2010-10-22"
-    }
-    let wildcardMatch = containsSearchParameters(wildcardSearchParams)
-    // Perform a search with max result set using the wildcard params and the max-result parameter
-    if (wildcardMatch && _request.query["_max-results"]) {
-        if (isNaN(_request.query["_max-results"]) || _request.query["_max-results"] < 1) {
-            // Happy path only (For now)
-            throw Boom.badRequest("TBC", {
-                operationOutcomeCode: "TBC", apiErrorCode: "TBC"
-            })
-        } else if (_request.query["_max-results"] == 1) {
-            return buildPatientResponse([EXAMPLE_PATIENT_SMITH])
-        } else {
-            return buildPatientResponse([EXAMPLE_PATIENT_SMITH, EXAMPLE_PATIENT_SMYTHE])
-        }
-    // Perform a advanced search as wildcard provided and max-result parameter not set
-    } else if (wildcardMatch) {
-        return buildPatientResponse([EXAMPLE_PATIENT_SMITH, EXAMPLE_PATIENT_SMYTHE])
-    }
-
+    
     // Perform a fuzzy search 
     const fuzzySearchParams = {
         family: "Smith",
@@ -108,6 +85,32 @@ module.exports.search = function() {
         return buildPatientResponse([EXAMPLE_PATIENT_SMYTHE])
     } 
 
+    const wildcardSearchParams = {
+        family: "Sm*",
+        gender: "female",
+        birthdate: "2010-10-22"
+    }
+    let wildcardMatch = containsSearchParameters(wildcardSearchParams)
+    // Perform a search with max result set using the wildcard params and the max-result parameter
+    if (wildcardMatch && _request.query["_max-results"]) {
+        if (isNaN(_request.query["_max-results"]) || _request.query["_max-results"] < 0) {
+            // not integer
+            throw Boom.badRequest("TBC", {
+                operationOutcomeCode: "TBC", apiErrorCode: "TBC"
+            })
+        } else if (_request.query["_max-results"] < 2) {
+            // max-result smaller than number of results
+            throw Boom.badRequest("TBC", {
+                operationOutcomeCode: "TBC", apiErrorCode: "TOO_MANY_RESULTS"
+            })
+        } else {
+            return buildPatientResponse([EXAMPLE_PATIENT_SMITH, EXAMPLE_PATIENT_SMYTHE])
+        } 
+    // Perform a advanced search as wildcard provided and max-result parameter not set
+    } else if (wildcardMatch) {
+        return buildPatientResponse([EXAMPLE_PATIENT_SMITH, EXAMPLE_PATIENT_SMYTHE], 0.8343)
+    }
+
     // Perform a 'simple search'
     const simpleSearchParams = {
         family: "Smith",
@@ -115,7 +118,6 @@ module.exports.search = function() {
         birthdate: "2010-10-22",
     }
     let simpleMatch = containsSearchParameters(simpleSearchParams)
-
     // If so, try it
     if (simpleMatch) {
         return buildPatientResponse([EXAMPLE_PATIENT_SMITH])
