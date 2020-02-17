@@ -1,0 +1,54 @@
+[
+{
+	"profile": "1",
+	"scenario": "Retrieve Patient - Invalid NHS Number1",
+	"nhs_id": "9000000000",
+	"response_Status": "400",
+    "error_severity": "error",
+	"code": "INVALID_NHS_NUMBER",
+    "error_display": "NHS Number Invalid",
+    "error_system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
+},
+{
+	"profile": "1",
+	"scenario": "Retrieve Patient - Invalid NHS Number2",
+	"nhs_id": "900000000",
+	"response_Status": "400",
+    "error_severity": "error",
+	"code": "INVALID_NHS_NUMBER",
+    "error_display": "NHS Number Invalid",
+    "error_system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
+},
+{
+	"profile": "1",
+	"scenario": "Retrieve Patient - NHS Number Does Not Exist",
+	"nhs_id": "9111231130",
+	"response_Status": "404",
+    "error_severity": "information",
+	"code": "PATIENT_NOT_FOUND",
+    "error_display": "No patient found",
+    "error_system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
+},
+{
+	"profile": "1",
+	"scenario": "Retrieve Patient - NHS Number Not Provided",
+	"response_Status": "400",
+    "error_severity": "error",
+	"code": "INVALID_NHS_NUMBER",
+    "error_display": "NHS Number Invalid",
+    "error_system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
+},
+{
+	"profile": "2",
+	"scenario": "Search Patient - Invalid Date Format",
+	"family": "Smith",
+	"given": "Jane",
+    "gender": "female",
+	"birthdate": "22-10-2010",
+	"response_Status": "400",
+    "error_severity": "error",
+	"code": "INVALID_BIRTH_DEATH_DATE_FORMAT",
+    "error_display": "birthdate has invalid format: 22-10-2010 is not in YYYY-MM-DD format",
+    "error_system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
+}
+]
