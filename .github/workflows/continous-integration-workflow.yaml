@@ -86,11 +86,21 @@ jobs:
           asset_name: patient-demographics-service-api.json
           asset_content_type: application/json
 
-      - name: Deploy to Apigee (master only)
+      - name: Deploy to OAS Spec to Apigee (master only)
         if: github.ref == 'refs/heads/master'
         env:
-          APIGEE_USER: ${{ secrets.APIGEE_USER }}
-          APIGEE_PASS: ${{ secrets.APIGEE_PASS }}
+          APIGEE_USERNAME: ${{ secrets.APIGEE_USER }}
+          APIGEE_PASSWORD: ${{ secrets.APIGEE_PASS }}
           APIGEE_PORTAL_API_ID: ${{ secrets.APIGEE_PORTAL_API_ID }}
           APIGEE_SPEC_ID: ${{ secrets.APIGEE_SPEC_ID }}
-        run: scripts/deploy.sh
+        run: make deploy-spec
+
+      - name: Deploy to API Proxy (inc Sandbox) to Apigee (master only)
+        if: github.ref == 'refs/heads/master'
+        env:
+          APIGEE_USERNAME: ${{ secrets.APIGEE_USER }}
+          APIGEE_PASSWORD: ${{ secrets.APIGEE_PASS }}
+          APIGEE_APIPROXY: ${{ secrets.APIGEE_APIPROXY }}
+          APIGEE_ORGANIZATION: ${{ secrets.APIGEE_ORGANIZATION }}
+          APIGEE_ENVIRONMENTS: ${{ secrets.APIGEE_ENVIRONMENTS }}
+        run: make deploy-proxy
