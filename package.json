@@ -12,6 +12,7 @@
   "license": "MIT",
   "homepage": "https://github.com/NHSDigital/personal-demographics-service-api",
   "dependencies": {
+    "newman": "^4.5.7",
     "speccy": "^0.11.0"
   },
   "devDependencies": {
