@@ -1,5 +1,10 @@
 # Changelog
 
+## 2020-02-17
+* Add Apigee API Proxy definition to repository
+* Make command to deploy API Proxy and Sandbox server
+* Continuous integration task to deploy API Proxy
+
 ## 2020-02-13
 * Fix caching process, which was breaking on master
 * Auto-link JIRA tickets in pull requests

@@ -4,6 +4,7 @@ This is a RESTful HL7® FHIR® API specification for the *Personal Demographics 
 * `specification/` This [Open API Specification](https://swagger.io/docs/specification/about/) describes the endpoints, methods and messages exchanged by the API. Use it to generate interactive documentation; the contract between the API and its consumers.
 * `sandbox/` This NodeJS application implements a mock implementation of the service. Use it as a back-end service to the interactive documentation to illustrate interactions and concepts. It is not intended to provide an exhaustive/faithful environment suitable for full development and testing.
 * `scripts/` Utilities helpful to developers of this specification.
+* `apiproxy/` The Apigee API Proxy
 
 Consumers of the API will find developer documentation on the [NHS Digital Developer Hub](https://emea-demo8-nhsdportal.apigee.io/).
 
@@ -84,3 +85,33 @@ Procedure:
  * Import the collection into Postman
  * Update requests and export the collection back into the repo
  * Re-generate the [Run in Postman button](https://learning.getpostman.com/docs/postman-for-publishers/run-in-postman/creating-run-button/) Markdown button link and update the OAS
+
+## Deployment
+:bulb: Consider using [direnv](https://direnv.net/) to manage your environment variables during development.
+
+### Specification
+Update the API Specification and derived documentation in the Portal.
+
+`make deploy-spec` with environment variables:
+
+* `APIGEE_USERNAME`
+* `APIGEE_PASSWORD`
+* `APIGEE_SPEC_ID`
+* `APIGEE_PORTAL_API_ID`
+
+### API Proxy & Sandbox Service
+Redeploy the API Proxy and hosted Sandbox service.
+
+`make deploy-proxy` with environment variables:
+
+* `APIGEE_USERNAME`
+* `APIGEE_PASSWORD`
+* `APIGEE_ORGANIZATION`
+* `APIGEE_ENVIRONMENTS`
+* `APIGEE_APIPROXY`
+
+#### Platform setup
+
+Successful deployment of the API Proxy requires:
+
+ 1. A *Target Server* named `ig3`
