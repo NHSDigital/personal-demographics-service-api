@@ -16,8 +16,14 @@ install-fhir-validator:
 	mkdir -p bin
 	test -f bin/org.hl7.fhir.validator.jar || curl https://fhir.github.io/latest-ig-publisher/org.hl7.fhir.validator.jar > bin/org.hl7.fhir.validator.jar
 
+lint:
+	npm run lint
+
 test:
-	npm run test
+	npm run test-local
+
+test-sandbox:
+	npm run test-sandbox
 
 validate: generate-examples
 	java -jar bin/org.hl7.fhir.validator.jar dist/examples/**/*application_fhir+json*.json -version 4.0.1 -tx n/a | tee /tmp/validation.txt

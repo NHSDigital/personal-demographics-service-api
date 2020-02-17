@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "OAS (Swagger v3) API Definition for Patient Information",
   "scripts": {
-    "test": "speccy lint specification/patient-demographics-service-api.yaml --skip default-and-example-are-redundant",
+    "lint": "speccy lint specification/patient-demographics-service-api.yaml --skip default-and-example-are-redundant",
+    "test-local": "node_modules/.bin/newman run tests/e2e/personal-demographics-service.json -d tests/e2e/test-data.json -e tests/e2e/environments/local.postman_environment.json --reporters html,cli,htmlextra --reporter-htmlextra-logs --reporter-htmlextra-darkTheme",
+    "test-sandbox": "node_modules/.bin/newman run tests/e2e/personal-demographics-service.json -d tests/e2e/test-data.json -e tests/e2e/environments/sandbox.postman_environment.json --reporters html,cli,htmlextra --reporter-htmlextra-logs --reporter-htmlextra-darkTheme",
     "publish": "mkdir -p dist && node_modules/.bin/speccy resolve specification/patient-demographics-service-api.yaml -i | poetry run python scripts/yaml2json.py | poetry run python scripts/set_version.py > dist/patient-demographics-service-api.json",
     "serve": "node_modules/.bin/speccy serve dist/patient-demographics-service-api.json",
     "check-licenses": "node_modules/.bin/license-checker --failOn GPL --failOn LGPL"
@@ -13,6 +15,7 @@
   "homepage": "https://github.com/NHSDigital/personal-demographics-service-api",
   "dependencies": {
     "newman": "^4.5.7",
+    "newman-reporter-htmlextra": "^1.11.3",
     "speccy": "^0.11.0"
   },
   "devDependencies": {

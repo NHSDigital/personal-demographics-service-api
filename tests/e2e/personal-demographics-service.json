@@ -72,7 +72,7 @@
 			"response": []
 		},
 		{
-			"name": "Retrieve Patient - Negatative Test",
+			"name": "Retrieve Patient - Negative Test",
 			"event": [
 				{
 					"listen": "test",
@@ -196,13 +196,31 @@
 					}
 				],
 				"url": {
-					"raw": "https://{{environment}}/Patient{{queryParameter}}",
+					"raw": "https://{{environment}}/Patient?family={{family}}&given={{given}}&gender={{gender}}&birthdate={{birthdate}}",
 					"protocol": "https",
 					"host": [
 						"{{environment}}"
 					],
 					"path": [
-						"Patient{{queryParameter}}"
+						"Patient"
+					],
+					"query": [
+						{
+							"key": "family",
+							"value": "{{family}}"
+						},
+						{
+							"key": "given",
+							"value": "{{given}}"
+						},
+						{
+							"key": "gender",
+							"value": "{{gender}}"
+						},
+						{
+							"key": "birthdate",
+							"value": "{{birthdate}}"
+						}
 					]
 				},
 				"description": "Testing the correct url is returned on an error response"
@@ -282,21 +300,21 @@
 	],
 	"variable": [
 		{
-			"id": "1a1672f3-0bd8-42f3-9c56-aa201eb51926",
+			"id": "cb56da37-8fcc-4f23-a456-0c074f5dc3a4",
 			"key": "nhs_id",
 			"value": "9000000000",
 			"type": "string",
 			"disabled": true
 		},
 		{
-			"id": "379d85b5-d001-421f-bf2a-a80b3164e8cf",
+			"id": "34c76124-9b90-41e0-a356-48a3ecff5970",
 			"key": "profile",
 			"value": "1",
 			"type": "string",
 			"disabled": true
 		},
 		{
-			"id": "3753cb7e-979f-4c3f-a955-3ad099b5b1d3",
+			"id": "085f9d9e-dfa4-48a7-90b0-f83b33df1c0d",
 			"key": "response_Status",
 			"value": "400",
 			"type": "string",

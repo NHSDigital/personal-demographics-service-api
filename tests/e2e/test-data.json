@@ -6,7 +6,7 @@
 	"response_Status": "400",
     "error_severity": "error",
 	"code": "INVALID_NHS_NUMBER",
-    "error_display": "NHS Number Invalid",
+    "error_display": "NHS Number 9000000000 is not a valid NHS number",
     "error_system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
 },
 {
@@ -16,7 +16,7 @@
 	"response_Status": "400",
     "error_severity": "error",
 	"code": "INVALID_NHS_NUMBER",
-    "error_display": "NHS Number Invalid",
+    "error_display": "NHS Number 90000000000 is not a valid NHS number",
     "error_system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
 },
 {
@@ -47,7 +47,7 @@
 	"birthdate": "22-10-2010",
 	"response_Status": "400",
     "error_severity": "error",
-	"code": "INVALID_BIRTH_DEATH_DATE_FORMAT",
+	"code": "invalidDateFormat",
     "error_display": "birthdate has invalid format: 22-10-2010 is not in YYYY-MM-DD format",
     "error_system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
 }
