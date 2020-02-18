@@ -21,3 +21,7 @@ jobs:
           msg: |
             This branch is work on a ticket in the NHS Digital APM JIRA Project. Here's a handy link to the ticket:
             # [${{ env.TICKET_NAME }}](https://jira.digital.nhs.uk/browse/${{ env.TICKET_NAME}})
+
+      - name: Enforce Sandbox Javascript style
+        working-directory: sandbox
+        run: npm run lint

@@ -4,6 +4,7 @@
     "description": "Patient Information API Sandbox Server",
     "main": "app.js",
     "scripts": {
+        "lint": "find . -type f -name '*.js' ! -name '.eslintrc.js' | xargs eslint --fix",
         "start": "node app.js --use_strict"
     },
     "author": "NHS Digital",

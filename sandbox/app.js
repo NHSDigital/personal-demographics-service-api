@@ -147,7 +147,7 @@ const init = async() => {
     server.route({
         method: 'GET',
         path: '/Patient',
-        handler: (request, h) => {
+        handler: (request) => {
             // TODO: This can be provided to a PatientSearcher to use to implement a more
             // 'proper' search
             const searchMap = {
