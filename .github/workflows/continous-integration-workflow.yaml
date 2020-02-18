@@ -70,7 +70,7 @@ jobs:
       - name: Store local test result artifact
         uses: actions/upload-artifact@v1
         with:
-          name: local-tests-${{ github.run_id }}.json
+          name: local-tests-${{ github.run_id }}.html
           path: ./dist/local-tests.html
 
       - name: Set SPEC_VERSION env var
@@ -136,5 +136,5 @@ jobs:
         if: github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v1
         with:
-          name: sandbox-tests-${{ github.run_id }}.json
+          name: sandbox-tests-${{ github.run_id }}.html
           path: ./dist/sandbox-tests.html
