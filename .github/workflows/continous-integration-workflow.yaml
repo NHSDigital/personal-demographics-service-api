@@ -61,6 +61,9 @@ jobs:
       - name: Compile spec
         run: make publish
 
+      - name: Set SPEC_VERSION env var
+        run: echo ::set-env name=SPEC_VERSION::$(poetry run python scripts/calculate_version.py)
+
       - name: Run local tests
         run: make test
 
@@ -72,9 +75,6 @@ jobs:
         with:
           name: local-tests-${{ env.SPEC_VERSION }}+${{ github.run_id }}.html
           path: ./dist/local-tests.html
-
-      - name: Set SPEC_VERSION env var
-        run: echo ::set-env name=SPEC_VERSION::$(poetry run python scripts/calculate_version.py)
 
       - name: Store distributable schema
         uses: actions/upload-artifact@v1
