@@ -53,8 +53,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://{{environment}}/Patient/1",
-					"protocol": "https",
+					"raw": "{{environment}}/Patient/1",
 					"host": [
 						"{{environment}}"
 					],
@@ -119,8 +118,7 @@
 					}
 				],
 				"url": {
-					"raw": "https://{{environment}}/Patient/:nhs_id",
-					"protocol": "https",
+					"raw": "{{environment}}/Patient/:nhs_id",
 					"host": [
 						"{{environment}}"
 					],
@@ -191,8 +189,7 @@
 					}
 				],
 				"url": {
-					"raw": "https://{{environment}}/Patient?family={{family}}&given={{given}}&gender={{gender}}&birthdate={{birthdate}}",
-					"protocol": "https",
+					"raw": "{{environment}}/Patient?family={{family}}&given={{given}}&gender={{gender}}&birthdate={{birthdate}}",
 					"host": [
 						"{{environment}}"
 					],
@@ -295,21 +292,21 @@
 	],
 	"variable": [
 		{
-			"id": "2b10e407-c803-45ce-b537-a9ff1a60f3b4",
+			"id": "23e9cd6e-486d-4a89-9cd1-e51c688474e6",
 			"key": "nhs_id",
 			"value": "9000000000",
 			"type": "string",
 			"disabled": true
 		},
 		{
-			"id": "ae32fdcb-afe1-41f5-a527-477a605fbdf8",
+			"id": "7f112e03-b3ac-454b-85b7-99170843d425",
 			"key": "profile",
 			"value": "1",
 			"type": "string",
 			"disabled": true
 		},
 		{
-			"id": "d470e1f6-d71d-47c2-b6b7-2e1afd585994",
+			"id": "daff99f3-e10c-4e3c-aea6-0c635da70647",
 			"key": "response_Status",
 			"value": "400",
 			"type": "string",
