@@ -20,6 +20,7 @@ lint:
 	npm run lint
 	cd sandbox && npm run lint && cd ..
 	poetry run pylint **/*.py
+	find -name '*.sh' | grep -v node_modules | xargs shellcheck
 
 test:
 	npm run test-local
