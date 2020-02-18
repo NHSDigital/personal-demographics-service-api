@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-LICENSES=$(poetry run pip-licenses)
+LICENSES=$(poetry run pip-licenses --ignore-packages pylint astroid) # Ignore any dev-only licenses here (i.e. they do not get deployed with the final asset)
 INCOMPATIBLE_LIBS=$(echo "$LICENSES" | grep 'GPL' || true)
 
 if [[ -z $INCOMPATIBLE_LIBS ]]; then
