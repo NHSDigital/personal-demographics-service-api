@@ -116,5 +116,5 @@ jobs:
         run: make deploy-proxy
 
       - name: Run sandbox tests (master only)
-        # if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master'
         run: make test-sandbox
