@@ -58,6 +58,9 @@ jobs:
       - name: Check resources are valid FHIR 4.0.1
         run: make validate
 
+      - name: Compile spec
+        run: make publish
+
       - name: Run local tests
         run: make test
 
@@ -69,9 +72,6 @@ jobs:
         with:
           name: local-tests-${{ github.run_id }}.json
           path: ./dist/local-tests.html
-
-      - name: Compile spec
-        run: make publish
 
       - name: Set SPEC_VERSION env var
         run: echo ::set-env name=SPEC_VERSION::$(poetry run python scripts/calculate_version.py)
