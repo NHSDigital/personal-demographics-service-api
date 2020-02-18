@@ -55,6 +55,10 @@ jobs:
       - name: Lint Spec
         run: make lint
 
+      - name: Enforce Sandbox Javascript style
+        working-directory: sandbox
+        run: npm run lint
+
       - name: Check resources are valid FHIR 4.0.1
         run: make validate
 
