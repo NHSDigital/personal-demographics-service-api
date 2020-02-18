@@ -44,14 +44,22 @@ jobs:
       - name: Install repo
         run: make install
 
+      - name: Start local sandbox server
+        run: |
+          cd sandbox
+          npm run start &
+
       - name: Check licenses
         run: make check-licenses
 
       - name: Lint Spec
-        run: make test
+        run: make lint
 
       - name: Check resources are valid FHIR 4.0.1
         run: make validate
+
+      - name: Run local tests
+        run: make test
 
       - name: Compile spec
         run: make publish
@@ -106,3 +114,7 @@ jobs:
           APIGEE_ORGANIZATION: ${{ secrets.APIGEE_ORGANIZATION }}
           APIGEE_ENVIRONMENTS: ${{ secrets.APIGEE_ENVIRONMENTS }}
         run: make deploy-proxy
+
+      - name: Run sandbox tests (master only)
+        # if: github.ref == 'refs/heads/master'
+        run: make test-sandbox
