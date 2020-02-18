@@ -65,7 +65,7 @@ jobs:
         run: make test
 
       - name: Copy local test report
-        run: cp newman/*.html dist/local-tests.html && rm newman/*.html
+        run: cat newman/*.html > dist/local-tests.html && rm newman/*.html
 
       - name: Store local test result artifact
         uses: actions/upload-artifact@v1
@@ -130,7 +130,7 @@ jobs:
 
       - name: Copy sandbox test report (master only)
         if: github.ref == 'refs/heads/master'
-        run: cp newman/*.html dist/sandbox-tests.html && rm newman/*.html
+        run: cat newman/*.html > dist/sandbox-tests.html && rm newman/*.html
 
       - name: Store local test result artifact (master only)
         if: github.ref == 'refs/heads/master'
