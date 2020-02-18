@@ -31,19 +31,14 @@
 							"",
 							"if (pm.variables.get(\"profile\") === \"1\") {",
 							"    console.log(\"profile being used is 1\");",
-							"    postman.setNextRequest(\"Retrieve Patient - Negatative Test\");",
+							"    postman.setNextRequest(\"Retrieve Patient - Negative Test\");",
 							"    console.log(\"using Retrieve Patient Test\");",
 							"    }",
 							"    if (pm.variables.get(\"profile\") === \"2\") {",
 							"    console.log(\"profile being used is 2\");",
-							"    postman.setNextRequest(\"Search Patient - Negative Test Simple\");",
+							"    postman.setNextRequest(\"Search Patient - Negative Test\");",
 							"    console.log(\"using Search Patient Test\");",
-							"    }",
-							"    if (pm.variables.get(\"profile\") === \"3\") {",
-							"    console.log(\"profile being used is 3\");",
-							"    postman.setNextRequest(\"Search Patient - Negative Test Simple\");",
-							"    console.log(\"using Search Patient Test\");",
-							"    }",
+							"}",
 							"}",
 							"checkTest();"
 						],
@@ -300,21 +295,21 @@
 	],
 	"variable": [
 		{
-			"id": "cb56da37-8fcc-4f23-a456-0c074f5dc3a4",
+			"id": "2b10e407-c803-45ce-b537-a9ff1a60f3b4",
 			"key": "nhs_id",
 			"value": "9000000000",
 			"type": "string",
 			"disabled": true
 		},
 		{
-			"id": "34c76124-9b90-41e0-a356-48a3ecff5970",
+			"id": "ae32fdcb-afe1-41f5-a527-477a605fbdf8",
 			"key": "profile",
 			"value": "1",
 			"type": "string",
 			"disabled": true
 		},
 		{
-			"id": "085f9d9e-dfa4-48a7-90b0-f83b33df1c0d",
+			"id": "d470e1f6-d71d-47c2-b6b7-2e1afd585994",
 			"key": "response_Status",
 			"value": "400",
 			"type": "string",
