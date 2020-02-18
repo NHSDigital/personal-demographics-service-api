@@ -52,12 +52,8 @@ jobs:
       - name: Check licenses
         run: make check-licenses
 
-      - name: Lint Spec
+      - name: Lint
         run: make lint
-
-      - name: Enforce Sandbox Javascript style
-        working-directory: sandbox
-        run: npm run lint
 
       - name: Check resources are valid FHIR 4.0.1
         run: make validate

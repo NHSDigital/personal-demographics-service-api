@@ -18,6 +18,8 @@ install-fhir-validator:
 
 lint:
 	npm run lint
+	cd sandbox && npm run lint && cd ..
+	poetry run pylint **/*.py
 
 test:
 	npm run test-local

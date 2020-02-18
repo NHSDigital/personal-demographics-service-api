@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-'''
+"""
 Python functions to generate [NHS Number](https://www.nhs.uk/using-the-nhs/about-the-nhs/what-is-an-nhs-number/) check digits, or validate NHS Numbers.
 
 Check digit generation algorithm is described here: https://www.datadictionary.nhs.uk/data_dictionary/attributes/n/nhs/nhs_number_de.asp?shownav=1
@@ -8,11 +8,12 @@ Check digit generation algorithm is described here: https://www.datadictionary.n
 Sean Kelly has an version implemented as a spreadsheet that can be used to generate 'valid' (but not real) NHS numbers for testing purpoes. This was the source of the NHS numbers in the tests.
 
 This is unused and provided as a convenience/reference implementation.
-'''
+"""
+import argparse
 
 
 def calculate_check_digit(nhs_number: str) -> int:
-    '''Given a nine-digit NHS Number calculate the tenth check digit.'''
+    """Given a nine-digit NHS Number calculate the tenth check digit."""
 
     if not nhs_number.isdigit():
         raise ValueError("nhs_number must comprise only digits")
@@ -34,7 +35,7 @@ def calculate_check_digit(nhs_number: str) -> int:
 
 
 def nhs_number_is_valid(nhs_number: str) -> bool:
-    '''Validate a full (ten-digit) NHS Number by recalculating the check digit.'''
+    """Validate a full (ten-digit) NHS Number by recalculating the check digit."""
 
     if not nhs_number.isdigit():
         raise ValueError("nhs_number must comprise only digits")
@@ -44,8 +45,8 @@ def nhs_number_is_valid(nhs_number: str) -> bool:
     return calculate_check_digit(nhs_number[:9]) == int(nhs_number[9])
 
 
-if __name__ == '__main__':
-    import argparse
+def main():
+    """Main entrypoint"""
     parser = argparse.ArgumentParser(
         description='Validate NHS Numbers or generate check digit for a number')
     parser.add_argument(
@@ -57,3 +58,8 @@ if __name__ == '__main__':
         print(calculate_check_digit(args.nhs_number))
     elif args.operation == 'validate':
         print(nhs_number_is_valid(args.nhs_number))
+
+
+
+if __name__ == '__main__':
+    main()

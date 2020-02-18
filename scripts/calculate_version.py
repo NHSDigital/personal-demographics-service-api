@@ -16,10 +16,10 @@ Commands:
     +startversioning       Reset version to v1.0.0-alpha
 """
 
-import git
-import semver
 import os.path
 import itertools
+import git
+import semver
 
 
 SCRIPT_LOCATION = os.path.join(os.path.dirname(os.path.abspath(__file__)))
@@ -28,6 +28,7 @@ REPO = git.Repo(REPO_ROOT)
 
 
 def get_versionable_commits(repo):
+    """Gets all the versionable commits for a repository"""
     # Ignore merge commits
     commits = [c for c in repo.iter_commits() if len(c.parents) == 1]
 
@@ -35,21 +36,23 @@ def get_versionable_commits(repo):
     return list(itertools.takewhile(lambda c: '+startversioning' not in c.message, commits))
 
 
-def commit_message_contains(s):
-    def inner_f(commit):
-        return s in commit.message
-    return inner_f
+def is_status_set_command(commit):
+    """Returns true if commit.message is a status setting command"""
+    return ('+setstatus' in commit.message) or ('+clearstatus' in commit.message)
 
 
-def is_status_set_command(c):
-    return ('+setstatus' in c.message) or ('+clearstatus' in c.message)
+def is_major_inc(commit):
+    """Returns true if commit.message contains a major inc command"""
+    return '+major' in commit.message
 
 
-is_major_inc = commit_message_contains('+major')
-is_minor_inc = commit_message_contains('+minor')
+def is_minor_inc(commit):
+    """Returns true if commit.message contains a minor inc command"""
+    return '+minor' in commit.message
 
 
 def without_empty(commits):
+    """Takes a list of commits and returns a list without empty commits"""
     pairs = zip(commits, commits[1:])
 
     for fst, snd in pairs:
@@ -62,6 +65,7 @@ def without_empty(commits):
 
 
 def calculate_version(base_major=1, base_minor=0, base_revision=0, base_pre='alpha'):
+    """Calculates a semver based on commit history and special flags in commit messages"""
     major = base_major
     minor = base_minor
     patch = base_revision

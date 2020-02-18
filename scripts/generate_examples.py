@@ -6,15 +6,24 @@ generate_example.py
 Usage:
   generate_example.py SPEC_FILE OUT_DIR
 """
-from docopt import docopt
 import json
 import os
 import os.path
+from docopt import docopt
 from jsonpath_rw import parse
 
 
-def generate_resource_example(schema_dict, path=[]):
+def generate_resource_example(schema_dict, path=None):
+    """
+    Generates resource examples from an OAS schema
+
+    Incomplete, especially around multiple arity/polymorphic parts such as anyOf.
+    In future this should be replaced by an example generator that uses FHIR tooling.
+    """
     example = {}
+
+    if path is None:
+        path = []
 
     for property_name, property_value in schema_dict.items():
         if property_value['type'] == 'array':
@@ -44,12 +53,13 @@ def generate_resource_example(schema_dict, path=[]):
     return example
 
 
-if __name__ == "__main__":
+def main(arguments):
+    """Program entry point"""
     arguments = docopt(__doc__, version='0')
 
     # Load spec from file
-    with open(arguments['SPEC_FILE'], 'r') as f:
-        spec = json.loads(f.read())
+    with open(arguments['SPEC_FILE'], 'r') as spec_file:
+        spec = json.loads(spec_file.read())
 
     # Create default dir structure
     for i in ['resources', 'responses']:
@@ -57,16 +67,20 @@ if __name__ == "__main__":
 
     # Generate resources
     for component_name, component_spec in spec['components']['schemas'].items():
-        with open(os.path.join(arguments['OUT_DIR'], 'resources', component_name + '.json'), 'w') as f:
-            f.write(json.dumps(generate_resource_example(component_spec['properties'], [component_name])))
+        with open(os.path.join(arguments['OUT_DIR'], 'resources', component_name + '.json'), 'w') as out_file:
+            out_file.write(json.dumps(generate_resource_example(component_spec['properties'], [component_name])))
 
     # Pull out responses
     match_expr = parse('paths.*.*.(response|(responses.*)).content.*.(example|(examples.*.value))')
 
-    for example in match_expr.find(spec):
-        if 'patch' in str(example.full_path):
+    for match in match_expr.find(spec):
+        if 'patch' in str(match.full_path):
             # PATCHes are not FHIR resources, so we should not be validating them
             continue
 
-        with open(os.path.join(arguments['OUT_DIR'], 'responses', str(example.full_path).replace('/', '_') + '.json'), 'w') as f:
-            f.write(json.dumps(example.value))
+        with open(os.path.join(arguments['OUT_DIR'], 'responses', str(match.full_path).replace('/', '_') + '.json'), 'w') as out_file:
+            out_file.write(json.dumps(match.value))
+
+
+if __name__ == "__main__":
+    main(arguments=docopt(__doc__, version='0'))

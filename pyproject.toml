@@ -36,6 +36,7 @@ gitpython = "^3.0.5"
 flake8 = "^3.7.9"
 black = "^19.10b0"
 pip-licenses = "^2.0.1"
+pylint = "^2.4.4"
 
 
 [tool.poetry.scripts]
