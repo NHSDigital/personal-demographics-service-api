@@ -61,6 +61,15 @@ jobs:
       - name: Run local tests
         run: make test
 
+      - name: Copy local test report
+        run: cp newman/*.html dist/local-tests.html && rm newman/*.html
+
+      - name: Store local test result artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: local-tests-${{ github.run_id }}.json
+          path: ./dist/local-tests.html
+
       - name: Compile spec
         run: make publish
 
@@ -118,3 +127,15 @@ jobs:
       - name: Run sandbox tests (master only)
         if: github.ref == 'refs/heads/master'
         run: make test-sandbox
+
+      - name: Copy sandbox test report (master only)
+        if: github.ref == 'refs/heads/master'
+        run: cp newman/*.html dist/sandbox-tests.html && rm newman/*.html
+
+      - name: Store local test result artifact (master only)
+        if: github.ref == 'refs/heads/master'
+        uses: actions/upload-artifact@v1
+        with:
+          name: sandbox-tests-${{ github.run_id }}.json
+          path: ./dist/sandbox-tests.html
+
