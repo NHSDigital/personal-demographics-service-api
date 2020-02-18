@@ -6,7 +6,7 @@ install-python:
 	poetry install
 
 install-node:
-	npm install --dev
+	npm install
 	cd sandbox && npm install
 
 install-hooks:
