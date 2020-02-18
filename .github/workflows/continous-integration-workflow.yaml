@@ -1,4 +1,4 @@
-name: Build Jobs
+name: Build
 
 on: push
 
