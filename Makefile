@@ -57,3 +57,6 @@ deploy-proxy: update-examples
 
 deploy-spec: update-examples
 	scripts/deploy_spec.sh
+
+format:
+	poetry run black **/*.py
