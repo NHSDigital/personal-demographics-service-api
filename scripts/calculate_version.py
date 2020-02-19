@@ -23,7 +23,7 @@ import semver
 
 
 SCRIPT_LOCATION = os.path.join(os.path.dirname(os.path.abspath(__file__)))
-REPO_ROOT = os.path.abspath(os.path.join(SCRIPT_LOCATION, '..'))
+REPO_ROOT = os.path.abspath(os.path.join(SCRIPT_LOCATION, ".."))
 REPO = git.Repo(REPO_ROOT)
 
 
@@ -33,22 +33,24 @@ def get_versionable_commits(repo):
     commits = [c for c in repo.iter_commits() if len(c.parents) == 1]
 
     # If there is a marker to start versioning from, use it. Else, start from the first commit
-    return list(itertools.takewhile(lambda c: '+startversioning' not in c.message, commits))
+    return list(
+        itertools.takewhile(lambda c: "+startversioning" not in c.message, commits)
+    )
 
 
 def is_status_set_command(commit):
     """Returns true if commit.message is a status setting command"""
-    return ('+setstatus' in commit.message) or ('+clearstatus' in commit.message)
+    return ("+setstatus" in commit.message) or ("+clearstatus" in commit.message)
 
 
 def is_major_inc(commit):
     """Returns true if commit.message contains a major inc command"""
-    return '+major' in commit.message
+    return "+major" in commit.message
 
 
 def is_minor_inc(commit):
     """Returns true if commit.message contains a minor inc command"""
-    return '+minor' in commit.message
+    return "+minor" in commit.message
 
 
 def without_empty(commits):
@@ -64,7 +66,7 @@ def without_empty(commits):
     yield commits[-1]
 
 
-def calculate_version(base_major=1, base_minor=0, base_revision=0, base_pre='alpha'):
+def calculate_version(base_major=1, base_minor=0, base_revision=0, base_pre="alpha"):
     """Calculates a semver based on commit history and special flags in commit messages"""
     major = base_major
     minor = base_minor
@@ -79,10 +81,12 @@ def calculate_version(base_major=1, base_minor=0, base_revision=0, base_pre='alp
     if status_sets:
         most_recent_message = status_sets[0].message.strip()
 
-        if most_recent_message.startswith('+setstatus '):
-            pre = most_recent_message.split(' ')[1]  # Take the first string after the command
+        if most_recent_message.startswith("+setstatus "):
+            pre = most_recent_message.split(" ")[
+                1
+            ]  # Take the first string after the command
 
-        if most_recent_message == '+clearstatus':
+        if most_recent_message == "+clearstatus":
             pre = None
 
     # If there are any +major in commit messages, increment the counter
@@ -107,8 +111,8 @@ def calculate_version(base_major=1, base_minor=0, base_revision=0, base_pre='alp
     commits = list(without_empty(commits))
     patch = len(commits)
 
-    return 'v' + str(semver.VersionInfo(major, minor, patch, pre))
+    return "v" + str(semver.VersionInfo(major, minor, patch, pre))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print(calculate_version())

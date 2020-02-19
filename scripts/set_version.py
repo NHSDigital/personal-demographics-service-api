@@ -13,7 +13,7 @@ from calculate_version import calculate_version
 def main():
     """Main entrypoint"""
     data = json.loads(sys.stdin.read())
-    data['info']['version'] = str(calculate_version())
+    data["info"]["version"] = str(calculate_version())
     sys.stdout.write(json.dumps(data, indent=2))
     sys.stdout.close()
 
