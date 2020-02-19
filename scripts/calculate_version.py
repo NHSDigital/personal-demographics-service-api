@@ -93,7 +93,6 @@ def calculate_version(base_major=1, base_minor=0, base_revision=0, base_pre='alp
         minor = 0
         patch = 0
 
-
     # If there are any +minor in commit messages, increment the counter
     # We only care about commits after the last major increment
     commits = list(itertools.takewhile(lambda c: not is_major_inc(c), commits))

@@ -60,6 +60,5 @@ def main():
         print(nhs_number_is_valid(args.nhs_number))
 
 
-
 if __name__ == '__main__':
     main()
