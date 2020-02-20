@@ -116,3 +116,7 @@ Redeploy the API Proxy and hosted Sandbox service.
 Successful deployment of the API Proxy requires:
 
  1. A *Target Server* named `ig3`
+ 2. A *Key-Value Map* named `pds-variables`, containing:
+    1. Key: `from_asid`, Value: Accredited System ID (ASID) identifying the API Gateway
+
+:bulb: For Sandbox-running environments (`test`) these need to be present for successful deployment but can be set to empty/dummy values.
