@@ -82,7 +82,7 @@ module.exports.search = function() {
     }
     let fuzzyMatch = containsSearchParameters(fuzzySearchParams)
     if (fuzzyMatch) {
-        return buildPatientResponse([EXAMPLE_PATIENT_SMYTHE])
+        return buildPatientResponse([EXAMPLE_PATIENT_SMYTHE], 0.8976)
     } 
 
     const wildcardSearchParams = {
