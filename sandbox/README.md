@@ -15,32 +15,7 @@ npm run serve
 
 ## Deployment
 
-To deploy you need to set enviroment variables for Apigee. Your credentials will not work if multi-factor authentication is setup on your account.
-
-You need to set:
-- Username
-- Password
-- Apigee Spec ID
-- Apigee Portal API ID
-
-To set environment variables:
-
-```
-export APIGEE_USER=<USERNAME>
-export APIGEE_PASS=<PASSWORD>
-export APIGEE_SPEC_ID=<SPEC ID>
-export APIGEE_PORTAL_API_ID=<PORTAL_API)ID>
-```
-
-Then to deploy:
-
-```
-npm run deploy
-```
-
-Will collect all the assets in the `dist/` folder and create a new **undeployed** revision of the *Patient-Information* API Proxy.
-
-Uses [apigeetool](https://www.npmjs.com/package/apigeetool).
+Redeploy the API Proxy. See the main [README.md](../README.md).
 
 ## Endpoints
 

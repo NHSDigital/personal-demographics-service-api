@@ -153,6 +153,10 @@ paths:
           * date of death (range)
           * registered GP Practice
 
+        If a _fuzzy-match has not been specified the parameters must include:
+          * family name (minimum of 2 characters, maybe wildcarded)
+          * gender
+          * date of birth (range)
 
         ## Historic data search
         By default the endpoint only searches current information. You can request to search historic information, such as maiden names or previous addresses using the _history query parameter.
@@ -175,7 +179,7 @@ paths:
         You can request to only return exact matches (score = 1) using the _exact-match parameter.
 
         ## Number of results returned
-        By default, the endpoint will return a maximum of 50 results. If there are more than 50 matching patient records, the endpoint will return no results and the error response TBC.
+        By default, the endpoint will return a maximum of 50 results. If there are more than 50 matching patient records, the endpoint will return no results and the error response TOO_MANY_MATCHES.
         You can choose to limit the number of results returned using the _length parameter.
 
         ## Clinical safety and IG
@@ -196,7 +200,6 @@ paths:
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
-
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
       tags:
         - patients
@@ -218,7 +221,7 @@ paths:
             type: boolean
             default: false
         - name: _fuzzy-match
-          description: The search will perform phonetic matching on names using soundex, transpose names and will score the results.  
+          description: The search will perform phonetic matching on names using soundex, transpose names and will score the results.  If the fields death-date or general-practitioner are provided they will be ignored in this search.  This search is performed using a combination of parameters if an invalid combination is supplied INVALID_COMBINATION will be returned.
           example: true
           in: query
           required: false
@@ -406,7 +409,7 @@ paths:
                             - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
                               version: '1'
                               code: INVALID_COMBINATION
-                              display: "Invalid combindation for fields"
+                              display: "Invalid combination for fields"
   /Patient/{id}:
     parameters:
       - $ref: '#/components/parameters/Id'

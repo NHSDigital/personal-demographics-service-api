@@ -10,7 +10,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # This causes all history to be fetched, which is required for calculate-version to function
 
       - name: Install Python 3.8
         uses: actions/setup-python@v1
@@ -21,13 +21,25 @@ jobs:
         run: sudo apt update
 
       - name: Install Java and Node
-        run: sudo apt install default-jre default-jdk npm
+        run: sudo apt-get install --yes default-jre default-jdk npm
 
       - name: Upgrade python packaging tools
         run: python -m pip install --upgrade pip setuptools wheel
 
       - name: Install poetry
         run: pip install poetry
+
+      - name: Cache poetry packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/pypoetry
+          key: ${{ runner.os }}-build-cache-poetry-packages-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-cache-npm-packages-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install repo
         run: make install
@@ -53,10 +65,44 @@ jobs:
           name: patient-demographics-service-api-${{ env.SPEC_VERSION }}+${{ github.run_id }}.json
           path: ./dist/patient-demographics-service-api.json
 
-      - name: Deploy to Apigee (master only)
+      - name: Create release (master only)
+        id: create-release
+        if: github.ref == 'refs/heads/master'
+        uses: actions/create-release@v1
+        continue-on-error: true
         env:
-          APIGEE_USER: ${{ secrets.APIGEE_USER }}
-          APIGEE_PASS: ${{ secrets.APIGEE_PASS }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.SPEC_VERSION }}
+          release_name: ${{ env.SPEC_VERSION }}
+
+      - name: Upload spec release asset
+        if: github.ref == 'refs/heads/master'
+        uses: actions/upload-release-asset@v1
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./dist/patient-demographics-service-api.json
+          asset_name: patient-demographics-service-api.json
+          asset_content_type: application/json
+
+      - name: Deploy to OAS Spec to Apigee (master only)
+        if: github.ref == 'refs/heads/master'
+        env:
+          APIGEE_USERNAME: ${{ secrets.APIGEE_USER }}
+          APIGEE_PASSWORD: ${{ secrets.APIGEE_PASS }}
           APIGEE_PORTAL_API_ID: ${{ secrets.APIGEE_PORTAL_API_ID }}
           APIGEE_SPEC_ID: ${{ secrets.APIGEE_SPEC_ID }}
-        run: scripts/deploy.sh
+        run: make deploy-spec
+
+      - name: Deploy to API Proxy (inc Sandbox) to Apigee (master only)
+        if: github.ref == 'refs/heads/master'
+        env:
+          APIGEE_USERNAME: ${{ secrets.APIGEE_USER }}
+          APIGEE_PASSWORD: ${{ secrets.APIGEE_PASS }}
+          APIGEE_APIPROXY: ${{ secrets.APIGEE_APIPROXY }}
+          APIGEE_ORGANIZATION: ${{ secrets.APIGEE_ORGANIZATION }}
+          APIGEE_ENVIRONMENTS: ${{ secrets.APIGEE_ENVIRONMENTS }}
+        run: make deploy-proxy

@@ -1,0 +1,23 @@
+name: Lint PR
+on: pull_request
+jobs:
+  link-ticket:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo ref
+        run: echo ${{ github.event.pull_request.head.ref }}
+
+      - name: Check ticket name is in pull request
+        run: echo ${{ github.event.pull_request.head.ref }} | grep -i -E -q "apm-[0-9]+"
+
+      - name: Grab ticket name
+        run: echo ::set-env name=TICKET_NAME::$(echo ${{ github.event.pull_request.head.ref }} | grep -i -o 'apm-[0-9]\+' | tr '[:lower:]' '[:upper:]')
+
+      - name: Comment on PR
+        uses: unsplash/comment-on-pr@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          msg: |
+            This branch is work on a ticket in the NHS Digital APM JIRA Project. Here's a handy link to the ticket:
+            # [${{ env.TICKET_NAME }}](https://jira.digital.nhs.uk/browse/${{ env.TICKET_NAME}})
