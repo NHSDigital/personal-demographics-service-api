@@ -93,7 +93,7 @@ module.exports.search = function() {
     let wildcardMatch = containsSearchParameters(wildcardSearchParams)
     // Perform a search with max result set using the wildcard params and the max-result parameter
     if (wildcardMatch && _request.query["_max-results"]) {
-        if (isNaN(_request.query["_max-results"]) || _request.query["_max-results"] < 0) {
+        if (isNaN(_request.query["_max-results"]) || _request.query["_max-results"] < 1 || _request.query["_max-results"] > 50) {
             // not integer
             throw Boom.badRequest("TBC", {
                 operationOutcomeCode: "TBC", apiErrorCode: "TBC"
@@ -104,7 +104,7 @@ module.exports.search = function() {
                 operationOutcomeCode: "TBC", apiErrorCode: "TOO_MANY_RESULTS"
             })
         } else {
-            return buildPatientResponse([EXAMPLE_PATIENT_SMITH, EXAMPLE_PATIENT_SMYTHE])
+            return buildPatientResponse([EXAMPLE_PATIENT_SMITH, EXAMPLE_PATIENT_SMYTHE], 0.8343)
         } 
     // Perform a advanced search as wildcard provided and max-result parameter not set
     } else if (wildcardMatch) {
