@@ -39,14 +39,35 @@ in CI, but it's useful to run them locally too.
 $ make install-hooks
 ```
 
+### Environment Variables
+There is a file called `.env` that contains environment variables that are used by components that should behave differently in different environments.
+
+If you want to use the local defaults, you can run the following to add the env vars to your current session:
+```
+$ source .env
+```
+
 ### Make commands
 There are `make` commands that alias some of this functionality:
- * `test` -- Lints the definition
+ * `lint` -- Lints the spec and code
  * `publish` -- Outputs the specification as a **single file** into the `dist/` directory
  * `serve` -- Serves a preview of the specification in human-readable format
  * `generate-examples` -- generate example objects from the specification
  * `validate` -- validate generated examples against FHIR R4
 
+### Running tests
+#### End-to-end tests
+To run tests, you need to supply an environment. A `local` environment and an environment template are included under `tests/e2e/environments`.
+
+In order for local tests to work, you must have the sandbox server running locally.
+```
+cd sandbox && npm run start
+```
+
+To run local tests, use:
+```
+npm run test -- -e tests/e2e/environments/local.postman_environment.json
+```
 
 ### VS Code Plugins
 

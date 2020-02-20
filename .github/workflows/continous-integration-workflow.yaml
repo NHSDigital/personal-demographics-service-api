@@ -65,7 +65,7 @@ jobs:
         run: echo ::set-env name=SPEC_VERSION::$(poetry run python scripts/calculate_version.py)
 
       - name: Run local tests
-        run: make test
+        run: npm run test -- -e tests/e2e/environments/local.postman_environment.json
 
       - name: Copy local test report
         run: cat newman/*.html > dist/local-tests.html && rm newman/*.html
