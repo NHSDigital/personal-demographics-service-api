@@ -139,6 +139,7 @@ Redeploy the API Proxy and hosted Sandbox service.
 * `APIGEE_ORGANIZATION`
 * `APIGEE_ENVIRONMENTS`
 * `APIGEE_APIPROXY`
+* `APIGEE_BASE_PATH`
 
 #### Platform setup
 
