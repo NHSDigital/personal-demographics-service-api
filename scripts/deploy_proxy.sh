@@ -8,6 +8,7 @@ set -o nounset errexit pipefail
 mkdir -p dist
 rm -rf dist/apiproxy
 cp -R apiproxy/ dist/
+sed -i "s/PROXY_BASE_PATH/$APIGEE_BASE_PATH/g" dist/apiproxy/proxies/default.xml
 mkdir -p dist/apiproxy/resources/hosted/mocks
 cp sandbox/*.js sandbox/*.json sandbox/*.yaml dist/apiproxy/resources/hosted/
 cp -L sandbox/mocks/*.json dist/apiproxy/resources/hosted/mocks/

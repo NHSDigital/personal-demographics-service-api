@@ -105,4 +105,5 @@ jobs:
           APIGEE_APIPROXY: ${{ secrets.APIGEE_APIPROXY }}
           APIGEE_ORGANIZATION: ${{ secrets.APIGEE_ORGANIZATION }}
           APIGEE_ENVIRONMENTS: ${{ secrets.APIGEE_ENVIRONMENTS }}
+          APIGEE_BASE_PATH: patient-demographics
         run: make deploy-proxy
