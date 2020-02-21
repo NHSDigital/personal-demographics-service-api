@@ -3,15 +3,19 @@ template.py
 
 Takes and environment template and injects values into it from the command line.
 
+Can operate with a template file or from stdin. Replacements can be supplied as an argument in JSON format or from env.
+
 Usage:
-  template.py <template_file> <replacements>
-  template.py - <replacements>
+  template.py [<replacements>] [-f <path> | --file=<path>] [-e | --env]
+  template.py - [<replacements>] [-e | --env]
   template.py (-h | --help)
 
 Options:
-  -h --help   Show this screen.
-
+  -h --help                 Show this screen.
+  -f <path> --file=<path>   Template from file at path.
+  -e --env                  Replace from environment variables.
 """
+import os
 import sys
 import json
 from docopt import docopt
@@ -23,13 +27,18 @@ def replace(template, replacements):
 
 
 def main(args):
-    if args['<template_file>']:
-        with open(args['<template_file>'], 'r') as template_file:
+    template = ""
+    if args['--file']:
+        with open(args['--file'], 'r') as template_file:
             template = template_file.read()
     else:
         template = sys.stdin.read()
 
-    replacements = json.loads(args['<replacements>'])
+    replacements = {}
+    if args['<replacements>']:
+        replacements = json.loads(args['<replacements>'])
+    elif args['--env']:
+        replacements = os.environ
 
     sys.stdout.write(replace(template, replacements))
     sys.stdout.close()
