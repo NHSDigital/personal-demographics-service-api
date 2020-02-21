@@ -127,7 +127,7 @@ jobs:
         run: make deploy-proxy
 
       - name: Run sandbox tests (master only)
-        if: github.ref == 'refs/heads/master'
+        # if: github.ref == 'refs/heads/master'
         env:
           API_TEST_ENV_FILE_PATH: "tests/e2e/environments/sandbox.postman_environment.json"
           API_TEST_URL: ${{ secrets.API_TEST_URL }}
