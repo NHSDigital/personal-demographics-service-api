@@ -132,7 +132,9 @@ jobs:
           API_TEST_ENV_FILE_PATH: "tests/e2e/environments/sandbox.postman_environment.json"
           API_TEST_URL: ${{ secrets.API_TEST_URL }}
           ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
-        run: poetry run scripts/template.py -f tests/environments/postman_environment.json.template --env && make test
+        run: |
+          poetry run scripts/template.py -f tests/environments/postman_environment.json.template --env > tests/e2e/environments/sandbox.postman_environment.json
+          make test
 
       - name: Copy sandbox test report (master only)
         if: github.ref == 'refs/heads/master'
