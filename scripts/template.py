@@ -1,7 +1,7 @@
 """
 template.py
 
-Takes and environment template and injects values into it from the command line.
+Takes a jinja2 template and injects values into it from the command line.
 
 Can operate with a template file or from stdin. Replacements can be supplied as an argument in JSON format or from env.
 
@@ -13,7 +13,7 @@ Usage:
 Options:
   -h --help                 Show this screen.
   -f <path> --file=<path>   Template from file at path.
-  -e --env                  Replace from environment variables.
+  -e --env                  Replace from environment variables instead of JSON argument.
 """
 import os
 import sys

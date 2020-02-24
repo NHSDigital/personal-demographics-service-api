@@ -40,11 +40,13 @@ $ make install-hooks
 ```
 
 ### Environment Variables
-There is a file called `.env` that contains environment variables that are used by components that should behave differently in different environments.
+There is a file called `.envrc` that contains environment variables that are used by components that should behave differently in different environments.
 
-If you want to use the local defaults, you can run the following to add the env vars to your current session:
+If you have [direnv](https://direnv.net/) installed, your shell will automatically pick up these environment variables.
+
+If you want to use the local defaults without direnv, you can run the following to add the env vars to your current session:
 ```
-$ source .env
+$ source .envrc
 ```
 
 ### Make commands
@@ -66,8 +68,12 @@ cd sandbox && npm run start
 
 To run local tests, use:
 ```
-npm run test -- -e tests/e2e/environments/local.postman_environment.json
+make test
 ```
+
+If you'd like to run tests under a different environment, set `API_TEST_ENV_FILE_PATH` (pointing to a valid postman enviroment file) and run `make test`.
+
+There is a template environment file available at `tests/e2e/environments/postman_environment.json.template`.
 
 ### VS Code Plugins
 
