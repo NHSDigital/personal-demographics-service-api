@@ -32,7 +32,7 @@ info:
     * nominated pharmacy (other related pharmacies coming soon)
     * consent information (coming soon)
     * related people (coming soon)
-    
+
     Currently, this API can only be accessed by healthcare professionals, authenticated with an NHS smartcard or equivalent.
     Unauthenticated access and citizen access are on the roadmap.
 
@@ -70,7 +70,7 @@ info:
 
     It also conforms to the [FHIR](/introduction-to-apis#fhir) global standard for health care data exchange.
     Specifically, it is aligned with [FHIR UK Core](https://digital.nhs.uk/services/fhir-uk-core), which is built on FHIR Release 4.
-    
+
     You don’t need to know much about FHIR to use this API - FHIR APIs are just RESTful APIs that follow specific rules.
     In particular:
     - resource names are capitalised and singular, for example the `/Patient` not `/patients`
@@ -92,11 +92,11 @@ info:
     It supports the following security patterns:
     * [user-restricted RESTful API - using NHS Identity - combined authentication and authorisation](/security-and-authorisation#user-restricted-restful-api-using-nhs-identity-combined-authentication-and-authorisation)
     * [user-restricted RESTful API - using NHS Identity - separate authentication and authorisation](/security-and-authorisation#user-restricted-restful-api-using-nhs-identity-separate-authentication-and-authorisation)
-    
+
     In due course we plan to add the following:
     - access for citizens, using NHS Login
     - unattended access - without smartcard - similar to the PDS SMSP API
-    
+
     ## Testing
     You can test this API in:
     * our [sandbox environment](/testing#sandbox-testing) for initial developer testing
@@ -112,7 +112,7 @@ info:
 
     ## Assurance
     We are hoping to make the assurance process as lightweight and as self-service as possible.
-    
+
     More details to follow.
 
     ## Endpoints
@@ -121,17 +121,14 @@ info:
     * `GET /Patient/{id}` - get patient's personal details
     * `PATCH /Patient/{id}` - update patient's personal details
   contact:
-    name: 'Personal Demographics Service FHIR API Support'
+    name: Personal Demographics Service FHIR API Support
     url: 'https://tbc.api.nhs.net'
-    email: 'tbc-api-support@nhs.net'
-
+    email: tbc-api-support@nhs.net
 servers:
-  - url: https://emea-demo8-test.apigee.net/personal-demographics
+  - url: 'https://emea-demo8-test.apigee.net/personal-demographics'
     description: Sandbox service.
-
 tags:
   - name: patients
-
 paths:
   /Patient:
     get:
@@ -220,7 +217,7 @@ paths:
             type: boolean
             default: false
         - name: _fuzzy-match
-          description: The search will perform phonetic matching on names using soundex, transpose names and will score the results.  If the fields death-date or general-practitioner are provided they will be ignored in this search.  This search is performed using a combination of parameters if an invalid combination is supplied INVALID_COMBINATION will be returned.
+          description: 'The search will perform phonetic matching on names using soundex, transpose names, and score the results.  If the fields death-date or general-practitioner are provided they will be ignored in this search. This search is performed using a combination of parameters. If an invalid combination is supplied INVALID_COMBINATION will be returned.'
           example: true
           in: query
           required: false
@@ -228,7 +225,7 @@ paths:
             type: boolean
             default: false
         - name: _max-results
-          description: The maximum number of results to return, this cannot be greater than 50.   If there are more than 50 results then no results will be return and an outcome of TOO_MANY_MATCHES. 
+          description: 'The maximum number of results to return, which cannot be greater than 50.  If there are more than 50 results,  no results will be returned with and outcome of TOO_MANY_MATCHES.'
           example: 1
           in: query
           required: false
@@ -237,44 +234,44 @@ paths:
             format: int32
             default: 50
         - name: family
-          description: The patient's family name (surname)
-          examples: 
+          description: "The patient's family name (surname)."
+          examples:
             simple:
               value: Smith
               summary: Will also match Smythe if _fuzzy-match is specified.
             wildcarded:
-              value: 'Sm\*t\*'
-              summary: Wildcards must contain at least two characters, this will match Smith, Smythe
+              value: "Sm\\*t\\*"
+              summary: 'Wildcards must contain at least two characters, this will match Smith, Smythe'
           in: query
           required: false
           schema:
             type: string
         - name: given
-          description: The patient's given name(s).
+          description: "The patient's given name(s)."
           example: Jane
           in: query
           required: false
           schema:
             type: string
         - name: gender
-          description: "Gender the patient identifies as."
+          description: Gender the patient identifies as.
           example: female
           in: query
           required: false
           schema:
-            $ref: 'components/schemas/Gender.yaml'
+            $ref: components/schemas/Gender.yaml
         - name: birthdate
           in: query
-          description: Birth date in the format `yyyy-mm-dd`.  A range can be specified with a subset of the [FHIR date searching specifiers](https://www.hl7.org/fhir/search.html#date)
+          description: 'Birth date is in the format `yyyy-mm-dd`.  A range can be specified with a subset of the [FHIR date searching specifiers](https://www.hl7.org/fhir/search.html#date).'
           examples:
-            simple: 
-              value: 'eq2010-10-22'
+            simple:
+              value: eq2010-10-22
               description: Exact match date
             rangege:
-              value: 'ge2010-10-22'
+              value: ge2010-10-22
               description: Greater than or equals match which matches 2010-10-22 or 2010-10-23
             rangele:
-              value: 'le2010-10-22'
+              value: le2010-10-22
               description: Les than or equals match which matches 2010-10-22 or 2010-10-21
           required: false
           schema:
@@ -282,36 +279,36 @@ paths:
             format: date
         - name: death-date
           in: query
-          description: Date of death in the format `yyyy-mm-dd`.  A range can be specified with a subset of the [FHIR date searching specifiers](https://www.hl7.org/fhir/search.html#date)
+          description: 'Date of death in the format `yyyy-mm-dd`.  A range can be specified with a subset of the [FHIR date searching specifiers](https://www.hl7.org/fhir/search.html#date).'
           examples:
-            simple: 
-              value: 'eq2010-10-22'
+            simple:
+              value: eq2010-10-22
               description: Exact match date
             rangege:
-              value: 'ge2010-10-22'
+              value: ge2010-10-22
               description: Greater than or equals match which matches 2010-10-22 or 2010-10-23
             rangele:
-              value: 'le2010-10-22'
+              value: le2010-10-22
               description: Les than or equals match which matches 2010-10-22 or 2010-10-21
           required: false
           schema:
             type: string
             format: date
         - name: address-postcode
-          description: White spaces in postcodes are significant, i.e. LS16AE will not match LS1 6AE.
-          examples: 
+          description: 'White spaces in postcodes are significant, which means LS16AE will not match LS1 6AE.'
+          examples:
             simple:
               value: LS1 6AE
-              summary: Spaces important, will not match LS16AE
+              summary: 'Spaces important, will not match LS16AE'
             wildcarded:
-              value: 'LS1\*'
-              summary: Will match LS16AE and 'LS1 6AE', 'LS1 6AB'
+              value: "LS1\\*"
+              summary: "Will match LS16AE and 'LS1 6AE', 'LS1 6AB'"
           in: query
           required: false
           schema:
             type: string
         - name: general-practitioner
-          description: "The ODS code of the patient's registered general practitioner."
+          description: "The Organisation Data Service (ODS) code of the patient's registered general practitioner."
           example: Y00001
           in: query
           required: false
@@ -320,7 +317,7 @@ paths:
             format: ods_code
       responses:
         '200':
-          description: "A completed search, containing zero, one or many matching patients."
+          description: 'A completed search, containing zero, one, or many matching patients.'
           content:
             application/fhir+json:
               schema:
@@ -373,15 +370,15 @@ paths:
                 entry:
                   - fullUrl: 'https://beta.api.digital.nhs.uk/Patient/9000000009'
                     search:
-                      score: 1.0
+                      score: 1
                     resource:
-                      $ref: 'components/examples/Patient.json'
+                      $ref: components/examples/Patient.json
         '400':
           description: Invalid search paramaters supplied.
           content:
             application/fhir+json:
               schema:
-                $ref: 'components/schemas/OperationOutcome.yaml'
+                $ref: components/schemas/OperationOutcome.yaml
               examples:
                 not-enough:
                   summary: too few search params
@@ -392,7 +389,7 @@ paths:
                         code: required
                         details:
                           coding:
-                            - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
+                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
                               code: NO_SEARCHES_PERFORMED
                               display: Not enough search parameters were provided to be able to make a search.
@@ -405,11 +402,11 @@ paths:
                         code: value
                         details:
                           coding:
-                            - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
+                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
                               code: INVALID_COMBINATION
-                              display: "Invalid combination for fields"
-  /Patient/{id}:
+                              display: Invalid combination for fields
+  '/Patient/{id}':
     parameters:
       - $ref: '#/components/parameters/Id'
     get:
@@ -431,8 +428,7 @@ paths:
         Alternatively, you can try out the sandbox using our Postman collection:
 
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
-
-      summary: Retrieve a patient's record
+      summary: "Retrieve a patient's record"
       operationId: get-patient
       tags:
         - patients
@@ -441,19 +437,19 @@ paths:
           description: Information successfully returned.
           headers:
             ETag:
-              $ref: 'components/schemas/ETag.yaml'
+              $ref: components/schemas/ETag.yaml
           content:
             application/fhir+json:
               schema:
-                $ref: 'components/schemas/Patient.yaml'
+                $ref: components/schemas/Patient.yaml
               example:
-                $ref: 'components/examples/Patient.json'
+                $ref: components/examples/Patient.json
         '400':
           description: Invalid NHS number supplied.
           content:
             application/fhir+json:
               schema:
-                $ref: 'components/schemas/OperationOutcome.yaml'
+                $ref: components/schemas/OperationOutcome.yaml
               example:
                 resourceType: OperationOutcome
                 issue:
@@ -461,7 +457,7 @@ paths:
                     code: value
                     details:
                       coding:
-                        - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
                           code: invalidNHSNumber
                           display: NHS Number 9000000000 is not a valid NHS number.
@@ -470,7 +466,7 @@ paths:
           content:
             application/fhir+json:
               schema:
-                $ref: 'components/schemas/OperationOutcome.yaml'
+                $ref: components/schemas/OperationOutcome.yaml
               example:
                 resourceType: OperationOutcome
                 issue:
@@ -478,7 +474,7 @@ paths:
                     code: not-found
                     details:
                       coding:
-                        - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
                           code: patientNotFound
                           display: Patient with NHS number 9111231130 could not be found.
@@ -545,36 +541,36 @@ paths:
                   type: boolean
                   default: false
                 patches:
-                  $ref: 'components/schemas/JsonPatch.yaml'
+                  $ref: components/schemas/JsonPatch.yaml
             examples:
               add-name:
                 summary: Add a new name to the patient
                 value:
-                  $ref: 'components/examples/requests/PatientPatch/add-name.json'
+                  $ref: components/examples/requests/PatientPatch/add-name.json
               update-name:
                 summary: Update the first given name entry
                 value:
-                  $ref: 'components/examples/requests/PatientPatch/update-name.json'
+                  $ref: components/examples/requests/PatientPatch/update-name.json
               delete-name:
                 summary: Remove a name no longer in use
                 value:
-                  $ref: 'components/examples/requests/PatientPatch/delete-name.json'
+                  $ref: components/examples/requests/PatientPatch/delete-name.json
       responses:
         '200':
           description: Patient updated.
           headers:
             ETag:
-              $ref: 'components/schemas/ETag.yaml'
+              $ref: components/schemas/ETag.yaml
           content:
             application/fhir+json:
               schema:
-                $ref: 'components/schemas/Patient.yaml'
+                $ref: components/schemas/Patient.yaml
         '400':
           description: Client error.
           content:
             application/fhir+json:
               schema:
-                $ref: 'components/schemas/OperationOutcome.yaml'
+                $ref: components/schemas/OperationOutcome.yaml
               examples:
                 missing-if-match:
                   summary: Missing If-Match header
@@ -585,7 +581,7 @@ paths:
                         code: required
                         details:
                           coding:
-                            - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
+                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
                               code: versionNotSupplied
                               display: If-Match header must be supplied to update this resource.
@@ -598,7 +594,7 @@ paths:
                         code: value
                         details:
                           coding:
-                            - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
+                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
                               code: invalidNHSNumber
                               display: NHS Number 9000000000 is not a valid NHS number.
@@ -611,7 +607,7 @@ paths:
                         code: required
                         details:
                           coding:
-                            - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
+                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
                               code: noPatchesSubmitted
                               display: No patches submitted.
@@ -624,16 +620,16 @@ paths:
                         code: value
                         details:
                           coding:
-                            - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
+                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
                               code: invalidPatchOperation
-                              display: "Invalid patch: Cannot perform the operation at a path that does not exist."
+                              display: 'Invalid patch: Cannot perform the operation at a path that does not exist.'
         '404':
           description: Patient not found.
           content:
             application/fhir+json:
               schema:
-                $ref: 'components/schemas/OperationOutcome.yaml'
+                $ref: components/schemas/OperationOutcome.yaml
               example:
                 resourceType: OperationOutcome
                 issue:
@@ -641,7 +637,7 @@ paths:
                     code: not-found
                     details:
                       coding:
-                        - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
                           code: patientNotFound
                           display: Patient with NHS number 9111231130 could not be found.
@@ -652,7 +648,7 @@ paths:
           content:
             application/fhir+json:
               schema:
-                $ref: 'components/schemas/OperationOutcome.yaml'
+                $ref: components/schemas/OperationOutcome.yaml
               example:
                 resourceType: OperationOutcome
                 issue:
@@ -660,19 +656,19 @@ paths:
                     code: value
                     details:
                       coding:
-                        - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
                           code: unsupportedMediaType
-                          display: Must be 'application/json-patch+json'.
+                          display: "Must be 'application/json-patch+json'."
 components:
   parameters:
     Id:
       name: id
       in: path
-      description: The patient's NHS Number.
+      description: "The patient's NHS Number."
       required: true
       schema:
-        $ref: 'components/schemas/NhsNumber.yaml'
+        $ref: components/schemas/NhsNumber.yaml
     IfMatch:
       in: header
       name: If-Match
@@ -683,13 +679,13 @@ components:
       required: true
       schema:
         type: string
-        format: '^W\/\"[[:print:]]+\"$' # Printable characters enclosed in quotes. See: https://tools.ietf.org/html/rfc7230#section-3.2.6
-        example: W/"2"
+        format: "^W\\/\\\"[[:print:]]+\\\"$"
+        example: 'W/"2"'
   schemas:
     Patient:
-      $ref: 'components/schemas/Patient.yaml'
+      $ref: components/schemas/Patient.yaml
     OperationOutcome:
-      $ref: 'components/schemas/OperationOutcome.yaml'
+      $ref: components/schemas/OperationOutcome.yaml
   responses:
     412PreconditionFailed:
       description: |
@@ -699,7 +695,7 @@ components:
       content:
         application/fhir+json:
           schema:
-            $ref: 'components/schemas/OperationOutcome.yaml'
+            $ref: components/schemas/OperationOutcome.yaml
           example:
             resourceType: OperationOutcome
             issue:
@@ -707,7 +703,7 @@ components:
                 code: conflict
                 details:
                   coding:
-                    - system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode"
+                    - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                       version: '1'
                       code: versionMismatch
                       display: This resource has changed since you last read. Please re-read and try again with the new version number.
