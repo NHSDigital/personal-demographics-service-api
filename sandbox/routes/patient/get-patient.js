@@ -42,38 +42,17 @@ module.exports = [
                     {operationOutcomeCode: "required", apiErrorCode: "tooFewSearchParams"})
             }
 
-            // If provided, validate birthdate, death-date params
-            // Make this better
             if (request.query["birthdate"]) {
-                if (Array.isArray(request.query["birthdate"])) {
-
-                    request.query["birthdate"].forEach(date => {   
-                        if (dateValidator.birthdateSchema.validate(date).error) { 
-                            throw Boom.badRequest(
-                                // Decide on format string instead of [a-z]YYYY-MM-DD
-                                `birthdate has invalid format: ${request.query["birthdate"]} is not in [a-z]YYYY-MM-DD format`,
-                                {operationOutcomeCode: "value", apiErrorCode: "invalidDateFormat"})
-                        } 
-                    }) 
-
-                } else {
-                    // Single date provided
-                    if (dateValidator.birthdateSchema.validate(request.query["birthdate"]).error) {
+                let birthdateParameter = Array.isArray(request.query["birthdate"]) ? request.query["birthdate"] : [request.query["birthdate"]]
+                birthdateParameter.forEach(date => {   
+                    if (dateValidator.birthdateSchema.validate(date).error) { 
                         throw Boom.badRequest(
                             // Decide on format string instead of [a-z]YYYY-MM-DD
                             `birthdate has invalid format: ${request.query["birthdate"]} is not in [a-z]YYYY-MM-DD format`,
                             {operationOutcomeCode: "value", apiErrorCode: "invalidDateFormat"})
                     }
-                }
+                }) 
             }
-
-            // if provided, validate birthdate parameter
-            // if (request.query["birthdate"] && dateValidator.birthdateSchema.validate(request.query["birthdate"]).error) {
-            //     throw Boom.badRequest(
-            //         // Decide on format string instead of [a-z]YYYY-MM-DD
-            //         `birthdate has invalid format: ${request.query["birthdate"]} is not in [a-z]YYYY-MM-DD format`,
-            //         {operationOutcomeCode: "value", apiErrorCode: "invalidDateFormat"})
-            // }
 
             if (request.query["death-date"] && dateValidator.dateSchema.validate(request.query["death-date"]).error) {
                 throw Boom.badRequest(

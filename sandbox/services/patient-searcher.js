@@ -138,7 +138,6 @@ module.exports.search = function() {
     let simpleMatch = containsSearchParameters(simpleSearchParams)
     // If so, try it
     if (simpleMatch) {
-        console.log("Successful simple search")
         return buildPatientResponse([EXAMPLE_PATIENT_SMITH])
     }
 
