@@ -31,8 +31,6 @@ module.exports = [
         method: 'GET',
         path: '/Patient',
         handler: (request) => {
-
-            console.log(request.query)
             
             let patientSearcher = require("../../services/patient-searcher").init(request)
 
