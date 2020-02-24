@@ -40,14 +40,9 @@ $ make install-hooks
 ```
 
 ### Environment Variables
-There is a file called `.envrc` that contains environment variables that are used by components that should behave differently in different environments.
+Various scripts and commands rely on environment variables being set. These are documented with the commands.
 
-If you have [direnv](https://direnv.net/) installed, your shell will automatically pick up these environment variables.
-
-If you want to use the local defaults without direnv, you can run the following to add the env vars to your current session:
-```
-$ source .envrc
-```
+:bulb: Consider using [direnv](https://direnv.net/) to manage your environment variables during development and maintaining your own `.envrc` file - the values of these variables will be specific to you and/or sensitive.
 
 ### Make commands
 There are `make` commands that alias some of this functionality:
@@ -61,6 +56,11 @@ There are `make` commands that alias some of this functionality:
 #### End-to-end tests
 To run tests, you need to supply an environment. A `local` environment and an environment template are included under `tests/e2e/environments`.
 
+Set the following environment variables for local testing:
+ * `ENVIRONMENT`: `local`
+ * `API_TEST_ENV_FILE_PATH`: `tests/e2e/environments/local.postman_environment.json`
+ * `API_TEST_URL`: `localhost:9000`
+
 In order for local tests to work, you must have the sandbox server running locally.
 ```
 cd sandbox && npm run start
@@ -71,9 +71,7 @@ To run local tests, use:
 make test
 ```
 
-If you'd like to run tests under a different environment, set `API_TEST_ENV_FILE_PATH` (pointing to a valid postman enviroment file) and run `make test`.
-
-There is a template environment file available at `tests/e2e/environments/postman_environment.json.template`.
+There is a template environment file available at `tests/e2e/environments/postman_environment.json.template` useful for configuring different testing environments (such as on the CI server).
 
 ### VS Code Plugins
 
@@ -117,7 +115,6 @@ Procedure:
  * Re-generate the [Run in Postman button](https://learning.getpostman.com/docs/postman-for-publishers/run-in-postman/creating-run-button/) Markdown button link and update the OAS
 
 ## Deployment
-:bulb: Consider using [direnv](https://direnv.net/) to manage your environment variables during development.
 
 ### Specification
 Update the API Specification and derived documentation in the Portal.
@@ -137,9 +134,11 @@ Redeploy the API Proxy and hosted Sandbox service.
 * `APIGEE_USERNAME`
 * `APIGEE_PASSWORD`
 * `APIGEE_ORGANIZATION`
-* `APIGEE_ENVIRONMENTS`
-* `APIGEE_APIPROXY`
-* `APIGEE_BASE_PATH`
+* `APIGEE_ENVIRONMENTS` - Comma-separated list of environments to deploy to (e.g. `test,prod`)
+* `APIGEE_APIPROXY` - Name of the API Proxy for deployment
+* `APIGEE_BASE_PATH` - The proxy's base path (must be unique)
+
+:bulb: Specify your own API Proxy (with base path) for use during development.
 
 #### Platform setup
 
