@@ -1,10 +1,20 @@
 <TargetEndpoint name="default">
-  <HTTPTargetConnection>
-    <SSLInfo>
-      <Enabled>true</Enabled>
-    </SSLInfo>
-    <LoadBalancer>
-      <Server name="ig3" />
-    </LoadBalancer>
-  </HTTPTargetConnection>
+    <PreFlow>
+        <Request>
+            <Step>
+                <Name>KeyValueMapOperations.GetAsid</Name>
+            </Step>
+            <Step>
+                <Name>AssignMessage.FromAsidHeader</Name>
+            </Step>
+        </Request>
+    </PreFlow>
+    <HTTPTargetConnection>
+        <SSLInfo>
+            <Enabled>true</Enabled>
+        </SSLInfo>
+        <LoadBalancer>
+            <Server name="ig3" />
+        </LoadBalancer>
+    </HTTPTargetConnection>
 </TargetEndpoint>

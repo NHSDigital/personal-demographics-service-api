@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<KeyValueMapOperations async="false" continueOnError="false" enabled="true" name="KeyValueMapOperations.GetAsid" mapIdentifier="pds-variables">
+    <Get assignTo="private.apigee.from_asid" index="1">
+        <Key>
+            <Parameter>from_asid</Parameter>
+        </Key>
+    </Get>
+</KeyValueMapOperations>

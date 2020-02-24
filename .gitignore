@@ -7,3 +7,4 @@ newman/
 .#*
 
 __pycache__/
+.envrc

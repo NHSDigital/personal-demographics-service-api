@@ -1,17 +1,18 @@
 <ProxyEndpoint name="default">
-  <PreFlow>
-    <Request/>
-    <Response/>
-  </PreFlow>
-  <HTTPProxyConnection>
-    <BasePath>/personal-demographics</BasePath>
-    <VirtualHost>secure</VirtualHost>
-  </HTTPProxyConnection>
-  <RouteRule name="sandbox">
-    <Condition>environment.name="test"</Condition>
-    <TargetEndpoint>sandbox</TargetEndpoint>
-  </RouteRule>
-  <RouteRule name="ig3">
-    <TargetEndpoint>ig3</TargetEndpoint>
-  </RouteRule>
+    <PreFlow>
+        <Request/>
+        <Response/>
+    </PreFlow>
+    <HTTPProxyConnection>
+        <!-- Populated during deploy ment by scripts/deploy_proxy.sh -->
+        <BasePath>/PROXY_BASE_PATH</BasePath>
+        <VirtualHost>secure</VirtualHost>
+    </HTTPProxyConnection>
+    <RouteRule name="sandbox">
+        <Condition>environment.name="test"</Condition>
+        <TargetEndpoint>sandbox</TargetEndpoint>
+    </RouteRule>
+    <RouteRule name="ig3">
+        <TargetEndpoint>ig3</TargetEndpoint>
+    </RouteRule>
 </ProxyEndpoint>
