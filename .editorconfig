@@ -1,0 +1,21 @@
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+end_of_line = lf
+
+[Makefile]
+indent_style = tab
+
+[*.{xml,js,json,yaml}]
+indent_size = 2
+
+[*.postman_collection.json]
+indent_style = tab
+
+[*.yaml]
+trim_trailing_whitespace = false

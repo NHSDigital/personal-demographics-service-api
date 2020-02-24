@@ -70,7 +70,7 @@ properties:
       oneOf:
         - $ref: "extensions/ContactRank.yaml"
         - $ref: "extensions/CopyCorrespondenceIndicator.yaml"
-    
+
   # TODO: model all of the below
   # ranking:
   #   type: integer

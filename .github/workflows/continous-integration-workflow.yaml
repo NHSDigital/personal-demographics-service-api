@@ -1,4 +1,4 @@
-name: Build Jobs
+name: Build
 
 on: push
 
@@ -44,11 +44,16 @@ jobs:
       - name: Install repo
         run: make install
 
+      - name: Start local sandbox server
+        run: |
+          cd sandbox
+          npm run start &
+
       - name: Check licenses
         run: make check-licenses
 
-      - name: Lint Spec
-        run: make test
+      - name: Lint
+        run: make lint
 
       - name: Check resources are valid FHIR 4.0.1
         run: make validate
@@ -58,6 +63,20 @@ jobs:
 
       - name: Set SPEC_VERSION env var
         run: echo ::set-env name=SPEC_VERSION::$(poetry run python scripts/calculate_version.py)
+
+      - name: Run local tests
+        env:
+          API_TEST_ENV_FILE_PATH: "tests/e2e/environments/local.postman_environment.json"
+        run: make test 
+
+      - name: Copy local test report
+        run: cat newman/*.html > dist/local-tests.html && rm newman/*.html
+
+      - name: Store local test result artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: local-tests-${{ env.SPEC_VERSION }}+${{ github.run_id }}.html
+          path: ./dist/local-tests.html
 
       - name: Store distributable schema
         uses: actions/upload-artifact@v1
@@ -106,3 +125,24 @@ jobs:
           APIGEE_ORGANIZATION: ${{ secrets.APIGEE_ORGANIZATION }}
           APIGEE_ENVIRONMENTS: ${{ secrets.APIGEE_ENVIRONMENTS }}
         run: make deploy-proxy
+
+      - name: Run sandbox tests (master only)
+        # if: github.ref == 'refs/heads/master'
+        env:
+          API_TEST_ENV_FILE_PATH: "tests/e2e/environments/sandbox.postman_environment.json"
+          API_TEST_URL: ${{ secrets.API_TEST_URL }}
+          ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+        run: |
+          poetry run python scripts/template.py -f tests/e2e/environments/postman_environment.json.template --env > tests/e2e/environments/sandbox.postman_environment.json
+          make test
+
+      - name: Copy sandbox test report (master only)
+        if: github.ref == 'refs/heads/master'
+        run: cat newman/*.html > dist/sandbox-tests.html && rm newman/*.html
+
+      - name: Store sandbox test result artifact (master only)
+        if: github.ref == 'refs/heads/master'
+        uses: actions/upload-artifact@v1
+        with:
+          name: sandbox-tests-${{ env.SPEC_VERSION }}+${{ github.run_id }}.html
+          path: ./dist/sandbox-tests.html

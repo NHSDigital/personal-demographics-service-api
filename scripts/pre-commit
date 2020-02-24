@@ -1,3 +1,4 @@
 #!/bin/sh
-make test
+make lint
 make validate
+cd sandbox && npm run lint

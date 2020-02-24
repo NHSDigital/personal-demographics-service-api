@@ -10,7 +10,7 @@ const preResponse = function (request, h) {
     const response = request.response
 
     // Don't reformat non-error responses, and don't reformat system (>=500) errors
-    if (!response.isBoom ) {
+    if (!response.isBoom) {
         // Set Content-Type on all responses
         response.type(CONTENT_TYPE)
         return h.continue
@@ -27,7 +27,7 @@ const preResponse = function (request, h) {
     }
 
     /* Reformat errors to FHIR spec
-     Expects request.response is a Boom object with following properties:
+      Expects request.response is a Boom object with following properties:
       * Boom Standard:
         * message: human-readable error message
         * output.statusCode: HTTP status code
@@ -56,12 +56,12 @@ const preResponse = function (request, h) {
         .type(CONTENT_TYPE)
 }
 
-const init = async () => {
+const init = async() => {
     const server = Hapi.server({
         port: 9000,
         host: '0.0.0.0',
         routes: {
-            cors: true,  // Won't run as Apigee hosted target without this
+            cors: true, // Won't run as Apigee hosted target without this
             files: {
                 relativeTo: Path.join(__dirname, 'mocks')
             }
