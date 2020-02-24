@@ -63,7 +63,8 @@ def without_empty(commits):
             yield fst
 
     # Have to remember to yield the last one
-    yield commits[-1]
+    if commits:
+        yield commits[-1]
 
 
 def calculate_version(base_major=1, base_minor=0, base_revision=0, base_pre="alpha"):
