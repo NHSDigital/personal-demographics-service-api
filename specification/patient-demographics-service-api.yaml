@@ -150,13 +150,13 @@ paths:
           * date of death (range)
           * registered GP Practice
 
-        If a _fuzzy-match has not been specified the parameters must include:
-          * family name (minimum of 2 characters, maybe wildcarded)
+        If a `_fuzzy-match` has not been specified the parameters must include:
+          * family name (minimum of two characters, maybe wildcarded)
           * gender
           * date of birth (range)
 
         ## Historic data search
-        By default the endpoint only searches current information. You can request to search historic information, such as maiden names or previous addresses using the _history query parameter.
+        By default the endpoint only searches current information. You can request to search historic information, such as maiden names or previous addresses using the `_history` query parameter.
                 
         
         ## Matching rules
@@ -164,23 +164,23 @@ paths:
 
         Spaces in postcodes must match exactly, for example ‘AA11 1AA’ will not match ‘AA111AA’.
         For date of birth and date of death, you can request to search for an exact date or for a range of dates.
-        You can use wildcards in given name and family name. Wildcards must be preceded by at least two characters, for example 'Br*' is valid, but '*cDougal' is not. Multiple wildcards are allowed, for example 'Br*w*' will match 'Brown' and 'Brower'.
-        You can also request a fuzzy search ( _fuzzy query parameter). This search does the best it can to find a match, such as:
+        You can use wildcards in given name and family name. Wildcards must be preceded by at least two characters; for example 'Br*' is valid, but '*cDougal' is not. Multiple wildcards are allowed; for example 'Br*w*' will match 'Brown' and 'Brower'.
+        You can also request a fuzzy search ( `_fuzzy query` parameter). This search does the best it can to find a match, such as:
           * Matching common homophones, such as ‘Smith’ and ‘Smythe’
           * Checking for transposed names, such as ‘Adam Thomas’ and ‘Thomas Adam’
           * Phonetic matching using soundex
 
         ## Result scoring
-        Every result includes a score from 0 to 1. Scores less than 1 can happen when parameters supplied do not match exactly to the values on the patient record.
+        Every result includes a score from 0 to 1. Scores less than 1 can happen when parameters supplied do not exactly match the values on the patient record.
         Results are sorted best-first.
-        You can request to only return exact matches (score = 1) using the _exact-match parameter.
+        You can request to only return exact matches (score = 1) using the `_exact-match` parameter.
 
         ## Number of results returned
         By default, the endpoint will return a maximum of 50 results. If there are more than 50 matching patient records, the endpoint will return no results and the error response TOO_MANY_MATCHES.
-        You can choose to limit the number of results returned using the _length parameter.
+        You can choose to limit the number of results returned using the `_max-results` parameter.
 
         ## Clinical safety and IG
-        TBC guidance around safe & private use of search.
+        TBC guidance around safe and private use of search.
 
 
         ## Sandbox testing
@@ -225,7 +225,7 @@ paths:
             type: boolean
             default: false
         - name: _max-results
-          description: 'The maximum number of results to return, which cannot be greater than 50.  If there are more than 50 results,  no results will be returned with and outcome of TOO_MANY_MATCHES.'
+          description: The maximum number of results to return cannot be greater than 50.   If there are more than 50 results, no results will be returned with an outcome of TOO_MANY_MATCHES. 
           example: 1
           in: query
           required: false
@@ -238,7 +238,7 @@ paths:
           examples:
             simple:
               value: Smith
-              summary: Will also match Smythe if _fuzzy-match is specified.
+              summary: Will also match Smythe if `_fuzzy-match` is specified.
             wildcarded:
               value: "Sm\\*t\\*"
               summary: 'Wildcards must contain at least two characters, this will match Smith, Smythe'
@@ -268,11 +268,11 @@ paths:
               value: eq2010-10-22
               description: Exact match date
             rangege:
-              value: ge2010-10-22
-              description: Greater than or equals match which matches 2010-10-22 or 2010-10-23
+              value: 'ge2010-10-22'
+              description: Greater than or equals match, which matches 2010-10-22 or 2010-10-23
             rangele:
-              value: le2010-10-22
-              description: Les than or equals match which matches 2010-10-22 or 2010-10-21
+              value: 'le2010-10-22'
+              description: Less than or equals match, which matches 2010-10-22 or 2010-10-21
           required: false
           schema:
             type: string
@@ -288,15 +288,15 @@ paths:
               value: ge2010-10-22
               description: Greater than or equals match which matches 2010-10-22 or 2010-10-23
             rangele:
-              value: le2010-10-22
-              description: Les than or equals match which matches 2010-10-22 or 2010-10-21
+              value: 'le2010-10-22'
+              description: Less than or equals match, which matches 2010-10-22 or 2010-10-21
           required: false
           schema:
             type: string
             format: date
         - name: address-postcode
-          description: 'White spaces in postcodes are significant, which means LS16AE will not match LS1 6AE.'
-          examples:
+          description: White spaces in postcodes are significant; that is, LS16AE will not match LS1 6AE.
+          examples: 
             simple:
               value: LS1 6AE
               summary: 'Spaces important, will not match LS16AE'
