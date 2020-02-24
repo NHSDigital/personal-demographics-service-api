@@ -133,6 +133,7 @@ jobs:
           API_TEST_URL: ${{ secrets.API_TEST_URL }}
           ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
         run: |
+          echo `poetry run scripts/template.py -f tests/environments/postman_environment.json.template --env`
           poetry run scripts/template.py -f tests/environments/postman_environment.json.template --env > tests/e2e/environments/sandbox.postman_environment.json
           make test
 
