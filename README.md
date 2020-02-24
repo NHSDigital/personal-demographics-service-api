@@ -1,4 +1,7 @@
 # personal-demographics-service-api
+
+![Build](https://github.com/NHSDigital/personal-demographics-service-api/workflows/Build/badge.svg?branch=master)
+
 This is a RESTful HL7® FHIR® API specification for the *Personal Demographics Service*.
 
 * `specification/` This [Open API Specification](https://swagger.io/docs/specification/about/) describes the endpoints, methods and messages exchanged by the API. Use it to generate interactive documentation; the contract between the API and its consumers.
@@ -36,14 +39,41 @@ in CI, but it's useful to run them locally too.
 $ make install-hooks
 ```
 
+### Environment Variables
+There is a file called `.envrc` that contains environment variables that are used by components that should behave differently in different environments.
+
+If you have [direnv](https://direnv.net/) installed, your shell will automatically pick up these environment variables.
+
+If you want to use the local defaults without direnv, you can run the following to add the env vars to your current session:
+```
+$ source .envrc
+```
+
 ### Make commands
 There are `make` commands that alias some of this functionality:
- * `test` -- Lints the definition
+ * `lint` -- Lints the spec and code
  * `publish` -- Outputs the specification as a **single file** into the `dist/` directory
  * `serve` -- Serves a preview of the specification in human-readable format
  * `generate-examples` -- generate example objects from the specification
  * `validate` -- validate generated examples against FHIR R4
 
+### Running tests
+#### End-to-end tests
+To run tests, you need to supply an environment. A `local` environment and an environment template are included under `tests/e2e/environments`.
+
+In order for local tests to work, you must have the sandbox server running locally.
+```
+cd sandbox && npm run start
+```
+
+To run local tests, use:
+```
+make test
+```
+
+If you'd like to run tests under a different environment, set `API_TEST_ENV_FILE_PATH` (pointing to a valid postman enviroment file) and run `make test`.
+
+There is a template environment file available at `tests/e2e/environments/postman_environment.json.template`.
 
 ### VS Code Plugins
 

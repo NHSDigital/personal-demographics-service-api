@@ -6,7 +6,7 @@ install-python:
 	poetry install
 
 install-node:
-	npm install --dev
+	npm install
 	cd sandbox && npm install
 
 install-hooks:
@@ -18,6 +18,12 @@ install-fhir-validator:
 
 test:
 	npm run test
+
+lint:
+	npm run lint
+	cd sandbox && npm run lint && cd ..
+	poetry run flake8 **/*.py
+	find -name '*.sh' | grep -v node_modules | xargs shellcheck
 
 validate: generate-examples
 	java -jar bin/org.hl7.fhir.validator.jar dist/examples/**/*application_fhir+json*.json -version 4.0.1 -tx n/a | tee /tmp/validation.txt
@@ -48,3 +54,6 @@ deploy-proxy: update-examples
 
 deploy-spec: update-examples
 	scripts/deploy_spec.sh
+
+format:
+	poetry run black **/*.py

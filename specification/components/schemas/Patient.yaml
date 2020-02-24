@@ -30,7 +30,7 @@ properties:
   meta:
     type: object
     description: Metadata about this resource.
-    properties: 
+    properties:
       versionId:
         type: string
         description: The NHS Digital assigned version of the patient resource.

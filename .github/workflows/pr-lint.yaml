@@ -1,12 +1,9 @@
-name: Lint PR
+name: PR Quality Check
 on: pull_request
 jobs:
   link-ticket:
     runs-on: ubuntu-latest
     steps:
-      - name: Echo ref
-        run: echo ${{ github.event.pull_request.head.ref }}
-
       - name: Check ticket name is in pull request
         run: echo ${{ github.event.pull_request.head.ref }} | grep -i -E -q "apm-[0-9]+"
 

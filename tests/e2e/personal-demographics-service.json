@@ -1,0 +1,317 @@
+{
+  "info": {
+    "_postman_id": "653bcd12-f167-4c8b-a0bd-a9d7b8245955",
+    "name": "Personal Demographics Service (FHIR) API",
+    "description": "\r\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Dummy Test",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "2ab15ab7-28bb-404b-b968-2ad5d8674642",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "db87933f-83b5-4c29-b255-1269cf5dda5d",
+            "exec": [
+              "//Function to determine which Request to use based on the Profile of data being used",
+              "//==================================================================================",
+              "",
+              "function checkTest() {",
+              "",
+              "if (pm.variables.get(\"profile\") === \"1\") {",
+              "    console.log(\"profile being used is 1\");",
+              "    postman.setNextRequest(\"Retrieve Patient - Negative Test\");",
+              "    console.log(\"using Retrieve Patient Test\");",
+              "    }",
+              "    if (pm.variables.get(\"profile\") === \"2\") {",
+              "    console.log(\"profile being used is 2\");",
+              "    postman.setNextRequest(\"Search Patient - Negative Test\");",
+              "    console.log(\"using Search Patient Test\");",
+              "}",
+              "}",
+              "checkTest();"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{environment}}/Patient/1",
+          "host": [
+            "{{environment}}"
+          ],
+          "path": [
+            "Patient",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Retrieve Patient - Negative Test",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "e57f793c-3c38-4919-be4e-2392110ef8a1",
+            "exec": [
+              "// Apply Common Tests to Error Responses",
+              "//========================================",
+              "eval(pm.globals.get(\"errorResponseCommonTests\"))();",
+              "",
+              "",
+              "// Ensure this is the last test in the worksflow",
+              "//==============================================",
+              "postman.setNextRequest(null);"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "8a994d0b-16d5-4000-8e78-27ea37241a1c",
+            "exec": [
+              "// Print the Scenario under Test",
+              "//==============================",
+              "console.log(\"The scenario under test is: \"+(pm.variables.get(\"scenario\")));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "from_asid",
+            "type": "text",
+            "value": "200000000610"
+          },
+          {
+            "key": "role_id",
+            "type": "text",
+            "value": "1234567890"
+          },
+          {
+            "key": "user_id",
+            "type": "text",
+            "value": "1234567890"
+          }
+        ],
+        "url": {
+          "raw": "{{environment}}/Patient/:nhs_id",
+          "host": [
+            "{{environment}}"
+          ],
+          "path": [
+            "Patient",
+            ":nhs_id"
+          ],
+          "variable": [
+            {
+              "key": "nhs_id",
+              "value": "{{nhs_id}}",
+              "type": "string"
+            }
+          ]
+        },
+        "description": "Testing the correct url is returned on an error response - invalid nhs number"
+      },
+      "response": []
+    },
+    {
+      "name": "Search Patient - Negative Test Simple",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "e57f793c-3c38-4919-be4e-2392110ef8a1",
+            "exec": [
+              "// Apply Common Tests to Error Responses",
+              "//======================================",
+              "eval(pm.globals.get(\"errorResponseCommonTests\"))();",
+              "",
+              "",
+              "// Ensure this is the last test in the worksflow",
+              "//==============================================",
+              "postman.setNextRequest(null);"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "1d9acc9b-38e3-4170-adf6-22858b6178fa",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "from_asid",
+            "type": "text",
+            "value": "{{from_asid}}"
+          },
+          {
+            "key": "role_id",
+            "type": "text",
+            "value": "{{role_id}}"
+          },
+          {
+            "key": "user_id",
+            "type": "text",
+            "value": "{{user_id}}"
+          }
+        ],
+        "url": {
+          "raw": "{{environment}}/Patient?family={{family}}&given={{given}}&gender={{gender}}&birthdate={{birthdate}}",
+          "host": [
+            "{{environment}}"
+          ],
+          "path": [
+            "Patient"
+          ],
+          "query": [
+            {
+              "key": "family",
+              "value": "{{family}}"
+            },
+            {
+              "key": "given",
+              "value": "{{given}}"
+            },
+            {
+              "key": "gender",
+              "value": "{{gender}}"
+            },
+            {
+              "key": "birthdate",
+              "value": "{{birthdate}}"
+            }
+          ]
+        },
+        "description": "Testing the correct url is returned on an error response"
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "d85c405c-1ef1-4c85-876a-8522f4df6484",
+        "type": "text/javascript",
+        "exec": [
+          "//Function to test that an Error Response is returned and the payload of the response is correct.",
+          "//This function shall be called by any Requests that expect an Error Response",
+          "//================================================================================================",
+          "",
+          "var errorResponseCommonTests = () => {",
+          "",
+          "    var response = pm.response.json();",
+          "    ",
+          "    // Check that the response status has been populated correctly ",
+          "    console.log (\"Returned Status is: \" + response.status);",
+          "    console.log (\"Expected Status is: \" + pm.variables.get(\"response_Status\"));",
+          "    pm.test(\"Status code is correct\", function () {",
+          "        pm.response.to.have.status(parseInt(pm.variables.get(\"response_Status\")));",
+          "    });",
+          "    ",
+          "    ",
+          "    // Check that the response Error Severity has been populated correctly  ",
+          "    console.log (\"Returned Error Severity is: \" + response.issue[0].severity);",
+          "    console.log (\"Expected Error Severity is: \" + pm.variables.get(\"error_severity\"));",
+          "    pm.test(\"Response severity has been populated correctly\", function () {",
+          "        pm.expect(response.issue[0].severity).to.eql(pm.variables.get(\"error_severity\"));",
+          "    });",
+          "    ",
+          "    ",
+          "    // Check that the response Display Message has been populated correctly",
+          "    console.log (\"Returned Display Message is: \" + response.issue[0].details.coding[0].display);",
+          "    console.log (\"Expected Display Message is: \" + pm.variables.get(\"error_display\"));",
+          "    pm.test(\"Response Display Message has been populated correctly\", function () {",
+          "        pm.expect(response.issue[0].details.coding[0].display).to.eql(pm.variables.get(\"error_display\"));",
+          "    });",
+          "    ",
+          "    ",
+          "    // Check that the response Error Code has been populated correctly ",
+          "    console.log (\"Returned Error Code is: \" + response.issue[0].details.coding[0].code);",
+          "    console.log (\"Expected Error Code is: \" + pm.variables.get(\"code\"));",
+          "    pm.test(\"Response Error Code has been populated correctly\", function () {",
+          "        pm.expect(response.issue[0].details.coding[0].code).to.eql(pm.variables.get(\"code\"));",
+          "    });",
+          "    ",
+          "    ",
+          "    // Check that the response System URL has been populated correctly ",
+          "    console.log (\"Returned System URL is: \" + response.issue[0].details.coding[0].system);",
+          "    console.log (\"Expected System URL is: \" + pm.variables.get(\"error_system\"));",
+          "    pm.test(\"Response System URL has been populated correctly\", function () {",
+          "        pm.expect(response.issue[0].details.coding[0].system).to.eql(pm.variables.get(\"error_system\"));",
+          "    });",
+          "};",
+          "",
+          "pm.globals.set(\"errorResponseCommonTests\", errorResponseCommonTests.toString());"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "id": "3c6ae959-fdd6-4c74-b60a-06d28e4b778b",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "id": "23e9cd6e-486d-4a89-9cd1-e51c688474e6",
+      "key": "nhs_id",
+      "value": "9000000000",
+      "type": "string",
+      "disabled": true
+    },
+    {
+      "id": "7f112e03-b3ac-454b-85b7-99170843d425",
+      "key": "profile",
+      "value": "1",
+      "type": "string",
+      "disabled": true
+    },
+    {
+      "id": "daff99f3-e10c-4e3c-aea6-0c635da70647",
+      "key": "response_Status",
+      "value": "400",
+      "type": "string",
+      "disabled": true
+    }
+  ],
+  "protocolProfileBehavior": {}
+}

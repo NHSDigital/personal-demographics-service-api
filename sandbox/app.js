@@ -13,7 +13,7 @@ const jsonpatch = require('fast-json-patch')
 const EXAMPLE_PATIENT = JSON.parse(fs.readFileSync('mocks/Patient.json'))
 const CONTENT_TYPE = 'application/fhir+json; fhirVersion=4.0'
 
-const nhsNumberSchema = Joi.string().custom(function (value) {
+const nhsNumberSchema = Joi.string().custom(function(value) {
     if (NhsNumberValidator.validate(value)) {
         return value
     }
@@ -32,22 +32,20 @@ const dateSchema = Joi.string().pattern(/^\d{4}-\d{2}-\d{2}$/)
  *
  * @param {*} request - hapi's request object
  */
-const checkNhsNumber = function (request) {
+const checkNhsNumber = function(request) {
     // Validate NHS number is valid format
     // Ideally should be done using options.validate object (https://hapi.dev/tutorials/validation/)
     // But don't know how to customise the returned JSON when done this way
     const validationResult = nhsNumberSchema.validate(request.params.nhsNumber)
     if (validationResult.error) {
         throw Boom.badRequest(
-            `NHS Number ${request.params.nhsNumber} is not a valid NHS number`,
-            {operationOutcomeCode: "value", apiErrorCode: "invalidNHSNumber"})
+            `NHS Number ${request.params.nhsNumber} is not a valid NHS number`, { operationOutcomeCode: "value", apiErrorCode: "invalidNHSNumber" })
     }
 
     // Validate NHS number is for our test patient
     if (request.params.nhsNumber != EXAMPLE_PATIENT.id) {
         throw Boom.notFound(
-            `Patient with NHS number ${request.params.nhsNumber} could not be found`,
-            {operationOutcomeCode: "not_found", apiErrorCode: "patientNotFound"}
+            `Patient with NHS number ${request.params.nhsNumber} could not be found`, { operationOutcomeCode: "not_found", apiErrorCode: "patientNotFound" }
         )
     }
 }
@@ -65,11 +63,11 @@ const createFhirResponse = function(h, resource) {
         .etag(resource.meta.versionId, { weak: true })
 }
 
-const preResponse = function (request, h) {
+const preResponse = function(request, h) {
     const response = request.response
 
     // Don't reformat non-error responses, and don't reformat system (>=500) errors
-    if (!response.isBoom ) {
+    if (!response.isBoom) {
         // Set Content-Type on all responses
         response.type(CONTENT_TYPE)
         return h.continue
@@ -86,7 +84,7 @@ const preResponse = function (request, h) {
     }
 
     /* Reformat errors to FHIR spec
-     Expects request.response is a Boom object with following properties:
+      Expects request.response is a Boom object with following properties:
       * Boom Standard:
         * message: human-readable error message
         * output.statusCode: HTTP status code
@@ -115,12 +113,12 @@ const preResponse = function (request, h) {
         .type(CONTENT_TYPE)
 }
 
-const init = async () => {
+const init = async() => {
     const server = Hapi.server({
         port: 9000,
         host: '0.0.0.0',
         routes: {
-            cors: true,  // Won't run as Apigee hosted target without this
+            cors: true, // Won't run as Apigee hosted target without this
             files: {
                 relativeTo: Path.join(__dirname, 'mocks')
             }
@@ -141,15 +139,15 @@ const init = async () => {
 
     /* Patient search
         Behaviour implemented:
-         * Provide no recognised search params: 400 + Appropriate error
-         * Provide improperly-specified birthdate/death-date param: 400 + Appropriate error
-         * Provide *some* search params: Empty search response
-         * Provide ?birthdate=2010-10-22&family=Smith&given=Jane&gender=female: receive example patient as search result
+        * Provide no recognised search params: 400 + Appropriate error
+        * Provide improperly-specified birthdate/death-date param: 400 + Appropriate error
+        * Provide *some* search params: Empty search response
+        * Provide ?birthdate=2010-10-22&family=Smith&given=Jane&gender=female: receive example patient as search result
     */
     server.route({
         method: 'GET',
         path: '/Patient',
-        handler: (request, h) => {
+        handler: (request) => {
             // TODO: This can be provided to a PatientSearcher to use to implement a more
             // 'proper' search
             const searchMap = {
@@ -167,8 +165,7 @@ const init = async () => {
             ["birthdate", "death-date"].forEach(dateParam => {
                 if (request.query[dateParam] && dateSchema.validate(request.query[dateParam]).error) {
                     throw Boom.badRequest(
-                        `${dateParam} has invalid format: ${request.query[dateParam]} is not in YYYY-MM-DD format`,
-                        {operationOutcomeCode: "value", apiErrorCode: "invalidDateFormat"})
+                        `${dateParam} has invalid format: ${request.query[dateParam]} is not in YYYY-MM-DD format`, { operationOutcomeCode: "value", apiErrorCode: "invalidDateFormat" })
                 }
 
             });
@@ -184,8 +181,7 @@ const init = async () => {
             }
             if (!hasAnySearchParam) {
                 throw Boom.badRequest(
-                    "Not enough search parameters were provided to be able to make a search",
-                    {operationOutcomeCode: "required", apiErrorCode: "tooFewSearchParams"})
+                    "Not enough search parameters were provided to be able to make a search", { operationOutcomeCode: "required", apiErrorCode: "tooFewSearchParams" })
             }
 
             // Build our empty search response
@@ -244,12 +240,10 @@ const init = async () => {
 
             // Check If-Match header exists
             // TODO: Return different error where If-Match header is incorrect format
-            if (
-                !request.headers["if-match"] ||
+            if (!request.headers["if-match"] ||
                 !(request.headers["if-match"].startsWith('W/"') && request.headers["if-match"].endsWith('"'))) {
                 throw Boom.badRequest(
-                    "If-Match header must be supplied to update this resource",
-                    {operationOutcomeCode: "required", apiErrorCode: "versionNotSupplied"}
+                    "If-Match header must be supplied to update this resource", { operationOutcomeCode: "required", apiErrorCode: "versionNotSupplied" }
                 )
             }
 
@@ -257,41 +251,36 @@ const init = async () => {
             const ifMatch = request.headers["if-match"].slice(3, -1) // Strip the W/"..."
             if (ifMatch != EXAMPLE_PATIENT.meta.versionId) {
                 throw Boom.preconditionFailed(
-                    "This resource has changed since you last read. Please re-read and try again with the new version number.",
-                    {operationOutcomeCode: "conflict", apiErrorCode: "versionMismatch"})
+                    "This resource has changed since you last read. Please re-read and try again with the new version number.", { operationOutcomeCode: "conflict", apiErrorCode: "versionMismatch" })
             }
 
             // Check Content-Type header
-            if (!request.headers["content-type"]
-                || request.headers["content-type"].toLowerCase() !== "application/json-patch+json") {
+            if (!request.headers["content-type"] ||
+                request.headers["content-type"].toLowerCase() !== "application/json-patch+json") {
                 // TODO: What's the proper error here?
                 throw Boom.unsupportedMediaType(
-                    "Must be application/json-patch+json",
-                    {operationOutcomeCode: "value", apiErrorCode: "unsupportedMediaType"})
+                    "Must be application/json-patch+json", { operationOutcomeCode: "value", apiErrorCode: "unsupportedMediaType" })
             }
 
             // Verify at least one patch object has been submitted
             if (!request.payload || !request.payload.patches || request.payload.patches.length === 0) {
                 // TODO: Proper error message
                 throw Boom.badRequest(
-                    "No patches submitted",
-                    {operationOutcomeCode: "required", apiErrorCode: "noPatchesSubmitted"})
+                    "No patches submitted", { operationOutcomeCode: "required", apiErrorCode: "noPatchesSubmitted" })
             }
 
             // Apply the submitted patches
             let patchedPatient
             try {
                 patchedPatient = jsonpatch.applyPatch(EXAMPLE_PATIENT, request.payload.patches, true, false).newDocument
-            }
-            catch (e) {
+            } catch (e) {
                 const patchingError = e.message.slice(0, e.message.indexOf('\n')) // Just the first line; rest is tons of extraneous detail
                 throw Boom.badRequest(
-                    `Invalid patch: ${patchingError}`,
-                    {operationOutcomeCode: "value", apiErrorCode: "invalidPatchOperation"})
+                    `Invalid patch: ${patchingError}`, { operationOutcomeCode: "value", apiErrorCode: "invalidPatchOperation" })
             }
             patchedPatient.meta.versionId++
 
-            return createFhirResponse(h, patchedPatient)
+                return createFhirResponse(h, patchedPatient)
         }
     })
 
