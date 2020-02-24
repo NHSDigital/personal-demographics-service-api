@@ -31,6 +31,8 @@ module.exports = [
         method: 'GET',
         path: '/Patient',
         handler: (request) => {
+
+            console.log(request.query)
             
             let patientSearcher = require("../../services/patient-searcher").init(request)
 
@@ -41,15 +43,43 @@ module.exports = [
             }
 
             // If provided, validate birthdate, death-date params
-            // TODO: birthdate range
-            ["birthdate", "death-date"].forEach(dateParam => {
-                if (request.query[dateParam] && dateValidator.dateSchema.validate(request.query[dateParam]).error) {
-                    throw Boom.badRequest(
-                        `${dateParam} has invalid format: ${request.query[dateParam]} is not in YYYY-MM-DD format`,
-                        {operationOutcomeCode: "value", apiErrorCode: "invalidDateFormat"})
-                }
+            // Make this better
+            if (request.query["birthdate"]) {
+                if (Array.isArray(request.query["birthdate"])) {
 
-            });
+                    request.query["birthdate"].forEach(date => {   
+                        if (dateValidator.birthdateSchema.validate(date).error) { 
+                            throw Boom.badRequest(
+                                // Decide on format string instead of [a-z]YYYY-MM-DD
+                                `birthdate has invalid format: ${request.query["birthdate"]} is not in [a-z]YYYY-MM-DD format`,
+                                {operationOutcomeCode: "value", apiErrorCode: "invalidDateFormat"})
+                        } 
+                    }) 
+
+                } else {
+                    // Single date provided
+                    if (dateValidator.birthdateSchema.validate(request.query["birthdate"]).error) {
+                        throw Boom.badRequest(
+                            // Decide on format string instead of [a-z]YYYY-MM-DD
+                            `birthdate has invalid format: ${request.query["birthdate"]} is not in [a-z]YYYY-MM-DD format`,
+                            {operationOutcomeCode: "value", apiErrorCode: "invalidDateFormat"})
+                    }
+                }
+            }
+
+            // if provided, validate birthdate parameter
+            // if (request.query["birthdate"] && dateValidator.birthdateSchema.validate(request.query["birthdate"]).error) {
+            //     throw Boom.badRequest(
+            //         // Decide on format string instead of [a-z]YYYY-MM-DD
+            //         `birthdate has invalid format: ${request.query["birthdate"]} is not in [a-z]YYYY-MM-DD format`,
+            //         {operationOutcomeCode: "value", apiErrorCode: "invalidDateFormat"})
+            // }
+
+            if (request.query["death-date"] && dateValidator.dateSchema.validate(request.query["death-date"]).error) {
+                throw Boom.badRequest(
+                    `death-date has invalid format: ${request.query["death-date"]} is not in YYYY-MM-DD format`,
+                    {operationOutcomeCode: "value", apiErrorCode: "invalidDateFormat"})
+            }
 
             return patientSearcher.search()
         }
