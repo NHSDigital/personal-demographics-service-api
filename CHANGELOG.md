@@ -1,6 +1,10 @@
 # Changelog
 
 ## 2020-02-24
+* API Proxy: Add `from_asid` header when communicating with `ig3` target endpoint
+* API Proxy (ops): Deployment scripts and instructions now support 'personal' developer proxies
+
+## 2020-02-24
 * Hugely improved linting of source code
 * New testing setup & approach to support e2e tests
 * Updated CI to run regression tests
