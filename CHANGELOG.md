@@ -1,5 +1,10 @@
 # Changelog
 
+## 2020-02-24
+* Hugely improved linting of source code
+* New testing setup & approach to support e2e tests
+* Updated CI to run regression tests
+
 ## 2020-02-17
 * Add Apigee API Proxy definition to repository
 * Make command to deploy API Proxy and Sandbox server
