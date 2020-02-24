@@ -1,0 +1,954 @@
+{
+	"info": {
+		"_postman_id": "8e329df9-b7ae-446c-9374-019d36f88e6f",
+		"name": "Sandbox",
+		"description": "Sandbox Testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Patient",
+			"item": [
+				{
+					"name": "Search",
+					"item": [
+						{
+							"name": "Successful simple search",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "560bab76-e84b-4ee4-b162-74f75914f6a0",
+										"exec": [
+											"pm.test(\"Returns status code 200 OK\", () =>{",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Returns correct canned response\", () =>{",
+											"    let expectedResponse = JSON.stringify(pm.variables.get(\"expected_response\"));",
+											"    let actualResponse = JSON.stringify(pm.response.json().entry[0]);",
+											"    console.log(\"Expected Canned Response: \" + expectedResponse);",
+											"    console.log(\"Actual Response: \" + actualResponse);",
+											"    pm.expect(JSON.stringify(pm.response.json().entry[0])).to.eql(expectedResponse);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "07c5f9f1-1588-4eb6-b1b2-d82db92c928c",
+										"exec": [
+											"let expected_response =",
+											"{",
+											"  \"search\": {",
+											"    \"score\": 1",
+											"  },",
+											"  \"resource\": {",
+											"    \"resourceType\": \"Patient\",",
+											"    \"id\": \"9000000009\",",
+											"    \"identifier\": [",
+											"      {",
+											"        \"system\": \"https://fhir.nhs.uk/Id/nhs-number\",",
+											"        \"value\": \"9000000009\",",
+											"        \"extension\": [",
+											"          {",
+											"            \"url\": \"https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus\",",
+											"            \"valueCodeableConcept\": {",
+											"              \"coding\": [",
+											"                {",
+											"                  \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/UKCore-NHSNumberVerificationStatus\",",
+											"                  \"version\": \"1.0.0\",",
+											"                  \"code\": \"01\",",
+											"                  \"display\": \"Number present and verified\"",
+											"                }",
+											"              ]",
+											"            }",
+											"          }",
+											"        ]",
+											"      }",
+											"    ],",
+											"    \"meta\": {",
+											"      \"versionId\": \"2\"",
+											"    },",
+											"    \"name\": [",
+											"      {",
+											"        \"use\": \"usual\",",
+											"        \"period\": {",
+											"          \"start\": \"2020-01-01\",",
+											"          \"end\": \"2020-12-31\"",
+											"        },",
+											"        \"given\": [",
+											"          \"Jane\"",
+											"        ],",
+											"        \"family\": \"Smith\",",
+											"        \"prefix\": \"Mrs\",",
+											"        \"suffix\": \"MBE\"",
+											"      }",
+											"    ],",
+											"    \"gender\": \"female\",",
+											"    \"birthDate\": \"2010-10-22\",",
+											"    \"deceasedDateTime\": \"2010-10-22T00:00:00+00:00\",",
+											"    \"address\": [",
+											"      {",
+											"        \"id\": \"123\",",
+											"        \"period\": {",
+											"          \"start\": \"2020-01-01\",",
+											"          \"end\": \"2020-12-31\"",
+											"        },",
+											"        \"use\": \"work\",",
+											"        \"type\": \"both\",",
+											"        \"line\": [",
+											"          \"NHS Digital\",",
+											"          \"Whitehall II\",",
+											"          \"Whitehall Quay\",",
+											"          \"Leeds\",",
+											"          \"West Yorkshire\"",
+											"        ],",
+											"        \"postalCode\": \"LS1 6AE\",",
+											"        \"extension\": [",
+											"          {",
+											"            \"url\": \"https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-AddressKey\",",
+											"            \"extension\": [",
+											"              {",
+											"                \"url\": \"type\",",
+											"                \"valueCoding\": {",
+											"                  \"system\": \"https://simplifier.net/guide/UKCoreDecember2019/CodeSystemUKCore-AddressKeyType\",",
+											"                  \"code\": \"PAF\"",
+											"                }",
+											"              },",
+											"              {",
+											"                \"url\": \"value\",",
+											"                \"valueString\": \"12345678\"",
+											"              }",
+											"            ]",
+											"          }",
+											"        ]",
+											"      }",
+											"    ],",
+											"    \"contact\": [",
+											"      {",
+											"        \"id\": \"123\",",
+											"        \"period\": {",
+											"          \"start\": \"2020-01-01\",",
+											"          \"end\": \"2020-12-31\"",
+											"        },",
+											"        \"relationship\": [",
+											"          {",
+											"            \"coding\": [",
+											"              {",
+											"                \"system\": \"http://terminology.hl7.org/CodeSystem/v2-0131\",",
+											"                \"version\": \"2.9\",",
+											"                \"code\": \"C\",",
+											"                \"display\": \"Emergency Contact\"",
+											"              }",
+											"            ]",
+											"          }",
+											"        ],",
+											"        \"name\": {",
+											"          \"use\": \"usual\",",
+											"          \"period\": {",
+											"            \"start\": \"2020-01-01\",",
+											"            \"end\": \"2020-12-31\"",
+											"          },",
+											"          \"given\": [",
+											"            \"Jane\"",
+											"          ],",
+											"          \"family\": \"Smith\",",
+											"          \"prefix\": \"Mrs\",",
+											"          \"suffix\": \"MBE\"",
+											"        },",
+											"        \"telecom\": [",
+											"          {",
+											"            \"period\": {",
+											"              \"start\": \"2020-01-01\",",
+											"              \"end\": \"2020-12-31\"",
+											"            },",
+											"            \"system\": \"phone\",",
+											"            \"value\": \"01632960587\",",
+											"            \"use\": \"work\",",
+											"            \"rank\": 1",
+											"          }",
+											"        ]",
+											"      }",
+											"    ],",
+											"    \"telecom\": [",
+											"      {",
+											"        \"period\": {",
+											"          \"start\": \"2020-01-01\",",
+											"          \"end\": \"2020-12-31\"",
+											"        },",
+											"        \"system\": \"phone\",",
+											"        \"value\": \"01632960587\",",
+											"        \"use\": \"work\",",
+											"        \"rank\": 1",
+											"      }",
+											"    ],",
+											"    \"generalPractitioner\": [",
+											"      {",
+											"        \"id\": \"Y12345\",",
+											"        \"reference\": \"https://directory.spineservices.nhs.uk/STU3/Organization/Y12345\"",
+											"      }",
+											"    ],",
+											"    \"communication\": [",
+											"      {",
+											"        \"language\": {",
+											"          \"coding\": [",
+											"            {",
+											"              \"system\": \"https://nhsconnect.github.io/FHIR-R4-Core-IG-Prototype/CodeSystem-UKCore-HumanLanguage.html\",",
+											"              \"version\": \"1.0.0\",",
+											"              \"code\": \"en\",",
+											"              \"display\": \"English\"",
+											"            }",
+											"          ]",
+											"        },",
+											"        \"preferred\": true",
+											"      }",
+											"    ],",
+											"    \"extension\": [",
+											"      {",
+											"        \"url\": \"https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-NominatedPharmacy\",",
+											"        \"valueReference\": {",
+											"          \"reference\": \"https://directory.spineservices.nhs.uk/STU3/Organization/Y12345\",",
+											"          \"identifier\": {",
+											"            \"system\": \"https://fhir.nhs.uk/Id/ods-organization-code\",",
+											"            \"value\": \"Y12345\"",
+											"          }",
+											"        }",
+											"      },",
+											"      {",
+											"        \"url\": \"https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus\",",
+											"        \"extension\": [",
+											"          {",
+											"            \"url\": \"deathNotificationStatus\",",
+											"            \"valueCodeableConcept\": {",
+											"              \"coding\": [",
+											"                {",
+											"                  \"system\": \"https://simplifier.net/UKCore/CodeSystem-UKCore-DeathNotificationStatus\",",
+											"                  \"version\": \"1.0.0\",",
+											"                  \"code\": \"2\",",
+											"                  \"display\": \"Formal - death notice received from Registrar of Deaths\"",
+											"                }",
+											"              ]",
+											"            }",
+											"          },",
+											"          {",
+											"            \"url\": \"systemEffectiveDate\",",
+											"            \"valueDateTime\": \"2010-10-22T00:00:00+00:00\"",
+											"          }",
+											"        ]",
+											"      }",
+											"    ]",
+											"  }",
+											"}",
+											"",
+											"pm.variables.set(\"expected_response\", expected_response);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{environment}}/Patient?family=Smith&given=Jane&gender=female&birthdate=2010-10-22",
+									"host": [
+										"{{environment}}"
+									],
+									"path": [
+										"Patient"
+									],
+									"query": [
+										{
+											"key": "family",
+											"value": "Smith"
+										},
+										{
+											"key": "given",
+											"value": "Jane"
+										},
+										{
+											"key": "gender",
+											"value": "female"
+										},
+										{
+											"key": "birthdate",
+											"value": "2010-10-22"
+										}
+									]
+								},
+								"description": "Example of a simple search returning a single result"
+							},
+							"response": []
+						},
+						{
+							"name": "Unsuccessful simple search",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "94ef7c25-67f3-4edc-87e4-e2e1ee7b29b5",
+										"exec": [
+											"pm.test(\"Returns status code 200 OK\", () =>{",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Returns 0 search results\", () =>{",
+											"    pm.expect(pm.response.json().entry).to.be.empty;",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{environment}}/Patient?family=Bingham&given=John&gender=male&birthdate=1934-12-18",
+									"host": [
+										"{{environment}}"
+									],
+									"path": [
+										"Patient"
+									],
+									"query": [
+										{
+											"key": "family",
+											"value": "Bingham"
+										},
+										{
+											"key": "given",
+											"value": "John"
+										},
+										{
+											"key": "gender",
+											"value": "male"
+										},
+										{
+											"key": "birthdate",
+											"value": "1934-12-18"
+										}
+									]
+								},
+								"description": "Example of a search that is valid, but returns no results"
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid birth date format",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "05f2ea19-56b4-4948-855f-c0a725aeefdd",
+										"exec": [
+											"var response = pm.response.json();",
+											"",
+											"pm.test(\"Returns status code 400 Bad Request\", () =>{",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"Returns correct canned response\", () =>{",
+											"    pm.expect(JSON.stringify(response)).to.eql(JSON.stringify({",
+											"    \"resourceType\": \"OperationOutcome\",",
+											"    \"issue\": [",
+											"        {",
+											"            \"severity\": \"error\",",
+											"            \"code\": \"value\",",
+											"            \"details\": {",
+											"                \"coding\": [",
+											"                    {",
+											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
+											"                        \"version\": 1,",
+											"                        \"code\": \"invalidDateFormat\",",
+											"                        \"display\": \"birthdate has invalid format: 20101022 is not in YYYY-MM-DD format\"",
+											"                    }",
+											"                ]",
+											"            }",
+											"        }",
+											"    ]",
+											"}));",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{environment}}/Patient?family=Smith&given=Jane&gender=female&birthdate=20101022",
+									"host": [
+										"{{environment}}"
+									],
+									"path": [
+										"Patient"
+									],
+									"query": [
+										{
+											"key": "family",
+											"value": "Smith"
+										},
+										{
+											"key": "given",
+											"value": "Jane"
+										},
+										{
+											"key": "gender",
+											"value": "female"
+										},
+										{
+											"key": "birthdate",
+											"value": "20101022"
+										}
+									]
+								},
+								"description": "Example error caused by providing `birthdate` query param in an invalid format"
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid death date format",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ee5f2db1-cbc9-4735-9312-38a349a6c49d",
+										"exec": [
+											"var response = pm.response.json();",
+											"",
+											"pm.test(\"Returns status code 400 Bad Request\", () =>{",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"Returns correct canned response\", () =>{",
+											"    pm.expect(JSON.stringify(response)).to.eql(JSON.stringify({",
+											"    \"resourceType\": \"OperationOutcome\",",
+											"    \"issue\": [",
+											"        {",
+											"            \"severity\": \"error\",",
+											"            \"code\": \"value\",",
+											"            \"details\": {",
+											"                \"coding\": [",
+											"                    {",
+											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
+											"                        \"version\": 1,",
+											"                        \"code\": \"invalidDateFormat\",",
+											"                        \"display\": \"death-date has invalid format: 20101022 is not in YYYY-MM-DD format\"",
+											"                    }",
+											"                ]",
+											"            }",
+											"        }",
+											"    ]",
+											"}));",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{environment}}/Patient?family=Smith&given=Jane&gender=female&death-date=20101022",
+									"host": [
+										"{{environment}}"
+									],
+									"path": [
+										"Patient"
+									],
+									"query": [
+										{
+											"key": "family",
+											"value": "Smith"
+										},
+										{
+											"key": "given",
+											"value": "Jane"
+										},
+										{
+											"key": "gender",
+											"value": "female"
+										},
+										{
+											"key": "death-date",
+											"value": "20101022"
+										}
+									]
+								},
+								"description": "Example error caused by providing `birthdate` query param in an invalid format"
+							},
+							"response": []
+						},
+						{
+							"name": "Too few search parameters",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bf631974-7e07-49eb-841a-2f6cc7bbd1f8",
+										"exec": [
+											"var response = pm.response.json();",
+											"",
+											"pm.test(\"Returns status code 400 Bad Request\", () =>{",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"Returns correct canned response\", () =>{",
+											"    pm.expect(JSON.stringify(response)).to.eql(JSON.stringify({",
+											"    \"resourceType\": \"OperationOutcome\",",
+											"    \"issue\": [",
+											"        {",
+											"            \"severity\": \"error\",",
+											"            \"code\": \"required\",",
+											"            \"details\": {",
+											"                \"coding\": [",
+											"                    {",
+											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
+											"                        \"version\": 1,",
+											"                        \"code\": \"tooFewSearchParams\",",
+											"                        \"display\": \"Not enough search parameters were provided to be able to make a search\"",
+											"                    }",
+											"                ]",
+											"            }",
+											"        }",
+											"    ]",
+											"}));",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{environment}}/Patient",
+									"host": [
+										"{{environment}}"
+									],
+									"path": [
+										"Patient"
+									]
+								},
+								"description": "Example error caused by providing too few (none in this instance) search parameters"
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Retrieve",
+					"item": [
+						{
+							"name": "Retrieve: Patient Exists",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "a3b62985-27a5-408e-b188-525f31de2de7",
+										"exec": [
+											"var response = pm.response.json();",
+											"    ",
+											"",
+											"pm.test(\"Returns status code 200 OK\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Returns correct etag header\", function () {",
+											"    pm.response.to.have.header(\"etag\", \"W/\\\"2\\\"\");",
+											"});",
+											"",
+											"pm.test(\"Returns correct canned response\", () =>{",
+											"    var expected = JSON.stringify(pm.environment.get(\"expected_response\"));",
+											"    var actual = JSON.stringify(response);",
+											"    pm.expect(actual).to.eql(expected);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "629b83a1-27b5-4cfe-b95e-0414c79471a3",
+										"exec": [
+											"var expected_response =",
+											"{",
+											"    \"resourceType\": \"Patient\",",
+											"    \"id\": \"9000000009\",",
+											"    \"identifier\": [",
+											"        {",
+											"            \"system\": \"https://fhir.nhs.uk/Id/nhs-number\",",
+											"            \"value\": \"9000000009\",",
+											"            \"extension\": [",
+											"                {",
+											"                    \"url\": \"https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus\",",
+											"                    \"valueCodeableConcept\": {",
+											"                        \"coding\": [",
+											"                            {",
+											"                                \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/UKCore-NHSNumberVerificationStatus\",",
+											"                                \"version\": \"1.0.0\",",
+											"                                \"code\": \"01\",",
+											"                                \"display\": \"Number present and verified\"",
+											"                            }",
+											"                        ]",
+											"                    }",
+											"                }",
+											"            ]",
+											"        }",
+											"    ],",
+											"    \"meta\": {",
+											"        \"versionId\": \"2\"",
+											"    },",
+											"    \"name\": [",
+											"        {",
+											"            \"use\": \"usual\",",
+											"            \"period\": {",
+											"                \"start\": \"2020-01-01\",",
+											"                \"end\": \"2020-12-31\"",
+											"            },",
+											"            \"given\": [",
+											"                \"Jane\"",
+											"            ],",
+											"            \"family\": \"Smith\",",
+											"            \"prefix\": \"Mrs\",",
+											"            \"suffix\": \"MBE\"",
+											"        }",
+											"    ],",
+											"    \"gender\": \"female\",",
+											"    \"birthDate\": \"2010-10-22\",",
+											"    \"deceasedDateTime\": \"2010-10-22T00:00:00+00:00\",",
+											"    \"address\": [",
+											"        {",
+											"            \"id\": \"123\",",
+											"            \"period\": {",
+											"                \"start\": \"2020-01-01\",",
+											"                \"end\": \"2020-12-31\"",
+											"            },",
+											"            \"use\": \"work\",",
+											"            \"type\": \"both\",",
+											"            \"line\": [",
+											"                \"NHS Digital\",",
+											"                \"Whitehall II\",",
+											"                \"Whitehall Quay\",",
+											"                \"Leeds\",",
+											"                \"West Yorkshire\"",
+											"            ],",
+											"            \"postalCode\": \"LS1 6AE\",",
+											"            \"extension\": [",
+											"                {",
+											"                    \"url\": \"https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-AddressKey\",",
+											"                    \"extension\": [",
+											"                        {",
+											"                            \"url\": \"type\",",
+											"                            \"valueCoding\": {",
+											"                                \"system\": \"https://simplifier.net/guide/UKCoreDecember2019/CodeSystemUKCore-AddressKeyType\",",
+											"                                \"code\": \"PAF\"",
+											"                            }",
+											"                        },",
+											"                        {",
+											"                            \"url\": \"value\",",
+											"                            \"valueString\": \"12345678\"",
+											"                        }",
+											"                    ]",
+											"                }",
+											"            ]",
+											"        }",
+											"    ],",
+											"    \"contact\": [",
+											"        {",
+											"            \"id\": \"123\",",
+											"            \"period\": {",
+											"                \"start\": \"2020-01-01\",",
+											"                \"end\": \"2020-12-31\"",
+											"            },",
+											"            \"relationship\": [",
+											"                {",
+											"                    \"coding\": [",
+											"                        {",
+											"                            \"system\": \"http://terminology.hl7.org/CodeSystem/v2-0131\",",
+											"                            \"version\": \"2.9\",",
+											"                            \"code\": \"C\",",
+											"                            \"display\": \"Emergency Contact\"",
+											"                        }",
+											"                    ]",
+											"                }",
+											"            ],",
+											"            \"name\": {",
+											"                \"use\": \"usual\",",
+											"                \"period\": {",
+											"                    \"start\": \"2020-01-01\",",
+											"                    \"end\": \"2020-12-31\"",
+											"                },",
+											"                \"given\": [",
+											"                    \"Jane\"",
+											"                ],",
+											"                \"family\": \"Smith\",",
+											"                \"prefix\": \"Mrs\",",
+											"                \"suffix\": \"MBE\"",
+											"            },",
+											"            \"telecom\": [",
+											"                {",
+											"                    \"period\": {",
+											"                        \"start\": \"2020-01-01\",",
+											"                        \"end\": \"2020-12-31\"",
+											"                    },",
+											"                    \"system\": \"phone\",",
+											"                    \"value\": \"01632960587\",",
+											"                    \"use\": \"work\",",
+											"                    \"rank\": 1",
+											"                }",
+											"            ]",
+											"        }",
+											"    ],",
+											"    \"telecom\": [",
+											"        {",
+											"            \"period\": {",
+											"                \"start\": \"2020-01-01\",",
+											"                \"end\": \"2020-12-31\"",
+											"            },",
+											"            \"system\": \"phone\",",
+											"            \"value\": \"01632960587\",",
+											"            \"use\": \"work\",",
+											"            \"rank\": 1",
+											"        }",
+											"    ],",
+											"    \"generalPractitioner\": [",
+											"        {",
+											"            \"id\": \"Y12345\",",
+											"            \"reference\": \"https://directory.spineservices.nhs.uk/STU3/Organization/Y12345\"",
+											"        }",
+											"    ],",
+											"    \"communication\": [",
+											"        {",
+											"            \"language\": {",
+											"                \"coding\": [",
+											"                    {",
+											"                        \"system\": \"https://nhsconnect.github.io/FHIR-R4-Core-IG-Prototype/CodeSystem-UKCore-HumanLanguage.html\",",
+											"                        \"version\": \"1.0.0\",",
+											"                        \"code\": \"en\",",
+											"                        \"display\": \"English\"",
+											"                    }",
+											"                ]",
+											"            },",
+											"            \"preferred\": true",
+											"        }",
+											"    ],",
+											"    \"extension\": [",
+											"        {",
+											"            \"url\": \"https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-NominatedPharmacy\",",
+											"            \"valueReference\": {",
+											"                \"reference\": \"https://directory.spineservices.nhs.uk/STU3/Organization/Y12345\",",
+											"                \"identifier\": {",
+											"                    \"system\": \"https://fhir.nhs.uk/Id/ods-organization-code\",",
+											"                    \"value\": \"Y12345\"",
+											"                }",
+											"            }",
+											"        },",
+											"        {",
+											"            \"url\": \"https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus\",",
+											"            \"extension\": [",
+											"                {",
+											"                    \"url\": \"deathNotificationStatus\",",
+											"                    \"valueCodeableConcept\": {",
+											"                        \"coding\": [",
+											"                            {",
+											"                                \"system\": \"https://simplifier.net/UKCore/CodeSystem-UKCore-DeathNotificationStatus\",",
+											"                                \"version\": \"1.0.0\",",
+											"                                \"code\": \"2\",",
+											"                                \"display\": \"Formal - death notice received from Registrar of Deaths\"",
+											"                            }",
+											"                        ]",
+											"                    }",
+											"                },",
+											"                {",
+											"                    \"url\": \"systemEffectiveDate\",",
+											"                    \"valueDateTime\": \"2010-10-22T00:00:00+00:00\"",
+											"                }",
+											"            ]",
+											"        }",
+											"    ]",
+											"}",
+											"",
+											"pm.environment.set(\"expected_response\", expected_response);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{environment}}/Patient/9000000009",
+									"host": [
+										"{{environment}}"
+									],
+									"path": [
+										"Patient",
+										"9000000009"
+									]
+								},
+								"description": "GIVEN I have a valid NHS Number\nWHEN I call the simple search query\nTHEN I should get the patients details"
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve: Patient does not Exist",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "a3b62985-27a5-408e-b188-525f31de2de7",
+										"exec": [
+											"var response = pm.response.json();",
+											"",
+											"pm.test(\"Returns status code 404 Not Found\", () =>{",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Returns correct canned response\", () =>{",
+											"    pm.expect(JSON.stringify(response)).to.eql(JSON.stringify({",
+											"    \"resourceType\": \"OperationOutcome\",",
+											"    \"issue\": [",
+											"        {",
+											"            \"severity\": \"error\",",
+											"            \"code\": \"not_found\",",
+											"            \"details\": {",
+											"                \"coding\": [",
+											"                    {",
+											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
+											"                        \"version\": 1,",
+											"                        \"code\": \"patientNotFound\",",
+											"                        \"display\": \"Patient with NHS number 9111231130 could not be found\"",
+											"                    }",
+											"                ]",
+											"            }",
+											"        }",
+											"    ]",
+											"}));",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{environment}}/Patient/9111231130",
+									"host": [
+										"{{environment}}"
+									],
+									"path": [
+										"Patient",
+										"9111231130"
+									]
+								},
+								"description": "GIVEN I have a valid NHS Number\nWHEN I call the simple search query\nTHEN I should get the patients details"
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve: Invalid NHS number",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "a3b62985-27a5-408e-b188-525f31de2de7",
+										"exec": [
+											"var response = pm.response.json();",
+											"",
+											"pm.test(\"Returns status code 400 Bad Request\", () =>{",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"Returns correct canned response\", () =>{",
+											"    pm.expect(JSON.stringify(response)).to.eql(JSON.stringify({",
+											"    \"resourceType\": \"OperationOutcome\",",
+											"    \"issue\": [",
+											"        {",
+											"            \"severity\": \"error\",",
+											"            \"code\": \"value\",",
+											"            \"details\": {",
+											"                \"coding\": [",
+											"                    {",
+											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
+											"                        \"version\": 1,",
+											"                        \"code\": \"invalidNHSNumber\",",
+											"                        \"display\": \"NHS Number 9000000000 is not a valid NHS number\"",
+											"                    }",
+											"                ]",
+											"            }",
+											"        }",
+											"    ]",
+											"}));",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{environment}}/Patient/9000000000",
+									"host": [
+										"{{environment}}"
+									],
+									"path": [
+										"Patient",
+										"9000000000"
+									]
+								},
+								"description": "GIVEN I have a valid NHS Number\nWHEN I call the simple search query\nTHEN I should get the patients details"
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "7b2aac9b-9cf9-47c5-b2f8-af9569784baa",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "6d11c2ae-779e-4217-b61e-338b07999a0a",
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Returns fhirVersion 4.0 Content-Type header\", () =>{",
+					"        pm.response.to.have.header(\"Content-Type\");",
+					"        pm.expect(postman.getResponseHeader(\"Content-type\")).to.equal(\"application/fhir+json; fhirVersion=4.0\");",
+					"});"
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
