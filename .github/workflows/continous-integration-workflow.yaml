@@ -70,9 +70,11 @@ jobs:
         run: make test 
 
       - name: Copy local test report
+        if: always()
         run: cat newman/*.html > dist/local-tests.html && rm newman/*.html
 
       - name: Store local test result artifact
+        if: always()
         uses: actions/upload-artifact@v1
         with:
           name: local-tests-${{ env.SPEC_VERSION }}+${{ github.run_id }}.html

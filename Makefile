@@ -57,3 +57,6 @@ deploy-spec: update-examples
 
 format:
 	poetry run black **/*.py
+
+sandbox: update-examples
+	cd sandbox && npm run start

@@ -63,7 +63,7 @@ Set the following environment variables for local testing:
 
 In order for local tests to work, you must have the sandbox server running locally.
 ```
-cd sandbox && npm run start
+make sandbox
 ```
 
 To run local tests, use:
