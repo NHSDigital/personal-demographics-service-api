@@ -20,3 +20,8 @@ jobs:
           msg: |
             This branch is work on a ticket in the NHS Digital APM JIRA Project. Here's a handy link to the ticket:
             # [${{ env.TICKET_NAME }}](https://jira.digital.nhs.uk/browse/${{ env.TICKET_NAME}})
+
+      - name: Merge dependabot PRs
+        uses: ridedott/merge-me-action@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
