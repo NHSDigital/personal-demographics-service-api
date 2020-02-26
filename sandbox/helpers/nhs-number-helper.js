@@ -2,7 +2,7 @@ const Boom = require('boom')
 const fs = require('fs')
 const nhsNumberValidator = require('../validators/nhs-number-validator')
 
-const EXAMPLE_PATIENT = JSON.parse(fs.readFileSync('mocks/Patient-Jane-Smith.json'))
+const EXAMPLE_PATIENT = JSON.parse(fs.readFileSync('mocks/Patient.json'))
 
 module.exports = {
     /**

@@ -4,7 +4,7 @@ const nhsNumberHelper = require('../../helpers/nhs-number-helper')
 const fhirHelper = require('../../helpers/fhir-helper')
 const jsonpatch = require('fast-json-patch')
 
-const EXAMPLE_PATIENT = JSON.parse(fs.readFileSync('mocks/Patient-Jane-Smith.json'))
+const EXAMPLE_PATIENT = JSON.parse(fs.readFileSync('mocks/Patient.json'))
 
 module.exports = [
     {
@@ -23,11 +23,11 @@ module.exports = [
         handler: (request, h) => {
             nhsNumberHelper.checkNhsNumber(request)
 
+            let requestValidator = require("../../validators/request-validator").init(request)
+
             // Check If-Match header exists
             // TODO: Return different error where If-Match header is incorrect format
-            if (
-                !request.headers["if-match"] ||
-                !(request.headers["if-match"].startsWith('W/"') && request.headers["if-match"].endsWith('"'))) {
+            if (!requestValidator.validateIfMatchParameter()) {
                 throw Boom.badRequest(
                     "If-Match header must be supplied to update this resource",
                     {operationOutcomeCode: "required", apiErrorCode: "versionNotSupplied"}
@@ -35,16 +35,14 @@ module.exports = [
             }
 
             // Check If-Match header is correct version
-            const ifMatch = request.headers["if-match"].slice(3, -1) // Strip the W/"..."
-            if (ifMatch != EXAMPLE_PATIENT.meta.versionId) {
+            if (!requestValidator.validateIfMatchHeaderIsCorrectVersion(EXAMPLE_PATIENT)) {
                 throw Boom.preconditionFailed(
                     "This resource has changed since you last read. Please re-read and try again with the new version number.",
                     {operationOutcomeCode: "conflict", apiErrorCode: "versionMismatch"})
             }
 
             // Check Content-Type header
-            if (!request.headers["content-type"]
-                || request.headers["content-type"].toLowerCase() !== "application/json-patch+json") {
+            if (!requestValidator.validateContentTypeHeader()) {
                 // TODO: What's the proper error here?
                 throw Boom.unsupportedMediaType(
                     "Must be application/json-patch+json",
@@ -52,7 +50,7 @@ module.exports = [
             }
 
             // Verify at least one patch object has been submitted
-            if (!request.payload || !request.payload.patches || request.payload.patches.length === 0) {
+            if (!requestValidator.verifyPatchObjectHasBeenSubmitted()) {
                 // TODO: Proper error message
                 throw Boom.badRequest(
                     "No patches submitted",

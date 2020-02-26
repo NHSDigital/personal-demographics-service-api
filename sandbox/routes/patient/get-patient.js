@@ -4,7 +4,7 @@ const fhirHelper = require('../../helpers/fhir-helper')
 const nhsNumberHelper = require('../../helpers/nhs-number-helper')
 const dateValidator = require('../../validators/date-validator')
 
-const EXAMPLE_PATIENT_SMITH = JSON.parse(fs.readFileSync('mocks/Patient-Jane-Smith.json'))
+const EXAMPLE_PATIENT_SMITH = JSON.parse(fs.readFileSync('mocks/Patient.json'))
 
 module.exports = [
     /* Patient Search

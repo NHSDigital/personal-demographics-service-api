@@ -2,7 +2,7 @@ const Boom = require('boom')
 const fs = require('fs')
 const lodash = require('lodash')
 
-const EXAMPLE_PATIENT_SMITH = JSON.parse(fs.readFileSync('mocks/Patient-Jane-Smith.json'))
+const EXAMPLE_PATIENT_SMITH = JSON.parse(fs.readFileSync('mocks/Patient.json'))
 const EXAMPLE_PATIENT_SMYTHE = JSON.parse(fs.readFileSync('mocks/Patient-Jayne-Smyth.json'))
 
 let _request;
@@ -67,13 +67,16 @@ module.exports.search = function() {
             total: examplePatients.length,
             entry: []
         }
+
         if (examplePatients.length > 0) {
-            response.entry.push({
-                search: {
-                    score: searchScore
-                },
-                resource: examplePatients,
-            })
+            examplePatients.forEach(patient => {
+                response.entry.push({
+                    search: {
+                        score: searchScore
+                    },
+                    resource: patient,
+                })
+            });
         }
         return response
     }

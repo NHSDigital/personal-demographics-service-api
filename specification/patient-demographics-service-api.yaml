@@ -380,7 +380,7 @@ paths:
                     search:
                       score: 1.0
                     resource:
-                      $ref: 'components/examples/Patient-Jane-Smith.json'
+                      $ref: 'components/examples/Patient.json'
         '400':
           description: Invalid search paramaters supplied.
           content:
@@ -452,7 +452,7 @@ paths:
               schema:
                 $ref: 'components/schemas/Patient.yaml'
               example:
-                $ref: 'components/examples/Patient-Jane-Smith.json'
+                $ref: 'components/examples/Patient.json'
         '400':
           description: Invalid NHS number supplied.
           content:
