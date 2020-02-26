@@ -1,5 +1,8 @@
 # Changelog
 
+## 2020-02-26
+* Add a config for dependabot so that security updates are automatically merged
+
 ## 2020-02-24
 * Hugely improved linting of source code
 * New testing setup & approach to support e2e tests
