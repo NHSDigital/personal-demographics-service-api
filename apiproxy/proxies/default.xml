@@ -1,6 +1,11 @@
 <ProxyEndpoint name="default">
     <PreFlow>
-        <Request/>
+        <Request>
+          <Step>
+            <Name>RaiseFault.400BadRequest</Name>
+            <Condition>request.header.role_id is null</Condition>
+          </Step>
+        </Request>
         <Response/>
     </PreFlow>
     <HTTPProxyConnection>
