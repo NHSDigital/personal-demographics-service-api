@@ -24,4 +24,5 @@ jobs:
       - name: Merge dependabot PRs
         uses: ridedott/merge-me-action@master
         with:
+          GITHUB_LOGIN: dependabot-preview
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
