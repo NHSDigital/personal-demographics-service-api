@@ -1,4 +1,4 @@
-## Summary 
+## Summary
 * Routine Change
 * :exclamation: Breaking Change
 * :robot: Operational or Infrastructure Change
