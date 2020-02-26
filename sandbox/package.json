@@ -10,8 +10,8 @@
     "author": "NHS Digital",
     "license": "MIT",
     "dependencies": {
-        "@hapi/hapi": "^18.4.0",
-        "@hapi/joi": "^16.1.8",
+        "@hapi/hapi": "^19.1.1",
+        "@hapi/joi": "^17.1.0",
         "fast-json-patch": "^3.0.0-1",
         "inert": "^5.1.3",
         "nhs-number-validator": "^1.1.1"
