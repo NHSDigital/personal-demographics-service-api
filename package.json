@@ -18,7 +18,7 @@
   "devDependencies": {
     "newman": "^4.5.7",
     "newman-reporter-html": "^1.0.5",
-    "newman-reporter-htmlextra": "^1.11.3",
+    "newman-reporter-htmlextra": "^1.12.1",
     "apigeetool": "^0.14.2",
     "license-checker": "^25.0.1"
   }
