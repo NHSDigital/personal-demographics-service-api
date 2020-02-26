@@ -3,9 +3,6 @@ update_configs:
   - package_manager: "javascript"
     directory: "/"
     update_schedule: "live"
-    allowed_updates:
-      - match:
-          update_type: "security"
     automerged_updates:
       - match:
           dependency_type: "all"
@@ -13,9 +10,6 @@ update_configs:
   - package_manager: "javascript"
     directory: "/sandbox"
     update_schedule: "live"
-    allowed_updates:
-      - match:
-          update_type: "security"
     automerged_updates:
       - match:
           dependency_type: "all"
@@ -23,9 +17,6 @@ update_configs:
   - package_manager: "python"
     directory: "/"
     update_schedule: "live"
-    allowed_updates:
-      - match:
-          update_type: "security"
     automerged_updates:
       - match:
           dependency_type: "all"
