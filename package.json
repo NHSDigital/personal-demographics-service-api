@@ -16,7 +16,7 @@
     "speccy": "^0.11.0"
   },
   "devDependencies": {
-    "newman": "^4.5.7",
+    "newman": "^4.6.0",
     "newman-reporter-html": "^1.0.5",
     "newman-reporter-htmlextra": "^1.11.3",
     "apigeetool": "^0.14.2",
