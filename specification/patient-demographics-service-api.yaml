@@ -139,40 +139,30 @@ paths:
         url: https://digital.nhs.uk/services/organisation-data-service
       description: |
         ## Overview
-        Use this endpoint to search for a patient record in PDS.
+        Use this endpoint to search for a patient in PDS.
 
-        You can search using any combination of:
+        You can search using a combination of:
           * given name
           * family name
           * gender
           * postcode
           * date of birth (range)
           * date of death (range)
-          * registered GP Practice
-
-        If a `_fuzzy-match` has not been specified the parameters must include:
-          * family name (minimum of two characters, maybe wildcarded)
-          * gender
-          * date of birth (range)
-
-        ## Historic data search
-        By default the endpoint only searches current information. You can request to search historic information, such as maiden names or previous addresses using the `_history` query parameter.
-                
-        
+          * registered GP practice
+     
         ## Matching rules
         Search parameters are not case sensitive.
 
-        Spaces in postcodes must match exactly, for example ‘AA11 1AA’ will not match ‘AA111AA’.
+        Spaces in postcodes must match exactly, for example `AA11 1AA` will not match `AA111AA`.
         
-        For date of birth and date of death, you can request to search for an exact date or for a range of dates.
+        For date of birth and date of death, you can search for an exact date or for a range of dates.
         
-        You can use wildcards in given name and family name. Wildcards must be preceded by at least two characters; for example 'Br\*' is valid, but '\*cDougal' is not. Multiple wildcards are allowed; for example 'Br\*w\*' will match 'Brown' and 'Brower'.
+        You can use wildcards in given name and family name. Wildcards must start with at least two characters; for example `Br\*` is valid, but `\*cDougal` is not. Multiple wildcards are allowed; for example `Br\*w\*` will match `Brown` and `Brower`.
         
-        You can also request a fuzzy search ( `_fuzzy query` parameter). This search does the best it can to find a match, such as:
-          * Matching common homophones, such as ‘Smith’ and ‘Smythe’
-          * Checking for transposed names, such as ‘Adam Thomas’ and ‘Thomas Adam’
-          * Phonetic matching using soundex
-
+        You can request a fuzzy search using the `_fuzzy-match` queryparameter. This will additionally:
+          * match common homophones, such as `Smith` and `Smythe`, using the [Soundex](https://en.wikipedia.org/wiki/Soundex) algorithm
+          * check for transposed names, such as `Adam Thomas` and `Thomas Adam`
+   
         ## Result scoring
         Every result includes a score from 0 to 1.
         
