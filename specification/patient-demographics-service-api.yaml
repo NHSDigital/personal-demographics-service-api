@@ -163,22 +163,45 @@ paths:
           * match common homophones, such as `Smith` and `Smythe`, using the [Soundex](https://en.wikipedia.org/wiki/Soundex) algorithm
           * check for transposed names, such as `Adam Thomas` and `Thomas Adam`
    
-        ## Result scoring
-        Every result includes a score from 0 to 1.
+        ## Search parameter options
+        For a non-fuzzy search, the minimum set of search parameters is:
+        * family name - but it can include wildcards
+        * gender
+        * date of birth - but it can be a range
         
-        Scores less than 1 can happen when parameters supplied do not exactly match the values on the patient record.
-        Results are sorted best-first.
-        You can request to only return exact matches (score = 1) using the `_exact-match` parameter.
+        For a fuzzy search, use one of the following search parameter combinations:
+        * given name, family name and date of birth
+        * family name, date of birth, gender and postcode
+        * given name date of birth, gender and postcode
+        
+        Do not use the date of death or registered GP Practice query paramaters for a fuzzy search; they will be ignored.
+        
+        If you use an invalid combination of query parameters, you will get an `INVALID_COMBINATION` error.
+        
+        ## Historic data search
+        By default the endpoint only searches current information. You can search historic information, such as previous names or addresses using the `_history` query parameter.
+   
+        ## Scoring
+        Every matched patient in the results list includes a score to indicate how closely the patient matched the search parameters.
+        
+        A score of 1.0 indicates an exact match. A score of less than 1.0 indicates a partial match.
+        
+        The result list is sorted in descending score order - best match first.
+        
+        Use the `_exact-match` query parameter to return exact matches only - where the score = 1.0.
 
         ## Number of results returned
         By default, the endpoint will return a maximum of 50 results.
         
-        If there are more than 50 matching patient records, the endpoint will return no results and the error response TOO_MANY_MATCHES.
-        You can choose to limit the number of results returned using the `_max-results` parameter.
+        If there are more than 50 matching patients, the endpoint will return no results and the error response `TOO_MANY_MATCHES`. You can choose to limit the number of results returned using the `_max-results` query parameter.
+        You can request a single, exact match using `_exact-match=true` and `_max-results=1`.
 
-        ## Clinical safety and IG
-        TBC guidance around safe and private use of search.
-
+        ## Clinical safety and privacy
+        This endpoint can return multiple matching patients for a given search, including partial matches.
+        
+        You should ensure that you design, build and test your software to minimise these risks:
+        * an end user selects the wrong patient from the results presented, so there is a risk of clinical harm; for example due to retrieval of the wrong medical data
+        * the end user has access to patients’ personal data, so there is a risk to patient privacy
 
         ## Sandbox testing
         You can test the following scenarios in our [sandbox environment](/testing#sandbox-testing):
@@ -198,7 +221,7 @@ paths:
         - patients
       parameters:
         - name: _exact-match
-          description: The search will only return results where the score is 1.0.
+          description: The search only returns results where the `score` field is 1.0.
           example: true
           in: query
           required: false
@@ -206,7 +229,7 @@ paths:
             type: boolean
             default: false
         - name: _history
-          description: The search will look for matches in historic information such as previous names and addresses.
+          description: The search looks for matches in historic information such as previous names and addresses.
           example: true
           in: query
           required: false
@@ -214,7 +237,7 @@ paths:
             type: boolean
             default: false
         - name: _fuzzy-match
-          description: 'The search will perform phonetic matching on names using soundex, transpose names, and score the results.  If the fields death-date or general-practitioner are provided they will be ignored in this search. This search is performed using a combination of parameters. If an invalid combination is supplied INVALID_COMBINATION will be returned.'
+          description: A fuzzy search is performed, including checks for homophones and transposed names.
           example: true
           in: query
           required: false
@@ -222,7 +245,7 @@ paths:
             type: boolean
             default: false
         - name: _max-results
-          description: The maximum number of results to return cannot be greater than 50.   If there are more than 50 results, no results will be returned with an outcome of TOO_MANY_MATCHES. 
+          description: The maximum number of results to return between 1 and 50. The default is 50.
           example: 1
           in: query
           required: false
@@ -244,14 +267,14 @@ paths:
           schema:
             type: string
         - name: given
-          description: "The patient's given name(s)."
+          description: "The patient's given name."
           example: Jane
           in: query
           required: false
           schema:
             type: string
         - name: gender
-          description: Gender the patient identifies as.
+          description: Gender with which the patient identifies.
           example: female
           in: query
           required: false
@@ -259,7 +282,7 @@ paths:
             $ref: components/schemas/Gender.yaml
         - name: birthdate
           in: query
-          description: 'Birth date is in the format `yyyy-mm-dd`.  A range can be specified with a subset of the [FHIR date searching specifiers](https://www.hl7.org/fhir/search.html#date).'
+          description: Date of birth in the format `<eq|ge|le>yyyy-mm-dd`. To specify a range, use `birthdate=geyyyy-mm-dd&birthdate=leyyyy-mm-dd`.
           examples:
             simple:
               value: eq2010-10-22
@@ -276,7 +299,7 @@ paths:
             format: date
         - name: death-date
           in: query
-          description: 'Date of death in the format `yyyy-mm-dd`.  A range can be specified with a subset of the [FHIR date searching specifiers](https://www.hl7.org/fhir/search.html#date).'
+          description: Date of death in the format `<eq|ge|le>yyyy-mm-dd`. To specify a range, use `death-date=geyyyy-mm-dd&death-date=leyyyy-mm-dd`.
           examples:
             simple:
               value: eq2010-10-22
@@ -292,7 +315,7 @@ paths:
             type: string
             format: date
         - name: address-postcode
-          description: White spaces in postcodes are significant; that is, LS16AE will not match LS1 6AE.
+          description: The postcode of any of the patient’s known addresses. White spaces in postcodes are significant; that is, LS16AE will not match LS1 6AE.
           examples: 
             simple:
               value: LS1 6AE
@@ -305,7 +328,7 @@ paths:
           schema:
             type: string
         - name: general-practitioner
-          description: "The Organisation Data Service (ODS) code of the patient's registered general practitioner."
+          description: "The Organisation Data Service (ODS) code of the patient's registered GP practice."
           example: Y00001
           in: query
           required: false
