@@ -1,5 +1,8 @@
 # Changelog
 
+## 2020-03-02
+* New PDS sandbox search scenarios
+
 ## 2020-02-24
 * Hugely improved linting of source code
 * New testing setup & approach to support e2e tests

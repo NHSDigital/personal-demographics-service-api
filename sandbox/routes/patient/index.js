@@ -1,6 +1,6 @@
-let get = require('./get-patient');
-let patch = require('./patch-patient');
+const get = require('./get-patient');
+const patch = require('./patch-patient');
 
-let routes = [].concat(get, patch);
+const routes = [].concat(get, patch);
 
 module.exports = routes;

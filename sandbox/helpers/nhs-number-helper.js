@@ -1,8 +1,6 @@
 const Boom = require('boom')
-const fs = require('fs')
+const patients = require('../services/patients')
 const nhsNumberValidator = require('../validators/nhs-number-validator')
-
-const EXAMPLE_PATIENT = JSON.parse(fs.readFileSync('mocks/Patient.json'))
 
 module.exports = {
     /**
@@ -27,7 +25,7 @@ module.exports = {
         }
 
         // Validate NHS number is for our test patient
-        if (request.params.nhsNumber != EXAMPLE_PATIENT.id) {
+        if (request.params.nhsNumber != patients.examplePatientSmith.id) {
             throw Boom.notFound(
                 `Patient with NHS number ${request.params.nhsNumber} could not be found`,
                 {operationOutcomeCode: "not_found", apiErrorCode: "patientNotFound"}

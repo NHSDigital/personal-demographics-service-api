@@ -3,6 +3,7 @@
 const Hapi = require('@hapi/hapi')
 const Path = require('path')
 const Inert = require('inert')
+const routes = require('./routes/patient')
 
 const CONTENT_TYPE = 'application/fhir+json; fhirVersion=4.0'
 
@@ -71,7 +72,6 @@ const init = async() => {
 
     await server.register(Inert)
 
-    var routes = require('./routes/patient')
     server.route(routes)
 
     await server.start()
