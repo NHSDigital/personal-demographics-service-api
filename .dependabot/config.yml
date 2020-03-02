@@ -1,0 +1,23 @@
+version: 1
+update_configs:
+  - package_manager: "javascript"
+    directory: "/"
+    update_schedule: "live"
+    automerged_updates:
+      - match:
+          dependency_type: "all"
+          update_type: "security:patch"
+  - package_manager: "javascript"
+    directory: "/sandbox"
+    update_schedule: "live"
+    automerged_updates:
+      - match:
+          dependency_type: "all"
+          update_type: "security:patch"
+  - package_manager: "python"
+    directory: "/"
+    update_schedule: "live"
+    automerged_updates:
+      - match:
+          dependency_type: "all"
+          update_type: "security:patch"

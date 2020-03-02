@@ -3,10 +3,15 @@
 ## 2020-03-02
 * New PDS sandbox search scenarios
 
+## 2020-02-26
+* Add a config for dependabot so that security updates are automatically merged
+
 ## 2020-02-24
 * Hugely improved linting of source code
 * New testing setup & approach to support e2e tests
 * Updated CI to run regression tests
+* API Proxy: Add `from_asid` header when communicating with `ig3` target endpoint
+* API Proxy (ops): Deployment scripts and instructions now support 'personal' developer proxies
 
 ## 2020-02-17
 * Add Apigee API Proxy definition to repository

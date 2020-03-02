@@ -67,12 +67,14 @@ jobs:
       - name: Run local tests
         env:
           API_TEST_ENV_FILE_PATH: "tests/e2e/environments/local.postman_environment.json"
-        run: make test 
+        run: make test
 
       - name: Copy local test report
+        if: always()
         run: cat newman/*.html > dist/local-tests.html && rm newman/*.html
 
       - name: Store local test result artifact
+        if: always()
         uses: actions/upload-artifact@v1
         with:
           name: local-tests-${{ env.SPEC_VERSION }}+${{ github.run_id }}.html
@@ -124,10 +126,11 @@ jobs:
           APIGEE_APIPROXY: ${{ secrets.APIGEE_APIPROXY }}
           APIGEE_ORGANIZATION: ${{ secrets.APIGEE_ORGANIZATION }}
           APIGEE_ENVIRONMENTS: ${{ secrets.APIGEE_ENVIRONMENTS }}
+          APIGEE_BASE_PATH: personal-demographics
         run: make deploy-proxy
 
       - name: Run sandbox tests (master only)
-        # if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master'
         env:
           API_TEST_ENV_FILE_PATH: "tests/e2e/environments/sandbox.postman_environment.json"
           API_TEST_URL: ${{ secrets.API_TEST_URL }}
