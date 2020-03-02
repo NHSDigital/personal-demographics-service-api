@@ -184,6 +184,26 @@
       }
     },
     {
+      "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DispensingDoctor",
+      "valueReference": {
+        "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y23456",
+        "identifier": {
+          "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+          "value": "Y23456"
+        }
+      }
+    },
+    {
+      "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-MedicalApplianceSupplier",
+      "valueReference": {
+        "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y34567",
+        "identifier": {
+          "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+          "value": "Y34567"
+        }
+      }
+    },
+    {
       "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus",
       "extension": [
         {

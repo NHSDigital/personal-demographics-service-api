@@ -81,4 +81,6 @@ properties:
     items:
       anyOf:
         - $ref: "extensions/NominatedPharmacy.yaml"
+        - $ref: "extensions/DispensingDoctor.yaml"
+        - $ref: "extensions/MedicalApplianceSupplier.yaml"
         - $ref: "extensions/DeathNotificationStatus.yaml"
