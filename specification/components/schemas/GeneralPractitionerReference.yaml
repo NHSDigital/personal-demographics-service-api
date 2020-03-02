@@ -19,7 +19,7 @@ properties:
     description: Identifier and system of identification used for this Organisation.
     type: object
     properties:
-      sytem:
+      system:
         description: URL for the Organisation Data Service - who are responsible for publishing codes that identify organisations and individuals across health and social care
         type: string
         readOnly: true
