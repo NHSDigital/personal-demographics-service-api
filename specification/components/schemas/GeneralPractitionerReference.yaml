@@ -2,11 +2,31 @@ description: General practice (not practitioner) with which the patient is or wa
 type: object
 properties:
   id:
-    description: Organisation code for the registered general practice, as held in the [Organisation Data Service](https://developer.nhs.uk/apis/ods/).
+    description: Object identifier (OID) specific to the returned details - this should be return exactly the same in any update.
     type: string
-    pattern: ^[0-9A-Z]+$
-    example: Y12345
+    readOnly: true
+    example: 254406A3
+  type: 
+    description: Type of Reference being returned.
+    type: string
+    readOnly: true
+    example: 'Organization'
   reference:
     description: URL for the FHIR Organization resource for the registered general practice. See [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details.
     type: string
     example: "https://directory.spineservices.nhs.uk/STU3/Organization/Y12345"
+  identifier:
+    description: Identifier and system of identification used for this Organisation.
+    type: object
+    properties:
+      sytem:
+        description: URL for the Organisation Data Service - who are responsible for publishing codes that identify organisations and individuals across health and social care
+        type: string
+        readOnly: true
+        example: 'https://digital.nhs.uk/services/organisation-data-service'
+      value:
+        description: Organisation code for the registered general practice, as held in the [Organisation Data Service](https://developer.nhs.uk/apis/ods/).
+        type: string
+        pattern: ^[0-9A-Z]+$
+        example: Y12345
+        
