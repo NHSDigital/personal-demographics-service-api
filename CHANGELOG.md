@@ -5,6 +5,7 @@
 * Rename `from_asid` header to `NHSD-ASID`
 * New PDS sandbox search scenarios
 * Updating `Name` prefixes and suffixes to be an array of string, not string
+* Add dispensing doctor and medical appliance supplier extensions
 
 
 ## 2020-02-26
