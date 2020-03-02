@@ -20,7 +20,7 @@ properties:
     type: object
     properties:
       system:
-        description: URL for the Organisation Data Service - who are responsible for publishing codes that identify organisations and individuals across health and social care
+        description: URL for the Organisation Data Service - who are responsible for publishing codes that identify organisations and individuals across health and social care.
         type: string
         readOnly: true
         example: 'https://digital.nhs.uk/services/organisation-data-service'
