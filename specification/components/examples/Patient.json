@@ -144,7 +144,7 @@
       "type": "Organization",
       "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y12345",
       "identifier": {
-        "sytem": "https://digital.nhs.uk/services/organisation-data-service",
+        "system": "https://digital.nhs.uk/services/organisation-data-service",
         "value": "Y12345"
       }
     }
