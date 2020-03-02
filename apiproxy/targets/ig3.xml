@@ -9,7 +9,7 @@
                 <Name>KeyValueMapOperations.GetAsid</Name>
             </Step>
             <Step>
-                <Name>AssignMessage.FromAsidHeader</Name>
+                <Name>AssignMessage.AddAsidHeader</Name>
             </Step>
         </Request>
     </PreFlow>
