@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2020-03-02
-* Add `role_id` header to specification
+* Add `NHSD-Session-URID` header to specification.
 
 ## 2020-02-26
 * Add a config for dependabot so that security updates are automatically merged

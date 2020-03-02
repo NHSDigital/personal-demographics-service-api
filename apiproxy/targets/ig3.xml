@@ -3,7 +3,7 @@
         <Request>
             <Step>
               <Name>RaiseFault.400BadRequest</Name>
-              <Condition>request.header.role_id is null</Condition>
+              <Condition>request.header.NHSD-Session-URID is null</Condition>
             </Step>
             <Step>
                 <Name>KeyValueMapOperations.GetAsid</Name>

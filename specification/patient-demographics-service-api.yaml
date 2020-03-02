@@ -706,7 +706,7 @@ components:
         example: 'W/"2"'
     RoleId:
       in: header
-      name: role_id
+      name: NHSD-Session-URID
       description: |
         A *User Role ID* (URID) -- also known as a *User Role Profile ID (URPID)* -- specifies the role the user is acting in. This dictates the actions they can perform.
 
