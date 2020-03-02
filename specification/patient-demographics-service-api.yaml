@@ -695,9 +695,11 @@ components:
       in: header
       name: role_id
       description: |
-        A *User Role ID* (URID) -- also known as a *User Role Profile ID (URPID)*.
+        A *User Role ID* (URID) -- also known as a *User Role Profile ID (URPID)* -- specifies the role the user is acting in. This dictates the actions they can perform.
 
-        TBD: How this is described and at what level.
+        A URID belongs to a user (they are not generic) and a user may have more than one.
+
+        NB: This parameter is not required when interacting with the Sandbox.
       required: true
       schema:
         type: string
