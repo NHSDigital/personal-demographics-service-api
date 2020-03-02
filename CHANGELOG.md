@@ -1,6 +1,8 @@
 # Changelog
 
 ## 2020-03-02
+* Add `NHSD-Session-URID` header to specification.
+* Rename `from_asid` header to `NHSD-ASID`
 * New PDS sandbox search scenarios
 * Updating `Name` prefixes and suffixes to be an array of string, not string
 

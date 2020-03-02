@@ -1,8 +1,5 @@
 <ProxyEndpoint name="default">
-    <PreFlow>
-        <Request/>
-        <Response/>
-    </PreFlow>
+    <PreFlow/>
     <HTTPProxyConnection>
         <!-- Populated during deploy ment by scripts/deploy_proxy.sh -->
         <BasePath>/PROXY_BASE_PATH</BasePath>

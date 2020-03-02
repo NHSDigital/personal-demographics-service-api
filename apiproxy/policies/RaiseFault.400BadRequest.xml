@@ -1,0 +1,10 @@
+<RaiseFault async="false" continueOnError="false" enabled="true" name="RaiseFault.400BadRequest">
+    <FaultResponse>
+        <Set>
+            <Payload contentType="text/plain"/>
+            <StatusCode>400</StatusCode>
+            <ReasonPhrase>Bad Request</ReasonPhrase>
+        </Set>
+    </FaultResponse>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</RaiseFault>
