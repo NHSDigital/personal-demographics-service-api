@@ -33,10 +33,16 @@ properties:
     description: Family name (often called Surname).
     example: Smith
   prefix:
-    type: string
+    type: array
     description: Name prefixes, titles, and prenominals.
-    example: Mrs
+    example: [Mrs]
+    items:
+      type: string
+      example: Mrs
   suffix:
-    type: string
+    type: array
     description: Name suffices and postnominals.
-    example: MBE
+    example: [MBE, PhD]
+    items:
+      type: string
+      example: MBE
