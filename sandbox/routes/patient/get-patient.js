@@ -43,10 +43,9 @@ module.exports = [
             if (request.query["birthdate"]) {
                 let birthdateParameter = Array.isArray(request.query["birthdate"]) ? request.query["birthdate"] : [request.query["birthdate"]]
                 birthdateParameter.forEach(date => {   
-                    if (dateValidator.birthdateSchema.validate(date).error) { 
+                    if (dateValidator.dateSchema.validate(date).error) { 
                         throw Boom.badRequest(
-                            // Decide on format string instead of [a-z]YYYY-MM-DD
-                            `birthdate has invalid format: ${request.query["birthdate"]} is not in [a-z]YYYY-MM-DD format`,
+                            `birthdate has invalid format: ${request.query["birthdate"]} is not in <eq|ge|le>YYYY-MM-DD format`,
                             {operationOutcomeCode: "value", apiErrorCode: "invalidDateFormat"})
                     }
                 }) 
@@ -54,7 +53,7 @@ module.exports = [
 
             if (request.query["death-date"] && dateValidator.dateSchema.validate(request.query["death-date"]).error) {
                 throw Boom.badRequest(
-                    `death-date has invalid format: ${request.query["death-date"]} is not in YYYY-MM-DD format`,
+                    `death-date has invalid format: ${request.query["death-date"]} is not in <eq|ge|le>YYYY-MM-DD format`,
                     {operationOutcomeCode: "value", apiErrorCode: "invalidDateFormat"})
             }
 

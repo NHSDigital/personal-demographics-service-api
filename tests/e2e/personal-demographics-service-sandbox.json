@@ -266,16 +266,12 @@
 											"value": "Smith"
 										},
 										{
-											"key": "given",
-											"value": "Jane"
-										},
-										{
 											"key": "gender",
 											"value": "female"
 										},
 										{
 											"key": "birthdate",
-											"value": "2010-10-22"
+											"value": "eq2010-10-22"
 										}
 									]
 								},
@@ -329,7 +325,7 @@
 										},
 										{
 											"key": "birthdate",
-											"value": "1934-12-18"
+											"value": "eq1934-12-18"
 										}
 									]
 								},
@@ -364,7 +360,7 @@
 											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
 											"                        \"version\": 1,",
 											"                        \"code\": \"invalidDateFormat\",",
-											"                        \"display\": \"birthdate has invalid format: 20101022 is not in YYYY-MM-DD format\"",
+											"                        \"display\": \"birthdate has invalid format: 20101022 is not in <eq|ge|le>YYYY-MM-DD format\"",
 											"                    }",
 											"                ]",
 											"            }",
@@ -438,7 +434,7 @@
 											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
 											"                        \"version\": 1,",
 											"                        \"code\": \"invalidDateFormat\",",
-											"                        \"display\": \"death-date has invalid format: 20101022 is not in YYYY-MM-DD format\"",
+											"                        \"display\": \"death-date has invalid format: 20101022 is not in <eq|ge|le>YYYY-MM-DD format\"",
 											"                    }",
 											"                ]",
 											"            }",
