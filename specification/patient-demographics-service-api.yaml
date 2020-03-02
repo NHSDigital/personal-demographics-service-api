@@ -210,7 +210,11 @@ paths:
 
         | Scenario                       | Request                                                      | Response                                   |
         | ------------------------------ | ------------------------------------------------------------ | ------------------------------------------ |
-        | Successful simple search       | `family`=`Smith`, `given`=`Jane`, `gender`=`female`, `birthdate`=`2010-10-22` | HTTP Status 200 with single search result. |
+        | Successful simple search       | `family`=`Smith`, `given`=`Jane`, `gender`=`female`, `birthdate`=`eq2010-10-22` | HTTP Status 200 with single search result. |
+        | Successful advanced search       | `family`=`Sm*`, `gender`=`female`, `birthdate`=`eq2010-10-22` | HTTP Status 200 with search result of two. |
+        | Successful advanced search with `_max-results` parameter set.      | `family`=`Sm*`, `gender`=`female`, `birthdate`=`eq2010-10-22`, `_max-results`=`2` | HTTP Status 200 with search result of two. |
+        | Successful advanced search with daterange parameters provided      | `family`=`Smith`, `gender`=`female`, `birthdate`=`ge2010-10-21`, `birthdate`=`le2010-10-23` | HTTP Status 200 with single search result. |
+        | Successful algorithmic search      | `family`=`Smith`, `given`=`Jane` `gender`=`female`, `birthdate`=`eq2010-10-22`, `_fuzzy-match`=`true` | HTTP Status 200 with single search result. |
         | Unsuccessful search            | Any other valid search query parameters                      | HTTP Status 200 with no search results     |
         | Invalid date format            | `birthdate` or `death-date` query parameters with values not in format `YYYY-MM-DD` | HTTP Status 400 with problem description   |
         | Too few search parameters      | Any invalid combination of query parameters                  | HTTP Status 400 with problem description   |
@@ -297,8 +301,9 @@ paths:
               description: Less than or equals match, which matches 2010-10-22 or 2010-10-21
           required: false
           schema:
-            type: string
-            format: date
+            type: array
+            items: 
+              type: string
         - name: death-date
           in: query
           description: Date of death in the format `<eq|ge|le>yyyy-mm-dd`. To specify a range, use `death-date=geyyyy-mm-dd&death-date=leyyyy-mm-dd`.
