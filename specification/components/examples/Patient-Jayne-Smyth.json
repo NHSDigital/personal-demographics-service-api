@@ -36,8 +36,12 @@
         "Jayne"
       ],
       "family": "Smyth",
-      "prefix": "Mrs",
-      "suffix": "MBE"
+      "prefix": [
+        "Mrs"
+      ],
+      "suffix": [
+        "MBE"
+      ]
     }
   ],
   "gender": "female",
@@ -109,8 +113,12 @@
           "Jayne"
         ],
         "family": "Smyth",
-        "prefix": "Mrs",
-        "suffix": "MBE"
+        "prefix": [
+          "Mrs"
+        ],
+        "suffix": [
+          "MBE"
+        ]
       },
       "telecom": [
         {
@@ -140,8 +148,13 @@
   ],
   "generalPractitioner": [
     {
-      "id": "Y12345",
-      "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y12345"
+      "id": "254406A3",
+      "type": "Organization",
+      "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y12345",
+      "identifier": {
+        "system": "https://digital.nhs.uk/services/organisation-data-service",
+        "value": "Y12345"
+      }
     }
   ],
   "communication": [
@@ -167,6 +180,26 @@
         "identifier": {
           "system": "https://fhir.nhs.uk/Id/ods-organization-code",
           "value": "Y12345"
+        }
+      }
+    },
+    {
+      "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DispensingDoctor",
+      "valueReference": {
+        "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y23456",
+        "identifier": {
+          "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+          "value": "Y23456"
+        }
+      }
+    },
+    {
+      "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-MedicalApplianceSupplier",
+      "valueReference": {
+        "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y34567",
+        "identifier": {
+          "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+          "value": "Y34567"
         }
       }
     },
