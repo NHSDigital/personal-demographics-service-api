@@ -208,7 +208,7 @@ paths:
 
         | Scenario                       | Request                                                      | Response                                   |
         | ------------------------------ | ------------------------------------------------------------ | ------------------------------------------ |
-        | Successful simple search       | `family`=`Smith`, `given`=`Jane`, `gender`=`female`, `birthdate`=`eq2010-10-22` | HTTP Status 200 with single search result. |
+        | Successful simple search       | `family`=`Smith`, `gender`=`female`, `birthdate`=`eq2010-10-22` | HTTP Status 200 with single search result. |
         | Successful advanced search       | `family`=`Sm*`, `gender`=`female`, `birthdate`=`eq2010-10-22` | HTTP Status 200 with search result of two. |
         | Successful advanced search with `_max-results` parameter set.      | `family`=`Sm*`, `gender`=`female`, `birthdate`=`eq2010-10-22`, `_max-results`=`2` | HTTP Status 200 with search result of two. |
         | Successful advanced search with daterange parameters provided      | `family`=`Smith`, `gender`=`female`, `birthdate`=`ge2010-10-21`, `birthdate`=`le2010-10-23` | HTTP Status 200 with single search result. |
