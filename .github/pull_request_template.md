@@ -7,6 +7,14 @@
 
 Add any other relevant notes or explanations here. **Remove this line if you have nothing to add.**
 
+
+## Reviews Required
+* [x] Dev
+* [ ] Test
+* [ ] Tech Author
+* [ ] Product Owner
+
+
 ## Review Checklist
 :information_source: This section is to be filled in by the **reviewer**.
 
