@@ -38,8 +38,8 @@ info:
 
     ## Related APIs
     The following APIs also give access to the Personal Demographics Service:
-    - [Personal Demographics Service (SMSP) API](#) - use this if you want to get PDS data without an authenticated end used (no smartcard required). It is, however, read-only and searches are limited to a single result.
-    - [Personal Demographics Service (HL7 V3) API](#) - use this if you want to use functions that are not yet available on the FHIR API.
+    - [Personal Demographics Service (SMSP) API](https://digital.nhs.uk/developer/api-specifications/personal-demographics-service---smsp-api) - use this if you want to get PDS data without an authenticated end used (no smartcard required). It is, however, read-only and searches are limited to a single result.
+    - [Personal Demographics Service (HL7 V3) API](https://digital.nhs.uk/developer/api-specifications/personal-demographics-service-hl7-v3) - use this if you want to use functions that are not yet available on the FHIR API.
 
     Once our roadmap is complete, the above APIs will become redundant.
 
@@ -47,7 +47,7 @@ info:
     - [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) - use this to get full details for the organisations related to the patient, such as their registered GP or nominated pharmacy.
 
     ## API status and roadmap
-    This API is in [alpha](/reference-guide#api-status) - expect significant breaking changes.
+    This API is in [alpha](https://digital.nhs.uk/developer/developer-reference/reference-guide#api-status) - expect significant breaking changes.
 
     It is currently only available for sandbox testing, not for integration testing or production use.
 
@@ -63,12 +63,12 @@ info:
 
     We are extremely keen to receive feedback on the API during alpha and beta,
     for example if there are data fields missing that you think you need.
-    Please [get in touch](/help-and-support) with any comments or suggestions.
+    Please [get in touch](https://digital.nhs.uk/developer/help-and-support) with any comments or suggestions.
 
     ## Technology
-    This API is [RESTful](/introduction-to-apis#basic-rest).
+    This API is [RESTful](https://digital.nhs.uk/developer/developer-reference/introduction-to-apis#basic-rest).
 
-    It also conforms to the [FHIR](/introduction-to-apis#fhir) global standard for health care data exchange.
+    It also conforms to the [FHIR](https://digital.nhs.uk/developer/developer-reference/introduction-to-apis#fhir) global standard for health care data exchange.
     Specifically, it is aligned with [FHIR UK Core](https://digital.nhs.uk/services/fhir-uk-core), which is built on FHIR Release 4.
 
     You don’t need to know much about FHIR to use this API - FHIR APIs are just RESTful APIs that follow specific rules.
@@ -81,7 +81,7 @@ info:
     currently requires a connection to the [Health and Social Care Network (HSCN)](https://digital.nhs.uk/services/health-and-social-care-network).
 
     ## Authorisation
-    This API is [user-restricted](/security-and-authorisation#user-restricted-apis),
+    This API is [user-restricted](https://digital.nhs.uk/developer/security-and-authorisation#user-restricted-apis),
     meaning an end user must be present and authenticated to use it.
 
     The end user must be:
@@ -90,8 +90,10 @@ info:
 
     The API uses Open ID Connect to authenticate the end user and OAuth 2.0 to authorise the calling system.
     It supports the following security patterns:
-    * [user-restricted RESTful API - using NHS Identity - combined authentication and authorisation](/security-and-authorisation#user-restricted-restful-api-using-nhs-identity-combined-authentication-and-authorisation)
-    * [user-restricted RESTful API - using NHS Identity - separate authentication and authorisation](/security-and-authorisation#user-restricted-restful-api-using-nhs-identity-separate-authentication-and-authorisation)
+    * user-restricted RESTful API - using NHS Identity - combined authentication and authorisation
+    * user-restricted RESTful API - using NHS Identity - separate authentication and authorisation
+
+    For more details, see [user-restricted APIs](https://digital.nhs.uk/developer/security-and-authorisation#user-restricted-apis).
 
     In due course we plan to add the following:
     - access for citizens, using NHS Login
@@ -99,8 +101,8 @@ info:
 
     ## Testing
     You can test this API in:
-    * our [sandbox environment](/testing#sandbox-testing) for initial developer testing
-    * our [integration test environment](/testing#integration-testing) for formal integration testing (coming soon)
+    * our [sandbox environment](https://digital.nhs.uk/developer/testing#sandbox-testing) for initial developer testing
+    * our [integration test environment](https://digital.nhs.uk/developer/testing#integration-testing) for formal integration testing (coming soon)
 
     Our sandbox environment is a very basic simulation of the live service. It only covers a limited set of scenarios and is stateless, so does not actually persist any updates.
 
@@ -120,6 +122,7 @@ info:
     * `GET /Patient` - search for patient
     * `GET /Patient/{id}` - get patient's personal details
     * `PATCH /Patient/{id}` - update patient's personal details
+
   contact:
     name: Personal Demographics Service FHIR API Support
     url: 'https://tbc.api.nhs.net'
