@@ -122,6 +122,11 @@ info:
     * `GET /Patient` - search for patient
     * `GET /Patient/{id}` - get patient's personal details
     * `PATCH /Patient/{id}` - update patient's personal details
+
+  contact:
+    name: Personal Demographics Service FHIR API Support
+    url: 'https://tbc.api.nhs.net'
+    email: tbc-api-support@nhs.net
 servers:
   - url: 'https://emea-demo8-test.apigee.net/personal-demographics'
     description: Sandbox service.
