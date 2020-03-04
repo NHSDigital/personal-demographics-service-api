@@ -302,7 +302,7 @@ paths:
           required: false
           schema:
             type: array
-            items: 
+            items:
               type: string
         - name: death-date
           in: query
@@ -717,8 +717,8 @@ components:
 
         A URID belongs to a user (they are not generic) and a user may have more than one.
 
-        Note: This parameter is not required when interacting with the Sandbox.
-      required: true
+        Note: This parameter is required unless interacting with the Sandbox.
+      required: false
       schema:
         type: string
         format: '^[0-9]+$'
