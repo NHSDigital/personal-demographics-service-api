@@ -8,7 +8,11 @@
     </PostFlow>
     <PreFlow name="PreFlow">
         <Request/>
-        <Response/>
+        <Response>
+          <Step>
+            <Name>AssignMessage.AddCors</Name>
+          </Step>
+        </Response>
     </PreFlow>
     <HostedTarget>
         <Properties/>

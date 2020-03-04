@@ -40,9 +40,12 @@ clean:
 generate-examples: publish clean
 	mkdir -p dist/examples
 	poetry run python scripts/generate_examples.py dist/patient-demographics-service-api.json dist/examples
+	cp dist/examples/resources/Patient.json dist/examples/resources/Patient-Jayne-Smyth.json
+	sed -i -e 's/9000000009/9000000010/g; s/Jane/Jayne/g; s/Smith/Smyth/g;' dist/examples/resources/Patient-Jayne-Smyth.json
 
 update-examples: generate-examples
 	jq -rM . <dist/examples/resources/Patient.json >specification/components/examples/Patient.json
+	jq -rM . <dist/examples/resources/Patient-Jayne-Smyth.json >specification/components/examples/Patient-Jayne-Smyth.json
 	make publish
 
 check-licenses:
