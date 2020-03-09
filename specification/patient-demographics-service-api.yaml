@@ -179,7 +179,7 @@ paths:
         * family name, date of birth, gender and postcode
         * given name date of birth, gender and postcode
 
-        Do not use the date of death or registered GP Practice query paramaters for a fuzzy search; they will be ignored.
+        If you include the date of death or registered GP Practice query parameters for a fuzzy search, they will not be used as part of the search. However they will affect the patient's matching [score](#Scoring), meaning a mismatch will reduce the returned score.
 
         If you use an invalid combination of query parameters, you will get an `INVALID_COMBINATION` error.
 
@@ -211,20 +211,21 @@ paths:
         ## Sandbox testing
         You can test the following scenarios in our [sandbox environment](/testing#sandbox-testing):
 
-        | Scenario                       | Request                                                      | Response                                   |
-        | ------------------------------ | ------------------------------------------------------------ | ------------------------------------------ |
-        | Successful simple search       | `family`=`Smith`, `gender`=`female`, `birthdate`=`eq2010-10-22` | HTTP Status 200 with single search result. |
-        | Successful advanced search       | `family`=`Sm*`, `gender`=`female`, `birthdate`=`eq2010-10-22` | HTTP Status 200 with search result of two. |
-        | Successful advanced search with `_max-results` parameter set.      | `family`=`Sm*`, `gender`=`female`, `birthdate`=`eq2010-10-22`, `_max-results`=`2` | HTTP Status 200 with search result of two. |
-        | Successful advanced search with daterange parameters provided      | `family`=`Smith`, `gender`=`female`, `birthdate`=`ge2010-10-21`, `birthdate`=`le2010-10-23` | HTTP Status 200 with single search result. |
-        | Successful algorithmic search      | `family`=`Smith`, `given`=`Jane` `gender`=`female`, `birthdate`=`eq2010-10-22`, `_fuzzy-match`=`true` | HTTP Status 200 with single search result. |
-        | Unsuccessful search            | Any other valid search query parameters                      | HTTP Status 200 with no search results     |
-        | Invalid date format            | `birthdate` or `death-date` query parameters with values not in format `YYYY-MM-DD` | HTTP Status 400 with problem description   |
-        | Too few search parameters      | Any invalid combination of query parameters                  | HTTP Status 400 with problem description   |
+        | Scenario                    | Request                                                      | Response                                   |
+        | --------------------------- | ------------------------------------------------------------ | ------------------------------------------ |
+        | Basic search                | `family`=`Smith`, `gender`=`female`, `birthdate`=`eq2010-10-22` | HTTP Status 200 with single search result. |
+        | Wildcard search             | `family`=`Sm*`, `gender`=`female`, `birthdate`=`eq2010-10-22` | HTTP Status 200 with search result of two. |
+        | Search with limited results | `family`=`Sm*`, `gender`=`female`, `birthdate`=`eq2010-10-22`, `_max-results`=`2` | HTTP Status 200 with search result of two. |
+        | Search with date range      | `family`=`Smith`, `gender`=`female`, `birthdate`=`ge2010-10-21`, `birthdate`=`le2010-10-23` | HTTP Status 200 with single search result. |
+        | Fuzzy search                | `family`=`Smith`, `given`=`Jane` `gender`=`female`, `birthdate`=`eq2010-10-22`, `_fuzzy-match`=`true` | HTTP Status 200 with single search result. |
+        | Unsuccessful search         | Any other valid search query parameters                      | HTTP Status 200 with no search results     |
+        | Invalid date format         | `birthdate` or `death-date` query parameters with values not in format `YYYY-MM-DD` | HTTP Status 400 with problem description   |
+        | Too few search parameters   | Any invalid combination of query parameters                  | HTTP Status 400 with problem description   |
 
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
+        
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
       tags:
         - patients
