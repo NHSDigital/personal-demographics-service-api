@@ -1,5 +1,9 @@
 # Changelog
 
+## 2020-03-09
+* Created `identity-v1` OAuth API Proxy
+* Secured PDS API Proxy Endpoints by requiring OAuth and JWT Tokens
+
 ## 2020-03-02
 * Add `NHSD-Session-URID` header to specification.
 * Rename `from_asid` header to `NHSD-ASID`

@@ -1,0 +1,15 @@
+<RaiseFault async="false" continueOnError="false" enabled="false" name="RaiseFault.CheckRedirectUri">
+  <FaultResponse>
+    <Set>
+      <Payload contentType="application/json">
+        {
+          "ErrorCode" : "invalid_request",
+          "Error" :"Invalid redirection uri {request.queryparam.redirect_uri}"
+        }
+      </Payload>
+      <StatusCode>400</StatusCode>
+      <ReasonPhrase>Bad Request</ReasonPhrase>
+    </Set>
+  </FaultResponse>
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</RaiseFault>

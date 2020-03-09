@@ -136,6 +136,8 @@ paths:
   /Patient:
     parameters:
       - $ref: '#/components/parameters/RoleId'
+      - $ref: '#/components/parameters/BearerAuthorization'
+      - $ref: '#/components/parameters/NHSDIdentityJwt'
     get:
       summary: Search for patient
       operationId: search-patient
@@ -225,7 +227,7 @@ paths:
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
-        
+
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
       tags:
         - patients
@@ -441,6 +443,8 @@ paths:
     parameters:
       - $ref: '#/components/parameters/Id'
       - $ref: '#/components/parameters/RoleId'
+      - $ref: '#/components/parameters/BearerAuthorization'
+      - $ref: '#/components/parameters/NHSDIdentityJwt'
     get:
       description: |
         ## Overview
@@ -727,6 +731,30 @@ components:
         type: string
         format: '^[0-9]+$'
         example: '555021935107'
+    BearerAuthorization:
+      in: header
+      name: Authorization
+      description: |
+        An OAuthV2 access token presented in Bearer format.
+
+        Note: This parameter is required unless interacting with the Sandbox.
+      required: false
+      schema:
+        type: string
+        format: '^Bearer\ [[:ascii:]]+$'
+        example: 'Bearer g1112R_ccQ1Ebbb4gtHBP1aaaNM'
+    NHSDIdentityJwt:
+      in: header
+      name: NHSD-Identity-JWT
+      description: |
+        A Base64-encoded JWT Token containing a subject and issuer.
+
+        Note: This parameter is required unless interacting with the Sandbox.
+      required: false
+      schema:
+        type: string
+        format: byte
+        example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJpc3MiOiJleGFtcGxlLm9yZyJ9.35HCa_9q5c_BtL1P_nfrgB4bANE7HAOMWjf3hO9o4ns'
   schemas:
     Patient:
       $ref: components/schemas/Patient.yaml

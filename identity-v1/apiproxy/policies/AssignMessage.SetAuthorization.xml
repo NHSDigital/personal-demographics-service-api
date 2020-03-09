@@ -1,0 +1,11 @@
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.SetAuthorization">
+    <AssignVariable>
+        <Name>request.formparam.client_id</Name>
+        <Ref>original.client_id</Ref>
+    </AssignVariable>
+    <AssignVariable>
+        <Name>request.formparam.secret</Name>
+        <Ref>original.secret</Ref>
+    </AssignVariable>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</AssignMessage>
