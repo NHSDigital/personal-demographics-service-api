@@ -1,0 +1,20 @@
+<ExtractVariables async="false" continueOnError="false" enabled="true" name="ExtractVariables.ReadCacheJson">
+  <JSONPayload>
+    <Variable name="original_client_id">
+      <JSONPath>$.client_id</JSONPath>
+    </Variable>
+    <Variable name="original_redirect_uri">
+      <JSONPath>$.redirect_uri</JSONPath>
+    </Variable>
+    <Variable name="original_state">
+      <JSONPath>$.state</JSONPath>
+    </Variable>
+    <Variable name="original_response_type">
+      <JSONPath>$.response_type</JSONPath>
+    </Variable>
+    <Variable name="original_scope">
+      <JSONPath>$.scope</JSONPath>
+    </Variable>
+  </JSONPayload>
+  <Source clearPayload="false">client-state</Source>
+</ExtractVariables>

@@ -2,6 +2,8 @@
 
 ## 2020-03-09
 * Add business effective period for all pharmacy extensions
+* Created `identity-v1` OAuth API Proxy
+* Secured PDS API Proxy Endpoints by requiring OAuth and JWT Tokens
 
 ## 2020-03-02
 * Add `NHSD-Session-URID` header to specification.
