@@ -1,15 +1,15 @@
-var1 = context.getVariable('request.queryparam.client_id');
-var2 = context.getVariable('request.queryparam.state');
-var3 = context.getVariable('request.queryparam.redirect_uri');
-var4 = context.getVariable('request.queryparam.response_type');
-var5 = context.getVariable('request.queryparam.scope');
+client_id = context.getVariable('request.queryparam.client_id');
+state = context.getVariable('request.queryparam.state');
+redirect_uri = context.getVariable('request.queryparam.redirect_uri');
+response_type = context.getVariable('request.queryparam.response_type');
+scope = context.getVariable('request.queryparam.scope');
 
 var cacheEntry = {
-  client_id: var1,
-  redirect_uri: var3,
-  state: var2,
-  response_type: var4,
-  scope: var5
+  client_id: client_id,
+  redirect_uri: redirect_uri,
+  state: state,
+  response_type: response_type,
+  scope: scope
 };
 
 context.setVariable('cacheEntry', JSON.stringify(cacheEntry));
