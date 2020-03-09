@@ -1,0 +1,9 @@
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.AddUserIdHeader">
+  <Add>
+      <Headers>
+          <Header name="NHSD-Identity-UUID">{jwt.DecodeJWT.FromJWTHeader.claim.subject}</Header>
+      </Headers>
+  </Add>
+  <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+  <AssignTo createNew="false" transport="http" type="request"/>
+</AssignMessage>

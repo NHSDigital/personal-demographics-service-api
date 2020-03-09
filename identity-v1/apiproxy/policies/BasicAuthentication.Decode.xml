@@ -1,0 +1,7 @@
+<BasicAuthentication async="false" continueOnError="false" enabled="true" name="BasicAuthentication.Decode">
+  <Operation>Decode</Operation>
+  <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+  <User ref="original.client_id"/>
+  <Password ref="original.secret"/>
+  <Source>request.header.Authorization</Source>
+</BasicAuthentication>

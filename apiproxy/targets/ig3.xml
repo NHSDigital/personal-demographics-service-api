@@ -6,6 +6,18 @@
               <Condition>request.header.NHSD-Session-URID is null</Condition>
             </Step>
             <Step>
+              <Name>OauthV2.VerifyAccessToken</Name>
+            </Step>
+            <Step>
+              <Name>DecodeJWT.FromJWTHeader</Name>
+            </Step>
+            <Step>
+              <Name>AssignMessage.AddUserIdHeader</Name>
+            </Step>
+            <Step>
+              <Name>AssignMessage.AddIssuerHeader</Name>
+            </Step>
+            <Step>
                 <Name>KeyValueMapOperations.GetAsid</Name>
             </Step>
             <Step>
