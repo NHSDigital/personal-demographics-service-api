@@ -179,7 +179,7 @@ paths:
         * family name, date of birth, gender and postcode
         * given name date of birth, gender and postcode
 
-        If you include the date of death or registered GP Practice query parameters for a fuzzy search, they will not be used as part of the search. However they will affect the patient's matching [score](#Scoring), meaning a mismatch will reduce the returned score.
+        If you include the date of death or registered GP Practice query parameters for a fuzzy search, they will not be used as part of the search. However they will affect the patient's matching score, meaning a mismatch will reduce the returned score.
 
         If you use an invalid combination of query parameters, you will get an `INVALID_COMBINATION` error.
 
