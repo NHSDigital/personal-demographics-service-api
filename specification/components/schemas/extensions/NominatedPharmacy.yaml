@@ -27,3 +27,17 @@ properties:
             type: string
             description: Organisation code for the nominated pharmacy, as held in the [Organisation Data Service](https://developer.nhs.uk/apis/ods/).
             example: Y12345
+          period:
+            type: object
+            description: Period in which this pharmacy is or was the nominated pharmacy for this patient.
+            properties:
+              start:
+                type: string
+                format: date
+                description: Date on which this pharmacy became or will become the nominated pharmacy for this patient, formatted as `yyyy-mm-dd`.
+                example: '2020-01-01'
+              end:
+                type: string
+                format: date
+                description: Date on which this pharmacy ceased or will cease to be the nominated pharmacy for this patient, formatted as `yyyy-mm-dd`.
+                example: '2021-01-01'
