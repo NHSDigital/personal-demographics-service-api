@@ -741,8 +741,8 @@ components:
       required: false
       schema:
         type: string
-        format: '^Bearer\:\ [[:ascii:]]+$'
-        example: 'Bearer: g1112R_ccQ1Ebbb4gtHBP1aaaNM'
+        format: '^Bearer\ [[:ascii:]]+$'
+        example: 'Bearer g1112R_ccQ1Ebbb4gtHBP1aaaNM'
     NHSDIdentityJwt:
       in: header
       name: NHSD-Identity-JWT
