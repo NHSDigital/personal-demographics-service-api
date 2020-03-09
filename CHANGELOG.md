@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2020-03-09
+* Add business effective period for all pharmacy extensions
 * Created `identity-v1` OAuth API Proxy
 * Secured PDS API Proxy Endpoints by requiring OAuth and JWT Tokens
 
@@ -10,7 +11,6 @@
 * New PDS sandbox search scenarios
 * Updating `Name` prefixes and suffixes to be an array of string, not string
 * Add dispensing doctor and medical appliance supplier extensions
-
 
 ## 2020-02-26
 * Add a config for dependabot so that security updates are automatically merged
