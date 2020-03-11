@@ -153,7 +153,11 @@
       "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y12345",
       "identifier": {
         "system": "https://digital.nhs.uk/services/organisation-data-service",
-        "value": "Y12345"
+        "value": "Y12345",
+        "period": {
+          "start": "2020-01-01",
+          "end": "2021-01-01"
+        }
       }
     }
   ],
