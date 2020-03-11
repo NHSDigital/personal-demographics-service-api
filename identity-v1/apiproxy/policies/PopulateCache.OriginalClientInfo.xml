@@ -1,0 +1,9 @@
+<PopulateCache async="false" continueOnError="false" enabled="true" name="PopulateCache.OriginalClientInfo">
+  <CacheKey>
+    <KeyFragment>{state}</KeyFragment>
+    <KeyFragment>original_client</KeyFragment>
+  </CacheKey>
+  <CacheResource>client-state</CacheResource>
+  <Scope>Exclusive</Scope>
+  <Source>cacheEntry</Source>
+</PopulateCache>

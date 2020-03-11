@@ -1,0 +1,14 @@
+<TargetEndpoint name="identity-server">
+  <PreFlow>
+    <Request>
+    </Request>
+  </PreFlow>
+  <HTTPTargetConnection>
+    <SSLInfo>
+      <Enabled>true</Enabled>
+    </SSLInfo>
+    <LoadBalancer>
+      <Server name="identity-server" />
+    </LoadBalancer>
+  </HTTPTargetConnection>
+</TargetEndpoint>

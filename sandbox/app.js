@@ -44,7 +44,7 @@ const preResponse = function (request, h) {
             details: {
                 coding: [{
                     system: "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
-                    version: 1,
+                    version: "1",
                     code: error.data.apiErrorCode,
                     display: error.message
                 }]

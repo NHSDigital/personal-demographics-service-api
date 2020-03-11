@@ -1,0 +1,21 @@
+<ExtractVariables async="false" continueOnError="false" enabled="true" name="ExtractVariables.AccessToken">
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+  <JSONPayload>
+    <Variable name="externalAccessToken">
+      <JSONPath>$.access_token</JSONPath>
+    </Variable>
+    <Variable name="externalRefreshToken">
+      <JSONPath>$.refresh_token</JSONPath>
+    </Variable>
+    <Variable name="externalIdToken">
+      <JSONPath>$.id_token</JSONPath>
+    </Variable>
+    <Variable name="externalTokenExpiresIn">
+      <JSONPath>$.expires_in</JSONPath>
+    </Variable>
+    <Variable name="token_type">
+      <JSONPath>$.token_type</JSONPath>
+    </Variable>
+  </JSONPayload>
+  <Source clearPayload="false">TokenResponse</Source>
+</ExtractVariables>

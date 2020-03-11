@@ -14,11 +14,16 @@ module.exports = {
      * @param {*} request - hapi's request object
      */
     checkNhsNumber: function (request) {
-        // Validate NHS number is valid format
         // Ideally should be done using options.validate object (https://hapi.dev/tutorials/validation/)
         // But don't know how to customise the returned JSON when done this way
-        const validationResult = nhsNumberValidator.nhsNumberSchema.validate(request.params.nhsNumber)
-        if (validationResult.error) {
+        if (!request.params.nhsNumber) {
+            throw Boom.badRequest(
+                `Unsupported Service`,
+                {operationOutcomeCode: "processing", apiErrorCode: "UNSUPPORTED_SERVICE"})
+        }
+
+        // Validate NHS number is valid format
+        if (nhsNumberValidator.nhsNumberSchema.validate(request.params.nhsNumber).error) {
             throw Boom.badRequest(
                 `NHS Number ${request.params.nhsNumber} is not a valid NHS number`,
                 {operationOutcomeCode: "value", apiErrorCode: "invalidNHSNumber"})

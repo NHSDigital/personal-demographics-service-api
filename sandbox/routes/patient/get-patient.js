@@ -12,7 +12,7 @@ module.exports = [
     */
     {
         method: 'GET',
-        path: '/Patient/{nhsNumber}',
+        path: '/Patient/{nhsNumber*}',
         handler: (request, h) => {
             nhsNumberHelper.checkNhsNumber(request)
             return fhirHelper.createFhirResponse(h, patients.examplePatientSmith)
