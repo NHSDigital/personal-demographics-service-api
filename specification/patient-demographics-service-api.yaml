@@ -164,7 +164,8 @@ paths:
 
         For date of birth and date of death, you can search for an exact date or for a range of dates.
 
-        You can use wildcards in given name and family name. Wildcards must start with at least two characters; for example `Br\*` is valid, but `\*cDougal` is not. Multiple wildcards are allowed; for example `Br\*w\*` will match `Brown` and `Brower`.
+        You can use wildcards in given name and family name. Wildcards must start with at least two characters; for example, `Br*` is valid, but `*cDougal` is not. Multiple wildcards are allowed; for example, `Br*w*` will match `Brown` and `Brower`.
+        Be sure that any wildcards are encoded before sending the request. An encoded wildcard is `%2A`; for example, `Br%2A` is valid.
 
         You can request a fuzzy search using the `_fuzzy-match` queryparameter. This will additionally:
           * match common homophones, such as `Smith` and `Smythe`, using the [Soundex](https://en.wikipedia.org/wiki/Soundex) algorithm
