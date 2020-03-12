@@ -10,6 +10,7 @@ jobs:
       vmImage: 'ubuntu-latest'
     variables:
       API_TEST_ENV_FILE_PATH: "tests/e2e/environments/local.postman_environment.json"
+      PIP_CACHE_DIR: ".poetry"
     steps:
       # Check out repo with full depth
       - checkout: self
@@ -33,7 +34,7 @@ jobs:
         displayName: "Cache Python Dependencies"
         inputs:
           key: '"$(Agent.OS)" | poetry.lock'
-          path: "~/.cache/pypoetry"
+          path: ".poetry"
 
       # cache npm dependencies
       - task: Cache@2
