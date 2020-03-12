@@ -7,5 +7,55 @@ jobs:
     timeoutInMinutes: 10
     pool:
       vmImage: 'ubuntu-latest'
+    variables:
+      API_TEST_ENV_FILE_PATH: "tests/e2e/environments/local.postman_environment.json"
     steps:
+      # Check out repo with full depth
       - checkout: self
+
+      # Use Python 3.8
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '3.8'
+
+      # Install apt dependencies
+      - bash: |
+          sudo apt update
+          sudo apt-get install --yes default-jre default-jdk npm
+
+      # Install python dependencies
+      - bash: |
+          python -m pip install --upgrade pip setuptools wheel
+          pip install poetry
+
+      # make install
+      - bash: |
+          make install
+
+      # start sandbox for testing later
+      - bash: |
+          make sandbox
+
+      # check licenses
+      - bash: |
+          make check-licenses
+
+      # lint
+      - bash: |
+          make lint
+
+      # validate
+      - bash: |
+          make validate
+
+      # compile spec
+      - bash: |
+          make publish
+
+      # set SPEC_VERSION
+      - bash: |
+          echo "##vso[task.setvariable variable=SPEC_VERSION]$(poetry run python scripts/calculate_version.py)"
+
+      # run local tests
+      - bash: |
+          make test
