@@ -35,6 +35,9 @@ jobs:
         inputs:
           key: '"$(Agent.OS)" | "python" | poetry.lock'
           path: ".poetry"
+          restoreKeys: |
+            "$(Agent.OS)" | "python" | poetry.lock
+            "$(Agent.OS)" | "pythons"
 
       # cache npm dependencies
       - task: Cache@2
@@ -42,6 +45,9 @@ jobs:
         inputs:
           key: '"$(Agent.OS)" | "node" | package-lock.json'
           path: "node_modules"
+          restoreKeys: |
+            "$(Agent.OS)" | "node" | package-lock.json
+            "$(Agent.OS)" | "node"
           
       # cache sandbox npm dependencies
       - task: Cache@2
@@ -49,6 +55,9 @@ jobs:
         inputs:
           key: '"$(Agent.OS)" | "node-sandbox" | sandbox/package-lock.json'
           path: "sandbox/node_modules"
+          restoreKeys: |
+            "$(Agent.OS)" | "node-sandbox" | sandbox/package-lock.json
+            "$(Agent.OS)" | "node-sandbox"
 
       # make install
       - bash: "make install"
