@@ -33,21 +33,21 @@ jobs:
       - task: Cache@2
         displayName: "Cache Python Dependencies"
         inputs:
-          key: '"$(Agent.OS)" | poetry.lock'
+          key: '"$(Agent.OS)" | "python" | poetry.lock'
           path: ".poetry"
 
       # cache npm dependencies
       - task: Cache@2
         displayName: "Cache Package NPM Dependencies"
         inputs:
-          key: '"$(Agent.OS)" | "package" | package-lock.json'
+          key: '"$(Agent.OS)" | "node" | package-lock.json'
           path: "node_modules"
           
       # cache sandbox npm dependencies
       - task: Cache@2
         displayName: "Cache Sandbox NPM Dependencies"
         inputs:
-          key: '"$(Agent.OS)" | "sandbox" | sandbox/package-lock.json'
+          key: '"$(Agent.OS)" | "node-sandbox" | sandbox/package-lock.json'
           path: "sandbox/node_modules"
 
       # make install
