@@ -55,11 +55,10 @@
         "end": "2020-12-31"
       },
       "use": "work",
-      "type": "both",
       "line": [
-        "NHS Digital",
-        "Whitehall II",
-        "Whitehall Quay",
+        "1 Trevelyan Square",
+        "Boar Lane",
+        "City Centre",
         "Leeds",
         "West Yorkshire"
       ],
