@@ -4,6 +4,7 @@ trigger:
 
 jobs:
   - job: build
+    displayName: Build & Test
     timeoutInMinutes: 10
     pool:
       vmImage: 'ubuntu-latest'
@@ -34,7 +35,7 @@ jobs:
 
       # start sandbox for testing later
       - bash: |
-          make sandbox
+          make sandbox &
 
       # check licenses
       - bash: |
