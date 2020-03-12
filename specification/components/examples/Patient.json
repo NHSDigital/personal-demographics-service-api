@@ -127,8 +127,7 @@
           },
           "system": "phone",
           "value": "01632960587",
-          "use": "work",
-          "rank": 1
+          "use": "work"
         }
       ]
     }
@@ -141,8 +140,7 @@
       },
       "system": "phone",
       "value": "01632960587",
-      "use": "work",
-      "rank": 1
+      "use": "work"
     }
   ],
   "generalPractitioner": [
