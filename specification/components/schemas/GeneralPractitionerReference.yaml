@@ -29,4 +29,17 @@ properties:
         type: string
         pattern: ^[0-9A-Z]+$
         example: Y12345
-        
+      period:
+        type: object
+        description: Period in which this general practice is or was the general practice for this patient.
+        properties:
+          start:
+            type: string
+            format: date
+            description: Date on which this general practice became the general practice for this patient, formatted as `yyyy-mm-dd`.
+            example: '2020-01-01'
+          end:
+            type: string
+            format: date
+            description: Date on which this general practice ceased or will cease to be the general practice for this patient, formatted as `yyyy-mm-dd`.
+            example: '2021-01-01'   
