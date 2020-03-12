@@ -28,10 +28,6 @@ jobs:
       - bash: "python -m pip install --upgrade pip setuptools wheel && pip install poetry"
         displayName: Install python dependencies
 
-      # make install
-      - bash: "make install"
-        displayName: Install repo
-
       # cache python dependencies
       - task: Cache@2
         displayName: "Cache Python Dependencies"
@@ -41,10 +37,21 @@ jobs:
 
       # cache npm dependencies
       - task: Cache@2
-        displayName: "Cache NPM Dependencies"
+        displayName: "Cache Package NPM Dependencies"
         inputs:
-          key: '"$(Agent.OS)" | package-lock.json | sandbox/package-lock.json'
-          path: "~/.npm"
+          key: '"$(Agent.OS)" | "package" | package-lock.json'
+          path: "node_modules"
+          
+      # cache sandbox npm dependencies
+      - task: Cache@2
+        displayName: "Cache Sandbox NPM Dependencies"
+        inputs:
+          key: '"$(Agent.OS)" | "sandbox" | sandbox/package-lock.json'
+          path: "sandbox/node_modules"
+
+      # make install
+      - bash: "make install"
+        displayName: Install repo
 
       # start sandbox for testing later
       - bash: "make sandbox &"
