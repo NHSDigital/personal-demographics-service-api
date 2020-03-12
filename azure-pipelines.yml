@@ -32,6 +32,20 @@ jobs:
       - bash: "make install"
         displayName: Install repo
 
+      # cache python dependencies
+      - task: Cache@2
+        displayName: "Cache Python Dependencies"
+        inputs:
+          key: '"$(Agent.OS)" | poetry.lock'
+          path: "~/.cache/pypoetry"
+
+      # cache npm dependencies
+      - task: Cache@2
+        displayName: "Cache NPM Dependencies"
+        inputs:
+          key: '"$(Agent.OS)" | package-lock.json | sandbox/package-lock.json'
+          path: "~/.npm"
+
       # start sandbox for testing later
       - bash: "make sandbox &"
         displayName: Start Sandbox Server
