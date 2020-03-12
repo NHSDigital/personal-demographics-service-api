@@ -30,8 +30,3 @@ properties:
     description: Location associated with communication system, or marker to indicated whether it is temporary or outdated.
     enum: [home, work, temp, old, mobile]
     example: work
-  rank:
-    description: Preferred order of use. 1 is highest.
-    type: integer
-    example: 1
-    minimum: 1
