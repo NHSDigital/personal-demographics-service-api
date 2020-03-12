@@ -16,47 +16,46 @@ jobs:
 
       # Use Python 3.8
       - task: UsePythonVersion@0
+        displayName: "Use Python 3.8"
         inputs:
-          versionSpec: '3.8'
+          versionSpec: "3.8"
 
       # Install apt dependencies
-      - bash: |
-          sudo apt update
-          sudo apt-get install --yes default-jre default-jdk npm
+      - bash: "sudo apt update && sudo apt-get install --yes default-jre default-jdk npm"
+        displayName: Install apt dependencies
 
       # Install python dependencies
-      - bash: |
-          python -m pip install --upgrade pip setuptools wheel
-          pip install poetry
+      - bash: "python -m pip install --upgrade pip setuptools wheel && pip install poetry"
+        displayName: Install python dependencies
 
       # make install
-      - bash: |
-          make install
+      - bash: "make install"
+        displayName: Install repo
 
       # start sandbox for testing later
-      - bash: |
-          make sandbox &
+      - bash: "make sandbox &"
+        displayName: Start Sandbox Server
 
       # check licenses
-      - bash: |
-          make check-licenses
+      - bash: "make check-licenses"
+        displayName: Check licenses
 
       # lint
-      - bash: |
-          make lint
+      - bash: "make lint"
+        displayName: Lint
 
       # validate
-      - bash: |
-          make validate
+      - bash: "make validate"
+        displayName: Validate FHIR
 
       # compile spec
-      - bash: |
-          make publish
+      - bash: "make publish"
+        displayName: Compile Spec
 
       # set SPEC_VERSION
-      - bash: |
-          echo "##vso[task.setvariable variable=SPEC_VERSION]$(poetry run python scripts/calculate_version.py)"
+      - bash: 'echo "##vso[task.setvariable variable=SPEC_VERSION]$(poetry run python scripts/calculate_version.py)"'
+        displayName: Set SPEC_VERSION
 
       # run local tests
-      - bash: |
-          make test
+      - bash: "make test"
+        displayName: Run Tests
