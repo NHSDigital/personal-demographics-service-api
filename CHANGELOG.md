@@ -1,5 +1,8 @@
 # Changelog
 
+## 2020-03-11
+* Add business effective period for general practice
+
 ## 2020-03-09
 * Add business effective period for all pharmacy extensions
 * Created `identity-v1` OAuth API Proxy
