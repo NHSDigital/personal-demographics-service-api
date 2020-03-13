@@ -26,30 +26,32 @@ lint:
 	find -name '*.sh' | grep -v node_modules | xargs shellcheck
 
 validate: generate-examples
-	java -jar bin/org.hl7.fhir.validator.jar dist/examples/**/*application_fhir+json*.json -version 4.0.1 -tx n/a | tee /tmp/validation.txt
+	java -jar bin/org.hl7.fhir.validator.jar build/examples/**/*application_fhir+json*.json -version 4.0.1 -tx n/a | tee /tmp/validation.txt
 
-publish:
+publish: clean
+	mkdir -p build
 	npm run publish 2> /dev/null
 
 serve: update-examples
 	npm run serve
 
 clean:
-	rm -rf dist/examples
+	rm -rf build
+	rm -rf dist
 
 generate-examples: publish clean
-	mkdir -p dist/examples
-	poetry run python scripts/generate_examples.py dist/patient-demographics-service-api.json dist/examples
-	cp dist/examples/resources/Patient.json dist/examples/resources/Patient-Jayne-Smyth.json
-	cp dist/examples/resources/Search_Patient.json dist/examples/resources/Search_Patient-Jayne-Smyth.json
-	sed -i -e 's/9000000009/9000000010/g; s/Jane/Jayne/g; s/Smith/Smyth/g;' dist/examples/resources/Patient-Jayne-Smyth.json
-	sed -i -e 's/9000000009/9000000010/g; s/Jane/Jayne/g; s/Smith/Smyth/g;' dist/examples/resources/Search_Patient-Jayne-Smyth.json
+	mkdir -p build/examples
+	poetry run python scripts/generate_examples.py build/patient-demographics-service-api.json build/examples
+	cp build/examples/resources/Patient.json build/examples/resources/Patient-Jayne-Smyth.json
+	cp build/examples/resources/Search_Patient.json build/examples/resources/Search_Patient-Jayne-Smyth.json
+	sed -i -e 's/9000000009/9000000010/g; s/Jane/Jayne/g; s/Smith/Smyth/g;' build/examples/resources/Patient-Jayne-Smyth.json
+	sed -i -e 's/9000000009/9000000010/g; s/Jane/Jayne/g; s/Smith/Smyth/g;' build/examples/resources/Search_Patient-Jayne-Smyth.json
 
 update-examples: generate-examples
-	jq -rM . <dist/examples/resources/Patient.json >specification/components/examples/Patient.json
-	jq -rM . <dist/examples/resources/Patient-Jayne-Smyth.json >specification/components/examples/Patient-Jayne-Smyth.json
-	jq -rM . <dist/examples/resources/Search_Patient.json >specification/components/examples/Search_Patient.json
-	jq -rM . <dist/examples/resources/Search_Patient-Jayne-Smyth.json >specification/components/examples/Search_Patient-Jayne-Smyth.json
+	jq -rM . <build/examples/resources/Patient.json >specification/components/examples/Patient.json
+	jq -rM . <build/examples/resources/Patient-Jayne-Smyth.json >specification/components/examples/Patient-Jayne-Smyth.json
+	jq -rM . <build/examples/resources/Search_Patient.json >specification/components/examples/Search_Patient.json
+	jq -rM . <build/examples/resources/Search_Patient-Jayne-Smyth.json >specification/components/examples/Search_Patient-Jayne-Smyth.json
 	make publish
 
 check-licenses:
@@ -67,3 +69,11 @@ format:
 
 sandbox: update-examples
 	cd sandbox && npm run start
+
+build-proxy:
+	scripts/build_proxy.sh
+
+release: clean publish build-proxy
+	mkdir -p dist
+	tar -zcvf dist/package.tar.gz build
+

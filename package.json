@@ -5,8 +5,8 @@
   "scripts": {
     "lint": "node_modules/.bin/speccy lint specification/patient-demographics-service-api.yaml --skip default-and-example-are-redundant",
     "test": "node_modules/.bin/newman run tests/e2e/personal-demographics-service-sandbox.json -e $API_TEST_ENV_FILE_PATH --reporters html,cli,htmlextra --reporter-htmlextra-logs --reporter-htmlextra-darkTheme",
-    "publish": "mkdir -p dist && node_modules/.bin/speccy resolve specification/patient-demographics-service-api.yaml -i | poetry run python scripts/yaml2json.py | poetry run python scripts/set_version.py > dist/patient-demographics-service-api.json",
-    "serve": "node_modules/.bin/speccy serve dist/patient-demographics-service-api.json",
+    "publish": "mkdir -p build && node_modules/.bin/speccy resolve specification/patient-demographics-service-api.yaml -i | poetry run python scripts/yaml2json.py | poetry run python scripts/set_version.py > build/patient-demographics-service-api.json",
+    "serve": "node_modules/.bin/speccy serve build/patient-demographics-service-api.json",
     "check-licenses": "node_modules/.bin/license-checker --failOn GPL --failOn LGPL"
   },
   "author": "NHS Digital",
