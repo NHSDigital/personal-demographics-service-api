@@ -1,7 +1,7 @@
 <AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.AddIssuerHeader">
   <Add>
       <Headers>
-          <Header name="NHSD-Identity-IdP">{jwt.DecodeJWT.FromJWTHeader.claim.issuer}</Header>
+          <Header name="NHSD-Identity-IdP">{jwt.VerifyJWT.FromJWTHeader.claim.issuer}</Header>
       </Headers>
   </Add>
   <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
