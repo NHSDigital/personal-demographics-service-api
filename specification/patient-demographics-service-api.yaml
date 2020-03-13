@@ -449,7 +449,7 @@ paths:
     get:
       description: |
         ## Overview
-        Returns personal details for the patient with the given NHS Number.
+        Use this endpoint to get details for a patient from PDS for a given NHS Number.
 
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
@@ -518,7 +518,7 @@ paths:
     patch:
       description: |
         ## Overview
-        Updates specific patient information.
+        Use this endpoint to update patient details in PDS.
 
         This is a 'patch' operation, meaning you can update specific parts of the patient record (such as a name or an address), as opposed to having to update the entire record.
 
