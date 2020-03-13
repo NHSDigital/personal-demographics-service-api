@@ -273,7 +273,7 @@ paths:
               value: Smith
               summary: Will also match Smythe if `_fuzzy-match` is specified.
             wildcarded:
-              value: "Sm\\*t\\*"
+              value: "Sm*t*"
               summary: 'Wildcards must contain at least two characters, this will match Smith, Smythe'
           in: query
           required: false
@@ -335,8 +335,8 @@ paths:
               value: LS1 6AE
               summary: 'Spaces important, will not match LS16AE'
             wildcarded:
-              value: "LS1\\*"
-              summary: "Will match LS16AE and 'LS1 6AE', 'LS1 6AB'"
+              value: "LS1*"
+              summary: "Will match 'LS16AE', 'LS1 6AE' and 'LS1 6AB'"
           in: query
           required: false
           schema:
