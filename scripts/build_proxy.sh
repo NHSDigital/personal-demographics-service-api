@@ -8,7 +8,6 @@ set -o nounset errexit pipefail
 mkdir -p build
 rm -rf build/apiproxy
 cp -Rv apiproxy build/
-sed "s/PROXY_BASE_PATH/$APIGEE_BASE_PATH/g" build/apiproxy/proxies/default.xml > build/apiproxy/proxies/default_temp.xml
 cp -f build/apiproxy/proxies/default_temp.xml build/apiproxy/proxies/default.xml
 rm -rf build/apiproxy/proxies/default_temp.xml
 mkdir -p build/apiproxy/resources/hosted
