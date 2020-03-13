@@ -29,15 +29,15 @@ properties:
             example: Y34567
           period:
             type: object
-            description: Period in which this pharmacy is or was the medical appliance supplier for this patient.
+            description: Time period when medical appliance supplier was, is, or will be valid.
             properties:
               start:
                 type: string
                 format: date
-                description: Date on which this pharmacy became or will become the medical appliance supplier for this patient, formatted as `yyyy-mm-dd`.
+                description: Start date of time period, if known, in format `yyyy-mm-dd`. Can be a future date.
                 example: '2020-01-01'
               end:
                 type: string
                 format: date
-                description: Date on which this pharmacy ceased or will cease to be the medical appliance supplier for this patient, formatted as `yyyy-mm-dd`.
+                description: End date of time period, if known and if not ongoing, in format `yyyy-mm-dd`. Can be a future date.
                 example: '2021-01-01'

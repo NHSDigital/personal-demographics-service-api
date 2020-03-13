@@ -7,19 +7,19 @@ properties:
     example: usual
   period:
     type: object
-    description: The dates between which this name was associated with this person.
+    description: Time period when name was, is, or will be in use.
     required:
       - start
     properties:
       start:
         type: string
         format: date
-        description: Date which this person was first known by this name, in format `yyyy-mm-dd`.
+        description: Start date of time period, if known, in format `yyyy-mm-dd`. Can be a future date.
         example: 2020-01-01
       end:
         type: string
         format: date
-        description: Date at which person was no longer known by this name, in format `yyyy-mm-dd`.
+        description: End date of time period, if known and if not ongoing, in format `yyyy-mm-dd`. Can be a future date.
         example: 2020-12-31
   given:
     type: array
