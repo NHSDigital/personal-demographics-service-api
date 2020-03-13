@@ -3,18 +3,18 @@ type: object
 properties:
   period:
     type: object
-    description: Time period when contact point was, or is, valid.
+    description: Time period when contact point was, is, or will be valid.
     properties:
       start:
         type: string
         format: date
-        description: Start date of time period, if known, in format `yyyy-mm-dd`.
+        description: Start date of time period, if known, in format `yyyy-mm-dd`. Can be a future date.
         example: 2020-01-01
         # required: true
       end:
         type: string
         format: date
-        description: End date of time period, if known and if not ongoing, in format `yyyy-mm-dd`.
+        description: End date of time period, if known and if not ongoing, in format `yyyy-mm-dd`. Can be a future date.
         example: 2020-12-31
   system:
     description: Means of communication, such as by phone, text, email, etc.
