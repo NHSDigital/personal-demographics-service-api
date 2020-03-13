@@ -160,7 +160,7 @@ paths:
         ## Matching rules
         Search parameters are not case sensitive.
 
-        Spaces in postcodes must match exactly, for example `AA11 1AA` will not match `AA111AA`.
+        Spaces in postcodes do not need to match exactly, for example `LS116AD` will match `LS11 6AD`, however including spaces will also work.
 
         For date of birth and date of death, you can search for an exact date or for a range of dates.
 
@@ -329,11 +329,11 @@ paths:
             type: string
             format: date
         - name: address-postcode
-          description: The postcode of any of the patient’s known addresses. White spaces in postcodes are significant; that is, LS16AE will not match LS1 6AE.
+          description: The postcode of any of the patient’s known addresses. White spaces in postcodes are not significant; that is, LS16AE and LS1 6AE will both match LS1 6AE.
           examples:
             simple:
               value: LS1 6AE
-              summary: 'Spaces important, will not match LS16AE'
+              summary: 'Spaces not important, would match LS16AE'
             wildcarded:
               value: "LS1*"
               summary: "Will match 'LS16AE', 'LS1 6AE' and 'LS1 6AB'"
