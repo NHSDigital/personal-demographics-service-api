@@ -29,7 +29,7 @@ properties:
             example: Y34567
           period:
             type: object
-            description: Time period when the medical appliance supplier was, or is, valid.
+            description: Time period when medical appliance supplier was, or is, valid.
             properties:
               start:
                 type: string
