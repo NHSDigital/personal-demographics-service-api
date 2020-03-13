@@ -90,3 +90,11 @@ jobs:
       # run local tests
       - bash: "make test"
         displayName: Run Tests
+
+      # build release package
+      - bash: "make release"
+        displayName: Build Release Package
+
+      # publish release package artifact
+      - publish: dist/package.tar.gz
+        artifact: personal-demographics-service-$(SPEC_VERSION)+$(Build.BuildNumber)
