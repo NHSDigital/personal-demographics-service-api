@@ -9,7 +9,14 @@
               <Name>OauthV2.VerifyAccessToken</Name>
             </Step>
             <Step>
-              <Name>DecodeJWT.FromJWTHeader</Name>
+              <Name>KeyValueMapOperations.GetVariables</Name>
+            </Step>
+            <!-- TODO: https://community.apigee.com/questions/34110/how-can-i-store-the-results-of-the-servicecallout.html -->
+            <Step>
+              <Name>ServiceCallout.GetJWKS</Name>
+            </Step>
+            <Step>
+              <Name>VerifyJWT.FromJWTHeader</Name>
             </Step>
             <Step>
               <Name>AssignMessage.AddUserIdHeader</Name>
@@ -18,7 +25,7 @@
               <Name>AssignMessage.AddIssuerHeader</Name>
             </Step>
             <Step>
-                <Name>KeyValueMapOperations.GetAsid</Name>
+                <Name>KeyValueMapOperations.GetSecureVariables</Name>
             </Step>
             <Step>
                 <Name>AssignMessage.AddAsidHeader</Name>
