@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<KeyValueMapOperations async="false" continueOnError="false" enabled="true" name="KeyValueMapOperations.GetVariables" mapIdentifier="pds-variables">
+    <Get assignTo="private.apigee.jwks_path" index="1">
+        <Key>
+            <Parameter>jwks_path</Parameter>
+        </Key>
+    </Get>
+</KeyValueMapOperations>

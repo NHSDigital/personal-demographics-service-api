@@ -1,0 +1,7 @@
+<LookupCache name='LookupCache.JWKS'>
+  <AssignTo>jwks</AssignTo>
+  <Scope>Application</Scope>
+  <CacheKey>
+    <KeyFragment>jwks</KeyFragment>
+  </CacheKey>
+</LookupCache>
