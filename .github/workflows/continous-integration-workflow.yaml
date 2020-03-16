@@ -71,7 +71,7 @@ jobs:
 
       - name: Copy local test report
         if: always()
-        run: cat newman/*.html > build/local-tests.html && rm newman/*.xml
+        run: cat newman/*.xml > build/local-tests.html && rm newman/*.xml
 
       - name: Store local test result artifact
         if: always()
