@@ -1,0 +1,7 @@
+<AssignMessage name='AssignMessage.JWKS'>
+  <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+  <AssignVariable>
+    <Name>jwks</Name>
+    <Ref>jwks_callout_response.content</Ref>
+  </AssignVariable>
+</AssignMessage>
