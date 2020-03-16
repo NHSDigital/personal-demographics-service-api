@@ -6,6 +6,6 @@
     affected clients before doing so. Therefore I think it’s safe for you to always expect RS256. -->
   <Algorithm>RS256</Algorithm>
   <PublicKey>
-    <JWKS ref="jwks_callout_response.content"/>
+    <JWKS ref="jwks"/>
   </PublicKey>
 </VerifyJWT>
