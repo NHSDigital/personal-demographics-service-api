@@ -94,6 +94,13 @@ jobs:
       - bash: "make test"
         displayName: Run Tests
 
+      # upload test results
+      - task: PublishTestResult@2
+        inputs:
+          testResultsFormat: 'JUnit'
+          testResultsFiles: 'newman/*.xml'
+          failTaskOnFailedTests: true
+
       # build release package
       - bash: "make release"
         displayName: Build Release Package

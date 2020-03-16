@@ -6,4 +6,4 @@ set -o nounset errexit pipefail
 # files into build/apiproxy/ and deploy to Apigee
 
 ./build_proxy.sh
-node_modules/.bin/apigeetool deployproxy --environments "$APIGEE_ENVIRONMENTS" --api "$APIGEE_APIPROXY" --directory build/ --verbose
+node_modules/.bin/apigeetool deployproxy --environments "$APIGEE_ENVIRONMENTS" --api "$APIGEE_APIPROXY" --directory "build/proxies/$PROXY_TYPE/apiproxy" --verbose
