@@ -144,8 +144,12 @@ Redeploy the API Proxy and hosted Sandbox service.
 
 Successful deployment of the API Proxy requires:
 
- 1. A *Target Server* named `ig3`
- 2. A *Key-Value Map* named `pds-variables`, containing:
+ 1. *Target Servers*:
+    1. `ig3`: Gateway to PDS API
+    2. `identity-server` - Identity Provider's OAuth server
+ 2. An **encrypted** (for production) *Key-Value Map* named `pds-variables-encrypted`, containing:
     1. Key: `NHSD-ASID`, Value: Accredited System ID (ASID) identifying the API Gateway
+ 3. A *Key-Value Map* named `pds-variables`, containing:
+    1. Key: `jwks_path`, Value: Path on `identity-server` Target Server to JSON Web Key Set (JWKS)
 
 :bulb: For Sandbox-running environments (`test`) these need to be present for successful deployment but can be set to empty/dummy values.
