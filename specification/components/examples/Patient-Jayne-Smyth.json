@@ -163,14 +163,13 @@
       "language": {
         "coding": [
           {
-            "system": "https://nhsconnect.github.io/FHIR-R4-Core-IG-Prototype/CodeSystem-UKCore-HumanLanguage.html",
+            "system": "https://simplifier.net/ukcore/CodeSystem-UKCore-HumanLanguage",
             "version": "1.0.0",
             "code": "en",
             "display": "English"
           }
         ]
-      },
-      "preferred": true
+      }
     }
   ],
   "extension": [

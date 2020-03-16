@@ -73,6 +73,7 @@ properties:
   communication:
     type: array
     description: List of languages that may be used to communicate with this patient.
+    maxItems: 1
     items:
       $ref: "Communication.yaml"
   extension:
