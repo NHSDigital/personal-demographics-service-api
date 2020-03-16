@@ -95,7 +95,7 @@ jobs:
         displayName: Run Tests
 
       # upload test results
-      - task: PublishTestResult@2
+      - task: PublishTestResults@2
         inputs:
           testResultsFormat: 'JUnit'
           testResultsFiles: 'newman/*.xml'
