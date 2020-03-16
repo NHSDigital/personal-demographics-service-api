@@ -7,7 +7,7 @@ set -o nounset errexit pipefail
 
 mkdir -p build
 rm -rf build/apiproxy
-cp -Rv apiproxy build/
+cp -Rv proxies/sandbox/apiproxy build/
 cp -f build/apiproxy/proxies/default_temp.xml build/apiproxy/proxies/default.xml
 rm -rf build/apiproxy/proxies/default_temp.xml
 mkdir -p build/apiproxy/resources/hosted

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.AddAsidHeader">
+    <Add>
+        <Headers>
+            <Header name="NHSD-ASID">{private.apigee.NHSD-ASID}</Header>
+        </Headers>
+    </Add>
+    <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    <AssignTo createNew="false" transport="http" type="request"/>
+</AssignMessage>
