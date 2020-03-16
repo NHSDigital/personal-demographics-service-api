@@ -71,14 +71,14 @@ jobs:
 
       - name: Copy local test report
         if: always()
-        run: cat newman/*.html > dist/local-tests.html && rm newman/*.html
+        run: cat newman/*.html > build/local-tests.html && rm newman/*.html
 
       - name: Store local test result artifact
         if: always()
         uses: actions/upload-artifact@v1
         with:
           name: local-tests-${{ env.SPEC_VERSION }}+${{ github.run_id }}.html
-          path: ./dist/local-tests.html
+          path: ./build/local-tests.html
 
       - name: Store distributable schema
         uses: actions/upload-artifact@v1
