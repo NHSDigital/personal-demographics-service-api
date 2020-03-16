@@ -23,7 +23,7 @@ properties:
           example: en
         display:
           type: string
-          description: Display-friendly representation of the language code. If there is a code with no mapping to a display `Unknown` will be returned.
+          description: Display-friendly representation of the language code (such as English). If there is a language code with no defined mapping, `Unknown` will be returned.
           example: English
       required:
         - code
