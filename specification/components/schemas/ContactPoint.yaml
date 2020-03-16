@@ -3,18 +3,18 @@ type: object
 properties:
   period:
     type: object
-    description: The dates between which this person could be communicated with via this contact method.
+    description: Time period when contact point was, is, or will be valid.
     properties:
       start:
         type: string
         format: date
-        description: Date which this person was first able to be contacted by this method, in format `yyyy-mm-dd`.
+        description: Start date of time period, if known, in format `yyyy-mm-dd`. Can be a future date.
         example: 2020-01-01
         # required: true
       end:
         type: string
         format: date
-        description: Date at which person was no longer able to be contacted by this method, in format `yyyy-mm-dd`.
+        description: End date of time period, if known and if not ongoing, in format `yyyy-mm-dd`. Can be a future date.
         example: 2020-12-31
   system:
     description: Means of communication, such as by phone, text, email, etc.
@@ -30,8 +30,3 @@ properties:
     description: Location associated with communication system, or marker to indicated whether it is temporary or outdated.
     enum: [home, work, temp, old, mobile]
     example: work
-  rank:
-    description: Preferred order of use. 1 is highest.
-    type: integer
-    example: 1
-    minimum: 1

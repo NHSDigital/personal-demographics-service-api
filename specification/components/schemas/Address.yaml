@@ -8,39 +8,41 @@ properties:
     example: '123'
   period:
     type: object
-    description: The dates between which this address is linked to this patient.
+    description: Time period when address was, is, or will be in use.
     required:
       - start
     properties:
       start:
         type: string
         format: date
-        description: Date which patient became associated with this address, in format `yyyy-mm-dd`.
+        description: Start date of time period, if known, in format `yyyy-mm-dd`. Can be a future date.
         example: 2020-01-01
       end:
         type: string
         format: date
-        description: Date at which patient is no longer associated with this address, in format `yyyy-mm-dd`.
+        description: End date of time period, if known and if not ongoing, in format `yyyy-mm-dd`. Can be a future date.
         example: 2020-12-31
   use:
     type: string
-    description: Purpose of this address.
-    enum: [home, work, temp, old, billing] # TODO: how do we map usual, correspondence, temporary, other?
+    description: |
+      Purpose of this address:
+      - home - a communication address at a home.
+      - work - an office address. First choice for business related contacts during business hours.
+      - temp - a temporary address. The period can provide more detailed information.
+      - billing - a corresponding address nominated by the patient where communication can be sent.
+    enum: [home, work, temp, billing]
     example: work
-  type:
-    type: string
-    description: Type of address. Postal-only (aka correspondence) addresses can be used to communicate, but are not where the person associated with this address can be usually found.
-    enum: [postal, physical, both]
-    example: both
   line:
     type: array
     description: All lines of the address except the postal code.
     items:
       type: string
+    minItems: 5
+    maxItems: 5
     example:
-      - NHS Digital
-      - Whitehall II
-      - Whitehall Quay
+      - 1 Trevelyan Square
+      - Boar Lane
+      - City Centre
       - Leeds
       - West Yorkshire
   postalCode:

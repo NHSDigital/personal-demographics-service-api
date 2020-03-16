@@ -5,19 +5,19 @@ properties:
     example: '123'
   period:
     type: object
-    description: The dates between which this person could be communicated with via this contact method.
+    description: Time period when contact was, is, or will be valid.
     required:
       - start
     properties:
       start:
         type: string
         format: date
-        description: Date which this person was first able to be contacted by this method, in format `yyyy-mm-dd`.
+        description: Start date of time period, if known, in format `yyyy-mm-dd`. Can be a future date.
         example: 2020-01-01
       end:
         type: string
         format: date
-        description: Date at which this person was no longer able to be contacted by this method, in format `yyyy-mm-dd`.
+        description: End date of time period, if known and if not ongoing, in format `yyyy-mm-dd`. Can be a future date.
         example: 2020-12-31
   relationship:
     description: Details of contact's relationship with the patient.
