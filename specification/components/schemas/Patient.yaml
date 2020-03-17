@@ -57,12 +57,12 @@ properties:
     $ref: "PersonAddress.yaml"
   contact:
     type: array
-    description: List of related people (e.g. emergency contacts).
+    description: List of related people for the patient, for example emergency contact.
     items:
       $ref: "Contact.yaml"
   telecom:
     type: array
-    description: List of contact methods.
+    description: List of contact points for the patient, for example phone numbers or email addresses.
     items:
       $ref: "ContactPoint.yaml"
   generalPractitioner:
@@ -72,7 +72,7 @@ properties:
       $ref: "GeneralPractitionerReference.yaml"
   communication:
     type: array
-    description: List of languages that may be used to communicate with this patient.
+    description: List of languages that may be used to communicate with the patient.
     items:
       $ref: "Communication.yaml"
   extension:
