@@ -3,16 +3,16 @@ description: Wrapper object for telecom usage classes.
 properties:
   url:
     type: string
-    description: URL for specification of the Telecom Usage extension.
+    description: URL for the Telecom Usage extension specification.
     default: https://simplifier.net/guide/UKCore/Extension-UKCore-TelecomUseage
     readOnly: true
   valueCoding:
     type: object
-    description: Location associated with communication system, or marker to indicated whether it is temporary or outdated.
+    description: Location associated with the communication system, or marker to indicate whether it is temporary or outdated.
     properties:
       system:
         type: string
-        description: URL of Code System that describes available Telecom Use classes.
+        description: URL of the Code System that describes available Telecom Use classes.
         default: https://simplifier.net/UKCore/CodeSystem-UKCore-TelecomUsage
         readOnly: true
       version:
@@ -22,7 +22,7 @@ properties:
         readOnly: true
       code:
         type: string
-        description: A code to identify the usage class of telecom.
+        description: The code to identify the usage class of this particular telecom instance.
         example: HP
       display:
         type: string

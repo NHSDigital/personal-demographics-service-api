@@ -3,7 +3,7 @@ description: Unique identifier for an address.
 properties:
   url:
     type: string
-    description: URL of specification of the AddressKey extension.
+    description: URL of the AddresKey extension specification.
     default: https://simplifier.net/UKCore/ExtensionUKCoreAddressKey
     readOnly: true
   extension:
@@ -25,7 +25,7 @@ properties:
               properties:
                 system:
                   type: string
-                  description: URL of Code System that describes available Address Key formats.
+                  description: URL of the Code System that describes available Address Key formats.
                   default: https://simplifier.net/UKCore/UKCore-AddressKeyType
                   readOnly: true
                 code:

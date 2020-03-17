@@ -26,6 +26,6 @@ properties:
     example: '01632960587'
   extension:
     type: array
-    description: Location associated with communication system, or marker to indicated whether it is temporary or outdated.
+    description: Location associated with communication system, or marker to indicate whether it is temporary or outdated.
     items:
       $ref: 'extensions/TelecomUsage.yaml'
