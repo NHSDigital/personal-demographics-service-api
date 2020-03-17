@@ -4,6 +4,7 @@ properties:
   coding:
     type: array
     description: Exactly one language code.
+    minItems: 1
     maxItems: 1
     items:
       type: object
@@ -11,7 +12,7 @@ properties:
         system:
           type: string
           description: URL of the Language Code System. Always uses the 'UKCore-HumanLanguage' Code System.
-          example: https://nhsconnect.github.io/FHIR-R4-Core-IG-Prototype/CodeSystem-UKCore-HumanLanguage.html
+          example: https://simplifier.net/ukcore/CodeSystem-UKCore-HumanLanguage
         version:
           type: string
           description: Version of the language code system.
@@ -22,5 +23,9 @@ properties:
           example: en
         display:
           type: string
-          description: Display-friendly representation of the language code.
+          description: Display-friendly representation of the language code (such as English). If there is a language code with no defined mapping, `Unknown` will be returned.
           example: English
+      required:
+        - code
+required:
+  - coding
