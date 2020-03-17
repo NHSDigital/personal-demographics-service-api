@@ -10,7 +10,6 @@ properties:
         format: date
         description: Start date of time period, if known, in format `yyyy-mm-dd`. Can be a future date.
         example: 2020-01-01
-        # required: true
       end:
         type: string
         format: date
@@ -19,14 +18,14 @@ properties:
   system:
     description: Means of communication, such as by phone, text, email, etc.
     type: string
-    enum: [phone, fax, email, pager, url, sms, other]
+    enum: [phone, fax, email, pager, sms]
     example: phone
   value:
     description: Phone number, email, or other identifier for use with contact system.
     type: string
     example: '01632960587'
-  use:
-    type: string
+  extension:
+    type: array
     description: Location associated with communication system, or marker to indicated whether it is temporary or outdated.
-    enum: [home, work, temp, old, mobile]
-    example: work
+    items:
+      $ref: 'extensions/TelecomUsage.yaml'

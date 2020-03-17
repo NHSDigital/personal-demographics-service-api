@@ -4,7 +4,7 @@ properties:
   url:
     type: string
     description: URL of specification of the AddressKey extension.
-    default: https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-AddressKey
+    default: https://simplifier.net/UKCore/ExtensionUKCoreAddressKey
     readOnly: true
   extension:
     type: array
@@ -26,7 +26,7 @@ properties:
                 system:
                   type: string
                   description: URL of Code System that describes available Address Key formats.
-                  default: "https://simplifier.net/guide/UKCoreDecember2019/CodeSystemUKCore-AddressKeyType"
+                  default: https://simplifier.net/UKCore/UKCore-AddressKeyType
                   readOnly: true
                 code:
                   type: string
