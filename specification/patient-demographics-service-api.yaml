@@ -287,12 +287,14 @@ paths:
           schema:
             type: string
         - name: gender
-          description: Gender with which the patient identifies.
+          description: Gender with which the patient most strongly identifies.
           example: female
           in: query
           required: false
           schema:
-            $ref: components/schemas/Gender.yaml
+            type: string
+            enum: [male, female, other, unknown]
+            example: female
         - name: birthdate
           in: query
           description: Date of birth in the format `<eq|ge|le>yyyy-mm-dd`. To specify a range, use `birthdate=geyyyy-mm-dd&birthdate=leyyyy-mm-dd`.
@@ -449,16 +451,16 @@ paths:
     get:
       description: |
         ## Overview
-        Returns personal details for the patient with the given NHS Number.
+        Use this endpoint to get patient details from PDS for a given NHS Number.
 
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
 
         | Scenario              | Request                                         | Response                                      |
         | --------------------- | ----------------------------------------------- | --------------------------------------------- |
-        | Patient exists        | `nhs_number`=`9000000009`                       | HTTP Status 200 with patient data in response |
-        | Patient doesn't exist | `nhs_number`=`9111231130` (or any other valid NHS Number)  | HTTP Status 404 with problem description      |
-        | Invalid NHS Number    | `nhs_number`=`9000000000` (or any invalid NHS Number)| HTTP Status 400 with problem description      |
+        | Patient exists        | `id`=`9000000009`                       | HTTP Status 200 with patient data in response |
+        | Patient doesn't exist | `id`=`9111231130` (or any other valid NHS Number)  | HTTP Status 404 with problem description      |
+        | Invalid NHS Number    | `id`=`9000000000` (or any invalid NHS Number)| HTTP Status 400 with problem description      |
 
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
@@ -518,7 +520,7 @@ paths:
     patch:
       description: |
         ## Overview
-        Updates specific patient information.
+        Use this endpoint to update patient details in PDS.
 
         This is a 'patch' operation, meaning you can update specific parts of the patient record (such as a name or an address), as opposed to having to update the entire record.
 
@@ -537,9 +539,9 @@ paths:
 
         | Scenario                            | Request                                                      | Response                                         |
         | ----------------------------------- | ------------------------------------------------------------ | ------------------------------------------------ |
-        | Successful update                   | `nhs_number`=`9000000009`<br />Body: One of the provided examples<br />Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json-patch+json` | HTTP Status 200 with updated patient in response (but note that the update won't be persisted) |
-        | Patient doesn't exist               | `nhs_number`=`9111231130` (or any other valid NHS Number)    | HTTP Status 404 with problem description         |
-        | Invalid NHS Number                  | `nhs_number`=`9000000000` (or any invalid NHS Number)        | HTTP Status 400 with problem description         |
+        | Successful update                   | `id`=`9000000009`<br />Body: One of the provided examples<br />Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json-patch+json` | HTTP Status 200 with updated patient in response (but note that the update won't be persisted) |
+        | Patient doesn't exist               | `id`=`9111231130` (or any other valid NHS Number)    | HTTP Status 404 with problem description         |
+        | Invalid NHS Number                  | `id`=`9000000000` (or any invalid NHS Number)        | HTTP Status 400 with problem description         |
         | Missing resource version identifier | `If-Match` header missing or set to format other than `W/"<version>"` | HTTP Status 400 with problem description         |
         | Incorrect resource version          | `If-Match`=`W/"1"`                                           | HTTP Status 412 with problem description         |
         | Wrong content type                  | `Content-Type` header missing or other than `application/json-patch+json` | HTTP Status 415 with problem description         |
@@ -702,10 +704,11 @@ components:
     Id:
       name: id
       in: path
-      description: "The patient's NHS Number."
+      description: The patient's NHS Number. The primary identifier of a patient, unique within NHS England and Wales. Always 10 digits and must be a [valid NHS Number](https://www.datadictionary.nhs.uk/data_dictionary/attributes/n/nhs/nhs_number_de.asp).
       required: true
       schema:
-        $ref: components/schemas/NhsNumber.yaml
+        type: string
+        example: "9000000009"
     IfMatch:
       in: header
       name: If-Match
