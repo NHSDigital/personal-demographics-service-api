@@ -26,14 +26,14 @@ module.exports = {
         if (nhsNumberValidator.nhsNumberSchema.validate(request.params.nhsNumber).error) {
             throw Boom.badRequest(
                 `NHS Number ${request.params.nhsNumber} is not a valid NHS number`,
-                {operationOutcomeCode: "value", apiErrorCode: "invalidNHSNumber"})
+                {operationOutcomeCode: "value", apiErrorCode: "INVALID_NHS_NUMBER"})
         }
 
         // Validate NHS number is for our test patient
         if (request.params.nhsNumber != patients.examplePatientSmith.id) {
             throw Boom.notFound(
                 `Patient with NHS number ${request.params.nhsNumber} could not be found`,
-                {operationOutcomeCode: "not_found", apiErrorCode: "patientNotFound"}
+                {operationOutcomeCode: "not_found", apiErrorCode: "PATIENT_NOT_FOUND"}
             )
         }
     }
