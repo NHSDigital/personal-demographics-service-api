@@ -1,4 +1,4 @@
-description: A telecommunication address.
+description: A contact point, such as a phone number or email address.
 type: object
 properties:
   period:
@@ -17,16 +17,16 @@ properties:
         description: End date of time period, if known and if not ongoing, in format `yyyy-mm-dd`. Can be a future date.
         example: 2020-12-31
   system:
-    description: Means of communication, such as by phone, text, email, etc.
+    description: Means of communication, such as phone or email.
     type: string
     enum: [phone, fax, email, pager, url, sms, other]
     example: phone
   value:
-    description: Phone number, email, or other identifier for use with contact system.
+    description: Phone number, email address, or other identifier for use with contact system.
     type: string
     example: '01632960587'
   use:
     type: string
-    description: Location associated with communication system, or marker to indicated whether it is temporary or outdated.
+    description: Location associated with communication system, or marker to indicate it is temporary or outdated.
     enum: [home, work, temp, old, mobile]
     example: work
