@@ -1,5 +1,5 @@
 type: array
-description: List of addresses associated with a person.
+description: List of addresses associated with the patient.
 items:
   $ref: "Address.yaml"
 # TODO: find a way to model no fixed address
