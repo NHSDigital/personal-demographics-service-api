@@ -23,7 +23,7 @@ const preResponse = function (request, h) {
     // us as internal server errors
     if (!error.data) {
         error.data = {}
-        error.data['apiErrorCode'] = "internalServerError"
+        error.data['apiErrorCode'] = "FAILURE_TO_PROCESS_MESSAGE"
         error.data['operationOutcomeCode'] = "exception"
     }
 

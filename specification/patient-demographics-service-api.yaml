@@ -496,7 +496,7 @@ paths:
                       coding:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
-                          code: invalidNHSNumber
+                          code: INVALID_NHS_NUMBER
                           display: NHS Number 9000000000 is not a valid NHS number.
         '404':
           description: Patient not found.
@@ -513,7 +513,7 @@ paths:
                       coding:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
-                          code: patientNotFound
+                          code: PATIENT_NOT_FOUND
                           display: Patient with NHS number 9111231130 could not be found.
     patch:
       description: |
@@ -620,7 +620,7 @@ paths:
                           coding:
                             - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
-                              code: versionNotSupplied
+                              code: MISSING_IF_MATCH_HEADER
                               display: If-Match header must be supplied to update this resource.
                 invalid-nhs-number:
                   summary: Invalid NHS number supplied
@@ -633,7 +633,7 @@ paths:
                           coding:
                             - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
-                              code: invalidNHSNumber
+                              code: INVALID_NHS_NUMBER
                               display: NHS Number 9000000000 is not a valid NHS number.
                 no-patches-submitted:
                   summary: No patches submitted
@@ -676,7 +676,7 @@ paths:
                       coding:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
-                          code: patientNotFound
+                          code: PATIENT_NOT_FOUND
                           display: Patient with NHS number 9111231130 could not be found.
         '412':
           $ref: '#/components/responses/412PreconditionFailed'
@@ -780,5 +780,5 @@ components:
                   coding:
                     - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                       version: '1'
-                      code: versionMismatch
+                      code: INVALID_IF_MATCH_HEADER
                       display: This resource has changed since you last read. Please re-read and try again with the new version number.
