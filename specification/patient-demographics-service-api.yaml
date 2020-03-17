@@ -287,12 +287,14 @@ paths:
           schema:
             type: string
         - name: gender
-          description: Gender with which the patient identifies.
+          description: Gender with which the patient most strongly identifies.
           example: female
           in: query
           required: false
           schema:
-            $ref: components/schemas/Gender.yaml
+            type: string
+            enum: [male, female, other, unknown]
+            example: female
         - name: birthdate
           in: query
           description: Date of birth in the format `<eq|ge|le>yyyy-mm-dd`. To specify a range, use `birthdate=geyyyy-mm-dd&birthdate=leyyyy-mm-dd`.
@@ -702,10 +704,11 @@ components:
     Id:
       name: id
       in: path
-      description: "The patient's NHS Number."
+      description: The patient's NHS Number. The primary identifier of a patient, unique within NHS England and Wales. Always 10 digits and must be a [valid NHS Number](https://www.datadictionary.nhs.uk/data_dictionary/attributes/n/nhs/nhs_number_de.asp).
       required: true
       schema:
-        $ref: components/schemas/NhsNumber.yaml
+        type: string
+        example: "9000000009"
     IfMatch:
       in: header
       name: If-Match
