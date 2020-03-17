@@ -1,5 +1,5 @@
 type: object
-description: An address associated with a person.
+description: An address associated with the patient.
 properties:
   id:
     type: string
