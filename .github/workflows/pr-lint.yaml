@@ -12,14 +12,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check ticket name conforms to requirements
-        run: echo ${{ github.event.pull_request.head.ref }} | grep -i -E -q "(apm-[0-9]+)|(dependabot\/)"
+        run: echo ${{ github.event.pull_request.head.ref }} | grep -i -E -q "(apm-[0-9]+)|(apmspii-[0-9]+)|(dependabot\/)"
 
       - name: Grab ticket name
-        if: contains(github.event.pull_request.head.ref, 'apm-') || contains(github.event.pull_request.head.ref, 'APM-')
-        run: echo ::set-env name=TICKET_NAME::$(echo ${{ github.event.pull_request.head.ref }} | grep -i -o 'apm-[0-9]\+' | tr '[:lower:]' '[:upper:]')
+        if: contains(github.event.pull_request.head.ref, 'apm-') || contains(github.event.pull_request.head.ref, 'APM-') || contains(github.event.pull_request.head.ref, 'apmspii-') || contains(github.event.pull_request.head.ref, 'APMSPII-')
+        run: echo ::set-env name=TICKET_NAME::$(echo ${{ github.event.pull_request.head.ref }} | grep -i -o '\(apm-[0-9]\+\)\|\(apmspii-[0-9]\+\)' | tr '[:lower:]' '[:upper:]')
 
       - name: Comment on PR
-        if: contains(github.event.pull_request.head.ref, 'apm-') || contains(github.event.pull_request.head.ref, 'APM-')
+        if: contains(github.event.pull_request.head.ref, 'apm-') || contains(github.event.pull_request.head.ref, 'APM-') || contains(github.event.pull_request.head.ref, 'apmspii-') || contains(github.event.pull_request.head.ref, 'APMSPII-')
         uses: unsplash/comment-on-pr@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
