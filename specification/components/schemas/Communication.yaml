@@ -1,5 +1,5 @@
 type: object
-description: A language that may be used to communicate with the patient.
+description: A language that may be used to communicate with the patient. This will only be populated on a retrieval and not a search.
 properties:
   language:
     $ref: 'codeable/Language.yaml'

@@ -20,6 +20,51 @@ function containsSearchParameters(request, searchParameters) {
     return true
 }
 
+function slimPatientResponse(patient) {
+    // Remove parts of the patient that will not be returned on a search response
+    // to align with how the backend actually performs
+
+    let whitelist = {
+        resourceType: function(patient, key) {return patient[key]},
+        id: function(patient, key) {return patient[key]},
+        identifier: function(patient, key) {return patient[key]},
+        meta: function(patient, key) {return patient[key]},
+        name: function(patient, key) {return patient[key]},
+        gender: function(patient, key) {return patient[key]},
+        birthDate: function(patient, key) {return patient[key]},
+        deceasedDateTime: function(patient, key) {return patient[key]},
+        address: function(patient, key) {
+            // Only return the "home" address
+            let addresses = [];
+            patient[key].forEach(addr => {
+                if (addr["use"] === "home") {
+                    addresses.push(addr);
+                }
+            });
+            return addresses;
+        },
+        generalPractitioner: function(patient, key) {return patient[key]},
+        extension: function(patient, key) {
+            // The only extension to return is Death Notification
+            let extension = [];
+            patient[key].forEach(ext => {
+                if (ext["url"] === "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus") {
+                    extension.push(ext);
+                }
+            });
+            return extension;
+        }
+    };
+
+    let slimPatient = {};
+    Object.keys(whitelist).forEach(function(key) {
+        if (key in patient) {
+            slimPatient[key] = whitelist[key](patient, key);
+        }
+    });
+    return slimPatient;
+}
+
 function buildPatientResponse(examplePatients = [], searchScore = 1.0) {
     let response = {
         resourceType: "Bundle",
@@ -35,7 +80,7 @@ function buildPatientResponse(examplePatients = [], searchScore = 1.0) {
                 search: {
                     score: searchScore
                 },
-                resource: patient,
+                resource: slimPatientResponse(patient),
             })
         });
     }
