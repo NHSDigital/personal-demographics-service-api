@@ -3,7 +3,5 @@ description: A language that may be used to communicate with the patient.
 properties:
   language:
     $ref: 'codeable/Language.yaml'
-  preferred:
-    type: boolean
-    description: Indicates if this is a preferred language.
-    example: true
+required:
+  - language

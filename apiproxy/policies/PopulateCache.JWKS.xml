@@ -1,0 +1,10 @@
+<PopulateCache name='PopulateCache.JWKS'>
+  <Source>jwks_callout_response.content</Source>
+  <Scope>Application</Scope>
+  <CacheKey>
+    <KeyFragment>jwks</KeyFragment>
+  </CacheKey>
+  <ExpirySettings>
+    <TimeoutInSeconds>60</TimeoutInSeconds>
+  </ExpirySettings>
+</PopulateCache>
