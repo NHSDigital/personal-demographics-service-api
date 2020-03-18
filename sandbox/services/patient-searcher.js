@@ -85,7 +85,7 @@ module.exports.search = function(request) {
         birthdate: ["ge2010-10-21", "le2010-10-23"]
     }
     if (containsSearchParameters(request, dateRangeSearchParams)) {
-        return buildPatientResponse([patients.examplePatientSmith])
+        return buildPatientResponse([patients.exampleSearchPatientSmith])
     }
     
     // Perform a fuzzy search 
@@ -97,7 +97,7 @@ module.exports.search = function(request) {
         "_fuzzy-match": "true"
     }
     if (containsSearchParameters(request, fuzzySearchParams)) {
-        return buildPatientResponse([patients.examplePatientSmyth], 0.8976)
+        return buildPatientResponse([patients.exampleSearchPatientSmyth], 0.8976)
     } 
 
     // Check for wildcard search
@@ -121,11 +121,11 @@ module.exports.search = function(request) {
             })
         } else {
             // Return Max Result response
-            return buildPatientResponse([patients.examplePatientSmith, patients.examplePatientSmyth], 0.8343)
+            return buildPatientResponse([patients.exampleSearchPatientSmith, patients.exampleSearchPatientSmyth], 0.8343)
         } 
     // Perform a advanced search as wildcard provided and max-result parameter not set
     } else if (wildcardMatch) {
-        return buildPatientResponse([patients.examplePatientSmith, patients.examplePatientSmyth], 0.8343)
+        return buildPatientResponse([patients.exampleSearchPatientSmith, patients.exampleSearchPatientSmyth], 0.8343)
     }
 
     // Perform a 'simple search'
@@ -136,7 +136,7 @@ module.exports.search = function(request) {
     }
     // If so, try it
     if (containsSearchParameters(request, simpleSearchParams)) {
-        return buildPatientResponse([patients.examplePatientSmith])
+        return buildPatientResponse([patients.exampleSearchPatientSmith])
     }
 
     return buildPatientResponse()

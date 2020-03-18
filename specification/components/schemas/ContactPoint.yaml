@@ -1,4 +1,4 @@
-description: A contact point, such as a phone number or email address.
+description: A contact point, such as a phone number or email address. This will only be populated on a retrieval and not a search.
 type: object
 properties:
   period:

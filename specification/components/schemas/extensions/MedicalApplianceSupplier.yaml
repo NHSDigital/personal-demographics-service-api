@@ -1,5 +1,5 @@
 type: object
-description: Wrapper object for the patient's medical appliance supplier.
+description: Wrapper object for the patient's medical appliance supplier. This will only be populated on a retrieval and not a search.
 properties:
   url:
     type: string
