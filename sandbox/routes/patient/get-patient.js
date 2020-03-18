@@ -37,7 +37,7 @@ module.exports = [
             if (!patientSearcher.requestContainsParameters(request)) {
                 throw Boom.badRequest(
                     "Not enough search parameters were provided to be able to make a search",
-                    {operationOutcomeCode: "required", apiErrorCode: "tooFewSearchParams"})
+                    {operationOutcomeCode: "required", apiErrorCode: "MISSING_VALUE"})
             }
 
             if (request.query["birthdate"]) {
@@ -46,7 +46,7 @@ module.exports = [
                     if (dateValidator.dateSchema.validate(date).error) { 
                         throw Boom.badRequest(
                             `birthdate has invalid format: ${request.query["birthdate"]} is not in <eq|ge|le>YYYY-MM-DD format`,
-                            {operationOutcomeCode: "value", apiErrorCode: "invalidDateFormat"})
+                            {operationOutcomeCode: "value", apiErrorCode: "INVALID_DATE_FORMAT"})
                     }
                 }) 
             }
@@ -54,7 +54,7 @@ module.exports = [
             if (request.query["death-date"] && dateValidator.dateSchema.validate(request.query["death-date"]).error) {
                 throw Boom.badRequest(
                     `death-date has invalid format: ${request.query["death-date"]} is not in <eq|ge|le>YYYY-MM-DD format`,
-                    {operationOutcomeCode: "value", apiErrorCode: "invalidDateFormat"})
+                    {operationOutcomeCode: "value", apiErrorCode: "INVALID_DATE_FORMAT"})
             }
 
             return patientSearcher.search(request)

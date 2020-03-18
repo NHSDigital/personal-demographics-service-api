@@ -9,8 +9,15 @@ function containsSearchParameters(request, searchParameters) {
         return lodash.pickBy(parameters, (value, key) => key !== "_max-results")
     }
 
-    let searchParamsWithoutMaxResult = removeMaxResultParameter(searchParameters)
-    let queryParamsWithoutMaxResult = removeMaxResultParameter(request.query)
+    // Lowercases all the paramater values - so that 'smith' will match 'Smith'
+    function lowerValues(obj) {
+        return lodash.mapValues(obj, function(val){
+            return lodash.isString(val) ? val.toLowerCase() : val;
+        });
+    }
+
+    let searchParamsWithoutMaxResult = lowerValues(removeMaxResultParameter(searchParameters))
+    let queryParamsWithoutMaxResult = lowerValues(removeMaxResultParameter(request.query))
 
     // Verifies that search parameters match query parameters
     if (!lodash.isEqual(searchParamsWithoutMaxResult, queryParamsWithoutMaxResult)) {
