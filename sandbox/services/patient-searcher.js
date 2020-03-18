@@ -20,51 +20,6 @@ function containsSearchParameters(request, searchParameters) {
     return true
 }
 
-function slimPatientResponse(patient) {
-    // Remove parts of the patient that will not be returned on a search response
-    // to align with how the backend actually performs
-
-    let whitelist = {
-        resourceType: function(patient, key) {return patient[key]},
-        id: function(patient, key) {return patient[key]},
-        identifier: function(patient, key) {return patient[key]},
-        meta: function(patient, key) {return patient[key]},
-        name: function(patient, key) {return patient[key]},
-        gender: function(patient, key) {return patient[key]},
-        birthDate: function(patient, key) {return patient[key]},
-        deceasedDateTime: function(patient, key) {return patient[key]},
-        address: function(patient, key) {
-            // Only return the "home" address
-            let addresses = [];
-            patient[key].forEach(addr => {
-                if (addr["use"] === "home") {
-                    addresses.push(addr);
-                }
-            });
-            return addresses;
-        },
-        generalPractitioner: function(patient, key) {return patient[key]},
-        extension: function(patient, key) {
-            // The only extension to return is Death Notification
-            let extension = [];
-            patient[key].forEach(ext => {
-                if (ext["url"] === "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus") {
-                    extension.push(ext);
-                }
-            });
-            return extension;
-        }
-    };
-
-    let slimPatient = {};
-    Object.keys(whitelist).forEach(function(key) {
-        if (key in patient) {
-            slimPatient[key] = whitelist[key](patient, key);
-        }
-    });
-    return slimPatient;
-}
-
 function buildPatientResponse(examplePatients = [], searchScore = 1.0) {
     let response = {
         resourceType: "Bundle",
@@ -80,7 +35,7 @@ function buildPatientResponse(examplePatients = [], searchScore = 1.0) {
                 search: {
                     score: searchScore
                 },
-                resource: slimPatientResponse(patient),
+                resource: patient,
             })
         });
     }
@@ -123,7 +78,7 @@ module.exports.search = function(request) {
         birthdate: ["ge2010-10-21", "le2010-10-23"]
     }
     if (containsSearchParameters(request, dateRangeSearchParams)) {
-        return buildPatientResponse([patients.examplePatientSmith])
+        return buildPatientResponse([patients.exampleSearchPatientSmith])
     }
     
     // Perform a fuzzy search 
@@ -135,7 +90,7 @@ module.exports.search = function(request) {
         "_fuzzy-match": "true"
     }
     if (containsSearchParameters(request, fuzzySearchParams)) {
-        return buildPatientResponse([patients.examplePatientSmyth], 0.8976)
+        return buildPatientResponse([patients.exampleSearchPatientSmyth], 0.8976)
     } 
 
     // Check for wildcard search
@@ -159,11 +114,11 @@ module.exports.search = function(request) {
             })
         } else {
             // Return Max Result response
-            return buildPatientResponse([patients.examplePatientSmith, patients.examplePatientSmyth], 0.8343)
+            return buildPatientResponse([patients.exampleSearchPatientSmith, patients.exampleSearchPatientSmyth], 0.8343)
         } 
     // Perform a advanced search as wildcard provided and max-result parameter not set
     } else if (wildcardMatch) {
-        return buildPatientResponse([patients.examplePatientSmith, patients.examplePatientSmyth], 0.8343)
+        return buildPatientResponse([patients.exampleSearchPatientSmith, patients.exampleSearchPatientSmyth], 0.8343)
     }
 
     // Perform a 'simple search'
@@ -174,7 +129,7 @@ module.exports.search = function(request) {
     }
     // If so, try it
     if (containsSearchParameters(request, simpleSearchParams)) {
-        return buildPatientResponse([patients.examplePatientSmith])
+        return buildPatientResponse([patients.exampleSearchPatientSmith])
     }
 
     return buildPatientResponse()

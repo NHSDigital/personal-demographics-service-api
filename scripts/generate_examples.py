@@ -9,6 +9,7 @@ Usage:
 import json
 import os
 import os.path
+from copy import deepcopy
 from docopt import docopt
 from jsonpath_rw import parse
 
@@ -76,6 +77,47 @@ def generate_resource_example(schema_dict, path=None):
 
     return example
 
+def return_value(resource, key):
+    """ Return the value from the resource """
+    return resource[key]
+
+def slim_address(resource, key):
+    """ Only return the "home" address """
+    return [addr for addr in resource[key] if addr["use"] == "home"]
+
+def slim_extension(resource, key):
+    """ The only extension to return is Death Notification """
+    return [
+        addr for addr in resource[key]
+        if addr["url"] == "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus"
+    ]
+
+def slim_resource(resource):
+    """
+    Remove parts of the patient that will not be returned on a search response
+    to align with how the backend actually performs.
+    """
+    whitelist = {
+        "resourceType": return_value,
+        "id": return_value,
+        "identifier": return_value,
+        "meta": return_value,
+        "name": return_value,
+        "gender": return_value,
+        "birthDate": return_value,
+        "deceasedDateTime": return_value,
+        "address": slim_address,
+        "generalPractitioner": return_value,
+        "extension": slim_extension
+    }
+
+    slimmed_resource = {}
+    for key, func in whitelist.items():
+        if key in resource:
+            slimmed_resource[key] = func(resource, key)
+    return slimmed_resource
+
+
 
 def main(arguments):
     """Program entry point"""
@@ -89,19 +131,39 @@ def main(arguments):
     for i in ["resources", "responses"]:
         os.makedirs(os.path.join(arguments["OUT_DIR"], i), exist_ok=True)
 
+    example_dict = {
+        "Patient": [
+            {"type": "retrieval", "file_prefix": "", "slim": False},
+            {"type": "search", "file_prefix": "Search_", "slim": True}
+        ],
+        "OperationOutcome": [
+            {"type": "error", "file_prefix": "", "slim": False},
+        ]
+    }
+
     # Generate resources
     for component_name, component_spec in spec["components"]["schemas"].items():
-        with open(
-            os.path.join(arguments["OUT_DIR"], "resources", component_name + ".json"),
-            "w",
-        ) as out_file:
-            out_file.write(
-                json.dumps(
-                    generate_resource_example(
-                        component_spec["properties"], [component_name]
+        resource_example = generate_resource_example(
+            component_spec["properties"], [component_name]
+        )
+
+        example_types = example_dict[component_name]
+        for example_type in example_types:
+            new_resource_example = deepcopy(resource_example)
+            if example_type["slim"]:
+                new_resource_example = slim_resource(new_resource_example)
+
+            with open(
+                os.path.join(
+                    arguments["OUT_DIR"],
+                    "resources",
+                    "{}{}.json".format(
+                        example_type["file_prefix"], component_name
                     )
-                )
-            )
+                ),
+                "w",
+            ) as out_file:
+                out_file.write(json.dumps(new_resource_example))
 
     # Pull out responses
     match_expr = parse(
