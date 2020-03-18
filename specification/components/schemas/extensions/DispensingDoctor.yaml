@@ -1,5 +1,5 @@
 type: object
-description: Wrapper object for the patient's dispensing doctor.
+description: Wrapper object for the patient's dispensing doctor. This will only be populated on a retrieval and not a search.
 properties:
   url:
     type: string
