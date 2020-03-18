@@ -77,13 +77,16 @@ def generate_resource_example(schema_dict, path=None):
 
     return example
 
+
 def return_value(resource, key):
     """ Return the value from the resource """
     return resource[key]
 
+
 def slim_address(resource, key):
     """ Only return the "home" address """
     return [addr for addr in resource[key] if addr["use"] == "home"]
+
 
 def slim_extension(resource, key):
     """ The only extension to return is Death Notification """
@@ -91,6 +94,7 @@ def slim_extension(resource, key):
         addr for addr in resource[key]
         if addr["url"] == "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus"
     ]
+
 
 def slim_resource(resource):
     """
@@ -116,7 +120,6 @@ def slim_resource(resource):
         if key in resource:
             slimmed_resource[key] = func(resource, key)
     return slimmed_resource
-
 
 
 def main(arguments):
