@@ -1766,7 +1766,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{environment}}/Patient?family=Smith&given=Jane&gender=female&birthdate=eq2010-10-22&_fuzzy-match=true",
+											"raw": "{{environment}}/Patient?family=smith&given=Jane&gender=female&birthdate=eq2010-10-22&_fuzzy-match=true",
 											"host": [
 												"{{environment}}"
 											],
@@ -1776,7 +1776,7 @@
 											"query": [
 												{
 													"key": "family",
-													"value": "Smith"
+													"value": "smith"
 												},
 												{
 													"key": "given",
@@ -2202,7 +2202,7 @@
 											"                    {",
 											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
 											"                        \"version\": \"1\",",
-											"                        \"code\": \"invalidDateFormat\",",
+											"                        \"code\": \"INVALID_DATE_FORMAT\",",
 											"                        \"display\": \"birthdate has invalid format: 20101022 is not in <eq|ge|le>YYYY-MM-DD format\"",
 											"                    }",
 											"                ]",
@@ -2276,7 +2276,7 @@
 											"                    {",
 											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
 											"                        \"version\": \"1\",",
-											"                        \"code\": \"invalidDateFormat\",",
+											"                        \"code\": \"INVALID_DATE_FORMAT\",",
 											"                        \"display\": \"death-date has invalid format: 20101022 is not in <eq|ge|le>YYYY-MM-DD format\"",
 											"                    }",
 											"                ]",
@@ -2350,7 +2350,7 @@
 											"                    {",
 											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
 											"                        \"version\": \"1\",",
-											"                        \"code\": \"tooFewSearchParams\",",
+											"                        \"code\": \"MISSING_VALUE\",",
 											"                        \"display\": \"Not enough search parameters were provided to be able to make a search\"",
 											"                    }",
 											"                ]",
@@ -2774,7 +2774,7 @@
 											"                    {",
 											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
 											"                        \"version\": \"1\",",
-											"                        \"code\": \"patientNotFound\",",
+											"                        \"code\": \"PATIENT_NOT_FOUND\",",
 											"                        \"display\": \"Patient with NHS number 9111231130 could not be found\"",
 											"                    }",
 											"                ]",
@@ -2831,7 +2831,7 @@
 											"                    {",
 											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
 											"                        \"version\": \"1\",",
-											"                        \"code\": \"invalidNHSNumber\",",
+											"                        \"code\": \"INVALID_NHS_NUMBER\",",
 											"                        \"display\": \"NHS Number 9000000000 is not a valid NHS number\"",
 											"                    }",
 											"                ]",

@@ -26,7 +26,7 @@ module.exports = [
             if (!requestValidator.validateIfMatchParameter(request)) {
                 throw Boom.badRequest(
                     "If-Match header must be supplied to update this resource",
-                    {operationOutcomeCode: "required", apiErrorCode: "versionNotSupplied"}
+                    {operationOutcomeCode: "required", apiErrorCode: "MISSING_IF_MATCH_HEADER"}
                 )
             }
 
@@ -34,7 +34,7 @@ module.exports = [
             if (!requestValidator.validateIfMatchHeaderIsCorrectVersion(request, patients.examplePatientSmith)) {
                 throw Boom.preconditionFailed(
                     "This resource has changed since you last read. Please re-read and try again with the new version number.",
-                    {operationOutcomeCode: "conflict", apiErrorCode: "versionMismatch"})
+                    {operationOutcomeCode: "conflict", apiErrorCode: "INVALID_IF_MATCH_HEADER"})
             }
 
             // Check Content-Type header
