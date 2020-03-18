@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 """
 generate_example.py
 
@@ -9,8 +8,63 @@ Usage:
 import json
 import os
 import os.path
+from copy import deepcopy
 from docopt import docopt
 from jsonpath_rw import parse
+
+
+def _return_value(resource, key):
+    """ Return the value from the resource """
+    return resource[key]
+
+
+def _slim_address(resource, key):
+    """ Only return the "home" address """
+    return [addr for addr in resource[key] if addr["use"] == "home"]
+
+
+def _slim_extension(resource, key):
+    """ The only extension to return is Death Notification """
+    return [
+        addr for addr in resource[key]
+        if addr["url"] == "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus"
+    ]
+
+
+def slim_patient(resource):
+    """
+    Remove parts of the patient that will not be returned on a search response
+    to align with how the backend actually performs.
+    """
+
+    # These are the only fields that will be populated on a search
+    whitelist = {
+        "resourceType": _return_value,
+        "id": _return_value,
+        "identifier": _return_value,
+        "meta": _return_value,
+        "name": _return_value,
+        "gender": _return_value,
+        "birthDate": _return_value,
+        "deceasedDateTime": _return_value,
+        "address": _slim_address,
+        "generalPractitioner": _return_value,
+        "extension": _slim_extension
+    }
+
+    # Loop around the whitelist returning the result of mapped function.
+    return {key: func(resource, key) for key, func in whitelist.items() if key in resource}
+
+
+EXAMPLE_TYPES = {
+    "Patient": [
+        {"type": "retrieval", "file_prefix": "", "slim_func": None},
+        {"type": "search", "file_prefix": "Search_", "slim_func": slim_patient}
+    ],
+    "OperationOutcome": [
+        {"type": "error", "file_prefix": "", "slim_func": None},
+    ]
+}
 
 
 def generate_resource_example(schema_dict, path=None):
@@ -91,17 +145,31 @@ def main(arguments):
 
     # Generate resources
     for component_name, component_spec in spec["components"]["schemas"].items():
-        with open(
-            os.path.join(arguments["OUT_DIR"], "resources", component_name + ".json"),
-            "w",
-        ) as out_file:
-            out_file.write(
-                json.dumps(
-                    generate_resource_example(
-                        component_spec["properties"], [component_name]
-                    )
+        resource_example = generate_resource_example(
+            component_spec["properties"], [component_name]
+        )
+
+        example_types = EXAMPLE_TYPES[component_name]
+        for example_type in example_types:
+            new_resource_example = deepcopy(resource_example)
+            if example_type["slim_func"]:
+                # If the current example type has a slimming function - run it
+                new_resource_example = example_type["slim_func"](
+                    new_resource_example
                 )
-            )
+
+            # Create file
+            with open(
+                os.path.join(
+                    arguments["OUT_DIR"],
+                    "resources",
+                    "{}{}.json".format(
+                        example_type["file_prefix"], component_name
+                    )
+                ),
+                "w",
+            ) as out_file:
+                out_file.write(json.dumps(new_resource_example))
 
     # Pull out responses
     match_expr = parse(

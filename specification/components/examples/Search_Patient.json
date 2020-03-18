@@ -1,0 +1,90 @@
+{
+  "resourceType": "Patient",
+  "id": "9000000009",
+  "identifier": [
+    {
+      "system": "https://fhir.nhs.uk/Id/nhs-number",
+      "value": "9000000009",
+      "extension": [
+        {
+          "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                "version": "1.0.0",
+                "code": "01",
+                "display": "Number present and verified"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "versionId": "2"
+  },
+  "name": [
+    {
+      "use": "usual",
+      "period": {
+        "start": "2020-01-01",
+        "end": "2020-12-31"
+      },
+      "given": [
+        "Jane"
+      ],
+      "family": "Smith",
+      "prefix": [
+        "Mrs"
+      ],
+      "suffix": [
+        "MBE"
+      ]
+    }
+  ],
+  "gender": "female",
+  "birthDate": "2010-10-22",
+  "deceasedDateTime": "2010-10-22T00:00:00+00:00",
+  "address": [],
+  "generalPractitioner": [
+    {
+      "id": "254406A3",
+      "type": "Organization",
+      "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y12345",
+      "identifier": {
+        "system": "https://digital.nhs.uk/services/organisation-data-service",
+        "value": "Y12345",
+        "period": {
+          "start": "2020-01-01",
+          "end": "2021-01-01"
+        }
+      }
+    }
+  ],
+  "extension": [
+    {
+      "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus",
+      "extension": [
+        {
+          "url": "deathNotificationStatus",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://simplifier.net/UKCore/CodeSystem-UKCore-DeathNotificationStatus",
+                "version": "1.0.0",
+                "code": "2",
+                "display": "Formal - death notice received from Registrar of Deaths"
+              }
+            ]
+          }
+        },
+        {
+          "url": "systemEffectiveDate",
+          "valueDateTime": "2010-10-22T00:00:00+00:00"
+        }
+      ]
+    }
+  ]
+}

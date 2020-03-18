@@ -1,5 +1,5 @@
 type: object
-description: A related person for the patient, for example emergency contact.
+description: A related person for the patient, for example emergency contact. This will only be populated on a retrieval and not a search.
 properties:
   id:
     type: string

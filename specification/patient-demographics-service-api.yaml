@@ -408,7 +408,7 @@ paths:
                     search:
                       score: 1
                     resource:
-                      $ref: components/examples/Patient.json
+                      $ref: components/examples/Search_Patient.json
         '400':
           description: Invalid search paramaters supplied.
           content:
