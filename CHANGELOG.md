@@ -1,5 +1,8 @@
 # Changelog
 
+## 2020-03-18
+* Additional check that required header `NHS-Session-URID` is not blank/empty when present
+
 ## 2020-03-16
 * Validate JWT signature
 

@@ -2,8 +2,9 @@
     <PreFlow>
         <Request>
             <Step>
+              <!-- Header NHSD-Session-URID must be present and not empty -->
               <Name>RaiseFault.400BadRequest</Name>
-              <Condition>request.header.NHSD-Session-URID is null</Condition>
+              <Condition>(request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+")</Condition>
             </Step>
             <Step>
               <Name>OauthV2.VerifyAccessToken</Name>
