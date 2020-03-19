@@ -19,6 +19,6 @@
         <Condition>request.verb == "OPTIONS" AND request.header.origin != null AND request.header.Access-Control-Request-Method != null</Condition>
     </RouteRule>
     <RouteRule name="ig3">
-        <TargetEndpoint>ig3</TargetEndpoint>
+        <TargetEndpoint>default</TargetEndpoint>
     </RouteRule>
 </ProxyEndpoint>
