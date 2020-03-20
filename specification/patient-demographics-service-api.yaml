@@ -54,7 +54,7 @@ info:
     The following items are on our roadmap, in rough priority order:
     - addition of data fields for consent information, related people and more information on nominated pharmacies
     - integration testing service (target date: end of February 2020)
-    - assurance process
+    - onboarding process
     - production service - beta - search for patient and retrieve patient details (target date: end of March 2020)
     - production service - beta - update patient (target date: end of April 2020)
     - unauthenticated access - without NHS smartcard - similar to the PDS SMSP API (target date to be confirmed)
@@ -112,8 +112,8 @@ info:
 
     [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
 
-    ## Assurance
-    We are hoping to make the assurance process as lightweight and as self-service as possible.
+    ## Onboarding
+    We are hoping to make the onboarding process as lightweight and as self-service as possible.
 
     More details to follow.
 
