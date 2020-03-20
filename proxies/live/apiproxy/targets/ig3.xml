@@ -1,4 +1,4 @@
-<TargetEndpoint name="default">
+<TargetEndpoint name="ig3">
     <PreFlow>
         <Request>
             <Step>

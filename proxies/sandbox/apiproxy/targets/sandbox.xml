@@ -1,4 +1,4 @@
-<TargetEndpoint name="default">
+<TargetEndpoint name="sandbox">
     <Description/>
     <FaultRules/>
     <Flows/>
