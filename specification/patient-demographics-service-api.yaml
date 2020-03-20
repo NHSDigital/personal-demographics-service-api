@@ -6,130 +6,18 @@ info:
   version: "{VERSION}"
   title: Personal Demographics Service (FHIR) API
   description: |
-    ## Overview
-    Use this API to access the [Personal Demographics Service (PDS)](https://digital.nhs.uk/services/demographics) - the national electronic database of NHS patient details such as name, address, date of birth and NHS Number.
-
-    You can:
-    * search for patients
-    * get patient details
-    * update patient details
-
-    You cannot currently use this API to:
-    * check that you have the right NHS Number for a patient
-    * create a new record for a birth
-    * receive birth notifications
-    * create a record for a new patient
-    * register a new patient at a GP Practice - instead, use [National Health Application and Infrastructure Services (NHAIS)](https://digital.nhs.uk/services/nhais/nhais-developer-document-library)
-
-    You can access the following data:
-    * NHS Number
-    * name
-    * gender
-    * addresses and contact details
-    * birth information
-    * death information
-    * registered GP
-    * nominated pharmacy (other related pharmacies coming soon)
-    * consent information (coming soon)
-    * related people (coming soon)
-
-    Currently, this API can only be accessed by healthcare professionals, authenticated with an NHS smartcard or equivalent.
-    Unauthenticated access and citizen access are on the roadmap.
-
-    ## Related APIs
-    The following APIs also give access to the Personal Demographics Service:
-    - [Personal Demographics Service (SMSP) API](https://digital.nhs.uk/developer/api-specifications/personal-demographics-service---smsp-api) - use this if you want to get PDS data without an authenticated end used (no smartcard required). It is, however, read-only and searches are limited to a single result.
-    - [Personal Demographics Service (HL7 V3) API](https://digital.nhs.uk/developer/api-specifications/personal-demographics-service-hl7-v3) - use this if you want to use functions that are not yet available on the FHIR API.
-
-    Once our roadmap is complete, the above APIs will become redundant.
-
-    The following APIs are also related to this API:
-    - [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) - use this to get full details for the organisations related to the patient, such as their registered GP or nominated pharmacy.
-
-    ## API status and roadmap
-    This API is in [alpha](https://digital.nhs.uk/developer/developer-reference/reference-guide#api-status) - expect significant breaking changes.
-
-    It is currently only available for sandbox testing, not for integration testing or production use.
-
-    The following items are on our roadmap, in rough priority order:
-    - addition of data fields for consent information, related people and more information on nominated pharmacies
-    - integration testing service (target date: end of February 2020)
-    - assurance process
-    - production service - beta - search for patient and retrieve patient details (target date: end of March 2020)
-    - production service - beta - update patient (target date: end of April 2020)
-    - unauthenticated access - without NHS smartcard - similar to the PDS SMSP API (target date to be confirmed)
-    - access for citizens using NHS Login (target date to be confirmed)
-    - exit beta (target date: end of September 2020, subject to availability of beta testers)
-
-    We are extremely keen to receive feedback on the API during alpha and beta,
-    for example if there are data fields missing that you think you need.
-    Please [get in touch](https://digital.nhs.uk/developer/help-and-support) with any comments or suggestions.
-
-    ## Technology
-    This API is [RESTful](https://digital.nhs.uk/developer/developer-reference/introduction-to-apis#basic-rest).
-
-    It also conforms to the [FHIR](https://digital.nhs.uk/developer/developer-reference/introduction-to-apis#fhir) global standard for health care data exchange.
-    Specifically, it is aligned with [FHIR UK Core](https://digital.nhs.uk/services/fhir-uk-core), which is built on FHIR Release 4.
-
-    You don’t need to know much about FHIR to use this API - FHIR APIs are just RESTful APIs that follow specific rules.
-    In particular:
-    - resource names are capitalised and singular, for example the `/Patient` not `/patients`
-    - array names are singular, for example `line` not `lines` for address lines
-    - data items that are country-specific and thus not included in the FHIR global base resources are usually wrapped in an `extension` object
-
-    This API is available on the Internet, although access using NHS smartcards (see below)
-    currently requires a connection to the [Health and Social Care Network (HSCN)](https://digital.nhs.uk/services/health-and-social-care-network).
-
-    ## Authorisation
-    This API is [user-restricted](https://digital.nhs.uk/developer/security-and-authorisation#user-restricted-apis),
-    meaning an end user must be present and authenticated to use it.
-
-    The end user must be:
-    - a healthcare professional
-    - strongly authenticated, using either an NHS smartcard or a modern alternative
-
-    The API uses Open ID Connect to authenticate the end user and OAuth 2.0 to authorise the calling system.
-    It supports the following security patterns:
-    * user-restricted RESTful API - using NHS Identity - combined authentication and authorisation
-    * user-restricted RESTful API - using NHS Identity - separate authentication and authorisation
-
-    For more details, see [user-restricted APIs](https://digital.nhs.uk/developer/security-and-authorisation#user-restricted-apis).
-
-    In due course we plan to add the following:
-    - access for citizens, using NHS Login
-    - unattended access - without smartcard - similar to the PDS SMSP API
-
-    ## Testing
-    You can test this API in:
-    * our [sandbox environment](https://digital.nhs.uk/developer/testing#sandbox-testing) for initial developer testing
-    * our [integration test environment](https://digital.nhs.uk/developer/testing#integration-testing) for formal integration testing (coming soon)
-
-    Our sandbox environment is a very basic simulation of the live service. It only covers a limited set of scenarios and is stateless, so does not actually persist any updates.
-
-    For more details on sandbox testing, or to try out the sandbox using our "Try this API" feature, see the documentation for each endpoint.
-
-    Alternatively, you can try out the sandbox using our Postman collection:
-
-    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
-
-    ## Assurance
-    We are hoping to make the assurance process as lightweight and as self-service as possible.
-
-    More details to follow.
-
-    ## Endpoints
-    To see details for specific endpoints, select from the list on the left hand side of the page:
-    * `GET /Patient` - search for patient
-    * `GET /Patient/{id}` - get patient's personal details
-    * `PATCH /Patient/{id}` - update patient's personal details
 
   contact:
     name: Personal Demographics Service FHIR API Support
     url: 'https://tbc.api.nhs.net'
     email: tbc-api-support@nhs.net
 servers:
-  - url: 'https://emea-demo8-test.apigee.net/personal-demographics'
-    description: Sandbox service.
+  - url: 'https://sandbox.api.service.nhs.uk/personal-demographics'
+    description: Sandbox environment.
+  - url: 'https://int.api.service.nhs.uk/personal-demographics'
+    description: Integration environment.
+  - url: 'https://api.service.nhs.uk/personal-demographics'
+    description: Production environment.
 tags:
   - name: patients
 paths:
