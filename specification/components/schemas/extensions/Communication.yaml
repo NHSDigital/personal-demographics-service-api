@@ -1,0 +1,46 @@
+type: object
+description: Wrapper object for communication details.
+required:
+  - url
+  - extension
+properties:
+  url:
+    type: string
+    description: Definition of communication extension.
+    default: https://simplifier.net/UKCore/ExtensionUKCoreNHSCommunication
+    readOnly: true
+  extension:
+    type: array
+    description: Definition of communication extension, The array must have two items, a valueCodeableConcept for the language and a valueBoolean for if an interpreter is required.
+    minItems: 2
+    maxItems: 2
+    items:
+      anyOf:
+        - type: object
+          description: Wrapper object for communication language.
+          required:
+            - url
+            - valueCodeableConcept
+          properties:
+            url:
+              type: string
+              description: Key of this object. Always `language`.
+              default: language
+              readOnly: true
+            valueCodeableConcept:
+              "$ref": "../codeable/Language.yaml"
+        - type: object
+          description: Wrapper object for whether an interpreter is required.
+          required:
+            - url
+            - valueBoolean
+          properties:
+            url:
+              type: string
+              description: Key of this object. Always `interpreterRequired`.
+              default: interpreterRequired
+              readOnly: true
+            valueBoolean:
+              type: boolean
+              description: Whether an interpreter is required.
+              example: true
