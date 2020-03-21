@@ -1,5 +1,6 @@
 const Boom = require('boom')
 const lodash = require('lodash')
+const datefns = require('date-fns')
 const patients = require('./patients')
 
 function containsSearchParameters(request, searchParameters) {
@@ -31,7 +32,7 @@ function buildPatientResponse(examplePatients = [], searchScore = 1.0) {
     let response = {
         resourceType: "Bundle",
         type: "searchset",
-        timestamp: Date.now(),
+        timestamp: datefns.format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss+00:00"),
         total: examplePatients.length,
         entry: []
     }
@@ -39,6 +40,7 @@ function buildPatientResponse(examplePatients = [], searchScore = 1.0) {
     if (examplePatients.length > 0) {
         examplePatients.forEach(patient => {
             response.entry.push({
+                fullUrl: "https://beta.api.digital.nhs.uk/Patient/" + patient["id"],
                 search: {
                     score: searchScore
                 },

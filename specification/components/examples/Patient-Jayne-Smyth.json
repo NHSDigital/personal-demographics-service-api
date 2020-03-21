@@ -158,20 +158,6 @@
       }
     }
   ],
-  "communication": [
-    {
-      "language": {
-        "coding": [
-          {
-            "system": "https://simplifier.net/ukcore/CodeSystem-UKCore-HumanLanguage",
-            "version": "1.0.0",
-            "code": "en",
-            "display": "English"
-          }
-        ]
-      }
-    }
-  ],
   "extension": [
     {
       "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-NominatedPharmacy",
@@ -234,6 +220,28 @@
         {
           "url": "systemEffectiveDate",
           "valueDateTime": "2010-10-22T00:00:00+00:00"
+        }
+      ]
+    },
+    {
+      "url": "https://simplifier.net/UKCore/ExtensionUKCoreNHSCommunication",
+      "extension": [
+        {
+          "url": "language",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://simplifier.net/ukcore/CodeSystem-UKCore-HumanLanguage",
+                "version": "1.0.0",
+                "code": "fr",
+                "display": "French"
+              }
+            ]
+          }
+        },
+        {
+          "url": "interpreterRequired",
+          "valueBoolean": true
         }
       ]
     }
