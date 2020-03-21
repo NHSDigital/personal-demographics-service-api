@@ -47,14 +47,16 @@ info:
     - [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) - use this to get full details for the organisations related to the patient, such as their registered GP or nominated pharmacy.
 
     ## API status and roadmap
-    This API is in [alpha](https://digital.nhs.uk/developer/developer-reference/reference-guide#api-status) - expect significant breaking changes.
+    This API is in [beta](https://digital.nhs.uk/developer/developer-reference/reference-guide#api-status), meaning:
+    - we might make breaking changes, but only if we can't avoid it, and we'll give advance notice
+    - we can't guarantee availability or performance
 
     It is currently only available for sandbox testing, not for integration testing or production use.
 
     The following items are on our roadmap, in rough priority order:
-    - addition of data fields for consent information, related people and more information on nominated pharmacies
-    - integration testing service (target date: end of February 2020)
-    - assurance process
+    - addition of data fields for consent information, related people and sensitive patient flag
+    - integration testing service (target date: ASAP)
+    - onboarding process
     - production service - beta - search for patient and retrieve patient details (target date: end of March 2020)
     - production service - beta - update patient (target date: end of April 2020)
     - unauthenticated access - without NHS smartcard - similar to the PDS SMSP API (target date to be confirmed)
