@@ -47,11 +47,13 @@ info:
     - [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) - use this to get full details for the organisations related to the patient, such as their registered GP or nominated pharmacy.
 
     ## API status and roadmap
-    This API is in [beta](https://digital.nhs.uk/developer/developer-reference/reference-guide#api-status), meaning:
+    The search and retrieve endpoints are in [beta](https://digital.nhs.uk/developer/developer-reference/reference-guide#api-status), meaning:
     - we might make breaking changes, but only if we can't avoid it, and we'll give advance notice
     - we can't guarantee availability or performance
+    
+    The update endpoint is in [alpha](https://digital.nhs.uk/developer/developer-reference/reference-guide#api-status) - expect further breaking changes.
 
-    It is currently only available for sandbox testing, not for integration testing or production use.
+    The API is currently only available for sandbox testing, not for integration testing or production use.
 
     The following items are on our roadmap, in rough priority order:
     - addition of data fields for consent information, related people and sensitive patient flag
