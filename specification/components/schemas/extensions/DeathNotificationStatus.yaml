@@ -1,5 +1,8 @@
 type: object
 description: Wrapper object for death notification details.
+required:
+  - url
+  - extension
 properties:
   url:
     type: string
