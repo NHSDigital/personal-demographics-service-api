@@ -83,5 +83,5 @@ jobs:
       - name: Store distributable schema
         uses: actions/upload-artifact@v1
         with:
-          name: patient-demographics-service-api-${{ env.SPEC_VERSION }}+${{ github.run_id }}.json
-          path: ./build/patient-demographics-service-api.json
+          name: personal-demographics-${{ env.SPEC_VERSION }}+${{ github.run_id }}.json
+          path: ./build/personal-demographics.json

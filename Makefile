@@ -41,7 +41,7 @@ clean:
 
 generate-examples: publish clean
 	mkdir -p build/examples
-	poetry run python scripts/generate_examples.py build/patient-demographics-service-api.json build/examples
+	poetry run python scripts/generate_examples.py build/personal-demographics.json build/examples
 	cp build/examples/resources/Patient.json build/examples/resources/Patient-Jayne-Smyth.json
 	cp build/examples/resources/Search_Patient.json build/examples/resources/Search_Patient-Jayne-Smyth.json
 	sed -i -e 's/9000000009/9000000010/g; s/Jane/Jayne/g; s/Smith/Smyth/g;' build/examples/resources/Patient-Jayne-Smyth.json
