@@ -103,17 +103,12 @@ info:
     - unattended access - without smartcard - similar to the PDS SMSP API
 
     ## Testing
-    You can test this API in:
-    * our [sandbox environment](https://digital.nhs.uk/developer/testing#sandbox-testing) for initial developer testing
-    * our [integration test environment](https://digital.nhs.uk/developer/testing#integration-testing) for formal integration testing (coming soon)
-
-    Our sandbox environment is a very basic simulation of the live service. It only covers a limited set of scenarios and is stateless, so does not actually persist any updates.
-
-    For more details on sandbox testing, or to try out the sandbox using our "Try this API" feature, see the documentation for each endpoint.
-
-    Alternatively, you can try out the sandbox using our Postman collection:
-
+    You can test this API in the following environments:
+    * [sandbox environment](https://digital.nhs.uk/developer/testing#sandbox-testing) for initial developer testing. See our Postman collection:
     [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
+    * [integration test environment](https://digital.nhs.uk/developer/testing#integration-testing) - also known as `INT` - for formal integration testing
+
+    Download the PDS test data pack. This is the same data used to test the PDS SMSP API.
 
     ## Onboarding
     [Contact us](https://digital.nhs.uk/developer/help-and-support) for more details on the onboarding process.
