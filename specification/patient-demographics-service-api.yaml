@@ -56,18 +56,17 @@ info:
     The API is currently only available for sandbox testing, not for integration testing or production use.
 
     The following items are on our roadmap, in rough priority order:
-    - addition of data fields for consent information, related people and sensitive patient flag
     - integration testing service (target date: ASAP)
-    - onboarding process
     - production service - beta - search for patient and retrieve patient details (target date: end of March 2020)
+    - addition of data fields for consent information, related people and sensitive patient flag
     - production service - beta - update patient (target date: end of April 2020)
-    - unauthenticated access - without NHS smartcard - similar to the PDS SMSP API (target date to be confirmed)
-    - access for citizens using NHS Login (target date to be confirmed)
+    - unauthenticated access - without NHS smartcard - similar to the PDS SMSP API (target date to be confirmed - please [contact us](https://digital.nhs.uk/developer/help-and-support) for more details)
+    - access for citizens using NHS Login (target date to be confirmed - please [contact us](https://digital.nhs.uk/developer/help-and-support) for more details)
     - exit beta (target date: end of September 2020, subject to availability of beta testers)
 
-    We are extremely keen to receive feedback on the API during alpha and beta,
+    We are extremely keen to receive feedback on the API during beta,
     for example if there are data fields missing that you think you need.
-    Please [get in touch](https://digital.nhs.uk/developer/help-and-support) with any comments or suggestions.
+    Please [contact us](https://digital.nhs.uk/developer/help-and-support) with any comments or suggestions.
 
     ## Technology
     This API is [RESTful](https://digital.nhs.uk/developer/developer-reference/introduction-to-apis#basic-rest).
