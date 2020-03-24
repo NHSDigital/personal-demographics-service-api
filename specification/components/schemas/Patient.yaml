@@ -55,11 +55,6 @@ properties:
     format: date-time
   address:
     $ref: "PersonAddress.yaml"
-  contact:
-    type: array
-    description: List of related people for the patient, for example emergency contact.
-    items:
-      $ref: "Contact.yaml"
   telecom:
     type: array
     description: List of contact points for the patient, for example phone numbers or email addresses.

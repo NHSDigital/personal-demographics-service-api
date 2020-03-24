@@ -27,6 +27,7 @@
   },
   "name": [
     {
+      "id": "123",
       "use": "usual",
       "period": {
         "start": "2020-01-01",
@@ -79,55 +80,6 @@
               "valueString": "12345678"
             }
           ]
-        }
-      ]
-    }
-  ],
-  "contact": [
-    {
-      "id": "123",
-      "period": {
-        "start": "2020-01-01",
-        "end": "2020-12-31"
-      },
-      "relationship": [
-        {
-          "coding": [
-            {
-              "system": "http://terminology.hl7.org/CodeSystem/v2-0131",
-              "version": "2.9",
-              "code": "C",
-              "display": "Emergency Contact"
-            }
-          ]
-        }
-      ],
-      "name": {
-        "use": "usual",
-        "period": {
-          "start": "2020-01-01",
-          "end": "2020-12-31"
-        },
-        "given": [
-          "Jane"
-        ],
-        "family": "Smith",
-        "prefix": [
-          "Mrs"
-        ],
-        "suffix": [
-          "MBE"
-        ]
-      },
-      "telecom": [
-        {
-          "period": {
-            "start": "2020-01-01",
-            "end": "2020-12-31"
-          },
-          "system": "phone",
-          "value": "01632960587",
-          "use": "work"
         }
       ]
     }
