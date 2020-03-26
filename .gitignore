@@ -1,6 +1,7 @@
 node_modules/
 bin/
 dist/
+build/
 public/
 newman/
 

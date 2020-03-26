@@ -27,6 +27,7 @@
   },
   "name": [
     {
+      "id": "123",
       "use": "usual",
       "period": {
         "start": "2020-01-01",
@@ -83,55 +84,6 @@
       ]
     }
   ],
-  "contact": [
-    {
-      "id": "123",
-      "period": {
-        "start": "2020-01-01",
-        "end": "2020-12-31"
-      },
-      "relationship": [
-        {
-          "coding": [
-            {
-              "system": "http://terminology.hl7.org/CodeSystem/v2-0131",
-              "version": "2.9",
-              "code": "C",
-              "display": "Emergency Contact"
-            }
-          ]
-        }
-      ],
-      "name": {
-        "use": "usual",
-        "period": {
-          "start": "2020-01-01",
-          "end": "2020-12-31"
-        },
-        "given": [
-          "Jayne"
-        ],
-        "family": "Smyth",
-        "prefix": [
-          "Mrs"
-        ],
-        "suffix": [
-          "MBE"
-        ]
-      },
-      "telecom": [
-        {
-          "period": {
-            "start": "2020-01-01",
-            "end": "2020-12-31"
-          },
-          "system": "phone",
-          "value": "01632960587",
-          "use": "work"
-        }
-      ]
-    }
-  ],
   "telecom": [
     {
       "period": {
@@ -155,20 +107,6 @@
           "start": "2020-01-01",
           "end": "2021-01-01"
         }
-      }
-    }
-  ],
-  "communication": [
-    {
-      "language": {
-        "coding": [
-          {
-            "system": "https://simplifier.net/ukcore/CodeSystem-UKCore-HumanLanguage",
-            "version": "1.0.0",
-            "code": "en",
-            "display": "English"
-          }
-        ]
       }
     }
   ],
@@ -234,6 +172,28 @@
         {
           "url": "systemEffectiveDate",
           "valueDateTime": "2010-10-22T00:00:00+00:00"
+        }
+      ]
+    },
+    {
+      "url": "https://simplifier.net/UKCore/ExtensionUKCoreNHSCommunication",
+      "extension": [
+        {
+          "url": "language",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://simplifier.net/ukcore/CodeSystem-UKCore-HumanLanguage",
+                "version": "1.0.0",
+                "code": "fr",
+                "display": "French"
+              }
+            ]
+          }
+        },
+        {
+          "url": "interpreterRequired",
+          "valueBoolean": true
         }
       ]
     }

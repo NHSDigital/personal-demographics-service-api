@@ -55,11 +55,6 @@ properties:
     format: date-time
   address:
     $ref: "PersonAddress.yaml"
-  contact:
-    type: array
-    description: List of related people for the patient, for example emergency contact.
-    items:
-      $ref: "Contact.yaml"
   telecom:
     type: array
     description: List of contact points for the patient, for example phone numbers or email addresses.
@@ -70,18 +65,13 @@ properties:
     description: General practice (not practitioner) with which the patient is or was registered. Always contains zero or one general practitioner objects.
     items:
       $ref: "GeneralPractitionerReference.yaml"
-  communication:
-    type: array
-    description: List of languages that may be used to communicate with the patient.
-    maxItems: 1
-    items:
-      $ref: "Communication.yaml"
   extension:
     type: array
-    description: Wrapper array for the patient's nominated pharmacy and death notification status, which are both FHIR extensions. Always contains zero or one nominated pharmacy objects and zero or one death notification status objects.
+    description: Wrapper array for the patient's pharmacies, death notification status and communication details, which are all FHIR extensions. Always contains zero or one of each pharmacy objects, zero or one death notification status objects and zero or one communication details objects.
     items:
       anyOf:
         - $ref: "extensions/NominatedPharmacy.yaml"
         - $ref: "extensions/DispensingDoctor.yaml"
         - $ref: "extensions/MedicalApplianceSupplier.yaml"
         - $ref: "extensions/DeathNotificationStatus.yaml"
+        - $ref: "extensions/Communication.yaml"
