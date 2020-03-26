@@ -108,7 +108,7 @@ info:
     [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
     * [integration test environment](https://digital.nhs.uk/developer/testing#integration-testing) - also known as `INT` - for formal integration testing
 
-    Download the PDS test data pack. This is the same data used to test the PDS SMSP API.
+    Download the [PDS FHIR API test data pack](https://digital.nhs.uk/developer/api-specifications/pds-fhir-api-test-data). This is the same data used to test the PDS SMSP API.
 
     ## Onboarding
     [Contact us](https://digital.nhs.uk/developer/help-and-support) for more details on the onboarding process.
