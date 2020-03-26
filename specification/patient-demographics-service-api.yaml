@@ -134,7 +134,7 @@ servers:
   - url: 'https://int.api.service.nhs.uk/personal-demographics'
     description: Integration environment.
   - url: 'https://api.service.nhs.uk/personal-demographics'
-    description: Production environment.
+    description: 'Production environment. (Not available: See "API Status and Roadmap".)'
 tags:
   - name: patients
 paths:
