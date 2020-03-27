@@ -1,0 +1,22 @@
+type: array
+description: Identifier and system of identification used for this Patient.
+readOnly: true
+items:
+  type: object
+  maxItems: 1
+  required:
+    - value
+  properties:
+    system:
+      type: string
+      format: url
+      description: System identifier belongs to.
+      default: https://fhir.nhs.uk/Id/nhs-number
+      readOnly: true
+    value:
+      $ref: "NhsNumber.yaml"
+    extension:
+      type: array
+      description: FHIR extensions.
+      items:
+        $ref: "extensions/NHSNumberVerificationStatus.yaml"

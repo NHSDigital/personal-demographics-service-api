@@ -1,4 +1,9 @@
 type: object
+required:
+  - birthDate
+  - gender
+  - name
+  - address
 properties:
   resourceType:
     type: string
@@ -9,29 +14,13 @@ properties:
     $ref: "NhsNumber.yaml"
     readOnly: true
   identifier:
-    type: array
-    description: Identifier and system of identification used for this Patient.
-    items:
-      type: object
-      properties:
-        system:
-          type: string
-          format: url
-          description: System identifier belongs to.
-          default: https://fhir.nhs.uk/Id/nhs-number
-          readOnly: true
-        value:
-          $ref: "NhsNumber.yaml"
-        extension:
-          type: array
-          description: FHIR extensions.
-          items:
-            $ref: "extensions/NHSNumberVerificationStatus.yaml"
+    $ref: "Identifier.yaml"
   meta:
     $ref: "Meta.yaml"
   name:
     type: array
     description: List of names associated with the patient.
+    minItems: 1
     items:
       $ref: "HumanName.yaml"
   gender:
@@ -55,6 +44,8 @@ properties:
       $ref: "ContactPoint.yaml"
   generalPractitioner:
     type: array
+    minItems: 0
+    maxItems: 1
     description: General practice (not practitioner) with which the patient is, or was, registered. Always contains zero or one general practitioner object.
     items:
       $ref: "GeneralPractitionerReference.yaml"

@@ -12,10 +12,15 @@ properties:
   extension:
     type: array
     description: Array containing exactly one death notification status code object and exactly one effective date object.
+    minItems: 2
+    maxItems: 2
     items:
       anyOf:
         - type: object
           description: Wrapper object for death notification status code.
+          required:
+            - url
+            - valueCodeableConcept
           properties:
             url:
               type: string
@@ -26,6 +31,9 @@ properties:
               $ref: "../codeable/DeathNotificationStatus.yaml"
         - type: object
           description: Wrapper object for death notification effective date.
+          required:
+            - url
+            - valueDateTime
           properties:
             url:
               type: string

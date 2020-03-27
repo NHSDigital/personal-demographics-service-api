@@ -1,5 +1,8 @@
 description: General practice (not practitioner) with which the patient is or was registered. 
 type: object
+required:
+  - id
+  - identifier
 properties:
   id:
     description: Object identifier (OID) specific to the returned details - this should be return exactly the same in any update.
@@ -18,6 +21,8 @@ properties:
   identifier:
     description: Identifier and system of identification used for this Organisation.
     type: object
+    required:
+      - value
     properties:
       system:
         description: URL for the Organisation Data Service - who are responsible for publishing codes that identify organisations and individuals across health and social care.
@@ -30,16 +35,4 @@ properties:
         pattern: ^[0-9A-Z]+$
         example: Y12345
       period:
-        type: object
-        description: Time period when registered general practice was, is, or will be valid.
-        properties:
-          start:
-            type: string
-            format: date
-            description: Start date of time period, if known, in format `yyyy-mm-dd`. Can be a future date.
-            example: '2020-01-01'
-          end:
-            type: string
-            format: date
-            description: End date of time period, if known and if not ongoing, in format `yyyy-mm-dd`. Can be a future date.
-            example: '2021-01-01'   
+        $ref: "Period.yaml"

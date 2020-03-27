@@ -16,7 +16,6 @@ properties:
       * REDACTED - redacted. The patient record has been marked as invalid, so the data should not be used. This code will never be returned; you will receive a 404, and appropriate error response, if an invalidated patient retrieval is attempted.
       It is also possible that no security field will be added to the response, which is the equivalent to unrestricted.
     readOnly: true
-    minItems: 0
     maxItems: 1
     items:
       type: object
