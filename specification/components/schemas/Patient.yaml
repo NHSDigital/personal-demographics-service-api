@@ -39,12 +39,12 @@ properties:
       security:
         type: array
         description: |
-          The level of security on the patients record, this will affect which fields will be populated on retrieval. The possible responses are:
-          - U, meaning unrestricted. All available data will be returned.
-          - R, meaning restricted. Any sensitive data around the patients location, such as address, gp practice, etc. will be removed from the response.
-          - V, meaning very restricted. All patient identifiable data, such as name, date of birth, address, etc. will be removed from the response.
-          - REDACTED, meaning redacted. The patient record has been marked as invalid, so the data should not be used. This code will never be returned and you will receive a 404 and appropriate error response if an invalidated patient retrieval is attempted.
-          It is also possible that no security field will be added to the response, this is the equivalent to unrestricted.
+          The level of security on the patients record, which affects which fields are populated on retrieval. The possible responses are:
+          * U - unrestricted. All available data will be returned.
+          * R - restricted. Any sensitive data around the patients location, such as address or GP practice, will be removed from the response.
+          * V - very restricted. All patient identifiable data, such as name, date of birth or address, will be removed from the response.
+          * REDACTED - redacted. The patient record has been marked as invalid, so the data should not be used. This code will never be returned; you will receive a 404, and appropriate error response, if an invalidated patient retrieval is attempted.
+          It is also possible that no security field will be added to the response, which is the equivalent to unrestricted.
         readOnly: true
         minItems: 0
         maxItems: 1
@@ -63,7 +63,7 @@ properties:
             display:
               type: string
               description: Representation defined by the system.
-              enum: ["unrestricted", restricted, "very restricted", redacted]
+              enum: ["unrestricted", "restricted", "very restricted", "redacted"]
               example: unrestricted
   name:
     type: array
@@ -86,17 +86,17 @@ properties:
     $ref: "PersonAddress.yaml"
   telecom:
     type: array
-    description: List of contact points for the patient, for example phone numbers or email addresses.
+    description: List of contact points for the patient; for example, phone numbers or email addresses.
     items:
       $ref: "ContactPoint.yaml"
   generalPractitioner:
     type: array
-    description: General practice (not practitioner) with which the patient is or was registered. Always contains zero or one general practitioner objects.
+    description: General practice (not practitioner) with which the patient is, or was, registered. Always contains zero or one general practitioner object.
     items:
       $ref: "GeneralPractitionerReference.yaml"
   extension:
     type: array
-    description: Wrapper array for the patient's pharmacies, death notification status and communication details, which are all FHIR extensions. Always contains zero or one of each pharmacy objects, zero or one death notification status objects and zero or one communication details objects.
+    description: Wrapper array for the patient's pharmacies, death notification status and communication details; these are all FHIR extensions. Always contains zero or one of each pharmacy object, zero or one death notification status object, and zero or one communication details object.
     items:
       anyOf:
         - $ref: "extensions/NominatedPharmacy.yaml"
