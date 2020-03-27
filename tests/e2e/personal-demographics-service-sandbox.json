@@ -914,7 +914,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{environment}}/Patient?family=smith&given=Jane&gender=female&birthdate=eq2010-10-22&_fuzzy-match=true",
+											"raw": "{{environment}}/Patient?family=smith&given=Jane&gender=female&birthdate=2010-10-22&_fuzzy-match=true",
 											"host": [
 												"{{environment}}"
 											],
@@ -936,7 +936,7 @@
 												},
 												{
 													"key": "birthdate",
-													"value": "eq2010-10-22"
+													"value": "2010-10-22"
 												},
 												{
 													"key": "_fuzzy-match",

@@ -105,7 +105,7 @@ info:
     ## Testing
     You can test this API in the following environments:
     * [sandbox environment](https://digital.nhs.uk/developer/testing#sandbox-testing) for initial developer testing. See our Postman collection:
-    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
+    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ccf2a785660c65d82a46)
     * [integration test environment](https://digital.nhs.uk/developer/testing#integration-testing) - also known as `INT` - for formal integration testing
 
     Download the [PDS FHIR API test data pack](https://digital.nhs.uk/developer/api-specifications/pds-fhir-api-test-data). This is the same data used to test the PDS SMSP API.
@@ -225,7 +225,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ccf2a785660c65d82a46)
       tags:
         - patients
       parameters:
@@ -462,7 +462,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ccf2a785660c65d82a46)
       summary: "Retrieve a patient's record"
       operationId: get-patient
       tags:
@@ -548,7 +548,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ccf2a785660c65d82a46)
 
 
       summary: Update a patient's record
