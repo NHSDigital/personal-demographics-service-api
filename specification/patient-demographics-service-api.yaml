@@ -113,7 +113,7 @@ info:
 
     Alternatively, you can try out the sandbox using our Postman collection:
 
-    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
+    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ccf2a785660c65d82a46)
 
     ## Onboarding
     [Contact us](https://digital.nhs.uk/developer/help-and-support) for more details on the onboarding process.
@@ -230,7 +230,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ccf2a785660c65d82a46)
       tags:
         - patients
       parameters:
@@ -467,7 +467,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ccf2a785660c65d82a46)
       summary: "Retrieve a patient's record"
       operationId: get-patient
       tags:
@@ -553,7 +553,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/2871d49488699f3f5a67)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ccf2a785660c65d82a46)
 
 
       summary: Update a patient's record
