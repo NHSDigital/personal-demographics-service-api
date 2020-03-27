@@ -216,7 +216,7 @@ paths:
         * the end user has access to patients’ personal data, so there is a risk to patient privacy
 
         ## Sandbox testing
-        You can test the following scenarios in our [sandbox environment](/testing#sandbox-testing):
+        You can test the following scenarios in our sandbox environment:
 
         | Scenario                    | Request                                                      | Response                                   |
         | --------------------------- | ------------------------------------------------------------ | ------------------------------------------ |
