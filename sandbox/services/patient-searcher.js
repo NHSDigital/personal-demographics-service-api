@@ -7,25 +7,42 @@ function containsSearchParameters(request, searchParameters) {
 
     // Create new object that doesnt contain _max-result parameters as it value can change and is handled later
     function removeMaxResultParameter(parameters) {
-        return lodash.pickBy(parameters, (value, key) => key !== "_max-results")
+        return lodash.pickBy(parameters, (value, key) => key !== "_max-results");
     }
 
     // Lowercases all the paramater values - so that 'smith' will match 'Smith'
-    function lowerValues(obj) {
-        return lodash.mapValues(obj, function(val){
+    function lowerValues(parameters) {
+        return lodash.mapValues(parameters, function(val){
             return lodash.isString(val) ? val.toLowerCase() : val;
         });
     }
 
-    let searchParamsWithoutMaxResult = lowerValues(removeMaxResultParameter(searchParameters))
-    let queryParamsWithoutMaxResult = lowerValues(removeMaxResultParameter(request.query))
-
-    // Verifies that search parameters match query parameters
-    if (!lodash.isEqual(searchParamsWithoutMaxResult, queryParamsWithoutMaxResult)) {
-        return false
+    // Remove date 'eq' prefix, as it is optional.
+    function dateFormat(parameters) {
+        return lodash.mapValues(parameters, function(val, key){
+            if ((key == "birthdate" || key == "death-date") && 
+                    (lodash.isString(val) && val.startsWith("eq"))) {
+                return lodash.isString(val) ? val.replace("eq", "") : val;
+            }
+            return val;
+        });
     }
 
-    return true
+    var formattedSearchParams = searchParameters;
+    var formattedQueryParams = request.query;
+
+    let formattingFuncs = [removeMaxResultParameter, lowerValues, dateFormat];
+    formattingFuncs.forEach(func => {
+        formattedSearchParams = func(formattedSearchParams);
+        formattedQueryParams = func(formattedQueryParams);
+    });
+
+    // Verifies that search parameters match query parameters
+    if (!lodash.isEqual(formattedSearchParams, formattedQueryParams)) {
+        return false;
+    }
+
+    return true;
 }
 
 function buildPatientResponse(examplePatients = [], searchScore = 1.0) {
@@ -48,7 +65,7 @@ function buildPatientResponse(examplePatients = [], searchScore = 1.0) {
             })
         });
     }
-    return response
+    return response;
 }
 
 // Verify search contains parameters
@@ -74,7 +91,7 @@ module.exports.requestContainsParameters = function(request) {
             break
         }
     }
-    return hasAnySearchParam
+    return hasAnySearchParam;
 }
 
 // Determine which 'search' to perform based on parameters passed
@@ -123,11 +140,11 @@ module.exports.search = function(request) {
             })
         } else {
             // Return Max Result response
-            return buildPatientResponse([patients.exampleSearchPatientSmith, patients.exampleSearchPatientSmyth], 0.8343)
+            return buildPatientResponse([patients.exampleSearchPatientSmith, patients.exampleSearchPatientSmyth], 0.8343);
         } 
     // Perform a advanced search as wildcard provided and max-result parameter not set
     } else if (wildcardMatch) {
-        return buildPatientResponse([patients.exampleSearchPatientSmith, patients.exampleSearchPatientSmyth], 0.8343)
+        return buildPatientResponse([patients.exampleSearchPatientSmith, patients.exampleSearchPatientSmyth], 0.8343);
     }
 
     // Perform a 'simple search'
@@ -138,10 +155,10 @@ module.exports.search = function(request) {
     }
     // If so, try it
     if (containsSearchParameters(request, simpleSearchParams)) {
-        return buildPatientResponse([patients.exampleSearchPatientSmith])
+        return buildPatientResponse([patients.exampleSearchPatientSmith]);
     }
 
-    return buildPatientResponse()
+    return buildPatientResponse();
     
 }
     

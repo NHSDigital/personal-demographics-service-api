@@ -34,6 +34,14 @@ module.exports = [
         path: '/Patient',
         handler: (request) => {
 
+            function dateFormat(date) {
+                if (date.match(/^\d/)) {
+                    // Allow 2020-03-27 and eq2020-03-27 - adding on the 'eq' if missing as the (imported) validator expects it.
+                    date = "eq" + date;
+                }
+                return date
+            }
+
             if (!patientSearcher.requestContainsParameters(request)) {
                 throw Boom.badRequest(
                     "Not enough search parameters were provided to be able to make a search",
@@ -42,7 +50,8 @@ module.exports = [
 
             if (request.query["birthdate"]) {
                 let birthdateParameter = Array.isArray(request.query["birthdate"]) ? request.query["birthdate"] : [request.query["birthdate"]]
-                birthdateParameter.forEach(date => {   
+                birthdateParameter.forEach(date => {  
+                    date = dateFormat(date)
                     if (dateValidator.dateSchema.validate(date).error) { 
                         throw Boom.badRequest(
                             `birthdate has invalid format: ${request.query["birthdate"]} is not in <eq|ge|le>YYYY-MM-DD format`,
@@ -51,10 +60,14 @@ module.exports = [
                 }) 
             }
 
-            if (request.query["death-date"] && dateValidator.dateSchema.validate(request.query["death-date"]).error) {
-                throw Boom.badRequest(
-                    `death-date has invalid format: ${request.query["death-date"]} is not in <eq|ge|le>YYYY-MM-DD format`,
-                    {operationOutcomeCode: "value", apiErrorCode: "INVALID_DATE_FORMAT"})
+            if (request.query["death-date"]) {
+                var date = request.query["death-date"]
+                date = dateFormat(date)
+                if(dateValidator.dateSchema.validate(date).error) {
+                    throw Boom.badRequest(
+                        `death-date has invalid format: ${request.query["death-date"]} is not in <eq|ge|le>YYYY-MM-DD format`,
+                        {operationOutcomeCode: "value", apiErrorCode: "INVALID_DATE_FORMAT"})
+                }
             }
 
             return patientSearcher.search(request)
