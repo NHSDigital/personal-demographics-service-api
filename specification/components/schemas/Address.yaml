@@ -26,10 +26,10 @@ properties:
     type: string
     description: |
       Purpose of this address:
-      - home - a communication address at a home.
-      - work - an office address. First choice for business related contacts during business hours.
-      - temp - a temporary address. The period can provide more detailed information.
-      - billing - a corresponding address nominated by the patient where communication can be sent.
+      * home - a communication address at a home.
+      * work - an office address. First choice for business related contacts during business hours.
+      * temp - a temporary address. The period can provide more detailed information.
+      * billing - a corresponding address nominated by the patient where communication can be sent.
     enum: [home, work, temp, billing]
     example: work
   line:
