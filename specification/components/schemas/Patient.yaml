@@ -63,7 +63,7 @@ properties:
             display:
               type: string
               description: Representation defined by the system.
-              enum: ["unrestricted", restricted, "very restricted", redacted]
+              enum: ["unrestricted", "restricted", "very restricted", "redacted"]
               example: unrestricted
   name:
     type: array
