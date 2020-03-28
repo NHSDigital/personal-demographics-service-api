@@ -28,14 +28,7 @@ properties:
           items:
             $ref: "extensions/NHSNumberVerificationStatus.yaml"
   meta:
-    type: object
-    description: Metadata about this resource.
-    properties:
-      versionId:
-        type: string
-        description: The NHS Digital assigned version of the patient resource.
-        readOnly: true
-        example: "2"
+    $ref: "Meta.yaml"
   name:
     type: array
     description: List of names associated with the patient.
@@ -57,17 +50,17 @@ properties:
     $ref: "PersonAddress.yaml"
   telecom:
     type: array
-    description: List of contact points for the patient, for example phone numbers or email addresses.
+    description: List of contact points for the patient; for example, phone numbers or email addresses.
     items:
       $ref: "ContactPoint.yaml"
   generalPractitioner:
     type: array
-    description: General practice (not practitioner) with which the patient is or was registered. Always contains zero or one general practitioner objects.
+    description: General practice (not practitioner) with which the patient is, or was, registered. Always contains zero or one general practitioner object.
     items:
       $ref: "GeneralPractitionerReference.yaml"
   extension:
     type: array
-    description: Wrapper array for the patient's pharmacies, death notification status and communication details, which are all FHIR extensions. Always contains zero or one of each pharmacy objects, zero or one death notification status objects and zero or one communication details objects.
+    description: Wrapper array for the patient's pharmacies, death notification status and communication details; these are all FHIR extensions. Always contains zero or one of each pharmacy object, zero or one death notification status object, and zero or one communication details object.
     items:
       anyOf:
         - $ref: "extensions/NominatedPharmacy.yaml"
