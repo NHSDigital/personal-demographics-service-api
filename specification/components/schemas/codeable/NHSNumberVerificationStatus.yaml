@@ -1,7 +1,7 @@
 type: object
 description: NHS Number Verification Status Indicator.
 required:
-  coding
+  - coding
 properties:
   coding:
     type: array
