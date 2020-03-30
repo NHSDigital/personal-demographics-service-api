@@ -23,7 +23,14 @@
     }
   ],
   "meta": {
-    "versionId": "2"
+    "versionId": "2",
+    "security": [
+      {
+        "system": "https://www.hl7.org/fhir/valueset-security-labels.html",
+        "code": "U",
+        "display": "unrestricted"
+      }
+    ]
   },
   "name": [
     {

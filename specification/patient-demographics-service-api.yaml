@@ -108,14 +108,20 @@ info:
     * our integration test environment for formal integration testing (coming soon)
 
     ### Sandbox testing
-    Our [sandbox environment](https://digital.nhs.uk/developer/testing#sandbox-testing) is a very basic simulation of the live service. It only covers a limited set of scenarios and is stateless, so it does not actually persist any updates.
+    Our [sandbox environment](https://digital.nhs.uk/developer/testing#sandbox-testing) is a very basic simulation of the live service.
+    It only covers a limited set of scenarios and is stateless, so it does not actually persist any updates.
+    
     For more details on sandbox testing, or to try out the sandbox using our "Try this API" feature, see the documentation for each endpoint.
+    
     Alternatively, you can try out the sandbox using our Postman collection:
+    
     [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ccf2a785660c65d82a46)
     
     ### Integration testing
     Our [integration test environment](https://digital.nhs.uk/developer/testing#integration-testing) is for formal integration testing.
+    
     You can use our [test data pack](https://digital.nhs.uk/developer/api-specifications/pds-fhir-api-test-data) to test most common scenarios. You can also create your own test data.
+    
     For more details see [integration testing with our RESTful APIs](https://digital.nhs.uk/developer/testing#integration-testing-with-our-restful-apis).
     
     ## Onboarding
@@ -216,7 +222,7 @@ paths:
         * the end user has access to patients’ personal data, so there is a risk to patient privacy
 
         ## Sandbox testing
-        You can test the following scenarios in our [sandbox environment](/testing#sandbox-testing):
+        You can test the following scenarios in our sandbox environment:
 
         | Scenario                    | Request                                                      | Response                                   |
         | --------------------------- | ------------------------------------------------------------ | ------------------------------------------ |
