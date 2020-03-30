@@ -141,9 +141,9 @@ servers:
   - url: 'https://sandbox.api.service.nhs.uk/personal-demographics'
     description: Sandbox environment.
   - url: 'https://int.api.service.nhs.uk/personal-demographics'
-    description: Integration environment.
+    description: Integration test environment.
   - url: 'https://api.service.nhs.uk/personal-demographics'
-    description: 'Production environment. (Not available: See "API Status and Roadmap".)'
+    description: 'Production environment (not yet available: see "API status and roadmap").'
 tags:
   - name: patients
 paths:
