@@ -1,5 +1,8 @@
 # Changelog
 
+## 2020-03-20
+* Update server urls to '.api.service.nhs.uk' domains in the OAS. Now includes Integration and Production environments.
+
 ## 2020-03-27
 * Added `security` object to patient `meta` object
 
