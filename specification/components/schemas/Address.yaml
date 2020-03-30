@@ -31,13 +31,13 @@ properties:
     example:
       - 1 Trevelyan Square
       - Boar Lane
-      - "City Centre"
+      - City Centre
       - Leeds
       - West Yorkshire
   postalCode:
     type: string
     description: Postal code of the address.
-    example: "LS1 6AE"
+    example: LS1 6AE
   extension:
     type: array
     description: Postal Address File (PAF) key associated with this address formatted as a FHIR extension. Empty if no PAF key for the address is known, or an object specifying the code system of the address key and the value of the address key. 
