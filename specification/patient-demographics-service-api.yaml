@@ -58,13 +58,13 @@ info:
 
     The update endpoint is in [alpha](https://digital.nhs.uk/developer/developer-reference/reference-guide#api-status) - expect further breaking changes.
 
-    The API is currently only available for sandbox testing, not for integration testing or production use.
+    The API is currently available for sandbox testing and integration testing, but not for production use.
 
     The following items are on our roadmap, in rough priority order:
-    - integration testing service (target date: ASAP)
-    - production service - beta - search for patient and retrieve patient details (target date: end of March 2020)
-    - addition of data fields for consent information, related people and sensitive patient flag
-    - production service - beta - update patient (target date: end of April 2020)
+    - integration testing service - enhancement to support authorisation with NHS smartcards (target date: ASAP)
+    - production service - beta - search for patient and retrieve patient details (target date: end of April 2020)
+    - addition of data fields for consent information and related people
+    - production service - beta - update patient (target date: end of May 2020)
     - unauthenticated access - without NHS smartcard - similar to the PDS SMSP API (target date to be confirmed - please [contact us](https://digital.nhs.uk/developer/help-and-support) for more details)
     - access for citizens using NHS Login (target date to be confirmed - please [contact us](https://digital.nhs.uk/developer/help-and-support) for more details)
     - exit beta (target date: end of September 2020, subject to availability of beta testers)
@@ -110,11 +110,12 @@ info:
     ## Testing
     You can test this API in:
     * our sandbox environment for initial developer testing
-    * our integration test environment for formal integration testing (coming soon)
+    * our integration test environment for formal integration testing
 
     ### Sandbox testing
     Our [sandbox environment](https://digital.nhs.uk/developer/testing#sandbox-testing) is a very basic simulation of the live service.
     It only covers a limited set of scenarios and is stateless, so it does not actually persist any updates.
+    It does not include authorisation.
     
     For more details on sandbox testing, or to try out the sandbox using our "Try this API" feature, see the documentation for each endpoint.
     
@@ -124,6 +125,9 @@ info:
     
     ### Integration testing
     Our [integration test environment](https://digital.nhs.uk/developer/testing#integration-testing) is for formal integration testing.
+    
+    It includes authorisation, although at the moment it only supports signing in with a user name and password.
+    Authorisation with smartcards is coming soon.
     
     You can use our [test data pack](https://digital.nhs.uk/developer/api-specifications/pds-fhir-api-test-data) to test most common scenarios. You can also create your own test data.
     
