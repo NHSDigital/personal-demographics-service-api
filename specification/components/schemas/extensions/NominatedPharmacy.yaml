@@ -1,5 +1,8 @@
 type: object
 description: Wrapper object for the patient's nominated pharmacy. This will only be populated on a retrieval and not a search.
+required:
+  - url
+  - valueReference
 properties:
   url:
     type: string
@@ -9,6 +12,9 @@ properties:
   valueReference:
     type: object
     description: Reference to a Pharmacy Organization Resource.
+    required:
+      - reference
+      - identifier
     properties:
       reference:
         type: string
@@ -17,6 +23,8 @@ properties:
       identifier:
         type: object
         description: Wrapper object for the patient's nominated pharmacy organisation code.
+        required:
+          - value
         properties:
           system:
             type: string
@@ -28,16 +36,4 @@ properties:
             description: Organisation code for the nominated pharmacy, as held in the [Organisation Data Service](https://developer.nhs.uk/apis/ods/).
             example: Y12345
           period:
-            type: object
-            description: Time period when nominated pharmacy was, is, or will be valid.
-            properties:
-              start:
-                type: string
-                format: date
-                description: Start date of time period, if known, in format `yyyy-mm-dd`. Can be a future date.
-                example: '2020-01-01'
-              end:
-                type: string
-                format: date
-                description: End date of time period, if known and if not ongoing, in format `yyyy-mm-dd`. Can be a future date.
-                example: '2021-01-01'
+            $ref: "../Period.yaml"

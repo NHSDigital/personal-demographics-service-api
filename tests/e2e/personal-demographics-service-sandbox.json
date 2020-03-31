@@ -93,7 +93,7 @@
 													"                        \"use\": \"usual\",",
 													"                        \"period\": {",
 													"                            \"start\": \"2020-01-01\",",
-													"                            \"end\": \"2020-12-31\"",
+													"                            \"end\": \"2021-12-31\"",
 													"                        },",
 													"                        \"given\": [",
 													"                            \"Jane\"",
@@ -121,7 +121,7 @@
 													"                            \"value\": \"Y12345\",",
 													"                            \"period\": {",
 													"                                \"start\": \"2020-01-01\",",
-													"                                \"end\": \"2021-01-01\"",
+													"                                \"end\": \"2021-12-31\"",
 													"                            }",
 													"                        }",
 													"                    }",
@@ -197,7 +197,7 @@
 													"                        \"use\": \"usual\",",
 													"                        \"period\": {",
 													"                            \"start\": \"2020-01-01\",",
-													"                            \"end\": \"2020-12-31\"",
+													"                            \"end\": \"2021-12-31\"",
 													"                        },",
 													"                        \"given\": [",
 													"                            \"Jayne\"",
@@ -225,7 +225,7 @@
 													"                            \"value\": \"Y12345\",",
 													"                            \"period\": {",
 													"                                \"start\": \"2020-01-01\",",
-													"                                \"end\": \"2021-01-01\"",
+													"                                \"end\": \"2021-12-31\"",
 													"                            }",
 													"                        }",
 													"                    }",
@@ -372,7 +372,7 @@
 													"                        \"use\": \"usual\",",
 													"                        \"period\": {",
 													"                            \"start\": \"2020-01-01\",",
-													"                            \"end\": \"2020-12-31\"",
+													"                            \"end\": \"2021-12-31\"",
 													"                        },",
 													"                        \"given\": [",
 													"                            \"Jane\"",
@@ -400,7 +400,7 @@
 													"                            \"value\": \"Y12345\",",
 													"                            \"period\": {",
 													"                                \"start\": \"2020-01-01\",",
-													"                                \"end\": \"2021-01-01\"",
+													"                                \"end\": \"2021-12-31\"",
 													"                            }",
 													"                        }",
 													"                    }",
@@ -476,7 +476,7 @@
 													"                        \"use\": \"usual\",",
 													"                        \"period\": {",
 													"                            \"start\": \"2020-01-01\",",
-													"                            \"end\": \"2020-12-31\"",
+													"                            \"end\": \"2021-12-31\"",
 													"                        },",
 													"                        \"given\": [",
 													"                            \"Jayne\"",
@@ -504,7 +504,7 @@
 													"                            \"value\": \"Y12345\",",
 													"                            \"period\": {",
 													"                                \"start\": \"2020-01-01\",",
-													"                                \"end\": \"2021-01-01\"",
+													"                                \"end\": \"2021-12-31\"",
 													"                            }",
 													"                        }",
 													"                    }",
@@ -656,7 +656,7 @@
 													"                        \"use\": \"usual\",",
 													"                        \"period\": {",
 													"                            \"start\": \"2020-01-01\",",
-													"                            \"end\": \"2020-12-31\"",
+													"                            \"end\": \"2021-12-31\"",
 													"                        },",
 													"                        \"given\": [",
 													"                            \"Jane\"",
@@ -684,7 +684,7 @@
 													"                            \"value\": \"Y12345\",",
 													"                            \"period\": {",
 													"                                \"start\": \"2020-01-01\",",
-													"                                \"end\": \"2021-01-01\"",
+													"                                \"end\": \"2021-12-31\"",
 													"                            }",
 													"                        }",
 													"                    }",
@@ -843,7 +843,7 @@
 													"                        \"use\": \"usual\",",
 													"                        \"period\": {",
 													"                            \"start\": \"2020-01-01\",",
-													"                            \"end\": \"2020-12-31\"",
+													"                            \"end\": \"2021-12-31\"",
 													"                        },",
 													"                        \"given\": [",
 													"                            \"Jayne\"",
@@ -871,7 +871,7 @@
 													"                            \"value\": \"Y12345\",",
 													"                            \"period\": {",
 													"                                \"start\": \"2020-01-01\",",
-													"                                \"end\": \"2021-01-01\"",
+													"                                \"end\": \"2021-12-31\"",
 													"                            }",
 													"                        }",
 													"                    }",
@@ -1030,7 +1030,7 @@
 											"                        \"use\": \"usual\",",
 											"                        \"period\": {",
 											"                            \"start\": \"2020-01-01\",",
-											"                            \"end\": \"2020-12-31\"",
+											"                            \"end\": \"2021-12-31\"",
 											"                        },",
 											"                        \"given\": [",
 											"                            \"Jane\"",
@@ -1058,7 +1058,7 @@
 											"                            \"value\": \"Y12345\",",
 											"                            \"period\": {",
 											"                                \"start\": \"2020-01-01\",",
-											"                                \"end\": \"2021-01-01\"",
+											"                                \"end\": \"2021-12-31\"",
 											"                            }",
 											"                        }",
 											"                    }",
@@ -1468,7 +1468,7 @@
 											"            \"use\": \"usual\",",
 											"            \"period\": {",
 											"                \"start\": \"2020-01-01\",",
-											"                \"end\": \"2020-12-31\"",
+											"                \"end\": \"2021-12-31\"",
 											"            },",
 											"            \"given\": [",
 											"                \"Jane\"",
@@ -1490,7 +1490,7 @@
 											"            \"id\": \"123\",",
 											"            \"period\": {",
 											"                \"start\": \"2020-01-01\",",
-											"                \"end\": \"2020-12-31\"",
+											"                \"end\": \"2021-12-31\"",
 											"            },",
 											"            \"use\": \"work\",",
 											"            \"line\": [",
@@ -1523,9 +1523,10 @@
 											"    ],",
 											"    \"telecom\": [",
 											"        {",
+											"            \"id\": \"123\",",
 											"            \"period\": {",
 											"                \"start\": \"2020-01-01\",",
-											"                \"end\": \"2020-12-31\"",
+											"                \"end\": \"2021-12-31\"",
 											"            },",
 											"            \"system\": \"phone\",",
 											"            \"value\": \"01632960587\",",
@@ -1542,7 +1543,7 @@
 											"                \"value\": \"Y12345\",",
 											"                \"period\": {",
 											"                    \"start\": \"2020-01-01\",",
-											"                    \"end\": \"2021-01-01\"",
+											"                    \"end\": \"2021-12-31\"",
 											"                }",
 											"            }",
 											"        }",
@@ -1557,7 +1558,7 @@
 											"                    \"value\": \"Y12345\",",
 											"                    \"period\": {",
 											"                        \"start\": \"2020-01-01\",",
-											"                        \"end\": \"2021-01-01\"",
+											"                        \"end\": \"2021-12-31\"",
 											"                    }",
 											"                }",
 											"            }",
@@ -1571,7 +1572,7 @@
 											"                    \"value\": \"Y23456\",",
 											"                    \"period\": {",
 											"                        \"start\": \"2020-01-01\",",
-											"                        \"end\": \"2021-01-01\"",
+											"                        \"end\": \"2021-12-31\"",
 											"                    }",
 											"                }",
 											"            }",
@@ -1585,7 +1586,7 @@
 											"                    \"value\": \"Y34567\",",
 											"                    \"period\": {",
 											"                        \"start\": \"2020-01-01\",",
-											"                        \"end\": \"2021-01-01\"",
+											"                        \"end\": \"2021-12-31\"",
 											"                    }",
 											"                }",
 											"            }",
@@ -1658,68 +1659,7 @@
 								},
 								"description": "GIVEN I have a valid NHS Number\nWHEN I call the simple search query\nTHEN I should get the patients details"
 							},
-							"response": [
-								{
-									"name": "Retrieve: Patient Exists",
-									"originalRequest": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{environment}}/Patient/9000000009",
-											"host": [
-												"{{environment}}"
-											],
-											"path": [
-												"Patient",
-												"9000000009"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Date",
-											"value": "Fri, 21 Feb 2020 16:55:50 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/fhir+json; fhirVersion=4.0"
-										},
-										{
-											"key": "Transfer-Encoding",
-											"value": "chunked"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										},
-										{
-											"key": "etag",
-											"value": "W/\"2\""
-										},
-										{
-											"key": "vary",
-											"value": "origin,accept-encoding"
-										},
-										{
-											"key": "access-control-expose-headers",
-											"value": "WWW-Authenticate,Server-Authorization"
-										},
-										{
-											"key": "cache-control",
-											"value": "no-cache"
-										},
-										{
-											"key": "content-encoding",
-											"value": "gzip"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"resourceType\": \"Patient\",\n    \"id\": \"9000000009\",\n    \"identifier\": [\n        {\n            \"system\": \"https://fhir.nhs.uk/Id/nhs-number\",\n            \"value\": \"9000000009\",\n            \"extension\": [\n                {\n                    \"url\": \"https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus\",\n                    \"valueCodeableConcept\": {\n                        \"coding\": [\n                            {\n                                \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/UKCore-NHSNumberVerificationStatus\",\n                                \"version\": \"1.0.0\",\n                                \"code\": \"01\",\n                                \"display\": \"Number present and verified\"\n                            }\n                        ]\n                    }\n                }\n            ]\n        }\n    ],\n    \"meta\": {\n        \"versionId\": \"2\"\n    },\n    \"name\": [\n        {\n            \"use\": \"usual\",\n            \"period\": {\n                \"start\": \"2020-01-01\",\n                \"end\": \"2020-12-31\"\n            },\n            \"given\": [\n                \"Jane\"\n            ],\n            \"family\": \"Smith\",\n            \"prefix\": \"Mrs\",\n            \"suffix\": \"MBE\"\n        }\n    ],\n    \"gender\": \"female\",\n    \"birthDate\": \"2010-10-22\",\n    \"deceasedDateTime\": \"2010-10-22T00:00:00+00:00\",\n    \"address\": [\n        {\n            \"id\": \"123\",\n            \"period\": {\n                \"start\": \"2020-01-01\",\n                \"end\": \"2020-12-31\"\n            },\n            \"use\": \"work\",\n            \"line\": [\n                \"1 Trevelyan Square\",\n                \"Boar Lane\",\n                \"City Centre\",\n                \"Leeds\",\n                \"West Yorkshire\"\n            ],\n            \"postalCode\": \"LS1 6AE\",\n            \"extension\": [\n                {\n                    \"url\": \"https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-AddressKey\",\n                    \"extension\": [\n                        {\n                            \"url\": \"type\",\n                            \"valueCoding\": {\n                                \"system\": \"https://simplifier.net/guide/UKCoreDecember2019/CodeSystemUKCore-AddressKeyType\",\n                                \"code\": \"PAF\"\n                            }\n                        },\n                        {\n                            \"url\": \"value\",\n                            \"valueString\": \"12345678\"\n                        }\n                    ]\n                }\n            ]\n        }\n    ],\n    \"telecom\": [\n        {\n            \"period\": {\n                \"start\": \"2020-01-01\",\n                \"end\": \"2020-12-31\"\n            },\n            \"system\": \"phone\",\n            \"value\": \"01632960587\",\n            \"use\": \"work\",\n            \"rank\": 1\n        }\n    ],\n    \"generalPractitioner\": [\n        {\n            \"id\": \"Y12345\",\n            \"reference\": \"https://directory.spineservices.nhs.uk/STU3/Organization/Y12345\"\n        }\n    ],\n    \"communication\": [\n        {\n            \"language\": {\n                \"coding\": [\n                    {\n                        \"system\": \"https://simplifier.net/ukcore/CodeSystem-UKCore-HumanLanguage\",\n                        \"version\": \"1.0.0\",\n                        \"code\": \"en\",\n                        \"display\": \"English\"\n                    }\n                ]\n            },\n}\n    ],\n    \"extension\": [\n        {\n            \"url\": \"https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-NominatedPharmacy\",\n            \"valueReference\": {\n                \"reference\": \"https://directory.spineservices.nhs.uk/STU3/Organization/Y12345\",\n                \"identifier\": {\n                    \"system\": \"https://fhir.nhs.uk/Id/ods-organization-code\",\n                    \"value\": \"Y12345\"\n                }\n            }\n        },\n        {\n            \"url\": \"https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus\",\n            \"extension\": [\n                {\n                    \"url\": \"deathNotificationStatus\",\n                    \"valueCodeableConcept\": {\n                        \"coding\": [\n                            {\n                                \"system\": \"https://simplifier.net/UKCore/CodeSystem-UKCore-DeathNotificationStatus\",\n                                \"version\": \"1.0.0\",\n                                \"code\": \"2\",\n                                \"display\": \"Formal - death notice received from Registrar of Deaths\"\n                            }\n                        ]\n                    }\n                },\n                {\n                    \"url\": \"systemEffectiveDate\",\n                    \"valueDateTime\": \"2010-10-22T00:00:00+00:00\"\n                }\n            ]\n        }\n    ]\n}"
-								}
-							]
+							"response": []
 						},
 						{
 							"name": "Retrieve: Patient does not Exist",

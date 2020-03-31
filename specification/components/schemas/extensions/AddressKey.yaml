@@ -9,10 +9,15 @@ properties:
   extension:
     type: array
     description: "Specification of address key system and address key value. Contains exactly two items: one describing the code system the Address Key uses, and the other specifying the value of the Address Key."
+    minItems: 2
+    maxItems: 2
     items:
       anyOf:
         - type: object
           description: Coding system of the address key.
+          required:
+            - url
+            - valueCoding
           properties:
             url:
               type: string
@@ -22,6 +27,9 @@ properties:
             valueCoding:
               type: object
               description: URL of specification of address key format.
+              required:
+                - system
+                - code
               properties:
                 system:
                   type: string
@@ -36,6 +44,9 @@ properties:
                   readOnly: true
         - type: object
           description: Value of the address key.
+          required:
+            - url
+            - valueString
           properties:
             url:
               type: string

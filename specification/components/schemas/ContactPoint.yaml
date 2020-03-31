@@ -1,21 +1,18 @@
 description: A contact point, such as a phone number or email address. This will only be populated on a retrieval and not a search.
 type: object
+required:
+  - id
+  - use
+  - system
+  - value
 properties:
+  id:
+    type: string
+    description: Unique object identifier for this contact point.
+    readOnly: true
+    example: '123'
   period:
-    type: object
-    description: Time period when contact point was, is, or will be valid.
-    properties:
-      start:
-        type: string
-        format: date
-        description: Start date of time period, if known, in format `yyyy-mm-dd`. Can be a future date.
-        example: 2020-01-01
-        # required: true
-      end:
-        type: string
-        format: date
-        description: End date of time period, if known and if not ongoing, in format `yyyy-mm-dd`. Can be a future date.
-        example: 2020-12-31
+    $ref: "Period.yaml"
   system:
     description: Means of communication, such as phone or email.
     type: string

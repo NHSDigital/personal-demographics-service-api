@@ -9,6 +9,7 @@ properties:
   issue:
     type: array
     description: List of issues that have occurred.
+    minItems: 1
     items:
       type: object
       required:

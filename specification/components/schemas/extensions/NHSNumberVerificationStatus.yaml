@@ -1,5 +1,6 @@
 type: object
 description: Status indicating if NHS number is present and verified.
+readOnly: true
 properties:
   url:
     type: string
