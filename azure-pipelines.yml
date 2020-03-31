@@ -15,24 +15,19 @@ jobs:
       API_TEST_ENV_FILE_PATH: "tests/e2e/environments/local.postman_environment.json"
       PIP_CACHE_DIR: ".poetry"
     steps:
-      # Check out repo with full depth
       - checkout: self
 
-      # Use Python 3.8
       - task: UsePythonVersion@0
         displayName: "Use Python 3.8"
         inputs:
           versionSpec: "3.8"
 
-      # Install apt dependencies
       - bash: "sudo apt update && sudo apt-get install --yes default-jre default-jdk npm"
         displayName: Install apt dependencies
 
-      # Install python dependencies
       - bash: "python -m pip install --upgrade pip setuptools wheel && pip install poetry"
         displayName: Install python dependencies
 
-      # cache python dependencies
       - task: Cache@2
         displayName: "Cache Python Dependencies"
         inputs:
@@ -42,7 +37,6 @@ jobs:
             "$(Agent.OS)" | "python" | poetry.lock
             "$(Agent.OS)" | "pythons"
 
-      # cache npm dependencies
       - task: Cache@2
         displayName: "Cache Package NPM Dependencies"
         inputs:
@@ -52,7 +46,6 @@ jobs:
             "$(Agent.OS)" | "node" | package-lock.json
             "$(Agent.OS)" | "node"
           
-      # cache sandbox npm dependencies
       - task: Cache@2
         displayName: "Cache Sandbox NPM Dependencies"
         inputs:
@@ -62,49 +55,38 @@ jobs:
             "$(Agent.OS)" | "node-sandbox" | sandbox/package-lock.json
             "$(Agent.OS)" | "node-sandbox"
 
-      # make install
       - bash: "make install"
         displayName: Install repo
 
-      # start sandbox for testing later
       - bash: "make sandbox &"
         displayName: Start Sandbox Server
 
-      # check licenses
       - bash: "make check-licenses"
         displayName: Check licenses
 
-      # lint
       - bash: "make lint"
         displayName: Lint
 
-      # validate
       - bash: "make validate"
         displayName: Validate FHIR
 
-      # compile spec
       - bash: "make publish"
         displayName: Compile Spec
 
-      # set SPEC_VERSION
       - bash: 'echo "##vso[task.setvariable variable=SPEC_VERSION]$(poetry run python scripts/calculate_version.py)"'
         displayName: Set SPEC_VERSION
 
-      # run local tests
       - bash: "make test"
         displayName: Run Tests
 
-      # upload test results
       - task: PublishTestResults@2
         inputs:
           testResultsFormat: 'JUnit'
           testResultsFiles: 'newman/*.xml'
           failTaskOnFailedTests: true
 
-      # build release package
       - bash: "make release"
         displayName: Build Release Package
 
-      # publish release package artifact
       - publish: dist/package.tar.gz
         artifact: personal-demographics-service-$(SPEC_VERSION)+$(Build.BuildNumber)
