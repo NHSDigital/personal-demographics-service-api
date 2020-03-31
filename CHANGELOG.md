@@ -1,5 +1,9 @@
 # Changelog
 
+## 2020-03-31
+* Move over to using Azure Pipelines for builds and releases.
+* Some refactoring.
+
 ## 2020-03-20
 * Update server urls to '.api.service.nhs.uk' domains in the OAS. Now includes Integration and Production environments.
 
