@@ -6,6 +6,11 @@ info:
   version: "{VERSION}"
   title: Personal Demographics Service (FHIR) API
   description: |
+  
+    | Sandbox base URL            | `https://sandbox.api.service.nhs.uk/personal-demographics/`    |
+    | Integration test base URL   | `https://int.api.service.nhs.uk/personal-demographics/`        |
+    | Production base URL         | Not yet available                                              |
+  
     ## Overview
     Use this API to access the [Personal Demographics Service (PDS)](https://digital.nhs.uk/services/demographics) - the national electronic database of NHS patient details such as name, address, date of birth and NHS Number.
 
