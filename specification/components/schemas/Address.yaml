@@ -1,5 +1,8 @@
 type: object
 description: An address associated with the patient.
+required:
+  - id
+  - use
 properties:
   id:
     type: string
@@ -7,21 +10,7 @@ properties:
     readOnly: true
     example: '123'
   period:
-    type: object
-    description: Time period when address was, is, or will be in use.
-    required:
-      - start
-    properties:
-      start:
-        type: string
-        format: date
-        description: Start date of time period, if known, in format `yyyy-mm-dd`. Can be a future date.
-        example: 2020-01-01
-      end:
-        type: string
-        format: date
-        description: End date of time period, if known and if not ongoing, in format `yyyy-mm-dd`. Can be a future date.
-        example: 2020-12-31
+    $ref: "Period.yaml"
   use:
     type: string
     description: |
@@ -35,10 +24,10 @@ properties:
   line:
     type: array
     description: All lines of the address except the postal code.
-    items:
-      type: string
     minItems: 5
     maxItems: 5
+    items:
+      type: string
     example:
       - 1 Trevelyan Square
       - Boar Lane
@@ -48,9 +37,9 @@ properties:
   postalCode:
     type: string
     description: Postal code of the address.
-    example: "LS1 6AE"
+    example: LS1 6AE
   extension:
     type: array
-    description: Postal address file (PAF) key associated with this address formatted as a FHIR extension. Empty if no PAF key for the address is known, or an object specifying the code system of the address key and the value of the address key. 
+    description: Postal Address File (PAF) key associated with this address formatted as a FHIR extension. Empty if no PAF key for the address is known, or an object specifying the code system of the address key and the value of the address key. 
     items:
       $ref: 'extensions/AddressKey.yaml'

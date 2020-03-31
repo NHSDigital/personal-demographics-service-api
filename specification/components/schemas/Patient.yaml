@@ -1,4 +1,9 @@
 type: object
+required:
+  - birthDate
+  - gender
+  - name
+  - address
 properties:
   resourceType:
     type: string
@@ -9,58 +14,69 @@ properties:
     $ref: "NhsNumber.yaml"
     readOnly: true
   identifier:
-    type: array
-    description: Identifier and system of identification used for this Patient.
-    items:
-      type: object
-      properties:
-        system:
-          type: string
-          format: url
-          description: System identifier belongs to.
-          default: https://fhir.nhs.uk/Id/nhs-number
-          readOnly: true
-        value:
-          $ref: "NhsNumber.yaml"
-        extension:
-          type: array
-          description: FHIR extensions.
-          items:
-            $ref: "extensions/NHSNumberVerificationStatus.yaml"
+    $ref: "Identifier.yaml"
   meta:
     $ref: "Meta.yaml"
   name:
     type: array
-    description: List of names associated with the patient.
+    description: | 
+      List of names associated with the patient.
+      
+      When a patient tagged as `very restricted` is retrieved, all names will be removed from the response.
+    minItems: 1
     items:
       $ref: "HumanName.yaml"
   gender:
     $ref: "Gender.yaml"
   birthDate:
-    description: Date of birth. A date in the format `yyyy-mm-dd`.
+    description: |
+      Date of birth. A date in the format `yyyy-mm-dd`.
+      
+      When a patient tagged as `very restricted` is retrieved, birth date will be removed from the response.
     example: "2010-10-22"
     type: string
     format: date
   deceasedDateTime:
-    description: Date and time of death, if applicable and known. A datetime in the format `yyyy-mm-ddTHH:MM:SS+HH:MM`.
+    description: |
+      Date and time of death, if applicable and known. A datetime in the format `yyyy-mm-ddTHH:MM:SS+HH:MM`.
+      
+      When a patient tagged as `very restricted` is retrieved, death date will be removed from the response.
     example: "2010-10-22T00:00:00+00:00"
     type: string
     format: date-time
   address:
-    $ref: "PersonAddress.yaml"
+    type: array
+    description: | 
+      List of addresses associated with the patient.
+      
+      This will only be fully populated on a retrieval, only a the `home` address will be returned on a search.
+
+      When a patient tagged as `restricted` or `very restricted` is retrieved, all addresses will be removed from the response.
+    items:
+      $ref: "Address.yaml"
   telecom:
     type: array
-    description: List of contact points for the patient; for example, phone numbers or email addresses.
+    description: |
+      List of contact points for the patient; for example, phone numbers or email addresses.
+
+      When a patient tagged as `restricted` or `very restricted` is retrieved, all contact points will be removed from the response.
     items:
       $ref: "ContactPoint.yaml"
   generalPractitioner:
     type: array
-    description: General practice (not practitioner) with which the patient is, or was, registered. Always contains zero or one general practitioner object.
+    maxItems: 1
+    description: |
+      General Practice (not practitioner) with which the patient is, or was, registered. Always contains zero or one general practitioner object.
+
+      When a patient tagged as `restricted` or `very restricted` is retrieved, the General Practice will be removed from the response.
     items:
       $ref: "GeneralPractitionerReference.yaml"
   extension:
     type: array
-    description: Wrapper array for the patient's pharmacies, death notification status and communication details; these are all FHIR extensions. Always contains zero or one of each pharmacy object, zero or one death notification status object, and zero or one communication details object.
+    description: |
+      Wrapper array for the patient's pharmacies, death notification status and communication details; these are all FHIR extensions. Always contains zero or one of each pharmacy object, zero or one death notification status object, and zero or one communication details object.
+
+      When a patient tagged as `restricted` or `very restricted` is retrieved, the Pharmacy and Death Notification extensions will be removed from the response.
     items:
       anyOf:
         - $ref: "extensions/NominatedPharmacy.yaml"

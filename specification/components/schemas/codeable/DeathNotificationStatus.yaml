@@ -3,8 +3,13 @@ description: Death Notification Status.
 properties:
   coding:
     type: array
+    minItems: 1
+    maxItems: 1
     items:
       type: object
+      required:
+        - system
+        - code
       properties:
         system:
           type: string
@@ -18,12 +23,12 @@ properties:
           type: string
           description: | 
             Symbol, in syntax, defined by the system:
-            - Code 1. Informal death notice received via an update from a local NHS Organisation such as GP practice or Trust
-            - Code 2. Formal death notice received from Registrar of Deaths. Only these endpoints are allowed to add a Formal death:
+            * Code 1 - Informal death notice received via an update from a local NHS Organisation such as GP practice or Trust
+            * Code 2 - Formal death notice received from Registrar of Deaths. Only these endpoints are allowed to add a Formal death:
                 - National Back Office using the Demographic Spine Application (DSA)
                 - Office of National Statistics (ONS)
                 - Maternity sites
-            - Code U. Removed. This is a possible response, but it cannot be used on an update because Spine will reject it
+            * Code U - Removed. This is a possible response, but it cannot be used on an update because Spine will reject it
           example: '2'
           enum: ['1', '2', 'U']
         display:
@@ -31,6 +36,6 @@ properties:
           description: Representation defined by the system.
           example: "Formal - death notice received from Registrar of Deaths"
           enum:
-            - "Informal death notice received via an update from a local NHS Organisation such as GP practice or Trust"
-            - "Formal death notice received from Registrar of Deaths"
-            - "Removed"
+            - Informal death notice received via an update from a local NHS Organisation such as GP practice or Trust
+            - Formal death notice received from Registrar of Deaths
+            - Removed
