@@ -115,7 +115,7 @@ info:
     
     Alternatively, you can try out the sandbox using our Postman collection:
     
-    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ccf2a785660c65d82a46)
+    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f574e6533fcc2e93a2d2)
     
     ### Integration testing
     Our [integration test environment](https://digital.nhs.uk/developer/testing#integration-testing) is for formal integration testing.
@@ -138,7 +138,7 @@ info:
     url: 'https://tbc.api.nhs.net'
     email: tbc-api-support@nhs.net
 servers:
-  - url: 'https://emea-demo8-test.apigee.net/personal-demographics'
+  - url: 'https://sandbox.api.service.nhs.uk/personal-demographics'
     description: Sandbox service.
 tags:
   - name: patients
@@ -239,7 +239,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ccf2a785660c65d82a46)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f574e6533fcc2e93a2d2)
       tags:
         - patients
       parameters:
@@ -476,7 +476,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ccf2a785660c65d82a46)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f574e6533fcc2e93a2d2)
       summary: "Retrieve a patient's record"
       operationId: get-patient
       tags:
@@ -562,7 +562,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ccf2a785660c65d82a46)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f574e6533fcc2e93a2d2)
 
 
       summary: Update a patient's record
