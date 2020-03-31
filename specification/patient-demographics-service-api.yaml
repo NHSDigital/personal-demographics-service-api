@@ -61,7 +61,7 @@ info:
     The API is currently available for sandbox testing and integration testing, but not for production use.
 
     The following items are on our roadmap, in rough priority order:
-    - integration testing service - enhancement to support authorisation with NHS smartcards (ASAP)
+    - integration testing service - enhancement to support authorisation with NHS smartcards (target date: ASAP)
     - production service - beta - search for patient and retrieve patient details (target date: end of April 2020)
     - addition of data fields for consent information and related people
     - production service - beta - update patient (target date: end of May 2020)
