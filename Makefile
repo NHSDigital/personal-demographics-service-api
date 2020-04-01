@@ -42,16 +42,10 @@ clean:
 generate-examples: publish clean
 	mkdir -p build/examples
 	poetry run python scripts/generate_examples.py build/personal-demographics.json build/examples
-	cp build/examples/resources/Patient.json build/examples/resources/Patient-Jayne-Smyth.json
-	cp build/examples/resources/Search_Patient.json build/examples/resources/Search_Patient-Jayne-Smyth.json
-	sed -i -e 's/9000000009/9000000010/g; s/Jane/Jayne/g; s/Smith/Smyth/g;' build/examples/resources/Patient-Jayne-Smyth.json
-	sed -i -e 's/9000000009/9000000010/g; s/Jane/Jayne/g; s/Smith/Smyth/g;' build/examples/resources/Search_Patient-Jayne-Smyth.json
+	scripts/duplicate_examples.sh
 
 update-examples: generate-examples
-	jq -rM . <build/examples/resources/Patient.json >specification/components/examples/Patient.json
-	jq -rM . <build/examples/resources/Patient-Jayne-Smyth.json >specification/components/examples/Patient-Jayne-Smyth.json
-	jq -rM . <build/examples/resources/Search_Patient.json >specification/components/examples/Search_Patient.json
-	jq -rM . <build/examples/resources/Search_Patient-Jayne-Smyth.json >specification/components/examples/Search_Patient-Jayne-Smyth.json
+	scripts/update_examples.sh
 	make publish
 
 check-licenses:

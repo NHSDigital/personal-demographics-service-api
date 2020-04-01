@@ -20,7 +20,7 @@ properties:
       * temp - a temporary address. The period can provide more detailed information.
       * billing - a corresponding address nominated by the patient where communication can be sent.
     enum: [home, work, temp, billing]
-    example: work
+    example: home
   line:
     type: array
     description: All lines of the address except the postal code.
