@@ -6,11 +6,6 @@ info:
   version: "{VERSION}"
   title: Personal Demographics Service (FHIR) API
   description: |
-  
-    | Sandbox base URL            | `https://sandbox.api.service.nhs.uk/personal-demographics/`    |
-    | Integration test base URL   | `https://int.api.service.nhs.uk/personal-demographics/`        |
-    | Production base URL         | Not yet available                                              |
-  
     ## Overview
     Use this API to access the [Personal Demographics Service (PDS)](https://digital.nhs.uk/services/demographics) - the national electronic database of NHS patient details such as name, address, date of birth and NHS Number.
 
@@ -107,15 +102,20 @@ info:
     - access for citizens, using NHS Login
     - unattended access - without smartcard - similar to the PDS SMSP API
 
-    ## Testing
-    You can test this API in:
-    * our sandbox environment for initial developer testing
-    * our integration test environment for formal integration testing
-
+    ## Environments and testing
+    
+    | Environment       | Base URL                                                       |
+    | ----------------- | -------------------------------------------------------------- |
+    | Sandbox           | `https://sandbox.api.service.nhs.uk/personal-demographics/`    |
+    | Integration test  | `https://int.api.service.nhs.uk/personal-demographics/`        |
+    | Production        | Not yet available                                              |
+    
     ### Sandbox testing
-    Our [sandbox environment](https://digital.nhs.uk/developer/testing#sandbox-testing) is a very basic simulation of the live service.
-    It only covers a limited set of scenarios and is stateless, so it does not actually persist any updates.
-    It does not include authorisation.
+    Our [sandbox environment](https://digital.nhs.uk/developer/testing#sandbox-testing):
+    * is for early developer testing
+    * only covers a limited set of scenarios
+    * is stateless, so it does not actually persist any updates
+    * is open access, so does not allow you to test authorisation
     
     For more details on sandbox testing, or to try out the sandbox using our "Try this API" feature, see the documentation for each endpoint.
     
@@ -124,12 +124,11 @@ info:
     [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f574e6533fcc2e93a2d2)
     
     ### Integration testing
-    Our [integration test environment](https://digital.nhs.uk/developer/testing#integration-testing) is for formal integration testing.
+    Our [integration test environment](https://digital.nhs.uk/developer/testing#integration-testing):
+    * is for formal integration testing
+    * includes authorisation, although at the moment it only supports signing in with a user name and password - authorisation with smartcards is coming soon
     
-    It includes authorisation, although at the moment it only supports signing in with a user name and password.
-    Authorisation with smartcards is coming soon.
-    
-    You can use our [test data pack](https://digital.nhs.uk/developer/api-specifications/pds-fhir-api-test-data) to test most common scenarios. You can also create your own test data.
+    You can use our [PDS FHIR API test data pack](https://digital.nhs.uk/developer/api-specifications/pds-fhir-api-test-data) to test most common scenarios. You can also create your own test data.
     
     For more details see [integration testing with our RESTful APIs](https://digital.nhs.uk/developer/testing#integration-testing-with-our-restful-apis).
     
@@ -190,9 +189,11 @@ paths:
         You can use wildcards in given name and family name. Wildcards must start with at least two characters; for example, `Br*` is valid, but `*cDougal` is not. Multiple wildcards are allowed; for example, `Br*w*` will match `Brown` and `Brower`.
         Be sure that any wildcards are encoded before sending the request. An encoded wildcard is `%2A`; for example, `Br%2A` is valid.
 
-        You can request a fuzzy search using the `_fuzzy-match` queryparameter. This will additionally:
+        You can request a fuzzy search using the `_fuzzy-match` query parameter. This will:
           * match common homophones, such as `Smith` and `Smythe`, using the [Soundex](https://en.wikipedia.org/wiki/Soundex) algorithm
           * check for transposed names, such as `Adam Thomas` and `Thomas Adam`
+          
+        Wildcards cannot be used with a fuzzy search.
 
         ## Search parameter options
         For a non-fuzzy search, the minimum set of search parameters is:
@@ -203,28 +204,32 @@ paths:
         For a fuzzy search, use one of the following search parameter combinations:
         * given name, family name and date of birth
         * family name, date of birth, gender and postcode
-        * given name date of birth, gender and postcode
+        * given name, date of birth, gender and postcode
 
         If you include the date of death or registered GP Practice query parameters for a fuzzy search, they will not be used as part of the search. However they will affect the patient's matching score, meaning a mismatch will reduce the returned score.
 
         If you use an invalid combination of query parameters, you will get an `INVALID_COMBINATION` error.
 
         ## Historic data search
-        By default the endpoint only searches current information. You can search historic information, such as previous names or addresses using the `_history` query parameter.
+        By default the endpoint only searches current information.
+        You can search historic information, such as previous names or addresses using the `_history` query parameter.
+        
+        You cannot perform a fuzzy search on historic information.
 
         ## Scoring
-        Every matched patient in the results list includes a score to indicate how closely the patient matched the search parameters.
+        Every matched patient in the result list includes a score to indicate how closely the patient matched the search parameters.
 
         A score of 1.0 indicates an exact match. A score of less than 1.0 indicates a partial match.
 
         The result list is sorted in descending score order - best match first.
 
-        Use the `_exact-match` query parameter to return exact matches only - where the score = 1.0.
+        Use the `_exact-match` query parameter to return exact matches only - where the score is 1.0.
 
         ## Number of results returned
         By default, the endpoint will return a maximum of 50 results.
 
-        If there are more than 50 matching patients, the endpoint will return no results and the error response `TOO_MANY_MATCHES`. You can choose to limit the number of results returned using the `_max-results` query parameter.
+        If there are more than 50 matching patients, the endpoint will return no results and the error response `TOO_MANY_MATCHES`.
+        You can further limit the number of results using the `_max-results` query parameter.
         You can request a single, exact match using `_exact-match=true` and `_max-results=1`.
 
         ## Clinical safety and privacy
@@ -233,6 +238,8 @@ paths:
         You should ensure that you design, build and test your software to minimise these risks:
         * an end user selects the wrong patient from the results presented, so there is a risk of clinical harm; for example due to retrieval of the wrong medical data
         * the end user has access to patients’ personal data, so there is a risk to patient privacy
+        
+        In particular, it is almost certainly a good idea to display search results in descending score order - best match first.
 
         ## Sandbox testing
         You can test the following scenarios in our sandbox environment:
