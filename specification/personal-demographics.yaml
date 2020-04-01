@@ -111,8 +111,8 @@ info:
     | Production        | Not yet available                                              |
     
     ### Sandbox testing
-    Our [sandbox environment](https://digital.nhs.uk/developer/testing#sandbox-testing) is:
-    * for early developer testing
+    Our [sandbox environment](https://digital.nhs.uk/developer/testing#sandbox-testing):
+    * is for early developer testing
     * only covers a limited set of scenarios
     * is stateless, so it does not actually persist any updates
     * is open access, so does not allow you to test authorisation
@@ -124,8 +124,8 @@ info:
     [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f574e6533fcc2e93a2d2)
     
     ### Integration testing
-    Our [integration test environment](https://digital.nhs.uk/developer/testing#integration-testing) is:
-    * for formal integration testing
+    Our [integration test environment](https://digital.nhs.uk/developer/testing#integration-testing):
+    * is for formal integration testing
     * includes authorisation, although at the moment it only supports signing in with a user name and password - authorisation with smartcards is coming soon
     
     You can use our [PDS FHIR API test data pack](https://digital.nhs.uk/developer/api-specifications/pds-fhir-api-test-data) to test most common scenarios. You can also create your own test data.
@@ -238,6 +238,8 @@ paths:
         You should ensure that you design, build and test your software to minimise these risks:
         * an end user selects the wrong patient from the results presented, so there is a risk of clinical harm; for example due to retrieval of the wrong medical data
         * the end user has access to patients’ personal data, so there is a risk to patient privacy
+        
+        In particular, it is almost certainly a good idea to display search results in descending score order - best match first.
 
         ## Sandbox testing
         You can test the following scenarios in our sandbox environment:
