@@ -238,6 +238,8 @@ paths:
         You should ensure that you design, build and test your software to minimise these risks:
         * an end user selects the wrong patient from the results presented, so there is a risk of clinical harm; for example due to retrieval of the wrong medical data
         * the end user has access to patients’ personal data, so there is a risk to patient privacy
+        
+        In particular, it is almost certainly a good idea to display search results in descending score order - best match first.
 
         ## Sandbox testing
         You can test the following scenarios in our sandbox environment:
