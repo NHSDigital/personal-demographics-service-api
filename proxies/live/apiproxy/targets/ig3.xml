@@ -1,0 +1,72 @@
+<TargetEndpoint name="ig3">
+  <PreFlow>
+    <Request>
+      <Step>
+        <Name>Quota</Name>
+      </Step>
+      <Step>
+        <Name>SpikeArrest</Name>
+      </Step>
+      <Step>
+        <!-- Header NHSD-Session-URID must be present and not empty -->
+        <Name>RaiseFault.400BadRequest</Name>
+        <Condition>(request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>OauthV2.VerifyAccessToken</Name>
+      </Step>
+      <!-- Using pattern from https://community.apigee.com/questions/34110/how-can-i-store-the-results-of-the-servicecallout.html
+           Steps are:
+           1. LookupCache.JWKS: Attempt to get JWKS from cache, store in flow variable `jwks`
+           2. If this fails (`jwks` is null)
+           2a. KeyValueMapOperations.GetVariables: Get JWKS path from KVM
+           2b. ServiceCallout.GetJWKS: Retrieve JWKS from IdP
+           2c. PopulateCache.JWKS: Store in cache
+           2d. AssignMessage.JWKS: Assign the JWKS from the service callout to `jwks` flow variable
+           3. VerifyJWT.FromJWTHeader: Verify the JWT using the `jwks` flow variable
+      -->
+      <Step>
+        <Name>LookupCache.JWKS</Name>
+      </Step>
+      <Step>
+        <Name>KeyValueMapOperations.GetVariables</Name>
+        <Condition>jwks = null</Condition>
+      </Step>
+      <Step>
+        <Name>ServiceCallout.GetJWKS</Name>
+        <Condition>jwks = null</Condition>
+      </Step>
+      <Step>
+        <Name>PopulateCache.JWKS</Name>
+        <Condition>jwks = null</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.JWKS</Name>
+        <Condition>jwks = null</Condition>
+      </Step>
+      <Step>
+        <Name>VerifyJWT.FromJWTHeader</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.AddUserIdHeader</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.AddIssuerHeader</Name>
+      </Step>
+      <Step>
+        <Name>KeyValueMapOperations.GetSecureVariables</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.AddAsidHeader</Name>
+      </Step>
+    </Request>
+  </PreFlow>
+  <HTTPTargetConnection>
+    <SSLInfo>
+      <Enabled>true</Enabled>
+    </SSLInfo>
+    <LoadBalancer>
+      <Server name="ig3" />
+    </LoadBalancer>
+  </HTTPTargetConnection>
+</TargetEndpoint>

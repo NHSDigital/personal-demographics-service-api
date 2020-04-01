@@ -4,6 +4,7 @@ dist/
 build/
 public/
 newman/
+build/
 
 .#*
 
