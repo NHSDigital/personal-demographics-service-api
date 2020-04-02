@@ -30,7 +30,14 @@ module.exports = {
         }
 
         // Validate NHS number is for our test patient
-        if (request.params.nhsNumber != patients.examplePatientSmith.id) {
+        let found = false;
+        Object.keys(patients.retrieve).forEach(key => {
+            if (request.params.nhsNumber === patients.retrieve[key].id) {
+                found = true
+            }
+        })
+
+        if (!found) {
             throw Boom.notFound(
                 `Patient with NHS number ${request.params.nhsNumber} could not be found`,
                 {operationOutcomeCode: "not_found", apiErrorCode: "PATIENT_NOT_FOUND"}
