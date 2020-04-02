@@ -76,7 +76,7 @@ properties:
     description: |
       Wrapper array for the patient's pharmacies, death notification status and communication details; these are all FHIR extensions. Always contains zero or one of each pharmacy object, zero or one death notification status object, and zero or one communication details object.
 
-      When a patient tagged as `restricted` or `very restricted` is retrieved, the Pharmacy and Death Notification extensions will be removed from the response.
+      When a patient tagged as `restricted` or `very restricted` is retrieved, the Pharmacy extensions will be removed from the response.
     items:
       anyOf:
         - $ref: "extensions/NominatedPharmacy.yaml"
