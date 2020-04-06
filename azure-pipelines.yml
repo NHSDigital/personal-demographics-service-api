@@ -1,5 +1,12 @@
+name: "$(SourceBranchName)+$(BuildID)"
+
 trigger:
-- master
+  branches:
+    include:
+      - tags/refs/v*
+  tags:
+    include:
+      - v*
 
 pr:
   branches:
@@ -15,7 +22,11 @@ jobs:
       API_TEST_ENV_FILE_PATH: "tests/e2e/environments/local.postman_environment.json"
       PIP_CACHE_DIR: ".poetry"
     steps:
-      - checkout: self
+      - checkout: 
+
+      - bash: 'echo "##vso[build.updatebuildnumber]$(System.PullRequest.SourceBranch)+$(Build.BuildID)"'
+        condition: eq(variables['Build.SourceBranchName'], 'merge')
+        displayName: Update build ID if this is a pull request
 
       - task: UsePythonVersion@0
         displayName: "Use Python 3.8"
