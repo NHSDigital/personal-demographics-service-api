@@ -75,5 +75,6 @@ build-proxy:
 
 release: clean publish build-proxy
 	mkdir -p dist
-	tar -zcvf dist/package.tar.gz build
+	cp -R build/. dist/
+	cp -R terraform dist
 

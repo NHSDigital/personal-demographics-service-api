@@ -67,15 +67,6 @@ jobs:
       - name: Set SPEC_VERSION env var
         run: echo ::set-env name=SPEC_VERSION::$(poetry run python scripts/calculate_version.py)
 
-      - name: Run local tests
-        env:
-          API_TEST_ENV_FILE_PATH: "tests/e2e/environments/local.postman_environment.json"
-        run: make test
-
-      - name: Copy local test report
-        if: always()
-        run: cat newman/*.xml > build/local-tests.xml && rm newman/*.xml
-
       - name: Create release (master only)
         id: create-release
         if: github.ref == 'refs/heads/master'
@@ -86,9 +77,3 @@ jobs:
         with:
           tag_name: ${{ env.SPEC_VERSION }}
           release_name: ${{ env.SPEC_VERSION }}
-      
-      - name: Store distributable schema
-        uses: actions/upload-artifact@v1
-        with:
-          name: personal-demographics-${{ env.SPEC_VERSION }}+${{ github.run_id }}.json
-          path: ./build/personal-demographics.json
