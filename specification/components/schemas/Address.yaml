@@ -8,7 +8,7 @@ properties:
     type: string
     description: Unique system identifier for this address.
     readOnly: true
-    example: '123'
+    example: '1234'
   period:
     $ref: "Period.yaml"
   use:
