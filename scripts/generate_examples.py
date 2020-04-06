@@ -56,13 +56,44 @@ def slim_patient(resource):
     return {key: func(resource, key) for key, func in whitelist.items() if key in resource}
 
 
+def sensitive_patient(resource):
+    """
+    Only include parts of the patient that will be returned on a sensitive response
+    to align with how the backend actually performs.
+    """
+
+    # These are the fields that will be removed
+    blacklist = [
+        "address",
+        "telecom",
+        "generalPractitioner"
+    ]
+
+    new_resource = {}
+    for key, value in resource.items():
+        if key not in blacklist:
+            new_resource[key] = value
+        elif isinstance(value, list):
+            new_resource[key] = []
+        elif isinstance(value, dict):
+            new_resource[key] = {}
+
+    new_resource["meta"]["security"][0]["code"] = "R"
+    new_resource["meta"]["security"][0]["display"] = "restricted"
+
+    new_resource["extension"] = _slim_extension(resource, "extension")
+    return new_resource
+
+
 EXAMPLE_TYPES = {
     "Patient": [
-        {"type": "retrieval", "file_prefix": "", "slim_func": None},
-        {"type": "search", "file_prefix": "Search_", "slim_func": slim_patient}
+        {"type": "retrieval", "file_prefix": "", "slim_func": []},
+        {"type": "search", "file_prefix": "Search_", "slim_func": [slim_patient]},
+        {"type": "sensitive", "file_prefix": "Sensitive_", "slim_func": [sensitive_patient]},
+        {"type": "sensitive", "file_prefix": "Sensitive_Search_", "slim_func": [slim_patient, sensitive_patient]}
     ],
     "OperationOutcome": [
-        {"type": "error", "file_prefix": "", "slim_func": None},
+        {"type": "error", "file_prefix": "", "slim_func": []},
     ]
 }
 
@@ -154,9 +185,8 @@ def main(arguments):
             new_resource_example = deepcopy(resource_example)
             if example_type["slim_func"]:
                 # If the current example type has a slimming function - run it
-                new_resource_example = example_type["slim_func"](
-                    new_resource_example
-                )
+                for func in example_type["slim_func"]:
+                    new_resource_example = func(new_resource_example)
 
             # Create file
             with open(

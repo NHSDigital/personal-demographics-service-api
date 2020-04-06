@@ -31,7 +31,7 @@ module.exports = [
             }
 
             // Check If-Match header is correct version
-            if (!requestValidator.validateIfMatchHeaderIsCorrectVersion(request, patients.examplePatientSmith)) {
+            if (!requestValidator.validateIfMatchHeaderIsCorrectVersion(request, patients.retrieve.examplePatientSmith)) {
                 throw Boom.preconditionFailed(
                     "This resource has changed since you last read. Please re-read and try again with the new version number.",
                     {operationOutcomeCode: "conflict", apiErrorCode: "INVALID_IF_MATCH_HEADER"})
@@ -56,7 +56,7 @@ module.exports = [
             // Apply the submitted patches
             let patchedPatient
             try {
-                patchedPatient = jsonpatch.applyPatch(patients.examplePatientSmith, request.payload.patches, true, false).newDocument
+                patchedPatient = jsonpatch.applyPatch(patients.retrieve.examplePatientSmith, request.payload.patches, true, false).newDocument
             }
             catch (e) {
                 const patchingError = e.message.slice(0, e.message.indexOf('\n')) // Just the first line; rest is tons of extraneous detail

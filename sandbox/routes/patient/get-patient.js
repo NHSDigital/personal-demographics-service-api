@@ -15,7 +15,14 @@ module.exports = [
         path: '/Patient/{nhsNumber*}',
         handler: (request, h) => {
             nhsNumberHelper.checkNhsNumber(request)
-            return fhirHelper.createFhirResponse(h, patients.examplePatientSmith)
+
+            let response = patients.retrieve.examplePatientSmith
+            Object.keys(patients.retrieve).forEach(key => {
+                if (request.params.nhsNumber === patients.retrieve[key].id) {
+                    response = patients.retrieve[key]
+                }
+            })
+            return fhirHelper.createFhirResponse(h, response)
         }
     },
 
