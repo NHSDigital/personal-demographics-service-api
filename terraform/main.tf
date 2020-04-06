@@ -19,4 +19,5 @@ module "personal-demographics-service" {
   path               = "personal-demographics"
   apigee_environment = var.apigee_environment
   proxy_type         = length(regexall("sandbox", var.apigee_environment)) > 0 ? "sandbox" : "live"
+  namespace          = var.namespace
 }
