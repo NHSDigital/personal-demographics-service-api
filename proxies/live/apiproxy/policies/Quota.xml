@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Quota name="Quota">
+<Quota name="Quota" type="calendar">
     <DisplayName>Quota</DisplayName>
     <Allow count="300"/> <!-- FIXME! This quota info should not be hardcoded --> 
     <Interval ref="request.header.quota_count">1</Interval>
