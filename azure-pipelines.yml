@@ -88,5 +88,5 @@ jobs:
       - bash: "make release"
         displayName: Build Release Package
 
-      - publish: dist/package.tar.gz
+      - publish: dist/
         artifact: personal-demographics-service-$(SPEC_VERSION)+$(Build.BuildNumber)
