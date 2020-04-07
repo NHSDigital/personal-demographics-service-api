@@ -1,0 +1,66 @@
+{
+	"info": {
+		"_postman_id": "138a4806-74f8-406a-90cb-c2acb50630ea",
+		"name": "Personal Demographics Service - SmokeTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Retrieve Patient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9ba9f64b-ae66-4e9f-93e8-e74f28f48a5c",
+						"exec": [
+							"pm.test(\"Returns Status code 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Returns Patient\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    console.log(\"Response: \" + JSON.stringify(jsonData, null, 2));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "NHSD-Identity-UUID",
+						"value": "1234567890",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer  8mCqlwfEeJZg9m10sgMfBCXH0kU"
+					},
+					{
+						"key": "NHSD-Identity-JWT",
+						"value": "eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEreStXZ3JINVVpOVdUaW9MdDA9IiwiYWxnIjoiUlMyNTYifQ.eyJhdF9oYXNoIjoiU01qX0ttQjFqMUNmXzlrRG5ReGI3QSIsInN1YiI6IjkxMDAwMDAwMDAwMSIsImF1ZGl0VHJhY2tpbmdJZCI6ImU0OTJkYTQ0LWZkOWEtNGVlMS05NmNiLTUxZjkxYzk0YTc0Yi04MjY0MyIsImlzcyI6Imh0dHBzOi8vYW0ubmhzc3BpdC0yLnB0bC5uaHNkLWVzYS5uZXQ6NDQzL29wZW5hbS9vYXV0aDIvcmVhbG1zL3Jvb3QvcmVhbG1zL29pZGMiLCJ0b2tlbk5hbWUiOiJpZF90b2tlbiIsImF1ZCI6Ijk2OTU2NzMzMTQxNS5hcHBzLm5hdGlvbmFsIiwiY19oYXNoIjoiYmVaQjdHVGhpVWZwdXNOd0pib1MtZyIsImFjciI6IkFBTDFfUFdEIiwib3JnLmZvcmdlcm9jay5vcGVuaWRjb25uZWN0Lm9wcyI6IjdiQWQ5RTF2a0JYZEw3VTMyREdTZkxiWDlmYyIsInNfaGFzaCI6IklxOHN5LXJkZlZxdlFtcGIyQ190bFEiLCJhenAiOiI5Njk1NjczMzE0MTUuYXBwcy5uYXRpb25hbCIsImF1dGhfdGltZSI6MTU4NjE4MTU3NCwicmVhbG0iOiIvb2lkYyIsImV4cCI6MTU4NjE4NTE3NCwidG9rZW5UeXBlIjoiSldUVG9rZW4iLCJpYXQiOjE1ODYxODE1NzR9.NSp2p85973bz_N6dr0eyz43xdCYRGUa0GRaGMq2LQ3D6z9vwUyoCx4YeGFQ8GFC2zMJDOwDLcJIFIxWj4xrniE0h8OAr7bg5_d9j39evW4IoZr9IzF2FjxYFyzYKZT0JqiEVvt_U6M0pHGaUX9CJ36PH7oFzCngSE-UN9v1Cyl1To3DAOOobhXNTFxfXnKHdi5e7_ZqsYr0NQ4QuDz-MqL__tTxuNZQzbD9SU6BnCbWw_RXigc9AtxwXqONe15lPVeu3AEiaMzMr1ZVtdHbD58Kh1MaHp84x3EccZ4XsDbyNqBTh9xDTxm64gn8uMCWzlg8cS66bu3DSXa50pNjUtA"
+					},
+					{
+						"key": "NHSD-Session-URID",
+						"value": "1234567890"
+					}
+				],
+				"url": {
+					"raw": "{{environment}}/personal-demographics/Patient/5900018512",
+					"host": [
+						"{{environment}}"
+					],
+					"path": [
+						"personal-demographics",
+						"Patient",
+						"5900018512"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
