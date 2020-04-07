@@ -11,7 +11,7 @@ function nhsIdLogin(_callback) {
     (async () => {
         let herokuapp_url = process.argv[3];
         console.log("Oauth journey on " + herokuapp_url);
-        const browser = await puppeteer.launch({ headless: false });
+        const browser = await puppeteer.launch({ headless: true });
         const page = await browser.newPage();
         await page.goto(herokuapp_url, { waitUntil: 'networkidle2' });
         await page.click("#start")
