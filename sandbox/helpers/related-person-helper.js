@@ -5,7 +5,7 @@ const relatedpersons = require('../services/relatedpersons')
 function _getRelatedPersons(nhsNumber) {
     let response = [];
         Object.keys(relatedpersons).forEach(key => {
-            if (nhsNumber === key.replace("P_", "")) {
+            if (nhsNumber === key) {
                 Object.keys(relatedpersons[key]).forEach(responseKey => {
                     response.push(relatedpersons[key][responseKey]);
                 })
