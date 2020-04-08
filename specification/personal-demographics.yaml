@@ -159,7 +159,7 @@ servers:
     description: 'Production environment (not yet available: see "API status and roadmap").'
 tags:
   - name: patients
-  - name: relatedpersons
+  - name: relatedperson
 paths:
   /Patient:
     parameters:
