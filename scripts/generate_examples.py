@@ -1,68 +1,38 @@
 #!/usr/bin/env python
 """
-generate_example.py
+generate_examples.py
 
 Usage:
-  generate_example.py SPEC_FILE OUT_DIR
+  generate_examples.py SPEC_FILE OUT_DIR
 """
 import json
-import os
 import os.path
 from copy import deepcopy
 from docopt import docopt
 from jsonpath_rw import parse
 
-
-def _return_value(resource, key):
-    """ Return the value from the resource """
-    return resource[key]
-
-
-def _slim_address(resource, key):
-    """ Only return the "home" address """
-    return [addr for addr in resource[key] if addr["use"] == "home"]
-
-
-def _slim_extension(resource, key):
-    """ The only extension to return is Death Notification """
-    return [
-        addr for addr in resource[key]
-        if addr["url"] == "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus"
-    ]
-
-
-def slim_patient(resource):
-    """
-    Remove parts of the patient that will not be returned on a search response
-    to align with how the backend actually performs.
-    """
-
-    # These are the only fields that will be populated on a search
-    whitelist = {
-        "resourceType": _return_value,
-        "id": _return_value,
-        "identifier": _return_value,
-        "meta": _return_value,
-        "name": _return_value,
-        "gender": _return_value,
-        "birthDate": _return_value,
-        "deceasedDateTime": _return_value,
-        "address": _slim_address,
-        "generalPractitioner": _return_value,
-        "extension": _slim_extension
-    }
-
-    # Loop around the whitelist returning the result of mapped function.
-    return {key: func(resource, key) for key, func in whitelist.items() if key in resource}
+from format_examples import (
+    slim_patient,
+    sensitive_patient,
+    related_person_reference_only,
+    related_person_no_reference
+)
 
 
 EXAMPLE_TYPES = {
     "Patient": [
-        {"type": "retrieval", "file_prefix": "", "slim_func": None},
-        {"type": "search", "file_prefix": "Search_", "slim_func": slim_patient}
+        {"type": "retrieval", "file_prefix": "", "slim_func": []},
+        {"type": "search", "file_prefix": "Search_", "slim_func": [slim_patient]},
+        {"type": "sensitive", "file_prefix": "Sensitive_", "slim_func": [sensitive_patient]},
+        {"type": "sensitive", "file_prefix": "Sensitive_Search_", "slim_func": [slim_patient, sensitive_patient]}
+    ],
+    "RelatedPerson": [
+        {"type": "retrieval", "file_prefix": "", "slim_func": []},
+        {"type": "nhs_number", "file_prefix": "Referenced_", "slim_func": [related_person_reference_only]},
+        {"type": "patient_details", "file_prefix": "Personal_Details_", "slim_func": [related_person_no_reference]}
     ],
     "OperationOutcome": [
-        {"type": "error", "file_prefix": "", "slim_func": None},
+        {"type": "error", "file_prefix": "", "slim_func": []},
     ]
 }
 
@@ -154,9 +124,8 @@ def main(arguments):
             new_resource_example = deepcopy(resource_example)
             if example_type["slim_func"]:
                 # If the current example type has a slimming function - run it
-                new_resource_example = example_type["slim_func"](
-                    new_resource_example
-                )
+                for func in example_type["slim_func"]:
+                    new_resource_example = func(new_resource_example)
 
             # Create file
             with open(

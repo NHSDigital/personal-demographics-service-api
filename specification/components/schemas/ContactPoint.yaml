@@ -10,7 +10,7 @@ properties:
     type: string
     description: Unique object identifier for this contact point.
     readOnly: true
-    example: '345'
+    example: '789'
   period:
     $ref: "Period.yaml"
   system:
