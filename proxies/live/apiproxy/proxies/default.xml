@@ -12,7 +12,7 @@
     </Flows>
     <PreFlow/>
     <HTTPProxyConnection>
-        <BasePath>/personal-demographics</BasePath>
+        <BasePath>{{ SERVICE_BASE_PATH }}</BasePath>
         <VirtualHost>secure</VirtualHost>
     </HTTPProxyConnection>
     <RouteRule name="NoRoute">
