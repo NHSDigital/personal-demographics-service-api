@@ -1,5 +1,8 @@
 # Changelog
 
+## 2020-04-08
+* Adding Related Person endpoint to the Specification.
+
 ## 2020-03-31
 * Move over to using Azure Pipelines for builds and releases.
 * Some refactoring.
