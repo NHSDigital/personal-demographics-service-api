@@ -4,7 +4,7 @@
   "patient": {
     "type": "Patient",
     "identifier": {
-      "system": "https://beta.api.digital.nhs.uk",
+      "system": "https://beta.api.digital.nhs.uk/Patient",
       "value": "90000000009"
     },
     "reference": "https://beta.api.digital.nhs.uk/Patient/90000000009"
