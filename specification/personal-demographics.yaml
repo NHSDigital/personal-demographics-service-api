@@ -121,7 +121,7 @@ info:
     
     Alternatively, you can try out the sandbox using our Postman collection:
     
-    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f574e6533fcc2e93a2d2)
+    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
     
     ### Integration testing
     Our [integration test environment](https://digital.nhs.uk/developer/testing#integration-testing):
@@ -268,7 +268,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f574e6533fcc2e93a2d2)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
       tags:
         - patients
       parameters:
@@ -506,7 +506,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f574e6533fcc2e93a2d2)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
       summary: "Retrieve a patient's record"
       operationId: get-patient
       tags:
@@ -592,7 +592,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f574e6533fcc2e93a2d2)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
 
 
       summary: Update a patient's record
@@ -758,17 +758,17 @@ paths:
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
 
-        | Scenario                     | Request                                           | Response                                             |
-        | ---------------------------- | ------------------------------------------------- | ---------------------------------------------------- |
-        | Related Person exists        | `id`=`9000000009`                                 | HTTP Status 200 with related person data in response |
-        | Related Person doesn't exist | `id`=`9111231130` (or any other valid NHS Number) | HTTP Status 404 with problem description             |
-        | Invalid NHS Number           | `id`=`9000000000` (or any invalid NHS Number)     | HTTP Status 400 with problem description             |
+        | Scenario                        | Request                                       | Response                                                      |
+        | ------------------------------- | --------------------------------------------- | ------------------------------------------------------------- |
+        | Multiple Related Persons exists | `id`=`9000000009`                             | HTTP Status 200 with related person data in a response Bundle |
+        | Single Related Person exists    | `id`=`9000000017`                             | HTTP Status 200 with related person data in a response Bundle |
+        | Related Persons do not exist    | `id`=`9000000025`                             | HTTP Status 404 with problem description                      |
 
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f574e6533fcc2e93a2d2)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
       summary: "Retrieve a list of Related Person resources for a given patient"
       operationId: get-related-persons
       tags:
@@ -877,13 +877,12 @@ paths:
         | ---------------------------- | --------------------------------------------------------------------- | ---------------------------------------------------- |
         | Related Person exists        | `id`=`9000000009`, `object_id`=`507B7621`                             | HTTP Status 200 with related person data in response |
         | Related Person doesn't exist | `id`=`9000000009`, `object_id`=`12345678` (or any other object id)    | HTTP Status 404 with problem description             |
-        | Invalid NHS Number           | `id`=`9000000000`, `object_id`=`507B7621` (or any invalid NHS Number) | HTTP Status 400 with problem description             |
 
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f574e6533fcc2e93a2d2)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
       summary: "Retrieve a specific related person"
       operationId: get-related-person
       tags:
