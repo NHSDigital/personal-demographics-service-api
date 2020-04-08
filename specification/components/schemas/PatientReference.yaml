@@ -1,0 +1,24 @@
+type: object
+required:
+  - type
+properties:
+  type:
+    type: string
+    default: Patient
+    readOnly: true
+  identifier:
+    type: object
+    properties:
+      system:
+        type: string
+        format: url
+        example: https://beta.api.digital.nhs.uk
+        readOnly: true
+      value:
+        type: string
+        example: "90000000009"
+  reference:
+    type: string
+    format: url
+    example: https://beta.api.digital.nhs.uk/Patient/90000000009
+    readOnly: true

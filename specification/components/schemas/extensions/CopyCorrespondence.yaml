@@ -10,4 +10,4 @@ properties:
   valueBoolean:
     type: boolean
     description: Flag indicating if this person should be copied in on correspondence.
-    example: false
+    example: true

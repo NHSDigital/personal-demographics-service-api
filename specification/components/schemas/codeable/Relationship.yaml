@@ -1,0 +1,33 @@
+type: object
+required:
+  - coding
+properties:
+  coding:
+    type: array
+    minItems: 1
+    maxItems: 3
+    items:
+      type: object
+      description: |
+        TODO - BC - something about combinations.
+      required:
+        - code
+      properties:
+        system:
+          type: string
+          description: URI of the coding system specification.
+          format: url
+          readOnly: true
+          enum: # TODO - BC | Remove and put in description
+            - https://simplifier.net/UKCore/CodeSystem-UKCore-AdditionalRelatedPersonRole
+            - https://fhir.nhs.uk/R4/Codesystem/UKCore-AdditionalRelatedPersonRole
+            - http://hl7.org/fhir/ValueSet/relatedperson-relationshiptype
+          default: https://simplifier.net/UKCore/CodeSystem-UKCore-AdditionalRelatedPersonRole
+        code:
+          type: string
+          description: Symbol in syntax defined by the system.
+          example:  "Guardian"
+        display:
+          type: string
+          description: Human-friendly display representation defined by the system.
+          example: Guardian of patient

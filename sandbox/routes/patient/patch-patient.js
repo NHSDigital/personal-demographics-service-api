@@ -66,7 +66,7 @@ module.exports = [
             }
             patchedPatient.meta.versionId++
 
-            return fhirHelper.createFhirResponse(h, patchedPatient)
+            return fhirHelper.createFhirResponse(h, patchedPatient, patchedPatient.meta.versionId)
         }
     }
 ]
