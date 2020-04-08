@@ -499,6 +499,11 @@ paths:
         ## Overview
         Use this endpoint to get patient details from PDS for a given NHS Number.
 
+        ## Superceded patients
+        Some patients are marked as superceded, this means that for some reason the original resource is no longer valid and has been replaced with a different resource.
+
+        On retrieval of a superceded resource the new resource will be automatically returned in place of the requested resource.
+
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
 
