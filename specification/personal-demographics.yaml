@@ -12,10 +12,11 @@ info:
     You can:
     * search for patients
     * get patient details
-    * update patient details
+    * get patient related people
 
     You cannot currently use this API to:
     * check that you have the right NHS Number for a patient
+    * update patient details (coming soon)
     * create a new record for a birth
     * receive birth notifications
     * create a record for a new patient
@@ -29,9 +30,11 @@ info:
     * birth information
     * death information
     * registered GP
-    * nominated pharmacy (other related pharmacies coming soon)
+    * nominated pharmacy
+    * dispensing doctor pharmacy
+    * medical appliance supplier pharmacy
+    * related people
     * consent information (coming soon)
-    * related people (coming soon)
 
     Currently, this API can only be accessed by healthcare professionals, authenticated with an NHS smartcard or equivalent.
     Unauthenticated access and citizen access are on the roadmap.
@@ -139,9 +142,9 @@ info:
     To see details for specific endpoints, select from the list on the left hand side of the page:
     * `GET /Patient` - search for patient
     * `GET /Patient/{id}` - get patient's personal details
-    * `GET /Patient/{id}/RelatedPerson` - get patient's related person details
+    * `GET /Patient/{id}/RelatedPerson` - get patient's related people details
     * `GET /Patient/{id}/RelatedPerson/{object_id}` - get patient's specific related person details
-    * `PATCH /Patient/{id}` - update patient's personal details
+    * `PATCH /Patient/{id}` - update patient's personal details (coming soon)
 
   contact:
     name: Personal Demographics Service FHIR API Support
@@ -332,7 +335,11 @@ paths:
           required: false
           schema:
             type: string
-            enum: [male, female, other, unknown]
+            enum:
+              - male
+              - female
+              - other
+              - unknown
             example: female
         - name: birthdate
           in: query
@@ -740,10 +747,6 @@ paths:
                           code: unsupportedMediaType
                           display: "Must be 'application/json-patch+json'."
 
-
-# TODO - BC | Related Person
-
-
   '/Patient/{id}/RelatedPerson':
     parameters:
       - $ref: '#/components/parameters/Id'
@@ -753,7 +756,7 @@ paths:
     get:
       description: |
         ## Overview
-        Use this endpoint to get a patient's Related Person details from PDS for a given NHS Number.
+        Use this endpoint to get a patient's related people details from PDS for a given NHS Number. This is a list of people who can be contacted, and how, regarding the patient.
 
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
@@ -770,9 +773,9 @@ paths:
 
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
       summary: "Retrieve a list of Related Person resources for a given patient"
-      operationId: get-related-persons
+      operationId: get-related-people
       tags:
-        - relatedpersons
+        - relatedperson
       responses:
         '200':
           description: Information successfully returned.
@@ -804,14 +807,14 @@ paths:
                   entry:
                     type: array
                     description: |
-                      A list of related person details attached to the patient. 
+                      A list of related people details attached to the patient. 
                     items:
                       type: object
                       properties:
                         fullUrl:
                           type: string
                           description: Absolute URL of the resource described in this item.
-                          example: 'https://beta.api.digital.nhs.uk/Patient/9000000009/507B7621'
+                          example: 'https://beta.api.digital.nhs.uk/Patient/9000000009/RelatedPerson/507B7621'
                         resource:
                           $ref: components/schemas/RelatedPerson.yaml
               example:
@@ -820,7 +823,7 @@ paths:
                 timestamp: '2019-12-25T12:00:00+00:00'
                 total: 1
                 entry:
-                  - fullUrl: 'https://beta.api.digital.nhs.uk/Patient/9000000009/507B7621'
+                  - fullUrl: 'https://beta.api.digital.nhs.uk/Patient/9000000009/RelatedPerson/507B7621'
                     resource:
                       $ref: components/examples/RelatedPerson.json
         '400':
@@ -867,8 +870,8 @@ paths:
       - $ref: '#/components/parameters/NHSDIdentityJwt'
     get:
       description: |
-        ## Overview - TODO - BC
-        Use this endpoint to get a patient's specific Related Person details from PDS for a given NHS Number.
+        ## Overview
+        Use this endpoint to get a patient's specific related person details from PDS for a given NHS Number, using the related person object id.
 
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
@@ -886,7 +889,7 @@ paths:
       summary: "Retrieve a specific related person"
       operationId: get-related-person
       tags:
-        - relatedpersons
+        - relatedperson
       responses:
         '200':
           description: Information successfully returned.
@@ -933,8 +936,6 @@ paths:
                           version: '1'
                           code: RESOURCE_NOT_FOUND
                           display: Resource not found
-# TODO - BC | End of related persons
-
 
 components:
   parameters:

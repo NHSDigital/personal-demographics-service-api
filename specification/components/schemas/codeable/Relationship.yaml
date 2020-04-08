@@ -4,12 +4,55 @@ required:
 properties:
   coding:
     type: array
+    description: |
+      Coded values for three relationship types:
+      * Role
+      * Type
+      * Next-of-Kin
+      The codes used can be found at:
+      * http://hl7.org/fhir/ValueSet/relatedperson-relationshiptype
+      * https://simplifier.net/UKCore/CodeSystem-UKCore-AdditionalRelatedPersonRole
+
+      The allowed values for `Role` are:
+      * Agent - Agent of patient
+      * Guardian - Guardian of patient
+      * Personal - Personal relationship with the patient
+
+      The allowed values for `Type` are:
+      * SPS - spouse
+      * DOMPART - domestic partner
+      * PRN - parent
+      * PRNFOST - foster parent
+      * STPPRN - step parent
+      * CHILD - child
+      * MTH - mother
+      * FTH - father
+      * SIS - sister
+      * BRO - brother
+      * FAMMEMB - family member
+      * ONESELF - self
+      * N - Next-of-Kin
+      * U - Unknown
+      * PolygamousPartner - Polygamous Partner of patient
+      * Dependant - Dependant of patient
+      * NonDependant - Non Dependant of patient
+      * ProxyContact - Proxy Contact for patient
+      * ProxyCommunication - Proxy Communication for patient
+      * ProxyContactCommunication - Proxy Contact and Communication for patient
+      * Carer - Carer of patient
+      * Guardian - Guardian of patient
+      * NotSpecified - Not Specified
+
+      The allowed values for `Next-of-Kin` are:
+      * N - Next-of-Kin
+
+      `Role` and `Type` are mandatory, so both should be present - however they both contain the `Guardian` code - so a single response is possible.
+
+      `Next-of-Kin` is optional and will be absent from the response when the related person is not the Next-of-Kin.
     minItems: 1
     maxItems: 3
     items:
       type: object
-      description: |
-        TODO - BC - something about combinations.
       required:
         - code
       properties:
@@ -18,10 +61,6 @@ properties:
           description: URI of the coding system specification.
           format: url
           readOnly: true
-          enum: # TODO - BC | Remove and put in description
-            - https://simplifier.net/UKCore/CodeSystem-UKCore-AdditionalRelatedPersonRole
-            - https://fhir.nhs.uk/R4/Codesystem/UKCore-AdditionalRelatedPersonRole
-            - http://hl7.org/fhir/ValueSet/relatedperson-relationshiptype
           default: https://simplifier.net/UKCore/CodeSystem-UKCore-AdditionalRelatedPersonRole
         code:
           type: string
