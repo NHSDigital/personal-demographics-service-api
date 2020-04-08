@@ -14,7 +14,10 @@ module.exports = [
         method: 'GET',
         path: '/Patient/{parameters*}',
         handler: (request, h) => {
-            const params = request.params.parameters.split("/")
+            // HAPI Server does not seem to support multiple ids in paths - such as:
+            //   /Patient/9000000009/RelatedPerson
+            // so need to force it like this.
+            const params = request.params.parameters.split("/");
             const nhsNumber = params[0];
             const resource = params.length > 1 ? params[1] : null;
             const objectId = params.length > 2 ? params[2] : null;
@@ -27,12 +30,12 @@ module.exports = [
 
             } else if (resource && objectId == null) {
                 // For example /Patient/9000000009/RelatedPerson
-                const response = relatedPersonHelper.getRelatedPersons(nhsNumber)
+                const response = relatedPersonHelper.getRelatedPersons(nhsNumber);
                 return fhirHelper.createFhirResponse(h, response, patient.meta.versionId);
 
             } else {
                 // For example /Patient/9000000009/RelatedPerson/12345
-                const relatedPerson = relatedPersonHelper.getRelatedPerson(nhsNumber, objectId)
+                const relatedPerson = relatedPersonHelper.getRelatedPerson(nhsNumber, objectId);
                 return fhirHelper.createFhirResponse(h, relatedPerson, patient.meta.versionId);
             }
         }
