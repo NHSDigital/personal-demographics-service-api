@@ -1,8 +1,0 @@
-<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.GenerateState">
-    <AssignVariable>
-        <Name>apigee.state</Name>
-        <Template>{randomLong(args)}</Template>
-    </AssignVariable>
-    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
-    <AssignTo createNew="false" transport="http" type="request"/>
-</AssignMessage>
