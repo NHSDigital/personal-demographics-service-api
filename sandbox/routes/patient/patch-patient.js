@@ -33,7 +33,7 @@ module.exports = [
             // Check If-Match header is correct version
             if (!requestValidator.validateIfMatchHeaderIsCorrectVersion(request, patients.retrieve.examplePatientSmith)) {
                 throw Boom.preconditionFailed(
-                    "This resource has changed since you last read. Please re-read and try again with the new version number.",
+                    "This resource has changed since you last read.",
                     {operationOutcomeCode: "conflict", apiErrorCode: "INVALID_IF_MATCH_HEADER"})
             }
 
