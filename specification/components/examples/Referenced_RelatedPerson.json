@@ -1,0 +1,96 @@
+{
+  "id": "B3380E98",
+  "resourceType": "RelatedPerson",
+  "patient": {
+    "type": "Patient",
+    "identifier": {
+      "system": "https://beta.api.digital.nhs.uk/Patient",
+      "value": "90000000009"
+    },
+    "reference": "https://beta.api.digital.nhs.uk/Patient/90000000009"
+  },
+  "active": true,
+  "period": {
+    "start": "2020-01-01",
+    "end": "2021-12-31"
+  },
+  "name": [],
+  "address": [],
+  "telecom": [],
+  "relationship": [
+    {
+      "coding": [
+        {
+          "system": "https://simplifier.net/UKCore/CodeSystem-UKCore-AdditionalRelatedPersonRole",
+          "code": "Guardian",
+          "display": "Guardian of patient"
+        }
+      ]
+    }
+  ],
+  "extension": [
+    {
+      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-CopyCorrespondenceIndicator",
+      "valueBoolean": true
+    },
+    {
+      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactRank",
+      "valuePositiveInt": 1
+    },
+    {
+      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference",
+      "extension": [
+        {
+          "url": "PreferredWrittenCommunicationFormat",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-PreferredWrittenCommunicationFormat",
+                "code": "12",
+                "display": "Braille"
+              }
+            ]
+          }
+        },
+        {
+          "url": "PreferredContactMethod",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://fhir.nhs.uk/R4/ValueSet/UKCore-PreferredContactMethod",
+                "code": "1",
+                "display": "Letter"
+              }
+            ]
+          }
+        },
+        {
+          "url": "PreferredContactTimes",
+          "valueString": "Not after 7pm"
+        }
+      ]
+    },
+    {
+      "url": "https://simplifier.net/UKCore/ExtensionUKCoreNHSCommunication",
+      "extension": [
+        {
+          "url": "language",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://simplifier.net/ukcore/CodeSystem-UKCore-HumanLanguage",
+                "version": "1.0.0",
+                "code": "fr",
+                "display": "French"
+              }
+            ]
+          }
+        },
+        {
+          "url": "interpreterRequired",
+          "valueBoolean": true
+        }
+      ]
+    }
+  ]
+}

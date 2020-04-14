@@ -1,86 +1,74 @@
 type: object
+additionalProperties: false
+required:
+  - id
+  - patient
+  - relationship
 properties:
   id:
     type: string
-    description: Logical (system) ID of this RelatedPerson.
-    example: 'ABC123'
-  identifier:
-    type: array
-    description: Identifier and system of identification used for this RelatedPerson.
-    items:
-      type: object
-      properties:
-        system:
-          type: string
-          format: url
-          description: System identifier belongs to.
-          default: https://fhir.nhs.uk/Id/nhs-number
-          readOnly: true
-        value:
-          $ref: "NhsNumber.yaml"
-        extension:
-          type: array
-          description: FHIR extensions.
-          items:
-            $ref: "extensions/NHSNumberVerificationStatus.yaml"
-  patient:
-    type: object
-    description: Patient to which this person is related.
-    properties:
-      reference:
-        type: string
-        description: URL or FHIR Path of Patient resource.
-        example: '/Patient/9000000009'
-      type:
-        type: string
-        description: Type the reference refers to.
-        example: 'Patient'
-  relationship:
-    description: Details of contact's relationship with the patient.
-    type: array
-    items:
-      $ref: "codeable/RelatedPersonRelationshipType.yaml"
-  name:
-    $ref: "HumanName.yaml"
-  telecom:
-    type: array
-    description: Contact points at which the contact may be reached.
-    items:
-      $ref: "ContactPoint.yaml"
-  gender:
-    $ref: "Gender.yaml"
-  birthDate:
-    description: Date of birth. A date in the format `yyyy-mm-dd`.
-    example: "2010-10-22"
+    description: Unique object identifier for this name.
+    readOnly: true
+    example: "507B7621"
+  resourceType:
     type: string
-    format: date
+    description: FHIR resource type.
+    default: RelatedPerson
+    readOnly: true
+  patient:
+     "$ref": PatientReference.yaml
+  active:
+    type: boolean
+    default: true
+    readOnly: true
+  period:
+    "$ref": Period.yaml
+  name:
+    type: array
+    description: |
+      List containing zero or one name associated with the related person.
+
+      This is an optional field as there may be a `patient` reference which can be used to retrieve any details about the related person.
+
+      If no `patient` reference is available `name` and `address` must be provided at the minimum.
+    maxItems: 1
+    items:
+      "$ref": HumanName.yaml
   address:
     type: array
+    description: |
+      List containing zero or one address associated with the related person.
+
+      This is an optional field as there may be a `patient` reference which can be used to retrieve any details about the related person.
+
+      If no `patient` reference is available `name` and `address` must be provided at the minimum.
+    maxItems: 1
     items:
-      $ref: "Address.yaml"
-  period:
-    $ref: "DateRange.yaml"
-  communication:
+      "$ref": Address.yaml
+  telecom:
     type: array
+    description: |
+      List containing zero to five contact methods associated with the related person.
+
+      This is an optional field as there may be a `patient` reference which can be used to retrieve any details about the related person.
+    maxItems: 5
     items:
-      $ref: "Communication.yaml"
+      "$ref": ContactPoint.yaml
+  relationship:
+    type: array
+    description: |
+      The relationship of the related person to the patient.
+    minItems: 1
+    maxItems: 1
+    items:
+      "$ref": codeable/Relationship.yaml
   extension:
     type: array
+    description: |
+      Wrapper array for copy correspondence, contact rank, contact preferences and communication details; these are all FHIR extensions. Always contains zero or one of each extension type.
     items:
-      oneOf:
-        - $ref: "extensions/ContactRank.yaml"
-        - $ref: "extensions/CopyCorrespondenceIndicator.yaml"
-
-  # TODO: model all of the below
-  # ranking:
-  #   type: integer
-  #   example: 1
-  # next_of_kin:
-  #   type: boolean
-  #   default: false
-  # copy_correspondence:
-  #   type: boolean
-  #   default: false
-  # callback_consent:
-  #   type: boolean
-  #   default: false
+      anyOf:
+        - "$ref": extensions/CopyCorrespondence.yaml
+        - "$ref": extensions/ContactRank.yaml
+        - "$ref": extensions/ContactPreference.yaml
+        - "$ref": extensions/Communication.yaml

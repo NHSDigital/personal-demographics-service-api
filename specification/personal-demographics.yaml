@@ -12,10 +12,11 @@ info:
     You can:
     * search for patients
     * get patient details
-    * update patient details
+    * get patient related people
 
     You cannot currently use this API to:
     * check that you have the right NHS Number for a patient
+    * update patient details (coming soon)
     * create a new record for a birth
     * receive birth notifications
     * create a record for a new patient
@@ -29,9 +30,11 @@ info:
     * birth information
     * death information
     * registered GP
-    * nominated pharmacy (other related pharmacies coming soon)
+    * nominated pharmacy
+    * dispensing doctor pharmacy
+    * medical appliance supplier pharmacy
+    * related people
     * consent information (coming soon)
-    * related people (coming soon)
 
     Currently, this API can only be accessed by healthcare professionals, authenticated with an NHS smartcard or equivalent.
     Unauthenticated access and citizen access are on the roadmap.
@@ -121,7 +124,7 @@ info:
 
     Alternatively, you can try out the sandbox using our Postman collection:
 
-    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f574e6533fcc2e93a2d2)
+    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
 
     ### Integration testing
     Our [integration test environment](https://digital.nhs.uk/developer/testing#integration-testing):
@@ -139,7 +142,9 @@ info:
     To see details for specific endpoints, select from the list on the left hand side of the page:
     * `GET /Patient` - search for patient
     * `GET /Patient/{id}` - get patient's personal details
-    * `PATCH /Patient/{id}` - update patient's personal details
+    * `GET /Patient/{id}/RelatedPerson` - get patient's related people details
+    * `GET /Patient/{id}/RelatedPerson/{object_id}` - get patient's specific related person details
+    * `PATCH /Patient/{id}` - update patient's personal details (coming soon)
 
   contact:
     name: Personal Demographics Service FHIR API Support
@@ -154,6 +159,7 @@ servers:
     description: 'Production environment (not yet available: see "API status and roadmap").'
 tags:
   - name: patients
+  - name: relatedperson
 paths:
   /Patient:
     parameters:
@@ -264,7 +270,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f574e6533fcc2e93a2d2)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
       tags:
         - patients
       parameters:
@@ -328,7 +334,11 @@ paths:
           required: false
           schema:
             type: string
-            enum: [male, female, other, unknown]
+            enum:
+              - male
+              - female
+              - other
+              - unknown
             example: female
         - name: birthdate
           in: query
@@ -487,6 +497,11 @@ paths:
         ## Overview
         Use this endpoint to get patient details from PDS for a given NHS Number.
 
+        ## Superceded patients
+        Some patients are marked as superceded, this means that for some reason the original resource is no longer valid and has been replaced with a different resource.
+
+        On retrieval of a superceded resource the new resource will be automatically returned in place of the requested resource.
+
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
 
@@ -501,7 +516,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f574e6533fcc2e93a2d2)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
       summary: "Retrieve a patient's record"
       operationId: get-patient
       tags:
@@ -587,7 +602,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f574e6533fcc2e93a2d2)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
 
 
       summary: Update a patient's record
@@ -734,6 +749,195 @@ paths:
                           version: '1'
                           code: unsupportedMediaType
                           display: "Must be 'application/json-patch+json'."
+
+  '/Patient/{id}/RelatedPerson':
+    parameters:
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/RoleId'
+      - $ref: '#/components/parameters/BearerAuthorization'
+    get:
+      description: |
+        ## Overview
+        Use this endpoint to get a patient's related people details from PDS for a given NHS Number. This is a list of people who can be contacted, and how, regarding the patient.
+
+        ## Sandbox test scenarios
+        You can test the following scenarios in our sandbox environment:
+
+        | Scenario                        | Request                                       | Response                                                      |
+        | ------------------------------- | --------------------------------------------- | ------------------------------------------------------------- |
+        | Multiple Related Persons exists | `id`=`9000000009`                             | HTTP Status 200 with related person data in a response Bundle |
+        | Single Related Person exists    | `id`=`9000000017`                             | HTTP Status 200 with related person data in a response Bundle |
+        | Related Persons do not exist    | `id`=`9000000025`                             | HTTP Status 404 with problem description                      |
+
+        You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
+
+        Alternatively, you can try out the sandbox using our Postman collection:
+
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
+      summary: "Retrieve a list of Related Person resources for a given patient"
+      operationId: get-related-people
+      tags:
+        - relatedperson
+      responses:
+        '200':
+          description: Information successfully returned.
+          headers:
+            ETag:
+              $ref: components/schemas/ETag.yaml
+          content:
+            application/fhir+json:
+              schema:
+                type: object
+                properties:
+                  resourceType:
+                    type: string
+                    description: FHIR Resource Type.
+                    default: Bundle
+                  type:
+                    type: string
+                    description: FHIR Bundle Type.
+                    default: searchset
+                  timestamp:
+                    type: string
+                    description: Time the search was performed.
+                    format: datetime
+                    example: '2019-12-25T12:00:00+00:00'
+                  total:
+                    type: integer
+                    description: Number of resources returned in search.
+                    example: 1
+                  entry:
+                    type: array
+                    description: |
+                      A list of related people details attached to the patient. 
+                    items:
+                      type: object
+                      properties:
+                        fullUrl:
+                          type: string
+                          description: Absolute URL of the resource described in this item.
+                          example: 'https://beta.api.digital.nhs.uk/Patient/9000000009/RelatedPerson/507B7621'
+                        resource:
+                          $ref: components/schemas/RelatedPerson.yaml
+              example:
+                resourceType: Bundle
+                type: searchset
+                timestamp: '2019-12-25T12:00:00+00:00'
+                total: 1
+                entry:
+                  - fullUrl: 'https://beta.api.digital.nhs.uk/Patient/9000000009/RelatedPerson/507B7621'
+                    resource:
+                      $ref: components/examples/RelatedPerson.json
+        '400':
+          description: Invalid NHS number supplied.
+          content:
+            application/fhir+json:
+              schema:
+                $ref: components/schemas/OperationOutcome.yaml
+              example:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: value
+                    details:
+                      coding:
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                          version: '1'
+                          code: INVALID_NHS_NUMBER
+                          display: NHS Number 9000000000 is not a valid NHS number
+        '404':
+          description: Related People not found.
+          content:
+            application/fhir+json:
+              schema:
+                $ref: components/schemas/OperationOutcome.yaml
+              example:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: not-found
+                    details:
+                      coding:
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                          version: '1'
+                          code: RESOURCE_NOT_FOUND
+                          display: Resource not found
+
+  '/Patient/{id}/RelatedPerson/{object_id}':
+    parameters:
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/ObjectId'
+      - $ref: '#/components/parameters/RoleId'
+      - $ref: '#/components/parameters/BearerAuthorization'
+    get:
+      description: |
+        ## Overview
+        Use this endpoint to get a patient's specific related person details from PDS for a given NHS Number, using the related person object id.
+
+        ## Sandbox test scenarios
+        You can test the following scenarios in our sandbox environment:
+
+        | Scenario                     | Request                                                               | Response                                             |
+        | ---------------------------- | --------------------------------------------------------------------- | ---------------------------------------------------- |
+        | Related Person exists        | `id`=`9000000009`, `object_id`=`507B7621`                             | HTTP Status 200 with related person data in response |
+        | Related Person doesn't exist | `id`=`9000000009`, `object_id`=`12345678` (or any other object id)    | HTTP Status 404 with problem description             |
+
+        You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
+
+        Alternatively, you can try out the sandbox using our Postman collection:
+
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
+      summary: "Retrieve a specific related person"
+      operationId: get-related-person
+      tags:
+        - relatedperson
+      responses:
+        '200':
+          description: Information successfully returned.
+          headers:
+            ETag:
+              $ref: components/schemas/ETag.yaml
+          content:
+            application/fhir+json:
+              schema:
+                $ref: components/schemas/RelatedPerson.yaml
+              example:
+                $ref: components/examples/RelatedPerson.json
+        '400':
+          description: Invalid NHS number supplied.
+          content:
+            application/fhir+json:
+              schema:
+                $ref: components/schemas/OperationOutcome.yaml
+              example:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: value
+                    details:
+                      coding:
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                          version: '1'
+                          code: INVALID_NHS_NUMBER
+                          display: NHS Number 9000000000 is not a valid NHS number
+        '404':
+          description: Related Person with the object ID was not found.
+          content:
+            application/fhir+json:
+              schema:
+                $ref: components/schemas/OperationOutcome.yaml
+              example:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: not-found
+                    details:
+                      coding:
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                          version: '1'
+                          code: RESOURCE_NOT_FOUND
+                          display: Resource not found
+
 components:
   parameters:
     Id:
@@ -744,6 +948,14 @@ components:
       schema:
         type: string
         example: "9000000009"
+    ObjectId:
+      name: object_id
+      in: path
+      description: A resource Object ID. The primary identifier of a resource.
+      required: true
+      schema:
+        type: string
+        example: "507B7621"
     IfMatch:
       in: header
       name: If-Match
@@ -785,6 +997,8 @@ components:
   schemas:
     Patient:
       $ref: components/schemas/Patient.yaml
+    RelatedPerson:
+      $ref: components/schemas/RelatedPerson.yaml
     OperationOutcome:
       $ref: components/schemas/OperationOutcome.yaml
   responses:
@@ -808,3 +1022,4 @@ components:
                       version: '1'
                       code: INVALID_IF_MATCH_HEADER
                       display: This resource has changed since you last read. Please re-read and try again with the new version number.
+

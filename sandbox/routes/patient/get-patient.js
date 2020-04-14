@@ -1,7 +1,7 @@
 const Boom = require('boom')
-const patients = require('../../services/patients')
 const fhirHelper = require('../../helpers/fhir-helper')
 const nhsNumberHelper = require('../../helpers/nhs-number-helper')
+const relatedPersonHelper = require('../../helpers/related-person-helper')
 const dateValidator = require('../../validators/date-validator')
 const patientSearcher = require("../../services/patient-searcher")
 
@@ -12,17 +12,32 @@ module.exports = [
     */
     {
         method: 'GET',
-        path: '/Patient/{nhsNumber*}',
+        path: '/Patient/{parameters*}',
         handler: (request, h) => {
-            nhsNumberHelper.checkNhsNumber(request)
+            // HAPI Server does not seem to support multiple ids in paths - such as:
+            //   /Patient/9000000009/RelatedPerson
+            // so need to force it like this.
+            const params = request.params.parameters.split("/");
+            const nhsNumber = params[0];
+            const resource = params.length > 1 ? params[1] : null;
+            const objectId = params.length > 2 ? params[2] : null;
 
-            let response = patients.retrieve.examplePatientSmith
-            Object.keys(patients.retrieve).forEach(key => {
-                if (request.params.nhsNumber === patients.retrieve[key].id) {
-                    response = patients.retrieve[key]
-                }
-            })
-            return fhirHelper.createFhirResponse(h, response)
+            const patient = nhsNumberHelper.getNhsNumber(nhsNumber);
+
+            if (resource == null) {
+                // For example /Patient/9000000009
+                return fhirHelper.createFhirResponse(h, patient, patient.meta.versionId);
+
+            } else if (resource && objectId == null) {
+                // For example /Patient/9000000009/RelatedPerson
+                const response = relatedPersonHelper.getRelatedPersons(nhsNumber);
+                return fhirHelper.createFhirResponse(h, response, patient.meta.versionId);
+
+            } else {
+                // For example /Patient/9000000009/RelatedPerson/12345
+                const relatedPerson = relatedPersonHelper.getRelatedPerson(nhsNumber, objectId);
+                return fhirHelper.createFhirResponse(h, relatedPerson, patient.meta.versionId);
+            }
         }
     },
 
