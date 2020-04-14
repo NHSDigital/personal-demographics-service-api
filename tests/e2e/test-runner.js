@@ -39,7 +39,7 @@ function setTokens(json) {
 
 function runPostmanCollection() {
     newman.run({
-        collection: require(process.argv[4]),
+        collection: require(process.argv[2]),
         reporters: ['cli,junit'],
         globals: {
             "id": "5bfde907-2a1e-8c5a-2246-4aff74b74236",
@@ -59,7 +59,7 @@ function runPostmanCollection() {
                 },
                 {
                     "key": "environment",
-                    "value": process.argv[5],
+                    "value": process.argv[4],
                     "type": "text",
                     "enabled": true
                 }
@@ -75,7 +75,7 @@ function runPostmanCollection() {
         if (err) { throw err; }
         console.log('collection run complete!');
     }).on('start', function (err, args) {
-        console.log('Running against ' + process.argv[5]);
+        console.log('Running against ' + process.argv[4]);
         console.log("Access Token: " + access_token);
         console.log("JWT: " + jwt_token);
     });
