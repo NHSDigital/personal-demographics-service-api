@@ -1,3 +1,0 @@
-<VerifyAPIKey async="false" continueOnError="false" enabled="true" name="VerifyAPIKey.ClientId">
-  <APIKey ref="request.queryparam.client_id" />
-</VerifyAPIKey>

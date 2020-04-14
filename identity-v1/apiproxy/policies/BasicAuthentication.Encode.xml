@@ -1,7 +1,0 @@
-<BasicAuthentication async="false" continueOnError="false" enabled="true" name="BasicAuthentication.Encode">
-  <Operation>Encode</Operation>
-  <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
-  <User ref="private.apigee.client_id"/>
-  <Password ref="private.apigee.client_secret"/>
-  <AssignTo createNew="true">basicAuthString</AssignTo>
-</BasicAuthentication>

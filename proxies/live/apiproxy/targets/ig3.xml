@@ -23,7 +23,7 @@
            2b. ServiceCallout.GetJWKS: Retrieve JWKS from IdP
            2c. PopulateCache.JWKS: Store in cache
            2d. AssignMessage.JWKS: Assign the JWKS from the service callout to `jwks` flow variable
-           3. VerifyJWT.FromJWTHeader: Verify the JWT using the `jwks` flow variable
+           3. VerifyJWT.FromOauthAttribute: Verify the JWT using the `jwks` flow variable
       -->
       <Step>
         <Name>LookupCache.JWKS</Name>
@@ -45,7 +45,7 @@
         <Condition>jwks = null</Condition>
       </Step>
       <Step>
-        <Name>VerifyJWT.FromJWTHeader</Name>
+        <Name>VerifyJWT.FromOauthAttribute</Name>
       </Step>
       <Step>
         <Name>AssignMessage.AddUserIdHeader</Name>
