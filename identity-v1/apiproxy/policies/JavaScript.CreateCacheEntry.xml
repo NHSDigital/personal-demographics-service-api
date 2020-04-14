@@ -1,3 +1,0 @@
-<Javascript async="false" continueOnError="false" enabled="true" timeLimit="200" name="JavaScript.CreateCacheEntry">
-  <ResourceURL>jsc://create-cache-entry.js</ResourceURL>
-</Javascript>

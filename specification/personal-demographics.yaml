@@ -103,35 +103,35 @@ info:
     - unattended access - without smartcard - similar to the PDS SMSP API
 
     ## Environments and testing
-    
+
     | Environment       | Base URL                                                       |
     | ----------------- | -------------------------------------------------------------- |
     | Sandbox           | `https://sandbox.api.service.nhs.uk/personal-demographics/`    |
     | Integration test  | `https://int.api.service.nhs.uk/personal-demographics/`        |
     | Production        | Not yet available                                              |
-    
+
     ### Sandbox testing
     Our [sandbox environment](https://digital.nhs.uk/developer/testing#sandbox-testing):
     * is for early developer testing
     * only covers a limited set of scenarios
     * is stateless, so it does not actually persist any updates
     * is open access, so does not allow you to test authorisation
-    
+
     For more details on sandbox testing, or to try out the sandbox using our "Try this API" feature, see the documentation for each endpoint.
-    
+
     Alternatively, you can try out the sandbox using our Postman collection:
-    
+
     [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f574e6533fcc2e93a2d2)
-    
+
     ### Integration testing
     Our [integration test environment](https://digital.nhs.uk/developer/testing#integration-testing):
     * is for formal integration testing
     * includes authorisation, although at the moment it only supports signing in with a user name and password - authorisation with smartcards is coming soon
-    
+
     You can use our [PDS FHIR API test data pack](https://digital.nhs.uk/developer/api-specifications/pds-fhir-api-test-data) to test most common scenarios. You can also create your own test data.
-    
+
     For more details see [integration testing with our RESTful APIs](https://digital.nhs.uk/developer/testing#integration-testing-with-our-restful-apis).
-    
+
     ## Onboarding
     [Contact us](https://digital.nhs.uk/developer/help-and-support) for more details on the onboarding process.
 
@@ -159,7 +159,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
-      - $ref: '#/components/parameters/NHSDIdentityJwt'
     get:
       summary: Search for patient
       operationId: search-patient
@@ -192,7 +191,7 @@ paths:
         You can request a fuzzy search using the `_fuzzy-match` query parameter. This will:
           * match common homophones, such as `Smith` and `Smythe`, using the [Soundex](https://en.wikipedia.org/wiki/Soundex) algorithm
           * check for transposed names, such as `Adam Thomas` and `Thomas Adam`
-          
+
         Wildcards cannot be used with a fuzzy search.
 
         ## Search parameter options
@@ -213,7 +212,7 @@ paths:
         ## Historic data search
         By default the endpoint only searches current information.
         You can search historic information, such as previous names or addresses using the `_history` query parameter.
-        
+
         You cannot perform a fuzzy search on historic information.
 
         ## Scoring
@@ -243,7 +242,7 @@ paths:
         You should ensure that you design, build and test your software to minimise these risks:
         * an end user selects the wrong patient from the results presented, so there is a risk of clinical harm; for example due to retrieval of the wrong medical data
         * the end user has access to patients’ personal data, so there is a risk to patient privacy
-        
+
         In particular, it is almost certainly a good idea to display search results in descending score order - best match first.
 
         ## Sandbox testing
@@ -483,7 +482,6 @@ paths:
       - $ref: '#/components/parameters/Id'
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
-      - $ref: '#/components/parameters/NHSDIdentityJwt'
     get:
       description: |
         ## Overview
@@ -784,18 +782,6 @@ components:
         type: string
         format: '^Bearer\ [[:ascii:]]+$'
         example: 'Bearer g1112R_ccQ1Ebbb4gtHBP1aaaNM'
-    NHSDIdentityJwt:
-      in: header
-      name: NHSD-Identity-JWT
-      description: |
-        A Base64-encoded JWT Token containing a subject and issuer.
-
-        Note: This parameter is required unless interacting with the Sandbox.
-      required: false
-      schema:
-        type: string
-        format: byte
-        example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJpc3MiOiJleGFtcGxlLm9yZyJ9.35HCa_9q5c_BtL1P_nfrgB4bANE7HAOMWjf3hO9o4ns'
   schemas:
     Patient:
       $ref: components/schemas/Patient.yaml
