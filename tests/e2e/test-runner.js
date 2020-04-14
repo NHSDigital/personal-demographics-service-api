@@ -74,15 +74,11 @@ function runPostmanCollection() {
             "_postman_exported_at": "2020-04-03T14:31:26.200Z",
             "_postman_exported_using": "Postman/4.8.0"
         },
-        // globals: require('/Users/gurdeep/Documents/Postman/globals.json'),
-        // environment: require('/Users/gurdeep/Documents/Postman/veit05.json'),
     }, function (err) {
         if (err) { throw err; }
         console.log('collection run complete!');
     }).on('start', function (err, args) {
         console.log('Running against ' + process.argv[4]);
-        console.log("Access Token: " + access_token);
-        console.log("JWT: " + jwt_token);
     });
 }
 
