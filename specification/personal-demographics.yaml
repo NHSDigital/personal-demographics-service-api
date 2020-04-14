@@ -755,7 +755,6 @@ paths:
       - $ref: '#/components/parameters/Id'
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
-      - $ref: '#/components/parameters/NHSDIdentityJwt'
     get:
       description: |
         ## Overview
@@ -870,7 +869,6 @@ paths:
       - $ref: '#/components/parameters/ObjectId'
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
-      - $ref: '#/components/parameters/NHSDIdentityJwt'
     get:
       description: |
         ## Overview
