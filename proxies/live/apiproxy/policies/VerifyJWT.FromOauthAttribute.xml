@@ -1,5 +1,6 @@
-<VerifyJWT async="false" continueOnError="false" enabled="true" name="VerifyJWT.FromJWTHeader">
-  <Source>request.header.NHSD-Identity-JWT</Source>
+<VerifyJWT async="false" continueOnError="false" enabled="true" name="VerifyJWT.FromOauthAttribute">
+  <!-- accesstoken variable is from OAuthV2 VerifyAccessToken policy. id_token is an attribute of it. -->
+  <Source>accesstoken.id_token</Source>
   <!-- Contact in NHSID Advised on 2020-03-13: "
     At the moment we are using the default configuration of RS256 for all our clients
     and we don’t intend to change this, if we were to we would obviously have to contact

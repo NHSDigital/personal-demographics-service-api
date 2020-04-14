@@ -1,5 +1,8 @@
 # Changelog
 
+## 2020-04-09
+* No longer need to include `NHSD-Identity-JWT` header in API Calls
+
 ## 2020-04-08
 * Adding Related Person endpoint to the Specification.
 
