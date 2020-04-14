@@ -41,6 +41,11 @@ function runPostmanCollection() {
     newman.run({
         collection: require(process.argv[2]),
         reporters: ['cli', 'junit'],
+        reporter: {
+            junit: {
+                export: './test-report.xml'
+            }
+        },
         globals: {
             "id": "5bfde907-2a1e-8c5a-2246-4aff74b74236",
             "name": "global-params",
