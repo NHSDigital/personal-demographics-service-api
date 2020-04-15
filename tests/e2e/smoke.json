@@ -53,7 +53,6 @@
 						"{{environment}}"
 					],
 					"path": [
-						"personal-demographics",
 						"Patient",
 						"5900018512"
 					]
