@@ -48,7 +48,7 @@
 					}
 				],
 				"url": {
-					"raw": "{{environment}}/personal-demographics/Patient/5900018512",
+					"raw": "{{environment}}/Patient/5900018512",
 					"host": [
 						"{{environment}}"
 					],
