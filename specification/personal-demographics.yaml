@@ -233,7 +233,7 @@ paths:
         ## Restricted patients
         Some patients are tagged as restricted, or sensitive. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telcom` and `generalPractitioner` will be removed.
 
-        If `address-postcode` is included in the search paramaters, no restricted patients will be returned even if a match is identified.
+        If `address-postcode` or `general-practitioner` are included in the search parameters, no restricted patients will be returned even if a match is identified.
 
         ## Number of results returned
         By default, the endpoint will return a maximum of 50 results.

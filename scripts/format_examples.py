@@ -49,8 +49,7 @@ def slim_patient(resource):
         "birthDate": _return_value,
         "deceasedDateTime": _return_value,
         "address": _slim_address,
-        "generalPractitioner": _return_value,
-        "extension": _slim_extension
+        "generalPractitioner": _return_value
     }
 
     # Loop around the whitelist returning the result of mapped function.
@@ -74,7 +73,9 @@ def sensitive_patient(resource):
     new_resource["meta"]["security"][0]["code"] = "R"
     new_resource["meta"]["security"][0]["display"] = "restricted"
 
-    new_resource["extension"] = _slim_extension(resource, "extension")
+    if "extension" in resource:
+        new_resource["extension"] = _slim_extension(resource, "extension")
+        
     return new_resource
 
 
