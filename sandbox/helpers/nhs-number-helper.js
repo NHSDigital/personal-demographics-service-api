@@ -4,7 +4,7 @@ const nhsNumberValidator = require('../validators/nhs-number-validator')
 
 function _getPatient(nhsNumber) {
     // Ideally should be done using options.validate object (https://hapi.dev/tutorials/validation/)
-    // But don't know how to customise the returned JSON when done this way
+    // but the returned JSON cannot be customised
     if (!nhsNumber) {
         throw Boom.badRequest(
             `Unsupported Service`,
