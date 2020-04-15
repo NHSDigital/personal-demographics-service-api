@@ -100,6 +100,7 @@ def related_person_no_reference(resource):
     }
     return new_resource
 
+
 def remove_empty_elements(obj):
     """
     Recursively traverse the dictionary removing any empty elements (eg. [] or {}).
