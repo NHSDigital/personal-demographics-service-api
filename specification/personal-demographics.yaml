@@ -12,10 +12,11 @@ info:
     You can:
     * search for patients
     * get patient details
-    * update patient details
+    * get patient related people
 
     You cannot currently use this API to:
     * check that you have the right NHS Number for a patient
+    * update patient details (coming soon)
     * create a new record for a birth
     * receive birth notifications
     * create a record for a new patient
@@ -29,9 +30,11 @@ info:
     * birth information
     * death information
     * registered GP
-    * nominated pharmacy (other related pharmacies coming soon)
+    * nominated pharmacy
+    * dispensing doctor pharmacy
+    * medical appliance supplier pharmacy
+    * related people
     * consent information (coming soon)
-    * related people (coming soon)
 
     Currently, this API can only be accessed by healthcare professionals, authenticated with an NHS smartcard or equivalent.
     Unauthenticated access and citizen access are on the roadmap.
@@ -103,35 +106,35 @@ info:
     - unattended access - without smartcard - similar to the PDS SMSP API
 
     ## Environments and testing
-    
+
     | Environment       | Base URL                                                       |
     | ----------------- | -------------------------------------------------------------- |
     | Sandbox           | `https://sandbox.api.service.nhs.uk/personal-demographics/`    |
     | Integration test  | `https://int.api.service.nhs.uk/personal-demographics/`        |
     | Production        | Not yet available                                              |
-    
+
     ### Sandbox testing
     Our [sandbox environment](https://digital.nhs.uk/developer/testing#sandbox-testing):
     * is for early developer testing
     * only covers a limited set of scenarios
     * is stateless, so it does not actually persist any updates
     * is open access, so does not allow you to test authorisation
-    
+
     For more details on sandbox testing, or to try out the sandbox using our "Try this API" feature, see the documentation for each endpoint.
-    
+
     Alternatively, you can try out the sandbox using our Postman collection:
-    
-    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f574e6533fcc2e93a2d2)
-    
+
+    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
+
     ### Integration testing
     Our [integration test environment](https://digital.nhs.uk/developer/testing#integration-testing):
     * is for formal integration testing
     * includes authorisation, although at the moment it only supports signing in with a user name and password - authorisation with smartcards is coming soon
-    
+
     You can use our [PDS FHIR API test data pack](https://digital.nhs.uk/developer/api-specifications/pds-fhir-api-test-data) to test most common scenarios. You can also create your own test data.
-    
+
     For more details see [integration testing with our RESTful APIs](https://digital.nhs.uk/developer/testing#integration-testing-with-our-restful-apis).
-    
+
     ## Onboarding
     [Contact us](https://digital.nhs.uk/developer/help-and-support) for more details on the onboarding process.
 
@@ -139,7 +142,9 @@ info:
     To see details for specific endpoints, select from the list on the left hand side of the page:
     * `GET /Patient` - search for patient
     * `GET /Patient/{id}` - get patient's personal details
-    * `PATCH /Patient/{id}` - update patient's personal details
+    * `GET /Patient/{id}/RelatedPerson` - get patient's related people details
+    * `GET /Patient/{id}/RelatedPerson/{object_id}` - get patient's specific related person details
+    * `PATCH /Patient/{id}` - update patient's personal details (coming soon)
 
   contact:
     name: Personal Demographics Service FHIR API Support
@@ -154,12 +159,12 @@ servers:
     description: 'Production environment (not yet available: see "API status and roadmap").'
 tags:
   - name: patients
+  - name: relatedperson
 paths:
   /Patient:
     parameters:
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
-      - $ref: '#/components/parameters/NHSDIdentityJwt'
     get:
       summary: Search for patient
       operationId: search-patient
@@ -192,7 +197,7 @@ paths:
         You can request a fuzzy search using the `_fuzzy-match` query parameter. This will:
           * match common homophones, such as `Smith` and `Smythe`, using the [Soundex](https://en.wikipedia.org/wiki/Soundex) algorithm
           * check for transposed names, such as `Adam Thomas` and `Thomas Adam`
-          
+
         Wildcards cannot be used with a fuzzy search.
 
         ## Search parameter options
@@ -213,7 +218,7 @@ paths:
         ## Historic data search
         By default the endpoint only searches current information.
         You can search historic information, such as previous names or addresses using the `_history` query parameter.
-        
+
         You cannot perform a fuzzy search on historic information.
 
         ## Scoring
@@ -224,6 +229,11 @@ paths:
         The result list is sorted in descending score order - best match first.
 
         Use the `_exact-match` query parameter to return exact matches only - where the score is 1.0.
+
+        ## Restricted patients
+        Some patients are tagged as restricted, or sensitive. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telcom` and `generalPractitioner` will be removed.
+
+        If `address-postcode` is included in the search paramaters, no restricted patients will be returned even if a match is identified.
 
         ## Number of results returned
         By default, the endpoint will return a maximum of 50 results.
@@ -238,7 +248,7 @@ paths:
         You should ensure that you design, build and test your software to minimise these risks:
         * an end user selects the wrong patient from the results presented, so there is a risk of clinical harm; for example due to retrieval of the wrong medical data
         * the end user has access to patients’ personal data, so there is a risk to patient privacy
-        
+
         In particular, it is almost certainly a good idea to display search results in descending score order - best match first.
 
         ## Sandbox testing
@@ -251,6 +261,7 @@ paths:
         | Search with limited results | `family`=`Sm*`, `gender`=`female`, `birthdate`=`eq2010-10-22`, `_max-results`=`2` | HTTP Status 200 with search result of two. |
         | Search with date range      | `family`=`Smith`, `gender`=`female`, `birthdate`=`ge2010-10-21`, `birthdate`=`le2010-10-23` | HTTP Status 200 with single search result. |
         | Fuzzy search                | `family`=`Smith`, `given`=`Jane` `gender`=`female`, `birthdate`=`eq2010-10-22`, `_fuzzy-match`=`true` | HTTP Status 200 with single search result. |
+        | Sensitive patient search    | `family`=`Smythe`, `given`=`Janet` `gender`=`female`, `birthdate`=`eq2005-06-16` | HTTP Status 200 with single search result. |
         | Unsuccessful search         | Any other valid search query parameters                      | HTTP Status 200 with no search results     |
         | Invalid date format         | `birthdate` or `death-date` query parameters with values not in format `YYYY-MM-DD` | HTTP Status 400 with problem description   |
         | Too few search parameters   | Any invalid combination of query parameters                  | HTTP Status 400 with problem description   |
@@ -259,7 +270,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f574e6533fcc2e93a2d2)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
       tags:
         - patients
       parameters:
@@ -323,7 +334,11 @@ paths:
           required: false
           schema:
             type: string
-            enum: [male, female, other, unknown]
+            enum:
+              - male
+              - female
+              - other
+              - unknown
             example: female
         - name: birthdate
           in: query
@@ -477,26 +492,31 @@ paths:
       - $ref: '#/components/parameters/Id'
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
-      - $ref: '#/components/parameters/NHSDIdentityJwt'
     get:
       description: |
         ## Overview
         Use this endpoint to get patient details from PDS for a given NHS Number.
 
+        ## Superceded patients
+        Some patients are marked as superceded, this means that for some reason the original resource is no longer valid and has been replaced with a different resource.
+
+        On retrieval of a superceded resource the new resource will be automatically returned in place of the requested resource.
+
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
 
-        | Scenario              | Request                                         | Response                                      |
-        | --------------------- | ----------------------------------------------- | --------------------------------------------- |
-        | Patient exists        | `id`=`9000000009`                       | HTTP Status 200 with patient data in response |
-        | Patient doesn't exist | `id`=`9111231130` (or any other valid NHS Number)  | HTTP Status 404 with problem description      |
-        | Invalid NHS Number    | `id`=`9000000000` (or any invalid NHS Number)| HTTP Status 400 with problem description      |
+        | Scenario                 | Request                                           | Response                                      |
+        | ------------------------ | ------------------------------------------------- | --------------------------------------------- |
+        | Patient exists           | `id`=`9000000009`                                 | HTTP Status 200 with patient data in response |
+        | Sensitive Patient exists | `id`=`9000000025`                                 | HTTP Status 200 with patient data in response with the sensitive details removed |
+        | Patient doesn't exist    | `id`=`9111231130` (or any other valid NHS Number) | HTTP Status 404 with problem description      |
+        | Invalid NHS Number       | `id`=`9000000000` (or any invalid NHS Number)     | HTTP Status 400 with problem description      |
 
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f574e6533fcc2e93a2d2)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
       summary: "Retrieve a patient's record"
       operationId: get-patient
       tags:
@@ -582,7 +602,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/f574e6533fcc2e93a2d2)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
 
 
       summary: Update a patient's record
@@ -729,6 +749,195 @@ paths:
                           version: '1'
                           code: unsupportedMediaType
                           display: "Must be 'application/json-patch+json'."
+
+  '/Patient/{id}/RelatedPerson':
+    parameters:
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/RoleId'
+      - $ref: '#/components/parameters/BearerAuthorization'
+    get:
+      description: |
+        ## Overview
+        Use this endpoint to get a patient's related people details from PDS for a given NHS Number. This is a list of people who can be contacted, and how, regarding the patient.
+
+        ## Sandbox test scenarios
+        You can test the following scenarios in our sandbox environment:
+
+        | Scenario                        | Request                                       | Response                                                      |
+        | ------------------------------- | --------------------------------------------- | ------------------------------------------------------------- |
+        | Multiple Related Persons exists | `id`=`9000000009`                             | HTTP Status 200 with related person data in a response Bundle |
+        | Single Related Person exists    | `id`=`9000000017`                             | HTTP Status 200 with related person data in a response Bundle |
+        | Related Persons do not exist    | `id`=`9000000025`                             | HTTP Status 404 with problem description                      |
+
+        You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
+
+        Alternatively, you can try out the sandbox using our Postman collection:
+
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
+      summary: "Retrieve a list of Related Person resources for a given patient"
+      operationId: get-related-people
+      tags:
+        - relatedperson
+      responses:
+        '200':
+          description: Information successfully returned.
+          headers:
+            ETag:
+              $ref: components/schemas/ETag.yaml
+          content:
+            application/fhir+json:
+              schema:
+                type: object
+                properties:
+                  resourceType:
+                    type: string
+                    description: FHIR Resource Type.
+                    default: Bundle
+                  type:
+                    type: string
+                    description: FHIR Bundle Type.
+                    default: searchset
+                  timestamp:
+                    type: string
+                    description: Time the search was performed.
+                    format: datetime
+                    example: '2019-12-25T12:00:00+00:00'
+                  total:
+                    type: integer
+                    description: Number of resources returned in search.
+                    example: 1
+                  entry:
+                    type: array
+                    description: |
+                      A list of related people details attached to the patient. 
+                    items:
+                      type: object
+                      properties:
+                        fullUrl:
+                          type: string
+                          description: Absolute URL of the resource described in this item.
+                          example: 'https://beta.api.digital.nhs.uk/Patient/9000000009/RelatedPerson/507B7621'
+                        resource:
+                          $ref: components/schemas/RelatedPerson.yaml
+              example:
+                resourceType: Bundle
+                type: searchset
+                timestamp: '2019-12-25T12:00:00+00:00'
+                total: 1
+                entry:
+                  - fullUrl: 'https://beta.api.digital.nhs.uk/Patient/9000000009/RelatedPerson/507B7621'
+                    resource:
+                      $ref: components/examples/RelatedPerson.json
+        '400':
+          description: Invalid NHS number supplied.
+          content:
+            application/fhir+json:
+              schema:
+                $ref: components/schemas/OperationOutcome.yaml
+              example:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: value
+                    details:
+                      coding:
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                          version: '1'
+                          code: INVALID_NHS_NUMBER
+                          display: NHS Number 9000000000 is not a valid NHS number
+        '404':
+          description: Related People not found.
+          content:
+            application/fhir+json:
+              schema:
+                $ref: components/schemas/OperationOutcome.yaml
+              example:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: not-found
+                    details:
+                      coding:
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                          version: '1'
+                          code: RESOURCE_NOT_FOUND
+                          display: Resource not found
+
+  '/Patient/{id}/RelatedPerson/{object_id}':
+    parameters:
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/ObjectId'
+      - $ref: '#/components/parameters/RoleId'
+      - $ref: '#/components/parameters/BearerAuthorization'
+    get:
+      description: |
+        ## Overview
+        Use this endpoint to get a patient's specific related person details from PDS for a given NHS Number, using the related person object id.
+
+        ## Sandbox test scenarios
+        You can test the following scenarios in our sandbox environment:
+
+        | Scenario                     | Request                                                               | Response                                             |
+        | ---------------------------- | --------------------------------------------------------------------- | ---------------------------------------------------- |
+        | Related Person exists        | `id`=`9000000009`, `object_id`=`507B7621`                             | HTTP Status 200 with related person data in response |
+        | Related Person doesn't exist | `id`=`9000000009`, `object_id`=`12345678` (or any other object id)    | HTTP Status 404 with problem description             |
+
+        You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
+
+        Alternatively, you can try out the sandbox using our Postman collection:
+
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
+      summary: "Retrieve a specific related person"
+      operationId: get-related-person
+      tags:
+        - relatedperson
+      responses:
+        '200':
+          description: Information successfully returned.
+          headers:
+            ETag:
+              $ref: components/schemas/ETag.yaml
+          content:
+            application/fhir+json:
+              schema:
+                $ref: components/schemas/RelatedPerson.yaml
+              example:
+                $ref: components/examples/RelatedPerson.json
+        '400':
+          description: Invalid NHS number supplied.
+          content:
+            application/fhir+json:
+              schema:
+                $ref: components/schemas/OperationOutcome.yaml
+              example:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: value
+                    details:
+                      coding:
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                          version: '1'
+                          code: INVALID_NHS_NUMBER
+                          display: NHS Number 9000000000 is not a valid NHS number
+        '404':
+          description: Related Person with the object ID was not found.
+          content:
+            application/fhir+json:
+              schema:
+                $ref: components/schemas/OperationOutcome.yaml
+              example:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: not-found
+                    details:
+                      coding:
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                          version: '1'
+                          code: RESOURCE_NOT_FOUND
+                          display: Resource not found
+
 components:
   parameters:
     Id:
@@ -739,6 +948,14 @@ components:
       schema:
         type: string
         example: "9000000009"
+    ObjectId:
+      name: object_id
+      in: path
+      description: A resource Object ID. The primary identifier of a resource.
+      required: true
+      schema:
+        type: string
+        example: "507B7621"
     IfMatch:
       in: header
       name: If-Match
@@ -777,21 +994,11 @@ components:
         type: string
         format: '^Bearer\ [[:ascii:]]+$'
         example: 'Bearer g1112R_ccQ1Ebbb4gtHBP1aaaNM'
-    NHSDIdentityJwt:
-      in: header
-      name: NHSD-Identity-JWT
-      description: |
-        A Base64-encoded JWT Token containing a subject and issuer.
-
-        Note: This parameter is required unless interacting with the Sandbox.
-      required: false
-      schema:
-        type: string
-        format: byte
-        example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJpc3MiOiJleGFtcGxlLm9yZyJ9.35HCa_9q5c_BtL1P_nfrgB4bANE7HAOMWjf3hO9o4ns'
   schemas:
     Patient:
       $ref: components/schemas/Patient.yaml
+    RelatedPerson:
+      $ref: components/schemas/RelatedPerson.yaml
     OperationOutcome:
       $ref: components/schemas/OperationOutcome.yaml
   responses:
@@ -815,3 +1022,4 @@ components:
                       version: '1'
                       code: INVALID_IF_MATCH_HEADER
                       display: This resource has changed since you last read. Please re-read and try again with the new version number.
+

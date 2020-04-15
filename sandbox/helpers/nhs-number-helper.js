@@ -2,6 +2,40 @@ const Boom = require('boom')
 const patients = require('../services/patients')
 const nhsNumberValidator = require('../validators/nhs-number-validator')
 
+function _getPatient(nhsNumber) {
+    // Ideally should be done using options.validate object (https://hapi.dev/tutorials/validation/)
+    // But don't know how to customise the returned JSON when done this way
+    if (!nhsNumber) {
+        throw Boom.badRequest(
+            `Unsupported Service`,
+            {operationOutcomeCode: "processing", apiErrorCode: "UNSUPPORTED_SERVICE"})
+    }
+
+    // Validate NHS number is valid format
+    if (nhsNumberValidator.nhsNumberSchema.validate(nhsNumber).error) {
+        throw Boom.badRequest(
+            `NHS Number ${nhsNumber} is not a valid NHS number`,
+            {operationOutcomeCode: "value", apiErrorCode: "INVALID_NHS_NUMBER"})
+    }
+
+    // Validate NHS number is for our test patient
+    let patient = null;
+    Object.keys(patients.retrieve).forEach(key => {
+        if (nhsNumber === patients.retrieve[key].id) {
+            patient = patients.retrieve[key];
+        }
+    })
+
+    if (patient == null) {
+        throw Boom.notFound(
+            `Patient with NHS number ${nhsNumber} could not be found`,
+            {operationOutcomeCode: "not_found", apiErrorCode: "PATIENT_NOT_FOUND"}
+        )
+    }
+
+    return patient;
+}
+
 module.exports = {
     /**
      * Used by Patient/{nhsNumber} paths to check it has been supplied in
@@ -11,30 +45,23 @@ module.exports = {
      *
      * Throws an appropriate Boom error message if either of these are wrong
      *
-     * @param {*} request - hapi's request object
+     * @param {*} nhsNumber - the nhsNumber to check
      */
-    checkNhsNumber: function (request) {
-        // Ideally should be done using options.validate object (https://hapi.dev/tutorials/validation/)
-        // But don't know how to customise the returned JSON when done this way
-        if (!request.params.nhsNumber) {
-            throw Boom.badRequest(
-                `Unsupported Service`,
-                {operationOutcomeCode: "processing", apiErrorCode: "UNSUPPORTED_SERVICE"})
-        }
+    checkNhsNumber: function (nhsNumber) {
+        _getPatient(nhsNumber)
+    },
 
-        // Validate NHS number is valid format
-        if (nhsNumberValidator.nhsNumberSchema.validate(request.params.nhsNumber).error) {
-            throw Boom.badRequest(
-                `NHS Number ${request.params.nhsNumber} is not a valid NHS number`,
-                {operationOutcomeCode: "value", apiErrorCode: "INVALID_NHS_NUMBER"})
-        }
 
-        // Validate NHS number is for our test patient
-        if (request.params.nhsNumber != patients.examplePatientSmith.id) {
-            throw Boom.notFound(
-                `Patient with NHS number ${request.params.nhsNumber} could not be found`,
-                {operationOutcomeCode: "not_found", apiErrorCode: "PATIENT_NOT_FOUND"}
-            )
-        }
+    /**
+     * Used by Patient/{nhsNumber} paths to get our example Patient record
+     *
+     * Returns the found patient.
+     *
+     * Throws an appropriate Boom error message if either of these are wrong
+     *
+     * @param {*} nhsNumber - the nhsNumber to check
+     */
+    getNhsNumber: function (nhsNumber) {
+        return _getPatient(nhsNumber)
     }
 }

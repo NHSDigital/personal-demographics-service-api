@@ -10,5 +10,6 @@ properties:
   valuePositiveInt:
     type: integer
     minimum: 1
+    maximum: 99
     description: Rank expressed as positive integer (1 being the highest).
     example: 1
