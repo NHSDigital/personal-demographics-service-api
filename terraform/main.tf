@@ -14,10 +14,13 @@ terraform {
 
 
 module "personal-demographics-service" {
-  source             = "github.com/NHSDigital/api-platform-service-module"
-  name               = "personal-demographics"
-  path               = "personal-demographics"
-  apigee_environment = var.apigee_environment
-  proxy_type         = length(regexall("sandbox", var.apigee_environment)) > 0 ? "sandbox" : "live"
-  namespace          = var.namespace
+  source                   = "github.com/NHSDigital/api-platform-service-module"
+  name                     = "personal-demographics"
+  path                     = "personal-demographics"
+  apigee_environment       = var.apigee_environment
+  proxy_type               = length(regexall("sandbox", var.apigee_environment)) > 0 ? "sandbox" : "live"
+  namespace                = var.namespace
+  make_api_product         = length(var.namespace) > 0 ? false : true
+  api_product_display_name = "Personal Demographics Service"
+  api_product_description  = "TODO: Link to docs?"
 }
