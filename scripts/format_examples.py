@@ -75,7 +75,7 @@ def sensitive_patient(resource):
 
     if "extension" in resource:
         new_resource["extension"] = _slim_extension(resource, "extension")
-        
+
     return new_resource
 
 
