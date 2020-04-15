@@ -14,7 +14,7 @@ terraform {
 
 
 module "personal-demographics-service" {
-  source             = "github.com/NHSDigital/api-platform-service-module?ref=apm-501-change-proxy-location"
+  source             = "github.com/NHSDigital/api-platform-service-module"
   name               = "personal-demographics"
   path               = "personal-demographics"
   apigee_environment = var.apigee_environment
