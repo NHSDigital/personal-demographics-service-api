@@ -16,10 +16,6 @@ def _process_blacklist(resource, blacklist):
     for key, value in resource.items():
         if key not in blacklist:
             new_resource[key] = value
-        elif isinstance(value, list):
-            new_resource[key] = []
-        elif isinstance(value, dict):
-            new_resource[key] = {}
     return new_resource
 
 
@@ -103,3 +99,24 @@ def related_person_no_reference(resource):
         "type": "Patient"
     }
     return new_resource
+
+def remove_empty_elements(obj):
+    """
+    Recursively traverse the dictionary removing any empty elements (eg. [] or {}).
+    """
+    new_obj = deepcopy(obj)
+    if isinstance(obj, dict):
+        for key, value in obj.items():
+            sub_value = remove_empty_elements(value)
+            if not sub_value and sub_value is not False:
+                del new_obj[key]
+            else:
+                new_obj[key] = sub_value
+    elif isinstance(obj, list):
+        new_obj = []
+        for value in obj:
+            sub_value = remove_empty_elements(value)
+            if sub_value or sub_value == "":
+                new_obj.append(sub_value)
+
+    return new_obj

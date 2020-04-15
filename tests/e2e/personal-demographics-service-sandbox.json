@@ -1,6 +1,7 @@
+
 {
 	"info": {
-		"_postman_id": "54fa79ab-def3-48bf-b473-9d3d338e63d5",
+		"_postman_id": "4ac1ea54-b33b-4427-9871-4d30b9978c76",
 		"name": "Sandbox",
 		"description": "Sandbox Testing",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -1468,8 +1469,6 @@
 											"                \"gender\": \"female\",",
 											"                \"birthDate\": \"2005-06-16\",",
 											"                \"deceasedDateTime\": \"2005-06-16T00:00:00+00:00\",",
-											"                \"address\": [],",
-											"                \"generalPractitioner\": [],",
 											"                \"extension\": [",
 											"                    {",
 											"                        \"url\": \"https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus\",",
@@ -2165,9 +2164,6 @@
 											"    \"gender\": \"female\",",
 											"    \"birthDate\": \"2010-10-22\",",
 											"    \"deceasedDateTime\": \"2010-10-22T00:00:00+00:00\",",
-											"    \"address\": [],",
-											"    \"telecom\": [],",
-											"    \"generalPractitioner\": [],",
 											"    \"extension\": [",
 											"        {",
 											"            \"url\": \"https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus\",",
@@ -2620,9 +2616,6 @@
 											"                    \"start\": \"2020-01-01\",",
 											"                    \"end\": \"2021-12-31\"",
 											"                },",
-											"                \"name\": [],",
-											"                \"address\": [],",
-											"                \"telecom\": [],",
 											"                \"relationship\": [",
 											"                    {",
 											"                        \"coding\": [",
@@ -2893,9 +2886,6 @@
 											"        \"start\": \"2020-01-01\",",
 											"        \"end\": \"2021-12-31\"",
 											"    },",
-											"    \"name\": [],",
-											"    \"address\": [],",
-											"    \"telecom\": [],",
 											"    \"relationship\": [",
 											"        {",
 											"            \"coding\": [",

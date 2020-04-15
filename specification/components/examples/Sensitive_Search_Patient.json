@@ -55,8 +55,6 @@
   "gender": "female",
   "birthDate": "2005-06-16",
   "deceasedDateTime": "2005-06-16T00:00:00+00:00",
-  "address": [],
-  "generalPractitioner": [],
   "extension": [
     {
       "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus",
