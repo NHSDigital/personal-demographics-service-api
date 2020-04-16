@@ -55,9 +55,6 @@
   "gender": "female",
   "birthDate": "2010-10-22",
   "deceasedDateTime": "2010-10-22T00:00:00+00:00",
-  "address": [],
-  "telecom": [],
-  "generalPractitioner": [],
   "extension": [
     {
       "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus",
