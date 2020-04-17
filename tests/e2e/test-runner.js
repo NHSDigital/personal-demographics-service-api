@@ -4,7 +4,7 @@ const puppeteer = require('puppeteer');
 const username = '910000000001';
 const password = 'Password1';
 var access_token = '';
-var jwt_token = ''
+var jwt_token = '';
 
 
 function nhsIdLogin(_callback) {
@@ -14,7 +14,7 @@ function nhsIdLogin(_callback) {
         const browser = await puppeteer.launch({ headless: true });
         const page = await browser.newPage();
         await page.goto(herokuapp_url, { waitUntil: 'networkidle2' });
-        await page.click("#start")
+        await page.click("#start");
         await page.waitForSelector('#idToken1');
         await page.type('#idToken1', username);
         await page.type('#idToken2', password);
@@ -22,7 +22,7 @@ function nhsIdLogin(_callback) {
         await page.waitForNavigation();
 
         let tokens = await page.$eval('body > div > div > pre', e => e.innerText);
-        setTokens(tokens);        
+        setTokens(tokens);
         await browser.close();
         _callback();
     })();
@@ -74,11 +74,13 @@ function runPostmanCollection() {
             "_postman_exported_at": "2020-04-03T14:31:26.200Z",
             "_postman_exported_using": "Postman/4.8.0"
         },
+        environment: require(process.argv[5])
     }, function (err) {
         if (err) { throw err; }
         console.log('collection run complete!');
     }).on('start', function (err, args) {
         console.log('Running against ' + process.argv[4]);
+        console.log('Using environment file ' + process.argv[5]);
     });
 }
 
