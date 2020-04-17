@@ -21,20 +21,17 @@ function nhsIdLogin(_callback) {
         await page.click('#loginButton_0');
         await page.waitForNavigation();
 
-        let tokens = await page.$eval('body > div > div > pre', e => e.innerText);
-        setTokens(tokens);
+        let tokenJson = await page.$eval('body > div > div > pre', e => e.innerText);
+        setTokens(tokenJson);
         await browser.close();
         _callback();
     })();
 }
 
 function setTokens(json) {
-    let parts = json.split(",");
-    access_token = parts[0].split(":")[1].trim();
-    jwt_token = parts[2].split(":")[1].trim();
-
-    access_token = access_token.replace(/'/g, '');
-    jwt_token = jwt_token.replace(/'/g, '');
+    let data = JSON.parse(json);
+    access_token = json.access_token;
+    jwt_token = json.id_token;
 }
 
 function runPostmanCollection() {
