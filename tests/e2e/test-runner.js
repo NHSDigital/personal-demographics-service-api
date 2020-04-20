@@ -30,10 +30,16 @@ function nhsIdLogin(username, password, login_url, callback) {
         await page.click("#start");
 
         console.log("Logging in...");
+        console.log("Waiting to find #idToken1...");
         await page.waitForSelector('#idToken1');
+
+        console.log("Filling #idToken1...");
         await page.type('#idToken1', username);
+        console.log("Filling #idToken2...");
         await page.type('#idToken2', password);
+        console.log("Clicking login...");
         await page.click('#loginButton_0');
+        console.log("Waiting for redirect...");
         await page.waitForNavigation();
 
         console.log("Logged in successfully.");
