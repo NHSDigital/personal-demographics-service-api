@@ -61,7 +61,7 @@ info:
     The following items are on our roadmap, in rough priority order:
     - integration testing service - enhancement to support authorisation with NHS smartcards (target date: ASAP)
     - production service - beta - search for patient and retrieve patient details (target date: end of April 2020)
-    - addition of data fields for consent information and related people
+    - addition of data fields for consent information
     - production service - beta - update patient (target date: end of May 2020)
     - unauthenticated access - without NHS smartcard - similar to the PDS SMSP API (target date to be confirmed - please [contact us](https://digital.nhs.uk/developer/help-and-support) for more details)
     - access for citizens using NHS Login (target date to be confirmed - please [contact us](https://digital.nhs.uk/developer/help-and-support) for more details)
