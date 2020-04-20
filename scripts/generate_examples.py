@@ -15,7 +15,8 @@ from format_examples import (
     slim_patient,
     sensitive_patient,
     related_person_reference_only,
-    related_person_no_reference
+    related_person_no_reference,
+    remove_empty_elements
 )
 
 
@@ -122,10 +123,10 @@ def main(arguments):
         example_types = EXAMPLE_TYPES[component_name]
         for example_type in example_types:
             new_resource_example = deepcopy(resource_example)
-            if example_type["slim_func"]:
-                # If the current example type has a slimming function - run it
-                for func in example_type["slim_func"]:
-                    new_resource_example = func(new_resource_example)
+            # If the current example type has a slimming function - run it
+            for func in example_type.get("slim_func", []):
+                new_resource_example = func(new_resource_example)
+            new_resource_example = remove_empty_elements(new_resource_example)
 
             # Create file
             with open(
