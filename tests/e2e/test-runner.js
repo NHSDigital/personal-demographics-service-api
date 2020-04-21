@@ -81,13 +81,31 @@ function collectionRunner(url, collection_path, environment_path) {
                     },
                     {
                         "key": "jwt",
-                        "value": credentials._token,
+                        "value": credentials.identity_token,
                         "type": "text",
                         "enabled": true
                     },
                     {
                         "key": "environment",
                         "value": url,
+                        "type": "text",
+                        "enabled": true
+                    },
+                    {
+                        "key": "nhsd-asid-header",
+                        "value": "NHSD-ASID",
+                        "type": "text",
+                        "enabled": true
+                    },
+                    {
+                        "key": "nhsd-identity-uuid-header",
+                        "value": "NHSD-Identity-UUID",
+                        "type": "text",
+                        "enabled": true
+                    },
+                    {
+                        "key": "nhsd-session-urid-header",
+                        "value": "NHSD-Session-URID",
                         "type": "text",
                         "enabled": true
                     }
