@@ -88,7 +88,7 @@ function collectionRunner(url, collection_path, environment_path) {
                     },
                     {
                         "key": "nhsd-asid-header",
-                        "value": "NHSD-ASID",
+                        "value": "NHSD-ASID-TEST",
                         "type": "text",
                         "enabled": true
                     },
