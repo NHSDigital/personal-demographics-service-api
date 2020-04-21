@@ -15,8 +15,8 @@ description: |
   | Code                       | Response Code | Description                                   |
   | -------------------------- | ------------- | --------------------------------------------- |
   | RESOURCE_NOT_FOUND         | 404           | The resource was not found. |
-  | INVALID_RESOURCE_ID        | 400           | The resource id was not valid. For example an nhsNumber is presented which is not a valid NHS Number. |
-  | INVALIDATED_RESOURCE       | 404           | The resource has been invalidated so with not be returned. |
+  | INVALID_RESOURCE_ID        | 400           | The resource id was not valid. For example a NHS Number is presented which is not a valid NHS Number. |
+  | INVALIDATED_RESOURCE       | 404           | The resource has been invalidated so could not be returned. |
 
   Search outcomes:
   | Code                       | Response Code | Description                                   |
