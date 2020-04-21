@@ -45,18 +45,17 @@ function collectionRunner(url, collection_path, environment_path) {
         path.resolve(environment_path)
     ));
 
-    collection.auth = {
-		    "type": "bearer",
-		    "bearer": [
-			      {
-				        "key": "token",
-				        "value": credentials.access_token,
-				        "type": "string"
-			      }
-		    ]};
-
-
     return (credentials) => {
+        collection.auth = {
+		        "type": "bearer",
+		        "bearer": [
+			          {
+				            "key": "token",
+				            "value": credentials.access_token,
+				            "type": "string"
+			          }
+		        ]};
+
         newman.run({
             collection: collection,
             reporters: ['cli', 'junit'],
