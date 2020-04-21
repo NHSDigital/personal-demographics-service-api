@@ -19,30 +19,15 @@ const puppeteer = require('puppeteer');
 function nhsIdLogin(username, password, login_url, callback) {
     (async () => {
         console.log("Oauth journey on " + login_url);
-        console.log("Starting puppeteer...");
         const browser = await puppeteer.launch({ headless: true });
-
-        console.log("Opening new page on browser...");
         const page = await browser.newPage();
-
-        console.log("Navigating to " + login_url + "...");
         await page.goto(login_url, { waitUntil: 'networkidle2' });
         await page.click("#start");
-
-        console.log("Logging in...");
-        console.log("Waiting to find #idToken1...");
         await page.waitForSelector('#idToken1');
-
-        console.log("Filling #idToken1...");
         await page.type('#idToken1', username);
-        console.log("Filling #idToken2...");
         await page.type('#idToken2', password);
-        console.log("Clicking login...");
         await page.click('#loginButton_0');
-        console.log("Waiting for redirect...");
         await page.waitForNavigation();
-
-        console.log("Logged in successfully.");
 
         let credentialsJSON = await page.$eval('body > div > div > pre', e => e.innerText);
         console.log(credentialsJSON.replace(/'/g, '"'));
