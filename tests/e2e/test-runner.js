@@ -54,6 +54,16 @@ function collectionRunner(url, collection_path, environment_path) {
                     export: './test-report.xml'
                 }
             },
+            "auth": {
+		            "type": "bearer",
+		            "bearer": [
+			              {
+				                "key": "token",
+				                "value": credentials.access_token,
+				                "type": "string"
+			              }
+		            ]
+	          },
             globals: {
                 "id": "5bfde907-2a1e-8c5a-2246-4aff74b74236",
                 "name": "global-params",
