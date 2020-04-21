@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Quota name="Quota" type="calendar">
     <DisplayName>Quota</DisplayName>
-    <Allow count="300"/> <!-- FIXME! This quota info should not be hardcoded --> 
-    <Interval ref="request.header.quota_count">1</Interval>
-    <TimeUnit ref="request.header.quota_timeout">minute</TimeUnit>
+    <Allow count="300" countRef="OAuthV2.VerifyAccessToken.apiproduct.developer.quota.limit"/>
+    <Interval ref="OAuthV2.VerifyAccessToken.apiproduct.developer.quota.interval">1</Interval>
+    <TimeUnit ref="OAuthV2.VerifyAccessToken.apiproduct.developer.quota.timeunit">minute</TimeUnit>
     <StartTime>2020-3-30 12:00:00</StartTime>
 </Quota>
