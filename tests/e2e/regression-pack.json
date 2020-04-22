@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3d4719d2-332f-49f4-b62c-5b89fbb06c03",
+		"_postman_id": "2a0d247c-5cad-4048-af96-83b8c62f9449",
 		"name": "Personal Demographics Service",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -71,7 +71,7 @@
 									"/*Check suffix has been populated properly*/\r",
 									"pm.test(\"Name 'suffix' has been mapped correctly\", function () {\r",
 									"    if (pm.variables.get(\"suffix\")  === undefined ) {\r",
-									"        pm.expect(response.entry[0].resource.name[0].suffix).to.eql([]);\r",
+									"        pm.expect(response.entry[0].resource.name[0].suffix).to.eql(undefined);\r",
 									"    }\r",
 									"    else {\r",
 									"        pm.expect(response.entry[0].resource.name[0].suffix).to.eql(pm.variables.get(\"suffix\"));\r",
@@ -140,7 +140,7 @@
 									"pm.test(\"deceasedDateTime has been mapped correctly\", function () {\r",
 									"   let deceasedDateTimeExists = (pm.variables.get(\"deceasedDateTime\"));\r",
 									"   if (!deceasedDateTimeExists) {\r",
-									"       pm.expect(response.entry[0].resource.deceasedDateTime).to.eql(null);\r",
+									"       pm.expect(response.entry[0].resource.deceasedDateTime).to.eql(undefined);\r",
 									"   }\r",
 									"   else if (deceasedDateTimeExists) {\r",
 									"    pm.expect((response.entry[0].resource.deceasedDateTime).substring(0,10)).to.eql((pm.variables.get(\"deceasedDateTime\")));\r",
@@ -153,7 +153,7 @@
 									"/*address line mapping function*/\r",
 									"if (pm.variables.get(\"s-flagged\")) {\r",
 									"    pm.test('Address is not displayed for Sensitive Patient', () => {\r",
-									"        pm.expect(response.entry[0].resource.address).to.be.empty;\r",
+									"        pm.expect(response.entry[0].resource.address).to.be.undefined;\r",
 									"    });\r",
 									"} else {\r",
 									"    pm.test(\"Address has been mapped correctly\", function () {\r",
@@ -183,7 +183,7 @@
 									"/*telecom.system mapping function*/\r",
 									"if (pm.variables.get(\"s-flagged\")) {\r",
 									"    pm.test(\"Telecom is not displayed for Sensitive Patient\", () => {\r",
-									"        pm.expect(response.entry[0].resource.telecom).to.be.empty;\r",
+									"        pm.expect(response.entry[0].resource.telecom).to.be.undefined;\r",
 									"    })\r",
 									"} else {\r",
 									"    pm.test(\"Telecom 'System' has been mapped correctly\", function () {\r",
@@ -250,7 +250,7 @@
 									"/*generalPractitioner mapping function*/\r",
 									"if (pm.variables.get(\"s-flagged\")) {\r",
 									"    pm.test('generalPractitioner is not displayed for Sensitive Patient', () => {\r",
-									"        pm.expect(response.entry[0].resource.generalPractitioner).to.be.empty;\r",
+									"        pm.expect(response.entry[0].resource.generalPractitioner).to.be.undefined;\r",
 									"    })\r",
 									"} else {\r",
 									"    pm.test(\"generalPractitioner has been mapped correctly\", function () {\r",
@@ -259,7 +259,7 @@
 									"        var generalPractitionerValueExists = (pm.variables.get(\"generalPractitionerValue\"));\r",
 									"        if (!generalPractitionerValueExists) {\r",
 									"            console.log(\"if generalPractitionerValue doesnt exist then there should be no generalPractice returned = \" + response.entry[0].resource.generalPractitioner);\r",
-									"            pm.expect(JSON.stringify(response.entry[0].resource.generalPractitioner)).to.eql(\"[]\");\r",
+									"            pm.expect(JSON.stringify(response.entry[0].resource.generalPractitioner)).to.eql(undefined);\r",
 									"        }\r",
 									"        else if (generalPractitionerValueExists) {\r",
 									"            pm.expect(response.entry[0].resource.generalPractitioner[0].identifier.value).to.eql((pm.variables.get(\"generalPractitionerValue\")));\r",
@@ -283,7 +283,7 @@
 									"/*DeathNotification ValueDateTime mapping function*/\r",
 									"if (pm.variables.get(\"s-flagged\")) {\r",
 									"    pm.test(\"DeathNotification is not displayed for a Sensitive patient\", () => {\r",
-									"        pm.expect(response.entry[0].resource.extension[0]).to.equal(undefined);\r",
+									"        pm.expect(response.entry[0].resource.extension).to.equal(undefined);\r",
 									"    });\r",
 									"} else {\r",
 									"    pm.test(\"DeathNotification has been mapped correctly\", function () {\r",
@@ -297,19 +297,24 @@
 									"            pm.expect(response.entry[0].resource.extension[0].extension[1].url).to.eql(\"systemEffectiveDate\");\r",
 									"        }\r",
 									"        else if (pm.variables.get(\"deathNotificationValueDateTime\") === \"\") {\r",
-									"            pm.expect(JSON.stringify(response.entry[0].resource.extension)).to.eql(\"[]\");\r",
+									"            pm.expect(JSON.stringify(response.entry[0].resource.extension)).to.eql(undefined);\r",
 									"        }\r",
 									"    });\r",
 									"}\r",
 									"\r",
-									"if (pm.variables.get(\"s-flagged\")) {\r",
-									"    pm.test(\"meta security object has been mapped correctly\", () => {\r",
+									"pm.test(\"meta security object has been mapped correctly\", () => {\r",
+									"    if (pm.variables.get('security.code')) {\r",
 									"        pm.expect(response.entry[0].resource.meta.security[0].code).to.equal(pm.variables.get('security.code'));\r",
 									"        pm.expect(response.entry[0].resource.meta.security[0].display).to.equal('restricted');\r",
 									"        pm.expect(response.entry[0].resource.meta.security[0].system).to.equal('https://www.hl7.org/fhir/valueset-security-labels.html');\r",
-									"    });\r",
-									"}\r",
-									"\r",
+									"    } else {\r",
+									"        pm.expect(response.entry[0].resource.meta.security[0].code).to.equal('U');\r",
+									"        pm.expect(response.entry[0].resource.meta.security[0].display).to.equal('unrestricted');\r",
+									"        pm.expect(response.entry[0].resource.meta.security[0].system).to.equal('https://www.hl7.org/fhir/valueset-security-labels.html');\r",
+									"    }\r",
+									"    \r",
+									"    pm.variables.unset('security.code');\r",
+									"});\r",
 									"\r",
 									"};\r",
 									"\r",
@@ -514,12 +519,12 @@
 									"        }",
 									"",
 									"        return scores;",
-									"    }",
+									"    };",
 									"",
 									"    calls.getTotalNumberOfPatients = () => {",
 									"        let response = JSON.parse(responseBody);",
 									"        return response.total;",
-									"    }",
+									"    };",
 									"    ",
 									"    calls.containsPatientWithNhsNumber = function(nhsNumber) {",
 									"        for (i = 0; i < response.entry.length; i++) {",
@@ -529,7 +534,7 @@
 									"        }",
 									"",
 									"        return false;",
-									"    }",
+									"    };",
 									"    ",
 									"    calls.getScoreByNhsNumber = function(resp, nhsNumber) {",
 									"        console.log(\"HERE: \" + resp);",
@@ -540,7 +545,7 @@
 									"        }",
 									"",
 									"        return null;",
-									"    }",
+									"    };",
 									"",
 									"    return calls;",
 									"} + '; patient();');"
@@ -683,19 +688,19 @@
 									"\r",
 									"/*Check prefix has been populated properly*/\r",
 									"pm.test(\"Name 'prefix' has been mapped correctly\", function () {\r",
-									"    if (!pm.variables.get(\"prefix\")) {\r",
-									"            pm.expect(response.name[0].prefix[0]).to.eql(undefined);\r",
+									"    if (pm.variables.get(\"prefix\") === undefined) {\r",
+									"        pm.expect(response.name[0].prefix).to.eql(undefined);\r",
+									"    } else {\r",
+									"        pm.expect(response.name[0].prefix[0]).to.eql(pm.variables.get(\"prefix\"));\r",
 									"    }\r",
-									"    else {\r",
-									"            pm.expect(response.name[0].prefix[0]).to.eql(pm.variables.get(\"prefix\"));\r",
-									"    }\r",
-									"    \r",
+									"\r",
+									"    pm.variables.unset(\"prefix\");\r",
 									"});\r",
 									"\r",
 									"/*Check suffix has been populated properly*/\r",
 									"pm.test(\"Name 'suffix' has been mapped correctly\", function () {\r",
-									"    if (pm.variables.get(\"suffix\")  === undefined ) {\r",
-									"        pm.expect(response.name[0].suffix).to.eql([]);\r",
+									"    if (!pm.variables.get(\"suffix\")) {\r",
+									"        pm.expect(response.name[0].suffix).to.equal(undefined);\r",
 									"    }\r",
 									"    else {\r",
 									"        pm.expect(response.name[0].suffix).to.eql(pm.variables.get(\"suffix\"));\r",
@@ -729,7 +734,7 @@
 									"pm.test(\"deceasedDateTime has been mapped correctly\", function () {\r",
 									"   let deceasedDateTimeExists = (pm.variables.get(\"deceasedDateTime\"));\r",
 									"   if (!deceasedDateTimeExists) {\r",
-									"       pm.expect(response.deceasedDateTime).to.eql(null);\r",
+									"       pm.expect(response.deceasedDateTime).to.eql(undefined);\r",
 									"   }\r",
 									"   else if (deceasedDateTimeExists) {\r",
 									"    pm.expect((response.deceasedDateTime).substring(0,10)).to.eql((pm.variables.get(\"deceasedDateTime\")));\r",
@@ -738,13 +743,19 @@
 									"});\r",
 									"\r",
 									"// Check Meta.Security object is displayed for Sensitive Patients\r",
-									"if (pm.variables.get(\"s-flagged\")) {\r",
-									"    pm.test(\"Security object has been mapped correctly - Only checked for a Sensitive Patient\", () => {\r",
+									"pm.test(\"Security object has been mapped correctly\", () => {\r",
+									"    let securityCode = pm.variables.get(\"securityCode\");\r",
+									"\r",
+									"    if (securityCode) {\r",
 									"        pm.expect(response.meta.security[0].code).to.equal('R');\r",
 									"        pm.expect(response.meta.security[0].display).to.equal('restricted');\r",
 									"        pm.expect(response.meta.security[0].system).to.equal('https://www.hl7.org/fhir/valueset-security-labels.html');\r",
-									"    });\r",
-									"}\r",
+									"    } else {\r",
+									"        pm.expect(response.meta.security[0].code).to.equal('U');\r",
+									"        pm.expect(response.meta.security[0].display).to.equal('unrestricted');\r",
+									"        pm.expect(response.meta.security[0].system).to.equal('https://www.hl7.org/fhir/valueset-security-labels.html');\r",
+									"    }\r",
+									"});\r",
 									"\r",
 									"// Check deathNotificationExtension\r",
 									"if (pm.variables.get(\"s-flagged\")) {\r",
@@ -760,125 +771,129 @@
 									"/*Check Address Related items*/\r",
 									"if (pm.variables.get(\"s-flagged\")) {\r",
 									"    pm.test(\"Address for a Sensitive patient is not returned\", () => {\r",
-									"        pm.expect(response.address).to.be.empty;\r",
+									"        pm.expect(response.address).to.be.undefined;\r",
 									"    });\r",
 									"} else {\r",
 									"    pm.test(\"Address has been mapped correctly\", function () {\r",
-									"        if (pm.variables.get(\"addressType\") == \"usual\") {\r",
-									"            pm.expect(response.address[0].use).to.eql(\"home\");\r",
+									"        let expectedValue;\r",
+									"        switch (pm.variables.get(\"addressType\")) {\r",
+									"            case 'usual':\r",
+									"                expectedValue = 'home';\r",
+									"                break;\r",
+									"            case 'work':\r",
+									"                expectedValue = 'work';\r",
+									"                break;\r",
+									"            case 'correspondence':\r",
+									"                expectedValue = 'billing';\r",
+									"                break;\r",
+									"            case 'temporary':\r",
+									"                expectedValue = 'temp';\r",
+									"                break;\r",
+									"            default:\r",
+									"                pm.expect.fail(\"addressType mapped incorrectly\");\r",
 									"        }\r",
-									"        else if (pm.variables.get(\"addressType\") == \"work\") {\r",
-									"            pm.expect(response.address[0].use).to.eql(\"work\");\r",
-									"        }\r",
-									"        else if (pm.variables.get(\"addressType\") == \"correspondence\") {\r",
-									"            pm.expect(response.address[0].use).to.eql(\"billing\");\r",
-									"        }\r",
-									"        else if (pm.variables.get(\"addressType\") == \"temporary\") {\r",
-									"            pm.expect(response.address[0].use).to.eql(\"temp\");\r",
-									"        }\r",
-									"        else pm.expect.fail(\"addressType mapped incorrectly\");\r",
 									"\r",
-									"        pm.expect(JSON.stringify(response.address[0].line)).to.eql(pm.variables.get(\"addressLine\"));\r",
-									"        pm.expect(response.address[0].period.start).to.eql(pm.variables.get(\"addressPeriodStart\"));\r",
-									"        pm.expect(response.address[0].postalCode).to.eql(pm.variables.get(\"postalCode\"));\r",
+									"        pm.expect(response.address[0].use).to.eql(expectedValue, \"invalid addressType\");\r",
+									"        pm.expect(JSON.stringify(response.address[0].line)).to.eql(pm.variables.get(\"addressLine\"), \"invalud addressLine\");\r",
+									"        pm.expect(response.address[0].period.start).to.eql(pm.variables.get(\"addressPeriodStart\"), \"invalid addressPeriodStart\");\r",
+									"        pm.expect(response.address[0].postalCode).to.eql(pm.variables.get(\"postalCode\"), \"invalid postalCode\");\r",
 									"\r",
-									"        if (pm.variables.get(\"addressPeriodEnd\") === undefined) {\r",
-									"            pm.expect(response.address[0].period.end).to.eql(undefined);\r",
-									"        }\r",
-									"        else {\r",
-									"            pm.expect(response.address[0].period.end).to.eql(pm.variables.get(\"addressPeriodEnd\"));\r",
-									"        }\r",
+									"        let addressPeriodEnd = pm.variables.get(\"addressPeriodEnd\") === undefined ? undefined : pm.variables.get(\"addressPeriodEnd\");\r",
+									"        pm.expect(response.address[0].period.end).to.eql(addressPeriodEnd, \"invalid addressPeriodEnd\");\r",
 									"    });\r",
-									"};\r",
+									"    \r",
+									"    pm.variables.unset(\"addressPeriodEnd\");\r",
+									"}\r",
 									"\r",
 									"/*telecom mapping function*/\r",
 									"if (pm.variables.get(\"s-flagged\")) {\r",
 									"    pm.test(\"Telecom for a Sensitive patient is not returned\", () => {\r",
-									"        pm.expect(response.telecom).to.be.empty;\r",
+									"        pm.expect(response.telecom).to.be.undefined;\r",
 									"    });\r",
 									"} else {\r",
 									"    pm.test(\"Telecom has been mapped correctly\", function () {\r",
+									"        let telecomType;\r",
 									"        if (pm.variables.get(\"telecomType\")) {\r",
+									"            switch (pm.variables.get(\"telecomType\").toLowerCase()) {\r",
+									"                case 'telephone':\r",
+									"                    telecomType = \"phone\";\r",
+									"                    break;\r",
+									"                case 'fax':\r",
+									"                case 'email':\r",
+									"                    telecomType = pm.variables.get(\"telecomType\");\r",
+									"                    break;\r",
+									"                case 'textphone':\r",
+									"                    telecomType = \"pager\";\r",
+									"                    break;\r",
+									"                default:\r",
+									"                    pm.expect.fail(\"telecomType mapping failure\");\r",
+									"                    break;\r",
+									"            }\r",
+									"            pm.expect(response.telecom[0].system).to.eql(telecomType, \"invalid telecomType\");\r",
 									"\r",
-									"            if (pm.variables.get(\"telecomType\") == \"telephone\") {\r",
-									"                pm.expect(response.telecom[0].system).to.eql(\"phone\");\r",
+									"            let telecomUse;\r",
+									"            switch (pm.variables.get(\"telecomUse\").toLowerCase()) {\r",
+									"                case 'home':\r",
+									"                case 'answering machine':\r",
+									"                case 'emergency':\r",
+									"                    telecomUse = \"home\";\r",
+									"                    break;\r",
+									"                case 'work':\r",
+									"                case 'mobile':\r",
+									"                    telecomUse = pm.variables.get(\"telecomUse\");\r",
+									"                    break;\r",
+									"                case 'pager':\r",
+									"                    telecomUse = \"mobile\";\r",
+									"                    break;\r",
+									"                case 'temporary':\r",
+									"                    telecomUse = \"temp\";\r",
+									"                    break;\r",
 									"            }\r",
-									"            else if (pm.variables.get(\"telecomType\") == \"fax\") {\r",
-									"                pm.expect(response.telecom[0].system).to.eql(\"fax\");\r",
-									"            }\r",
-									"            else if (pm.variables.get(\"telecomType\") == \"textphone\") {\r",
-									"                pm.expect(response.telecom[0].system).to.eql(\"pager\");\r",
-									"            }\r",
-									"            else if (pm.variables.get(\"telecomType\") == \"email\") {\r",
-									"                pm.expect(response.telecom[0].system).to.eql(\"email\");\r",
-									"            }\r",
-									"            else pm.expect.fail(\"telecomType mapping failure\");\r",
 									"\r",
-									"\r",
-									"            if (pm.variables.get(\"telecomUse\") === (\"home\" || \"Answering Machine\" || \"Emergency\")) {\r",
-									"                pm.expect(response.telecom[0].use).to.eql(\"home\");\r",
-									"            }\r",
-									"            else if (pm.variables.get(\"telecomUse\") == \"work\") {\r",
-									"                pm.expect(response.telecom[0].use).to.eql(\"work\");\r",
-									"            }\r",
-									"            else if (pm.variables.get(\"telecomUse\") == \"pager\") {\r",
-									"                pm.expect(response.telecom[0].use).to.eql(\"mobile\");\r",
-									"            }\r",
-									"            else if (pm.variables.get(\"telecomUse\") == \"mobile\") {\r",
-									"                pm.expect(response.telecom[0].use).to.eql(\"mobile\");\r",
-									"            }\r",
-									"            else if (pm.variables.get(\"telecomUse\") == \"temporary\") {\r",
-									"                pm.expect(response.telecom[0].use).to.eql(\"temp\");\r",
-									"            }\r",
-									"            else pm.expect.fail(\"telecomUse mapping failure\");\r",
-									"\r",
+									"            pm.expect(response.telecom[0].use).to.eql(telecomUse, \"invalid telecomUse\");\r",
 									"            pm.expect(response.telecom[0].period.start).to.eql((pm.variables.get(\"telecomPeriodStart\")));\r",
 									"            pm.expect(response.telecom[0].value).to.eql((pm.variables.get(\"telecomValue\")));\r",
-									"\r",
 									"        }\r",
 									"        else {\r",
-									"            pm.expect(response.telecom).to.eql([]);\r",
+									"            pm.expect(response.telecom).to.eql(undefined);\r",
 									"        }\r",
-									"    }\r",
-									"    )};\r",
+									"    })\r",
+									"\r",
+									"    pm.variables.unset(\"telecomType\");\r",
+									"    pm.variables.unset(\"telecomUse\");\r",
+									"};\r",
+									"\r",
 									"\r",
 									"/*generalPractitioner mapping function*/\r",
-									"if (pm.variables.get(\"s-flagged\")) {\r",
-									"    pm.test(\"generalPractitioner for a Sensitive patient is not returned\", () => {\r",
-									"        pm.expect(response.generalPractitioner).to.be.empty;\r",
-									"    });\r",
-									"} else {\r",
-									"    pm.test(\"generalPractitioner has been mapped correctly\", function () {\r",
-									"        console.log(\"expected generalPractitionerValue = \" + (pm.variables.get(\"generalPractitionerValue\")));\r",
-									"        console.log(\"returned generalPractitionerValue = \" + (JSON.stringify(response.generalPractitioner)));\r",
-									"        var generalPractitionerValueExists = (pm.variables.get(\"generalPractitionerValue\"));\r",
-									"        if (!generalPractitionerValueExists) {\r",
-									"            console.log(\"if generalPractitionerValue doesnt exist then there should be no generalPractice returned = \" + response.generalPractitioner);\r",
-									"            pm.expect(response.generalPractitioner).to.eql([]);\r",
-									"        }\r",
-									"        else if (generalPractitionerValueExists) {\r",
-									"            console.log(\"generalPractitionerValue has been set for the patient so generalPractitionerValue should be returned\");\r",
-									"            pm.expect(response.generalPractitioner[0].identifier.value).to.eql((pm.variables.get(\"generalPractitionerValue\")));\r",
-									"            pm.expect(response.generalPractitioner[0].identifier.system).to.eql(\"https://digital.nhs.uk/services/organisation-data-service\");\r",
-									"            pm.expect(response.generalPractitioner[0].reference).to.eql(\"https://directory.spineservices.nhs.uk/STU3/Organization/\" + (pm.variables.get(\"generalPractitionerValue\")));\r",
-									"            pm.expect(response.generalPractitioner[0].type).to.eql(\"Organization\");\r",
-									"            pm.expect(response.generalPractitioner[0].identifier.period.start).to.eql((pm.variables.get(\"generalPractitionerPeriodStart\")));\r",
-									"            pm.expect(response.generalPractitioner[0].identifier.period.end).to.eql((pm.variables.get(\"generalPractitionerPeriodEnd\")));\r",
-									"        }\r",
-									"        pm.variables.unset(\"generalPractitionerValue\");\r",
-									"        pm.variables.unset(\"generalPractitionerPeriodStart\");\r",
-									"        pm.variables.unset(\"generalPractitionerPeriodEnd\");\r",
-									"    });\r",
-									"};\r",
+									"pm.test(\"GeneralPractitioner has been mapped correctly\", () => {\r",
+									"    if (pm.variables.get(\"s-flagged\") || !pm.variables.get(\"generalPractitionerValue\")) {\r",
+									"        console.log(\"this is a sensitive patient or the generalPractitionerValue has not been set therefore generalPractice should not be returned\");\r",
+									"        pm.expect(response.generalPractitioner).to.be.undefined;\r",
+									"    } else {\r",
+									"        console.log(\"generalPractitionerValue has been set for the patient so generalPractitionerValue should be returned\");\r",
+									"        pm.expect(response.generalPractitioner[0].identifier.value).to.eql((pm.variables.get(\"generalPractitionerValue\")));\r",
+									"        pm.expect(response.generalPractitioner[0].identifier.system).to.eql(\"https://digital.nhs.uk/services/organisation-data-service\");\r",
+									"        pm.expect(response.generalPractitioner[0].reference).to.eql(\"https://directory.spineservices.nhs.uk/STU3/Organization/\" + (pm.variables.get(\"generalPractitionerValue\")));\r",
+									"        pm.expect(response.generalPractitioner[0].type).to.eql(\"Organization\");\r",
+									"        pm.expect(response.generalPractitioner[0].identifier.period.start).to.eql((pm.variables.get(\"generalPractitionerPeriodStart\")));\r",
+									"        pm.expect(response.generalPractitioner[0].identifier.period.end).to.eql((pm.variables.get(\"generalPractitionerPeriodEnd\")));\r",
+									"    }\r",
+									"\r",
+									"    pm.variables.unset(\"generalPractitionerValue\");\r",
+									"    pm.variables.unset(\"generalPractitionerPeriodStart\");\r",
+									"    pm.variables.unset(\"generalPractitionerPeriodEnd\");\r",
+									"\r",
+									"});\r",
 									"\r",
 									"/*nominatedPharmacy mapping function*/\r",
 									"pm.test(\"nominatedPharmacy has been mapped correctly\", function () {\r",
-									"\tvar nominatedPharmacyExtension = getNominatedPharmacy(response.extension);\r",
 									"    let nominatedPharmacyExists = (pm.variables.get(\"nominatedPharmacy\"));\r",
-									"    if (!nominatedPharmacyExists)  {\r",
+									"    let nominatedPharmacyExtension = response.extension === undefined ? undefined : getNominatedPharmacy(response.extension);\r",
+									"\r",
+									"    if (!nominatedPharmacyExists) {\r",
 									"        pm.expect(nominatedPharmacyExtension).to.eql(undefined);\r",
-									"         }\r",
-									"    else if (nominatedPharmacyExists) {\r",
+									"    }\r",
+									"    else {\r",
 									"        console.log(\"nominatedPharmacy has been set for the patient so nominatedPharmacy should be returned\");\r",
 									"        pm.expect(nominatedPharmacyExtension.url).to.eql(\"https://fhir.nhs.uk/R4/StructureDefinition/ExtensionUKCore-NominatedPharmacy\");\r",
 									"        pm.expect(nominatedPharmacyExtension.valueReference.identifier.period.start).to.eql(pm.variables.get(\"nominatedPharmacyPeriodStart\"));\r",
@@ -886,62 +901,63 @@
 									"        pm.expect(nominatedPharmacyExtension.valueReference.identifier.value).to.eql(pm.variables.get(\"nominatedPharmacy\"));\r",
 									"        pm.expect(nominatedPharmacyExtension.valueReference.identifier.system).to.eql(\"https://fhir.nhs.uk/Id/ods-organization-code\");\r",
 									"        pm.expect(nominatedPharmacyExtension.valueReference.reference).to.eql(\"https://directory.spineservices.nhs.uk/STU3/Organization/\" + (pm.variables.get(\"nominatedPharmacy\")));\r",
-									"           }\r",
+									"    }\r",
+									"\r",
 									"    pm.variables.unset(\"nominatedPharmacy\");\r",
-									"    pm.variables.unset(\"nominatedPharmacyPeriodStart\");    \r",
+									"    pm.variables.unset(\"nominatedPharmacyPeriodStart\");\r",
 									"    pm.variables.unset(\"nominatedPharmacyPeriodEnd\");\r",
 									"});\r",
 									"\r",
 									"\r",
 									"/*dispensingDoctor mapping function*/\r",
 									"pm.test(\"dispensingDoctor has been mapped correctly\", function () {\r",
-									"\tvar dispensingDoctorExtension = getDispensingDoctor(response.extension);\r",
-									"    var  dispensingDoctorExists = (pm.variables.get(\"dispensingDoctor\"));\r",
-									"    if (!dispensingDoctorExists)  {        \r",
+									"    let dispensingDoctorExtension = response.extension === undefined ? undefined : getDispensingDoctor(response.extension);\r",
+									"    let dispensingDoctorExists = pm.variables.get(\"dispensingDoctor\");\r",
+									"\r",
+									"    if (!dispensingDoctorExists) {\r",
 									"        pm.expect(dispensingDoctorExtension).to.eql(undefined);\r",
-									"         }\r",
-									"    else if (dispensingDoctorExists) {\r",
+									"    }\r",
+									"    else {\r",
 									"        console.log(\"dispensingDoctor has been set for the patient so dispensingDoctor should be returned\");\r",
 									"        pm.expect(dispensingDoctorExtension.url).to.eql(\"https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DispensingDoctor\");\r",
 									"        pm.expect(dispensingDoctorExtension.valueReference.identifier.period.start).to.eql(pm.variables.get(\"dispensingDoctorPeriodStart\"));\r",
 									"        pm.expect(dispensingDoctorExtension.valueReference.identifier.value).to.eql(pm.variables.get(\"dispensingDoctor\"));\r",
 									"        pm.expect(dispensingDoctorExtension.valueReference.identifier.system).to.eql(\"https://fhir.nhs.uk/Id/ods-organization-code\");\r",
 									"        pm.expect(dispensingDoctorExtension.valueReference.reference).to.eql(\"https://directory.spineservices.nhs.uk/STU3/Organization/\" + (pm.variables.get(\"dispensingDoctor\")));\r",
-									"         }  \r",
+									"    }\r",
 									"    pm.variables.unset(\"dispensingDoctor\");\r",
-									"    pm.variables.unset(\"dispensingDoctorPeriodStart\");  \r",
+									"    pm.variables.unset(\"dispensingDoctorPeriodStart\");\r",
 									"});\r",
 									"\r",
 									"/*medicalApplianceSupplier mapping function*/\r",
 									"pm.test(\"medicalApplianceSupplier has been mapped correctly\", function () {\r",
-									"\tvar medicalApplianceSupplierExtension = getMedicalApplianceSupplier(response.extension);\r",
-									"    var  medicalApplianceSupplierExists = (pm.variables.get(\"medicalApplianceSupplier\"));\r",
-									"    if (!medicalApplianceSupplierExists)  {\r",
+									"    let medicalApplianceSupplierExtension = response.extension === undefined ? undefined : getMedicalApplianceSupplier(response.extension);\r",
+									"    let medicalApplianceSupplierExists = pm.variables.get(\"medicalApplianceSupplier\");\r",
+									"\r",
+									"    if (!medicalApplianceSupplierExists) {\r",
 									"        pm.expect(medicalApplianceSupplierExtension).to.eql(undefined);\r",
-									"         }\r",
-									"    else if (medicalApplianceSupplierExists) {\r",
+									"    }\r",
+									"    else {\r",
 									"        console.log(\"medicalApplianceSupplier has been set for the patient so medicalApplianceSupplier should be returned\");\r",
 									"        pm.expect(medicalApplianceSupplierExtension.url).to.eql(\"https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-MedicalApplianceSupplier\");\r",
 									"        pm.expect(medicalApplianceSupplierExtension.valueReference.identifier.period.start).to.eql(pm.variables.get(\"medicalApplianceSupplierPeriodStart\"));\r",
 									"        pm.expect(medicalApplianceSupplierExtension.valueReference.identifier.value).to.eql(pm.variables.get(\"medicalApplianceSupplier\"));\r",
 									"        pm.expect(medicalApplianceSupplierExtension.valueReference.identifier.system).to.eql(\"https://fhir.nhs.uk/Id/ods-organization-code\");\r",
 									"        pm.expect(medicalApplianceSupplierExtension.valueReference.reference).to.eql(\"https://directory.spineservices.nhs.uk/STU3/Organization/\" + (pm.variables.get(\"medicalApplianceSupplier\")));\r",
-									"         }\r",
+									"    }\r",
 									"    pm.variables.unset(\"medicalApplianceSupplier\");\r",
-									"    pm.variables.unset(\"medicalApplianceSupplierPeriodStart\");   \r",
+									"    pm.variables.unset(\"medicalApplianceSupplierPeriodStart\");\r",
 									"});\r",
 									"\r",
 									"\r",
-									"pm.test(\"language Extention has been mapped correctly\", function () {\r",
-									"    var languageExtension = getLanguageExtention(response.extension);\r",
-									"    console.log(languageExtension);\r",
+									"pm.test(\"language Extention has been mapped correctly\", () => {\r",
+									"    let languageExtension = response.extension === undefined ? undefined : getLanguageExtention(response.extension);\r",
 									"    let language = pm.variables.get(\"language\");\r",
-									"    \r",
+									"\r",
 									"    if (!language) {\r",
 									"        pm.expect(languageExtension).to.eql(undefined);\r",
 									"    }\r",
-									"    \r",
-									"    else if (language) {\r",
+									"    else {\r",
 									"        pm.expect(languageExtension.extension[0].url).to.eql(\"language\");\r",
 									"        pm.expect(languageExtension.extension[0].valueCodeableConcept.coding[0].code).to.eql(pm.variables.get(\"language\"));\r",
 									"        pm.expect(languageExtension.extension[0].valueCodeableConcept.coding[0].display).to.eql(pm.variables.get(\"languageDisplay\"));\r",
@@ -950,10 +966,11 @@
 									"        pm.expect(languageExtension.extension[1].url).to.eql(\"interpreterRequired\");\r",
 									"        pm.expect(languageExtension.extension[1].valueBoolean).to.eql(pm.variables.get(\"interpreter\"));\r",
 									"    }\r",
+									"\r",
 									"    pm.variables.unset(\"language\");\r",
-									"    pm.variables.unset(\"languageDisplay\");    \r",
-									"    pm.variables.unset(\"interpreter\");   \r",
-									"    \r",
+									"    pm.variables.unset(\"languageDisplay\");\r",
+									"    pm.variables.unset(\"interpreter\");\r",
+									"\r",
 									"});\r",
 									"\r",
 									"function getLanguageExtention(extensions) {\r",
@@ -1154,7 +1171,7 @@
 									"response": []
 								},
 								{
-									"name": "Simple Search - S Flagged Patient",
+									"name": "Simple Search - Sensitive Patient",
 									"event": [
 										{
 											"listen": "prerequest",
@@ -1279,7 +1296,7 @@
 													"pm.variables.set(\"telecomType\", \"fax\");",
 													"pm.variables.set(\"telecomUse\", \"work\");",
 													"pm.variables.set(\"given\", [\"John\"]);",
-													"pm.variables.set(\"suffix\", []);",
+													"pm.variables.set(\"suffix\", undefined);",
 													"pm.variables.set(\"namePeriodStart\", \"2020-03-02\");",
 													"pm.variables.set(\"addressLine\",JSON.stringify([\"bt Global services\",\"1 sovereign Street\",\"\",\"leeds\",\"\"]));",
 													"pm.variables.set(\"addressPeriodStart\", \"2020-02-28\");",
@@ -1389,11 +1406,11 @@
 													"pm.variables.set(\"telecomType\", \"textphone\");",
 													"pm.variables.set(\"telecomUse\", \"pager\");",
 													"pm.variables.set(\"given\", [\"person\"]);",
-													"pm.variables.set(\"suffix\", []);",
+													"pm.variables.set(\"suffix\", undefined);",
 													"pm.variables.set(\"namePeriodStart\", \"2020-02-26\");",
 													"pm.variables.set(\"addressLine\",JSON.stringify([\"\",\"13 westwood\",\"\",\"bradford\",\"\"]));",
 													"pm.variables.set(\"addressPeriodStart\", \"2020-02-26\");",
-													"pm.variables.set(\"postalCode\", \"\");",
+													"pm.variables.set(\"postalCode\", undefined);",
 													"pm.variables.set(\"patientId\", \"5900007073\");",
 													"pm.variables.set(\"metaVersionId\", \"4\");",
 													"pm.variables.set(\"resourceType\", \"Patient\");",
@@ -1511,7 +1528,7 @@
 													"pm.variables.set(\"telecomUse\", \"home\");",
 													"",
 													"pm.variables.set(\"given\", [\"someone\"]);",
-													"pm.variables.set(\"suffix\", []);",
+													"pm.variables.set(\"suffix\", undefined);",
 													"pm.variables.set(\"namePeriodStart\", \"2020-02-26\");",
 													"pm.variables.set(\"addressLine\",JSON.stringify([\"\",\"15 westwood ave\",\"eccleshill\",\"Bradford\",\"west yorkshire\"]));",
 													"pm.variables.set(\"addressPeriodStart\", \"2020-04-02\");",
@@ -1616,7 +1633,7 @@
 													"pm.variables.set(\"telecomType\", \"telephone\");",
 													"pm.variables.set(\"telecomUse\", \"mobile\");",
 													"pm.variables.set(\"given\", [\"ned\"]);",
-													"pm.variables.set(\"suffix\", []);",
+													"pm.variables.set(\"suffix\", undefined);",
 													"pm.variables.set(\"namePeriodStart\", \"2020-02-27\");",
 													"pm.variables.set(\"addressLine\",JSON.stringify([\"\",\"13 Westwood Ave\",\"Eccleshill\",\"Bradford\",\"\"]));",
 													"pm.variables.set(\"addressPeriodStart\", \"2020-02-27\");",
@@ -1722,7 +1739,7 @@
 													"pm.variables.set(\"telecomUse\", \"temporary\");",
 													"",
 													"pm.variables.set(\"given\", [\"Any\"]);",
-													"pm.variables.set(\"suffix\", []);",
+													"pm.variables.set(\"suffix\", undefined);",
 													"pm.variables.set(\"namePeriodStart\", \"2020-02-27\");",
 													"pm.variables.set(\"addressLine\",JSON.stringify([\"\",\"17 Westwood Avenue\",\"Eccleshill\",\"Bradford\",\"\"]));",
 													"pm.variables.set(\"addressPeriodStart\", \"2020-02-27\");",
@@ -1786,221 +1803,6 @@
 											]
 										},
 										"description": "This test validates that all Patient Demographic data is mapped correctly to the Fhir PDF response, specifically:\r\n\r\n* resourseType\r\n* patientId\r\n* identifierExtention\r\n* metaVersionId\r\n* nameFamily\r\n* nameGiven\r\n* prefix - specifically Spine \"Mr\" = PDS Fhir \"Mr\"\r\n* suffix\r\n* nameUse - specifically Spine nameType \"usual name\" = PDS Fhir nameUse \"official\"\r\n* namePeriodStart\r\n* gender - specifically Spine gender \"male\" = PDS Fhir nameUse \"male\"\r\n* birthDate\r\n* deceasedDateTime\r\n* addressLines\r\n* addressPeriodStart\r\n* addressUse - always returns \"home\" address only even though there may be other address associated with the Patient\r\n* postCode\r\n* telecomSystem - specifically Spine telecomType \"telephone\" = PDS Fhir telecomSystem \"phone\"\r\n* telecomUse - specifically Spine telecomUse \"temporary\" = PDS Fhir telecomUse \"temp\"\r\n* telecomPeriodStart\r\n* telecomValue\r\n* deceasedDateTime if - if present for Patient\r\n* generalPractitionerValue - if present for Patient\r\n* deathNotificationValueDateTime - if present for Patient"
-									},
-									"response": []
-								},
-								{
-									"name": "Simple Search - Minimum Criteria - Gender, DOB & Family 7",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"id": "e57f793c-3c38-4919-be4e-2392110ef8a1",
-												"exec": [
-													"var response = pm.response.json();",
-													"",
-													"// Apply Common Mapping Tests",
-													"//======================================",
-													"eval(pm.globals.get(\"checkSearchMappings\"))();"
-												],
-												"type": "text/javascript"
-											}
-										},
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "c3e2221d-db2e-4e98-a510-b18b78820f52",
-												"exec": [
-													"/*set variables for test*/",
-													"",
-													"pm.variables.set(\"family\", \"Answermachine\");",
-													"pm.variables.set(\"genderQ\", \"unknown\");",
-													"pm.variables.set(\"gender\", \"not known\");",
-													"pm.variables.set(\"birthdate\", \"2007-01-01\");",
-													"",
-													"//5900009068",
-													"/*set variables for checking mapping*/",
-													"",
-													"/*data variables being checked against.  These shall be replaced by the variables set when HL& is plugged in*/",
-													"pm.variables.set(\"prefix\", \"Mrs\");",
-													"pm.variables.set(\"nameType\", \"Usual name\");",
-													"pm.variables.set(\"addressType\", \"home\");",
-													"pm.variables.set(\"telecomType\", \"telephone\");",
-													"pm.variables.set(\"telecomUse\", \"Answering Machine\");",
-													"",
-													"pm.variables.set(\"given\", [\"another\"]);",
-													"pm.variables.set(\"suffix\", []);",
-													"pm.variables.set(\"namePeriodStart\", \"2020-02-27\");",
-													"pm.variables.set(\"addressLine\",JSON.stringify([\"\",\"27 Westwood Avenue\",\"Eccleshill\",\"Bradford\",\"\"]));",
-													"pm.variables.set(\"addressPeriodStart\", \"2020-02-27\");",
-													"pm.variables.set(\"postalCode\", \"BD2 2NJ\");",
-													"pm.variables.set(\"patientId\", \"5900000605\");",
-													"pm.variables.set(\"metaVersionId\", \"5\");",
-													"pm.variables.set(\"resourceType\", \"Patient\");",
-													"pm.variables.set(\"telecomPeriodStart\", \"2020-02-27\");",
-													"pm.variables.set(\"telecomValue\", \"09234567\");",
-													"pm.variables.set(\"deathNotificationValueDateTime\", \"\");"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "{{nhsd-asid-header}}",
-												"type": "text",
-												"value": "{{from_asid}}"
-											},
-											{
-												"key": "{{nhsd-session-urid-header}}",
-												"type": "text",
-												"value": "{{role_id}}"
-											},
-											{
-												"key": "{{nhsd-identity-uuid-header}}",
-												"type": "text",
-												"value": "{{user_id}}"
-											}
-										],
-										"url": {
-											"raw": "{{environment}}/Patient?family={{family}}&gender={{genderQ}}&birthdate={{birthdate}}",
-											"host": [
-												"{{environment}}"
-											],
-											"path": [
-												"Patient"
-											],
-											"query": [
-												{
-													"key": "family",
-													"value": "{{family}}"
-												},
-												{
-													"key": "gender",
-													"value": "{{genderQ}}"
-												},
-												{
-													"key": "birthdate",
-													"value": "{{birthdate}}"
-												},
-												{
-													"key": "general-practitioner",
-													"value": "Y0001",
-													"disabled": true
-												}
-											]
-										},
-										"description": "This test validates that all Patient Demographic data is mapped correctly to the Fhir PDF response, specifically:\r\n\r\n* resourseType\r\n* patientId\r\n* identifierExtention\r\n* metaVersionId\r\n* nameFamily\r\n* nameGiven\r\n* prefix - specifically Spine \"Mr\" = PDS Fhir \"Mr\"\r\n* suffix\r\n* nameUse - specifically Spine nameType \"usual name\" = PDS Fhir nameUse \"official\"\r\n* namePeriodStart\r\n* gender - specifically Spine gender \"not known\" = PDS Fhir nameUse \"unknown\"\r\n* birthDate\r\n* deceasedDateTime\r\n* addressLines\r\n* addressPeriodStart\r\n* addressUse - always returns \"home\" address only even though there may be other address associated with the Patient\r\n* postCode\r\n* telecomSystem - specifically Spine telecomType \"telephone\" = PDS Fhir telecomSystem \"phone\"\r\n* telecomUse - specifically Spine telecomUse \"Answering Machine\" = PDS Fhir telecomUse \"home\"\r\n* telecomPeriodStart\r\n* telecomValue\r\n* deceasedDateTime if - if present for Patient\r\n* generalPractitionerValue - if present for Patient\r\n* deathNotificationValueDateTime - if present for Patient"
-									},
-									"response": []
-								},
-								{
-									"name": "Simple Search - Minimum Criteria - Gender, DOB & Family 8",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"id": "e57f793c-3c38-4919-be4e-2392110ef8a1",
-												"exec": [
-													"var response = pm.response.json();",
-													"",
-													"// Apply Common Mapping Tests",
-													"//======================================",
-													"eval(pm.globals.get(\"checkSearchMappings\"))();"
-												],
-												"type": "text/javascript"
-											}
-										},
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "c3e2221d-db2e-4e98-a510-b18b78820f52",
-												"exec": [
-													"/*set variables for test*/",
-													"",
-													"pm.variables.set(\"family\", \"Emergency\");",
-													"pm.variables.set(\"genderQ\", \"other\");",
-													"pm.variables.set(\"gender\", \"not specified\");",
-													"pm.variables.set(\"birthdate\", \"2004-01-01\");",
-													"",
-													"//5900009068",
-													"/*set variables for checking mapping*/",
-													"",
-													"/*data variables being checked against.  These shall be replaced by the variables set when HL& is plugged in*/",
-													"pm.variables.set(\"prefix\", \"Ms\");",
-													"pm.variables.set(\"nameType\", \"Usual name\");",
-													"pm.variables.set(\"addressType\", \"home\");",
-													"pm.variables.set(\"telecomType\", \"telephone\");",
-													"pm.variables.set(\"telecomUse\", \"Emergency\");",
-													"",
-													"pm.variables.set(\"given\", [\"Emma\"]);",
-													"pm.variables.set(\"suffix\", []);",
-													"pm.variables.set(\"namePeriodStart\", \"2020-02-27\");",
-													"pm.variables.set(\"addressLine\",JSON.stringify([\"\",\"91 Westwood Avenue\",\"Eccleshill\",\"Bradford\",\"\"]));",
-													"pm.variables.set(\"addressPeriodStart\", \"2020-02-27\");",
-													"pm.variables.set(\"postalCode\", \"BD2 2LY\");",
-													"pm.variables.set(\"patientId\", \"5900013863\");",
-													"pm.variables.set(\"metaVersionId\", \"2\");",
-													"pm.variables.set(\"resourceType\", \"Patient\");",
-													"pm.variables.set(\"telecomPeriodStart\", \"2020-02-27\");",
-													"pm.variables.set(\"telecomValue\", \"0900000001\");",
-													"pm.variables.set(\"deceasedDateTime\", \"\");",
-													"pm.variables.set(\"deathNotificationValueDateTime\", \"\");"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "{{nhsd-asid-header}}",
-												"type": "text",
-												"value": "{{from_asid}}"
-											},
-											{
-												"key": "{{nhsd-session-urid-header}}",
-												"type": "text",
-												"value": "{{role_id}}"
-											},
-											{
-												"key": "{{nhsd-identity-uuid-header}}",
-												"type": "text",
-												"value": "{{user_id}}"
-											}
-										],
-										"url": {
-											"raw": "{{environment}}/Patient?family={{family}}&gender={{genderQ}}&birthdate={{birthdate}}",
-											"host": [
-												"{{environment}}"
-											],
-											"path": [
-												"Patient"
-											],
-											"query": [
-												{
-													"key": "family",
-													"value": "{{family}}"
-												},
-												{
-													"key": "gender",
-													"value": "{{genderQ}}"
-												},
-												{
-													"key": "birthdate",
-													"value": "{{birthdate}}"
-												},
-												{
-													"key": "general-practitioner",
-													"value": "Y0001",
-													"disabled": true
-												}
-											]
-										},
-										"description": "This test validates that all Patient Demographic data is mapped correctly to the Fhir PDF response, specifically:\r\n\r\n* resourseType\r\n* patientId\r\n* identifierExtention\r\n* metaVersionId\r\n* nameFamily\r\n* nameGiven\r\n* prefix - specifically Spine \"Mr\" = PDS Fhir \"Mr\"\r\n* suffix\r\n* nameUse - specifically Spine nameType \"usual name\" = PDS Fhir nameUse \"official\"\r\n* namePeriodStart\r\n* gender - specifically Spine gender \"not specified\" = PDS Fhir nameUse \"other\"\r\n* birthDate\r\n* deceasedDateTime\r\n* addressLines\r\n* addressPeriodStart\r\n* addressUse - always returns \"home\" address only even though there may be other address associated with the Patient\r\n* postCode\r\n* telecomSystem - specifically Spine telecomType \"telephone\" = PDS Fhir telecomSystem \"phone\"\r\n* telecomUse - specifically Spine telecomUse \"Emergency\" = PDS Fhir telecomUse \"home\"\r\n* telecomPeriodStart\r\n* telecomValue\r\n* deceasedDateTime if - if present for Patient\r\n* generalPractitionerValue - if present for Patient\r\n* deathNotificationValueDateTime - if present for Patient"
 									},
 									"response": []
 								},
@@ -2375,7 +2177,7 @@
 													"",
 													"pm.variables.set(\"family\", \"Name\");",
 													"pm.variables.set(\"given\", [\"Current\"]);",
-													"pm.variables.set(\"suffix\",  []);",
+													"pm.variables.set(\"suffix\",  undefined);",
 													"pm.variables.set(\"namePeriodStart\", \"2020-03-02\");",
 													"pm.variables.set(\"addressLine\",JSON.stringify([\"\",\"2 Westwood Ave\",\"Eccleshill\",\"Bradford\",\"\"]));",
 													"pm.variables.set(\"addressPeriodStart\", \"2020-03-02\");",
@@ -2490,7 +2292,7 @@
 													"",
 													"pm.variables.set(\"family\", \"Name\");",
 													"pm.variables.set(\"given\", [\"Current\"]);",
-													"pm.variables.set(\"suffix\", []);",
+													"pm.variables.set(\"suffix\", undefined);",
 													"pm.variables.set(\"namePeriodStart\", \"2020-03-02\");",
 													"pm.variables.set(\"addressLine\",JSON.stringify([\"\",\"2 Westwood Ave\",\"Eccleshill\",\"Bradford\",\"\"]));",
 													"pm.variables.set(\"addressPeriodStart\", \"2020-03-02\");",
@@ -2609,7 +2411,7 @@
 													"",
 													"pm.variables.set(\"family\", \"Name\");",
 													"pm.variables.set(\"given\", [\"Current\"]);",
-													"pm.variables.set(\"suffix\", []);",
+													"pm.variables.set(\"suffix\", undefined);",
 													"pm.variables.set(\"namePeriodStart\", \"2020-03-02\");",
 													"pm.variables.set(\"addressLine\",JSON.stringify([\"\",\"2 Westwood Ave\",\"Eccleshill\",\"Bradford\",\"\"]));",
 													"pm.variables.set(\"addressPeriodStart\", \"2020-03-02\");",
@@ -2726,7 +2528,7 @@
 													"",
 													"pm.variables.set(\"family\", \"Name\");",
 													"pm.variables.set(\"given\", [\"Current\"]);",
-													"pm.variables.set(\"suffix\", []);",
+													"pm.variables.set(\"suffix\", undefined);",
 													"pm.variables.set(\"namePeriodStart\", \"2020-03-02\");",
 													"pm.variables.set(\"addressLine\",JSON.stringify([\"\",\"2 Westwood Ave\",\"Eccleshill\",\"Bradford\",\"\"]));",
 													"pm.variables.set(\"addressPeriodStart\", \"2020-03-02\");",
@@ -2839,7 +2641,7 @@
 													"",
 													"pm.variables.set(\"family\", \"Name\");",
 													"pm.variables.set(\"given\", [\"Current\"]);",
-													"pm.variables.set(\"suffix\", []);",
+													"pm.variables.set(\"suffix\", undefined);",
 													"pm.variables.set(\"namePeriodStart\", \"2020-03-02\");",
 													"pm.variables.set(\"addressLine\",JSON.stringify([\"\",\"2 Westwood Ave\",\"Eccleshill\",\"Bradford\",\"\"]));",
 													"pm.variables.set(\"addressPeriodStart\", \"2020-03-02\");",
@@ -2958,7 +2760,7 @@
 													"",
 													"pm.variables.set(\"family\", \"Name\");",
 													"pm.variables.set(\"given\", [\"Current\"]);",
-													"pm.variables.set(\"suffix\", []);",
+													"pm.variables.set(\"suffix\", undefined);",
 													"pm.variables.set(\"namePeriodStart\", \"2020-03-02\");",
 													"pm.variables.set(\"addressLine\",JSON.stringify([\"\",\"2 Westwood Ave\",\"Eccleshill\",\"Bradford\",\"\"]));",
 													"pm.variables.set(\"addressPeriodStart\", \"2020-03-02\");",
@@ -3966,7 +3768,7 @@
 																	"",
 																	"pm.test(\"Check that no Patient returned\", function () {",
 																	"    pm.response.to.have.status(200);",
-																	"    pm.expect(response.entry).to.eql([]);",
+																	"    pm.expect(response.entry).to.eql(undefined);",
 																	"    pm.expect(response.resourceType).to.eql(\"Bundle\");",
 																	"    pm.expect(response.total).to.eql(0);",
 																	"    pm.expect(response.type).to.eql(\"searchset\");",
@@ -4055,7 +3857,7 @@
 																	"",
 																	"pm.test(\"Check that no Patient returned\", function () {",
 																	"    pm.response.to.have.status(200);",
-																	"    pm.expect(response.entry).to.eql([]);",
+																	"    pm.expect(response.entry).to.eql(undefined);",
 																	"    pm.expect(response.resourceType).to.eql(\"Bundle\");",
 																	"    pm.expect(response.total).to.eql(0);",
 																	"    pm.expect(response.type).to.eql(\"searchset\");",
@@ -4474,7 +4276,7 @@
 																	"",
 																	"pm.test(\"Check that no Patient returned\", function () {",
 																	"    pm.response.to.have.status(200);",
-																	"    pm.expect(response.entry).to.eql([]);",
+																	"    pm.expect(response.entry).to.eql(undefined);",
 																	"    pm.expect(response.resourceType).to.eql(\"Bundle\");",
 																	"    pm.expect(response.total).to.eql(0);",
 																	"    pm.expect(response.type).to.eql(\"searchset\");",
@@ -4561,7 +4363,7 @@
 																	"",
 																	"pm.test(\"Check that no Patient returned\", function () {",
 																	"    pm.response.to.have.status(200);",
-																	"    pm.expect(response.entry).to.eql([]);",
+																	"    pm.expect(response.entry).to.eql(undefined);",
 																	"    pm.expect(response.resourceType).to.eql(\"Bundle\");",
 																	"    pm.expect(response.total).to.eql(0);",
 																	"    pm.expect(response.type).to.eql(\"searchset\");",
@@ -5050,25 +4852,7 @@
 												"id": "67f97a66-b476-4b07-a989-a8ec489882c4",
 												"type": "text/javascript",
 												"exec": [
-													"pm.globals.set('patient', function patient() {",
-													"    let calls = {};",
-													"",
-													"    calls.getScores = () => {",
-													"        var scores = [];",
-													"        for (i = 0; i < response.entry.length; i++) {",
-													"            scores.push(response.entry[i].search.score);",
-													"        }",
-													"",
-													"        return scores;",
-													"    }",
-													"",
-													"    calls.getTotalNumberOfPatients = () => {",
-													"        let response = JSON.parse(responseBody);",
-													"        return response.total;",
-													"    }",
-													"",
-													"    return calls;",
-													"} + '; patient();');"
+													""
 												]
 											}
 										},
@@ -5644,7 +5428,8 @@
 															"    header: {",
 															"        asidHeader,",
 															"        sessionURIDHeader,",
-															"        identityUUIDHeader",
+															"        identityUUIDHeader,",
+															"        'Authorization': 'Bearer ' + pm.globals.get(\"token\")",
 															"    }",
 															"}, function (err, res) {",
 															"    console.log(\"Pre-request Request: \" + JSON.stringify(res.json()));",
@@ -5755,7 +5540,8 @@
 															"    header: {",
 															"            'NHSD-ASID': pm.environment.get(\"from_asid\"),",
 															"            'NHSD-Session-URID': pm.environment.get(\"role_id\"),",
-															"            'NHSD-Identity-UUID': pm.environment.get(\"user_id\")",
+															"            'NHSD-Identity-UUID': pm.environment.get(\"user_id\"),",
+															"            'Authorization': 'Bearer ' + pm.globals.get(\"token\")",
 															"    }",
 															"}, function (err, res) {",
 															"    pm.test('@Before: fuzzy-match set to false returns 0 patients', () => {",
@@ -5901,7 +5687,8 @@
 															"        header: {",
 															"            asidHeader,",
 															"            sessionURIDHeader,",
-															"            identityUUIDHeader",
+															"            identityUUIDHeader,",
+															"            'Authorization': 'Bearer ' + pm.globals.get(\"token\")",
 															"        }",
 															"    }, function (err, res) {",
 															"        console.log(\"Response for \" + p.parameter, res.json());",
@@ -6047,80 +5834,6 @@
 											},
 											"response": [
 												{
-													"name": "Fuzzy Search invalid search criteria",
-													"originalRequest": {
-														"method": "GET",
-														"header": [
-															{
-																"key": "{{nhsd-asid-header}}",
-																"value": "200000000610"
-															},
-															{
-																"key": "{{nhsd-session-urid-header}}",
-																"value": "1234567890"
-															},
-															{
-																"key": "{{nhsd-identity-uuid-header}}",
-																"value": "1234567890"
-															}
-														],
-														"url": {
-															"raw": "{{environment}}/Patient?_fuzzy-match=true&family=S*&birthdate=2015-12-15&given=Fuzzy",
-															"host": [
-																"{{environment}}"
-															],
-															"path": [
-																"Patient"
-															],
-															"query": [
-																{
-																	"key": "_fuzzy-match",
-																	"value": "true"
-																},
-																{
-																	"key": "family",
-																	"value": "S*"
-																},
-																{
-																	"key": "birthdate",
-																	"value": "2015-12-15"
-																},
-																{
-																	"key": "given",
-																	"value": "Fuzzy"
-																}
-															]
-														}
-													},
-													"status": "Bad Request",
-													"code": 400,
-													"_postman_previewlanguage": "json",
-													"header": [
-														{
-															"key": "Server",
-															"value": "nginx"
-														},
-														{
-															"key": "Date",
-															"value": "Thu, 27 Feb 2020 09:05:44 GMT"
-														},
-														{
-															"key": "Content-Type",
-															"value": "application/json"
-														},
-														{
-															"key": "Content-Length",
-															"value": "599"
-														},
-														{
-															"key": "Connection",
-															"value": "keep-alive"
-														}
-													],
-													"cookie": [],
-													"body": "{\n    \"issue\": [\n        {\n            \"code\": \"invalid\",\n            \"details\": {\n                \"coding\": [\n                    {\n                        \"code\": \"NO_SEARCHES_PERFORMED\",\n                        \"display\": \"No searches were performed as the search criteria did not meet the minimum requirements\",\n                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",\n                        \"version\": 1\n                    }\n                ]\n            },\n            \"severity\": \"error\"\n        }\n    ],\n    \"resourceType\": \"OperationOutcome\"\n}"
-												},
-												{
 													"name": "FUZZY_CRITERIA_NOT_MET error message",
 													"originalRequest": {
 														"method": "GET",
@@ -6193,6 +5906,80 @@
 													],
 													"cookie": [],
 													"body": "{\n    \"issue\": [\n        {\n            \"code\": \"invalid\",\n            \"details\": {\n                \"coding\": [\n                    {\n                        \"code\": \"FUZZY_CRITERIA_NOT_MET\",\n                        \"display\": \"A fuzzy search was requested however the data given did not meet the fuzzy search criteria\",\n                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",\n                        \"version\": \"1\"\n                    }\n                ]\n            },\n            \"severity\": \"error\"\n        }\n    ],\n    \"resourceType\": \"OperationOutcome\"\n}"
+												},
+												{
+													"name": "Fuzzy Search invalid search criteria",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "{{nhsd-asid-header}}",
+																"value": "200000000610"
+															},
+															{
+																"key": "{{nhsd-session-urid-header}}",
+																"value": "1234567890"
+															},
+															{
+																"key": "{{nhsd-identity-uuid-header}}",
+																"value": "1234567890"
+															}
+														],
+														"url": {
+															"raw": "{{environment}}/Patient?_fuzzy-match=true&family=S*&birthdate=2015-12-15&given=Fuzzy",
+															"host": [
+																"{{environment}}"
+															],
+															"path": [
+																"Patient"
+															],
+															"query": [
+																{
+																	"key": "_fuzzy-match",
+																	"value": "true"
+																},
+																{
+																	"key": "family",
+																	"value": "S*"
+																},
+																{
+																	"key": "birthdate",
+																	"value": "2015-12-15"
+																},
+																{
+																	"key": "given",
+																	"value": "Fuzzy"
+																}
+															]
+														}
+													},
+													"status": "Bad Request",
+													"code": 400,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Server",
+															"value": "nginx"
+														},
+														{
+															"key": "Date",
+															"value": "Thu, 27 Feb 2020 09:05:44 GMT"
+														},
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														},
+														{
+															"key": "Content-Length",
+															"value": "599"
+														},
+														{
+															"key": "Connection",
+															"value": "keep-alive"
+														}
+													],
+													"cookie": [],
+													"body": "{\n    \"issue\": [\n        {\n            \"code\": \"invalid\",\n            \"details\": {\n                \"coding\": [\n                    {\n                        \"code\": \"NO_SEARCHES_PERFORMED\",\n                        \"display\": \"No searches were performed as the search criteria did not meet the minimum requirements\",\n                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",\n                        \"version\": 1\n                    }\n                ]\n            },\n            \"severity\": \"error\"\n        }\n    ],\n    \"resourceType\": \"OperationOutcome\"\n}"
 												}
 											]
 										},
@@ -6370,7 +6157,8 @@
 															"    header: {",
 															"        asidHeader,",
 															"        sessionURIDHeader,",
-															"        identityUUIDHeader",
+															"        identityUUIDHeader,",
+															"        'Authorization': 'Bearer ' + pm.globals.get(\"token\")",
 															"    }",
 															"}, function (err, res) {",
 															"    console.log(\"Pre-request Request: \" + JSON.stringify(res.json()));",
@@ -7033,7 +6821,8 @@
 															"    header: {",
 															"        asidHeader,",
 															"        sessionURIDHeader,",
-															"        identityUUIDHeader",
+															"        identityUUIDHeader,",
+															"        'Authorization': 'Bearer ' + pm.globals.get(\"token\")",
 															"    }",
 															"}, function (err, res) {",
 															"    console.log(\"Pre-request Request: \" + JSON.stringify(res.json()));",
@@ -7152,7 +6941,8 @@
 															"    header: {",
 															"        asidHeader,",
 															"        sessionURIDHeader,",
-															"        identityUUIDHeader",
+															"        identityUUIDHeader,",
+															"        'Authorization': 'Bearer ' + pm.globals.get(\"token\")",
 															"    }",
 															"}, function (err, res) {",
 															"    console.log(\"Pre-request Request: \" + JSON.stringify(res.json()));",
@@ -7272,7 +7062,8 @@
 															"    header: {",
 															"        asidHeader,",
 															"        sessionURIDHeader,",
-															"        identityUUIDHeader",
+															"        identityUUIDHeader,",
+															"        'Authorization': 'Bearer ' + pm.globals.get(\"token\")",
 															"    }",
 															"}, function (err, res) {",
 															"    console.log(\"Pre-request Request: \" + JSON.stringify(res.json()));",
@@ -7391,7 +7182,8 @@
 															"    header: {",
 															"        asidHeader,",
 															"        sessionURIDHeader,",
-															"        identityUUIDHeader",
+															"        identityUUIDHeader,",
+															"        'Authorization': 'Bearer ' + pm.globals.get(\"token\")",
 															"    }",
 															"}, function (err, res) {",
 															"    console.log(\"Pre-request Request: \" + JSON.stringify(res.json()));",
@@ -7697,7 +7489,8 @@
 															"        header: {",
 															"            asidHeader,",
 															"            sessionURIDHeader,",
-															"            identityUUIDHeader",
+															"            identityUUIDHeader,",
+															"            'Authorization': 'Bearer ' + pm.globals.get(\"token\")",
 															"        }",
 															"    }, function (err, res) {",
 															"        let response = res.json();",
@@ -8408,115 +8201,6 @@
 											"response": []
 										},
 										{
-											"name": "Security validation is performed before request validation when performing a Search",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "5f6774f4-6032-467f-84b4-1043f7c14a69",
-														"exec": [
-															"let sessionURIDHeader = pm.variables.get(\"sessionURIDHeader\");",
-															"let identityUUIDHeader = pm.variables.get(\"identityUUIDHeader\");",
-															"",
-															"pm.variables.get('testData').forEach(scenario => {",
-															"\tlet asidHeader = getAsidHeader(scenario.asid);",
-															"\tpm.sendRequest({",
-															"\t\turl: pm.environment.get(\"environment\") + '/Patient?' + scenario.query,",
-															"\t\tmethod: 'GET',",
-															"\t\theader: {",
-															"\t\t\tasidHeader,",
-															"\t\t\tsessionURIDHeader,",
-															"\t\t\tidentityUUIDHeader",
-															"\t\t}",
-															"\t}, function (err, res) {",
-															"\t\tpm.test(scenario.name + \" Returns Status code \" + scenario.expectedStatus, function () {",
-															"\t\t\tpm.expect(res.code).to.equal(scenario.expectedStatus, 'invalid response returned');",
-															"\t\t});",
-															"",
-															"\t\tif (scenario.expectedStatus == 400) {",
-															"\t\t\tpm.test(scenario.name + \" Returns error code EXTRA_VALUE\", () => {",
-															"\t\t\t\tpm.expect(res.json().issue[0].details.coding[0].code).to.equal('EXTRA_VALUE');",
-															"\t\t\t});",
-															"",
-															"\t\t} else {",
-															"\t\t\tpm.test(scenario.name + \" Returns error code ACCESS_DENIED\", () => {",
-															"\t\t\t\tpm.expect(res.json().issue[0].details.coding[0].code).to.equal('ACCESS_DENIED');",
-															"\t\t\t});",
-															"\t\t}",
-															"\t});",
-															"",
-															"});",
-															"",
-															"",
-															"function getAsidHeader(type) {",
-															"\tlet asid;",
-															"\tswitch (type) {",
-															"\t\tcase 'valid':",
-															"\t\t\tasid = pm.environment.get(\"from_asid\");",
-															"\t\t\tbreak;",
-															"\t\tcase 'invalid':",
-															"\t\t\tasid = '123456789';",
-															"\t\t\tbreak;",
-															"\t\tcase 'missing':",
-															"\t\t\tasid = '';",
-															"\t\t\tbreak;",
-															"\t}",
-															"\t",
-															"\treturn {",
-															"\t\tkey: pm.globals.get(\"nhsd-asid-header\"),",
-															"\t\tvalue: asid",
-															"\t}",
-															"}"
-														],
-														"type": "text/javascript"
-													}
-												},
-												{
-													"listen": "prerequest",
-													"script": {
-														"id": "1789ffbf-aaf8-4c8e-9d56-806fd5b9d829",
-														"exec": [
-															"pm.variables.set('testData', data = [",
-															"    { name: \"Valid ASID and Invalid Search request\", asid: 'valid', query: 'faaaaamily=Smith&given=Jane&gender=female&birthdate=2010-10-22', expectedStatus: 400},",
-															"\t{ name: \"Invalid ASID and Invalid Search request\", asid: 'invalid', query: 'family=Smith&givvvvven=Jane&gender=female&birthdate=2010-10-22', expectedStatus: 401},",
-															"\t{ name: \"No ASID and Invalid Search request\", asid: 'missing', query: 'family=Smith&given=Jane&gender=female&birthhhhdate=2010-10-22', expectedStatus: 401},",
-															"\t{ name: \"No ASID and Valid Search request\", asid: 'missing', query: 'family=Smith&given=Jane&gender=female&birthdate=2010-10-22', expectedStatus: 401}",
-															"]);"
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"method": "GET",
-												"header": [
-													{
-														"key": "{{nhsd-asid-header}}",
-														"type": "text",
-														"value": "{{from_asid}}"
-													},
-													{
-														"key": "{{nhsd-session-urid-header}}",
-														"type": "text",
-														"value": "{{role_id}}"
-													},
-													{
-														"key": "{{nhsd-identity-uuid-header}}",
-														"type": "text",
-														"value": "{{user_id}}"
-													}
-												],
-												"url": {
-													"raw": "{{environment}}",
-													"host": [
-														"{{environment}}"
-													]
-												},
-												"description": "Security checks should be performed first to prevent information leakage.\n\nValidates when sending requests which have both a invalid asid and search query parameter, validation is performed on the asid first, thus throwing a 401 Unauthorized instead of query param validation i.e. 400 Bad Request"
-											},
-											"response": []
-										},
-										{
 											"name": "Search query containing special characters returns valid error messages",
 											"event": [
 												{
@@ -8535,7 +8219,8 @@
 															"        header: {",
 															"            asidHeader,",
 															"            sessionURIDHeader,",
-															"            identityUUIDHeader",
+															"            identityUUIDHeader,",
+															"            'Authorization': 'Bearer ' + pm.globals.get(\"token\")",
 															"        }",
 															"    }, function (err, response) {",
 															"        pm.test(scenario.name + \": Returns Status code 400 \", () => {",
@@ -8963,7 +8648,7 @@
 															}
 														],
 														"url": {
-															"raw": "{{environment}}/Patient?gender=male&birthdate=2000-01-01&family=Practitioner&general-practitioner=Y995894",
+															"raw": "{{environment}}/Patient?gender=male&family=Practitioner&general-practitioner=Y995894&birthdate=ge2000-01-01",
 															"host": [
 																"{{environment}}"
 															],
@@ -8972,17 +8657,8 @@
 															],
 															"query": [
 																{
-																	"key": "_max-results",
-																	"value": "50",
-																	"disabled": true
-																},
-																{
 																	"key": "gender",
 																	"value": "male"
-																},
-																{
-																	"key": "birthdate",
-																	"value": "2000-01-01"
 																},
 																{
 																	"key": "family",
@@ -8991,6 +8667,15 @@
 																{
 																	"key": "general-practitioner",
 																	"value": "Y995894"
+																},
+																{
+																	"key": "_max-results",
+																	"value": "50",
+																	"disabled": true
+																},
+																{
+																	"key": "birthdate",
+																	"value": "ge2000-01-01"
 																}
 															]
 														},
@@ -9518,15 +9203,15 @@
 													"});",
 													"",
 													"pm.test(\"Sensitive patients address is not displayed\", () => {",
-													"    pm.expect(response.entry[1].resource.address).to.be.empty;",
+													"    pm.expect(response.entry[1].resource.address).to.be.undefined;",
 													"});",
 													"",
 													"pm.test(\"Sensitive patients telecome details are not displayed\", () => {",
-													"    pm.expect(response.entry[1].resource.telecom).to.be.empty;",
+													"    pm.expect(response.entry[1].resource.telecom).to.be.undefined;",
 													"});",
 													"",
 													"pm.test(\"Sensitive patients GP details are not displayed\", () => {",
-													"    pm.expect(response.entry[1].resource.generalPractitioner).to.be.empty;",
+													"    pm.expect(response.entry[1].resource.generalPractitioner).to.be.undefined;",
 													"});"
 												],
 												"type": "text/javascript"
@@ -9832,7 +9517,7 @@
 											}
 										],
 										"url": {
-											"raw": "{{environment}}/Patient?birthdate=ge1900-01-01&family=Invalidated&gender=female",
+											"raw": "{{environment}}/Patient?birthdate=2000-01-01&family=Invalidated&gender=female&given=Patient",
 											"host": [
 												"{{environment}}"
 											],
@@ -9842,7 +9527,7 @@
 											"query": [
 												{
 													"key": "birthdate",
-													"value": "ge1900-01-01"
+													"value": "2000-01-01"
 												},
 												{
 													"key": "family",
@@ -9851,6 +9536,10 @@
 												{
 													"key": "gender",
 													"value": "female"
+												},
+												{
+													"key": "given",
+													"value": "Patient"
 												}
 											]
 										},
@@ -9956,7 +9645,13 @@
 													"   pm.sendRequest({\r",
 													"        url: pm.environment.get(\"environment\") + \"/Patient/\" + s.nhs_id,\r",
 													"        method: 'GET',\r",
-													"        header: { asidHeader, sessionURIDHeader, identityUUIDHeader }\r",
+													"        header: { \r",
+													"            asidHeader, \r",
+													"            sessionURIDHeader, \r",
+													"            identityUUIDHeader, \r",
+													"            'Authorization': 'Bearer ' + pm.globals.get(\"token\") \r",
+													"            \r",
+													"        }\r",
 													"        \r",
 													"    }, function (err, res) {\r",
 													"        let response = res.json();\r",
@@ -10024,7 +9719,7 @@
 													"        responseCode: \"RETRIEVAL_UNSUPPORTED\", \r",
 													"        responseDisplay: \"Retrieval unsupported for resource - 'nationality'\"},\r",
 													"        \r",
-													"       {desc: \"INVALIDATED_NHS_NUMBER\", nhs_id: \"5900008932\", \r",
+													"       {desc: \"INVALIDATED_NHS_NUMBER\", nhs_id: \"5900006107\", \r",
 													"        responseStatus: 404, \r",
 													"        responseIssueCode: \"processing\", \r",
 													"        responseSeverity: \"error\", \r",
@@ -10068,127 +9763,12 @@
 											],
 											"variable": [
 												{
-													"id": "2aea25ad-db20-4934-aa43-c144030b87c5",
 													"key": "nhs_id",
-													"value": "{{nshID}}",
-													"type": "string"
+													"value": "{{nshID}}"
 												}
 											]
 										},
 										"description": "Invalid Retrieve Patient calls shall result in a valid Error Response"
-									},
-									"response": []
-								},
-								{
-									"name": "Security validation is performed before request validation when performing a Retrieve",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"id": "5f6774f4-6032-467f-84b4-1043f7c14a69",
-												"exec": [
-													"let sessionURIDHeader = pm.variables.get(\"sessionURIDHeader\");",
-													"let identityUUIDHeader = pm.variables.get(\"identityUUIDHeader\");",
-													"",
-													"pm.variables.get('testData').forEach(scenario => {",
-													"\tlet asidHeader = getAsidHeader(scenario.asid);",
-													"\tpm.sendRequest({",
-													"\t\turl: pm.environment.get(\"environment\") + '/Patient/' + scenario.nhsNumber,",
-													"\t\tmethod: 'GET',",
-													"\t\theader: {",
-													"\t\t\tasidHeader,",
-													"\t\t\tsessionURIDHeader,",
-													"\t\t\tidentityUUIDHeader",
-													"\t\t}",
-													"\t}, function (err, res) {",
-													"\t\tpm.test(scenario.name + \" Returns Status code \" + scenario.expectedStatus, function () {",
-													"\t\t\tpm.expect(res.code).to.equal(scenario.expectedStatus, 'invalid response returned');",
-													"\t\t});",
-													"",
-													"\t\tif (scenario.expectedStatus == 400) {",
-													"\t\t\tpm.test(scenario.name + \" Returns error code INVALID_NHS_NUMBER\", () => {",
-													"\t\t\t\tpm.expect(res.json().issue[0].details.coding[0].code).to.equal('INVALID_NHS_NUMBER');",
-													"\t\t\t});",
-													"",
-													"\t\t} else {",
-													"\t\t\tpm.test(scenario.name + \" Returns error code ACCESS_DENIED\", () => {",
-													"\t\t\t\tpm.expect(res.json().issue[0].details.coding[0].code).to.equal('ACCESS_DENIED');",
-													"\t\t\t});",
-													"\t\t}",
-													"\t});",
-													"",
-													"});",
-													"",
-													"",
-													"function getAsidHeader(type) {",
-													"\tlet asid;",
-													"\tswitch (type) {",
-													"\t\tcase 'valid':",
-													"\t\t\tasid = pm.environment.get(\"from_asid\");",
-													"\t\t\tbreak;",
-													"\t\tcase 'invalid':",
-													"\t\t\tasid = '123456789';",
-													"\t\t\tbreak;",
-													"\t\tcase 'missing':",
-													"\t\t\tasid = '';",
-													"\t\t\tbreak;",
-													"\t}",
-													"\t",
-													"\treturn {",
-													"\t\tkey: pm.globals.get(\"nhsd-asid-header\"),",
-													"\t\tvalue: asid",
-													"\t}",
-													"}"
-												],
-												"type": "text/javascript"
-											}
-										},
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "1789ffbf-aaf8-4c8e-9d56-806fd5b9d829",
-												"exec": [
-													"pm.variables.set('testData', data = [",
-													"    { name: \"Valid ASID and Invalid NHS Number\", asid: 'valid', nhsNumber: '1234', expectedStatus: 400},",
-													"\t{ name: \"Invalid ASID and Invalid NHS Number\", asid: 'invalid', nhsNumber: '1234', expectedStatus: 401},",
-													"\t{ name: \"No ASID and Invalid NHS Number\", asid: 'missing', nhsNumber: '1234', expectedStatus: 401},",
-													"\t{ name: \"No ASID and Valid NHS Number\", asid: 'missing', nhsNumber: '5900014061', expectedStatus: 401}",
-													"]);"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "{{nhsd-asid-header}}",
-												"type": "text",
-												"value": "{{from_asid}}"
-											},
-											{
-												"key": "{{nhsd-session-urid-header}}",
-												"type": "text",
-												"value": "{{role_id}}"
-											},
-											{
-												"key": "{{nhsd-identity-uuid-header}}",
-												"type": "text",
-												"value": "{{user_id}}"
-											}
-										],
-										"url": {
-											"raw": "{{environment}}/Patient/1234",
-											"host": [
-												"{{environment}}"
-											],
-											"path": [
-												"Patient",
-												"1234"
-											]
-										},
-										"description": "Security checks should be performed first to prevent information leakage.\n\nValidates when sending a request which has both an invalid asid and nhs number, validation is performed on the asid first, thus throwing a 401 Unauthorized instead of a\nnhs number validation error (400 Bad Request)"
 									},
 									"response": []
 								}
@@ -10289,10 +9869,8 @@
 									],
 									"variable": [
 										{
-											"id": "3461d46c-da29-4138-a3db-16a73270be57",
 											"key": "nhs_id",
-											"value": "{{patientId}}",
-											"type": "string"
+											"value": "{{patientId}}"
 										}
 									]
 								},
@@ -10333,7 +9911,7 @@
 											"pm.variables.set(\"telecomType\", \"fax\");",
 											"pm.variables.set(\"telecomUse\", \"work\");",
 											"pm.variables.set(\"given\", [\"John\"]);",
-											"pm.variables.set(\"suffix\", []);",
+											"pm.variables.set(\"suffix\", undefined);",
 											"pm.variables.set(\"namePeriodStart\", \"2020-03-02\");",
 											"pm.variables.set(\"addressLine\",JSON.stringify([\"130 Greenhouse Lane\",\"Work Road\",\"Roundhay\",\"Leeds\",\"WEST YORKSHIRE\"]));",
 											"pm.variables.set(\"addressPeriodStart\", \"2019-01-10\");",
@@ -10394,8 +9972,7 @@
 									"variable": [
 										{
 											"key": "nhs_id",
-											"value": "{{patientId}}",
-											"type": "string"
+											"value": "{{patientId}}"
 										}
 									]
 								},
@@ -10439,7 +10016,7 @@
 											"pm.variables.set(\"birthdate\", \"2001-02-01\");",
 											"pm.variables.set(\"addressLine\",JSON.stringify([\"\",\"13 westwood\",\"\",\"bradford\",\"\"]));",
 											"pm.variables.set(\"addressPeriodStart\", \"2020-01-02\");",
-											"pm.variables.set(\"postalCode\", \"\");",
+											"pm.variables.set(\"postalCode\", undefined);",
 											"pm.variables.set(\"addressType\", \"correspondence\");",
 											"pm.variables.set(\"telecomPeriodStart\", \"2020-02-26\");",
 											"pm.variables.set(\"telecomValue\", \"0900000000\");",
@@ -10502,8 +10079,7 @@
 									"variable": [
 										{
 											"key": "nhs_id",
-											"value": "{{patientId}}",
-											"type": "string"
+											"value": "{{patientId}}"
 										}
 									]
 								},
@@ -10588,10 +10164,8 @@
 									],
 									"variable": [
 										{
-											"id": "4361981c-2cf7-454d-9e72-6dbef2ee9804",
 											"key": "nhs_id",
-											"value": "{{patientId}}",
-											"type": "string"
+											"value": "{{patientId}}"
 										}
 									]
 								},
@@ -10680,8 +10254,7 @@
 									"variable": [
 										{
 											"key": "nhs_id",
-											"value": "{{patientId}}",
-											"type": "string"
+											"value": "{{patientId}}"
 										}
 									]
 								},
@@ -10768,195 +10341,12 @@
 									],
 									"variable": [
 										{
-											"id": "5e5d2ead-b483-49d8-80e9-8e8164634903",
 											"key": "nhs_id",
-											"value": "{{patientId}}",
-											"type": "string"
+											"value": "{{patientId}}"
 										}
 									]
 								},
 								"description": "This test validates that all Patient Demographic data is mapped correctly to the Fhir PDF response, specifically:\r\n\r\n* resourseType\r\n* patientId\r\n* identifierExtention\r\n* metaVersionId\r\n* nameFamily\r\n* nameGiven\r\n* prefix - specifically Spine \"Mr\" = PDS Fhir \"Mr\"\r\n* suffix\r\n* nameUse - specifically Spine nameType \"usual name\" = PDS Fhir nameUse \"official\"\r\n* namePeriodStart\r\n* gender - specifically Spine gender \"male\" = PDS Fhir nameUse \"male\"\r\n* birthDate\r\n* deceasedDateTime\r\n* addressLines\r\n* addressPeriodStart\r\n* addressUse - always returns \"home\" address only even though there may be other address associated with the Patient\r\n* postCode\r\n* telecomSystem - specifically Spine telecomType \"telephone\" = PDS Fhir telecomSystem \"phone\"\r\n* telecomUse - specifically Spine telecomUse \"temporary\" = PDS Fhir telecomUse \"temp\"\r\n* telecomPeriodStart\r\n* telecomValue\r\n* deceasedDateTime if - if present for Patient\r\n* generalPractitionerValue - if present for Patient\r\n* deathNotificationValueDateTime - if present for Patient\r\n* Nominated Pharmacy - if present for Patient\r\n* Medical Appliance Supplier - if present for Patient\r\n* Communication Language - if present for Patient"
-							},
-							"response": []
-						},
-						{
-							"name": "Retrieve Patient - Happy path 7",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "5f6774f4-6032-467f-84b4-1043f7c14a69",
-										"exec": [
-											"var response = pm.response.json();",
-											"",
-											"// Apply Common Mapping Tests",
-											"//======================================",
-											"eval(pm.globals.get(\"checkRetrieveMappings\"))();"
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "1789ffbf-aaf8-4c8e-9d56-806fd5b9d829",
-										"exec": [
-											"/*set variables for checking mapping*/",
-											"",
-											"/*data variables being checked against.  These shall be replaced by the variables set when HL& is plugged in*/",
-											"pm.variables.set(\"prefix\", \"Mrs\");",
-											"pm.variables.set(\"nameType\", \"maiden\");",
-											"pm.variables.set(\"addressType\", \"usual\");",
-											"pm.variables.set(\"telecomType\", \"telephone\");",
-											"pm.variables.set(\"telecomUse\", \"Answering Machine\");",
-											"pm.variables.set(\"family\", \"Answermachine\");",
-											"pm.variables.set(\"gender\", \"not known\");",
-											"pm.variables.set(\"birthdate\", \"2007-01-01\");",
-											"pm.variables.set(\"given\", [\"another\"]);",
-											"pm.variables.set(\"namePeriodStart\", \"2020-02-27\");",
-											"pm.variables.set(\"addressLine\",JSON.stringify([\"\",\"27 Westwood Avenue\",\"Eccleshill\",\"Bradford\",\"\"]));",
-											"pm.variables.set(\"addressPeriodStart\", \"2020-02-27\");",
-											"pm.variables.set(\"postalCode\", \"BD2 2NJ\");",
-											"pm.variables.set(\"patientId\", \"5900000605\");",
-											"pm.variables.set(\"metaVersionId\", \"5\");",
-											"pm.variables.set(\"resourceType\", \"Patient\");",
-											"pm.variables.set(\"telecomPeriodStart\", \"2020-02-27\");",
-											"pm.variables.set(\"telecomValue\", \"09234567\");",
-											"pm.variables.set(\"deathNotificationValueDateTime\", \"\");"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "{{nhsd-asid-header}}",
-										"type": "text",
-										"value": "{{from_asid}}"
-									},
-									{
-										"key": "{{nhsd-session-urid-header}}",
-										"type": "text",
-										"value": "{{role_id}}"
-									},
-									{
-										"key": "{{nhsd-identity-uuid-header}}",
-										"type": "text",
-										"value": "{{user_id}}"
-									}
-								],
-								"url": {
-									"raw": "{{environment}}/Patient/:nhs_id",
-									"host": [
-										"{{environment}}"
-									],
-									"path": [
-										"Patient",
-										":nhs_id"
-									],
-									"variable": [
-										{
-											"id": "a8217d8d-56cf-4c26-a5a2-ed8edce6e0b4",
-											"key": "nhs_id",
-											"value": "{{patientId}}",
-											"type": "string"
-										}
-									]
-								},
-								"description": "work in progress.  This test shall cover a Happy path Retrieve scenario.  It currently asserts on General Practitioner, Pharmicies, Communication & Patient identifier, language.  Other checks shall be added in due course."
-							},
-							"response": []
-						},
-						{
-							"name": "Retrieve Patient - Happy path 8",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "5f6774f4-6032-467f-84b4-1043f7c14a69",
-										"exec": [
-											"var response = pm.response.json();",
-											"",
-											"// Apply Common Mapping Tests",
-											"//======================================",
-											"eval(pm.globals.get(\"checkRetrieveMappings\"))();"
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "1789ffbf-aaf8-4c8e-9d56-806fd5b9d829",
-										"exec": [
-											"/*set variables for checking mapping*/",
-											"",
-											"/*data variables being checked against.  These shall be replaced by the variables set when HL& is plugged in*/",
-											"pm.variables.set(\"prefix\", \"Ms\");",
-											"pm.variables.set(\"nameType\", \"Usual name\");",
-											"pm.variables.set(\"addressType\", \"usual\");",
-											"pm.variables.set(\"telecomType\", \"telephone\");",
-											"pm.variables.set(\"telecomUse\", \"Emergency\");",
-											"pm.variables.set(\"family\", \"Emergency\");",
-											"pm.variables.set(\"gender\", \"not specified\");",
-											"pm.variables.set(\"birthdate\", \"2004-01-01\");",
-											"pm.variables.set(\"given\", [\"Emma\"]);",
-											"pm.variables.set(\"namePeriodStart\", \"2020-02-27\");",
-											"pm.variables.set(\"addressLine\",JSON.stringify([\"\",\"91 Westwood Avenue\",\"Eccleshill\",\"Bradford\",\"\"]));",
-											"pm.variables.set(\"addressPeriodStart\", \"2020-02-27\");",
-											"pm.variables.set(\"postalCode\", \"BD2 2LY\");",
-											"pm.variables.set(\"patientId\", \"5900013863\");",
-											"pm.variables.set(\"metaVersionId\", \"2\");",
-											"pm.variables.set(\"resourceType\", \"Patient\");",
-											"pm.variables.set(\"telecomPeriodStart\", \"2020-02-27\");",
-											"pm.variables.set(\"telecomValue\", \"0900000001\");",
-											"pm.variables.set(\"deceasedDateTime\", \"\");",
-											"pm.variables.set(\"deathNotificationValueDateTime\", \"\");"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "{{nhsd-asid-header}}",
-										"type": "text",
-										"value": "{{from_asid}}"
-									},
-									{
-										"key": "{{nhsd-session-urid-header}}",
-										"type": "text",
-										"value": "{{role_id}}"
-									},
-									{
-										"key": "{{nhsd-identity-uuid-header}}",
-										"type": "text",
-										"value": "{{user_id}}"
-									}
-								],
-								"url": {
-									"raw": "{{environment}}/Patient/:nhs_id",
-									"host": [
-										"{{environment}}"
-									],
-									"path": [
-										"Patient",
-										":nhs_id"
-									],
-									"variable": [
-										{
-											"id": "6621d381-1de7-40c9-b34c-528a7ab9ffe4",
-											"key": "nhs_id",
-											"value": "{{patientId}}",
-											"type": "string"
-										}
-									]
-								},
-								"description": "This test validates that all Patient Demographic data is mapped correctly to the Fhir PDF response, specifically:\r\n\r\n* resourseType\r\n* patientId\r\n* identifierExtention\r\n* metaVersionId\r\n* nameFamily\r\n* nameGiven\r\n* prefix - specifically Spine \"Mr\" = PDS Fhir \"Mr\"\r\n* suffix\r\n* nameUse - specifically Spine nameType \"usual name\" = PDS Fhir nameUse \"official\"\r\n* namePeriodStart\r\n* gender - specifically Spine gender \"not specified\" = PDS Fhir nameUse \"other\"\r\n* birthDate\r\n* deceasedDateTime\r\n* addressLines\r\n* addressPeriodStart\r\n* addressUse - always returns \"home\" address only even though there may be other address associated with the Patient\r\n* postCode\r\n* telecomSystem - specifically Spine telecomType \"telephone\" = PDS Fhir telecomSystem \"phone\"\r\n* telecomUse - specifically Spine telecomUse \"Emergency\" = PDS Fhir telecomUse \"home\"\r\n* telecomPeriodStart\r\n* telecomValue\r\n* deceasedDateTime if - if present for Patient\r\n* generalPractitionerValue - if present for Patient\r\n* deathNotificationValueDateTime - if present for Patient\r\n* Nominated Pharmacy - if present for Patient\r\n* Medical Appliance Supplier - if present for Patient\r\n* Communication Language - if present for Patient"
 							},
 							"response": []
 						},
@@ -11035,10 +10425,8 @@
 									],
 									"variable": [
 										{
-											"id": "76f62245-0ccd-4604-bf82-f557cd68382f",
 											"key": "nhs_id",
-											"value": "{{supercededPatientId}}",
-											"type": "string"
+											"value": "{{supercededPatientId}}"
 										}
 									]
 								},
@@ -11071,7 +10459,6 @@
 											"/*set variables for checking mapping*/",
 											"",
 											"/*data variables being checked against.  These shall be replaced by the variables set when HL& is plugged in*/",
-											"pm.variables.set(\"prefix\", \"\");",
 											"pm.variables.set(\"nameType\", \"Usual name\");",
 											"pm.variables.set(\"addressType\", \"usual\");",
 											"pm.variables.set(\"family\", \"sensitive\");",
@@ -11082,6 +10469,7 @@
 											"pm.variables.set(\"patientId\", \"5900004430\");",
 											"pm.variables.set(\"resourceType\", \"Patient\");",
 											"pm.variables.set(\"deceasedDateTime\", \"2009-03-01\");",
+											"pm.variables.set(\"securityCode\", \"R\");",
 											"pm.variables.set(\"deathNotificationValueDateTime\", \"\");",
 											"pm.variables.set(\"deathNotificationStatus.display\", \"Informal - death notice received via an update from a local NHS Organisation such as GP or Trust\");"
 										],
@@ -13460,9 +12848,9 @@
 	],
 	"variable": [
 		{
-			"id": "da0a729b-ce78-49f8-867c-14d38beae212",
+			"id": "1132a62b-03c2-4c56-bdc1-2387c6f6fd82",
 			"key": "metaVersion",
-			"value": "107",
+			"value": "3",
 			"type": "string"
 		}
 	],

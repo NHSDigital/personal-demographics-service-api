@@ -64,6 +64,23 @@ function collectionRunner(url, collection_path, environment_path) {
                     export: './test-report.xml'
                 }
             },
+            environment: environment,
+            environment: {
+                "id": "0eba6cf0-3fd1-4b3f-b6be-4b20153baf8d",
+                "name": "environment-params",
+                "values": [                    
+                    {
+                        "key": "environment",
+                        "value": url,
+                        "type": "text",
+                        "enabled": true
+                    },                    
+                ],
+                "timestamp": 1404119927461,
+                "_postman_variable_scope": "environment",
+                "_postman_exported_at": "2020-04-03T14:31:26.200Z",
+                "_postman_exported_using": "Postman/4.8.0"
+            },
             globals: {
                 "id": "5bfde907-2a1e-8c5a-2246-4aff74b74236",
                 "name": "global-params",
@@ -79,13 +96,7 @@ function collectionRunner(url, collection_path, environment_path) {
                         "value": credentials.identity_token,
                         "type": "text",
                         "enabled": true
-                    },
-                    {
-                        "key": "environment",
-                        "value": url,
-                        "type": "text",
-                        "enabled": true
-                    },
+                    },                  
                     {
                         "key": "nhsd-asid-header",
                         "value": "NHSD-ASID-TEST",
@@ -109,8 +120,7 @@ function collectionRunner(url, collection_path, environment_path) {
                 "_postman_variable_scope": "globals",
                 "_postman_exported_at": "2020-04-03T14:31:26.200Z",
                 "_postman_exported_using": "Postman/4.8.0"
-            },
-            environment: environment
+            },            
         }, function (err) {
             if (err) { throw err; }
             console.log('collection run complete!');
