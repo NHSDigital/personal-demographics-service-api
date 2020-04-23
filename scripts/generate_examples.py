@@ -26,12 +26,21 @@ EXAMPLE_TYPES = {
         {"type": "retrieval", "file_prefix": "", "slim_func": []},
         {"type": "search", "file_prefix": "Search_", "slim_func": [slim_patient]},
         {"type": "sensitive", "file_prefix": "Sensitive_", "slim_func": [sensitive_patient]},
-        {"type": "sensitive", "file_prefix": "Sensitive_Search_", "slim_func": [slim_patient, sensitive_patient]}
+        {"type": "sensitive", "file_prefix": "Sensitive_Search_", "slim_func": [
+            slim_patient,
+            sensitive_patient
+        ]}
     ],
     "RelatedPerson": [
         {"type": "retrieval", "file_prefix": "", "slim_func": [remove_list_id]},
-        {"type": "nhs_number", "file_prefix": "Referenced_", "slim_func": [remove_list_id, related_person_reference_only]},
-        {"type": "patient_details", "file_prefix": "Personal_Details_", "slim_func": [remove_list_id, related_person_no_reference]}
+        {"type": "nhs_number", "file_prefix": "Referenced_", "slim_func": [
+            remove_list_id,
+            related_person_reference_only
+        ]},
+        {"type": "patient_details", "file_prefix": "Personal_Details_", "slim_func": [
+            remove_list_id,
+            related_person_no_reference
+        ]}
     ],
     "OperationOutcome": [
         {"type": "error", "file_prefix": "", "slim_func": []},
