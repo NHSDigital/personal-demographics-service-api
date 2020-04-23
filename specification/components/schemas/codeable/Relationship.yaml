@@ -54,7 +54,11 @@ properties:
     items:
       type: object
       required:
+        - system
         - code
+      enum:
+        - http://hl7.org/fhir/ValueSet/relatedperson-relationshiptype
+        - https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole
       properties:
         system:
           type: string
