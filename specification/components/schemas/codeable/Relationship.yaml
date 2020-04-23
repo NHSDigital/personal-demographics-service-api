@@ -11,7 +11,7 @@ properties:
       * Next-of-Kin
       The codes used can be found at:
       * http://hl7.org/fhir/ValueSet/relatedperson-relationshiptype
-      * https://simplifier.net/UKCore/CodeSystem-UKCore-AdditionalRelatedPersonRole
+      * https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole
 
       The allowed values for `Role` are:
       * Agent - Agent of patient
@@ -54,14 +54,18 @@ properties:
     items:
       type: object
       required:
+        - system
         - code
+      enum:
+        - http://hl7.org/fhir/ValueSet/relatedperson-relationshiptype
+        - https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole
       properties:
         system:
           type: string
           description: URI of the coding system specification.
           format: url
           readOnly: true
-          default: https://simplifier.net/UKCore/CodeSystem-UKCore-AdditionalRelatedPersonRole
+          default: https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole
         code:
           type: string
           description: Symbol in syntax defined by the system.

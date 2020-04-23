@@ -14,7 +14,7 @@ properties:
         system:
           type: string
           description: URI of the coding system specification.
-          example: https://simplifier.net/UKCore/CodeSystem-UKCore-DeathNotificationStatus
+          example: https://fhir.nhs.uk/R4/CodeSystem/UKCore-DeathNotificationStatus
         version:
           type: string
           description: Version of the coding system in use.

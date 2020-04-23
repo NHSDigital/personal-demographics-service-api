@@ -7,7 +7,7 @@ properties:
   url:
     type: string
     description: Definition of death notification extension.
-    default: https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus
+    default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus
     readOnly: true
   extension:
     type: array
@@ -34,6 +34,7 @@ properties:
           required:
             - url
             - valueDateTime
+          readOnly: true
           properties:
             url:
               type: string
@@ -45,3 +46,4 @@ properties:
               description: Date and time at which death notification status took effect.
               format: date-time
               example: '2010-10-22T00:00:00+00:00'
+              readOnly: true

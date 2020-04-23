@@ -18,7 +18,7 @@
     {
       "coding": [
         {
-          "system": "https://simplifier.net/UKCore/CodeSystem-UKCore-AdditionalRelatedPersonRole",
+          "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole",
           "code": "Guardian",
           "display": "Guardian of patient"
         }
@@ -68,14 +68,14 @@
       ]
     },
     {
-      "url": "https://simplifier.net/UKCore/ExtensionUKCoreNHSCommunication",
+      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication",
       "extension": [
         {
           "url": "language",
           "valueCodeableConcept": {
             "coding": [
               {
-                "system": "https://simplifier.net/ukcore/CodeSystem-UKCore-HumanLanguage",
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage",
                 "version": "1.0.0",
                 "code": "fr",
                 "display": "French"
