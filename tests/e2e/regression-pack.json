@@ -8208,9 +8208,10 @@
 													"script": {
 														"id": "5f6774f4-6032-467f-84b4-1043f7c14a69",
 														"exec": [
-															"let asidHeader = pm.variables.get(\"asidHeader\");",
-															"let sessionURIDHeader = pm.variables.get(\"sessionURIDHeader\");",
-															"let identityUUIDHeader = pm.variables.get(\"identityUUIDHeader\");",
+															"let asidHeader = pm.environment.get(\"asidHeader\");",
+															"let sessionURIDHeader = pm.environment.get(\"sessionURIDHeader\");",
+															"let identityUUIDHeader = pm.environment.get(\"identityUUIDHeader\");",
+															"",
 															"",
 															"pm.variables.get('testData').forEach(scenario => {",
 															"    pm.sendRequest({",
