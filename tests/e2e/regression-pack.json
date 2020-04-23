@@ -6794,13 +6794,15 @@
 															"});",
 															"",
 															"pm.test(\"Patient matching score has increased\", () => {",
-															"    pm.expect(pm.variables.get(\"initialScore\")).to.be.below(newScore);",
+															"    pm.expect(pm.environment.get(\"initialScore\")).to.be.below(newScore);",
 															"});",
 															"",
 															"pm.test(\"Patient matching score is a valid score\"), () => {",
 															"    pm.expect(newScore).to.be.atLeast(0);",
 															"    pm.expect(newScore).to.be.atMost(1);",
-															"};"
+															"};",
+															"",
+															"pm.environment.unset(\"initialScore\");"
 														],
 														"type": "text/javascript"
 													}
@@ -6829,7 +6831,7 @@
 															"    pm.expect(res.json().entry[0].resource.id).to.equal(nhsNumber);",
 															"    let initialScore = res.json().entry[0].search.score;",
 															"    pm.variables.set(\"nhsNumber\", nhsNumber);",
-															"    pm.variables.set(\"initialScore\", initialScore);",
+															"    pm.environment.set(\"initialScore\", initialScore);",
 															"    console.log('NHS Number:' + nhsNumber + \" Score: \" + initialScore);",
 															"});"
 														],
