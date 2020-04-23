@@ -1,5 +1,6 @@
 type: object
-description: Flag indicating if this person should be copied in on any contact with the Patient.
+description: |
+  Flag indicating if this person should be copied in on any contact with the Patient. This will only be returned if the value is true and the person should be copied in on correspondence, otherwise it will be omitted. 
 properties:
   url:
     type: string
@@ -10,4 +11,4 @@ properties:
   valueBoolean:
     type: boolean
     description: Flag indicating if this person should be copied in on correspondence.
-    example: false
+    example: true

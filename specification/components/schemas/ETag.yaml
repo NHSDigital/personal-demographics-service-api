@@ -5,4 +5,4 @@ schema:
 description: |
   Record version identifier enclosed in quotes and preceded by 'W/'. For example, `W/"2"`.
 
-  Corresponds to `meta.versionId` attribute in body.
+  Corresponds to `meta.versionId` attribute in the patient resource body.

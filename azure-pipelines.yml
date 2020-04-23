@@ -22,9 +22,12 @@ jobs:
       API_TEST_ENV_FILE_PATH: "tests/e2e/environments/local.postman_environment.json"
       PIP_CACHE_DIR: ".poetry"
     steps:
-      - checkout: self 
+      - checkout: self
 
-      - bash: 'echo "##vso[build.updatebuildnumber]$(System.PullRequest.SourceBranch)+$(Build.BuildID)"'
+      - bash: echo "##vso[task.setvariable variable=BRANCH_NAME]`echo $(System.PullRequest.SourceBranch) | sed -r 's/[/|\\@":<>?*]+/-/g'`"
+        displayName: Set and replace invalid characters in branch name
+
+      - bash: 'echo "##vso[build.updatebuildnumber]$(BRANCH_NAME)+$(Build.BuildID)"'
         condition: eq(variables['Build.SourceBranchName'], 'merge')
         displayName: Update build ID if this is a pull request
 
@@ -33,7 +36,7 @@ jobs:
         inputs:
           versionSpec: "3.8"
 
-      - bash: "sudo apt update && sudo apt-get install --yes default-jre default-jdk npm"
+      - bash: "sudo apt update && sudo apt-get install --yes default-jre default-jdk nodejs"
         displayName: Install apt dependencies
 
       - bash: "python -m pip install --upgrade pip setuptools wheel && pip install poetry"

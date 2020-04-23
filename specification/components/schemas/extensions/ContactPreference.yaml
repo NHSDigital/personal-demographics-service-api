@@ -1,0 +1,96 @@
+title: Schema for a contact preference snippet
+type: object
+required:
+  - url
+  - extension
+properties:
+  url:
+    type: string
+    default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference
+    readOnly: true
+  extension:
+    type: array
+    maxItems: 3
+    items:
+      anyOf:
+        - type: object
+          required:
+            - url
+            - valueCodeableConcept
+          properties:
+            url:
+              type: string
+              default: PreferredWrittenCommunicationFormat
+              readOnly: true
+            valueCodeableConcept:
+              type: object
+              required:
+                - coding
+              properties:
+                coding:
+                  type: array
+                  minItems: 1
+                  maxItems: 1
+                  items:
+                    type: object
+                    required:
+                      - code
+                    properties:
+                      system:
+                        type: string
+                        format: url
+                        default: https://fhir.nhs.uk/R4/CodeSystem/UKCore-PreferredWrittenCommunicationFormat
+                        readOnly: true
+                      code:
+                        type: string
+                        example: "12"
+                      display:
+                        type: string
+                        example: "Braille"
+        - type: object
+          required:
+            - url
+            - valueCodeableConcept
+          properties:
+            url:
+              type: string
+              default: PreferredContactMethod
+              readOnly: true
+            valueCodeableConcept:
+              type: object
+              required:
+                - coding
+              properties:
+                coding:
+                  type: array
+                  minItems: 1
+                  maxItems: 1
+                  items:
+                    type: object
+                    required:
+                      - code
+                    properties:
+                      system:
+                        type: string
+                        format: url
+                        default: https://fhir.nhs.uk/R4/ValueSet/UKCore-PreferredContactMethod
+                        readOnly: true
+                      code:
+                        type: string
+                        example: "1"
+                      display:
+                        type: string
+                        example: Letter
+        - type: object
+          required:
+            - url
+            - valueString
+          properties:
+            url:
+              type: string
+              default: PreferredContactTimes
+              readOnly: true
+            valueString:
+              type: string
+              maximum: 40
+              example: Not after 7pm
