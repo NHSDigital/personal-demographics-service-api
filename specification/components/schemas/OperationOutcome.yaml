@@ -10,13 +10,9 @@ description: |
   | FAILURE_TO_PROCESS_MESSAGE | 500           | A default message when something really bad has happened that the system could not handle.	|
   | UNABLE_TO_CALL_SERVICE     | 408           | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
   | UNSUPPORTED_SERVICE        | 400           | The service the user requested an endpoint that does not exist - so is unsupported. eg. /Patient/9999999999/Pets |
-
-  Retrieval outcomes:
-  | Code                       | Response Code | Description                                   |
-  | -------------------------- | ------------- | --------------------------------------------- |
   | RESOURCE_NOT_FOUND         | 404           | The resource was not found. |
-  | INVALID_RESOURCE_ID        | 400           | The resource id was not valid. For example an nhsNumber is presented which is not a valid NHS Number. |
-  | INVALIDATED_RESOURCE       | 404           | The resource has been invalidated so with not be returned. |
+  | INVALID_RESOURCE_ID        | 400           | The resource id was not valid. For example a NHS Number is presented which is not a valid NHS Number. |
+  | INVALIDATED_RESOURCE       | 404           | The resource has been invalidated so could not be returned. |
 
   Search outcomes:
   | Code                       | Response Code | Description                                   |
@@ -29,9 +25,9 @@ description: |
   | -------------------------- | ------------- | --------------------------------------------- |
   | PRECONDITION_FAILED        | 412           | Request missing basic requirements such as If-Match header (or invalid headers). |
   | RESOURCE_VERSION_MISMATCH  | 409           | The resource version has changed since your last read, so the update has been rejected. |
+  | FORBIDDEN_UPDATE           | 403           | The user is not permitted to update certain resources or elements - a detailed description will be added to the display. For example - updating a sensitive patient or adding a formal death notification is only permitted from certain systems. |
   | VALIDATION_ERROR           | 400           | This it the "default" error thrown when no others are applicable. |
   | INVALID_UPDATE             | 400           | The update was invalid - a detailed description will be added to the display. |
-  | FORBIDDEN_UPDATE           | 400           | The user is not permitted to update certain resources or elements - a detailed description will be added to the display. For example - updating a sensitive patient or adding a formal death notification is only permitted from certain systems. |
   | MISSING_VALUE              | 400           | There was a missing value in the request. For example - a name update that is missing the surname. The missing value will be presented in the display.	|
   | INVALID_VALUE              | 400           | There was an invalid value in the request. For example - a name update where the surname is too long. The invalid value and field will be presented in the display. |
   | UNSUPPORTED_VALUE          | 400           | There was an unsupported value in the request. The value may be valid in the schmema - however it could be a legacy value that we do not allow to be set anymore. For example - setting the death notification status to 'removed'. The invalid value and field will be presented in the display. |
