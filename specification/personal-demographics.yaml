@@ -61,7 +61,7 @@ info:
     The following items are on our roadmap, in rough priority order:
     - integration testing service - enhancement to support authorisation with NHS smartcards (target date: ASAP)
     - production service - beta - search for patient and retrieve patient details (target date: end of April 2020)
-    - addition of data fields for consent information and related people
+    - addition of data fields for consent information
     - production service - beta - update patient (target date: end of May 2020)
     - unauthenticated access - without NHS smartcard - similar to the PDS SMSP API (target date to be confirmed - please [contact us](https://digital.nhs.uk/developer/help-and-support) for more details)
     - access for citizens using NHS Login (target date to be confirmed - please [contact us](https://digital.nhs.uk/developer/help-and-support) for more details)
@@ -467,13 +467,13 @@ paths:
                     resourceType: OperationOutcome
                     issue:
                       - severity: error
-                        code: required
+                        code: value
                         details:
                           coding:
                             - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
-                              code: NO_SEARCHES_PERFORMED
-                              display: Not enough search parameters were provided to be able to make a search.
+                              code: INVALID_SEARCH_DATA
+                              display: Invalid search data provided - Not enough search parameters were provided to be able to make a search.
                 bad-combination:
                   summary: Invalid combination of search parameters
                   value:
@@ -485,8 +485,8 @@ paths:
                           coding:
                             - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
-                              code: INVALID_COMBINATION
-                              display: Invalid combination for fields
+                              code: INVALID_SEARCH_DATA
+                              display: Invalid search data provided - 'Invalid Date Combination'
   '/Patient/{id}':
     parameters:
       - $ref: '#/components/parameters/Id'
@@ -548,8 +548,8 @@ paths:
                       coding:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
-                          code: INVALID_NHS_NUMBER
-                          display: NHS Number 9000000000 is not a valid NHS number.
+                          code: INVALID_RESOURCE_ID
+                          display: Resource Id is invalid
         '404':
           description: Patient not found.
           content:
@@ -565,8 +565,8 @@ paths:
                       coding:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
-                          code: PATIENT_NOT_FOUND
-                          display: Patient with NHS number 9111231130 could not be found.
+                          code: RESOURCE_NOT_FOUND
+                          display: Resource not found
     patch:
       description: |
         ## Overview
@@ -661,19 +661,6 @@ paths:
               schema:
                 $ref: components/schemas/OperationOutcome.yaml
               examples:
-                missing-if-match:
-                  summary: Missing If-Match header
-                  value:
-                    resourceType: OperationOutcome
-                    issue:
-                      - severity: error
-                        code: required
-                        details:
-                          coding:
-                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                              version: '1'
-                              code: MISSING_IF_MATCH_HEADER
-                              display: If-Match header must be supplied to update this resource.
                 invalid-nhs-number:
                   summary: Invalid NHS number supplied
                   value:
@@ -685,8 +672,8 @@ paths:
                           coding:
                             - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
-                              code: INVALID_NHS_NUMBER
-                              display: NHS Number 9000000000 is not a valid NHS number.
+                              code: INVALID_RESOURCE_ID
+                              display: Resource Id is invalid
                 no-patches-submitted:
                   summary: No patches submitted
                   value:
@@ -698,8 +685,8 @@ paths:
                           coding:
                             - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
-                              code: noPatchesSubmitted
-                              display: No patches submitted.
+                              code: MISSING_VALUE
+                              display: Missing value - patches
                 invalid-patch-operation:
                   summary: Invalid patch operation(s)
                   value:
@@ -711,8 +698,8 @@ paths:
                           coding:
                             - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
-                              code: invalidPatchOperation
-                              display: 'Invalid patch: Cannot perform the operation at a path that does not exist.'
+                              code: INVALID_UPDATE
+                              display: Invalid update with error - Invalid payload received - incorrect format
         '404':
           description: Patient not found.
           content:
@@ -728,27 +715,10 @@ paths:
                       coding:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
-                          code: PATIENT_NOT_FOUND
-                          display: Patient with NHS number 9111231130 could not be found.
+                          code: RESOURCE_NOT_FOUND
+                          display: Resource not found
         '412':
           $ref: '#/components/responses/412PreconditionFailed'
-        '415':
-          description: Unsupported media type.
-          content:
-            application/fhir+json:
-              schema:
-                $ref: components/schemas/OperationOutcome.yaml
-              example:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: value
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: unsupportedMediaType
-                          display: "Must be 'application/json-patch+json'."
 
   '/Patient/{id}/RelatedPerson':
     parameters:
@@ -843,8 +813,8 @@ paths:
                       coding:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
-                          code: INVALID_NHS_NUMBER
-                          display: NHS Number 9000000000 is not a valid NHS number
+                          code: INVALID_RESOURCE_ID
+                          display: Resource Id is invalid
         '404':
           description: Related People not found.
           content:
@@ -918,8 +888,8 @@ paths:
                       coding:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
-                          code: INVALID_NHS_NUMBER
-                          display: NHS Number 9000000000 is not a valid NHS number
+                          code: INVALID_RESOURCE_ID
+                          display: Resource Id is invalid
         '404':
           description: Related Person with the object ID was not found.
           content:
@@ -1011,15 +981,31 @@ components:
         application/fhir+json:
           schema:
             $ref: components/schemas/OperationOutcome.yaml
-          example:
-            resourceType: OperationOutcome
-            issue:
-              - severity: error
-                code: conflict
-                details:
-                  coding:
-                    - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                      version: '1'
-                      code: INVALID_IF_MATCH_HEADER
-                      display: This resource has changed since you last read. Please re-read and try again with the new version number.
+          examples:
+            invalid-if-match:
+              summary: Invalid If-Match header
+              value:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: conflict
+                    details:
+                      coding:
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                          version: '1'
+                          code: PRECONDITION_FAILED
+                          display: Invalid update with error - This resource has changed since you last read. Please re-read and try again with the new version number.
+            missing-if-match:
+              summary: Missing If-Match header
+              value:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: required
+                    details:
+                      coding:
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                          version: '1'
+                          code: PRECONDITION_FAILED
+                          display: Invalid update with error - If-Match header must be supplied to update this resource
 

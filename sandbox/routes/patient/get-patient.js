@@ -76,8 +76,8 @@ module.exports = [
                     date = dateFormat(date)
                     if (dateValidator.dateSchema.validate(date).error) { 
                         throw Boom.badRequest(
-                            `birthdate has invalid format: ${request.query["birthdate"]} is not in <eq|ge|le>YYYY-MM-DD format`,
-                            {operationOutcomeCode: "value", apiErrorCode: "INVALID_DATE_FORMAT"})
+                            `Invalid value - '${request.query["birthdate"]}' in field 'birthdate'`,
+                            {operationOutcomeCode: "value", apiErrorCode: "INVALID_SEARCH_DATA"})
                     }
                 }) 
             }
@@ -87,8 +87,8 @@ module.exports = [
                 date = dateFormat(date)
                 if(dateValidator.dateSchema.validate(date).error) {
                     throw Boom.badRequest(
-                        `death-date has invalid format: ${request.query["death-date"]} is not in <eq|ge|le>YYYY-MM-DD format`,
-                        {operationOutcomeCode: "value", apiErrorCode: "INVALID_DATE_FORMAT"})
+                        `Invalid value - '${request.query["death-date"]}' in field 'death-date'`,
+                        {operationOutcomeCode: "value", apiErrorCode: "INVALID_SEARCH_DATA"})
                 }
             }
 

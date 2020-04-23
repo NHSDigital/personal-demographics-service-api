@@ -1,5 +1,8 @@
 # Changelog
 
+## 2020-04-23
+* Add step in pipeline to replace invalid characters in the branch name 
+
 ## 2020-04-09
 * No longer need to include `NHSD-Identity-JWT` header in API Calls
 
