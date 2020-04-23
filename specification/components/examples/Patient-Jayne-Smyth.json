@@ -73,12 +73,12 @@
       "postalCode": "LS1 6AE",
       "extension": [
         {
-          "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-AddressKey",
+          "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-AddressKey",
           "extension": [
             {
               "url": "type",
               "valueCoding": {
-                "system": "https://simplifier.net/guide/UKCoreDecember2019/CodeSystemUKCore-AddressKeyType",
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-AddressKeyType",
                 "code": "PAF"
               }
             },
@@ -120,7 +120,7 @@
   ],
   "extension": [
     {
-      "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-NominatedPharmacy",
+      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NominatedPharmacy",
       "valueReference": {
         "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y12345",
         "identifier": {
@@ -134,7 +134,7 @@
       }
     },
     {
-      "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DispensingDoctor",
+      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DispensingDoctor",
       "valueReference": {
         "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y23456",
         "identifier": {
@@ -148,7 +148,7 @@
       }
     },
     {
-      "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-MedicalApplianceSupplier",
+      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-MedicalApplianceSupplier",
       "valueReference": {
         "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y34567",
         "identifier": {
@@ -162,14 +162,14 @@
       }
     },
     {
-      "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus",
+      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus",
       "extension": [
         {
           "url": "deathNotificationStatus",
           "valueCodeableConcept": {
             "coding": [
               {
-                "system": "https://simplifier.net/UKCore/CodeSystem-UKCore-DeathNotificationStatus",
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-DeathNotificationStatus",
                 "version": "1.0.0",
                 "code": "2",
                 "display": "Formal - death notice received from Registrar of Deaths"
@@ -184,14 +184,14 @@
       ]
     },
     {
-      "url": "https://simplifier.net/UKCore/ExtensionUKCoreNHSCommunication",
+      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication",
       "extension": [
         {
           "url": "language",
           "valueCodeableConcept": {
             "coding": [
               {
-                "system": "https://simplifier.net/ukcore/CodeSystem-UKCore-HumanLanguage",
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage",
                 "version": "1.0.0",
                 "code": "fr",
                 "display": "French"

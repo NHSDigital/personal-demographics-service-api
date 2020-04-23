@@ -16,7 +16,7 @@ properties:
         system:
           type: string
           description: URL of the Language Code System. Always uses the 'UKCore-HumanLanguage' Code System.
-          example: https://simplifier.net/ukcore/CodeSystem-UKCore-HumanLanguage
+          example: https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage
           readOnly: true
         version:
           type: string
