@@ -14,8 +14,8 @@ function _getPatient(nhsNumber) {
     // Validate NHS number is valid format
     if (nhsNumberValidator.nhsNumberSchema.validate(nhsNumber).error) {
         throw Boom.badRequest(
-            `NHS Number ${nhsNumber} is not a valid NHS number`,
-            {operationOutcomeCode: "value", apiErrorCode: "INVALID_NHS_NUMBER"})
+            `Resource Id is invalid`,
+            {operationOutcomeCode: "value", apiErrorCode: "INVALID_RESOURCE_ID"})
     }
 
     // Validate NHS number is for our test patient
@@ -28,8 +28,8 @@ function _getPatient(nhsNumber) {
 
     if (patient == null) {
         throw Boom.notFound(
-            `Patient with NHS number ${nhsNumber} could not be found`,
-            {operationOutcomeCode: "not_found", apiErrorCode: "PATIENT_NOT_FOUND"}
+            `Resource not found`,
+            {operationOutcomeCode: "not_found", apiErrorCode: "RESOURCE_NOT_FOUND"}
         )
     }
 
