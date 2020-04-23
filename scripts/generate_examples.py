@@ -16,7 +16,8 @@ from format_examples import (
     sensitive_patient,
     related_person_reference_only,
     related_person_no_reference,
-    remove_empty_elements
+    remove_empty_elements,
+    remove_list_id
 )
 
 
@@ -28,9 +29,9 @@ EXAMPLE_TYPES = {
         {"type": "sensitive", "file_prefix": "Sensitive_Search_", "slim_func": [slim_patient, sensitive_patient]}
     ],
     "RelatedPerson": [
-        {"type": "retrieval", "file_prefix": "", "slim_func": []},
-        {"type": "nhs_number", "file_prefix": "Referenced_", "slim_func": [related_person_reference_only]},
-        {"type": "patient_details", "file_prefix": "Personal_Details_", "slim_func": [related_person_no_reference]}
+        {"type": "retrieval", "file_prefix": "", "slim_func": [remove_list_id]},
+        {"type": "nhs_number", "file_prefix": "Referenced_", "slim_func": [remove_list_id, related_person_reference_only]},
+        {"type": "patient_details", "file_prefix": "Personal_Details_", "slim_func": [remove_list_id, related_person_no_reference]}
     ],
     "OperationOutcome": [
         {"type": "error", "file_prefix": "", "slim_func": []},

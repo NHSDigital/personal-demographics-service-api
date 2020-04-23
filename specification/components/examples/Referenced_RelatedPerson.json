@@ -4,10 +4,10 @@
   "patient": {
     "type": "Patient",
     "identifier": {
-      "system": "https://beta.api.digital.nhs.uk/Patient",
+      "system": "https://beta.api.digital.nhs.uk/personal-demographics/Patient",
       "value": "90000000009"
     },
-    "reference": "https://beta.api.digital.nhs.uk/Patient/90000000009"
+    "reference": "https://beta.api.digital.nhs.uk/personal-demographics/Patient/90000000009"
   },
   "active": true,
   "period": {

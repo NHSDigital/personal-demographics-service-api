@@ -9,6 +9,7 @@ properties:
       * Role
       * Type
       * Next-of-Kin
+
       The codes used can be found at:
       * http://hl7.org/fhir/ValueSet/relatedperson-relationshiptype
       * https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole

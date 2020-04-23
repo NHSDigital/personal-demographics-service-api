@@ -102,6 +102,23 @@ def related_person_no_reference(resource):
     return new_resource
 
 
+def remove_list_id(resource):
+    """
+    Remove `id` from list fields.
+    """
+    list_fields = [
+        "name",
+        "address",
+        "telecom"
+    ]
+
+    for key in list_fields:
+        for element in resource[key]:
+            del element["id"]
+
+    return resource
+
+
 def remove_empty_elements(obj):
     """
     Recursively traverse the dictionary removing any empty elements (eg. [] or {}).

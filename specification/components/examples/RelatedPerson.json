@@ -4,10 +4,10 @@
   "patient": {
     "type": "Patient",
     "identifier": {
-      "system": "https://beta.api.digital.nhs.uk/Patient",
+      "system": "https://beta.api.digital.nhs.uk/personal-demographics/Patient",
       "value": "90000000009"
     },
-    "reference": "https://beta.api.digital.nhs.uk/Patient/90000000009"
+    "reference": "https://beta.api.digital.nhs.uk/personal-demographics/Patient/90000000009"
   },
   "active": true,
   "period": {
@@ -16,7 +16,6 @@
   },
   "name": [
     {
-      "id": "123",
       "use": "usual",
       "period": {
         "start": "2020-01-01",
@@ -36,7 +35,6 @@
   ],
   "address": [
     {
-      "id": "456",
       "period": {
         "start": "2020-01-01",
         "end": "2021-12-31"
@@ -72,7 +70,6 @@
   ],
   "telecom": [
     {
-      "id": "789",
       "period": {
         "start": "2020-01-01",
         "end": "2021-12-31"
