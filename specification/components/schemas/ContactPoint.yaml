@@ -1,7 +1,6 @@
 description: A contact point, such as a phone number or email address. This will only be populated on a retrieval and not a search.
 type: object
 required:
-  - id
   - use
   - system
   - value
@@ -16,7 +15,7 @@ properties:
   system:
     description: Means of communication, such as phone or email.
     type: string
-    enum: [phone, fax, email, pager, url, sms, other]
+    enum: [phone, fax, email, pager, sms, other]
     example: phone
   value:
     description: Phone number, email address, or other identifier for use with contact system.

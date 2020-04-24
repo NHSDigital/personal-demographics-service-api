@@ -7,7 +7,7 @@ properties:
   url:
     type: string
     description: URL of specification of UKCore-DispensingDoctor FHIR extension.
-    default: https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DispensingDoctor
+    default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DispensingDoctor
     readOnly: true
   valueReference:
     type: object
