@@ -740,6 +740,9 @@ paths:
       description: |
         ## Overview
         Use this endpoint to get a patient's related people details from PDS for a given NHS Number. This is a list of people who can be contacted, and how, regarding the patient. These details may be useful for a practitioner to get in contact with a next of kin or guardian.
+        
+        ## Restricted patients
+        Some patients are tagged as restricted, or sensitive. Related people will not be returned for a restricted patient and an empty bundle will be returned.
 
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:

@@ -12,7 +12,7 @@ properties:
       The level of security on the patients record, which affects which fields are populated on retrieval. The possible responses are:
       * U - unrestricted. All available data will be returned.
       * R - restricted. Any sensitive data around the patient's location, so `address`, `generalPractitioner` and `telecom`, will be removed from the response.
-      * V - very restricted. All patient data will be removed from the response apart from `id`, `identifier` and `meta` fields.
+      * V - very restricted. All patient data will be removed from the response apart from `id`, `identifier` and `meta` fields. The `gender` field will return `unknown` regardless of actual gender.
       * REDACTED - redacted. The patient record has been marked as invalid, so the data should not be used. This code will never be returned; you will receive a 404, and appropriate error response, if an invalidated patient retrieval is attempted.
     readOnly: true
     maxItems: 1
