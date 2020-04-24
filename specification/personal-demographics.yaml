@@ -235,6 +235,10 @@ paths:
 
         If `address-postcode` or `general-practitioner` are included in the search parameters, no restricted patients will be returned even if a match is identified.
 
+        The restricted flag can be found in the data under `meta/security` on the patient resource.
+
+        NHS Digital guidance on restricting access to a patient's details can be found [here](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record)
+
         ## Number of results returned
         By default, the endpoint will return a maximum of 50 results.
 
@@ -261,7 +265,7 @@ paths:
         | Search with limited results | `family`=`Sm*`, `gender`=`female`, `birthdate`=`eq2010-10-22`, `_max-results`=`2` | HTTP Status 200 with search result of two. |
         | Search with date range      | `family`=`Smith`, `gender`=`female`, `birthdate`=`ge2010-10-21`, `birthdate`=`le2010-10-23` | HTTP Status 200 with single search result. |
         | Fuzzy search                | `family`=`Smith`, `given`=`Jane` `gender`=`female`, `birthdate`=`eq2010-10-22`, `_fuzzy-match`=`true` | HTTP Status 200 with single search result. |
-        | Sensitive patient search    | `family`=`Smythe`, `given`=`Janet` `gender`=`female`, `birthdate`=`eq2005-06-16` | HTTP Status 200 with single search result. |
+        | Sensitive patient search    | `family`=`Smythe`, `given`=`Janet` `gender`=`female`, `birthdate`=`eq2005-06-16` | HTTP Status 200 with single search result without restricted data. |
         | Unsuccessful search         | Any other valid search query parameters                      | HTTP Status 200 with no search results     |
         | Invalid date format         | `birthdate` or `death-date` query parameters with values not in format `YYYY-MM-DD` | HTTP Status 400 with problem description   |
         | Too few search parameters   | Any invalid combination of query parameters                  | HTTP Status 400 with problem description   |
@@ -431,7 +435,7 @@ paths:
                         fullUrl:
                           type: string
                           description: Absolute URL of the resource described in this item.
-                          example: 'https://beta.api.digital.nhs.uk/Patient/9000000009'
+                          example: 'https://beta.api.digital.nhs.uk/personal-demographics/Patient/9000000009'
                         search:
                           type: object
                           properties:
@@ -449,7 +453,7 @@ paths:
                 timestamp: '2019-12-25T12:00:00+00:00'
                 total: 1
                 entry:
-                  - fullUrl: 'https://beta.api.digital.nhs.uk/Patient/9000000009'
+                  - fullUrl: 'https://beta.api.digital.nhs.uk/personal-demographics/Patient/9000000009'
                     search:
                       score: 1
                     resource:
@@ -502,15 +506,22 @@ paths:
 
         On retrieval of a superceded resource the new resource will be automatically returned in place of the requested resource.
 
+        ## Restricted patients
+        Some patients are tagged as restricted, or sensitive. Restricted patients can be retrieved; however, location sensitive fields such as `address`, `telcom` and `generalPractitioner` will be removed.
+
+        The restricted flag can be found in the data under `meta/security` on the patient resource.
+
+        NHS Digital guidance on restricting access to a patient's details can be found [here](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record)
+
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
 
-        | Scenario                 | Request                                           | Response                                      |
-        | ------------------------ | ------------------------------------------------- | --------------------------------------------- |
-        | Patient exists           | `id`=`9000000009`                                 | HTTP Status 200 with patient data in response |
-        | Sensitive Patient exists | `id`=`9000000025`                                 | HTTP Status 200 with patient data in response with the sensitive details removed |
-        | Patient doesn't exist    | `id`=`9111231130` (or any other valid NHS Number) | HTTP Status 404 with problem description      |
-        | Invalid NHS Number       | `id`=`9000000000` (or any invalid NHS Number)     | HTTP Status 400 with problem description      |
+        | Scenario                 | Request                                           | Response                                                                       |
+        | ------------------------ | ------------------------------------------------- | ------------------------------------------------------------------------------ |
+        | Patient exists           | `id`=`9000000009`                                 | HTTP Status 200 with patient data in response with restricted data             |
+        | Sensitive patient exists | `id`=`9000000025`                                 | HTTP Status 200 with patient data in response with the restricted data removed |
+        | Patient doesn't exist    | `id`=`9111231130` (or any other valid NHS Number) | HTTP Status 404 with problem description                                       |
+        | Invalid NHS Number       | `id`=`9000000000` (or any invalid NHS Number)     | HTTP Status 400 with problem description                                       |
 
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
@@ -590,8 +601,8 @@ paths:
         | Scenario                            | Request                                                      | Response                                         |
         | ----------------------------------- | ------------------------------------------------------------ | ------------------------------------------------ |
         | Successful update                   | `id`=`9000000009`<br />Body: One of the provided examples<br />Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json-patch+json` | HTTP Status 200 with updated patient in response (but note that the update won't be persisted) |
-        | Patient doesn't exist               | `id`=`9111231130` (or any other valid NHS Number)    | HTTP Status 404 with problem description         |
-        | Invalid NHS Number                  | `id`=`9000000000` (or any invalid NHS Number)        | HTTP Status 400 with problem description         |
+        | Patient doesn't exist               | `id`=`9111231130` (or any other valid NHS Number)            | HTTP Status 404 with problem description         |
+        | Invalid NHS Number                  | `id`=`9000000000` (or any invalid NHS Number)                | HTTP Status 400 with problem description         |
         | Missing resource version identifier | `If-Match` header missing or set to format other than `W/"<version>"` | HTTP Status 400 with problem description         |
         | Incorrect resource version          | `If-Match`=`W/"1"`                                           | HTTP Status 412 with problem description         |
         | Wrong content type                  | `Content-Type` header missing or other than `application/json-patch+json` | HTTP Status 415 with problem description         |
@@ -728,16 +739,19 @@ paths:
     get:
       description: |
         ## Overview
-        Use this endpoint to get a patient's related people details from PDS for a given NHS Number. This is a list of people who can be contacted, and how, regarding the patient.
+        Use this endpoint to get a patient's related people details from PDS for a given NHS Number. This is a list of people who can be contacted, and how, regarding the patient. These details may be useful for a practitioner to get in contact with a next of kin or guardian.
+        
+        ## Restricted patients
+        Some patients are tagged as restricted, or sensitive. Related people will not be returned for a restricted patient and an empty bundle will be returned.
 
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
 
         | Scenario                        | Request                                       | Response                                                      |
         | ------------------------------- | --------------------------------------------- | ------------------------------------------------------------- |
-        | Multiple Related Persons exists | `id`=`9000000009`                             | HTTP Status 200 with related person data in a response Bundle |
-        | Single Related Person exists    | `id`=`9000000017`                             | HTTP Status 200 with related person data in a response Bundle |
-        | Related Persons do not exist    | `id`=`9000000025`                             | HTTP Status 404 with problem description                      |
+        | Multiple related people exists  | `id`=`9000000009`                             | HTTP Status 200 with related person data in a response Bundle |
+        | Single related person exists    | `id`=`9000000017`                             | HTTP Status 200 with related person data in a response Bundle |
+        | Related people do not exist     | `id`=`9000000025`                             | HTTP Status 404 with problem description                      |
 
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
@@ -786,7 +800,7 @@ paths:
                         fullUrl:
                           type: string
                           description: Absolute URL of the resource described in this item.
-                          example: 'https://beta.api.digital.nhs.uk/Patient/9000000009/RelatedPerson/507B7621'
+                          example: 'https://beta.api.digital.nhs.uk/personal-demographics/Patient/9000000009/RelatedPerson/507B7621'
                         resource:
                           $ref: components/schemas/RelatedPerson.yaml
               example:
@@ -795,7 +809,7 @@ paths:
                 timestamp: '2019-12-25T12:00:00+00:00'
                 total: 1
                 entry:
-                  - fullUrl: 'https://beta.api.digital.nhs.uk/Patient/9000000009/RelatedPerson/507B7621'
+                  - fullUrl: 'https://beta.api.digital.nhs.uk/personal-demographics/Patient/9000000009/RelatedPerson/507B7621'
                     resource:
                       $ref: components/examples/RelatedPerson.json
         '400':

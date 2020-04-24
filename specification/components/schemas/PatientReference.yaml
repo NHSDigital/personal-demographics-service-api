@@ -17,7 +17,7 @@ properties:
         type: string
         description: URL for the Patient retrieval API.
         format: url
-        example: https://beta.api.digital.nhs.uk/Patient
+        example: https://beta.api.digital.nhs.uk/personal-demographics/Patient
         readOnly: true
       value:
         type: string
@@ -27,5 +27,5 @@ properties:
     type: string
     description: URL for the FHIR Patient resource.
     format: url
-    example: https://beta.api.digital.nhs.uk/Patient/90000000009
+    example: https://beta.api.digital.nhs.uk/personal-demographics/Patient/90000000009
     readOnly: true

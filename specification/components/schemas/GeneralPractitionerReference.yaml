@@ -1,7 +1,6 @@
 description: General practice (not practitioner) with which the patient is or was registered. 
 type: object
 required:
-  - id
   - identifier
 properties:
   id:

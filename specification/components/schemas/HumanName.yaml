@@ -1,6 +1,5 @@
 type: object
 required:
-  - id
   - use
   - family
 properties:

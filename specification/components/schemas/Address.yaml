@@ -1,7 +1,6 @@
 type: object
 description: An address associated with the patient.
 required:
-  - id
   - use
 properties:
   id:
