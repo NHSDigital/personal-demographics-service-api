@@ -7,7 +7,7 @@ properties:
   url:
     type: string
     description: Definition of communication extension.
-    default: https://simplifier.net/UKCore/ExtensionUKCoreNHSCommunication
+    default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication
     readOnly: true
   extension:
     type: array

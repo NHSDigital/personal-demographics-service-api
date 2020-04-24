@@ -4,10 +4,10 @@
   "patient": {
     "type": "Patient",
     "identifier": {
-      "system": "https://beta.api.digital.nhs.uk/Patient",
+      "system": "https://beta.api.digital.nhs.uk/personal-demographics/Patient",
       "value": "90000000009"
     },
-    "reference": "https://beta.api.digital.nhs.uk/Patient/90000000009"
+    "reference": "https://beta.api.digital.nhs.uk/personal-demographics/Patient/90000000009"
   },
   "active": true,
   "period": {
@@ -16,7 +16,6 @@
   },
   "name": [
     {
-      "id": "123",
       "use": "usual",
       "period": {
         "start": "2020-01-01",
@@ -36,7 +35,6 @@
   ],
   "address": [
     {
-      "id": "456",
       "period": {
         "start": "2020-01-01",
         "end": "2021-12-31"
@@ -52,12 +50,12 @@
       "postalCode": "LS1 6AE",
       "extension": [
         {
-          "url": "https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-AddressKey",
+          "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-AddressKey",
           "extension": [
             {
               "url": "type",
               "valueCoding": {
-                "system": "https://simplifier.net/guide/UKCoreDecember2019/CodeSystemUKCore-AddressKeyType",
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-AddressKeyType",
                 "code": "PAF"
               }
             },
@@ -72,7 +70,6 @@
   ],
   "telecom": [
     {
-      "id": "789",
       "period": {
         "start": "2020-01-01",
         "end": "2021-12-31"
@@ -86,7 +83,7 @@
     {
       "coding": [
         {
-          "system": "https://simplifier.net/UKCore/CodeSystem-UKCore-AdditionalRelatedPersonRole",
+          "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole",
           "code": "Guardian",
           "display": "Guardian of patient"
         }
@@ -136,14 +133,14 @@
       ]
     },
     {
-      "url": "https://simplifier.net/UKCore/ExtensionUKCoreNHSCommunication",
+      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication",
       "extension": [
         {
           "url": "language",
           "valueCodeableConcept": {
             "coding": [
               {
-                "system": "https://simplifier.net/ukcore/CodeSystem-UKCore-HumanLanguage",
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage",
                 "version": "1.0.0",
                 "code": "fr",
                 "display": "French"
