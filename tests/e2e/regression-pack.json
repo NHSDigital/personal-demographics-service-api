@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "616987fd-9b7c-4b56-8dd7-c81c0647f059",
+		"_postman_id": "6616a0a4-94b3-4e49-81a2-6b2cceebe97b",
 		"name": "Personal Demographics Service copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -4897,7 +4897,7 @@
 															"    pm.expect(res.json().entry[0].resource.id).to.equal(nhsNumber);",
 															"    let initialScore = res.json().entry[0].search.score;",
 															"    pm.variables.set(\"nhsNumber\", nhsNumber);",
-															"    pm.variables.set(\"initialScore\", initialScore);",
+															"    pm.environment.set(\"initialScore\", initialScore);",
 															"    console.log('NHS Number:' + nhsNumber + \" Score: \" + initialScore);",
 															"});"
 														],
@@ -4923,13 +4923,15 @@
 															"});",
 															"",
 															"pm.test(\"Patient matching score has decreased\", () => {",
-															"    pm.expect(pm.variables.get(\"initialScore\")).to.be.above(newScore);",
+															"    pm.expect(pm.environment.get(\"initialScore\")).to.be.above(newScore);",
 															"});",
 															"",
 															"pm.test(\"Patient matching score is a valid score\"), () => {",
 															"    pm.expect(newScore).to.be.atLeast(0);",
 															"    pm.expect(newScore).to.be.atMost(1);",
-															"};"
+															"};",
+															"",
+															"pm.environment.unset(\"initialScore\");"
 														],
 														"type": "text/javascript"
 													}
@@ -4994,14 +4996,19 @@
 													"script": {
 														"id": "fffa160e-e723-4537-8282-3831893f5852",
 														"exec": [
+															"let asidHeader = pm.environment.get(\"asidHeader\");",
+															"let sessionURIDHeader = pm.environment.get(\"sessionURIDHeader\");",
+															"let identityUUIDHeader = pm.environment.get(\"identityUUIDHeader\");",
+															"",
+															"",
 															"// Send request with _fuzzy-match=false to make sure no patients are returned",
 															"pm.sendRequest({",
 															"    url: pm.environment.get(\"environment\") + '/Patient?_fuzzy-match=false&family=James&birthdate=2000-01-01&given=David&gender=male',",
 															"    method: 'GET',",
 															"    header: {",
-															"            'NHSD-ASID': pm.environment.get(\"from_asid\"),",
-															"            'NHSD-Session-URID': pm.environment.get(\"role_id\"),",
-															"            'NHSD-Identity-UUID': pm.environment.get(\"user_id\"),",
+															"            asidHeader,",
+															"            sessionURIDHeader,",
+															"            identityUUIDHeader,",
 															"            'Authorization': 'Bearer ' + pm.globals.get(\"token\")",
 															"    }",
 															"}, function (err, res) {",
@@ -5282,7 +5289,7 @@
 															"    pm.expect(res.json().entry[0].resource.id).to.equal(nhsNumber);",
 															"    let initialScore = res.json().entry[0].search.score;",
 															"    pm.variables.set(\"nhsNumber\", nhsNumber);",
-															"    pm.variables.set(\"initialScore\", initialScore);",
+															"    pm.environment.set(\"initialScore\", initialScore);",
 															"    console.log('NHS Number:' + nhsNumber + \" Score: \" + initialScore);",
 															"});"
 														],
@@ -5296,7 +5303,7 @@
 														"exec": [
 															"eval(pm.globals.get(\"patient\"));",
 															"let response = pm.response.json();",
-															"let initialScore = pm.variables.get(\"initialScore\");",
+															"let initialScore = pm.environment.get(\"initialScore\");",
 															"let newScore = response.entry[0].search.score;",
 															"console.log(\"New score: \" + newScore);",
 															"",
@@ -5316,7 +5323,9 @@
 															"pm.test(\"Patient matching score is a valid score\"), () => {",
 															"    pm.expect(newScore).to.be.atLeast(0);",
 															"    pm.expect(newScore).to.be.atMost(1);",
-															"};"
+															"};",
+															"",
+															"pm.enivironment.unset(\"initialScore\");"
 														],
 														"type": "text/javascript"
 													}
@@ -5951,13 +5960,15 @@
 															"",
 															"pm.test(\"Patient matching score has increased\", () => {",
 															"    ",
-															"    pm.expect(pm.variables.get(\"initialScore\")).to.be.below(newScore);",
+															"    pm.expect(pm.environment.get(\"initialScore\")).to.be.below(newScore);",
 															"});",
 															"",
 															"pm.test(\"Patient matching score is a valid score\"), () => {",
 															"    pm.expect(newScore).to.be.atLeast(0);",
 															"    pm.expect(newScore).to.be.atMost(1);",
-															"};"
+															"};",
+															"",
+															"pm.environment.unset(\"initialScore\");"
 														],
 														"type": "text/javascript"
 													}
@@ -5986,7 +5997,7 @@
 															"    pm.expect(res.json().entry[0].resource.id).to.equal(nhsNumber);",
 															"    let initialScore = res.json().entry[0].search.score;",
 															"    pm.variables.set(\"nhsNumber\", nhsNumber);",
-															"    pm.variables.set(\"initialScore\", initialScore);",
+															"    pm.environment.set(\"initialScore\", initialScore);",
 															"    console.log('NHS Number:' + nhsNumber + \" Score: \" + initialScore);",
 															"});"
 														],
@@ -6072,13 +6083,15 @@
 															"",
 															"pm.test(\"Patient matching score has remained at 1\", () => {",
 															"    ",
-															"    pm.expect(pm.variables.get(\"initialScore\")).to.equal(newScore);",
+															"    pm.expect(pm.environment.get(\"initialScore\")).to.equal(newScore);",
 															"});",
 															"",
 															"pm.test(\"Patient matching score is a valid score\"), () => {",
 															"    pm.expect(newScore).to.be.atLeast(0);",
 															"    pm.expect(newScore).to.be.atMost(1);",
-															"};"
+															"};",
+															"",
+															"pm.environment.unset(\"initialScore\");"
 														],
 														"type": "text/javascript"
 													}
@@ -6108,7 +6121,7 @@
 															"    let initialScore = res.json().entry[0].search.score;",
 															"    pm.expect(initialScore).to.equal(1, \"invalid patient data\")",
 															"    pm.variables.set(\"nhsNumber\", nhsNumber);",
-															"    pm.variables.set(\"initialScore\", initialScore);",
+															"    pm.environment.set(\"initialScore\", initialScore);",
 															"    console.log('NHS Number:' + nhsNumber + \" Score: \" + initialScore);",
 															"});"
 														],
@@ -6192,13 +6205,16 @@
 															"});",
 															"",
 															"pm.test(\"Patient matching score has increased\", () => {",
-															"    pm.expect(pm.variables.get(\"initialScore\")).to.equal(newScore);",
+															"    pm.expect(pm.environment.get(\"initialScore\")).to.equal(newScore);",
 															"});",
 															"",
 															"pm.test(\"Patient matching score is a valid score\"), () => {",
 															"    pm.expect(newScore).to.be.atLeast(0);",
 															"    pm.expect(newScore).to.be.atMost(1);",
-															"};"
+															"};",
+															"",
+															"",
+															"pm.environment.unset(\"initialScore\");"
 														],
 														"type": "text/javascript"
 													}
@@ -6227,7 +6243,7 @@
 															"    pm.expect(res.json().entry[0].resource.id).to.equal(nhsNumber);",
 															"    let initialScore = res.json().entry[0].search.score;",
 															"    pm.variables.set(\"nhsNumber\", nhsNumber);",
-															"    pm.variables.set(\"initialScore\", initialScore);",
+															"    pm.environment.set(\"initialScore\", initialScore);",
 															"    console.log('NHS Number:' + nhsNumber + \" Score: \" + initialScore);",
 															"});"
 														],
