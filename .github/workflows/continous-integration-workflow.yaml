@@ -27,7 +27,7 @@ jobs:
         run: |
           wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
           curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
-          sudo apt-get install -y nodejs"
+          sudo apt-get install -y nodejs
 
       - name: Upgrade python packaging tools
         run: python -m pip install --upgrade pip setuptools wheel
