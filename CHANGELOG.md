@@ -1,5 +1,10 @@
 # Changelog
 
+## 2020-04-27
+* Add new regression and smoke test packs
+* Add a test runner for newman tests, which can auth with identity-service
+* Additional changes to support running tests in release pipeline
+
 ## 2020-04-23
 * Add step in pipeline to replace invalid characters in the branch name 
 
