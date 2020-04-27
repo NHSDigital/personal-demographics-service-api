@@ -2,12 +2,6 @@
   <PreFlow>
     <Request>
       <Step>
-        <Name>Quota</Name>
-      </Step>
-      <Step>
-        <Name>SpikeArrest</Name>
-      </Step>
-      <Step>
         <!-- Header NHSD-Session-URID must be present and not empty -->
         <Name>RaiseFault.400BadRequest</Name>
         <Condition>(request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+")</Condition>
@@ -25,6 +19,12 @@
            2d. AssignMessage.JWKS: Assign the JWKS from the service callout to `jwks` flow variable
            3. VerifyJWT.FromOauthAttribute: Verify the JWT using the `jwks` flow variable
       -->
+      <Step>
+        <Name>Quota</Name>
+      </Step>
+      <Step>
+        <Name>SpikeArrest</Name>
+      </Step>
       <Step>
         <Name>LookupCache.JWKS</Name>
       </Step>

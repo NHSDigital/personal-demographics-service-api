@@ -4,7 +4,8 @@
   "description": "OAS (Swagger v3) API Definition for Patient Information",
   "scripts": {
     "lint": "node_modules/.bin/speccy lint specification/personal-demographics.yaml --skip default-and-example-are-redundant",
-    "test": "node_modules/.bin/newman run tests/e2e/personal-demographics-service-sandbox.json -e $API_TEST_ENV_FILE_PATH --reporters cli,junit",
+    "test": "node_modules/.bin/newman run tests/e2e/sandbox.json -e $API_TEST_ENV_FILE_PATH --reporters cli,junit",
+    "test-pipeline": "node_modules/.bin/node tests/e2e/test-runner.js -url https://acme-health-lite.herokuapp.com/ -env https://internal-dev.api.service.nhs.uk",
     "publish": "mkdir -p build && node_modules/.bin/speccy resolve specification/personal-demographics.yaml -i | poetry run python scripts/yaml2json.py | poetry run python scripts/set_version.py > build/personal-demographics.json",
     "serve": "node_modules/.bin/speccy serve build/personal-demographics.json",
     "check-licenses": "node_modules/.bin/license-checker --failOn GPL --failOn LGPL"
@@ -16,9 +17,12 @@
     "speccy": "^0.11.0"
   },
   "devDependencies": {
+    "apigeetool": "^0.14.2",
+    "license-checker": "^25.0.1",
     "newman": "^4.6.1",
     "newman-reporter-html": "^1.0.5",
     "newman-reporter-htmlextra": "^1.14.1",
+    "puppeteer": "^2.1.1",
     "apigeetool": "^0.14.2",
     "license-checker": "^25.0.1"
   }

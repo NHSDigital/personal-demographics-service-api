@@ -1,0 +1,60 @@
+{
+	"info": {
+		"_postman_id": "138a4806-74f8-406a-90cb-c2acb50630ea",
+		"name": "Personal Demographics Service - SmokeTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Retrieve Patient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9ba9f64b-ae66-4e9f-93e8-e74f28f48a5c",
+						"exec": [
+							"pm.test(\"Returns Status code 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "NHSD-Identity-UUID",
+						"value": "1234567890",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer  {{token}}"
+					},
+					{
+						"key": "NHSD-Identity-JWT",
+						"value": "{{jwt}}"
+					},
+					{
+						"key": "NHSD-Session-URID",
+						"value": "1234567890"
+					}
+				],
+				"url": {
+					"raw": "{{environment}}/healthcheck",
+					"host": [
+						"{{environment}}"
+					],
+					"path": [
+						"healthcheck"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
