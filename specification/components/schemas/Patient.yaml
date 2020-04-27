@@ -79,8 +79,9 @@ properties:
       When a patient tagged as `restricted` or `very restricted` is retrieved, the Pharmacy extensions will be removed from the response.
     items:
       anyOf:
-        - $ref: "extensions/NominatedPharmacy.yaml"
-        - $ref: "extensions/DispensingDoctor.yaml"
-        - $ref: "extensions/MedicalApplianceSupplier.yaml"
-        - $ref: "extensions/DeathNotificationStatus.yaml"
-        - $ref: "extensions/Communication.yaml"
+        - $ref: extensions/NominatedPharmacy.yaml
+        - $ref: extensions/DispensingDoctor.yaml
+        - $ref: extensions/MedicalApplianceSupplier.yaml
+        - $ref: extensions/DeathNotificationStatus.yaml
+        - $ref: extensions/Communication.yaml
+        - $ref: extensions/ContactPreference.yaml
