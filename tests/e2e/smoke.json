@@ -16,11 +16,7 @@
 							"pm.test(\"Returns Status code 200\", function () {",
 							"    pm.response.to.have.status(200);",
 							"});",
-							"",
-							"pm.test(\"Returns Patient\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    console.log(\"Response: \" + JSON.stringify(jsonData, null, 2));",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -48,13 +44,12 @@
 					}
 				],
 				"url": {
-					"raw": "{{environment}}/Patient/5900018512",
+					"raw": "{{environment}}/healthcheck",
 					"host": [
 						"{{environment}}"
 					],
 					"path": [
-						"Patient",
-						"5900018512"
+						"healthcheck"
 					]
 				}
 			},
