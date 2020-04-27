@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <SpikeArrest name="SpikeArrest">
   <DisplayName>SpikeArrest</DisplayName>
-  <Rate>5ps</Rate> <!-- FIXME! This quota info should not be hardcoded --> 
+  <Rate ref="apiproduct.ratelimit">5ps</Rate>
 </SpikeArrest>
 
