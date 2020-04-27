@@ -231,7 +231,7 @@ paths:
         Use the `_exact-match` query parameter to return exact matches only - where the score is 1.0.
 
         ## Restricted patients
-        Some patients are tagged as restricted, or sensitive. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telcom` and `generalPractitioner` will be removed.
+        Some patients are tagged as restricted, or sensitive. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telecom` and `generalPractitioner` will be removed.
 
         If `address-postcode` or `general-practitioner` are included in the search parameters, no restricted patients will be returned even if a match is identified.
 
@@ -507,7 +507,7 @@ paths:
         On retrieval of a superceded resource the new resource will be automatically returned in place of the requested resource.
 
         ## Restricted patients
-        Some patients are tagged as restricted, or sensitive. Restricted patients can be retrieved; however, location sensitive fields such as `address`, `telcom` and `generalPractitioner` will be removed.
+        Some patients are tagged as restricted, or sensitive. Restricted patients can be retrieved; however, location sensitive fields such as `address`, `telecom` and `generalPractitioner` will be removed.
 
         The restricted flag can be found in the data under `meta/security` on the patient resource.
 
@@ -518,7 +518,7 @@ paths:
 
         | Scenario                 | Request                                           | Response                                                                       |
         | ------------------------ | ------------------------------------------------- | ------------------------------------------------------------------------------ |
-        | Patient exists           | `id`=`9000000009`                                 | HTTP Status 200 with patient data in response with restricted data             |
+        | Patient exists           | `id`=`9000000009`                                 | HTTP Status 200 with patient data in response                                  |
         | Sensitive patient exists | `id`=`9000000025`                                 | HTTP Status 200 with patient data in response with the restricted data removed |
         | Patient doesn't exist    | `id`=`9111231130` (or any other valid NHS Number) | HTTP Status 404 with problem description                                       |
         | Invalid NHS Number       | `id`=`9000000000` (or any invalid NHS Number)     | HTTP Status 400 with problem description                                       |
