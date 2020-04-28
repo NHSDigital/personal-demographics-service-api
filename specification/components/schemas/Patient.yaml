@@ -30,7 +30,7 @@ properties:
     $ref: "Gender.yaml"
   birthDate:
     description: |
-      Date of birth. A date in the format `yyyy-mm-dd`.
+      Date of birth. A date in the format `yyyy-mm-dd`. Due to data quality issues on a small number of patients `yyyy-mm` and `yyyy` format may also be returned.
       
       When a patient tagged as `very restricted` is retrieved, birth date will be removed from the response.
     example: "2010-10-22"
@@ -38,7 +38,7 @@ properties:
     format: date
   deceasedDateTime:
     description: |
-      Date and time of death, if applicable and known. A datetime in the format `yyyy-mm-ddTHH:MM:SS+HH:MM`.
+      Date and time of death, if applicable and known. A datetime in the format `yyyy-mm-ddTHH:MM:SS+HH:MM` or `yyyy-mm-dd`. Due to data quality issues on a small number of patients `yyyy-mm` and `yyyy` format may also be returned.
       
       When a patient tagged as `very restricted` is retrieved, death date will be removed from the response.
     example: "2010-10-22T00:00:00+00:00"

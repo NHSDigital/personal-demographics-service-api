@@ -124,7 +124,7 @@ info:
 
     Alternatively, you can try out the sandbox using our Postman collection:
 
-    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
+    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/dc052f444e70d072e577)
 
     ### Integration testing
     Our [integration test environment](https://digital.nhs.uk/developer/testing#integration-testing):
@@ -274,7 +274,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/dc052f444e70d072e577)
       tags:
         - patients
       parameters:
@@ -527,7 +527,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/dc052f444e70d072e577)
       summary: "Retrieve a patient's record"
       operationId: get-patient
       tags:
@@ -613,7 +613,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/dc052f444e70d072e577)
 
 
       summary: Update a patient's record
@@ -757,7 +757,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/dc052f444e70d072e577)
       summary: "Retrieve a list of Related Person resources for a given patient"
       operationId: get-related-people
       tags:
@@ -831,81 +831,6 @@ paths:
                           display: Resource Id is invalid
         '404':
           description: Related People not found.
-          content:
-            application/fhir+json:
-              schema:
-                $ref: components/schemas/OperationOutcome.yaml
-              example:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: not-found
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: RESOURCE_NOT_FOUND
-                          display: Resource not found
-
-  '/Patient/{id}/RelatedPerson/{object_id}':
-    parameters:
-      - $ref: '#/components/parameters/Id'
-      - $ref: '#/components/parameters/ObjectId'
-      - $ref: '#/components/parameters/RoleId'
-      - $ref: '#/components/parameters/BearerAuthorization'
-    get:
-      description: |
-        ## Overview
-        Use this endpoint to get a patient's specific related person details from PDS for a given NHS Number, using the related person object id.
-
-        ## Sandbox test scenarios
-        You can test the following scenarios in our sandbox environment:
-
-        | Scenario                     | Request                                                               | Response                                             |
-        | ---------------------------- | --------------------------------------------------------------------- | ---------------------------------------------------- |
-        | Related Person exists        | `id`=`9000000009`, `object_id`=`507B7621`                             | HTTP Status 200 with related person data in response |
-        | Related Person doesn't exist | `id`=`9000000009`, `object_id`=`12345678` (or any other object id)    | HTTP Status 404 with problem description             |
-
-        You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
-
-        Alternatively, you can try out the sandbox using our Postman collection:
-
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/159f57ff644efe8683c5)
-      summary: "Retrieve a specific related person"
-      operationId: get-related-person
-      tags:
-        - relatedperson
-      responses:
-        '200':
-          description: Information successfully returned.
-          headers:
-            ETag:
-              $ref: components/schemas/ETag.yaml
-          content:
-            application/fhir+json:
-              schema:
-                $ref: components/schemas/RelatedPerson.yaml
-              example:
-                $ref: components/examples/RelatedPerson.json
-        '400':
-          description: Invalid NHS number supplied.
-          content:
-            application/fhir+json:
-              schema:
-                $ref: components/schemas/OperationOutcome.yaml
-              example:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: value
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: INVALID_RESOURCE_ID
-                          display: Resource Id is invalid
-        '404':
-          description: Related Person with the object ID was not found.
           content:
             application/fhir+json:
               schema:
