@@ -38,6 +38,8 @@ function buildBundleResponse(exampleResources = [], nhsNumber) {
                 resource: resource,
             })
         });
+    } else {
+        delete response.entry
     }
     return response;
 }

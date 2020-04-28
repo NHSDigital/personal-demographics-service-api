@@ -64,7 +64,10 @@ function buildPatientResponse(examplePatients = [], searchScore = 1.0) {
                 resource: patient,
             })
         });
-    }
+    } else {
+        delete response.entry
+    }   
+
     return response;
 }
 
