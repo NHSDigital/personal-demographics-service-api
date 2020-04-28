@@ -1,5 +1,8 @@
 # Changelog
 
+## 2020-04-28
+* Added Contact Preferences extension to the Patient resource
+
 ## 2020-04-27
 * Add new regression and smoke test packs
 * Add a test runner for newman tests, which can auth with identity-service
