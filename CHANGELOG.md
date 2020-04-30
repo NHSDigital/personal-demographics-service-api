@@ -1,5 +1,8 @@
 # Changelog
 
+## 2020-04-30
+* Remove TODO description
+
 ## 2020-04-27
 * Add new regression and smoke test packs
 * Add a test runner for newman tests, which can auth with identity-service
