@@ -22,7 +22,7 @@
     "newman": "^4.6.1",
     "newman-reporter-html": "^1.0.5",
     "newman-reporter-htmlextra": "^1.14.1",
-    "puppeteer": "^2.1.1",
+    "puppeteer": "^3.0.2",
     "apigeetool": "^0.14.2",
     "license-checker": "^25.0.1"
   }
