@@ -39,6 +39,11 @@ info:
     Currently, this API can only be accessed by healthcare professionals, authenticated with an NHS smartcard or equivalent.
     Unauthenticated access and citizen access are on the roadmap.
 
+    ## Legal use
+    This API can only be used where there is a legal basis to do so. You should [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) before you go too far with your development.
+    
+    You must have made this request before you can go live (see ‘Onboarding’ below).
+
     ## Related APIs
     The following APIs also give access to the Personal Demographics Service:
     - [Personal Demographics Service (SMSP) API](https://digital.nhs.uk/developer/api-specifications/personal-demographics-service---smsp-api) - use this if you want to get PDS data without an authenticated end used (no smartcard required). It is, however, read-only and searches are limited to a single result.
@@ -136,20 +141,30 @@ info:
     For more details see [integration testing with our RESTful APIs](https://digital.nhs.uk/developer/testing#integration-testing-with-our-restful-apis).
 
     ## Onboarding
-    [Contact us](https://digital.nhs.uk/developer/help-and-support) for more details on the onboarding process.
+    You need to get your software approved by us before it can go live with this API. We call this onboarding. The onboarding process can sometimes be quite long, so it’s worth planning well ahead.
+    
+    To onboard for this API, follow the [Supplier Conformance Assessment List (SCAL) process.]( https://digital.nhs.uk/developer/onboarding-process#onboard-using-the-supplier-conformance-assessment-list-scal-process)
+
+    When following the SCAL process, note that:
+    * In step 1: to confirm your use case for this API, you need to [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service), even if you already access PDS via another method.
+    * In step 6: when implementing your clinical risk management process, you must review and integrate the PDS FHIR API hazard log into your own risk log. You’ll find it embedded within the PDS FHIR API tab in the SCAL.
+    * In step 8: you need to review and complete the PDS FHIR API risk log to show that you have understood and mitigated the various risks. You might be asked to provide some evidence to prove that controls have been put in place. You’ll find the risk log embedded within the PDS FHIR API tab in the SCAL. This is separate from the clinical safety hazard log mentioned above.
+    * In step 9: you must conduct penetration testing to [CHECK standards](https://www.ncsc.gov.uk/information/check-penetration-testing)
+    * In step 10: when you complete the Service Desk Registration Form, send it to [api.management@nhs.net](mailto:api.management@nhs.net).
+    * In step 11: submit your completed SCAL to [api.management@nhs.net](mailto:api.management@nhs.net).
+    * In step 14: to request production access, contact us at [api.management@nhs.net](mailto:api.management@nhs.net).
 
     ## Endpoints
     To see details for specific endpoints, select from the list on the left hand side of the page:
-    * `GET /Patient` - search for patient
-    * `GET /Patient/{id}` - get patient's personal details
-    * `GET /Patient/{id}/RelatedPerson` - get patient's related people details
-    * `GET /Patient/{id}/RelatedPerson/{object_id}` - get patient's specific related person details
-    * `PATCH /Patient/{id}` - update patient's personal details (coming soon)
+    * `GET /Patient` - search for patients.
+    * `GET /Patient/{id}` - get patient's personal details.
+    * `GET /Patient/{id}/RelatedPerson` - get patient's related people details.
+    * `PATCH /Patient/{id}` - update patient's personal details (coming soon).
 
   contact:
     name: Personal Demographics Service FHIR API Support
     url: 'https://tbc.api.nhs.net'
-    email: tbc-api-support@nhs.net
+    email: api.management@nhs.net
 servers:
   - url: 'https://sandbox.api.service.nhs.uk/personal-demographics'
     description: Sandbox environment.
