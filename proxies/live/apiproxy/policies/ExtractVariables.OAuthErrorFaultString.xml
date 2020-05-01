@@ -1,0 +1,9 @@
+<ExtractVariables async="false" continueOnError="false" enabled="true" name="ExtractVariables.OAuthErrorFaultString">
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+  <JSONPayload>
+    <Variable name="faultstring">
+      <JSONPath>$.fault.faultstring</JSONPath>
+    </Variable>
+  </JSONPayload>
+  <Source clearPayload="false">error</Source>
+</ExtractVariables>
