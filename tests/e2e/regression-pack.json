@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6616a0a4-94b3-4e49-81a2-6b2cceebe97b",
+		"_postman_id": "95af754c-6089-4480-9d48-04bb009ac410",
 		"name": "Personal Demographics Service copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -14,7 +14,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "bf49ccb2-71c5-4477-9f89-9793362f63e9",
+								"id": "d0fe11cb-d685-4286-a481-efacf7146b92",
 								"exec": [
 									"/*functions*/\r",
 									"var checkSearchMappings = () => {\r",
@@ -292,7 +292,7 @@
 									"            pm.expect(response.entry[0].resource.extension[0].extension[0].url).to.eql(\"deathNotificationStatus\");\r",
 									"            pm.expect(response.entry[0].resource.extension[0].extension[0].valueCodeableConcept.coding[0].code).to.eql(\"1\");\r",
 									"            pm.expect(response.entry[0].resource.extension[0].extension[0].valueCodeableConcept.coding[0].display).to.eql(\"Informal - death notice received via an update from a local NHS Organisation such as GP or Trust\");\r",
-									"            pm.expect(response.entry[0].resource.extension[0].extension[0].valueCodeableConcept.coding[0].system).to.eql(\"https://simplifier.net/UKCore/CodeSystem-UKCore-DeathNotificationStatus\");\r",
+									"            pm.expect(response.entry[0].resource.extension[0].extension[0].valueCodeableConcept.coding[0].system).to.eql(\"https://fhir.nhs.uk/R4/CodeSystem/UKCore-DeathNotificationStatus\");\r",
 									"            pm.expect(response.entry[0].resource.extension[0].extension[0].valueCodeableConcept.coding[0].version).to.eql(\"1.0.0\");\r",
 									"            pm.expect(response.entry[0].resource.extension[0].extension[1].url).to.eql(\"systemEffectiveDate\");\r",
 									"        }\r",
@@ -343,7 +343,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "a1e2a4f1-cabf-41a2-a6bf-c08692a63edb",
+								"id": "68b45fba-1942-4d02-a6a6-19f921ef7ea1",
 								"exec": [
 									"/*CreatePatient Function*/",
 									"",
@@ -437,7 +437,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "8519afe6-10fe-47ce-9488-c1aac4d612b0",
+								"id": "5cdabcfa-c09a-469a-a2b5-e9a97d2a9543",
 								"exec": [
 									""
 								],
@@ -447,7 +447,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "d16440ed-a3e5-455e-8ab4-82a26bd91428",
+								"id": "1314c434-be9f-45a6-a466-f2937b914cf1",
 								"exec": [
 									"// Error Message Validation: Provides tests to assert against FHIR error response",
 									"",
@@ -505,7 +505,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "a4023e9a-078b-494c-a941-cefaced5defb",
+								"id": "be08cb08-d01c-4947-b190-8fe11c7f9674",
 								"exec": [
 									"// Patient Utility: Provides key patient response related functions",
 									"pm.globals.set('patient', function patient() {",
@@ -572,7 +572,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "a4023e9a-078b-494c-a941-cefaced5defb",
+								"id": "f09534cb-6476-4648-be64-1d08382f5863",
 								"exec": [
 									"// Assert utility: Tests for key aspects of the response",
 									"pm.globals.set(\"assertThatUtil\", function assertThatUtil() {",
@@ -618,7 +618,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cb4562d3-e6c0-4c41-a842-ab6c17467b4a",
+								"id": "e0393309-47db-4b24-ba6d-adc0ecb9851d",
 								"exec": [
 									"var checkRetrieveMappings = () => {\r",
 									"\r",
@@ -763,7 +763,7 @@
 									"        pm.expect(response.extension[0].extension[0].url).to.equal('deathNotificationStatus');\r",
 									"        pm.expect(response.extension[0].extension[0].valueCodeableConcept.coding[0].code).to.equal('1', 'invalid code');\r",
 									"        pm.expect(response.extension[0].extension[0].valueCodeableConcept.coding[0].display).to.equal(pm.variables.get(\"deathNotificationStatus.display\"));\r",
-									"        pm.expect(response.extension[0].extension[0].valueCodeableConcept.coding[0].system).to.equal('https://simplifier.net/UKCore/CodeSystem-UKCore-DeathNotificationStatus', 'invalid system');\r",
+									"        pm.expect(response.extension[0].extension[0].valueCodeableConcept.coding[0].system).to.equal('https://fhir.nhs.uk/R4/CodeSystem/UKCore-DeathNotificationStatus', 'invalid system');\r",
 									"        pm.expect(response.extension[0].extension[0].valueCodeableConcept.coding[0].version).to.equal('1.0.0', 'invalid version');\r",
 									"    });\r",
 									"}\r",
@@ -887,7 +887,7 @@
 									"\r",
 									"/*nominatedPharmacy mapping function*/\r",
 									"pm.test(\"nominatedPharmacy has been mapped correctly\", function () {\r",
-									"    let nominatedPharmacyExists = (pm.variables.get(\"nominatedPharmacy\"));\r",
+									"    let nominatedPharmacyExists = (pm.environment.get(\"nominatedPharmacy\"));\r",
 									"    let nominatedPharmacyExtension = response.extension === undefined ? undefined : getNominatedPharmacy(response.extension);\r",
 									"\r",
 									"    if (!nominatedPharmacyExists) {\r",
@@ -895,17 +895,17 @@
 									"    }\r",
 									"    else {\r",
 									"        console.log(\"nominatedPharmacy has been set for the patient so nominatedPharmacy should be returned\");\r",
-									"        pm.expect(nominatedPharmacyExtension.url).to.eql(\"https://fhir.nhs.uk/R4/StructureDefinition/ExtensionUKCore-NominatedPharmacy\");\r",
-									"        pm.expect(nominatedPharmacyExtension.valueReference.identifier.period.start).to.eql(pm.variables.get(\"nominatedPharmacyPeriodStart\"));\r",
-									"        pm.expect(nominatedPharmacyExtension.valueReference.identifier.period.end).to.eql(pm.variables.get(\"nominatedPharmacyPeriodEnd\"));\r",
-									"        pm.expect(nominatedPharmacyExtension.valueReference.identifier.value).to.eql(pm.variables.get(\"nominatedPharmacy\"));\r",
+									"        pm.expect(nominatedPharmacyExtension.url).to.eql(\"https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NominatedPharmacy\");\r",
+									"        pm.expect(nominatedPharmacyExtension.valueReference.identifier.period.start).to.eql(pm.environment.get(\"nominatedPharmacyPeriodStart\"));\r",
+									"        pm.expect(nominatedPharmacyExtension.valueReference.identifier.period.end).to.eql(pm.environment.get(\"nominatedPharmacyPeriodEnd\"));\r",
+									"        pm.expect(nominatedPharmacyExtension.valueReference.identifier.value).to.eql(pm.environment.get(\"nominatedPharmacy\"));\r",
 									"        pm.expect(nominatedPharmacyExtension.valueReference.identifier.system).to.eql(\"https://fhir.nhs.uk/Id/ods-organization-code\");\r",
-									"        pm.expect(nominatedPharmacyExtension.valueReference.reference).to.eql(\"https://directory.spineservices.nhs.uk/STU3/Organization/\" + (pm.variables.get(\"nominatedPharmacy\")));\r",
+									"        pm.expect(nominatedPharmacyExtension.valueReference.reference).to.eql(\"https://directory.spineservices.nhs.uk/STU3/Organization/\" + (pm.environment.get(\"nominatedPharmacy\")));\r",
 									"    }\r",
 									"\r",
-									"    pm.variables.unset(\"nominatedPharmacy\");\r",
-									"    pm.variables.unset(\"nominatedPharmacyPeriodStart\");\r",
-									"    pm.variables.unset(\"nominatedPharmacyPeriodEnd\");\r",
+									"    pm.environment.unset(\"nominatedPharmacy\");\r",
+									"    pm.environment.unset(\"nominatedPharmacyPeriodStart\");\r",
+									"    pm.environment.unset(\"nominatedPharmacyPeriodEnd\");\r",
 									"});\r",
 									"\r",
 									"\r",
@@ -1066,7 +1066,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+												"id": "b0b66984-f4d4-43ee-9f6c-ba91eaf7898a",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -1106,7 +1106,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+												"id": "f9a9a9e7-e9fe-4b96-ae1c-e27cd44a9eb5",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -1176,7 +1176,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+												"id": "2352f111-d31e-41fd-af50-22deb3e04307",
 												"exec": [
 													"/*set variables for test*/",
 													"pm.variables.set(\"s-flagged\", true);",
@@ -1206,7 +1206,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+												"id": "04bddea9-30c1-4a87-aa26-61083a2e1ec8",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -1278,7 +1278,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "c3e2221d-db2e-4e98-a510-b18b78820f52",
+												"id": "2315116c-025b-4b06-a673-061f5ac58a21",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -1317,7 +1317,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "f45d509a-3d7a-48a5-8bd2-8c8cced401eb",
+												"id": "925e6359-184e-4ed4-847e-84f98e669fa4",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -1387,7 +1387,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "c3e2221d-db2e-4e98-a510-b18b78820f52",
+												"id": "6165e90b-872f-419f-9bc8-6c31077b8e67",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -1424,7 +1424,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "e0f9db16-d23e-465e-a016-a9b7e91581de",
+												"id": "56292fd1-9497-473d-ac08-54846e8d9caf",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -1494,7 +1494,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "e57f793c-3c38-4919-be4e-2392110ef8a1",
+												"id": "1dccdf1e-84d7-4a41-8013-7453c052513c",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -1508,7 +1508,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "c3e2221d-db2e-4e98-a510-b18b78820f52",
+												"id": "9bf12993-ce99-47b8-9478-022efe2540d3",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -1601,7 +1601,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "e57f793c-3c38-4919-be4e-2392110ef8a1",
+												"id": "d02db231-4388-422c-a84d-64f7fab471da",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -1615,7 +1615,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "c3e2221d-db2e-4e98-a510-b18b78820f52",
+												"id": "ac7ab9f2-7ed4-4594-b454-6878f023f3b3",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -1706,7 +1706,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "e57f793c-3c38-4919-be4e-2392110ef8a1",
+												"id": "40f4f92d-dd63-4abf-96de-68a4ddf51e95",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -1720,7 +1720,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "c3e2221d-db2e-4e98-a510-b18b78820f52",
+												"id": "8f64f034-ed57-4a01-98c6-cf13f601ba5f",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -1812,7 +1812,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+												"id": "fd0a8634-bd07-4062-9ade-5c33c6081a4d",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -1855,7 +1855,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+												"id": "3d0ed66f-eeda-4b5a-a52a-15fd0b58cb37",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -1923,7 +1923,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+												"id": "1dc6702b-1b19-4cfd-bcdf-676b6d716b03",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -1967,7 +1967,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+												"id": "1e0dfc3a-9355-44a3-ae7d-e25d2a394c6c",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -2039,7 +2039,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+												"id": "dde92383-8027-4739-aa96-2c0847010d3e",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -2083,7 +2083,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+												"id": "4b37b500-4afa-438c-bec9-1763641bac60",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -2158,7 +2158,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+												"id": "8672cbc1-de55-44c1-bacb-7005d27e88ae",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -2197,7 +2197,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+												"id": "4cd894ea-d0df-442b-afb8-44b7618711ed",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -2272,7 +2272,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+												"id": "1b853009-c3c7-4f24-8b26-2773f809b478",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -2312,7 +2312,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+												"id": "95e9d7db-7c1c-437c-a177-5fbf4c8fe8d0",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -2390,7 +2390,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+												"id": "01147daa-2884-439e-a911-a2e48ebccf5c",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -2431,7 +2431,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+												"id": "c377f5cb-b741-4eba-a19c-74f7616b999f",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -2509,7 +2509,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+												"id": "2c7f8dec-f867-46ff-91e2-4e34918796d6",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -2548,7 +2548,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+												"id": "8fc6c126-b629-4346-8477-b84f4b69ccd4",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -2622,7 +2622,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+												"id": "f49e0f29-2954-49b9-9e37-06ae3c9bbc6c",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -2661,7 +2661,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+												"id": "1d1603df-f401-4717-8fc7-3246a3cf4a38",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -2739,7 +2739,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+												"id": "15da98e2-a128-4fe5-ad37-2dabc9e44f67",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -2780,7 +2780,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+												"id": "e12e932c-d38f-4cb2-bf53-1d0ba6fb8bbf",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -2871,7 +2871,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+																"id": "8173204f-9380-4f5a-972e-d082492011e8",
 																"exec": [
 																	"/*set variables for test*/",
 																	"",
@@ -2914,7 +2914,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+																"id": "c3e18d3d-3dca-4f33-92ae-5412fe3c39ee",
 																"exec": [
 																	"var response = pm.response.json();",
 																	"",
@@ -2982,7 +2982,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+																"id": "e954d1e6-d5cc-4d20-bc81-978862e33c50",
 																"exec": [
 																	"/*set variables for test*/",
 																	"",
@@ -3025,7 +3025,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+																"id": "88c95cf4-29d5-4b29-9365-b27d5b9c0536",
 																"exec": [
 																	"var response = pm.response.json();",
 																	"",
@@ -3093,7 +3093,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+																"id": "237f5a6c-e150-4db0-8bc3-1baebd1f8a64",
 																"exec": [
 																	"/*set variables for test*/",
 																	"",
@@ -3136,7 +3136,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+																"id": "1dfb6004-e5fb-4b9e-9525-d77f0d70b987",
 																"exec": [
 																	"var response = pm.response.json();",
 																	"",
@@ -3204,7 +3204,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+																"id": "c3178f24-2426-4b96-9e54-96733810efd9",
 																"exec": [
 																	"/*set variables for test*/",
 																	"",
@@ -3223,7 +3223,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+																"id": "6cc21ceb-1645-4ecb-bd8e-eb1bd6d65e02",
 																"exec": [
 																	"var response = pm.response.json();",
 																	"",
@@ -3295,7 +3295,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+																"id": "423a160c-c471-4156-b534-0ed6d70af589",
 																"exec": [
 																	"/*set variables for test*/",
 																	"",
@@ -3312,7 +3312,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+																"id": "25ff69bf-286f-4a5d-8be8-3d41f89900ac",
 																"exec": [
 																	"var response = pm.response.json();",
 																	"",
@@ -3391,7 +3391,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+																"id": "5e5b6088-9752-4f7a-853d-9177990aa47b",
 																"exec": [
 																	"/*set variables for test*/",
 																	"",
@@ -3434,7 +3434,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+																"id": "2131fe0a-5a3c-4974-989b-f9156b721a5b",
 																"exec": [
 																	"var response = pm.response.json();",
 																	"",
@@ -3498,7 +3498,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+																"id": "7228dd87-afb5-4dee-b250-0c7e20f9cc31",
 																"exec": [
 																	"/*set variables for test*/",
 																	"",
@@ -3541,7 +3541,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+																"id": "2622197c-26f9-4770-a84b-5a191c841287",
 																"exec": [
 																	"var response = pm.response.json();",
 																	"",
@@ -3605,7 +3605,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+																"id": "a530133c-dfca-4ddf-8932-505c9ef58174",
 																"exec": [
 																	"/*set variables for test*/",
 																	"",
@@ -3648,7 +3648,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+																"id": "010c83af-68b0-4519-a7c5-ed07078cabbd",
 																"exec": [
 																	"var response = pm.response.json();",
 																	"",
@@ -3712,7 +3712,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+																"id": "d3b3d4c5-583c-47f1-b758-daf14cd218d3",
 																"exec": [
 																	"/*set variables for test*/",
 																	"",
@@ -3731,7 +3731,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+																"id": "c44ae8a5-4543-4aa8-a9ae-e141aa67f695",
 																"exec": [
 																	"var response = pm.response.json();",
 																	"",
@@ -3799,7 +3799,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+																"id": "d38b9364-3d5a-4073-9fc2-06bb67f75c53",
 																"exec": [
 																	"/*set variables for test*/",
 																	"",
@@ -3818,7 +3818,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+																"id": "790c0962-72e3-4feb-9222-6728eb44af9b",
 																"exec": [
 																	"var response = pm.response.json();",
 																	"",
@@ -3897,7 +3897,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "309bd3d4-7bfe-413f-99c6-dc84086bdd05",
+														"id": "18b8f322-3611-489f-a087-0656063fc04a",
 														"exec": [
 															"var response = JSON.parse(responseBody);",
 															"const util = eval(globals.patient);",
@@ -3978,7 +3978,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "02a77542-f342-44b5-9609-c9a77ebd7cfe",
+														"id": "d2d2c1df-0849-4ea6-af23-3762cb0ae140",
 														"exec": [
 															"var response = JSON.parse(responseBody);",
 															"const util = eval(globals.patient);",
@@ -4062,7 +4062,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "02a77542-f342-44b5-9609-c9a77ebd7cfe",
+														"id": "e8e3a484-cb26-4b8a-9787-c1be76a5fd18",
 														"exec": [
 															"var response = JSON.parse(responseBody);",
 															"const util = eval(globals.patient);",
@@ -4218,7 +4218,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "309bd3d4-7bfe-413f-99c6-dc84086bdd05",
+														"id": "d67c06e3-c0fa-46f1-bd0b-518adedf6471",
 														"exec": [
 															"var response = JSON.parse(responseBody);",
 															"const util = eval(globals.patient);",
@@ -4246,7 +4246,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "1062c549-dccc-489f-a369-c16da00a1232",
+														"id": "9983efba-4875-4a6e-b697-ce02904b836b",
 														"exec": [
 															""
 														],
@@ -4310,7 +4310,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "67f97a66-b476-4b07-a989-a8ec489882c4",
+												"id": "1953b623-8f9a-4ef5-a913-6a814952dc22",
 												"type": "text/javascript",
 												"exec": [
 													""
@@ -4320,7 +4320,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "49c982ec-16a1-4e94-9191-4ab47b83cd5b",
+												"id": "49dea0a8-9e9a-48fc-8b9f-aebfcb60c42d",
 												"type": "text/javascript",
 												"exec": [
 													""
@@ -4340,7 +4340,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "309bd3d4-7bfe-413f-99c6-dc84086bdd05",
+														"id": "d2f594b3-050d-4f42-8b0c-0b081455d362",
 														"exec": [
 															"eval(pm.globals.get(\"assertThatUtil\"));",
 															"eval(pm.globals.get(\"patient\"));",
@@ -4496,7 +4496,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "309bd3d4-7bfe-413f-99c6-dc84086bdd05",
+														"id": "1c7442d7-f79e-4d8a-8216-fb686a98add6",
 														"exec": [
 															"var response = pm.response.json();",
 															"const assertThat = eval(pm.globals.get(\"assertThatUtil\"));",
@@ -4568,7 +4568,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "61099e06-453f-4b5a-8e82-3f134f1d7ebf",
+														"id": "99e9310f-881a-4e0b-a81e-78785f1e6374",
 														"exec": [
 															"eval(pm.globals.get(\"assertThatUtil\"));",
 															"eval(pm.globals.get(\"errorMessage\"));",
@@ -4718,7 +4718,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "61099e06-453f-4b5a-8e82-3f134f1d7ebf",
+														"id": "7e3da52b-d510-4c1f-8d38-e201374b18e1",
 														"exec": [
 															"eval(pm.globals.get(\"assertThatUtil\"));",
 															"eval(pm.globals.get(\"errorMessage\"));",
@@ -4876,7 +4876,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "fffa160e-e723-4537-8282-3831893f5852",
+														"id": "731a9a3b-ec80-4d15-8619-d0839820441f",
 														"exec": [
 															""
 														],
@@ -4886,7 +4886,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "93e28be6-475d-48b0-891e-fb16474ff575",
+														"id": "3ec89841-c85c-4163-ac22-b1afee3bee6e",
 														"exec": [
 															"const assertThat = eval(pm.globals.get(\"assertThatUtil\"));",
 															"const error = eval(pm.globals.get(\"errorMessage\"));",
@@ -5031,7 +5031,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "fffa160e-e723-4537-8282-3831893f5852",
+														"id": "e20948a6-770b-4175-bdbd-1154fa22e61a",
 														"exec": [
 															""
 														],
@@ -5041,7 +5041,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "93e28be6-475d-48b0-891e-fb16474ff575",
+														"id": "c20eacb9-56b4-4f71-bf71-2a1a4544f200",
 														"exec": [
 															"const assertThat = eval(pm.globals.get(\"assertThatUtil\"));",
 															"const patientUtil = eval(pm.globals.get(\"patient\"));",
@@ -5137,7 +5137,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "309bd3d4-7bfe-413f-99c6-dc84086bdd05",
+														"id": "05b83d00-06e5-41aa-8cb5-3efeee68bdac",
 														"exec": [
 															"let response = pm.response.json();",
 															"eval(pm.globals.get(\"assertThatUtil\"));",
@@ -5221,7 +5221,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "309bd3d4-7bfe-413f-99c6-dc84086bdd05",
+														"id": "c7797124-b147-4fcc-a465-158c5145f0a2",
 														"exec": [
 															"var response = pm.response.json();",
 															"eval(pm.globals.get(\"assertThatUtil\"));",
@@ -5276,7 +5276,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "309bd3d4-7bfe-413f-99c6-dc84086bdd05",
+														"id": "d18e3c52-f65a-47f7-a981-eb44889bdb8a",
 														"exec": [
 															"var response = pm.response.json();",
 															"eval(pm.globals.get(\"assertThatUtil\"));",
@@ -5353,7 +5353,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "309bd3d4-7bfe-413f-99c6-dc84086bdd05",
+														"id": "0cc9a566-a1cf-41e6-96b9-f0c6faee3fd5",
 														"exec": [
 															"var response = pm.response.json();",
 															"let globalNhsNumber = response.entry[0].resource.id;",
@@ -5401,7 +5401,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "555cfeec-5c14-4d76-a330-a5d011ab8ee9",
+														"id": "ac9fabd6-5197-4d99-8fb0-bfe8fde5b108",
 														"exec": [
 															""
 														],
@@ -5465,7 +5465,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "fffa160e-e723-4537-8282-3831893f5852",
+														"id": "1d194a5e-0079-4dbe-a7a9-8348e25574b9",
 														"exec": [
 															""
 														],
@@ -5475,7 +5475,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "93e28be6-475d-48b0-891e-fb16474ff575",
+														"id": "0ce5fa9e-e6b7-40bb-a236-a299e83b5414",
 														"exec": [
 															"var response = pm.response.json();",
 															"eval(pm.globals.get(\"assertThatUtil\"));",
@@ -5565,7 +5565,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "fffa160e-e723-4537-8282-3831893f5852",
+														"id": "6f6159c1-f348-4461-a7c9-77d1d9471d79",
 														"exec": [
 															""
 														],
@@ -5575,7 +5575,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "93e28be6-475d-48b0-891e-fb16474ff575",
+														"id": "19681df5-e98f-4889-b918-3cb52b87eace",
 														"exec": [
 															"var chai = require(\"chai\");",
 															"const assertThat = eval(pm.globals.get(\"assertThatUtil\"));",
@@ -5663,7 +5663,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+														"id": "966ce9f9-e894-4850-9a23-67a162566342",
 														"exec": [
 															"/*set variables for test*/",
 															"",
@@ -5706,7 +5706,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+														"id": "5be09f11-6213-411b-b3a4-2460db93df9a",
 														"exec": [
 															"var response = pm.response.json();",
 															"",
@@ -5776,7 +5776,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+														"id": "b22cf9db-3f64-4b8a-910f-09593450cb22",
 														"exec": [
 															"/*set variables for test*/",
 															"",
@@ -5819,7 +5819,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+														"id": "324771ec-ef18-4ae5-b3b1-97c75b8e4c77",
 														"exec": [
 															"var response = pm.response.json();",
 															"",
@@ -5888,7 +5888,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+														"id": "18ed1313-7ff8-4c83-ab0c-f1c8cbec402f",
 														"exec": [
 															"/*set variables for test*/",
 															"",
@@ -5931,7 +5931,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+														"id": "bf9c9c34-dc43-48a2-8427-b937b7264a10",
 														"exec": [
 															"var response = pm.response.json();",
 															"",
@@ -6000,7 +6000,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "422c870a-83c0-4429-af6b-8146a086a5b2",
+														"id": "cda161fc-752f-4270-8910-959dff30030d",
 														"exec": [
 															"/*set variables for test*/",
 															"",
@@ -6045,7 +6045,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "f7b3213c-4712-4604-bbf8-8d3cb038e756",
+														"id": "7030cc2a-e14b-4c94-b801-b74927f43fc9",
 														"exec": [
 															"var response = pm.response.json();",
 															"",
@@ -6118,7 +6118,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "309bd3d4-7bfe-413f-99c6-dc84086bdd05",
+														"id": "d1c37e13-6d79-4b97-b44d-3d889d30323e",
 														"exec": [
 															"let testScenarios = pm.variables.get('testData');",
 															"let asidHeader = pm.variables.get(\"asidHeader\");",
@@ -6178,7 +6178,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "555cfeec-5c14-4d76-a330-a5d011ab8ee9",
+														"id": "192cbe58-40d4-4cab-a378-ee8c35ce284c",
 														"exec": [
 															"let simple = [",
 															"    {",
@@ -6327,7 +6327,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "309bd3d4-7bfe-413f-99c6-dc84086bdd05",
+																"id": "6a0705b2-92ef-4abd-90c1-d4211a1a6b90",
 																"exec": [
 																	"eval(pm.globals.get(\"assertThatUtil\"));",
 																	"eval(pm.globals.get(\"errorMessage\"));",
@@ -6405,7 +6405,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "309bd3d4-7bfe-413f-99c6-dc84086bdd05",
+																"id": "f0fc6c0e-1d86-4975-aac0-a9881546f9ae",
 																"exec": [
 																	"eval(pm.globals.get(\"assertThatUtil\"));",
 																	"eval(pm.globals.get(\"patient\"));",
@@ -6481,7 +6481,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "309bd3d4-7bfe-413f-99c6-dc84086bdd05",
+																"id": "1859d5b8-840a-4f11-b8f9-7d9fb8277522",
 																"exec": [
 																	"eval(pm.globals.get(\"assertThatUtil\"));",
 																	"eval(pm.globals.get(\"patient\"));",
@@ -6577,7 +6577,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "309bd3d4-7bfe-413f-99c6-dc84086bdd05",
+												"id": "ba4c329e-ac37-4a5f-828a-87635c596fc1",
 												"exec": [
 													"eval(pm.globals.get(\"patient\"));",
 													"",
@@ -6596,7 +6596,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "5a8c311c-bd46-4c7b-b3dc-a3098486c8c4",
+												"id": "2a2f74cd-969d-40fa-bef6-5c16a49d483d",
 												"exec": [
 													"let asidHeader = pm.variables.get(\"asidHeader\");",
 													"let sessionURIDHeader = pm.variables.get(\"sessionURIDHeader\");",
@@ -6680,7 +6680,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "309bd3d4-7bfe-413f-99c6-dc84086bdd05",
+												"id": "dc215ce8-9687-4fa3-906b-9d0457b77c26",
 												"exec": [
 													"var response = pm.response.json();",
 													"eval(pm.globals.get(\"assertThatUtil\"));",
@@ -6702,7 +6702,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "32e4c0d7-5d97-43da-b210-934154a02436",
+												"id": "c8a9dbc7-66ce-4b39-81d5-e87eeed5bc91",
 												"exec": [
 													"let asidHeader = pm.variables.get(\"asidHeader\");",
 													"let sessionURIDHeader = pm.variables.get(\"sessionURIDHeader\");",
@@ -6781,7 +6781,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "02a77542-f342-44b5-9609-c9a77ebd7cfe",
+												"id": "9979f777-33cd-4e41-a1c9-1d1539e29894",
 												"exec": [
 													"eval(pm.globals.get(\"assertThatUtil\"));",
 													"eval(pm.globals.get(\"patient\"));",
@@ -6798,7 +6798,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "e1d16a93-1692-4692-997e-c5718c7e89bd",
+												"id": "e8e68a5b-4c1d-49a0-9d01-d97fbf8a6fa8",
 												"exec": [
 													"let asidHeader = pm.variables.get(\"asidHeader\");",
 													"let sessionURIDHeader = pm.variables.get(\"sessionURIDHeader\");",
@@ -6877,7 +6877,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "309bd3d4-7bfe-413f-99c6-dc84086bdd05",
+												"id": "b297427c-ac6f-4427-b4f8-041f9a165245",
 												"exec": [
 													"var response = pm.response.json();",
 													"eval(pm.globals.get(\"assertThatUtil\"));",
@@ -6899,7 +6899,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "c2feaaf3-ce38-4f1e-84f9-ab336a968a85",
+												"id": "e7fc8fdd-c081-4f8c-8536-4e3f0b46e1a2",
 												"exec": [
 													"let asidHeader = pm.variables.get(\"asidHeader\");",
 													"let sessionURIDHeader = pm.variables.get(\"sessionURIDHeader\");",
@@ -6978,7 +6978,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "2fa4ad97-ff41-4e08-9c3d-cb842614c3c5",
+												"id": "4109813b-d8b9-4559-a98b-584715023424",
 												"exec": [
 													"var response = pm.response.json();",
 													"eval(pm.globals.get(\"assertThatUtil\"));",
@@ -7062,7 +7062,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "2fa4ad97-ff41-4e08-9c3d-cb842614c3c5",
+												"id": "59c51648-da08-450e-b860-82416c7e0465",
 												"exec": [
 													"var response = pm.response.json();",
 													"eval(pm.globals.get(\"assertThatUtil\"));",
@@ -7088,7 +7088,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "560ca350-73e4-45a8-a92f-20114ad4154e",
+												"id": "21edf294-6e25-426c-ba72-b304abb2d577",
 												"exec": [
 													"let asidHeader = pm.variables.get(\"asidHeader\");",
 													"let sessionURIDHeader = pm.variables.get(\"sessionURIDHeader\");",
@@ -7162,7 +7162,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "2fa4ad97-ff41-4e08-9c3d-cb842614c3c5",
+												"id": "8c73439a-ae2c-4a82-9aff-256f049c3d48",
 												"exec": [
 													"var response = pm.response.json();",
 													"eval(pm.globals.get(\"assertThatUtil\"));",
@@ -7190,7 +7190,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "560ca350-73e4-45a8-a92f-20114ad4154e",
+												"id": "b13c71a6-2e86-4e91-9847-d34fa352ef3a",
 												"exec": [
 													"let asidHeader = pm.variables.get(\"asidHeader\");",
 													"let sessionURIDHeader = pm.variables.get(\"sessionURIDHeader\");",
@@ -7264,7 +7264,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "02a77542-f342-44b5-9609-c9a77ebd7cfe",
+												"id": "583085e7-0a02-4a98-a37b-148618f42667",
 												"exec": [
 													"eval(pm.globals.get(\"assertThatUtil\"));",
 													"eval(pm.globals.get(\"patient\"));",
@@ -7281,7 +7281,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "e1d16a93-1692-4692-997e-c5718c7e89bd",
+												"id": "1d392257-1421-464d-a75b-65083a6c53d3",
 												"exec": [
 													""
 												],
@@ -7356,7 +7356,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "5f6774f4-6032-467f-84b4-1043f7c14a69",
+										"id": "bd9f2264-eab0-4892-9eef-52295a9469ea",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -7371,7 +7371,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "1789ffbf-aaf8-4c8e-9d56-806fd5b9d829",
+										"id": "04154dd1-0d99-43c8-a5da-04d6a54c846f",
 										"exec": [
 											"/*set variables for checking mapping*/",
 											"",
@@ -7458,7 +7458,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "5f6774f4-6032-467f-84b4-1043f7c14a69",
+										"id": "2f4a3b90-84c0-4720-8f78-52b96151bca2",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -7473,7 +7473,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "1789ffbf-aaf8-4c8e-9d56-806fd5b9d829",
+										"id": "47413bbe-0d34-4014-82e3-4a9b95c41745",
 										"exec": [
 											"/*data variables being checked against.  These shall be replaced by the variables set when HL& is plugged in*/",
 											"pm.variables.set(\"nameType\", \"alias\");",
@@ -7560,7 +7560,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "5f6774f4-6032-467f-84b4-1043f7c14a69",
+										"id": "d423efef-b54c-4139-8001-0457a72c858b",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -7574,7 +7574,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "1789ffbf-aaf8-4c8e-9d56-806fd5b9d829",
+										"id": "70213cae-e059-457d-ad4a-25d89675bcef",
 										"exec": [
 											"/*set variables for checking mapping*/",
 											"",
@@ -7667,7 +7667,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "5f6774f4-6032-467f-84b4-1043f7c14a69",
+										"id": "fbfcc804-f188-460a-b3ce-f53217c2c513",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -7682,7 +7682,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "1789ffbf-aaf8-4c8e-9d56-806fd5b9d829",
+										"id": "9a650803-4ad6-4312-bf8e-567a38221e9b",
 										"exec": [
 											"/*set variables for checking mapping*/",
 											"",
@@ -7753,7 +7753,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "5f6774f4-6032-467f-84b4-1043f7c14a69",
+										"id": "db97f0c3-3a60-4cd5-8f20-dcf31757be43",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -7767,7 +7767,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "1789ffbf-aaf8-4c8e-9d56-806fd5b9d829",
+										"id": "51c3fb90-ec6c-4624-8e2a-3f2ac6bb0aea",
 										"exec": [
 											"/*set variables for checking mapping*/",
 											"",
@@ -7842,7 +7842,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "5f6774f4-6032-467f-84b4-1043f7c14a69",
+										"id": "32374996-628c-41e6-808b-f638307c1da6",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -7856,7 +7856,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "1789ffbf-aaf8-4c8e-9d56-806fd5b9d829",
+										"id": "da2a2402-31c0-4b64-b5c9-129efe07e75a",
 										"exec": [
 											"/*set variables for checking mapping*/",
 											"",
@@ -7930,7 +7930,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "5f6774f4-6032-467f-84b4-1043f7c14a69",
+										"id": "5f023830-f3ec-4fe2-b601-18c1c1f1c66e",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -7944,7 +7944,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "1789ffbf-aaf8-4c8e-9d56-806fd5b9d829",
+										"id": "72fd54f5-df00-450a-b551-7a57ceabeb4d",
 										"exec": [
 											"/*set variables for checking mapping*/",
 											"",
@@ -8014,7 +8014,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "309bd3d4-7bfe-413f-99c6-dc84086bdd05",
+										"id": "664f8455-ddcc-40a3-8cf4-9e3104e3d591",
 										"exec": [
 											"var response = pm.response.json();",
 											"eval(pm.globals.get(\"checkRetrieveMappings\"))();",
@@ -8026,7 +8026,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "a614f542-0c5f-42d0-8190-abce4b8b506a",
+										"id": "34b164c9-1dab-414f-b99f-98afce1d945d",
 										"exec": [
 											"pm.variables.set(\"s-flagged\", true);",
 											"",
@@ -8045,7 +8045,10 @@
 											"pm.variables.set(\"deceasedDateTime\", \"2009-03-01\");",
 											"pm.variables.set(\"securityCode\", \"R\");",
 											"pm.variables.set(\"deathNotificationValueDateTime\", \"\");",
-											"pm.variables.set(\"deathNotificationStatus.display\", \"Informal - death notice received via an update from a local NHS Organisation such as GP or Trust\");"
+											"pm.variables.set(\"deathNotificationStatus.display\", \"Informal - death notice received via an update from a local NHS Organisation such as GP or Trust\");",
+											"pm.variables.set(\"language\", \"be\");",
+											"pm.variables.set(\"languageDisplay\", \"Belarusian\"),",
+											"pm.variables.set(\"interpreter\", true);"
 										],
 										"type": "text/javascript"
 									}
@@ -8057,17 +8060,17 @@
 									{
 										"key": "{{nhsd-asid-header}}",
 										"type": "text",
-										"value": "200000000610"
+										"value": "{{from_asid}}"
 									},
 									{
 										"key": "{{nhsd-session-urid-header}}",
 										"type": "text",
-										"value": "1234567890"
+										"value": "{{role_id}}"
 									},
 									{
 										"key": "{{nhsd-identity-uuid-header}}",
 										"type": "text",
-										"value": "1234567890"
+										"value": "{{user_id}}"
 									}
 								],
 								"url": {
@@ -8082,1326 +8085,6 @@
 								}
 							},
 							"response": []
-						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "Update",
-					"item": [
-						{
-							"name": "Death Notification",
-							"item": [
-								{
-									"name": "Informal Death Notification Update permitted",
-									"item": [
-										{
-											"name": "Retrieve Patient - get current metaData Version",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "ed522c04-c945-43c2-ba6e-ba9a270f2b06",
-														"exec": [
-															"var response = pm.response.json();",
-															"",
-															"pm.collectionVariables.set(\"metaVersion\",response.meta.versionId);",
-															"console.log(pm.collectionVariables.get(\"metaVersion\"));",
-															"",
-															"     // Check that the response status has been populated correctly ",
-															"    pm.test(\"Response Status code is correct\", function () {",
-															"        pm.response.to.have.status(parseInt(\"200\"));",
-															"    });"
-														],
-														"type": "text/javascript"
-													}
-												},
-												{
-													"listen": "prerequest",
-													"script": {
-														"id": "5f6a3368-60dc-4dd0-91d5-cdcd7bf0ed20",
-														"exec": [
-															""
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"protocolProfileBehavior": {
-												"disableBodyPruning": true
-											},
-											"request": {
-												"method": "GET",
-												"header": [
-													{
-														"key": "{{nhsd-asid-header}}",
-														"type": "text",
-														"value": "200000000610"
-													},
-													{
-														"key": "{{nhsd-session-urid-header}}",
-														"type": "text",
-														"value": "1234567890"
-													},
-													{
-														"key": "{{nhsd-identity-uuid-header}}",
-														"type": "text",
-														"value": "1234567890"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "",
-													"options": {
-														"raw": {}
-													}
-												},
-												"url": {
-													"raw": "{{environment}}/Patient/:nhs_id",
-													"host": [
-														"{{environment}}"
-													],
-													"path": [
-														"Patient",
-														":nhs_id"
-													],
-													"variable": [
-														{
-															"key": "nhs_id",
-															"value": "5900007782"
-														}
-													]
-												},
-												"description": "Retrieved patient with an informal Death Notification has the correct extension with a code 1 and the correct display."
-											},
-											"response": []
-										},
-										{
-											"name": "Patch Patient - Add Informal Death Notification Permitted",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "ed522c04-c945-43c2-ba6e-ba9a270f2b06",
-														"exec": [
-															"var response = pm.response.json();",
-															"",
-															"var valueDateTime = (response.extension[0].extension[1].valueDateTime);",
-															"var responseValueDateTime = valueDateTime.substring(0,16);",
-															"pm.variables.set(\"responseValueDateTime\", responseValueDateTime);",
-															"",
-															"     // Check that the response status has been populated correctly ",
-															"    pm.test(\"Response Status code is correct\", function () {",
-															"        pm.response.to.have.status(parseInt(\"200\"));",
-															"    });",
-															"    ",
-															"    //Check that deceasedDateTime has been populated correctly",
-															"  pm.test(\"Response deceasedDateTime has been populated correctly\", function () {",
-															"        pm.expect(response.deceasedDateTime).to.eql(\"2020-02-18T17:06:00+00:00\");",
-															"  });",
-															"     ",
-															"//Check that extension[0].url has been populated correctly",
-															"  pm.test(\"Response extension.valueCodeableConcept.coding.display has been populated correctly\", function () {",
-															"        pm.expect(response.extension[0].url).to.eql(\"https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus\");",
-															"  });",
-															"",
-															"//Check that extension.url has been populated correctly",
-															"  pm.test(\"Response extension.url has been populated correctly\", function () {",
-															"        pm.expect(response.extension[0].extension[0].url).to.eql(\"deathNotificationStatus\");",
-															"  });",
-															"  ",
-															"//Check that extension.valueCodeableConcept.coding.code has been populated correctly",
-															"  pm.test(\"Response extension.valueCodeableConcept.coding.code has been populated correctly\", function () {",
-															"        pm.expect(response.extension[0].extension[0].valueCodeableConcept.coding[0].code).to.eql(\"1\");",
-															"  });",
-															"      ",
-															"//Check that extension.valueCodeableConcept.coding.disply has been populated correctly",
-															"  pm.test(\"Response extension.valueCodeableConcept.coding.display has been populated correctly\", function () {",
-															"        pm.expect(response.extension[0].extension[0].valueCodeableConcept.coding[0].display).to.eql(\"Informal - death notice received via an update from a local NHS Organisation such as GP or Trust\");",
-															"  });",
-															"  ",
-															"//Check that extension.valueCodeableConcept.coding.system has been populated correctly",
-															"  pm.test(\"Response extension.valueCodeableConcept.coding.system has been populated correctly\", function () {",
-															"        pm.expect(response.extension[0].extension[0].valueCodeableConcept.coding[0].system).to.eql(\"https://simplifier.net/UKCore/CodeSystem-UKCore-DeathNotificationStatus\");",
-															"  });",
-															"  ",
-															"//Check that extension.valueCodeableConcept.coding.version has been populated correctly",
-															"  pm.test(\"Response extension.valueCodeableConcept.coding.system has been populated correctly\", function () {",
-															"        pm.expect(response.extension[0].extension[0].valueCodeableConcept.coding[0].version).to.eql(\"1.0.0\");",
-															"  });",
-															"  ",
-															"  //Check that extension[1].url has been populated correctly",
-															"  pm.test(\"Response extension.url has been populated correctly\", function () {",
-															"        pm.expect(response.extension[0].extension[1].url).to.eql(\"systemEffectiveDate\");",
-															"  });",
-															"",
-															"    //Check that extension[0].valueDateTime has been populated correctly",
-															"  pm.test(\"Response extension[0].valueDateTime has been populated correctly\", function () {",
-															"        pm.expect(pm.variables.get(\"todaysDate\")).to.eql(pm.variables.get(\"responseValueDateTime\"));",
-															"  });"
-														],
-														"type": "text/javascript"
-													}
-												},
-												{
-													"listen": "prerequest",
-													"script": {
-														"id": "5f6a3368-60dc-4dd0-91d5-cdcd7bf0ed20",
-														"exec": [
-															"/*create a Date and time variable for TODAY, so that it can be used to set the valueDateTime in the Patch Request and also \r",
-															"validated against the valueDateTime\r",
-															"========================================================================================================================*/\r",
-															"\r",
-															"//create a date to be used in the valueDateTime field of the request  \r",
-															"var date = new Date().toISOString().substr(0, 19);\r",
-															"pm.variables.set(\"patch_valueDateTime\", (date + \"+00:00\"));\r",
-															"\r",
-															"\r",
-															"//create a date variable truncated so that it can be used to check against the returned valueDateTime in the Patch response\r",
-															"var todayDate = date.substring(0,16);\r",
-															"pm.variables.set(\"todaysDate\", todayDate);\r",
-															""
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"method": "PATCH",
-												"header": [
-													{
-														"key": "{{nhsd-asid-header}}",
-														"type": "text",
-														"value": "200000000610"
-													},
-													{
-														"key": "{{nhsd-session-urid-header}}",
-														"type": "text",
-														"value": "1234567890"
-													},
-													{
-														"key": "{{nhsd-identity-uuid-header}}",
-														"type": "text",
-														"value": "1234567890"
-													},
-													{
-														"key": "If-Match",
-														"type": "text",
-														"value": "W/\"{{metaVersion}}\""
-													},
-													{
-														"key": "Content-Type",
-														"name": "Content-Type",
-														"type": "text",
-														"value": "application/json-patch+json"
-													},
-													{
-														"key": "",
-														"type": "text",
-														"value": ""
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\r\n    \"patches\": [\r\n        {\r\n            \"op\": \"replace\",\r\n            \"path\": \"/extension/0\",\r\n            \"value\": { \r\n            \t\"extension\": [\r\n                {\r\n                    \"url\": \"deathNotificationStatus\",\r\n                    \"valueCodeableConcept\": {\r\n                        \"coding\": [\r\n                            {\r\n                                \"code\": \"1\",\r\n                                \"display\": \"Informal - death notice received via an update from a local NHS Organisation such as GP or Trust\",\r\n                                \"system\": \"https://simplifier.net/UKCore/CodeSystem-UKCore-DeathNotificationStatus\",\r\n                                \"version\": \"1.0.0\"\r\n                            }\r\n                        ]\r\n                    }\r\n                },\r\n                {\r\n                    \"url\": \"systemEffectiveDate\",\r\n                    \"valueDateTime\": \"{{patch_valueDateTime}}\"\r\n                }\r\n            ],\r\n            \"url\": \"https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus\"\r\n        }\r\n        }\r\n    ]\r\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{environment}}/Patient/:nhs_id",
-													"host": [
-														"{{environment}}"
-													],
-													"path": [
-														"Patient",
-														":nhs_id"
-													],
-													"variable": [
-														{
-															"key": "nhs_id",
-															"value": "5900007782"
-														}
-													]
-												},
-												"description": "Updating a patient with an Informal Death Notification will succeed."
-											},
-											"response": []
-										}
-									],
-									"description": "Updating a patient with a Formal Death Notification will fail as user is non-DSA/ONS/Maternity site (ensuring Operation Outcome is sensible).\r\n",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "26a78478-336a-41bd-89b5-e3cd96ad5a1e",
-												"type": "text/javascript",
-												"exec": [
-													""
-												]
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"id": "f6a370b5-d7bc-425c-bb7a-32f07ce19929",
-												"type": "text/javascript",
-												"exec": [
-													""
-												]
-											}
-										}
-									],
-									"protocolProfileBehavior": {},
-									"_postman_isSubFolder": true
-								},
-								{
-									"name": "Update Patient with Death Notification Removed flag",
-									"item": [
-										{
-											"name": "Retrieve Patient - get current metaData Version",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "ed522c04-c945-43c2-ba6e-ba9a270f2b06",
-														"exec": [
-															"var response = pm.response.json();",
-															"",
-															"pm.collectionVariables.set(\"metaVersion\",response.meta.versionId);",
-															"console.log(pm.collectionVariables.get(\"metaVersion\"));",
-															"",
-															"     // Check that the response status has been populated correctly ",
-															"    pm.test(\"Response Status code is correct\", function () {",
-															"        pm.response.to.have.status(parseInt(\"200\"));",
-															"    });",
-															"    ",
-															"    //Check that deceasedDateTime has been populated correctly",
-															"  pm.test(\"Response deceasedDateTime has been populated correctly\", function () {",
-															"        pm.expect(response.deceasedDateTime).to.eql(\"2010-01-01T00:00:00+00:00\");",
-															"  });",
-															"     ",
-															"//Check that extension[0].url has been populated correctly",
-															"  pm.test(\"Response extension.valueCodeableConcept.coding.display has been populated correctly\", function () {",
-															"        pm.expect(response.extension[0].url).to.eql(\"https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus\");",
-															"  });",
-															"",
-															"//Check that extension.url has been populated correctly",
-															"  pm.test(\"Response extension.url has been populated correctly\", function () {",
-															"        pm.expect(response.extension[0].extension[0].url).to.eql(\"deathNotificationStatus\");",
-															"  });",
-															"  ",
-															"//Check that extension.valueCodeableConcept.coding.code has been populated correctly",
-															"  pm.test(\"Response extension.valueCodeableConcept.coding.code has been populated correctly - 1 indicates an Informal notification\", function () {",
-															"        pm.expect(response.extension[0].extension[0].valueCodeableConcept.coding[0].code).to.eql(\"U\");",
-															"  });",
-															"      ",
-															"//Check that extension.valueCodeableConcept.coding.disply has been populated correctly",
-															"  pm.test(\"Response extension.valueCodeableConcept.coding.display has been populated correctly\", function () {",
-															"        pm.expect(response.extension[0].extension[0].valueCodeableConcept.coding[0].display).to.eql(\"Removed\");",
-															"  });",
-															"  ",
-															"//Check that extension.valueCodeableConcept.coding.system has been populated correctly",
-															"  pm.test(\"Response extension.valueCodeableConcept.coding.system has been populated correctly\", function () {",
-															"        pm.expect(response.extension[0].extension[0].valueCodeableConcept.coding[0].system).to.eql(\"https://simplifier.net/UKCore/CodeSystem-UKCore-DeathNotificationStatus\");",
-															"  });",
-															"  ",
-															"//Check that extension.valueCodeableConcept.coding.version has been populated correctly",
-															"  pm.test(\"Response extension.valueCodeableConcept.coding.system has been populated correctly\", function () {",
-															"        pm.expect(response.extension[0].extension[0].valueCodeableConcept.coding[0].version).to.eql(\"1.0.0\");",
-															"  });",
-															"  ",
-															"  //Check that extension[1].url has been populated correctly",
-															"  pm.test(\"Response extension.url has been populated correctly\", function () {",
-															"        pm.expect(response.extension[0].extension[1].url).to.eql(\"systemEffectiveDate\");",
-															"  });",
-															"",
-															"    //Check that extension[0].valueDateTime has been populated correctly",
-															"  pm.test(\"Response extension.url has been populated correctly\", function () {",
-															"        pm.expect(response.extension[0].extension[1].valueDateTime).to.eql(\"2020-02-19T12:51:25+00:00\");",
-															"  });"
-														],
-														"type": "text/javascript"
-													}
-												},
-												{
-													"listen": "prerequest",
-													"script": {
-														"id": "5f6a3368-60dc-4dd0-91d5-cdcd7bf0ed20",
-														"exec": [
-															""
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"protocolProfileBehavior": {
-												"disableBodyPruning": true
-											},
-											"request": {
-												"method": "GET",
-												"header": [
-													{
-														"key": "{{nhsd-asid-header}}",
-														"type": "text",
-														"value": "200000000610"
-													},
-													{
-														"key": "{{nhsd-session-urid-header}}",
-														"type": "text",
-														"value": "1234567890"
-													},
-													{
-														"key": "{{nhsd-identity-uuid-header}}",
-														"type": "text",
-														"value": "1234567890"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "",
-													"options": {
-														"raw": {}
-													}
-												},
-												"url": {
-													"raw": "{{environment}}/Patient/:nhs_id",
-													"host": [
-														"{{environment}}"
-													],
-													"path": [
-														"Patient",
-														":nhs_id"
-													],
-													"variable": [
-														{
-															"key": "nhs_id",
-															"value": "5900003108"
-														}
-													]
-												},
-												"description": "Retrieved patient with a Removed Death Notification has the correct extension with a code U and the correct display."
-											},
-											"response": []
-										},
-										{
-											"name": "Search Patient - Removed Notification",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "e57f793c-3c38-4919-be4e-2392110ef8a1",
-														"exec": [
-															" var response = pm.response.json();\r",
-															"\r",
-															"//Check that deceasedDateTime has been populated correctly\r",
-															"  pm.test(\"Response deceasedDateTime has been populated correctly\", function () {\r",
-															"        pm.expect(response.entry[0].resource.deceasedDateTime).to.eql(\"2010-01-01T00:00:00+00:00\");\r",
-															"  });\r",
-															"     \r",
-															"//Check that extension[0].url has been populated correctly\r",
-															"  pm.test(\"Response extension.valueCodeableConcept.coding.display has been populated correctly\", function () {\r",
-															"        pm.expect(response.entry[0].resource.extension[0].url).to.eql(\"https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus\");\r",
-															"  });\r",
-															"\r",
-															"//Check that extension.url has been populated correctly\r",
-															"  pm.test(\"Response extension[0].extension[0].url has been populated correctly\", function () {\r",
-															"        pm.expect(response.entry[0].resource.extension[0].extension[0].url).to.eql(\"deathNotificationStatus\");\r",
-															"  });\r",
-															"  \r",
-															"//Check that extension.valueCodeableConcept.coding.code has been populated correctly\r",
-															"  pm.test(\"Response extension.valueCodeableConcept.coding.code has been populated correctly - 1 indicates an Informal notification\", function () {\r",
-															"        pm.expect(response.entry[0].resource.extension[0].extension[0].valueCodeableConcept.coding[0].code).to.eql(\"U\");\r",
-															"  });\r",
-															"      \r",
-															"//Check that extension.valueCodeableConcept.coding.disply has been populated correctly\r",
-															"  pm.test(\"Response extension.valueCodeableConcept.coding.display has been populated correctly\", function () {\r",
-															"        pm.expect(response.entry[0].resource.extension[0].extension[0].valueCodeableConcept.coding[0].display).to.eql(\"Removed\");\r",
-															"  });\r",
-															"  \r",
-															"//Check that extension.valueCodeableConcept.coding.system has been populated correctly\r",
-															"  pm.test(\"Response extension.valueCodeableConcept.coding.system has been populated correctly\", function () {\r",
-															"        pm.expect(response.entry[0].resource.extension[0].extension[0].valueCodeableConcept.coding[0].system).to.eql(\"https://simplifier.net/UKCore/CodeSystem-UKCore-DeathNotificationStatus\");\r",
-															"  });\r",
-															"  \r",
-															"//Check that extension.valueCodeableConcept.coding.version has been populated correctly\r",
-															"  pm.test(\"Response extension[0].extension[0].valueCodeableConcept.coding[0].version has been populated correctly\", function () {\r",
-															"        pm.expect(response.entry[0].resource.extension[0].extension[0].valueCodeableConcept.coding[0].version).to.eql(\"1.0.0\");\r",
-															"  });\r",
-															"  \r",
-															"  //Check that extension[1].url has been populated correctly\r",
-															"  pm.test(\"Response extension[0].extension[1].url has been populated correctly\", function () {\r",
-															"        pm.expect(response.entry[0].resource.extension[0].extension[1].url).to.eql(\"systemEffectiveDate\");\r",
-															"  });\r",
-															"\r",
-															"    //Check that extension[0].valueDateTime has been populated correctly\r",
-															"  pm.test(\"Response extension[0].extension[1].valueDateTime has been populated correctly\", function () {\r",
-															"        pm.expect(response.entry[0].resource.extension[0].extension[1].valueDateTime).to.eql(\"2020-02-19T12:51:25+00:00\");\r",
-															"  });\r",
-															"  \r",
-															""
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"method": "GET",
-												"header": [
-													{
-														"key": "{{nhsd-asid-header}}",
-														"type": "text",
-														"value": "{{from_asid}}"
-													},
-													{
-														"key": "{{nhsd-session-urid-header}}",
-														"type": "text",
-														"value": "{{role_id}}"
-													},
-													{
-														"key": "{{nhsd-identity-uuid-header}}",
-														"type": "text",
-														"value": "{{user_id}}"
-													}
-												],
-												"url": {
-													"raw": "{{environment}}/Patient?family=Removed&given=deathNotification&gender=female&birthdate=2000-01-01",
-													"host": [
-														"{{environment}}"
-													],
-													"path": [
-														"Patient"
-													],
-													"query": [
-														{
-															"key": "family",
-															"value": "Removed"
-														},
-														{
-															"key": "given",
-															"value": "deathNotification"
-														},
-														{
-															"key": "gender",
-															"value": "female"
-														},
-														{
-															"key": "birthdate",
-															"value": "2000-01-01"
-														}
-													]
-												},
-												"description": "Search patient with a Removed Death Notification has the correct extension with a code U and the correct display."
-											},
-											"response": []
-										}
-									],
-									"description": "Updating a patient with a Removed Death Notification will fail as this is a legacy code (ensuring Operation Outcome is sensible).\r\n",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "df5c05dd-f973-47d7-b528-ef9ab75e47bb",
-												"type": "text/javascript",
-												"exec": [
-													""
-												]
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"id": "224b9474-a3a3-44c3-845c-da4313f73921",
-												"type": "text/javascript",
-												"exec": [
-													""
-												]
-											}
-										}
-									],
-									"protocolProfileBehavior": {},
-									"_postman_isSubFolder": true
-								},
-								{
-									"name": "Remove Death Notification Not Permitted",
-									"item": [
-										{
-											"name": "Retrieve Patient - get current metaData Version",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "ed522c04-c945-43c2-ba6e-ba9a270f2b06",
-														"exec": [
-															"var response = pm.response.json();",
-															"",
-															"pm.collectionVariables.set(\"metaVersion\",response.meta.versionId);",
-															"console.log(pm.collectionVariables.get(\"metaVersion\"));",
-															"",
-															"     // Check that the response status has been populated correctly ",
-															"    pm.test(\"Response Status code is correct\", function () {",
-															"        pm.response.to.have.status(parseInt(\"200\"));",
-															"    });"
-														],
-														"type": "text/javascript"
-													}
-												},
-												{
-													"listen": "prerequest",
-													"script": {
-														"id": "5f6a3368-60dc-4dd0-91d5-cdcd7bf0ed20",
-														"exec": [
-															""
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"protocolProfileBehavior": {
-												"disableBodyPruning": true
-											},
-											"request": {
-												"method": "GET",
-												"header": [
-													{
-														"key": "{{nhsd-asid-header}}",
-														"type": "text",
-														"value": "200000000610"
-													},
-													{
-														"key": "{{nhsd-session-urid-header}}",
-														"type": "text",
-														"value": "1234567890"
-													},
-													{
-														"key": "{{nhsd-identity-uuid-header}}",
-														"type": "text",
-														"value": "1234567890"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "",
-													"options": {
-														"raw": {}
-													}
-												},
-												"url": {
-													"raw": "{{environment}}/Patient/:nhs_id",
-													"host": [
-														"{{environment}}"
-													],
-													"path": [
-														"Patient",
-														":nhs_id"
-													],
-													"variable": [
-														{
-															"key": "nhs_id",
-															"value": "5900007782"
-														}
-													]
-												}
-											},
-											"response": []
-										}
-									],
-									"description": "Removal of a Death Notification will fail as user is non-DSA/ONS/Maternity site (ensuring Operation Outcome is sensible).",
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "12fd70a7-87d8-4929-953f-4e6d9443f6b1",
-												"type": "text/javascript",
-												"exec": [
-													""
-												]
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"id": "6f2c245a-cca4-4094-8ed4-0c4ceb427247",
-												"type": "text/javascript",
-												"exec": [
-													""
-												]
-											}
-										}
-									],
-									"protocolProfileBehavior": {},
-									"_postman_isSubFolder": true
-								},
-								{
-									"name": "Update Patient with Formal Death Notification Not permitted",
-									"item": [
-										{
-											"name": "Patient has an Informal Notification and trying to update with a Formal Notification",
-											"item": [
-												{
-													"name": "Retrieve Patient - Has an Informal Death Notification - get current metaData Version",
-													"event": [
-														{
-															"listen": "test",
-															"script": {
-																"id": "ed522c04-c945-43c2-ba6e-ba9a270f2b06",
-																"exec": [
-																	"var response = pm.response.json();",
-																	"",
-																	"pm.collectionVariables.set(\"metaVersion\",response.meta.versionId);",
-																	"console.log(pm.collectionVariables.get(\"metaVersion\"));",
-																	"",
-																	"// Check that the response status has been populated correctly ",
-																	"  pm.test(\"Response Status code is correct\", function () {",
-																	"        pm.response.to.have.status(parseInt(\"200\"));",
-																	"  });",
-																	"    ",
-																	"//Check that deceasedDateTime has been populated correctly",
-																	"  pm.test(\"Response deceasedDateTime has been populated correctly\", function () {",
-																	"        pm.expect(response.deceasedDateTime).to.eql(\"2020-02-14T00:00:00+00:00\");",
-																	"  });",
-																	"     ",
-																	"//Check that extension[0].url has been populated correctly",
-																	"  pm.test(\"Response extension.valueCodeableConcept.coding.display has been populated correctly\", function () {",
-																	"        pm.expect(response.extension[0].url).to.eql(\"https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus\");",
-																	"  });",
-																	"",
-																	"//Check that extension.url has been populated correctly",
-																	"  pm.test(\"Response extension.url has been populated correctly\", function () {",
-																	"        pm.expect(response.extension[0].extension[0].url).to.eql(\"deathNotificationStatus\");",
-																	"  });",
-																	"  ",
-																	"//Check that extension.valueCodeableConcept.coding.code has been populated correctly",
-																	"  pm.test(\"Response extension.valueCodeableConcept.coding.code has been populated correctly - 1 indicates an Informal notification\", function () {",
-																	"        pm.expect(response.extension[0].extension[0].valueCodeableConcept.coding[0].code).to.eql(\"1\");",
-																	"  });",
-																	"      ",
-																	"//Check that extension.valueCodeableConcept.coding.disply has been populated correctly",
-																	"  pm.test(\"Response extension.valueCodeableConcept.coding.display has been populated correctly\", function () {",
-																	"        pm.expect(response.extension[0].extension[0].valueCodeableConcept.coding[0].display).to.eql(\"Informal - death notice received via an update from a local NHS Organisation such as GP or Trust\");",
-																	"  });",
-																	"  ",
-																	"//Check that extension.valueCodeableConcept.coding.system has been populated correctly",
-																	"  pm.test(\"Response extension.valueCodeableConcept.coding.system has been populated correctly\", function () {",
-																	"        pm.expect(response.extension[0].extension[0].valueCodeableConcept.coding[0].system).to.eql(\"https://simplifier.net/UKCore/CodeSystem-UKCore-DeathNotificationStatus\");",
-																	"  });",
-																	"  ",
-																	"//Check that extension.valueCodeableConcept.coding.version has been populated correctly",
-																	"  pm.test(\"Response extension[0].extension[0].valueCodeableConcept.coding[0].version has been populated correctly\", function () {",
-																	"        pm.expect(response.extension[0].extension[0].valueCodeableConcept.coding[0].version).to.eql(\"1.0.0\");",
-																	"  });",
-																	"  ",
-																	"  //Check that extension[1].url has been populated correctly",
-																	"  pm.test(\"Response extension.url has been populated correctly\", function () {",
-																	"        pm.expect(response.extension[0].extension[1].url).to.eql(\"systemEffectiveDate\");",
-																	"  });",
-																	"",
-																	"     //Check that entry[0].resource.extension[0].valueDateTime has been populated correctly",
-																	"  pm.test(\"Response entry[0].resource.extension.url has been populated correctly\", function () {",
-																	"        pm.expect(response.extension[0].extension[1].valueDateTime).to.eql(\"2020-02-20T10:04:21+00:00\");",
-																	"  });"
-																],
-																"type": "text/javascript"
-															}
-														},
-														{
-															"listen": "prerequest",
-															"script": {
-																"id": "5f6a3368-60dc-4dd0-91d5-cdcd7bf0ed20",
-																"exec": [
-																	""
-																],
-																"type": "text/javascript"
-															}
-														}
-													],
-													"protocolProfileBehavior": {
-														"disableBodyPruning": true
-													},
-													"request": {
-														"method": "GET",
-														"header": [
-															{
-																"key": "{{nhsd-asid-header}}",
-																"type": "text",
-																"value": "200000000610"
-															},
-															{
-																"key": "{{nhsd-session-urid-header}}",
-																"type": "text",
-																"value": "1234567890"
-															},
-															{
-																"key": "{{nhsd-identity-uuid-header}}",
-																"type": "text",
-																"value": "1234567890"
-															}
-														],
-														"body": {
-															"mode": "raw",
-															"raw": "",
-															"options": {
-																"raw": {}
-															}
-														},
-														"url": {
-															"raw": "{{environment}}/Patient/:nhs_id",
-															"host": [
-																"{{environment}}"
-															],
-															"path": [
-																"Patient",
-																":nhs_id"
-															],
-															"variable": [
-																{
-																	"key": "nhs_id",
-																	"value": "5900018768"
-																}
-															]
-														},
-														"description": "Retrieved patient with an informal Death Notification has the correct extension with a code 1 and the correct display."
-													},
-													"response": []
-												},
-												{
-													"name": "Search Patient - Informal Notification",
-													"event": [
-														{
-															"listen": "test",
-															"script": {
-																"id": "e57f793c-3c38-4919-be4e-2392110ef8a1",
-																"exec": [
-																	" var response = pm.response.json();",
-																	"",
-																	"//Check that deceasedDateTime has been populated correctly",
-																	"  pm.test(\"Response entry[0].resource.deceasedDateTime has been populated correctly\", function () {",
-																	"        pm.expect(response.entry[0].resource.deceasedDateTime).to.eql(\"2020-02-14T00:00:00+00:00\");",
-																	"  });",
-																	"     ",
-																	"//Check that entry[0].resource.extension[0].url has been populated correctly",
-																	"  pm.test(\"Response entry[0].resource.extension[0].url has been populated correctly\", function () {",
-																	"        pm.expect(response.entry[0].resource.extension[0].url).to.eql(\"https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus\");",
-																	"  });",
-																	"",
-																	"//Check that entry[0].resource.extension.url has been populated correctly",
-																	"  pm.test(\"Response entry[0].resource.extension.url has been populated correctly\", function () {",
-																	"        pm.expect(response.entry[0].resource.extension[0].extension[0].url).to.eql(\"deathNotificationStatus\");",
-																	"  });",
-																	"  ",
-																	"//Check that entry[0].resource.extension.valueCodeableConcept.coding.code has been populated correctly",
-																	"  pm.test(\"Response entry[0].resource.extension.valueCodeableConcept.coding.code has been populated correctly - 1 indicates an Informal notification\", function () {",
-																	"        pm.expect(response.entry[0].resource.extension[0].extension[0].valueCodeableConcept.coding[0].code).to.eql(\"1\");",
-																	"  });",
-																	"      ",
-																	"//Check that entry[0].resource.extension.valueCodeableConcept.coding.disply has been populated correctly",
-																	"  pm.test(\"Response entry[0].resource.extension.valueCodeableConcept.coding.display has been populated correctly\", function () {",
-																	"        pm.expect(response.entry[0].resource.extension[0].extension[0].valueCodeableConcept.coding[0].display).to.eql(\"Informal - death notice received via an update from a local NHS Organisation such as GP or Trust\");",
-																	"  });",
-																	"  ",
-																	"//Check that entry[0].resource.extension[0].extension[0].valueCodeableConcept.coding[0].system has been populated correctly",
-																	"  pm.test(\"Response entry[0].resource.extension[0].extension[0].valueCodeableConcept.coding[0].system has been populated correctly\", function () {",
-																	"        pm.expect(response.entry[0].resource.extension[0].extension[0].valueCodeableConcept.coding[0].system).to.eql(\"https://simplifier.net/UKCore/CodeSystem-UKCore-DeathNotificationStatus\");",
-																	"  });",
-																	"  ",
-																	"//Check that entry[0].resource.extension.valueCodeableConcept.coding.version has been populated correctly",
-																	"  pm.test(\"Response entry[0].resource.extension.valueCodeableConcept.coding.version has been populated correctly\", function () {",
-																	"        pm.expect(response.entry[0].resource.extension[0].extension[0].valueCodeableConcept.coding[0].version).to.eql(\"1.0.0\");",
-																	"  });",
-																	"  ",
-																	"  //Check that entry[0].resource.extension[1].url has been populated correctly",
-																	"  pm.test(\"Response entry[0].resource.extension.url has been populated correctly\", function () {",
-																	"        pm.expect(response.entry[0].resource.extension[0].extension[1].url).to.eql(\"systemEffectiveDate\");",
-																	"  });",
-																	"",
-																	"    //Check that entry[0].resource.extension[0].valueDateTime has been populated correctly",
-																	"  pm.test(\"Response entry[0].resource.extension[0].extension[1].valueDateTime\", function () {",
-																	"        pm.expect(response.entry[0].resource.extension[0].extension[1].valueDateTime).to.eql(\"2020-02-20T10:04:21+00:00\");",
-																	"  });",
-																	"  ",
-																	""
-																],
-																"type": "text/javascript"
-															}
-														}
-													],
-													"request": {
-														"method": "GET",
-														"header": [
-															{
-																"key": "{{nhsd-asid-header}}",
-																"type": "text",
-																"value": "{{from_asid}}"
-															},
-															{
-																"key": "{{nhsd-session-urid-header}}",
-																"type": "text",
-																"value": "{{role_id}}"
-															},
-															{
-																"key": "{{nhsd-identity-uuid-header}}",
-																"type": "text",
-																"value": "{{user_id}}"
-															}
-														],
-														"url": {
-															"raw": "{{environment}}/Patient?family=Gone&given=John&gender=male&birthdate=1989-12-10",
-															"host": [
-																"{{environment}}"
-															],
-															"path": [
-																"Patient"
-															],
-															"query": [
-																{
-																	"key": "family",
-																	"value": "Gone"
-																},
-																{
-																	"key": "given",
-																	"value": "John"
-																},
-																{
-																	"key": "gender",
-																	"value": "male"
-																},
-																{
-																	"key": "birthdate",
-																	"value": "1989-12-10"
-																}
-															]
-														},
-														"description": "Search patient with an informal Death Notification has the correct extension with a code 1 and the correct display."
-													},
-													"response": []
-												}
-											],
-											"description": "Updating a patient with a Formal Death Notification will fail as user is non-DSA/ONS/Maternity site (ensuring Operation Outcome is sensible).\r\n",
-											"event": [
-												{
-													"listen": "prerequest",
-													"script": {
-														"id": "49ed89d3-f702-4893-9379-5eec5975dacf",
-														"type": "text/javascript",
-														"exec": [
-															""
-														]
-													}
-												},
-												{
-													"listen": "test",
-													"script": {
-														"id": "94558a9f-7046-4a79-a12b-4f1df4dceed8",
-														"type": "text/javascript",
-														"exec": [
-															""
-														]
-													}
-												}
-											],
-											"protocolProfileBehavior": {},
-											"_postman_isSubFolder": true
-										},
-										{
-											"name": "Patient has No Notification and trying to update with a Formal Notification",
-											"item": [
-												{
-													"name": "Retrieve Patient - Has no Death Notification - get current metaData",
-													"event": [
-														{
-															"listen": "test",
-															"script": {
-																"id": "ed522c04-c945-43c2-ba6e-ba9a270f2b06",
-																"exec": [
-																	"var response = pm.response.json();",
-																	"",
-																	"pm.collectionVariables.set(\"metaVersion\",response.meta.versionId);",
-																	"console.log(pm.collectionVariables.get(\"metaVersion\"));",
-																	"",
-																	"     // Check that the response status has been populated correctly ",
-																	"    pm.test(\"Response Status code is correct\", function () {",
-																	"        pm.response.to.have.status(parseInt(\"200\"));",
-																	"    });"
-																],
-																"type": "text/javascript"
-															}
-														},
-														{
-															"listen": "prerequest",
-															"script": {
-																"id": "5f6a3368-60dc-4dd0-91d5-cdcd7bf0ed20",
-																"exec": [
-																	""
-																],
-																"type": "text/javascript"
-															}
-														}
-													],
-													"protocolProfileBehavior": {
-														"disableBodyPruning": true
-													},
-													"request": {
-														"method": "GET",
-														"header": [
-															{
-																"key": "{{nhsd-asid-header}}",
-																"type": "text",
-																"value": "200000000610"
-															},
-															{
-																"key": "{{nhsd-session-urid-header}}",
-																"type": "text",
-																"value": "1234567890"
-															},
-															{
-																"key": "{{nhsd-identity-uuid-header}}",
-																"type": "text",
-																"value": "1234567890"
-															}
-														],
-														"body": {
-															"mode": "raw",
-															"raw": "",
-															"options": {
-																"raw": {}
-															}
-														},
-														"url": {
-															"raw": "{{environment}}/Patient/:nhs_id",
-															"host": [
-																"{{environment}}"
-															],
-															"path": [
-																"Patient",
-																":nhs_id"
-															],
-															"variable": [
-																{
-																	"key": "nhs_id",
-																	"value": "5900012506"
-																}
-															]
-														},
-														"description": "Retrieved patient with no Death Notification has no death notification extension."
-													},
-													"response": []
-												}
-											],
-											"description": "Updating a patient with a Formal Death Notification will fail as user is non-DSA/ONS/Maternity site (ensuring Operation Outcome is sensible).\r\n",
-											"event": [
-												{
-													"listen": "prerequest",
-													"script": {
-														"id": "aed4fe51-2648-430f-9ed1-1603ff7b74ee",
-														"type": "text/javascript",
-														"exec": [
-															""
-														]
-													}
-												},
-												{
-													"listen": "test",
-													"script": {
-														"id": "42465519-2a21-4268-adc8-1407421de891",
-														"type": "text/javascript",
-														"exec": [
-															""
-														]
-													}
-												}
-											],
-											"protocolProfileBehavior": {},
-											"_postman_isSubFolder": true
-										},
-										{
-											"name": "Patient has Formal Notification and trying to update with an Informal Notification",
-											"item": [
-												{
-													"name": "Retrieve Patient - Has an Formal Death Notification - get current metaData Version",
-													"event": [
-														{
-															"listen": "test",
-															"script": {
-																"id": "ed522c04-c945-43c2-ba6e-ba9a270f2b06",
-																"exec": [
-																	"var response = pm.response.json();",
-																	"",
-																	"pm.collectionVariables.set(\"metaVersion\",response.meta.versionId);",
-																	"console.log(pm.collectionVariables.get(\"metaVersion\"));",
-																	"",
-																	"// Check that the response status has been populated correctly ",
-																	"  pm.test(\"Response Status code is correct\", function () {",
-																	"        pm.response.to.have.status(parseInt(\"200\"));",
-																	"  });",
-																	"    ",
-																	"//Check that deceasedDateTime has been populated correctly",
-																	"  pm.test(\"Response deceasedDateTime has been populated correctly\", function () {",
-																	"        pm.expect(response.deceasedDateTime).to.eql(\"2020-01-01T00:00:00+00:00\");",
-																	"  });",
-																	"     ",
-																	"//Check that extension[0].url has been populated correctly",
-																	"  pm.test(\"Response extension.valueCodeableConcept.coding.display has been populated correctly\", function () {",
-																	"        pm.expect(response.extension[0].url).to.eql(\"https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus\");",
-																	"  });",
-																	"",
-																	"//Check that extension.url has been populated correctly",
-																	"  pm.test(\"Response extension.url has been populated correctly\", function () {",
-																	"        pm.expect(response.extension[0].extension[0].url).to.eql(\"deathNotificationStatus\");",
-																	"  });",
-																	"  ",
-																	"//Check that extension.valueCodeableConcept.coding.code has been populated correctly",
-																	"  pm.test(\"Response extension.valueCodeableConcept.coding.code has been populated correctly - 1 indicates an Informal notification\", function () {",
-																	"        pm.expect(response.extension[0].extension[0].valueCodeableConcept.coding[0].code).to.eql(\"2\");",
-																	"  });",
-																	"      ",
-																	"//Check that extension.valueCodeableConcept.coding.disply has been populated correctly",
-																	"  pm.test(\"Response extension.valueCodeableConcept.coding.display has been populated correctly\", function () {",
-																	"        pm.expect(response.extension[0].extension[0].valueCodeableConcept.coding[0].display).to.eql(\"Formal - death notice received from Registrar of Deaths\");",
-																	"  });",
-																	"  ",
-																	"//Check that extension.valueCodeableConcept.coding.system has been populated correctly",
-																	"  pm.test(\"Response extension.valueCodeableConcept.coding.system has been populated correctly\", function () {",
-																	"        pm.expect(response.extension[0].extension[0].valueCodeableConcept.coding[0].system).to.eql(\"https://simplifier.net/UKCore/CodeSystem-UKCore-DeathNotificationStatus\");",
-																	"  });",
-																	"  ",
-																	"//Check that extension.valueCodeableConcept.coding.version has been populated correctly",
-																	"  pm.test(\"Response extension.valueCodeableConcept.coding.system has been populated correctly\", function () {",
-																	"        pm.expect(response.extension[0].extension[0].valueCodeableConcept.coding[0].version).to.eql(\"1.0.0\");",
-																	"  });",
-																	"  ",
-																	"  //Check that extension[1].url has been populated correctly",
-																	"  pm.test(\"Response extension.url has been populated correctly\", function () {",
-																	"        pm.expect(response.extension[0].extension[1].url).to.eql(\"systemEffectiveDate\");",
-																	"  });",
-																	"",
-																	"     //Check that entry[0].resource.extension[0].valueDateTime has been populated correctly",
-																	"  pm.test(\"Response entry[0].resource.extension.url has been populated correctly\", function () {",
-																	"        pm.expect(response.extension[0].extension[1].valueDateTime).to.eql(\"2020-02-17T13:32:49+00:00\");",
-																	"  });"
-																],
-																"type": "text/javascript"
-															}
-														},
-														{
-															"listen": "prerequest",
-															"script": {
-																"id": "5f6a3368-60dc-4dd0-91d5-cdcd7bf0ed20",
-																"exec": [
-																	""
-																],
-																"type": "text/javascript"
-															}
-														}
-													],
-													"request": {
-														"method": "GET",
-														"header": [
-															{
-																"key": "{{nhsd-asid-header}}",
-																"type": "text",
-																"value": "200000000610"
-															},
-															{
-																"key": "{{nhsd-session-urid-header}}",
-																"type": "text",
-																"value": "1234567890"
-															},
-															{
-																"key": "{{nhsd-identity-uuid-header}}",
-																"type": "text",
-																"value": "1234567890"
-															}
-														],
-														"url": {
-															"raw": "{{environment}}/Patient/:nhs_id",
-															"host": [
-																"{{environment}}"
-															],
-															"path": [
-																"Patient",
-																":nhs_id"
-															],
-															"variable": [
-																{
-																	"key": "nhs_id",
-																	"value": "5900001210"
-																}
-															]
-														},
-														"description": "Retrieved patient with a Formal Death Notification has the correct extension with a code 2 and the correct display."
-													},
-													"response": []
-												},
-												{
-													"name": "Search Patient - Formal Notification",
-													"event": [
-														{
-															"listen": "test",
-															"script": {
-																"id": "e57f793c-3c38-4919-be4e-2392110ef8a1",
-																"exec": [
-																	" var response = pm.response.json();",
-																	"",
-																	"//Check that deceasedDateTime has been populated correctly",
-																	"  pm.test(\"Response entry[0].resource.deceasedDateTime has been populated correctly\", function () {",
-																	"        pm.expect(response.entry[0].resource.deceasedDateTime).to.eql(\"2020-01-01T00:00:00+00:00\");",
-																	"  });",
-																	"     ",
-																	"//Check that entry[0].resource.extension[0].url has been populated correctly",
-																	"  pm.test(\"Response entry[0].resource.extension[0].url has been populated correctly\", function () {",
-																	"        pm.expect(response.entry[0].resource.extension[0].url).to.eql(\"https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus\");",
-																	"  });",
-																	"",
-																	"//Check that entry[0].resource.extension.url has been populated correctly",
-																	"  pm.test(\"Response entry[0].resource.extension[0].extension[0].url has been populated correctly\", function () {",
-																	"        pm.expect(response.entry[0].resource.extension[0].extension[0].url).to.eql(\"deathNotificationStatus\");",
-																	"  });",
-																	"  ",
-																	"//Check that entry[0].resource.extension.valueCodeableConcept.coding.code has been populated correctly",
-																	"  pm.test(\"Response entry[0].resource.extension.valueCodeableConcept.coding.code has been populated correctly - 2 indicates an Formal notification\", function () {",
-																	"        pm.expect(response.entry[0].resource.extension[0].extension[0].valueCodeableConcept.coding[0].code).to.eql(\"2\");",
-																	"  });",
-																	"      ",
-																	"//Check that entry[0].resource.extension.valueCodeableConcept.coding.disply has been populated correctly",
-																	"  pm.test(\"Response entry[0].resource.extension.valueCodeableConcept.coding.display has been populated correctly\", function () {",
-																	"        pm.expect(response.entry[0].resource.extension[0].extension[0].valueCodeableConcept.coding[0].display).to.eql(\"Formal - death notice received from Registrar of Deaths\");",
-																	"  });",
-																	"  ",
-																	"//Check that entry[0].resource.extension[0].extension[0].valueCodeableConcept.coding[0].system has been populated correctly",
-																	"  pm.test(\"Response entry[0].resource.extension[0].extension[0].valueCodeableConcept.coding[0].system has been populated correctly\", function () {",
-																	"        pm.expect(response.entry[0].resource.extension[0].extension[0].valueCodeableConcept.coding[0].system).to.eql(\"https://simplifier.net/UKCore/CodeSystem-UKCore-DeathNotificationStatus\");",
-																	"  });",
-																	"  ",
-																	"//Check that entry[0].resource.extension.valueCodeableConcept.coding.version has been populated correctly",
-																	"  pm.test(\"Response entry[0].resource.extension.valueCodeableConcept.coding.version has been populated correctly\", function () {",
-																	"        pm.expect(response.entry[0].resource.extension[0].extension[0].valueCodeableConcept.coding[0].version).to.eql(\"1.0.0\");",
-																	"  });",
-																	"  ",
-																	"  //Check that entry[0].resource.extension[1].url has been populated correctly",
-																	"  pm.test(\"Response entry[0].resource.extension[0].extension[1].url has been populated correctly\", function () {",
-																	"        pm.expect(response.entry[0].resource.extension[0].extension[1].url).to.eql(\"systemEffectiveDate\");",
-																	"  });",
-																	"",
-																	"    //Check that entry[0].resource.extension[0].valueDateTime has been populated correctly",
-																	"  pm.test(\"Response entry[0].resource.extension[0].valueDateTime has been populated correctly\", function () {",
-																	"        pm.expect(response.entry[0].resource.extension[0].extension[1].valueDateTime).to.eql(\"2020-02-17T13:32:49+00:00\");",
-																	"  });",
-																	"  ",
-																	""
-																],
-																"type": "text/javascript"
-															}
-														}
-													],
-													"request": {
-														"method": "GET",
-														"header": [
-															{
-																"key": "{{nhsd-asid-header}}",
-																"type": "text",
-																"value": "{{from_asid}}"
-															},
-															{
-																"key": "{{nhsd-session-urid-header}}",
-																"type": "text",
-																"value": "{{role_id}}"
-															},
-															{
-																"key": "{{nhsd-identity-uuid-header}}",
-																"type": "text",
-																"value": "{{user_id}}"
-															}
-														],
-														"url": {
-															"raw": "{{environment}}/Patient?family=Death&given=Formal&gender=male&birthdate=2000-02-01",
-															"host": [
-																"{{environment}}"
-															],
-															"path": [
-																"Patient"
-															],
-															"query": [
-																{
-																	"key": "family",
-																	"value": "Death"
-																},
-																{
-																	"key": "given",
-																	"value": "Formal"
-																},
-																{
-																	"key": "gender",
-																	"value": "male"
-																},
-																{
-																	"key": "birthdate",
-																	"value": "2000-02-01"
-																}
-															]
-														},
-														"description": "Retrieved patient with a Formal Death Notification has the correct extension with a code 2 and the correct display."
-													},
-													"response": []
-												}
-											],
-											"description": "Updating a patient with a Formal Death Notification will fail as user is non-DSA/ONS/Maternity site (ensuring Operation Outcome is sensible).\r\n",
-											"event": [
-												{
-													"listen": "prerequest",
-													"script": {
-														"id": "fe04aff3-adc3-4383-accd-5843c909f3a3",
-														"type": "text/javascript",
-														"exec": [
-															""
-														]
-													}
-												},
-												{
-													"listen": "test",
-													"script": {
-														"id": "61f545aa-fd74-46d8-9e2f-2e31574e5be6",
-														"type": "text/javascript",
-														"exec": [
-															""
-														]
-													}
-												}
-											],
-											"protocolProfileBehavior": {},
-											"_postman_isSubFolder": true
-										}
-									],
-									"event": [
-										{
-											"listen": "prerequest",
-											"script": {
-												"id": "c6ba7d4d-8d9f-4ed2-aab1-59d952f6d928",
-												"type": "text/javascript",
-												"exec": [
-													""
-												]
-											}
-										},
-										{
-											"listen": "test",
-											"script": {
-												"id": "b8892a69-fbec-4c23-bc53-cb4d33b68d6c",
-												"type": "text/javascript",
-												"exec": [
-													""
-												]
-											}
-										}
-									],
-									"protocolProfileBehavior": {},
-									"_postman_isSubFolder": true
-								}
-							],
-							"protocolProfileBehavior": {},
-							"_postman_isSubFolder": true
 						}
 					],
 					"protocolProfileBehavior": {},
@@ -9425,7 +8108,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "9a507f42-ebdc-4300-b916-8c0ab96ee000",
+				"id": "d3c0c10d-08ce-4aeb-8313-650d9bbf2748",
 				"type": "text/javascript",
 				"exec": [
 					"// Set Headers for pm.sendRequest",
@@ -9453,7 +8136,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "f5640239-c903-4595-bac7-e9e41a913759",
+				"id": "8035c3a8-b3a4-407c-bc3d-d85dd4dbb297",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -9463,9 +8146,9 @@
 	],
 	"variable": [
 		{
-			"id": "20addbe7-8b13-48a2-9160-84802494d22e",
+			"id": "ea2245f1-c4c5-4bd9-974b-0dae62b132c1",
 			"key": "metaVersion",
-			"value": "3",
+			"value": "173",
 			"type": "string"
 		}
 	],
