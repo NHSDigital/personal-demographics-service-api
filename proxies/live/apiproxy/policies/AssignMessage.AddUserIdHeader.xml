@@ -1,7 +1,7 @@
 <AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.AddUserIdHeader">
   <Add>
       <Headers>
-          <Header name="NHSD-Identity-UUID">{jwt.VerifyJWT.FromOauthAttribute.claim.subject}</Header>
+          <Header name="NHSD-Identity-UUID">{accesstoken.id_token-subject}</Header>
       </Headers>
   </Add>
   <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
