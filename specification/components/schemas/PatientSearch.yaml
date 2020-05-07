@@ -69,7 +69,7 @@ properties:
   extension:
     type: array
     description: |
-      Wrapper array for the patient's death notification status; this is a FHIR extensions. Always contains zero or one death notification status object.
+      Wrapper array for the patient's death notification status; this is a FHIR extension. Always contains zero or one death notification status object.
     items:
       anyOf:
         - $ref: extensions/DeathNotificationStatus.yaml
