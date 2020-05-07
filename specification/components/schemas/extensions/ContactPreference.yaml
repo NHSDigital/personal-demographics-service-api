@@ -1,4 +1,4 @@
-title: Schema for a contact preference snippet
+title: Wrapper object for preferred contact details; the written communication format, preferred contact time and method.
 type: object
 required:
   - url
@@ -6,24 +6,29 @@ required:
 properties:
   url:
     type: string
+    description: Definition of the contact preference extension.
     default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference
     readOnly: true
   extension:
+    description: Wrapper array containing zero or one preferred contact method, zero or one preferred written communication format; and zero or one preferred contact time.
     type: array
     maxItems: 3
     items:
       anyOf:
         - type: object
+          description: Wrapper oject for preferred written communication format.
           required:
             - url
             - valueCodeableConcept
           properties:
             url:
               type: string
+              description: Key of this object. Always `PreferredWrittenCommunicationFormat`.
               default: PreferredWrittenCommunicationFormat
               readOnly: true
             valueCodeableConcept:
               type: object
+              description: Preferred Written Communication Format.
               required:
                 - coding
               properties:
@@ -39,25 +44,35 @@ properties:
                       system:
                         type: string
                         format: url
+                        description: Definition of the preferred written communication extension.
                         default: https://fhir.nhs.uk/R4/CodeSystem/UKCore-PreferredWrittenCommunicationFormat
                         readOnly: true
                       code:
                         type: string
+                        description: |
+                          A code to identify the preferred written communication format of a patient, contact or related person.
+                          * 11 - Large print
+                          * 12 - Braille
+                          * 13 - Audio tape
                         example: "12"
                       display:
                         type: string
+                        description: Display-friendly representation of the preferred written communication format code.
                         example: "Braille"
         - type: object
+          description: Wrapper oject for preferred contact method.
           required:
             - url
             - valueCodeableConcept
           properties:
             url:
               type: string
+              description: Key of this object. Always `PreferredContactMethod`.
               default: PreferredContactMethod
               readOnly: true
             valueCodeableConcept:
               type: object
+              description: Preferred Contact Method.
               required:
                 - coding
               properties:
@@ -73,24 +88,39 @@ properties:
                       system:
                         type: string
                         format: url
+                        description: Definition of the preferred contact method extension.
                         default: https://fhir.nhs.uk/R4/ValueSet/UKCore-PreferredContactMethod
                         readOnly: true
                       code:
                         type: string
+                        description: |
+                          A code to identify to identify the preferred contact method of a patient, contact or related person.
+                          * 1	- Letter
+                          * 2	- Visit
+                          * 3	- Telephone
+                          * 4	- E-mail
+                          * 5	- Minicom (Textphone)
+                          * 6	- Telephone contact via proxy
+                          * 7	- Sign language
+                          * 8	- No Telephone contact
                         example: "1"
                       display:
                         type: string
+                        description: Display-friendly representation of the preferred contact method code.
                         example: Letter
         - type: object
+          description: Wrapper oject for preferred contact method.
           required:
             - url
             - valueString
           properties:
             url:
               type: string
+              description: Key of this object. Always `PreferredContactTimes`.
               default: PreferredContactTimes
               readOnly: true
             valueString:
               type: string
               maximum: 40
+              description: A free-text description about the preferred contact times. 
               example: Not after 7pm

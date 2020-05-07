@@ -11,14 +11,6 @@ function _getRelatedPersons(nhsNumber) {
                 })
             }
         })
-
-        if (response.length === 0) {
-            throw Boom.notFound(
-                `Resource not found`,
-                {operationOutcomeCode: "not_found", apiErrorCode: "RESOURCE_NOT_FOUND"}
-            )
-        }
-
         return response
 }
 
@@ -38,6 +30,8 @@ function buildBundleResponse(exampleResources = [], nhsNumber) {
                 resource: resource,
             })
         });
+    } else {
+        delete response.entry
     }
     return response;
 }
