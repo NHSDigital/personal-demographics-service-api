@@ -16,7 +16,7 @@ properties:
     items:
       anyOf:
         - type: object
-          description: Wrapper oject for preferred written communication format.
+          description: Wrapper object for preferred written communication format.
           required:
             - url
             - valueCodeableConcept
@@ -60,7 +60,7 @@ properties:
                         description: Display-friendly representation of the preferred written communication format code.
                         example: "Braille"
         - type: object
-          description: Wrapper oject for preferred contact method.
+          description: Wrapper object for preferred contact method.
           required:
             - url
             - valueCodeableConcept
@@ -109,7 +109,7 @@ properties:
                         description: Display-friendly representation of the preferred contact method code.
                         example: Letter
         - type: object
-          description: Wrapper oject for preferred contact method.
+          description: Wrapper object for preferred contact times.
           required:
             - url
             - valueString
