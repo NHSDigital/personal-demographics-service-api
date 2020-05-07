@@ -96,7 +96,12 @@ function collectionRunner(url, collection_path, environment_path) {
                         "value": "NHSD-Session-URID",
                         "type": "text",
                         "enabled": true
-                    }
+                    },
+                    {
+                        "key": "role_id",
+                        "value": "1234567890",
+                        "enabled": true
+                    },
                 ],
                 "timestamp": 1404119927461,
                 "_postman_variable_scope": "globals",
