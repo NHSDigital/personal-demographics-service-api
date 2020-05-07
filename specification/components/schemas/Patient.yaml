@@ -30,7 +30,7 @@ properties:
     $ref: "Gender.yaml"
   birthDate:
     description: |
-      Date of birth. A date in the format `yyyy-mm-dd`.
+      Date of birth. A date in the format `yyyy-mm-dd`. Due to data quality issues on a small number of patients `yyyy-mm` and `yyyy` format may also be returned.
       
       When a patient tagged as `very restricted` is retrieved, birth date will be removed from the response.
     example: "2010-10-22"
@@ -38,7 +38,7 @@ properties:
     format: date
   deceasedDateTime:
     description: |
-      Date and time of death, if applicable and known. A datetime in the format `yyyy-mm-ddTHH:MM:SS+HH:MM`.
+      Date and time of death, if applicable and known. A datetime in the format `yyyy-mm-ddTHH:MM:SS+HH:MM` or `yyyy-mm-dd`. Due to data quality issues on a small number of patients `yyyy-mm` and `yyyy` format may also be returned.
       
       When a patient tagged as `very restricted` is retrieved, death date will be removed from the response.
     example: "2010-10-22T00:00:00+00:00"
@@ -74,13 +74,14 @@ properties:
   extension:
     type: array
     description: |
-      Wrapper array for the patient's pharmacies, death notification status and communication details; these are all FHIR extensions. Always contains zero or one of each pharmacy object, zero or one death notification status object, and zero or one communication details object.
+      Wrapper array for the patient's pharmacies, death notification status, communication details and contact preferences; these are all FHIR extensions. Always contains zero or one of each pharmacy object, zero or one death notification status object, zero or one communication details object, and zero or one contact preference.
 
       When a patient tagged as `restricted` or `very restricted` is retrieved, the Pharmacy extensions will be removed from the response.
     items:
       anyOf:
-        - $ref: "extensions/NominatedPharmacy.yaml"
-        - $ref: "extensions/DispensingDoctor.yaml"
-        - $ref: "extensions/MedicalApplianceSupplier.yaml"
-        - $ref: "extensions/DeathNotificationStatus.yaml"
-        - $ref: "extensions/Communication.yaml"
+        - $ref: extensions/NominatedPharmacy.yaml
+        - $ref: extensions/DispensingDoctor.yaml
+        - $ref: extensions/MedicalApplianceSupplier.yaml
+        - $ref: extensions/DeathNotificationStatus.yaml
+        - $ref: extensions/Communication.yaml
+        - $ref: extensions/ContactPreference.yaml

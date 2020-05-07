@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e70c4a87-f033-45ef-ad7a-6666c062d32c",
+		"_postman_id": "e4f74bfd-5201-4b1e-879b-5117de0364fe",
 		"name": "Personal Demographics Service - Sandbox",
 		"description": "Sandbox Testing",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -21,7 +21,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "7ecbe0ae-b410-442b-a3ff-0b1dfa815794",
+												"id": "053b9130-2456-40a2-90ca-3b92600e2dae",
 												"exec": [
 													"pm.test(\"Returns status code 200 OK\", () =>{",
 													"    pm.response.to.have.status(200);",
@@ -39,7 +39,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "88f01085-7f0b-4603-9e06-81181c0ca103",
+												"id": "d9f8a8b5-18de-478b-ac2d-7d32bd75c5c6",
 												"exec": [
 													"var expected_response =",
 													"{",
@@ -322,7 +322,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "7ecbe0ae-b410-442b-a3ff-0b1dfa815794",
+												"id": "37eefbeb-6f0a-4747-bfc1-a29a74ee5553",
 												"exec": [
 													"pm.test(\"Returns status code 200 OK\", () =>{",
 													"    pm.response.to.have.status(200);",
@@ -340,7 +340,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "88f01085-7f0b-4603-9e06-81181c0ca103",
+												"id": "5a4e695c-6184-4fb9-892d-815ea579dbb8",
 												"exec": [
 													"var expected_response =",
 													"{",
@@ -628,7 +628,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "7ecbe0ae-b410-442b-a3ff-0b1dfa815794",
+												"id": "6f6163c7-1f00-408f-948a-84c1807f9186",
 												"exec": [
 													"pm.test(\"Returns status code 200 OK\", () =>{",
 													"    pm.response.to.have.status(200);",
@@ -646,7 +646,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "88f01085-7f0b-4603-9e06-81181c0ca103",
+												"id": "6ac8dfe5-d7dc-4354-b616-ac81ec77919b",
 												"exec": [
 													"var expected_response =",
 													"{",
@@ -826,7 +826,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "7ecbe0ae-b410-442b-a3ff-0b1dfa815794",
+												"id": "ee488719-b92e-40be-b6d1-adb66b90a2c7",
 												"exec": [
 													"pm.test(\"Returns status code 200 OK\", () =>{",
 													"    pm.response.to.have.status(200);",
@@ -844,7 +844,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "88f01085-7f0b-4603-9e06-81181c0ca103",
+												"id": "54f5eb85-ad68-4e90-acd9-3c6c31372324",
 												"exec": [
 													"var expected_response =",
 													"{",
@@ -1024,7 +1024,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "7ecbe0ae-b410-442b-a3ff-0b1dfa815794",
+										"id": "de5300aa-058e-4994-a6f6-aac93fe1630c",
 										"exec": [
 											"pm.test(\"Returns status code 200 OK\", () =>{",
 											"    pm.response.to.have.status(200);",
@@ -1042,7 +1042,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "88f01085-7f0b-4603-9e06-81181c0ca103",
+										"id": "e3b63486-6543-47d0-8869-40b60528fadd",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -1211,7 +1211,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "7ecbe0ae-b410-442b-a3ff-0b1dfa815794",
+										"id": "744dc826-c0e0-4153-afc6-9d317cc5daa7",
 										"exec": [
 											"pm.test(\"Returns status code 200 OK\", () =>{",
 											"    pm.response.to.have.status(200);",
@@ -1229,7 +1229,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "88f01085-7f0b-4603-9e06-81181c0ca103",
+										"id": "747ce509-4a20-4dcc-947d-71cd2508259a",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -1351,15 +1351,19 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "94ef7c25-67f3-4edc-87e4-e2e1ee7b29b5",
+										"id": "420447a4-d3f4-4d28-84c0-677980e21546",
 										"exec": [
 											"pm.test(\"Returns status code 200 OK\", () =>{",
 											"    pm.response.to.have.status(200);",
 											"});",
 											"",
 											"pm.test(\"Returns 0 search results\", () =>{",
-											"    pm.expect(pm.response.json().entry).to.be.empty;",
-											"})"
+											"    pm.expect(pm.response.json().total).to.eql(0);",
+											"});",
+											"",
+											"pm.test(\"Returns no entry field\", () =>{",
+											"    pm.expect(pm.response.json().entry).to.eql(undefined);",
+											"});"
 										],
 										"type": "text/javascript"
 									}
@@ -1405,7 +1409,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "05f2ea19-56b4-4948-855f-c0a725aeefdd",
+										"id": "9bfe7d55-e55b-42d6-9118-499c7c648f5d",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -1479,7 +1483,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "ee5f2db1-cbc9-4735-9312-38a349a6c49d",
+										"id": "027703b6-f827-48f3-a647-f3b9f1ed513f",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -1553,7 +1557,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "bf631974-7e07-49eb-841a-2f6cc7bbd1f8",
+										"id": "1a5fa5a4-5b40-400b-a0e2-1164d3df41d0",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -1609,7 +1613,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "7ecbe0ae-b410-442b-a3ff-0b1dfa815794",
+										"id": "3fb16eea-ab90-451c-96f7-3c21f4e825be",
 										"exec": [
 											"pm.test(\"Returns status code 200 OK\", () =>{",
 											"    pm.response.to.have.status(200);",
@@ -1629,7 +1633,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "88f01085-7f0b-4603-9e06-81181c0ca103",
+										"id": "5e7a3e62-9b91-484a-85fb-b04d7bafb7fc",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -1758,7 +1762,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "a3b62985-27a5-408e-b188-525f31de2de7",
+										"id": "62cbef2b-38e2-4911-ac00-1fc63e2d39ac",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -1784,7 +1788,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "629b83a1-27b5-4cfe-b95e-0414c79471a3",
+										"id": "8548f9eb-4a50-41c0-b942-467055a9994b",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -1993,6 +1997,39 @@
 											"                    \"valueBoolean\": true",
 											"                }",
 											"            ]",
+											"        },",
+											"        {",
+											"            \"url\": \"https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference\",",
+											"            \"extension\": [",
+											"                {",
+											"                    \"url\": \"PreferredWrittenCommunicationFormat\",",
+											"                    \"valueCodeableConcept\": {",
+											"                        \"coding\": [",
+											"                            {",
+											"                                \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/UKCore-PreferredWrittenCommunicationFormat\",",
+											"                                \"code\": \"12\",",
+											"                                \"display\": \"Braille\"",
+											"                            }",
+											"                        ]",
+											"                    }",
+											"                },",
+											"                {",
+											"                    \"url\": \"PreferredContactMethod\",",
+											"                    \"valueCodeableConcept\": {",
+											"                        \"coding\": [",
+											"                            {",
+											"                                \"system\": \"https://fhir.nhs.uk/R4/ValueSet/UKCore-PreferredContactMethod\",",
+											"                                \"code\": \"1\",",
+											"                                \"display\": \"Letter\"",
+											"                            }",
+											"                        ]",
+											"                    }",
+											"                },",
+											"                {",
+											"                    \"url\": \"PreferredContactTimes\",",
+											"                    \"valueString\": \"Not after 7pm\"",
+											"                }",
+											"            ]",
 											"        }",
 											"    ]",
 											"}",
@@ -2027,7 +2064,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "a3b62985-27a5-408e-b188-525f31de2de7",
+										"id": "189ece30-a892-4950-9d45-b99044211fb6",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -2053,7 +2090,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "629b83a1-27b5-4cfe-b95e-0414c79471a3",
+										"id": "1a15ba87-fe02-4976-bbef-b4e3c0665360",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -2168,7 +2205,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "a3b62985-27a5-408e-b188-525f31de2de7",
+										"id": "fcb7e167-77a0-4b6a-9009-262e580af323",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -2225,7 +2262,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "a3b62985-27a5-408e-b188-525f31de2de7",
+										"id": "8c64eeee-d972-4305-b13f-a6bc12e38b04",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -2282,7 +2319,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "a3b62985-27a5-408e-b188-525f31de2de7",
+										"id": "cd8db184-053a-4338-ba29-e061121a1575",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -2339,7 +2376,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "a3b62985-27a5-408e-b188-525f31de2de7",
+										"id": "a620d902-e65b-4f4c-9b9e-9f1738bb2861",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -2367,7 +2404,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "629b83a1-27b5-4cfe-b95e-0414c79471a3",
+										"id": "bd56c638-a84f-401d-9735-dc2d99a7a01a",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -2493,7 +2530,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "a3b62985-27a5-408e-b188-525f31de2de7",
+										"id": "60cb299a-cebf-438e-9637-b3dceeadf22c",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -2521,7 +2558,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "629b83a1-27b5-4cfe-b95e-0414c79471a3",
+										"id": "5ef975e7-0550-4220-9fdc-075607dafe73",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -2820,7 +2857,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "a3b62985-27a5-408e-b188-525f31de2de7",
+										"id": "2cfa843e-4b0c-4676-a46e-c4f3b1ad3032",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -2878,35 +2915,31 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "a3b62985-27a5-408e-b188-525f31de2de7",
+										"id": "0a36034b-d0d7-4b79-b188-ac76e2f17774",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
-											"pm.test(\"Returns status code 404 Not Found\", () =>{",
-											"    pm.response.to.have.status(404);",
+											"pm.test(\"Returns status code 200\", () =>{",
+											"    pm.response.to.have.status(200);",
 											"});",
 											"",
-											"pm.test(\"Returns correct canned response\", () =>{",
-											"    pm.expect(JSON.stringify(response)).to.eql(JSON.stringify({",
-											"    \"resourceType\": \"OperationOutcome\",",
-											"    \"issue\": [",
-											"        {",
-											"            \"severity\": \"error\",",
-											"            \"code\": \"not_found\",",
-											"            \"details\": {",
-											"                \"coding\": [",
-											"                    {",
-											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
-											"                        \"version\": \"1\",",
-											"                        \"code\": \"RESOURCE_NOT_FOUND\",",
-											"                        \"display\": \"Resource not found\"",
-											"                    }",
-											"                ]",
-											"            }",
-											"        }",
-											"    ]",
-											"}));",
-											"})"
+											"",
+											"pm.test(\"Returns a Bundle\", () =>{",
+											"    pm.expect(pm.response.json().resourceType).to.eql(\"Bundle\");",
+											"});",
+											"",
+											"pm.test(\"Returns a type\", () =>{",
+											"    pm.expect(pm.response.json().type).to.eql(\"searchset\");",
+											"});",
+											"",
+											"pm.test(\"Returns 0 search results\", () =>{",
+											"    pm.expect(pm.response.json().total).to.eql(0);",
+											"});",
+											"",
+											"pm.test(\"Returns no entry field\", () =>{",
+											"    pm.expect(pm.response.json().entry).to.eql(undefined);",
+											"});",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -2929,232 +2962,6 @@
 								"description": "GIVEN I have a valid NHS Number\nWHEN I call the simple search query\nTHEN I should get the patients details"
 							},
 							"response": []
-						},
-						{
-							"name": "Related Person by Object Id",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "a3b62985-27a5-408e-b188-525f31de2de7",
-										"exec": [
-											"var response = pm.response.json();",
-											"    ",
-											"",
-											"pm.test(\"Returns status code 200 OK\", function () {",
-											"    pm.response.to.have.status(200);",
-											"});",
-											"",
-											"pm.test(\"Returns correct etag header\", function () {",
-											"    pm.response.to.have.header(\"etag\", \"W/\\\"2\\\"\");",
-											"});",
-											"",
-											"pm.test(\"Returns correct canned response\", () =>{",
-											"    pm.expect(JSON.stringify(pm.response.json())).to.eql(JSON.stringify(pm.environment.get(\"expected_response\")));",
-											"});",
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "629b83a1-27b5-4cfe-b95e-0414c79471a3",
-										"exec": [
-											"var expected_response =",
-											"{",
-											"    \"id\": \"B3380E98\",",
-											"    \"resourceType\": \"RelatedPerson\",",
-											"    \"patient\": {",
-											"        \"type\": \"Patient\",",
-											"        \"identifier\": {",
-											"            \"system\": \"https://beta.api.digital.nhs.uk/personal-demographics/Patient\",",
-											"            \"value\": \"90000000009\"",
-											"        },",
-											"        \"reference\": \"https://beta.api.digital.nhs.uk/personal-demographics/Patient/90000000009\"",
-											"    },",
-											"    \"active\": true,",
-											"    \"period\": {",
-											"        \"start\": \"2020-01-01\",",
-											"        \"end\": \"2021-12-31\"",
-											"    },",
-											"    \"relationship\": [",
-											"        {",
-											"            \"coding\": [",
-											"                {",
-											"                    \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole\",",
-											"                    \"code\": \"Guardian\",",
-											"                    \"display\": \"Guardian of patient\"",
-											"                }",
-											"            ]",
-											"        }",
-											"    ],",
-											"    \"extension\": [",
-											"        {",
-											"            \"url\": \"https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-CopyCorrespondenceIndicator\",",
-											"            \"valueBoolean\": true",
-											"        },",
-											"        {",
-											"            \"url\": \"https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactRank\",",
-											"            \"valuePositiveInt\": 1",
-											"        },",
-											"        {",
-											"            \"url\": \"https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference\",",
-											"            \"extension\": [",
-											"                {",
-											"                    \"url\": \"PreferredWrittenCommunicationFormat\",",
-											"                    \"valueCodeableConcept\": {",
-											"                        \"coding\": [",
-											"                            {",
-											"                                \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/UKCore-PreferredWrittenCommunicationFormat\",",
-											"                                \"code\": \"12\",",
-											"                                \"display\": \"Braille\"",
-											"                            }",
-											"                        ]",
-											"                    }",
-											"                },",
-											"                {",
-											"                    \"url\": \"PreferredContactMethod\",",
-											"                    \"valueCodeableConcept\": {",
-											"                        \"coding\": [",
-											"                            {",
-											"                                \"system\": \"https://fhir.nhs.uk/R4/ValueSet/UKCore-PreferredContactMethod\",",
-											"                                \"code\": \"1\",",
-											"                                \"display\": \"Letter\"",
-											"                            }",
-											"                        ]",
-											"                    }",
-											"                },",
-											"                {",
-											"                    \"url\": \"PreferredContactTimes\",",
-											"                    \"valueString\": \"Not after 7pm\"",
-											"                }",
-											"            ]",
-											"        },",
-											"        {",
-											"            \"url\": \"https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication\",",
-											"            \"extension\": [",
-											"                {",
-											"                    \"url\": \"language\",",
-											"                    \"valueCodeableConcept\": {",
-											"                        \"coding\": [",
-											"                            {",
-											"                                \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage\",",
-											"                                \"version\": \"1.0.0\",",
-											"                                \"code\": \"fr\",",
-											"                                \"display\": \"French\"",
-											"                            }",
-											"                        ]",
-											"                    }",
-											"                },",
-											"                {",
-											"                    \"url\": \"interpreterRequired\",",
-											"                    \"valueBoolean\": true",
-											"                }",
-											"            ]",
-											"        }",
-											"    ]",
-											"}",
-											"",
-											"pm.environment.set(\"expected_response\", expected_response);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{environment}}/Patient/9000000009/RelatedPerson/B3380E98",
-									"host": [
-										"{{environment}}"
-									],
-									"path": [
-										"Patient",
-										"9000000009",
-										"RelatedPerson",
-										"B3380E98"
-									]
-								},
-								"description": "GIVEN I have a valid NHS Number\nWHEN I call the simple search query\nTHEN I should get the patients details"
-							},
-							"response": []
-						},
-						{
-							"name": "Related Person by Object Id does not Exist",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "a3b62985-27a5-408e-b188-525f31de2de7",
-										"exec": [
-											"var response = pm.response.json();",
-											"    ",
-											"",
-											"pm.test(\"Returns status code 404 OK\", function () {",
-											"    pm.response.to.have.status(404);",
-											"});",
-											"",
-											"pm.test(\"Returns correct canned response\", () =>{",
-											"    pm.expect(JSON.stringify(pm.response.json())).to.eql(JSON.stringify(pm.environment.get(\"expected_response\")));",
-											"});",
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "629b83a1-27b5-4cfe-b95e-0414c79471a3",
-										"exec": [
-											"var expected_response =",
-											"{",
-											"    \"resourceType\": \"OperationOutcome\",",
-											"    \"issue\": [",
-											"        {",
-											"            \"severity\": \"error\",",
-											"            \"code\": \"not_found\",",
-											"            \"details\": {",
-											"                \"coding\": [",
-											"                    {",
-											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
-											"                        \"version\": \"1\",",
-											"                        \"code\": \"RESOURCE_NOT_FOUND\",",
-											"                        \"display\": \"Resource not found\"",
-											"                    }",
-											"                ]",
-											"            }",
-											"        }",
-											"    ]",
-											"}",
-											"",
-											"pm.environment.set(\"expected_response\", expected_response);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{environment}}/Patient/9000000009/RelatedPerson/12345678",
-									"host": [
-										"{{environment}}"
-									],
-									"path": [
-										"Patient",
-										"9000000009",
-										"RelatedPerson",
-										"12345678"
-									]
-								},
-								"description": "GIVEN I have a valid NHS Number\nWHEN I call the simple search query\nTHEN I should get the patients details"
-							},
-							"response": []
 						}
 					],
 					"protocolProfileBehavior": {},
@@ -3168,7 +2975,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "7b2aac9b-9cf9-47c5-b2f8-af9569784baa",
+				"id": "3f3d59f7-26e3-4209-9ae3-88d7cb583db9",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -3178,7 +2985,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "6d11c2ae-779e-4217-b61e-338b07999a0a",
+				"id": "927217e6-980b-4b23-a0fe-071b9816e355",
 				"type": "text/javascript",
 				"exec": [
 					"pm.test(\"Returns fhirVersion 4.0 Content-Type header\", () =>{",
