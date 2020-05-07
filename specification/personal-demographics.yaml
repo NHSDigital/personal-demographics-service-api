@@ -199,6 +199,8 @@ paths:
           * date of death (range)
           * registered GP practice
 
+        Ensure that the search parameters are url encoded, especially when containing special characters. For example a `space` must be represented by either `%20` or `+`.
+
         ## Matching rules
         Search parameters are not case sensitive.
 
