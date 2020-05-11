@@ -90,31 +90,18 @@ function collectionRunner(url, collection_path, environment_path) {
                         "value": credentials.access_token,
                         "type": "text",
                         "enabled": true
-                    },
-                    {
-                        "key": "jwt",
-                        "value": credentials.identity_token,
-                        "type": "text",
-                        "enabled": true
-                    },                  
-                    {
-                        "key": "nhsd-asid-header",
-                        "value": "NHSD-ASID-TEST",
-                        "type": "text",
-                        "enabled": true
-                    },
-                    {
-                        "key": "nhsd-identity-uuid-header",
-                        "value": "NHSD-Identity-UUID",
-                        "type": "text",
-                        "enabled": true
-                    },
+                    },                                                                      
                     {
                         "key": "nhsd-session-urid-header",
                         "value": "NHSD-Session-URID",
                         "type": "text",
                         "enabled": true
-                    }
+                    },
+                    {
+                        "key": "role_id",
+                        "value": "1234567890",
+                        "enabled": true
+                    },
                 ],
                 "timestamp": 1404119927461,
                 "_postman_variable_scope": "globals",
