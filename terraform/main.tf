@@ -18,7 +18,7 @@ module "personal-demographics-service" {
   name                     = "personal-demographics"
   path                     = "personal-demographics"
   apigee_environment       = var.apigee_environment
-  proxy_type               = length(regexall("sandbox", var.apigee_environment)) > 0 ? "sandbox" : "live"
+  proxy_type               = (var.force_sandbox || length(regexall("sandbox", var.apigee_environment)) > 0) ? "sandbox" : "live"
   namespace                = var.namespace
   make_api_product         = !(length(var.namespace) > 0 || length(regexall("sandbox", var.apigee_environment)) > 0)
   api_product_display_name = "Personal Demographics Service"
