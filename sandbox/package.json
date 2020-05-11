@@ -19,6 +19,6 @@
         "nhs-number-validator": "^1.1.1"
     },
     "devDependencies": {
-        "eslint": "^6.8.0"
+        "eslint": "^7.0.0"
     }
 }
