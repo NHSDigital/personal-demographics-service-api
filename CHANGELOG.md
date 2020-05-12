@@ -1,5 +1,9 @@
 # Changelog
 
+## 2020-05-07
+* Added Contact Preferences extension to the Patient resource
+* Removed GET Related Person by Object ID
+
 ## 2020-04-30
 * Remove TODO description
 * Fix fhir validator download

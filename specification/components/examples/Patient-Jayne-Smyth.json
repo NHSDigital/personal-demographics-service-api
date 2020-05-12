@@ -204,6 +204,39 @@
           "valueBoolean": true
         }
       ]
+    },
+    {
+      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference",
+      "extension": [
+        {
+          "url": "PreferredWrittenCommunicationFormat",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-PreferredWrittenCommunicationFormat",
+                "code": "12",
+                "display": "Braille"
+              }
+            ]
+          }
+        },
+        {
+          "url": "PreferredContactMethod",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://fhir.nhs.uk/R4/ValueSet/UKCore-PreferredContactMethod",
+                "code": "1",
+                "display": "Letter"
+              }
+            ]
+          }
+        },
+        {
+          "url": "PreferredContactTimes",
+          "valueString": "Not after 7pm"
+        }
+      ]
     }
   ]
 }

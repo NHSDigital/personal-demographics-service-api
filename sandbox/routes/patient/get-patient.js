@@ -32,11 +32,6 @@ module.exports = [
                 // For example /Patient/9000000009/RelatedPerson
                 const response = relatedPersonHelper.getRelatedPersons(nhsNumber);
                 return fhirHelper.createFhirResponse(h, response, patient.meta.versionId);
-
-            } else {
-                // For example /Patient/9000000009/RelatedPerson/12345
-                const relatedPerson = relatedPersonHelper.getRelatedPerson(nhsNumber, objectId);
-                return fhirHelper.createFhirResponse(h, relatedPerson, patient.meta.versionId);
             }
         }
     },
