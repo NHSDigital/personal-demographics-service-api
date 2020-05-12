@@ -939,16 +939,16 @@ paths:
         Note that your changes will not be persisted.
         JSON Patch operations themselves are validated, but the resulting resource is not validated for correctness.
 
-        | Scenario                            | Request                                                      | Response                                         |
-        | ----------------------------------- | ------------------------------------------------------------ | ------------------------------------------------ |
+        | Scenario                            | Request                                                                   | Response                                         |
+        | ----------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------ |
         | Successful update                   | `id`=`9000000009`<br />Body: One of the provided examples<br />Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json-patch+json` | HTTP Status 200 with updated patient in response (but note that the update won't be persisted) |
-        | Patient doesn't exist               | `id`=`9111231130` (or any other valid NHS Number)            | HTTP Status 404 with problem description         |
-        | Invalid NHS Number                  | `id`=`9000000000` (or any invalid NHS Number)                | HTTP Status 400 with problem description         |
-        | Missing resource version identifier | `If-Match` header missing or set to format other than `W/"<version>"` | HTTP Status 400 with problem description         |
-        | Incorrect resource version          | `If-Match`=`W/"1"`                                           | HTTP Status 412 with problem description         |
-        | Wrong content type                  | `Content-Type` header missing or other than `application/json-patch+json` | HTTP Status 415 with problem description         |
-        | No patches sent                     | Send body with no `patches` attribute                        | HTTP Status 400 with problem description         |
-        | Invalid patch operation(s)          | Send body with invalid JSON patches in `patches` attribute   | HTTP Status 400 with problem description         |
+        | Patient doesn't exist               | `id`=`9111231130` (or any other valid NHS Number)                         | HTTP Status 404 with problem description         |
+        | Invalid NHS Number                  | `id`=`9000000000` (or any invalid NHS Number)                             | HTTP Status 400 with problem description         |
+        | Missing resource version identifier | `If-Match` header missing or set to format other than `W/"<version>"`     | HTTP Status 412 with problem description         |
+        | Incorrect resource version          | `If-Match`=`W/"1"`                                                        | HTTP Status 412 with problem description         |
+        | Wrong content type                  | `Content-Type` header missing or other than `application/json-patch+json` | HTTP Status 400 with problem description         |
+        | No patches sent                     | Send body with no `patches` attribute                                     | HTTP Status 400 with problem description         |
+        | Invalid patch operation(s)          | Send body with invalid JSON patches in `patches` attribute                | HTTP Status 400 with problem description         |
 
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
@@ -977,10 +977,6 @@ paths:
               required:
                 - patches
               properties:
-                correction:
-                  description: Set to true if the update is correcting previously incorrect data.
-                  type: boolean
-                  default: false
                 patches:
                   $ref: components/schemas/JsonPatch.yaml
             examples:
