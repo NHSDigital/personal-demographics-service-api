@@ -129,7 +129,7 @@ info:
 
     Alternatively, you can try out the sandbox using our Postman collection:
 
-    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/dc052f444e70d072e577)
+    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c2f31c73988a07a6f49d)
 
     ### Integration testing
     Our [integration test environment](https://digital.nhs.uk/developer/testing#integration-testing):
@@ -291,7 +291,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/dc052f444e70d072e577)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c2f31c73988a07a6f49d)
       tags:
         - patients
       parameters:
@@ -544,7 +544,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/dc052f444e70d072e577)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c2f31c73988a07a6f49d)
       summary: "Retrieve a patient's record"
       operationId: get-patient
       tags:
@@ -954,7 +954,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/dc052f444e70d072e577)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c2f31c73988a07a6f49d)
 
 
       summary: Update a patient's record
@@ -1094,7 +1094,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/dc052f444e70d072e577)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c2f31c73988a07a6f49d)
       summary: "Retrieve a list of Related Person resources for a given patient"
       operationId: get-related-people
       tags:
