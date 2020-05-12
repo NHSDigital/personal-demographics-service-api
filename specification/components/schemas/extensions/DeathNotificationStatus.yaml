@@ -1,5 +1,12 @@
 type: object
-description: Wrapper object for death notification details.
+description: |
+  Wrapper object for death notification details.
+
+  There are a number of business rules that should be taken into account:
+      * Cannot be deleted.
+      * Cannot be changed if the death notification status is 2 (formal).
+      * Only certain endpoints can set a death notification of 2 (formal).
+      * When adding, a deceased date time must also be added.
 required:
   - url
   - extension

@@ -33,9 +33,6 @@ EXAMPLE_TYPES = {
             sensitive_patient
         ]}
     ],
-    "PatientUpdate": [
-        {"type": "update", "file_prefix": "", "slim_func": []},
-    ],
     "RelatedPerson": [
         {"type": "retrieval", "file_prefix": "", "slim_func": [remove_list_id]},
         {"type": "nhs_number", "file_prefix": "Referenced_", "slim_func": [

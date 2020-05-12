@@ -1005,7 +1005,7 @@ paths:
           content:
             application/fhir+json:
               schema:
-                $ref: components/schemas/PatientUpdate.yaml
+                $ref: components/schemas/Patient.yaml
         '400':
           description: Client error.
           content:
@@ -1249,8 +1249,6 @@ components:
       $ref: components/schemas/Patient.yaml
     PatientSearch:
       $ref: components/schemas/PatientSearch.yaml
-    PatientUpdate:
-      $ref: components/schemas/PatientUpdate.yaml
     RelatedPerson:
       $ref: components/schemas/RelatedPerson.yaml
     OperationOutcome:

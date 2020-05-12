@@ -41,6 +41,15 @@ properties:
       Date and time of death, if applicable and known. A datetime in the format `yyyy-mm-ddTHH:MM:SS+HH:MM` or `yyyy-mm-dd`. Due to data quality issues on a small number of patients `yyyy-mm` and `yyyy` format may also be returned.
       
       When a patient tagged as `very restricted` is retrieved, death date will be removed from the response.
+
+      When adding or updating the deceased date time, the update should be in the format `yyyy-mm-ddTHH:MM:SS+HH:`yyyy-mm-dd`.
+
+      There are a number of business rules that should be taken into account:
+      * Cannot be deleted.
+      * Cannot be a date in the future.
+      * Cannot be before the date of birth.
+      * Cannot be changed if the death notification status is 2 (formal).
+      * When adding, a death notification status must also be added.
     example: "2010-10-22T00:00:00+00:00"
     type: string
     format: date-time
