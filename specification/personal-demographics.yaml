@@ -602,13 +602,337 @@ paths:
 
         This is a 'patch' operation, meaning you can update specific parts of the patient record (such as a name or an address), as opposed to having to update the entire record.
 
-        ## Patient record versioning
+        ## Patient resource versioning
         To update a patient's record you must have retrieved it first.
         When you retrieve a patient record, you get a version number for the record (in the `ETag` header and in the `versionId` field in the response).
-        You must then pass the record's version number in the update request (in the `If-Match` header).
+        You must then pass the resource's version number in the update request (in the `If-Match` header).
         The update will only succeed if the patient record has not been updated in our database in the meantime.
         If the update succeeds, you will receive a copy of the update record in the response, including the new record version number.
         If you have a subsequent update you must use the new version number.
+
+        ## JSON Patch
+        To update a patient a [JSON Patch](https://tools.ietf.org/html/rfc6902) should be sent.
+
+        A patch object consists of:
+        * an operation, `op` - this is required.
+        * a path to the data that you want to change, `path` - this is required.
+        * the value that will be assigned, `value` - this is required for `add`, `replace` and `test`; but should not be included for a `remove`.
+
+        The following operations are supported:
+        * `add` - to add a new value.
+        * `replace` - to replace an existing value.
+        * `remove` - to remove an existing value.
+        * `test` - to test the state of a value is as expected before continuing with the update.
+
+        Paths point to a single value, list or object, for example:
+        * `/gender` - pointing to the gender value.
+        * `/name` - point to the name list.
+        * `/name/0` - pointing to the 1st object in the name list.
+        * `/address/0/line/1` - pointing to the 2nd line string in the 1st address object.
+
+        The value can be set to any valid value for that path, so could be a null, a string, an object or a list.
+
+        ### Addition
+
+        `add` should be used to add new items to a patient.
+
+        Adding a simple data item such as the date of death can be done using a patch such as:
+
+        ```json
+        {
+            "patches": [
+              { "op": "add", "path": "/deceasedDate", "value": "2020-01-01" }
+          ]
+        }
+        ```
+
+        Adding to a list such as a `name` should be done by including the whole object in the value field. Note, the list index is `-` which is because when adding to a list as the index will not be known:
+
+        ```json
+        {
+            "patches": [
+              {
+                    "op": "add",
+                    "path": "/name/-",
+                    "value": {
+                        "use": "usual",
+                        "period": { "start": "2019-12-31" },
+                        "prefix": ["Dr"],
+                        "given": [
+                          "Joe",
+                          "Horation",
+                          "Maximus"
+                        ],
+                        "family": "Bloggs",
+                        "suffix": ["PhD"]
+                    }
+                }
+          ]
+        }
+        ```
+
+        ### Replacing
+
+        `replace` should be used to alter existing items on the patient.
+
+        Replacing a simple data item such as the gender can be done using a patch such as:
+
+        ```json
+        {
+            "patches": [
+              { "op": "replace", "path": "/gender", "value": "male" }
+          ]
+        }
+        ```
+
+        Replacing a list item can be done in two ways which may be dependent on any external development libraries that can be used to create the patch.
+
+        The first approach is to replace the whole list item:
+
+        ```json
+        {
+            "patches": [
+              {
+                    "op": "replace",
+                    "path": "/name/0",
+                    "value": {
+                        "id": "123",
+                        "use": "usual",
+                        "period": { "start": "2019-12-31" },
+                        "prefix": ["Dr"],
+                        "given": [
+                          "Joe",
+                          "Horation",
+                          "Maximus"
+                        ],
+                        "family": "Bloggs",
+                        "suffix": ["PhD"]
+                    }
+                }
+          ]
+        }
+        ```
+
+        The second approach is to replace just a part, or parts, of the list object keys if all others will remain the same:
+
+        ```json
+        {
+            "patches": [
+              { "op": "replace", "path": "/name/0/id", "value": "123" },
+              { "op": "replace", "path": "/name/0/prefix/0", "value": "Mr" },
+              { "op": "replace", "path": "/name/0/family", "value": "Smith" }
+            ]
+        }
+        ```
+
+        An added requirement to ensure no accidental data loss or replacement of the wrong list item, you must always include the list `id` or `url`. This will be in the object on retrieval so just needs to be mirrored back. You should not include an id on an addition as this will be automatically generated by the system and is a unique object id, so only our system can guarantee that.
+
+        ### Removal
+
+        `remove` should be used to delete existing items on a patient.
+
+        Removing a simple data item such as the gender can be done using a patch such as:
+
+        ```json
+        {
+            "patches": [
+              { "op": "remove", "path": "/gender" }
+          ]
+        }
+        ```
+
+        Note, that in this scenario, although the patch is perfectly valid, the update will still be rejected as a patients gender cannot be removed.
+
+        Removing a list item should only be done on the whole item object, not individual sub-items; instead use the replace operation.
+
+        To remove a list item, a `test` operation must <u>immediately proceed</u> the `remove` . This is an added requirement to ensure no accidental data loss occurs or the wrong item is removed. The test operation should be used to assert either:
+
+        * the `id` - the object id for items that have one - for example `name`, `address` or `telecom`.
+        * the `url` - the url for the extension being removed.
+        * the whole object being removed.
+
+        An example of a list item removal using the `id` would be:
+
+        ```json
+        {
+            "patches": [
+              { "op": "test", "path": "/name/0/id", "value": "123" },
+              { "op": "remove", "path": "/name/0" }
+          ]
+        }
+        ```
+
+        An example of a extension list item removal using the `url` would be:
+
+        ```json
+        {
+            "patches": [
+              { "op": "test", "path": "/extension/0/url", "value": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus" },
+              { "op": "remove", "path": "/extension/0" }
+          ]
+        }
+        ```
+
+        An example of a list item removal using the whole object would be:
+
+        ```json
+        {
+            "patches": [
+              { 
+                    "op": "test",
+                    "path": "/name/0/",
+                    "value": {
+                        "id": "123",
+                        "use": "usual",
+                        "period": { "start": "2019-12-31" },
+                        "prefix": ["Dr"],
+                        "given": [
+                          "Joe",
+                          "Horation",
+                          "Maximus"
+                        ],
+                        "family": "Bloggs",
+                        "suffix": ["PhD"]
+                    }
+                },
+              { "op": "remove", "path": "/name/0" }
+          ]
+        }
+        ```
+
+        Special care should be taken when performing multiple removals in the same list; as removing a particular index could affect all subsequent index positions. The next two examples perform **<u>exactly</u>** the same operation.
+
+        Using the following initial (simplified) data, with the intention of removing the names in index 1 (Irwin) and 2 (Bruce):
+
+        ```json
+        {
+            "name": [
+                {"id": "2", "family": "Parker"},
+                {"id": "3", "family": "Irwin"},
+                {"id": "4", "family": "Bruce"},
+                {"id": "5", "family": "Sharpe"}
+            ]
+        }
+        ```
+
+        **Example 1**:
+
+        ```json
+        {
+            "patches": [
+              { "op": "test", "path": "/name/1/id", "value": "3" }
+              { "op": "remove", "path": "/name/1" },
+              { "op": "test", "path": "/name/1/id", "value": "4" }
+              { "op": "remove", "path": "/name/1" }
+          ]
+        }
+        ```
+
+        After the 1st removal the data will look like:
+
+        ```json
+        {
+            "name": [
+                {"id": "2", "family": "Parker"},
+                {"id": "4", "family": "Bruce"},
+                {"id": "5", "family": "Sharpe"}
+            ]
+        }
+        ```
+
+        meaning Irwin has been removed, Bruce has moved from index 2 -> 1 and Sharpe from 3 -> 2.
+
+        So after applying the 2nd removal the data will look like:
+
+        ```json
+        {
+            "name": [
+                {"id": "2", "family": "Parker"},
+                {"id": "5", "family": "Sharpe"}
+            ]
+        }
+        ```
+
+        Which is the intended outcome. Using the same index 1 for both removals may look unexpected, but the way JSON Patch works is iterating over each patch operation in turn and making the change to the list index positions. This means a developer needs to account for lists changing from one operation to the next.
+
+        **Example 2**:
+
+        ```json
+        {
+            "patches": [
+              { "op": "test", "path": "/name/2/id", "value": "4" }
+              { "op": "remove", "path": "/name/2" },
+              { "op": "test", "path": "/name/1/id", "value": "3" }
+              { "op": "remove", "path": "/name/1" }
+          ]
+        }
+        ```
+
+        After the 1st removal the data will look like:
+
+        ```json
+        {
+            "name": [
+                {"id": "2", "family": "Parker"},
+                {"id": "3", "family": "Irwin"},
+                {"id": "5", "family": "Sharpe"}
+            ]
+        }
+        ```
+
+        Applying the 2nd removal the data will look like:
+
+        ```json
+        {
+            "name": [
+                {"id": "2", "family": "Parker"},
+                {"id": "5", "family": "Sharpe"}
+            ]
+        }
+        ```
+
+        Which is the intended outcome. Providing the patches with the indexes descending means that the list stays in a stable format the whole way through as the only changes to the index positions are items have been passed over already.
+
+        **Example 3 - a failure**
+
+        ```json
+        {
+            "patches": [
+              { "op": "test", "path": "/name/1/id", "value": "3" },
+              { "op": "remove", "path": "/name/1" },
+              { "op": "test", "path": "/name/2/id", "value": "4" },
+              { "op": "remove", "path": "/name/2" }
+          ]
+        }
+        ```
+
+        After the 1st removal the data will look like:
+
+        ```json
+        {
+            "name": [
+                {"id": "2", "family": "Parker"},
+                {"id": "4", "family": "Bruce"},
+                {"id": "5", "family": "Sharpe"}
+            ]
+        }
+        ```
+
+        When applying the 2nd test, it will fail as the index 2 id is `5`, but the test was looking for `4`. An error will be returned and none of the updates provided would be made to the database.
+
+        This failure example is a good reason for forcing the use of the `test` operation. If there was no test, index 2 would have been blindly removed, meaning the final state of the data would look like:
+
+        ```json
+        {
+            "name": [
+                {"id": "2", "family": "Parker"},
+                {"id": "4", "family": "Bruce"}
+            ]
+        }
+        ```
+
+        Which is incorrect, as Irwin and Sharpe were removed instead of Irwin and Bruce.
+
 
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment.
@@ -681,7 +1005,7 @@ paths:
           content:
             application/fhir+json:
               schema:
-                $ref: components/schemas/Patient.yaml
+                $ref: components/schemas/PatientUpdate.yaml
         '400':
           description: Client error.
           content:
@@ -925,6 +1249,8 @@ components:
       $ref: components/schemas/Patient.yaml
     PatientSearch:
       $ref: components/schemas/PatientSearch.yaml
+    PatientUpdate:
+      $ref: components/schemas/PatientUpdate.yaml
     RelatedPerson:
       $ref: components/schemas/RelatedPerson.yaml
     OperationOutcome:
