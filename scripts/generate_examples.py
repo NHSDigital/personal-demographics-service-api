@@ -24,9 +24,11 @@ from format_examples import (
 EXAMPLE_TYPES = {
     "Patient": [
         {"type": "retrieval", "file_prefix": "", "slim_func": []},
-        {"type": "search", "file_prefix": "Search_", "slim_func": [slim_patient]},
         {"type": "sensitive", "file_prefix": "Sensitive_", "slim_func": [sensitive_patient]},
-        {"type": "sensitive", "file_prefix": "Sensitive_Search_", "slim_func": [
+    ],
+    "PatientSearch": [
+        {"type": "search", "file_prefix": "", "slim_func": [slim_patient]},
+        {"type": "sensitive", "file_prefix": "Sensitive_", "slim_func": [
             slim_patient,
             sensitive_patient
         ]}

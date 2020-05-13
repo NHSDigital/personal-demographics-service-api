@@ -1,6 +1,10 @@
 {
-  "correction": false,
   "patches": [
+    {
+      "op": "test",
+      "path": "/name/0/id",
+      "value": "123"
+    },
     {
       "op": "remove",
       "path": "/name/0"
