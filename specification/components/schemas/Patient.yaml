@@ -1,7 +1,5 @@
 type: object
 required:
-  - birthDate
-  - gender
   - name
   - address
 properties:
@@ -30,7 +28,9 @@ properties:
     $ref: "Gender.yaml"
   birthDate:
     description: |
-      Date of birth. A date in the format `yyyy-mm-dd`. Due to data quality issues on a small number of patients `yyyy-mm` and `yyyy` format may also be returned.
+      The date on which the patient was born or is officially deemed to have been born.
+      
+      It is a date in the format `yyyy-mm-dd`. Due to data quality issues on a small number of patients `yyyy-mm` and `yyyy` format may also be returned.
       
       When a patient tagged as `very restricted` is retrieved, birth date will be removed from the response.
 
@@ -45,11 +45,13 @@ properties:
     format: date
   deceasedDateTime:
     description: |
-      Date and time of death, if applicable and known. A datetime in the format `yyyy-mm-ddTHH:MM:SS+HH:MM` or `yyyy-mm-dd`. Due to data quality issues on a small number of patients `yyyy-mm` and `yyyy` format may also be returned.
+      The date and time on which a person died or is officially deemed to have died, if applicable and known.
+      
+      It is a datetime in the format `yyyy-mm-ddTHH:MM:SS+HH:MM` or `yyyy-mm-dd`. Due to data quality issues on a small number of patients `yyyy-mm` and `yyyy` format may also be returned.
       
       When a patient tagged as `very restricted` is retrieved, death date will be removed from the response.
 
-      When adding or updating the deceased date time, the update should be in the format `yyyy-mm-ddTHH:MM:SS+HH:`yyyy-mm-dd`.
+      When adding or updating the deceased date time, the update should be in the format `yyyy-mm-ddTHH:MM:SS+HH:MM`.
 
       There are a number of business rules that should be taken into account:
       * Cannot be removed.
