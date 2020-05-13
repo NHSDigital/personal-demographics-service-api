@@ -611,7 +611,12 @@ paths:
         If you have a subsequent update you must use the new version number.
 
         ## JSON Patch
-        To update a patient a [JSON Patch](https://tools.ietf.org/html/rfc6902) should be sent.
+        To update a patient a [JSON Patch](https://tools.ietf.org/html/rfc6902) should be sent. A JSON Patch consists of one or more patch objects within a list.
+
+        It is recommended that all desired updates are sent together in a single request as a list of patches.
+        This is the most efficient approach and will reduce the danger of race conditions occurring when updating the patient multiple times in a short period of time.
+
+        When processing the list of patch objects, each patch must be valid and pass all the business rules against the data. If one patch object fails, none of the patch objects will be applied.
 
         A patch object consists of:
         * an operation, `op` - this is required.
@@ -980,18 +985,50 @@ paths:
                 patches:
                   $ref: components/schemas/JsonPatch.yaml
             examples:
+              add-deceased-date-time:
+                summary: Add a new single item (deceasedDateTime) to the patient
+                value:
+                  $ref: components/examples/requests/PatientPatch/add-deceased-date-time.json
               add-name:
-                summary: Add a new name to the patient
+                summary: Add a new list item (name) to the patient
                 value:
                   $ref: components/examples/requests/PatientPatch/add-name.json
-              update-name:
-                summary: Update the first given name entry
+              add-extension:
+                summary: Add a an extension (Nominated Pharmacy) to the Patient
                 value:
-                  $ref: components/examples/requests/PatientPatch/update-name.json
+                  $ref: components/examples/requests/PatientPatch/add-extension.json
+              update-gender:
+                summary: Update the simple item (gender)
+                value:
+                  $ref: components/examples/requests/PatientPatch/update-gender.json
+              update-address:
+                summary: Update specific fields on a list item (address)
+                value:
+                  $ref: components/examples/requests/PatientPatch/update-address.json
+              update-address-alternative:
+                summary: Update whole object on a list item (address)
+                value:
+                  $ref: components/examples/requests/PatientPatch/update-address-alternative.json
+              update-extension:
+                summary: Update an extension (Death Notification)
+                value:
+                  $ref: components/examples/requests/PatientPatch/update-extension.json
+              delete-gender:
+                summary: Remove a single item (gender) no longer in use
+                value:
+                  $ref: components/examples/requests/PatientPatch/delete-gender.json
               delete-name:
-                summary: Remove a name no longer in use
+                summary: Remove a list item (name) no longer in use, using test pointing to the name items id
                 value:
                   $ref: components/examples/requests/PatientPatch/delete-name.json
+              delete-name-alternative:
+                summary: Remove a list item (name) no longer in use, using test pointing to the name object
+                value:
+                  $ref: components/examples/requests/PatientPatch/delete-name-alternative.json
+              delete-extension:
+                summary: Remove an extension (Dispensing Doctor Pharmacy) no longer in use
+                value:
+                  $ref: components/examples/requests/PatientPatch/delete-extension.json
       responses:
         '200':
           description: Patient updated.
