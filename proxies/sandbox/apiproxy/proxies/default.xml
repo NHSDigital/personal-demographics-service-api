@@ -21,4 +21,7 @@
     <RouteRule name="sandbox">
         <TargetEndpoint>sandbox</TargetEndpoint>
     </RouteRule>
+    <RouteRule name="_ping">
+    <Condition>(proxy.pathsuffix MatchesPath "/_ping") and (request.verb = "GET")</Condition>
+  </RouteRule>
 </ProxyEndpoint>
