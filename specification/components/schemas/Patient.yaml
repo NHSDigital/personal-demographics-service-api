@@ -1,7 +1,6 @@
 type: object
 required:
-  - name
-  - address
+  - id
 properties:
   resourceType:
     type: string
@@ -21,6 +20,16 @@ properties:
       List of names associated with the patient.
       
       When a patient tagged as `very restricted` is retrieved, all names will be removed from the response.
+
+      There are a number of business rules that should be taken into account:
+      * Cannot add more than one `usual` name.
+      * Cannot remove the `usual` name.
+      * Cannot add more than one `nickhame`.
+      * Can have multiple instances of all other names use types.
+      * Cannot replace the use type on an existing name. For example, once an name is a nickname, it cannot be changed directly to an alias. You must instead remove the nickname and add the alias.
+      * The first character of each `suffix` item must be `A-Z`.
+      * The date period is optional; where present they must a be valid dates and the `end` date cannot be before the `start` date.
+      * Supplied name data must be UTF-8 encodable.
     minItems: 1
     items:
       $ref: "HumanName.yaml"

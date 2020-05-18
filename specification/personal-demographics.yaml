@@ -651,7 +651,7 @@ paths:
         }
         ```
 
-        Adding to a list such as a `name` should be done by including the whole object in the value field. Note, the list index is `-` which is because when adding to a list as the index will not be known:
+        Adding to a list such as a `name` should be done by including the whole object in the value field. Note, the list index is `-` this is because when adding to a list as the index will not be known:
 
         ```json
         {
@@ -675,6 +675,8 @@ paths:
           ]
         }
         ```
+
+        When adding a list item, ensure the index is always `-`, otherwise the request will be rejected.
 
         ### Replacing
 

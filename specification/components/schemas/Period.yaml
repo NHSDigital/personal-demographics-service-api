@@ -1,5 +1,8 @@
 type: object
-description: Time period when name was, is, or will be in use.
+description: |
+  Time period when name was, is, or will be in use.
+
+  `end` cannot be before `start`.
 required:
   - start
 properties:
