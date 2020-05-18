@@ -1,0 +1,35 @@
+type: object
+description: Metadata about this resource.
+properties:
+  versionId:
+    type: string
+    description: The NHS Digital assigned version of the patient resource.
+    readOnly: true
+    example: "2"
+  security:
+    type: array
+    description: |
+      The level of security on the patients record, which affects which fields are populated on retrieval. The possible responses are:
+      * U - unrestricted. All available data will be returned.
+      * R - restricted. Any sensitive data around the patient's location, so `address`, `generalPractitioner` and `telecom`, will be removed from the response.
+      * V - very restricted. All patient data will be removed from the response apart from `id`, `identifier` and `meta` fields. The `gender` field will return `unknown` regardless of actual gender.
+      * REDACTED - redacted. The patient record has been marked as invalid, so the data should not be used. This code will never be returned; you will receive a 404, and appropriate error response, if an invalidated patient retrieval is attempted.
+    readOnly: true
+    maxItems: 1
+    items:
+      type: object
+      properties:
+        system:
+          type: string
+          description: URI of the value set specification.
+          example: https://www.hl7.org/fhir/valueset-security-labels.html
+        code:
+          type: string
+          description: Code defined by the system value set.
+          enum: [U, R, V, REDACTED]
+          example: U
+        display:
+          type: string
+          description: Representation defined by the system.
+          enum: ["unrestricted", "restricted", "very restricted", "redacted"]
+          example: unrestricted

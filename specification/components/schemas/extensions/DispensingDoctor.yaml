@@ -1,0 +1,39 @@
+type: object
+description: Wrapper object for the patient's dispensing doctor. This will only be populated on a retrieval and not a search.
+required:
+  - url
+  - valueReference
+properties:
+  url:
+    type: string
+    description: URL of specification of UKCore-DispensingDoctor FHIR extension.
+    default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DispensingDoctor
+    readOnly: true
+  valueReference:
+    type: object
+    description: Reference to a GP Practive Pharmacy Organization Resource.
+    required:
+      - reference
+      - identifier
+    properties:
+      reference:
+        type: string
+        description: URL of the FHIR Organization resource for the dispensing doctor. See [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details.
+        example: 'https://directory.spineservices.nhs.uk/STU3/Organization/Y23456'
+      identifier:
+        type: object
+        description: Wrapper object for the patient's dispensing doctor organisation code.
+        required:
+          - value
+        properties:
+          system:
+            type: string
+            description: URL for the FHIR code system for the ODS organisation code.
+            default: https://fhir.nhs.uk/Id/ods-organization-code
+            readOnly: true
+          value:
+            type: string
+            description: Organisation code for the dispensing doctor, as held in the [Organisation Data Service](https://developer.nhs.uk/apis/ods/).
+            example: Y23456
+          period:
+            $ref: "../Period.yaml"

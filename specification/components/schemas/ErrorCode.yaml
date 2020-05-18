@@ -5,6 +5,7 @@ properties:
     type: array
     items:
       type: object
+      readOnly: true
       properties:
         system:
           type: string
@@ -17,8 +18,8 @@ properties:
         code:
           type: string
           description: Symbol in syntax defined by the system.
-          example: invalidParams
+          example: INVALID_VALUE
         display:
           type: string
           description: Representation defined by the system.
-          example: Invalid params.
+          example: Invalid value - 2019-01 in field 'birthDate'

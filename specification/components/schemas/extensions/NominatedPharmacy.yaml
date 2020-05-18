@@ -1,14 +1,20 @@
 type: object
-description: Wrapper object for the patient's nominated pharmacy.
+description: Wrapper object for the patient's nominated pharmacy. This will only be populated on a retrieval and not a search.
+required:
+  - url
+  - valueReference
 properties:
   url:
     type: string
     description: URL of specification of UKCore-NominatedPharmacy FHIR extension.
-    default: https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-NominatedPharmacy
+    default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NominatedPharmacy
     readOnly: true
   valueReference:
     type: object
     description: Reference to a Pharmacy Organization Resource.
+    required:
+      - reference
+      - identifier
     properties:
       reference:
         type: string
@@ -17,6 +23,8 @@ properties:
       identifier:
         type: object
         description: Wrapper object for the patient's nominated pharmacy organisation code.
+        required:
+          - value
         properties:
           system:
             type: string
@@ -27,3 +35,5 @@ properties:
             type: string
             description: Organisation code for the nominated pharmacy, as held in the [Organisation Data Service](https://developer.nhs.uk/apis/ods/).
             example: Y12345
+          period:
+            $ref: "../Period.yaml"

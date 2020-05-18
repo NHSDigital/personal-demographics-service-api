@@ -1,0 +1,51 @@
+<TargetEndpoint name="ig3">
+  <FaultRules>
+    <FaultRule name="access_token_expired">
+      <Step>
+        <Name>ExtractVariables.OAuthErrorFaultString</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.OAuthPolicyErrorResponse</Name>
+      </Step>
+      <Condition>oauthV2.OauthV2.VerifyAccessToken.failed</Condition>
+    </FaultRule>
+  </FaultRules>
+  <PreFlow>
+    <Request>
+      <Step>
+        <!-- Header NHSD-Session-URID must be present and not empty -->
+        <Name>RaiseFault.400BadRequest</Name>
+        <Condition>(request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>OauthV2.VerifyAccessToken</Name>
+      </Step>
+      <Step>
+        <Name>Quota</Name>
+      </Step>
+      <Step>
+        <Name>SpikeArrest</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.AddUserIdHeader</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.AddIssuerHeader</Name>
+      </Step>
+      <Step>
+        <Name>KeyValueMapOperations.GetSecureVariables</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.AddAsidHeader</Name>
+      </Step>
+    </Request>
+  </PreFlow>
+  <HTTPTargetConnection>
+    <SSLInfo>
+      <Enabled>true</Enabled>
+    </SSLInfo>
+    <LoadBalancer>
+      <Server name="ig3" />
+    </LoadBalancer>
+  </HTTPTargetConnection>
+</TargetEndpoint>

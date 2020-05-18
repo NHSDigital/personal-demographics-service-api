@@ -1,9 +1,13 @@
 # personal-demographics-service-api
+
+![Build](https://github.com/NHSDigital/personal-demographics-service-api/workflows/Build/badge.svg?branch=master)
+
 This is a RESTful HL7® FHIR® API specification for the *Personal Demographics Service*.
 
 * `specification/` This [Open API Specification](https://swagger.io/docs/specification/about/) describes the endpoints, methods and messages exchanged by the API. Use it to generate interactive documentation; the contract between the API and its consumers.
 * `sandbox/` This NodeJS application implements a mock implementation of the service. Use it as a back-end service to the interactive documentation to illustrate interactions and concepts. It is not intended to provide an exhaustive/faithful environment suitable for full development and testing.
 * `scripts/` Utilities helpful to developers of this specification.
+* `apiproxy/` The Apigee API Proxy
 
 Consumers of the API will find developer documentation on the [NHS Digital Developer Hub](https://emea-demo8-nhsdportal.apigee.io/).
 
@@ -35,14 +39,39 @@ in CI, but it's useful to run them locally too.
 $ make install-hooks
 ```
 
+### Environment Variables
+Various scripts and commands rely on environment variables being set. These are documented with the commands.
+
+:bulb: Consider using [direnv](https://direnv.net/) to manage your environment variables during development and maintaining your own `.envrc` file - the values of these variables will be specific to you and/or sensitive.
+
 ### Make commands
 There are `make` commands that alias some of this functionality:
- * `test` -- Lints the definition
+ * `lint` -- Lints the spec and code
  * `publish` -- Outputs the specification as a **single file** into the `dist/` directory
  * `serve` -- Serves a preview of the specification in human-readable format
  * `generate-examples` -- generate example objects from the specification
  * `validate` -- validate generated examples against FHIR R4
 
+### Running tests
+#### End-to-end tests
+To run tests, you need to supply an environment. A `local` environment and an environment template are included under `tests/e2e/environments`.
+
+Set the following environment variables for local testing:
+ * `ENVIRONMENT`: `local`
+ * `API_TEST_ENV_FILE_PATH`: `tests/e2e/environments/local.postman_environment.json`
+ * `API_TEST_URL`: `localhost:9000`
+
+In order for local tests to work, you must have the sandbox server running locally.
+```
+make sandbox
+```
+
+To run local tests, use:
+```
+make test
+```
+
+There is a template environment file available at `tests/e2e/environments/postman_environment.json.template` useful for configuring different testing environments (such as on the CI server).
 
 ### VS Code Plugins
 
@@ -84,3 +113,43 @@ Procedure:
  * Import the collection into Postman
  * Update requests and export the collection back into the repo
  * Re-generate the [Run in Postman button](https://learning.getpostman.com/docs/postman-for-publishers/run-in-postman/creating-run-button/) Markdown button link and update the OAS
+
+## Deployment
+
+### Specification
+Update the API Specification and derived documentation in the Portal.
+
+`make deploy-spec` with environment variables:
+
+* `APIGEE_USERNAME`
+* `APIGEE_PASSWORD`
+* `APIGEE_SPEC_ID`
+* `APIGEE_PORTAL_API_ID`
+
+### API Proxy & Sandbox Service
+Redeploy the API Proxy and hosted Sandbox service.
+
+`make deploy-proxy` with environment variables:
+
+* `APIGEE_USERNAME`
+* `APIGEE_PASSWORD`
+* `APIGEE_ORGANIZATION`
+* `APIGEE_ENVIRONMENTS` - Comma-separated list of environments to deploy to (e.g. `test,prod`)
+* `APIGEE_APIPROXY` - Name of the API Proxy for deployment
+* `APIGEE_BASE_PATH` - The proxy's base path (must be unique)
+
+:bulb: Specify your own API Proxy (with base path) for use during development.
+
+#### Platform setup
+
+Successful deployment of the API Proxy requires:
+
+ 1. *Target Servers*:
+    1. `ig3`: Gateway to PDS API
+    2. `identity-server` - Identity Provider's OAuth server
+ 2. An **encrypted** (for production) *Key-Value Map* named `pds-variables-encrypted`, containing:
+    1. Key: `NHSD-ASID`, Value: Accredited System ID (ASID) identifying the API Gateway
+ 3. A *Key-Value Map* named `pds-variables`, containing:
+    1. Key: `jwks_path`, Value: Path on `identity-server` Target Server to JSON Web Key Set (JWKS)
+
+:bulb: For Sandbox-running environments (`test`) these need to be present for successful deployment but can be set to empty/dummy values.

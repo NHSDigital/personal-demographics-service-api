@@ -1,0 +1,31 @@
+type: object
+required:
+  - type
+properties:
+  type:
+    type: string
+    default: Patient
+    readOnly: true
+  identifier:
+    type: object
+    description: |
+      Identifier and system of identification used for this Patient.
+
+      This is an optional field as related person details are either a reference to another NHS Number, or the details, such as name and adress, stored directly on the resource.
+    properties:
+      system:
+        type: string
+        description: URL for the Patient retrieval API.
+        format: url
+        example: https://beta.api.digital.nhs.uk/personal-demographics/Patient
+        readOnly: true
+      value:
+        type: string
+        description: NHS Number for the related person
+        example: "90000000009"
+  reference:
+    type: string
+    description: URL for the FHIR Patient resource.
+    format: url
+    example: https://beta.api.digital.nhs.uk/personal-demographics/Patient/90000000009
+    readOnly: true

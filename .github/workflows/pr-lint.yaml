@@ -1,19 +1,25 @@
-name: Lint PR
+name: PR Quality Check
 on: pull_request
 jobs:
+  auto-approve:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: hmarr/auto-approve-action@v2.0.0
+      if: (github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]') && contains(github.event.pull_request.labels.*.name, 'security')
+      with:
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
   link-ticket:
     runs-on: ubuntu-latest
     steps:
-      - name: Echo ref
-        run: echo ${{ github.event.pull_request.head.ref }}
-
-      - name: Check ticket name is in pull request
-        run: echo ${{ github.event.pull_request.head.ref }} | grep -i -E -q "apm-[0-9]+"
+      - name: Check ticket name conforms to requirements
+        run: echo ${{ github.event.pull_request.head.ref }} | grep -i -E -q "(apm-[0-9]+)|(apmspii-[0-9]+)|(dependabot\/)"
 
       - name: Grab ticket name
-        run: echo ::set-env name=TICKET_NAME::$(echo ${{ github.event.pull_request.head.ref }} | grep -i -o 'apm-[0-9]\+' | tr '[:lower:]' '[:upper:]')
+        if: contains(github.event.pull_request.head.ref, 'apm-') || contains(github.event.pull_request.head.ref, 'APM-') || contains(github.event.pull_request.head.ref, 'apmspii-') || contains(github.event.pull_request.head.ref, 'APMSPII-')
+        run: echo ::set-env name=TICKET_NAME::$(echo ${{ github.event.pull_request.head.ref }} | grep -i -o '\(apm-[0-9]\+\)\|\(apmspii-[0-9]\+\)' | tr '[:lower:]' '[:upper:]')
 
       - name: Comment on PR
+        if: contains(github.event.pull_request.head.ref, 'apm-') || contains(github.event.pull_request.head.ref, 'APM-') || contains(github.event.pull_request.head.ref, 'apmspii-') || contains(github.event.pull_request.head.ref, 'APMSPII-')
         uses: unsplash/comment-on-pr@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

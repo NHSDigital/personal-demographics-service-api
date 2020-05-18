@@ -1,37 +1,28 @@
-description: A telecommunication address.
+description: A contact point, such as a phone number or email address. This will only be populated on a retrieval and not a search.
 type: object
+required:
+  - use
+  - system
+  - value
 properties:
-  period:
-    type: object
-    description: The dates between which this person could be communicated with via this contact method.
-    properties:
-      start:
-        type: string
-        format: date
-        description: Date which this person was first able to be contacted by this method, in format `yyyy-mm-dd`.
-        example: 2020-01-01
-        # required: true
-      end:
-        type: string
-        format: date
-        description: Date at which person was no longer able to be contacted by this method, in format `yyyy-mm-dd`.
-        example: 2020-12-31
-  system:
-    description: Means of communication, such as by phone, text, email, etc.
+  id:
     type: string
-    enum: [phone, fax, email, pager, url, sms, other]
+    description: Unique object identifier for this contact point.
+    readOnly: true
+    example: '789'
+  period:
+    $ref: "Period.yaml"
+  system:
+    description: Means of communication, such as phone or email.
+    type: string
+    enum: [phone, fax, email, pager, sms, other]
     example: phone
   value:
-    description: Phone number, email, or other identifier for use with contact system.
+    description: Phone number, email address, or other identifier for use with contact system.
     type: string
     example: '01632960587'
   use:
     type: string
-    description: Location associated with communication system, or marker to indicated whether it is temporary or outdated.
+    description: Location associated with communication system, or marker to indicate it is temporary or outdated.
     enum: [home, work, temp, old, mobile]
     example: work
-  rank:
-    description: Preferred order of use. 1 is highest.
-    type: integer
-    example: 1
-    minimum: 1

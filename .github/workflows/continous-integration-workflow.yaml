@@ -1,4 +1,4 @@
-name: Build Jobs
+name: Build
 
 on: push
 
@@ -20,8 +20,14 @@ jobs:
       - name: Update apt repositories
         run: sudo apt update
 
-      - name: Install Java and Node
-        run: sudo apt-get install --yes default-jre default-jdk npm
+      - name: Install Java
+        run: sudo apt-get install --yes default-jre default-jdk
+
+      - name: Install node
+        run: |
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+          sudo apt-get install -y nodejs
 
       - name: Upgrade python packaging tools
         run: python -m pip install --upgrade pip setuptools wheel
@@ -44,11 +50,16 @@ jobs:
       - name: Install repo
         run: make install
 
+      - name: Start local sandbox server
+        run: |
+          cd sandbox
+          npm run start &
+
       - name: Check licenses
         run: make check-licenses
 
-      - name: Lint Spec
-        run: make test
+      - name: Lint
+        run: make lint
 
       - name: Check resources are valid FHIR 4.0.1
         run: make validate
@@ -56,41 +67,19 @@ jobs:
       - name: Compile spec
         run: make publish
 
+      - name: Generate release
+        run: make release
+
       - name: Set SPEC_VERSION env var
         run: echo ::set-env name=SPEC_VERSION::$(poetry run python scripts/calculate_version.py)
-
-      - name: Store distributable schema
-        uses: actions/upload-artifact@v1
-        with:
-          name: patient-demographics-service-api-${{ env.SPEC_VERSION }}+${{ github.run_id }}.json
-          path: ./dist/patient-demographics-service-api.json
 
       - name: Create release (master only)
         id: create-release
         if: github.ref == 'refs/heads/master'
         uses: actions/create-release@v1
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ env.SPEC_VERSION }}
           release_name: ${{ env.SPEC_VERSION }}
-
-      - name: Upload spec release asset
-        if: github.ref == 'refs/heads/master'
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: ./dist/patient-demographics-service-api.json
-          asset_name: patient-demographics-service-api.json
-          asset_content_type: application/json
-
-      - name: Deploy to Apigee (master only)
-        if: github.ref == 'refs/heads/master'
-        env:
-          APIGEE_USER: ${{ secrets.APIGEE_USER }}
-          APIGEE_PASS: ${{ secrets.APIGEE_PASS }}
-          APIGEE_PORTAL_API_ID: ${{ secrets.APIGEE_PORTAL_API_ID }}
-          APIGEE_SPEC_ID: ${{ secrets.APIGEE_SPEC_ID }}
-        run: scripts/deploy.sh

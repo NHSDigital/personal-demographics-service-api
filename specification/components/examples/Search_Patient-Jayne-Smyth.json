@@ -1,0 +1,109 @@
+{
+  "resourceType": "Patient",
+  "id": "9000000017",
+  "identifier": [
+    {
+      "system": "https://fhir.nhs.uk/Id/nhs-number",
+      "value": "9000000017",
+      "extension": [
+        {
+          "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                "version": "1.0.0",
+                "code": "01",
+                "display": "Number present and verified"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "versionId": "2",
+    "security": [
+      {
+        "system": "https://www.hl7.org/fhir/valueset-security-labels.html",
+        "code": "U",
+        "display": "unrestricted"
+      }
+    ]
+  },
+  "name": [
+    {
+      "id": "123",
+      "use": "usual",
+      "period": {
+        "start": "2020-01-01",
+        "end": "2021-12-31"
+      },
+      "given": [
+        "Jayne"
+      ],
+      "family": "Smyth",
+      "prefix": [
+        "Mrs"
+      ],
+      "suffix": [
+        "MBE"
+      ]
+    }
+  ],
+  "gender": "female",
+  "birthDate": "2010-10-22",
+  "deceasedDateTime": "2010-10-22T00:00:00+00:00",
+  "address": [
+    {
+      "id": "456",
+      "period": {
+        "start": "2020-01-01",
+        "end": "2021-12-31"
+      },
+      "use": "home",
+      "line": [
+        "1 Trevelyan Square",
+        "Boar Lane",
+        "City Centre",
+        "Leeds",
+        "West Yorkshire"
+      ],
+      "postalCode": "LS1 6AE",
+      "extension": [
+        {
+          "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-AddressKey",
+          "extension": [
+            {
+              "url": "type",
+              "valueCoding": {
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-AddressKeyType",
+                "code": "PAF"
+              }
+            },
+            {
+              "url": "value",
+              "valueString": "12345678"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "generalPractitioner": [
+    {
+      "id": "254406A3",
+      "type": "Organization",
+      "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y12345",
+      "identifier": {
+        "system": "https://digital.nhs.uk/services/organisation-data-service",
+        "value": "Y12345",
+        "period": {
+          "start": "2020-01-01",
+          "end": "2021-12-31"
+        }
+      }
+    }
+  ]
+}

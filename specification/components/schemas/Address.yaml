@@ -1,54 +1,44 @@
 type: object
-description: An address associated with a person.
+description: An address associated with the patient.
+required:
+  - use
 properties:
   id:
     type: string
     description: Unique system identifier for this address.
     readOnly: true
-    example: '123'
+    example: '456'
   period:
-    type: object
-    description: The dates between which this address is linked to this patient.
-    required:
-      - start
-    properties:
-      start:
-        type: string
-        format: date
-        description: Date which patient became associated with this address, in format `yyyy-mm-dd`.
-        example: 2020-01-01
-      end:
-        type: string
-        format: date
-        description: Date at which patient is no longer associated with this address, in format `yyyy-mm-dd`.
-        example: 2020-12-31
+    $ref: "Period.yaml"
   use:
     type: string
-    description: Purpose of this address.
-    enum: [home, work, temp, old, billing] # TODO: how do we map usual, correspondence, temporary, other?
-    example: work
-  type:
-    type: string
-    description: Type of address. Postal-only (aka correspondence) addresses can be used to communicate, but are not where the person associated with this address can be usually found.
-    enum: [postal, physical, both]
-    example: both
+    description: |
+      Purpose of this address:
+      * home - a communication address at a home.
+      * work - an office address. First choice for business related contacts during business hours.
+      * temp - a temporary address. The period can provide more detailed information.
+      * billing - a corresponding address nominated by the patient where communication can be sent.
+    enum: [home, work, temp, billing]
+    example: home
   line:
     type: array
     description: All lines of the address except the postal code.
+    minItems: 5
+    maxItems: 5
     items:
       type: string
     example:
-      - NHS Digital
-      - Whitehall II
-      - Whitehall Quay
+      - 1 Trevelyan Square
+      - Boar Lane
+      - City Centre
       - Leeds
       - West Yorkshire
   postalCode:
     type: string
     description: Postal code of the address.
-    example: "LS1 6AE"
+    example: LS1 6AE
   extension:
     type: array
-    description: Postal address file (PAF) key associated with this address formatted as a FHIR extension. Empty if no PAF key for the address is known, or an object specifying the code system of the address key and the value of the address key. 
+    description: Postal Address File (PAF) key associated with this address formatted as a FHIR extension. Empty if no PAF key for the address is known, or an object specifying the code system of the address key and the value of the address key. 
     items:
       $ref: 'extensions/AddressKey.yaml'

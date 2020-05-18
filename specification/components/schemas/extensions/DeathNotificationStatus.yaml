@@ -1,18 +1,26 @@
 type: object
 description: Wrapper object for death notification details.
+required:
+  - url
+  - extension
 properties:
   url:
     type: string
     description: Definition of death notification extension.
-    default: https://simplifier.net/guide/UKCoreDecember2019/ExtensionUKCore-DeathNotificationStatus
+    default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus
     readOnly: true
   extension:
     type: array
     description: Array containing exactly one death notification status code object and exactly one effective date object.
+    minItems: 2
+    maxItems: 2
     items:
       anyOf:
         - type: object
           description: Wrapper object for death notification status code.
+          required:
+            - url
+            - valueCodeableConcept
           properties:
             url:
               type: string
@@ -23,6 +31,10 @@ properties:
               $ref: "../codeable/DeathNotificationStatus.yaml"
         - type: object
           description: Wrapper object for death notification effective date.
+          required:
+            - url
+            - valueDateTime
+          readOnly: true
           properties:
             url:
               type: string
@@ -34,3 +46,4 @@ properties:
               description: Date and time at which death notification status took effect.
               format: date-time
               example: '2010-10-22T00:00:00+00:00'
+              readOnly: true

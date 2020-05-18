@@ -1,0 +1,58 @@
+{
+  "resourceType": "Patient",
+  "id": "9000000025",
+  "identifier": [
+    {
+      "system": "https://fhir.nhs.uk/Id/nhs-number",
+      "value": "9000000025",
+      "extension": [
+        {
+          "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                "version": "1.0.0",
+                "code": "01",
+                "display": "Number present and verified"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "versionId": "2",
+    "security": [
+      {
+        "system": "https://www.hl7.org/fhir/valueset-security-labels.html",
+        "code": "R",
+        "display": "restricted"
+      }
+    ]
+  },
+  "name": [
+    {
+      "id": "123",
+      "use": "usual",
+      "period": {
+        "start": "2020-01-01",
+        "end": "2021-12-31"
+      },
+      "given": [
+        "Janet"
+      ],
+      "family": "Smythe",
+      "prefix": [
+        "Mrs"
+      ],
+      "suffix": [
+        "MBE"
+      ]
+    }
+  ],
+  "gender": "female",
+  "birthDate": "2005-06-16",
+  "deceasedDateTime": "2005-06-16T00:00:00+00:00"
+}

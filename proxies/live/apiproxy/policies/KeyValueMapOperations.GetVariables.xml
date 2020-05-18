@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<KeyValueMapOperations async="false" continueOnError="false" enabled="true" name="KeyValueMapOperations.GetVariables" mapIdentifier="pds-variables">
+  <!-- UNUSED POLICY
+  Leaving this in because I'm sure there will be a future need for unencrypted configuration variables for this API Proxy -->
+</KeyValueMapOperations>

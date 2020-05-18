@@ -1,8 +1,14 @@
 node_modules/
 bin/
 dist/
+build/
 public/
+newman/
+build/
 
 .#*
 
 __pycache__/
+.envrc
+
+tests/test-report.xml

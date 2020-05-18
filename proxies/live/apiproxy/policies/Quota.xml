@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Quota name="Quota" type="calendar">
+    <DisplayName>Quota</DisplayName>
+    <Allow count="300" countRef="apiproduct.developer.quota.limit"/>
+    <Interval ref="apiproduct.developer.quota.interval">1</Interval>
+    <TimeUnit ref="apiproduct.developer.quota.timeunit">minute</TimeUnit>
+    <StartTime>2020-3-30 12:00:00</StartTime>
+</Quota>

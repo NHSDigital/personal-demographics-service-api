@@ -1,0 +1,20 @@
+<TargetEndpoint name="sandbox">
+    <Description/>
+    <FaultRules/>
+    <Flows/>
+    <PostFlow name="PostFlow">
+        <Request/>
+        <Response/>
+    </PostFlow>
+    <PreFlow name="PreFlow">
+        <Request/>
+        <Response>
+          <Step>
+            <Name>AssignMessage.AddCors</Name>
+          </Step>
+        </Response>
+    </PreFlow>
+    <HostedTarget>
+        <Properties/>
+    </HostedTarget>
+</TargetEndpoint>
