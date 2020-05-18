@@ -9,6 +9,16 @@
             </Response>
         <Condition>request.verb == "OPTIONS" AND request.header.origin != null AND request.header.Access-Control-Request-Method != null</Condition>
       </Flow>
+      <Flow name="AddStatusToPing">
+            <Description/>
+            <Request/>
+            <Response>
+                <Step>
+                    <Name>AddStatusToPing</Name>
+                </Step>
+            </Response>
+            <Condition>(proxy.pathsuffix MatchesPath "/ping") and (request.verb = "GET")</Condition>
+        </Flow>
     </Flows>
     <PreFlow/>
     <HTTPProxyConnection>
