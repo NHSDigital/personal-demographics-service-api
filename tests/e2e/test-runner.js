@@ -45,6 +45,8 @@ function collectionRunner(url, collection_path, environment_path) {
         path.resolve(environment_path)
     ));
 
+    throw "Die for no reason!";
+
     return (credentials) => {
         collection.auth = {
 		        "type": "bearer",
