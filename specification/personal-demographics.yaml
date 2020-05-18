@@ -272,6 +272,30 @@ paths:
 
         In particular, it is almost certainly a good idea to display search results in descending score order - best match first.
 
+        ## Patient Data
+        The patient data returned on a search is not the full set of data that would be returned on a retrieval. The following data is included:
+        * id
+        * identifier
+        * meta
+        * name
+        * gender
+        * birthDate
+        * deceasedDateTime
+        * address (only home address)
+        * telecom
+        * generalPractitioner
+        * extension
+          * death notification
+
+        The following data will be excluded:
+        * address (all but the home address)
+        * extension
+          * nominated pharmacy
+          * dispensing doctor pharmacy
+          * medical appliance supplier pharmacy
+          * communication
+          * contact preference
+
         ## Sandbox testing
         You can test the following scenarios in our sandbox environment:
 
