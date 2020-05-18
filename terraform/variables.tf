@@ -24,3 +24,10 @@ variable "force_sandbox" {
   description = "Force a sandbox deploy instead of trying to detect if the deploy is happenning in a sandbox env"
   default = false
 }
+
+// FIXME: remove it
+variable "covid-19-testing-channel-availability-host" {
+    type = string
+    description = "Ignore"
+    default = ""
+}
