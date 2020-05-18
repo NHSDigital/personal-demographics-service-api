@@ -54,5 +54,29 @@
   ],
   "gender": "female",
   "birthDate": "2005-06-16",
-  "deceasedDateTime": "2005-06-16T00:00:00+00:00"
+  "deceasedDateTime": "2005-06-16T00:00:00+00:00",
+  "extension": [
+    {
+      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus",
+      "extension": [
+        {
+          "url": "deathNotificationStatus",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-DeathNotificationStatus",
+                "version": "1.0.0",
+                "code": "2",
+                "display": "Formal - death notice received from Registrar of Deaths"
+              }
+            ]
+          }
+        },
+        {
+          "url": "systemEffectiveDate",
+          "valueDateTime": "2005-06-16T00:00:00+00:00"
+        }
+      ]
+    }
+  ]
 }
