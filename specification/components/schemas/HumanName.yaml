@@ -38,20 +38,7 @@ properties:
     example: Smith
   prefix:
     type: array
-    description: |
-      Name prefixes, titles, and prenominals.
-
-      The full available range of generally recognised titles is permitted. However, if any of the following are used then the value input must conform to the following format:
-      * Mr
-      * Mrs
-      * Ms
-      * Dr
-      * Rev
-      * Sir
-      * Lady
-      * Lord
-
-      Any trailing full stops at the end of a prefix will be automatically removed. For example `Mrs.` will be changed to `Mrs`.
+    description: Name prefixes, titles, and prenominals.
     example: [Mrs]
     items:
       type: string

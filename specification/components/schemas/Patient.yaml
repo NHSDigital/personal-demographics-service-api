@@ -20,16 +20,6 @@ properties:
       List of names associated with the patient.
       
       When a patient tagged as `very restricted` is retrieved, all names will be removed from the response.
-
-      There are a number of business rules that should be taken into account:
-      * Cannot add more than one `usual` name.
-      * Cannot remove the `usual` name.
-      * Cannot add more than one `nickhame`.
-      * Can have multiple instances of all other names use types.
-      * Cannot replace the use type on an existing name. For example, once an name is a nickname, it cannot be changed directly to an alias. You must instead remove the nickname and add the alias.
-      * The first character of each `suffix` item must be `A-Z`.
-      * The date period is optional; where present they must a be valid dates and the `end` date cannot be before the `start` date.
-      * Supplied name data must be UTF-8 encodable.
     minItems: 1
     items:
       $ref: "HumanName.yaml"
@@ -42,13 +32,6 @@ properties:
       It is a date in the format `yyyy-mm-dd`. Due to data quality issues on a small number of patients `yyyy-mm` and `yyyy` format may also be returned.
       
       When a patient tagged as `very restricted` is retrieved, birth date will be removed from the response.
-
-      When adding or updating the birth date, the update should be in the format `yyyy-mm-dd`.
-
-      There are a number of business rules that should be taken into account:
-      * Cannot be removed.
-      * Cannot be a date in the future.
-      * Cannot be after the deceased date, if present.
     example: "2010-10-22"
     type: string
     format: date
@@ -59,15 +42,6 @@ properties:
       It is a datetime in the format `yyyy-mm-ddTHH:MM:SS+HH:MM` or `yyyy-mm-dd`. Due to data quality issues on a small number of patients `yyyy-mm` and `yyyy` format may also be returned.
       
       When a patient tagged as `very restricted` is retrieved, death date will be removed from the response.
-
-      When adding or updating the deceased date time, the update should be in the format `yyyy-mm-ddTHH:MM:SS+HH:MM`.
-
-      There are a number of business rules that should be taken into account:
-      * Cannot be removed.
-      * Cannot be a date in the future.
-      * Cannot be before the birth date.
-      * Cannot be replaced if the death notification status is 2 (formal).
-      * When adding, a death notification status must also be added.
     example: "2010-10-22T00:00:00+00:00"
     type: string
     format: date-time

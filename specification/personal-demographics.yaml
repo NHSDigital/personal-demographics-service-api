@@ -941,14 +941,91 @@ paths:
         Which is incorrect, as Irwin and Sharpe were removed instead of Irwin and Bruce.
 
 
+        ## Patient Data Fields
+
+        ### Date of Birth
+
+        Single item found under `birthDate` field.
+
+        When adding or updating the birth date, the update should be in the format `yyyy-mm-dd`.
+
+        There are a number of business rules that should be taken into account:
+        * Cannot be removed.
+        * Cannot be a date in the future.
+        * Cannot be after the deceased date, if present.
+
+        ### Date of Death
+
+        Single item found under `deceasedDateTime` field.
+
+        When adding or updating the deceased date time, the update should be in the format `yyyy-mm-ddTHH:MM:SS+HH:MM`.
+
+        There are a number of business rules that should be taken into account:
+        * Cannot be removed.
+        * Cannot be a date in the future.
+        * Cannot be before the birth date.
+        * Cannot be replaced if the death notification status is 2 (formal).
+        * When adding, a death notification status must also be added.
+
+        ### Death Notification
+
+        Single item found under `extension` with the extension url `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus`
+
+        There are a number of business rules that should be taken into account:
+        * Cannot be removed.
+        * Cannot be replaced if the death notification status is formal (2).
+        * Only certain endpoints can set a death notification of formal (2).
+        * When adding, a deceased date time must also be added.
+
+        ### Gender
+
+        Single item found under `gender` field.
+
+        When setting a gender, the local system should encourage the user to select `male` or `female` rather than `unknown`.
+        The fourth value of gender, `other`, meaning indeterminate; i.e. unable to be classified as either male or female; should never pro-actively be set by local systems - although this value can be retrieved.
+
+        There are a number of business rules that should be taken into account:
+          * Cannot be removed.
+          * Can only be `male`, `female` or `unknown`.
+          * Cannot set gender to `other`.
+
+        ### Name
+
+        List item found under `name` key.
+
+        There are a number of business rules that should be taken into account:
+        * Cannot add more than one `usual` name.
+        * Cannot remove the `usual` name.
+        * Cannot add more than one `nickhame`.
+        * Can have multiple instances of all other names use types.
+        * Cannot replace the use type on an existing name. For example, once an name is a nickname, it cannot be changed directly to an alias. You must instead remove the nickname and add the alias.
+        * The first character of each `suffix` item must be `A-Z`.
+        * The date period is optional; where present they must a be valid dates and the `end` date cannot be before the `start` date.
+        * Supplied name data must be UTF-8 encodable.
+        * The `period` is optional, but if included the `end` date cannot be before the `start` date. They can however be in the past, present or future.
+        * The full available range of generally recognised titles is permitted. However, if any of the following are used then the value input must conform to the following format:
+            * Mr
+            * Mrs
+            * Ms
+            * Dr
+            * Rev
+            * Sir
+            * Lady
+            * Lord
+        * Any trailing full stops at the end of a prefix will be automatically removed. For example `Mrs.` will be changed to `Mrs`.
+
+
         ## Sandbox test scenarios
+
         You can test the following scenarios in our sandbox environment.
-        Note that your changes will not be persisted.
-        JSON Patch operations themselves are validated, but the resulting resource is not validated for correctness.
+
+        Things to note when using the sandbox for PATCH:
+        * Your changes will not be persisted.
+        * JSON Patch operations themselves are validated, but the resulting resource is not validated for correctness; meaning any business rules are not applied.
 
         | Scenario                            | Request                                                                   | Response                                         |
         | ----------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------ |
-        | Successful update                   | `id`=`9000000009`<br />Body: One of the provided examples<br />Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json-patch+json` | HTTP Status 200 with updated patient in response (but note that the update won't be persisted) |
+        | Successful update                   | `id`=`9000000009`<br/><br/>Body: One of the provided examples or your own combination of patches<br/><br/>Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json-patch+json` | HTTP Status 200 with updated patient in response (but note that the update won't be persisted) |
         | Patient doesn't exist               | `id`=`9111231130` (or any other valid NHS Number)                         | HTTP Status 404 with problem description         |
         | Invalid NHS Number                  | `id`=`9000000000` (or any invalid NHS Number)                             | HTTP Status 400 with problem description         |
         | Missing resource version identifier | `If-Match` header missing or set to format other than `W/"<version>"`     | HTTP Status 412 with problem description         |

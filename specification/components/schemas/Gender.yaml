@@ -2,14 +2,6 @@ type: string
 description: |
   Classification of the gender of a patient. The classification is phenotypical rather than genotypical, i.e. it does not provide codes for medical or scientific purposes.
   It is the administrative gender that the patient wishes to be known as. In some cases, this may not be the same as the patient’s registered birth gender, or their current clinical gender.
-
-  When setting a gender, the local system should encourage the user to select 'male' or 'female' rather than 'unknown'.
-  The fourth value of gender, 'other', meaning indeterminate, i.e. unable to be classified as either male or female; should never pro-actively be set by local systems - although this value can be retrieved.
-
-  Contraints:
-  * Cannot be removed.
-  * Can only be `male`, `female` or `unknown`.
-  * Cannot set gender to `other`.
 enum:
   - male
   - female
