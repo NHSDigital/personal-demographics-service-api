@@ -1,10 +1,10 @@
 {
   "resourceType": "Patient",
-  "id": "9000000017",
+  "id": "9000000009",
   "identifier": [
     {
       "system": "https://fhir.nhs.uk/Id/nhs-number",
-      "value": "9000000017",
+      "value": "9000000009",
       "extension": [
         {
           "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
@@ -41,9 +41,9 @@
         "end": "2021-12-31"
       },
       "given": [
-        "Jayne"
+        "Jane"
       ],
-      "family": "Smyth",
+      "family": "Smith",
       "prefix": [
         "Mrs"
       ],
@@ -91,6 +91,18 @@
       ]
     }
   ],
+  "telecom": [
+    {
+      "id": "789",
+      "period": {
+        "start": "2020-01-01",
+        "end": "2021-12-31"
+      },
+      "system": "phone",
+      "value": "01632960587",
+      "use": "work"
+    }
+  ],
   "generalPractitioner": [
     {
       "id": "254406A3",
@@ -104,6 +116,30 @@
           "end": "2021-12-31"
         }
       }
+    }
+  ],
+  "extension": [
+    {
+      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus",
+      "extension": [
+        {
+          "url": "deathNotificationStatus",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-DeathNotificationStatus",
+                "version": "1.0.0",
+                "code": "2",
+                "display": "Formal - death notice received from Registrar of Deaths"
+              }
+            ]
+          }
+        },
+        {
+          "url": "systemEffectiveDate",
+          "valueDateTime": "2010-10-22T00:00:00+00:00"
+        }
+      ]
     }
   ]
 }
