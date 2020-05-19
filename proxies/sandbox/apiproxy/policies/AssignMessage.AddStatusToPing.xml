@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<AssignMessage continueOnError="false" enabled="true" name="AddStatusToPing" async="false">
+<AssignMessage continueOnError="false" enabled="true" name="AssignMessage.AddStatusToPing" async="false">
     <Set>
         <StatusCode>200</StatusCode>
         <Verb>GET</Verb>
