@@ -1,5 +1,7 @@
 # Changelog
 
+## TEST DO NOT MERGE
+
 ## 2020-05-07
 * Added Contact Preferences extension to the Patient resource
 * Removed GET Related Person by Object ID
