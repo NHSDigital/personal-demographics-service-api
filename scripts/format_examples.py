@@ -49,7 +49,9 @@ def slim_patient(resource):
         "birthDate": _return_value,
         "deceasedDateTime": _return_value,
         "address": _slim_address,
-        "generalPractitioner": _return_value
+        "telecom": _return_value,
+        "generalPractitioner": _return_value,
+        "extension": _slim_extension
     }
 
     # Loop around the whitelist returning the result of mapped function.
