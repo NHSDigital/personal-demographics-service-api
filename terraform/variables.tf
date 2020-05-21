@@ -25,23 +25,19 @@ variable "force_sandbox" {
   default = false
 }
 
-// FIXME remove default values
 variable "status_cake_username" {
     type = string
     description = "Statuscake username for monitoring and alerting"
-    default = ""
 }
 
 variable "status_cake_api_key" {
     type = string
     description = "Statuscake apikey for monitoring and alerting"
-    default = ""
 }
 
 variable "status_cake_contact_group" {
     type = string
     description = "Statuscake Contact Group for monitoring and alerting"
-    default = ""
 }
 
 // FIXME: remove it
