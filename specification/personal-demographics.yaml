@@ -28,7 +28,12 @@ info:
     * gender
     * addresses and contact details
     * birth information
+    ** date of birth
+    ** mulitple birth order
+    ** place of birth
     * death information
+    ** date of death
+    ** death notification status
     * registered GP
     * nominated pharmacy
     * dispensing doctor pharmacy
@@ -279,6 +284,7 @@ paths:
         * gender
         * birthDate
         * deceasedDateTime
+        * multipleBirthInteger
         * address (only home address)
         * telecom
         * generalPractitioner
@@ -293,6 +299,7 @@ paths:
           * medical appliance supplier pharmacy
           * communication
           * contact preference
+          * birth place
 
         ## Sandbox testing
         You can test the following scenarios in our sandbox environment:

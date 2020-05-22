@@ -35,6 +35,8 @@ properties:
     example: "2010-10-22"
     type: string
     format: date
+  multipleBirthInteger:
+    $ref: "MultipleBirthOrder.yaml"
   deceasedDateTime:
     description: |
       The date and time on which a person died or is officially deemed to have died, if applicable and known.
@@ -75,9 +77,9 @@ properties:
   extension:
     type: array
     description: |
-      Wrapper array for the patient's pharmacies, death notification status, communication details and contact preferences; these are all FHIR extensions. Always contains zero or one of each pharmacy object, zero or one death notification status object, zero or one communication details object, and zero or one contact preference.
+      Wrapper array for the patient's pharmacies, death notification status, communication details and contact preferences; these are all FHIR extensions. Always contains zero or one of each pharmacy object, zero or one death notification status object, zero or one communication details object, zero or one contact preference and zero or one place of birth object.
 
-      When a patient tagged as `restricted` or `very restricted` is retrieved, the Pharmacy extensions will be removed from the response.
+      When a patient tagged as `restricted` or `very restricted` is retrieved, the Pharmacy and Birth Place extensions will be removed from the response.
     items:
       anyOf:
         - $ref: extensions/NominatedPharmacy.yaml
@@ -86,3 +88,4 @@ properties:
         - $ref: extensions/DeathNotificationStatus.yaml
         - $ref: extensions/Communication.yaml
         - $ref: extensions/ContactPreference.yaml
+        - $ref: extensions/BirthPlace.yaml
