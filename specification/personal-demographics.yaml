@@ -287,7 +287,7 @@ paths:
         * extension
           * death notification
 
-        The following data will be excluded:
+        The following data is excluded:
         * address (all but the home address)
         * extension
           * nominated pharmacy
