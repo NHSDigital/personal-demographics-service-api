@@ -38,21 +38,6 @@ function _getPatient(nhsNumber) {
 
 module.exports = {
     /**
-     * Used by Patient/{nhsNumber} paths to check it has been supplied in
-     * correct format, and is the NHS Number of our example Patient record
-     *
-     * Returns nothing.
-     *
-     * Throws an appropriate Boom error message if either of these are wrong
-     *
-     * @param {*} nhsNumber - the nhsNumber to check
-     */
-    checkNhsNumber: function (nhsNumber) {
-        _getPatient(nhsNumber)
-    },
-
-
-    /**
      * Used by Patient/{nhsNumber} paths to get our example Patient record
      *
      * Returns the found patient.

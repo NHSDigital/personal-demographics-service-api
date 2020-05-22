@@ -1,0 +1,40 @@
+{
+  "patches": [
+    {
+      "op": "replace",
+      "path": "/address/0",
+      "value": {
+        "id": "456",
+        "period": {
+          "start": "2020-01-01",
+          "end": "2021-12-31"
+        },
+        "use": "home",
+        "line": [
+          "2 Whitehall Quay",
+          "Leeds",
+          "West Yorkshire"
+        ],
+        "postalCode": "LS1 4BU",
+        "extension": [
+          {
+            "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-AddressKey",
+            "extension": [
+              {
+                "url": "type",
+                "valueCoding": {
+                  "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-AddressKeyType",
+                  "code": "PAF"
+                }
+              },
+              {
+                "url": "value",
+                "valueString": "9876543"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
