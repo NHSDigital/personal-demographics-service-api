@@ -199,8 +199,6 @@ paths:
           * date of death (range)
           * registered GP practice
 
-        Ensure that the search parameters are url encoded, especially when containing special characters. For example a `space` must be represented by either `%20` or `+`.
-
         ## Matching rules
         Search parameters are not case sensitive.
 
@@ -272,6 +270,30 @@ paths:
 
         In particular, it is almost certainly a good idea to display search results in descending score order - best match first.
 
+        ## Patient Data
+        The patient data returned on a search is not the full set of data that would be returned on a retrieval. The following data is included:
+        * id
+        * identifier
+        * meta
+        * name
+        * gender
+        * birthDate
+        * deceasedDateTime
+        * address (only home address)
+        * telecom
+        * generalPractitioner
+        * extension
+          * death notification
+
+        The following data is excluded:
+        * address (all but the home address)
+        * extension
+          * nominated pharmacy
+          * dispensing doctor pharmacy
+          * medical appliance supplier pharmacy
+          * communication
+          * contact preference
+
         ## Sandbox testing
         You can test the following scenarios in our sandbox environment:
 
@@ -329,7 +351,10 @@ paths:
             format: int32
             default: 50
         - name: family
-          description: "The patient's family name (surname)."
+          description: |
+            The patient's family name (surname).
+
+            Ensure that the search parameters are url encoded, especially when containing special characters. For example a `space` must be represented by either `%20` or `+`.
           examples:
             simple:
               value: Smith
@@ -342,7 +367,10 @@ paths:
           schema:
             type: string
         - name: given
-          description: "The patient's given name."
+          description: |
+            The patient's given name.
+
+            Ensure that the search parameters are url encoded, especially when containing special characters. For example a `space` must be represented by either `%20` or `+`.
           example: Jane
           in: query
           required: false
@@ -397,7 +425,10 @@ paths:
             type: string
             format: date
         - name: address-postcode
-          description: The postcode of any of the patient’s known addresses. White spaces in postcodes are not significant; that is, LS16AE and LS1 6AE will both match LS1 6AE.
+          description: |
+            The postcode of any of the patient’s known addresses. White spaces in postcodes are not significant; that is, LS16AE and LS1 6AE will both match LS1 6AE.
+
+            Ensure that the search parameters are url encoded, especially when containing special characters. For example a `space` must be represented by either `%20` or `+`.
           examples:
             simple:
               value: LS1 6AE
