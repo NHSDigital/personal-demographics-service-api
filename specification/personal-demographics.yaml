@@ -638,6 +638,8 @@ paths:
         ## Overview
         Use this endpoint to update patient details in PDS.
 
+        The update process is asynchronous, so if the request is accepted a `202` response will be returned with a `Content-Location` header, use this location, which will be in the form `/Polling/<message id>` to poll the outcome. See the polling endoint for more details.
+
         This is a 'patch' operation, meaning you can update specific parts of the patient record (such as a name or an address), as opposed to having to update the entire record.
 
         ## Patient resource versioning
@@ -1063,7 +1065,7 @@ paths:
 
         | Scenario                            | Request                                                                   | Response                                         |
         | ----------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------ |
-        | Successful update                   | `id`=`9000000009`<br/><br/>Body: One of the provided examples or your own combination of patches<br/><br/>Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json-patch+json` | HTTP Status 200 with updated patient in response (but note that the update won't be persisted) |
+        | Successful update                   | `id`=`9000000009`<br/><br/>Body: One of the provided examples or your own combination of patches<br/><br/>Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json-patch+json` | HTTP Status 202 with the message url to poll in the `Content-Location` |
         | Patient doesn't exist               | `id`=`9111231130` (or any other valid NHS Number)                         | HTTP Status 404 with problem description         |
         | Invalid NHS Number                  | `id`=`9000000000` (or any invalid NHS Number)                             | HTTP Status 400 with problem description         |
         | Missing resource version identifier | `If-Match` header missing or set to format other than `W/"<version>"`     | HTTP Status 412 with problem description         |
@@ -1147,15 +1149,14 @@ paths:
                 value:
                   $ref: components/examples/requests/PatientPatch/delete-extension.json
       responses:
-        '200':
-          description: Patient updated.
+        '202':
+          description: |
+            The patch was syntactically fine and was accepted. A polling location will be returned in the `Content-Location` header.
+
+            Note, the patch may still fail after it is accepted, for example further validation of the patched patient may result in business rule failures. So you cannot assume what once the message has been accepted it will update the patient successfully.
           headers:
-            ETag:
-              $ref: components/schemas/ETag.yaml
-          content:
-            application/fhir+json:
-              schema:
-                $ref: components/schemas/Patient.yaml
+            Content-Location:
+              $ref: components/schemas/ContentLocation.yaml
         '400':
           description: Client error.
           content:
@@ -1338,6 +1339,126 @@ paths:
                           code: RESOURCE_NOT_FOUND
                           display: Resource not found
 
+  '/Polling/{message_id}':
+    parameters:
+      - $ref: '#/components/parameters/MessageId'
+      - $ref: '#/components/parameters/RoleId'
+      - $ref: '#/components/parameters/BearerAuthorization'
+    get:
+      description: |
+        ## Overview
+        When updating resources the request is asynchronous.
+        
+        Once the request is accepted a `202` response will be returned with a `Content-Location` header, use this location, which will be in the form `/Polling/<message id>` to poll the outcome.
+
+        Requests should be sent to the  polling endpoint until a non `202` response is returned.
+
+        ## Sandbox test scenarios
+        You can test the following scenarios in our sandbox environment:
+
+        | Scenario                                                   | Request                                              | Response                                    |
+        | ---------------------------------------------------------- | ---------------------------------------------------- | --------------------------------------------|
+        | Perform a valid patch request and use the content-location | `message_id` whatever was in patch accepted response | HTTP Status 200 with updated patient data   |
+        | Polling message id when update is not yet complete         | `message_id`=`20200522091633363041_000001`           | HTTP Status 202 with no data                |
+        | Polling message id not found                               | `message_id`=`20200522091633363041_000002`           | HTTP Status 404 with Operation Outcome body |
+
+        You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
+
+        Alternatively, you can try out the sandbox using our Postman collection:
+
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c2f31c73988a07a6f49d)
+      summary: Retrieve the outcome of the accepted update. 
+      operationId: polling
+      tags:
+        - relatedperson
+      responses:
+        '200':
+          description: Patient updated.
+          headers:
+            ETag:
+              $ref: components/schemas/ETag.yaml
+          content:
+            application/fhir+json:
+              schema:
+                $ref: components/schemas/Patient.yaml
+        '400':
+          description: Client error after the patch was accepted and patient was not updated.
+          content:
+            application/fhir+json:
+              schema:
+                $ref: components/schemas/OperationOutcome.yaml
+              examples:
+                business-rule-failure:
+                  summary: Business rule failure; start date was after the end date.
+                  value:
+                    resourceType: OperationOutcome
+                    issue:
+                      - severity: error
+                        code: structure
+                        details:
+                          coding:
+                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                              version: '1'
+                              code: INVALID_UPDATE
+                              display: Invalid update with error - business effective start date is after the end date
+        '403':
+          description: Part of your update could not be allowed as the change was forbidden.
+          content:
+            application/fhir+json:
+              schema:
+                $ref: components/schemas/OperationOutcome.yaml
+              examples:
+                business-rule-failure:
+                  summary: Date of death cannot be removed once it has been set.
+                  value:
+                    resourceType: OperationOutcome
+                    issue:
+                      - severity: information
+                        code: forbidden
+                        details:
+                          coding:
+                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                              version: '1'
+                              code: FORBIDDEN_UPDATE
+                              display: Forbidden update with error - source not permitted to remove 'deceasedDateTime'
+        '404':
+          description: The message id not found or you did not have permission to poll for that message.
+          content:
+            application/fhir+json:
+              schema:
+                $ref: components/schemas/OperationOutcome.yaml
+              example:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: information
+                    code: not-found
+                    details:
+                      coding:
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                          version: '1'
+                          code: POLLING_ID_NOT_FOUND
+                          display: The polling id was not found
+        '422':
+          description: |
+            The polling message id was found however the processing of the request failed in an unexpected way or was cancelled, so the update failed.
+            
+            Please raise these occurrences with our team so we can investigate the issue. When raising, quote the message id you were polling for.
+          content:
+            application/fhir+json:
+              schema:
+                $ref: components/schemas/OperationOutcome.yaml
+              example:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: processing
+                    details:
+                      coding:
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                          version: '1'
+                          code: POLLING_MESSAGE_FAILURE
+                          display: The polling id was found however the processing of the request failed in an unexpected way or was cancelled
+
 components:
   parameters:
     Id:
@@ -1348,6 +1469,14 @@ components:
       schema:
         type: string
         example: "9000000009"
+    MessageId:
+      name: message_id
+      in: path
+      description: The message id of the accepted update that needs to be submitted to confirm the resource a successfully updated.
+      required: true
+      schema:
+        type: string
+        example: "20200522091633363041_000001"
     ObjectId:
       name: object_id
       in: path
