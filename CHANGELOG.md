@@ -1,5 +1,9 @@
 # Changelog
 
+## 2020-05-12
+* Adding update JSON Patch description.
+* Deceased Date Time and Death Notification Status Update descriptions.
+
 ## 2020-05-07
 * Added Contact Preferences extension to the Patient resource
 * Removed GET Related Person by Object ID
