@@ -996,14 +996,14 @@ paths:
         There are a number of business rules that should be taken into account:
         * Cannot add more than one `usual` name.
         * Cannot remove the `usual` name.
-        * Cannot add more than one `nickhame`.
-        * Can have multiple instances of all other names use types.
-        * Cannot replace the use type on an existing name. For example, once an name is a nickname, it cannot be changed directly to an alias. You must instead remove the nickname and add the alias.
+        * Cannot add more than one `nickname`.
+        * Can have multiple instances of all other name use types.
+        * Cannot replace the use type on an existing name. For example, once a name is a nickname, it cannot be changed directly to an alias. You must instead remove the nickname and add the alias.
         * The first character of each `suffix` item must be `A-Z`.
         * The date period is optional; where present they must a be valid dates and the `end` date cannot be before the `start` date.
         * Supplied name data must be UTF-8 encodable.
         * The `period` is optional, but if included the `end` date cannot be before the `start` date. They can however be in the past, present or future.
-        * The full available range of generally recognised titles is permitted. However, if any of the following are used then the value input must conform to the following format:
+        * The full available range of generally recognised titles are permitted. However, if any of the following are used then the value input must conform to the following format:
             * Mr
             * Mrs
             * Ms
