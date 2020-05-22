@@ -134,7 +134,7 @@ info:
 
     Alternatively, you can try out the sandbox using our Postman collection:
 
-    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c2f31c73988a07a6f49d)
+    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
 
     ### Integration testing
     Our [integration test environment](https://digital.nhs.uk/developer/developer-reference/testing#integration-testing):
@@ -320,7 +320,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c2f31c73988a07a6f49d)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
       tags:
         - patients
       parameters:
@@ -582,7 +582,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c2f31c73988a07a6f49d)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
       summary: "Retrieve a patient's record"
       operationId: get-patient
       tags:
@@ -1078,7 +1078,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c2f31c73988a07a6f49d)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
 
 
       summary: Update a patient's record
@@ -1249,7 +1249,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c2f31c73988a07a6f49d)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
       summary: "Retrieve a list of Related Person resources for a given patient"
       operationId: get-related-people
       tags:
@@ -1351,22 +1351,25 @@ paths:
         
         Once the request is accepted a `202` response will be returned with a `Content-Location` header, use this location, which will be in the form `/Polling/<message id>` to poll the outcome.
 
-        Requests should be sent to the  polling endpoint until a non `202` response is returned.
+        Requests should be sent to the polling endpoint until a non `202` response is returned and the response deal with appropriately.
+
+        Polls should be done at a reasonable frequency to avoid excess traffic; it is recommended requests wait at least 100ms between attempts.
+        The server will return a cached response if attempts are less than 100ms apart, so retrieval of the outcome will not occur any faster.
 
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
 
-        | Scenario                                                   | Request                                              | Response                                    |
-        | ---------------------------------------------------------- | ---------------------------------------------------- | --------------------------------------------|
-        | Perform a valid patch request and use the content-location | `message_id` whatever was in patch accepted response | HTTP Status 200 with updated patient data   |
-        | Polling message id when update is not yet complete         | `message_id`=`20200522091633363041_000001`           | HTTP Status 202 with no data                |
-        | Polling message id not found                               | `message_id`=`20200522091633363041_000002`           | HTTP Status 404 with Operation Outcome body |
+        | Scenario                                                   | Request                                               | Response                                    |
+        | ---------------------------------------------------------- | ----------------------------------------------------- | --------------------------------------------|
+        | Perform a valid patch request and use the content-location | `message_id` whatever was in update accepted response | HTTP Status 200 with updated patient data   |
+        | Polling message id when update is not yet complete         | `message_id`=`20200522091633363041_000001`            | HTTP Status 202 with no data                |
+        | Polling message id not found                               | `message_id`=`20200522091633363041_000002`            | HTTP Status 404 with operation outcome body |
 
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c2f31c73988a07a6f49d)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
       summary: Retrieve the outcome of the accepted update. 
       operationId: polling
       tags:
