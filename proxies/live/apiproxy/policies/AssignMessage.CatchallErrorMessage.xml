@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="CatchallErrorMessage">
+    <DisplayName>Catchall error message</DisplayName>
+    <Set>
+        <Payload contentType="application/json">
+            {
+                "errors": [
+                    {
+                        "message": "{response.content}",
+                        "status": "{response.status.code}"
+                    }
+                ]
+            }
+            
+        </Payload>
+        <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+        <AssignTo createNew="false" transport="https" type="request"/>
+    </Set>
+</AssignMessage>

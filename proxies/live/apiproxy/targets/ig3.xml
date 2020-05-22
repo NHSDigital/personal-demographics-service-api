@@ -9,6 +9,12 @@
       </Step>
       <Condition>oauthV2.OauthV2.VerifyAccessToken.failed</Condition>
     </FaultRule>
+    <FaultRule name="catch_all">
+      <Step>
+        <Name>AssignMessage.CatchallErrorMessage</Name>
+        <Condition>(response.status.code GreaterThan "399")</Condition>
+      </Step>
+    </FaultRule>
   </FaultRules>
   <PreFlow>
     <Request>
