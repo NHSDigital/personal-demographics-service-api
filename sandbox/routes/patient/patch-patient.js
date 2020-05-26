@@ -1,5 +1,4 @@
 const Boom = require('boom')
-const patients = require('../../services/patients')
 const nhsNumberHelper = require('../../helpers/nhs-number-helper')
 const fhirHelper = require('../../helpers/fhir-helper')
 const jsonpatch = require('fast-json-patch')
@@ -20,49 +19,53 @@ module.exports = [
         method: 'PATCH',
         path: '/Patient/{nhsNumber}',
         handler: (request, h) => {
-            nhsNumberHelper.checkNhsNumber(request)
+            const nhsNumber = request.params.nhsNumber;
+            const patientToUpdate = nhsNumberHelper.getNhsNumber(nhsNumber);
 
             // Check If-Match header exists
             if (!requestValidator.validateIfMatchParameter(request)) {
-                throw Boom.badRequest(
-                    "If-Match header must be supplied to update this resource",
-                    {operationOutcomeCode: "required", apiErrorCode: "MISSING_IF_MATCH_HEADER"}
+                throw Boom.preconditionFailed(
+                    "Invalid update with error - If-Match header must be supplied to update this resource",
+                    {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED"}
                 )
             }
 
             // Check If-Match header is correct version
-            if (!requestValidator.validateIfMatchHeaderIsCorrectVersion(request, patients.retrieve.examplePatientSmith)) {
+            if (!requestValidator.validateIfMatchHeaderIsCorrectVersion(request, patientToUpdate)) {
                 throw Boom.preconditionFailed(
-                    "This resource has changed since you last read.",
-                    {operationOutcomeCode: "conflict", apiErrorCode: "INVALID_IF_MATCH_HEADER"})
+                    "Invalid update with error - This resource has changed since you last read. Please re-read and try again with the new version number.",
+                    {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED"})
             }
 
             // Check Content-Type header
             if (!requestValidator.validateContentTypeHeader(request)) {
-                // TODO: What's the proper error here?
-                throw Boom.unsupportedMediaType(
-                    "Must be application/json-patch+json",
-                    {operationOutcomeCode: "value", apiErrorCode: "unsupportedMediaType"})
+                throw Boom.badRequest(
+                    "Unsupported Service",
+                    {operationOutcomeCode: "processing", apiErrorCode: "UNSUPPORTED_SERVICE"})
             }
 
             // Verify at least one patch object has been submitted
             if (!requestValidator.verifyPatchObjectHasBeenSubmitted(request)) {
-                // TODO: Proper error message
                 throw Boom.badRequest(
-                    "No patches submitted",
-                    {operationOutcomeCode: "required", apiErrorCode: "noPatchesSubmitted"})
+                    "Invalid update with error - No patches found",
+                    {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE"})
             }
 
             // Apply the submitted patches
             let patchedPatient
             try {
-                patchedPatient = jsonpatch.applyPatch(patients.retrieve.examplePatientSmith, request.payload.patches, true, false).newDocument
+                patchedPatient = jsonpatch.applyPatch(
+                    patientToUpdate,
+                    request.payload.patches,
+                    true,
+                    false
+                ).newDocument
             }
             catch (e) {
                 const patchingError = e.message.slice(0, e.message.indexOf('\n')) // Just the first line; rest is tons of extraneous detail
                 throw Boom.badRequest(
                     `Invalid patch: ${patchingError}`,
-                    {operationOutcomeCode: "value", apiErrorCode: "invalidPatchOperation"})
+                    {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE"})
             }
             patchedPatient.meta.versionId++
 
