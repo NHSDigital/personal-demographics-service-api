@@ -12,9 +12,6 @@ properties:
   valueAddress:
     type: object
     additionalProperties: false
-    required:
-      - city
-      - district
     properties:
       city:
         type: string
