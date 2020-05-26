@@ -977,6 +977,8 @@ paths:
 
         Single item found under `birthDate` field.
 
+        In a JSON Patch request the path should be `/birthDate`.
+
         When adding or updating the birth date, the update should be in the format `yyyy-mm-dd`.
 
         There are a number of business rules that should be taken into account:
@@ -987,6 +989,8 @@ paths:
         ### Date of Death
 
         Single item found under `deceasedDateTime` field.
+
+        In a JSON Patch request the path should be `/deceasedDateTime`.
 
         When adding or updating the deceased date time, the update should be in the format `yyyy-mm-ddTHH:MM:SS+HH:MM`.
 
@@ -999,7 +1003,11 @@ paths:
 
         ### Death Notification
 
-        Single item found under `extension` with the extension url `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus`
+        Single item found under `extension` with the extension url `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus`.
+
+        In a JSON Patch request the path should be:
+        * `/extension/0` if the death notification is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
+        * `/extension/-` when adding a death notification.
 
         There are a number of business rules that should be taken into account:
         * Cannot be removed.
@@ -1011,6 +1019,8 @@ paths:
 
         Single item found under `gender` field.
 
+        In a JSON Patch request the path should be `/gender`.
+
         When setting a gender, the local system should encourage the user to select `male` or `female` rather than `unknown`.
         The fourth value of gender, `other`, meaning indeterminate; i.e. unable to be classified as either male or female; should never pro-actively be set by local systems - although this value can be retrieved.
 
@@ -1021,7 +1031,11 @@ paths:
 
         ### Name
 
-        List item found under `name` key.
+        List item found under `name` field.
+
+        In a JSON Patch request the path should be:
+        * `/name/0` if the name to be replaced or removed is the first item in the list. If it is the second item in the list the path will be `/name/1`, and so on.
+        * `/name/-` when adding a new name.
 
         There are a number of business rules that should be taken into account:
         * Cannot add more than one `usual` name.
