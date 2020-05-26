@@ -1,0 +1,13 @@
+{
+  "patches": [
+    {
+      "op": "test",
+      "path": "/extension/1/url",
+      "value": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DispensingDoctor"
+    },
+    {
+      "op": "remove",
+      "path": "/extension/1"
+    }
+  ]
+}

@@ -16,6 +16,8 @@ properties:
     type: array
     description: | 
       List of names associated with the patient.
+
+      This will only be fully populated on a retrieval, only a the `usual`, `nickname` and `temp` names will be returned on a search.
       
       When a patient tagged as `very restricted` is retrieved, all names will be removed from the response.
     minItems: 1
@@ -31,6 +33,8 @@ properties:
     example: "2010-10-22"
     type: string
     format: date
+  multipleBirthInteger:
+    $ref: "MultipleBirthOrder.yaml"
   deceasedDateTime:
     description: |
       Date and time of death, if applicable and known. A datetime in the format `yyyy-mm-ddTHH:MM:SS+HH:MM` or `yyyy-mm-dd`. Due to data quality issues on a small number of patients `yyyy-mm` and `yyyy` format may also be returned.
