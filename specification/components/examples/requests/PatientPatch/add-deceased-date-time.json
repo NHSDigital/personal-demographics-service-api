@@ -1,0 +1,9 @@
+{
+  "patches": [
+    {
+      "op": "add",
+      "path": "/deceasedDateTime",
+      "value": "2010-10-22T00:00:00+00:00"
+    }
+  ]
+}

@@ -47,6 +47,7 @@ def slim_patient(resource):
         "name": _return_value,
         "gender": _return_value,
         "birthDate": _return_value,
+        "multipleBirthInteger": _return_value,
         "deceasedDateTime": _return_value,
         "address": _slim_address,
         "telecom": _return_value,

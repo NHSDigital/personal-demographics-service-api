@@ -54,6 +54,7 @@
   ],
   "gender": "female",
   "birthDate": "2010-10-22",
+  "multipleBirthInteger": 1,
   "deceasedDateTime": "2010-10-22T00:00:00+00:00",
   "address": [
     {
@@ -237,6 +238,14 @@
           "valueString": "Not after 7pm"
         }
       ]
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/patient-birthPlace",
+      "valueAddress": {
+        "city": "Manchester",
+        "district": "Greater Manchester",
+        "country": "GBR"
+      }
     }
   ]
 }
