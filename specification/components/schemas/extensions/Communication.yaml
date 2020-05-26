@@ -1,5 +1,5 @@
 type: object
-description: Wrapper object for communication details.
+description: Wrapper object for communication details. This will only be populated on a retrieval and not a search.
 required:
   - url
   - extension

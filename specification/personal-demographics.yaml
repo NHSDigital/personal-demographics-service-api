@@ -56,18 +56,17 @@ info:
 
     ## API status and roadmap
     The search and retrieve endpoints are in [beta](https://digital.nhs.uk/developer/developer-reference/reference-guide#api-status), meaning:
-    - we might make breaking changes, but only if we can't avoid it, and we'll give advance notice
+    - we might make breaking changes, but only if we can't avoid it, and we'll give you advance notice
     - we can't guarantee availability or performance
 
-    The update endpoint is in [alpha](https://digital.nhs.uk/developer/developer-reference/reference-guide#api-status) - expect further breaking changes.
-
-    The API is currently available for sandbox testing and integration testing, but not for production use.
+    The update endpoint is in [alpha](https://digital.nhs.uk/developer/developer-reference/reference-guide#api-status), meaning
+    - expect further breaking changes
+    - it's only available in our sandbox, not for integration testing or production use
 
     The following items are on our roadmap, in rough priority order:
-    - integration testing service - enhancement to support authorisation with NHS smartcards (target date: ASAP)
-    - production service - beta - search for patient and retrieve patient details (target date: end of April 2020)
     - addition of data fields for consent information
-    - production service - beta - update patient (target date: end of May 2020)
+    - update patient - beta - integration testing (target date: end of June 2020)
+    - update patient - beta - production service (target date to be confirmed)
     - unauthenticated access - without NHS smartcard - similar to the PDS SMSP API (target date to be confirmed - please [contact us](https://digital.nhs.uk/developer/help-and-support) for more details)
     - access for citizens using NHS Login (target date to be confirmed - please [contact us](https://digital.nhs.uk/developer/help-and-support) for more details)
     - exit beta (target date: end of September 2020, subject to availability of beta testers)
@@ -92,7 +91,7 @@ info:
     currently requires a connection to the [Health and Social Care Network (HSCN)](https://digital.nhs.uk/services/health-and-social-care-network).
 
     ## Authorisation
-    This API is [user-restricted](https://digital.nhs.uk/developer/security-and-authorisation#user-restricted-apis),
+    This API is [user-restricted](https://digital.nhs.uk/developer/developer-reference/security-and-authorisation#user-restricted-apis),
     meaning an end user must be present and authenticated to use it.
 
     The end user must be:
@@ -104,7 +103,7 @@ info:
     * user-restricted RESTful API - using NHS Identity - combined authentication and authorisation
     * user-restricted RESTful API - using NHS Identity - separate authentication and authorisation
 
-    For more details, see [user-restricted APIs](https://digital.nhs.uk/developer/security-and-authorisation#user-restricted-apis).
+    For more details, see [user-restricted APIs](https://digital.nhs.uk/developer/developer-reference/security-and-authorisation#user-restricted-apis).
 
     In due course we plan to add the following:
     - access for citizens, using NHS Login
@@ -119,7 +118,7 @@ info:
     | Production        | Not yet available                                              |
 
     ### Sandbox testing
-    Our [sandbox environment](https://digital.nhs.uk/developer/testing#sandbox-testing):
+    Our [sandbox environment](https://digital.nhs.uk/developer/developer-reference/testing#sandbox-testing):
     * is for early developer testing
     * only covers a limited set of scenarios
     * is stateless, so it does not actually persist any updates
@@ -132,23 +131,23 @@ info:
     [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/dc052f444e70d072e577)
 
     ### Integration testing
-    Our [integration test environment](https://digital.nhs.uk/developer/testing#integration-testing):
+    Our [integration test environment](https://digital.nhs.uk/developer/developer-reference/testing#integration-testing):
     * is for formal integration testing
-    * includes authorisation, although at the moment it only supports signing in with a user name and password - authorisation with smartcards is coming soon
+    * includes authorisation, using either username/password (for early testing) or smartcard/PIN
 
     You can use our [PDS FHIR API test data pack](https://digital.nhs.uk/developer/api-specifications/pds-fhir-api-test-data) to test most common scenarios. You can also create your own test data.
 
-    For more details see [integration testing with our RESTful APIs](https://digital.nhs.uk/developer/testing#integration-testing-with-our-restful-apis).
+    For more details see [integration testing with our RESTful APIs](https://digital.nhs.uk/developer/developer-reference/testing#integration-testing-with-our-restful-apis).
 
     ## Onboarding
     You need to get your software approved by us before it can go live with this API. We call this onboarding. The onboarding process can sometimes be quite long, so it’s worth planning well ahead.
     
-    To onboard for this API, follow the [Supplier Conformance Assessment List (SCAL) process.]( https://digital.nhs.uk/developer/onboarding-process#onboard-using-the-supplier-conformance-assessment-list-scal-process)
+    To onboard for this API, follow the [Supplier Conformance Assessment List (SCAL) process.](https://digital.nhs.uk/developer/developer-reference/onboarding-process#onboard-using-the-supplier-conformance-assessment-list-scal-process)
 
     When following the SCAL process, note that:
     * In step 1: to confirm your use case for this API, you need to [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service), even if you already access PDS via another method.
-    * In step 6: when implementing your clinical risk management process, you must review and integrate the PDS FHIR API hazard log into your own risk log. You’ll find it embedded within the PDS FHIR API tab in the SCAL.
-    * In step 8: you need to review and complete the PDS FHIR API risk log to show that you have understood and mitigated the various risks. You might be asked to provide some evidence to prove that controls have been put in place. You’ll find the risk log embedded within the PDS FHIR API tab in the SCAL. This is separate from the clinical safety hazard log mentioned above.
+    * In step 6: when implementing your clinical risk management process, you must review and integrate the PDS FHIR API clinical hazard log into your own risk log. You’ll find it embedded within the PDS FHIR API tab in the SCAL.
+    * In step 8: you need to review and complete the PDS FHIR API risk log to show that you have understood and mitigated the various risks. You might be asked to provide some evidence to prove that controls have been put in place. You’ll find the risk log embedded within the PDS FHIR API tab in the SCAL. This is separate from the clinical hazard log mentioned above.
     * In step 9: you must conduct penetration testing to [CHECK standards](https://www.ncsc.gov.uk/information/check-penetration-testing)
     * In step 10: when you complete the Service Desk Registration Form, send it to [api.management@nhs.net](mailto:api.management@nhs.net).
     * In step 11: submit your completed SCAL to [api.management@nhs.net](mailto:api.management@nhs.net).
@@ -463,7 +462,7 @@ paths:
                               maximum: 1.0
                               example: 0.75
                         resource:
-                          $ref: 'components/schemas/Patient.yaml'
+                          $ref: 'components/schemas/PatientSearch.yaml'
               example:
                 resourceType: Bundle
                 type: searchset
@@ -474,7 +473,7 @@ paths:
                     search:
                       score: 1
                     resource:
-                      $ref: components/examples/Search_Patient.json
+                      $ref: components/examples/PatientSearch.json
         '400':
           description: Invalid search paramaters supplied.
           content:
@@ -923,6 +922,8 @@ components:
   schemas:
     Patient:
       $ref: components/schemas/Patient.yaml
+    PatientSearch:
+      $ref: components/schemas/PatientSearch.yaml
     RelatedPerson:
       $ref: components/schemas/RelatedPerson.yaml
     OperationOutcome:
