@@ -1022,7 +1022,7 @@ paths:
         In a JSON Patch request the path should be `/gender`.
 
         When setting a gender, the local system should encourage the user to select `male` or `female` rather than `unknown`.
-        The fourth value of gender, `other`, meaning indeterminate; i.e. unable to be classified as either male or female; should never pro-actively be set by local systems - although this value can be retrieved.
+        The fourth value of gender, `other`, meaning indeterminate; i.e. unable to be classified as either male or female; should never pro-actively be set by local systems - although this value can be retrieved due to legacy data or data quality issues.
 
         There are a number of business rules that should be taken into account:
           * Cannot be removed.
@@ -1047,7 +1047,7 @@ paths:
         * The date period is optional; where present they must a be valid dates and the `end` date cannot be before the `start` date.
         * Supplied name data must be UTF-8 encodable.
         * The `period` is optional, but if included the `end` date cannot be before the `start` date. They can however be in the past, present or future.
-        * The full available range of generally recognised titles are permitted. However, if any of the following are used then the value input must conform to the following format:
+        * The full available range of generally recognised titles are permitted, however, if any of the following are used then the value input must conform to the following format:
             * Mr
             * Mrs
             * Ms
@@ -1056,7 +1056,7 @@ paths:
             * Sir
             * Lady
             * Lord
-        * Any trailing full stops at the end of a prefix will be automatically removed. For example `Mrs.` will be changed to `Mrs`.
+        * Any trailing full stops at the end of a prefix will be automatically removed; for example `Mrs.` will be changed to `Mrs`.
 
 
         ## Sandbox test scenarios
