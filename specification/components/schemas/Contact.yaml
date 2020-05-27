@@ -15,6 +15,6 @@ properties:
   telecom:
     type: array
     description: |
-      List of Telecom objects on the contact should only contain `system` and `value`.
+      List of Telecom objects on the contact will only contain `system` and `value`.
     items:
       "$ref": ContactPoint.yaml

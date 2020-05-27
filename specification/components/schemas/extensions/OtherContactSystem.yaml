@@ -1,5 +1,5 @@
 type: object
-description: Wrapped object for other contact system details to be used when `use` values are not appropriate.
+description: Wrapped object for other contact system details.
 properties:
   url:
     type: string
