@@ -65,6 +65,12 @@ properties:
       When a patient tagged as `restricted` or `very restricted` is retrieved, all contact points will be removed from the response.
     items:
       $ref: "ContactPoint.yaml"
+  contact:
+    type: array
+    description: |
+      List of patient contacts. This will only be contact details for Emergency Contacts, all other contacts should be added to the patient's related person.
+    items:
+      $ref: "Contact.yaml"
   generalPractitioner:
     type: array
     maxItems: 1

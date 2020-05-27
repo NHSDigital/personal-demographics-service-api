@@ -1,7 +1,6 @@
 description: A contact point, such as a phone number or email address
 type: object
 required:
-  - use
   - system
   - value
 properties:
@@ -15,7 +14,7 @@ properties:
   system:
     description: Means of communication, such as phone or email.
     type: string
-    enum: [phone, fax, email, pager, sms, other]
+    enum: [phone, fax, email, other]
     example: phone
   value:
     description: Phone number, email address, or other identifier for use with contact system.
@@ -23,6 +22,12 @@ properties:
     example: '01632960587'
   use:
     type: string
-    description: Location associated with communication system, or marker to indicate it is temporary or outdated.
-    enum: [home, work, temp, old, mobile]
+    description: Location associated with communication system.
+    enum: [home, work, temp, mobile]
     example: work
+  extension:
+    type: array
+    maxItems: 1
+    description: Extension holding another contact system not available in the `use` enum. Either an `use` or an `extension` will be returned. 
+    items:
+      $ref: 'extensions/OtherContactSystem.yaml'

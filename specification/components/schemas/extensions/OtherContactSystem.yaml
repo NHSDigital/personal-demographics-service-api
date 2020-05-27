@@ -1,0 +1,25 @@
+type: object
+description: Wrapped object for other contact system details to be used when `use` values are not appropriate.
+properties:
+  url:
+    type: string
+    description: Definition of other contact system extension.
+    default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-OtherContactSystem
+    readOnly: true
+  valueCoding:
+    type: object
+    description: URL of specification of other contact systems.
+    properties:
+      system:
+        type: string
+        description: URL of Code System that describes available contact relationships.
+        default: https://fhir.nhs.uk/R4/CodeSystem/UKCore-OtherContactSystem
+        readOnly: true
+      code:
+        type: string
+        description: Coded value for the other contact system in place.
+        example: textphone
+      display:
+        description: Display-friendly representation of the other contact system code.
+        type: string
+        example: Minicom (Textphone)

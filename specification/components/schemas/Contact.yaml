@@ -1,0 +1,20 @@
+title: Schema for a patient contact.
+type: object
+additionalProperties: false
+required:
+  - relationship
+  - telecom
+properties:
+  id:
+    type: string
+    example: C123
+  period:
+    "$ref": Period.yaml
+  relationship:
+    "$ref": codeable/ContactRelationship.yaml
+  telecom:
+    type: array
+    description: |
+      List of Telecom objects on the contact should only contain `system` and `value`.
+    items:
+      "$ref": ContactPoint.yaml
