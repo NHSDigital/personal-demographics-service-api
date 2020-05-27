@@ -247,13 +247,11 @@ paths:
         Use the `_exact-match` query parameter to return exact matches only - where the score is 1.0.
 
         ## Restricted patients
-        Some patients are tagged as restricted, or sensitive. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telecom` and `generalPractitioner` will be removed.
+        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telecom` and `generalPractitioner` will be removed.
 
         If `address-postcode` or `general-practitioner` are included in the search parameters, no restricted patients will be returned even if a match is identified.
 
         The restricted flag can be found in the data under `meta/security` on the patient resource.
-
-        NHS Digital guidance on restricting access to a patient's details can be found [here](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record)
 
         ## Number of results returned
         By default, the endpoint will return a maximum of 50 results.
@@ -281,7 +279,7 @@ paths:
         | Search with limited results | `family`=`Sm*`, `gender`=`female`, `birthdate`=`eq2010-10-22`, `_max-results`=`2` | HTTP Status 200 with search result of two. |
         | Search with date range      | `family`=`Smith`, `gender`=`female`, `birthdate`=`ge2010-10-21`, `birthdate`=`le2010-10-23` | HTTP Status 200 with single search result. |
         | Fuzzy search                | `family`=`Smith`, `given`=`Jane` `gender`=`female`, `birthdate`=`eq2010-10-22`, `_fuzzy-match`=`true` | HTTP Status 200 with single search result. |
-        | Sensitive patient search    | `family`=`Smythe`, `given`=`Janet` `gender`=`female`, `birthdate`=`eq2005-06-16` | HTTP Status 200 with single search result without restricted data. |
+        | Restricted patient search   | `family`=`Smythe`, `given`=`Janet` `gender`=`female`, `birthdate`=`eq2005-06-16` | HTTP Status 200 with single search result with restricted data omitted. |
         | Unsuccessful search         | Any other valid search query parameters                      | HTTP Status 200 with no search results     |
         | Invalid date format         | `birthdate` or `death-date` query parameters with values not in format `YYYY-MM-DD` | HTTP Status 400 with problem description   |
         | Too few search parameters   | Any invalid combination of query parameters                  | HTTP Status 400 with problem description   |
@@ -523,11 +521,9 @@ paths:
         On retrieval of a superceded resource the new resource will be automatically returned in place of the requested resource.
 
         ## Restricted patients
-        Some patients are tagged as restricted, or sensitive. Restricted patients can be retrieved; however, location sensitive fields such as `address`, `telecom` and `generalPractitioner` will be removed.
+        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. Restricted patients can be retrieved; however, location sensitive fields such as `address`, `telecom` and `generalPractitioner` will be removed.
 
         The restricted flag can be found in the data under `meta/security` on the patient resource.
-
-        NHS Digital guidance on restricting access to a patient's details can be found [here](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record)
 
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
@@ -758,7 +754,9 @@ paths:
         Use this endpoint to get a patient's related people details from PDS for a given NHS Number. This is a list of people who can be contacted, and how, regarding the patient. These details may be useful for a practitioner to get in contact with a next of kin or guardian.
         
         ## Restricted patients
-        Some patients are tagged as restricted, or sensitive. Related people will not be returned for a restricted patient and an empty bundle will be returned.
+        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. Related people will not be returned for a restricted patient and an empty bundle will be returned.
+
+        If a related person only contains a patient reference reference, and when the patient is retrieved, it is restricted; location sensitive fields such as `address` and `telecom` will be removed.
 
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
