@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<AssignMessage async="false" continueOnError="false" enabled="true" name="CatchallErrorMessage">
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.CatchallErrorMessage">
     <DisplayName>Catchall error message</DisplayName>
     <Set>
         <Payload contentType="application/json">
