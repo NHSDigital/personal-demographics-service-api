@@ -38,4 +38,4 @@ jobs:
         with:
           msg: |
             This branch is work on a ticket is put on to the internal portal. Here's a handy link to the specification:
-            # [{{ github.event.pull_request.head.ref }} Specification](https://internal-portal.developer.nhs.uk/docs/personal-demographics-internal-dev-${{ env.SPEC_LINK }})
+            # [${{ github.event.pull_request.head.ref }} Specification](https://internal-portal.developer.nhs.uk/docs/personal-demographics-internal-dev-${{ env.SPEC_LINK }}/1/overview)
