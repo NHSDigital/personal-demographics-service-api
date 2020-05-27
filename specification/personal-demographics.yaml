@@ -353,7 +353,7 @@ paths:
           description: |
             The patient's family name (surname).
 
-            Ensure that the search parameters are url encoded, especially when containing special characters. For example a `space` must be represented by either `%20` or `+`.
+            Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding). For example a space must be represented by either `%20` or `+`.
           examples:
             simple:
               value: Smith
@@ -369,7 +369,7 @@ paths:
           description: |
             The patient's given name.
 
-            Ensure that the search parameters are url encoded, especially when containing special characters. For example a `space` must be represented by either `%20` or `+`.
+            Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding). For example a space must be represented by either `%20` or `+`.
           example: Jane
           in: query
           required: false
@@ -427,7 +427,7 @@ paths:
           description: |
             The postcode of any of the patient’s known addresses. White spaces in postcodes are not significant; that is, LS16AE and LS1 6AE will both match LS1 6AE.
 
-            Ensure that the search parameters are url encoded, especially when containing special characters. For example a `space` must be represented by either `%20` or `+`.
+            Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding). For example a space must be represented by either `%20` or `+`.
           examples:
             simple:
               value: LS1 6AE
