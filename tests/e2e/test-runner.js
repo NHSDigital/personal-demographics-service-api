@@ -21,7 +21,7 @@ function nhsIdLogin(username, password, login_url, callback) {
         console.log("Oauth journey on " + login_url);
         const browser = await puppeteer.launch({ headless: true });
         const page = await browser.newPage();
-        await page.goto(login_url, { waitUntil: 'networkidle2' });
+        await page.goto(login_url, { waitUntil: 'networkidle2', timeout: 120000 });
         await page.click("#start");
         await page.waitForSelector('#idToken1');
         await page.type('#idToken1', username);
