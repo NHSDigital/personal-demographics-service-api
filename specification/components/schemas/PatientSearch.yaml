@@ -16,6 +16,8 @@ properties:
     type: array
     description: | 
       List of names associated with the patient.
+
+      This will only be fully populated on a retrieval, only a the `usual`, `nickname` and `temp` names will be returned on a search.
       
       When a patient tagged as `very restricted` is retrieved, all names will be removed from the response.
     minItems: 1

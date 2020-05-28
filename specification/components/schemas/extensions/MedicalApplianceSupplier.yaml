@@ -11,7 +11,7 @@ properties:
     readOnly: true
   valueReference:
     type: object
-    description: Reference to a GP Practive Pharmacy Organization Resource.
+    description: Reference to medical appliance supplier pharmacy `Organization` resource.
     required:
       - reference
       - identifier

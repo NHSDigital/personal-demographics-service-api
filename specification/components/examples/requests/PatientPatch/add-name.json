@@ -1,5 +1,4 @@
 {
-  "correction": false,
   "patches": [
     {
       "op": "add",
@@ -9,14 +8,14 @@
         "period": {
           "start": "2019-12-31"
         },
-        "prefix": "Dr",
+        "prefix": ["Dr"],
         "given": [
           "Joe",
           "Horation",
           "Maximus"
         ],
         "family": "Bloggs",
-        "suffix": "PhD"
+        "suffix": ["PhD"]
       }
     }
   ]
