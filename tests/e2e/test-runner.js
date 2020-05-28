@@ -15,6 +15,9 @@ const docopt = require('docopt').docopt;
 const newman = require('newman');
 const puppeteer = require('puppeteer');
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 function nhsIdLogin(username, password, login_url, callback) {
     (async () => {
