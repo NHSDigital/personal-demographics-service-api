@@ -1,0 +1,39 @@
+type: object
+description: Wrapper object for place of birth details. This will not be returned on a restricted patient.
+required:
+  - url
+  - valueAddress
+properties:
+  url:
+    type: string
+    description: Definition of place of birth extension.
+    default: http://hl7.org/fhir/StructureDefinition/patient-birthPlace
+    readOnly: true
+  valueAddress:
+    type: object
+    additionalProperties: false
+    properties:
+      city:
+        type: string
+        description: Town or City of birth.
+        example: Manchester
+      district:
+        type: string
+        description: County of Metropolitan district of birth.
+        example: Greater Manchester 
+      country:
+        type: string
+        description: |
+          A coded value for a patients country of birth.
+
+          From [ISO 3166-1](http://hl7.org/fhir/valueset-iso3166-1-3.html) plus codes from the UK Internal Code list which do not have entries in ISO 3166-1.
+
+          UK Internal Codes:
+          * `1` - England
+          * `2` - Scotland
+          * `3` - Wales
+          * `4` - Northern Ireland
+          * `7` - Sark
+          * `9` - Alderney
+          * `10` - Channel Islands
+        example: GBR
