@@ -1386,7 +1386,7 @@ components:
       in: header
       name: NHSD-Session-URID
       description: |
-        A User Role ID (URID), also known as a User Role Profile ID (URPID), specifies the role the user is acting in. This dictates the actions they can perform.
+        A User Role ID (URID), also known as a User Role Profile ID (URPID), specifies the role the user is acting in.
 
         A URID belongs to a user (they are not generic) and a user may have more than one.
 
