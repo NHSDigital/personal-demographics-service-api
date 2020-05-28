@@ -183,8 +183,8 @@ servers:
     description: 'Production environment (not yet available: see "API status and roadmap").'
 tags:
   - name: patients
-  - name: relatedperson
   - name: polling
+  - name: relatedperson
 paths:
   /Patient:
     parameters:
