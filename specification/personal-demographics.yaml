@@ -184,6 +184,7 @@ servers:
 tags:
   - name: patients
   - name: relatedperson
+  - name: polling
 paths:
   /Patient:
     parameters:
@@ -1377,7 +1378,7 @@ paths:
       summary: Retrieve the outcome of the accepted update. 
       operationId: polling
       tags:
-        - relatedperson
+        - polling
       responses:
         '200':
           description: Patient updated.
