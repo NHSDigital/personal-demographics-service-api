@@ -267,21 +267,21 @@ paths:
 
         ## Patient data returned
         The patient data returned on a search is not the full set of data that is returned on a retrieval. The following data is included:
-        * NHS Number.
-        * Restricted flag.
-        * Name.
-        * Gender.
-        * Birth information; date of birth, birth order and place of birth.
-        * Death information; date of death and death notification status.
-        * Home address.
-        * Contact details.
-        * General Practice.
+        * NHS Number
+        * name
+        * gender
+        * birth information
+        * death information
+        * home address
+        * contact details
+        * registered GP
+        * restricted patient flag
 
         The following data is excluded:
-        * All addresses apart from home address.
-        * All pharmacies.
-        * Communication details.
-        * Contact preference details.
+        * all addresses apart from home address
+        * pharmacy details
+        * communication details
+        * contact preferences
 
         ## Clinical safety and privacy
         This endpoint can return multiple matching patients for a given search, including partial matches.
