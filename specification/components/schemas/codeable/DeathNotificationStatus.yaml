@@ -34,7 +34,7 @@ properties:
         display:
           type: string
           description: Representation defined by the system.
-          example: "Formal - death notice received from Registrar of Deaths"
+          example: Formal - death notice received from Registrar of Deaths
           enum:
             - Informal - death notice received via an update from a local NHS Organisation such as GP or Trust
             - Formal - death notice received from Registrar of Deaths

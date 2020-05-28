@@ -11,7 +11,7 @@ properties:
     readOnly: true
   valueReference:
     type: object
-    description: Reference to a Pharmacy Organization Resource.
+    description: Reference to a pharmacy `Organization` resource.
     required:
       - reference
       - identifier
