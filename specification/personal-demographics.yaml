@@ -635,14 +635,19 @@ paths:
         ## Overview
         Use this endpoint to update patient details in PDS.
 
-        This is a 'patch' operation, meaning you can update specific parts of the patient record (such as a name or an address), as opposed to having to update the entire record.
+        This is a 'patch' operation, meaning you can update specific parts of the patient record (such as a name or an address), without to having to update the entire record.
 
         ## Patient resource versioning
         To update a patient's record you must have retrieved it first.
-        When you retrieve a patient record, you get a version number for the record (in the `ETag` header and in the `versionId` field in the response).
-        You must then pass the resource's version number in the update request (in the `If-Match` header).
+
+        When you retrieve a patient record, you get a version number for the record (in the `ETag` response header and in the `versionId` field in the response).
+
+        You must then pass the resource's version number in the update request (in the `If-Match` response header).
+
         The update will only succeed if the patient record has not been updated in our database in the meantime.
+
         If the update succeeds, you will receive a copy of the update record in the response, including the new record version number.
+
         If you have a subsequent update you must use the new version number.
 
         ## JSON Patch
@@ -1081,7 +1086,7 @@ paths:
         | Incorrect resource version          | `If-Match`=`W/"1"`                                                        | HTTP Status 412 with problem description         |
         | Wrong content type                  | `Content-Type` header missing or other than `application/json-patch+json` | HTTP Status 400 with problem description         |
         | No patches sent                     | Send body with no `patches` attribute                                     | HTTP Status 400 with problem description         |
-        | Invalid patch operation(s)          | Send body with invalid JSON patches in `patches` attribute                | HTTP Status 400 with problem description         |
+        | Invalid patch operations            | Send body with invalid JSON patches in `patches` attribute                | HTTP Status 400 with problem description         |
 
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
@@ -1122,7 +1127,7 @@ paths:
                 value:
                   $ref: components/examples/requests/PatientPatch/add-name.json
               add-extension:
-                summary: Add a an extension (Nominated Pharmacy) to the Patient
+                summary: Add a an extension (nominated pharmacy) to the Patient
                 value:
                   $ref: components/examples/requests/PatientPatch/add-extension.json
               update-gender:
@@ -1138,7 +1143,7 @@ paths:
                 value:
                   $ref: components/examples/requests/PatientPatch/update-address-alternative.json
               update-extension:
-                summary: Update an extension (Death Notification)
+                summary: Update an extension (death notification)
                 value:
                   $ref: components/examples/requests/PatientPatch/update-extension.json
               delete-gender:
@@ -1154,7 +1159,7 @@ paths:
                 value:
                   $ref: components/examples/requests/PatientPatch/delete-name-alternative.json
               delete-extension:
-                summary: Remove an extension (Dispensing Doctor Pharmacy) no longer in use
+                summary: Remove an extension (dispensing doctor pharmacy) no longer in use
                 value:
                   $ref: components/examples/requests/PatientPatch/delete-extension.json
       responses:
