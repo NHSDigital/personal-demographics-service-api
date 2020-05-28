@@ -12,7 +12,7 @@
     <FaultRule name="catch_all">
       <Step>
         <Name>AssignMessage.CatchallErrorMessage</Name>
-        <Condition>(response.status.code GreaterThan "399")</Condition>
+        <Condition>(response.status.code GreaterThanOrEquals "400")</Condition>
       </Step>
     </FaultRule>
   </FaultRules>
