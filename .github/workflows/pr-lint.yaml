@@ -28,7 +28,7 @@ jobs:
             This branch is work on a ticket in the NHS Digital APM JIRA Project. Here's a handy link to the ticket:
             # [${{ env.TICKET_NAME }}](https://jira.digital.nhs.uk/browse/${{ env.TICKET_NAME}})
 
-      - name: Grab ticket name
+      - name: Grab branch name
         run: echo ::set-env name=SPEC_LINK::$(echo ${{ github.event.pull_request.head.ref }} | tr '[:upper:]' '[:lower:]')
 
       - name: Comment on PR with link to Spec
