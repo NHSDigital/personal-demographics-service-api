@@ -1,5 +1,8 @@
 # Changelog
 
+## 2020-05-28
+* Adding Polling endpoint.
+
 ## 2020-05-12
 * Adding update JSON Patch description.
 * Deceased Date Time and Death Notification Status Update descriptions.
