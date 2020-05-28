@@ -23,7 +23,7 @@ function nhsIdLogin(username, password, login_url, callback) {
         const page = await browser.newPage();
         await page.goto(login_url, { waitUntil: 'networkidle2', timeout: 120000 });
         await page.click("#start");
-        await page.waitForSelector('#idToken1');
+        await page.waitForSelector('#idToken1', { timeout: 120000 });
         await page.type('#idToken1', username);
         await page.type('#idToken2', password);
         await page.click('#loginButton_0');
