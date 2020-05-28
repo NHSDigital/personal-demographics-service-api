@@ -1,0 +1,10 @@
+{
+    "patches": [
+      {
+        "op": "replace",
+        "path": "/gender",
+        "value": "male"
+      }
+    ]
+}
+  
