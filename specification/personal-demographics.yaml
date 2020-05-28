@@ -265,6 +265,24 @@ paths:
         You can further limit the number of results using the `_max-results` query parameter.
         You can request a single, exact match using `_exact-match=true` and `_max-results=1`.
 
+        ## Patient data returned
+        The patient data returned on a search is not the full set of data that is returned on a retrieval. The following data is included:
+        * NHS Number
+        * name
+        * gender
+        * birth information
+        * death information
+        * home address
+        * contact details
+        * registered GP
+        * restricted patient flag
+
+        The following data is excluded:
+        * all addresses apart from home address
+        * pharmacy details
+        * communication details
+        * contact preferences
+
         ## Clinical safety and privacy
         This endpoint can return multiple matching patients for a given search, including partial matches.
 
@@ -273,30 +291,6 @@ paths:
         * the end user has access to patients’ personal data, so there is a risk to patient privacy
 
         In particular, it is almost certainly a good idea to display search results in descending score order - best match first.
-
-        ## Patient Data
-        The patient data returned on a search is not the full set of data that is returned on a retrieval. The following data is included:
-        * id
-        * identifier
-        * meta
-        * name
-        * gender
-        * birthDate
-        * deceasedDateTime
-        * address (only home address)
-        * telecom
-        * generalPractitioner
-        * extension
-          * death notification
-
-        The following data is excluded:
-        * address (all but the home address)
-        * extension
-          * nominated pharmacy
-          * dispensing doctor pharmacy
-          * medical appliance supplier pharmacy
-          * communication
-          * contact preference
 
         ## Sandbox testing
         You can test the following scenarios in our sandbox environment:
