@@ -280,7 +280,7 @@ paths:
         In particular, it is almost certainly a good idea to display search results in descending score order - best match first.
 
         ## Patient Data
-        The patient data returned on a search is not the full set of data that would be returned on a retrieval. The following data is included:
+        The patient data returned on a search is not the full set of data that is returned on a retrieval. The following data is included:
         * id
         * identifier
         * meta
@@ -365,7 +365,7 @@ paths:
           description: |
             The patient's family name (surname).
 
-            Ensure that the search parameters are url encoded, especially when containing special characters. For example a `space` must be represented by either `%20` or `+`.
+            Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding). For example a space must be represented by either `%20` or `+`.
           examples:
             simple:
               value: Smith
@@ -381,7 +381,7 @@ paths:
           description: |
             The patient's given name.
 
-            Ensure that the search parameters are url encoded, especially when containing special characters. For example a `space` must be represented by either `%20` or `+`.
+            Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding). For example a space must be represented by either `%20` or `+`.
           example: Jane
           in: query
           required: false
@@ -439,7 +439,7 @@ paths:
           description: |
             The postcode of any of the patient’s known addresses. White spaces in postcodes are not significant; that is, LS16AE and LS1 6AE will both match LS1 6AE.
 
-            Ensure that the search parameters are url encoded, especially when containing special characters. For example a `space` must be represented by either `%20` or `+`.
+            Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding). For example a space must be represented by either `%20` or `+`.
           examples:
             simple:
               value: LS1 6AE
@@ -989,6 +989,8 @@ paths:
 
         Single item found under `birthDate` field.
 
+        In a JSON Patch request the path should be `/birthDate`.
+
         When adding or updating the birth date, the update should be in the format `yyyy-mm-dd`.
 
         There are a number of business rules that should be taken into account:
@@ -999,6 +1001,8 @@ paths:
         ### Date of Death
 
         Single item found under `deceasedDateTime` field.
+
+        In a JSON Patch request the path should be `/deceasedDateTime`.
 
         When adding or updating the deceased date time, the update should be in the format `yyyy-mm-ddTHH:MM:SS+HH:MM`.
 
@@ -1011,7 +1015,11 @@ paths:
 
         ### Death Notification
 
-        Single item found under `extension` with the extension url `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus`
+        Single item found under `extension` with the extension url `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus`.
+
+        In a JSON Patch request the path should be:
+        * `/extension/0` if the death notification is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
+        * `/extension/-` when adding a death notification.
 
         There are a number of business rules that should be taken into account:
         * Cannot be removed.
@@ -1023,8 +1031,10 @@ paths:
 
         Single item found under `gender` field.
 
+        In a JSON Patch request the path should be `/gender`.
+
         When setting a gender, the local system should encourage the user to select `male` or `female` rather than `unknown`.
-        The fourth value of gender, `other`, meaning indeterminate; i.e. unable to be classified as either male or female; should never pro-actively be set by local systems - although this value can be retrieved.
+        The fourth value of gender, `other`, meaning indeterminate; i.e. unable to be classified as either male or female; should never pro-actively be set by local systems - although this value can be retrieved due to legacy data or data quality issues.
 
         There are a number of business rules that should be taken into account:
           * Cannot be removed.
@@ -1033,7 +1043,11 @@ paths:
 
         ### Name
 
-        List item found under `name` key.
+        List item found under `name` field.
+
+        In a JSON Patch request the path should be:
+        * `/name/0` if the name to be replaced or removed is the first item in the list. If it is the second item in the list the path will be `/name/1`, and so on.
+        * `/name/-` when adding a new name.
 
         There are a number of business rules that should be taken into account:
         * Cannot add more than one `usual` name.
@@ -1045,7 +1059,7 @@ paths:
         * The date period is optional; where present they must a be valid dates and the `end` date cannot be before the `start` date.
         * Supplied name data must be UTF-8 encodable.
         * The `period` is optional, but if included the `end` date cannot be before the `start` date. They can however be in the past, present or future.
-        * The full available range of generally recognised titles are permitted. However, if any of the following are used then the value input must conform to the following format:
+        * The full available range of generally recognised titles are permitted, however, if any of the following are used then the value input must conform to the following format:
             * Mr
             * Mrs
             * Ms
@@ -1054,7 +1068,7 @@ paths:
             * Sir
             * Lady
             * Lord
-        * Any trailing full stops at the end of a prefix will be automatically removed. For example `Mrs.` will be changed to `Mrs`.
+        * Any trailing full stops at the end of a prefix will be automatically removed; for example `Mrs.` will be changed to `Mrs`.
 
 
         ## Sandbox test scenarios
