@@ -1,24 +1,69 @@
 <ProxyEndpoint name="default">
-    <Flows>
-      <Flow name="OptionsPreFlight">
-            <Request/>
-            <Response>
-                <Step>
-                    <Name>AssignMessage.AddCors</Name>
-                </Step>
-            </Response>
-        <Condition>request.verb == "OPTIONS" AND request.header.origin != null AND request.header.Access-Control-Request-Method != null</Condition>
-      </Flow>
-    </Flows>
-    <PreFlow/>
-    <HTTPProxyConnection>
-        <BasePath>{{ SERVICE_BASE_PATH }}</BasePath>
-        <VirtualHost>secure</VirtualHost>
-    </HTTPProxyConnection>
-    <RouteRule name="NoRoute">
-        <Condition>request.verb == "OPTIONS" AND request.header.origin != null AND request.header.Access-Control-Request-Method != null</Condition>
-    </RouteRule>
-    <RouteRule name="ig3">
-        <TargetEndpoint>ig3</TargetEndpoint>
-    </RouteRule>
+  <Flows>
+    <Flow name="OptionsPreFlight">
+      <Request />
+      <Response>
+        <Step>
+          <Name>AssignMessage.AddCors</Name>
+        </Step>
+      </Response>
+      <Condition>request.verb == "OPTIONS" AND request.header.origin != null AND request.header.Access-Control-Request-Method != null</Condition>
+    </Flow>
+  </Flows>
+  <PreFlow>
+    <Request>
+      <Step>
+        <!-- Header NHSD-Session-URID must be present and not empty -->
+        <Name>RaiseFault.400BadRequest</Name>
+        <Condition>(request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>OauthV2.VerifyAccessToken</Name>
+      </Step>
+      <Step>
+        <Name>Quota</Name>
+      </Step>
+      <Step>
+        <Name>SpikeArrest</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.AddUserIdHeader</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.AddIssuerHeader</Name>
+      </Step>
+      <Step>
+        <Name>KeyValueMapOperations.GetSecureVariables</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.AddAsidHeader</Name>
+      </Step>
+    </Request>
+  </PreFlow>
+  <HTTPProxyConnection>
+    <BasePath>{{ SERVICE_BASE_PATH }}</BasePath>
+    <VirtualHost>secure</VirtualHost>
+  </HTTPProxyConnection>
+  <RouteRule name="NoRoute">
+    <Condition>request.verb == "OPTIONS" AND request.header.origin != null AND request.header.Access-Control-Request-Method != null</Condition>
+  </RouteRule>
+  <RouteRule name="ig3">
+    <TargetEndpoint>ig3</TargetEndpoint>
+  </RouteRule>
+  <FaultRules>
+    <FaultRule name="access_token_expired">
+      <Step>
+        <Name>ExtractVariables.OAuthErrorFaultString</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.OAuthPolicyErrorResponse</Name>
+      </Step>
+      <Condition>oauthV2.OauthV2.VerifyAccessToken.failed</Condition>
+    </FaultRule>
+  </FaultRules>
+  <DefaultFaultRule>
+    <Step>
+      <Name>AssignMessage.CatchallErrorMessage</Name>
+    </Step>
+  </DefaultFaultRule>
 </ProxyEndpoint>
