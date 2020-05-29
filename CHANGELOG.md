@@ -4,6 +4,10 @@
 * Added a step in pipeline to deploy the specification automatically
 * Added a step in the workflow to add a link to the interal portal to the specification
 
+## 2020-05-12
+* Adding update JSON Patch description.
+* Deceased Date Time and Death Notification Status Update descriptions.
+
 ## 2020-05-07
 * Added Contact Preferences extension to the Patient resource
 * Removed GET Related Person by Object ID
