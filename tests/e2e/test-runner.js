@@ -42,7 +42,7 @@ async function retry(func, times) {
     return result;
 }
 
-async function gotoLogin(browser) {
+async function gotoLogin(browser, login_url) {
     const page = await browser.newPage();
     await page.goto(login_url, { waitUntil: 'networkidle2', timeout: 120000 });
     await page.waitForSelector('#start', { timeout: 120000 });
@@ -56,7 +56,7 @@ function nhsIdLogin(username, password, login_url, callback) {
     (async () => {
         console.log("Oauth journey on " + login_url);
         const browser = await puppeteer.launch({ headless: true });
-        const page = await retry(async () => { return await gotoLogin(browser); }, 3);
+        const page = await retry(async () => { return await gotoLogin(browser, login_url); }, 3);
         await page.type('#idToken1', username);
         await page.type('#idToken2', password);
         await page.click('#loginButton_0');
@@ -97,17 +97,17 @@ function collectionRunner(url, collection_path, environment_path) {
                     export: './test-report.xml'
                 }
             },
-            environment: environment,
+            environment: environment, // What is going on here?
             environment: {
                 "id": "0eba6cf0-3fd1-4b3f-b6be-4b20153baf8d",
                 "name": "environment-params",
-                "values": [                    
+                "values": [
                     {
                         "key": "environment",
                         "value": url,
                         "type": "text",
                         "enabled": true
-                    },                    
+                    },
                 ],
                 "timestamp": 1404119927461,
                 "_postman_variable_scope": "environment",
@@ -123,7 +123,7 @@ function collectionRunner(url, collection_path, environment_path) {
                         "value": credentials.access_token,
                         "type": "text",
                         "enabled": true
-                    },                                                                      
+                    },
                     {
                         "key": "nhsd-session-urid-header",
                         "value": "NHSD-Session-URID",
@@ -140,7 +140,7 @@ function collectionRunner(url, collection_path, environment_path) {
                 "_postman_variable_scope": "globals",
                 "_postman_exported_at": "2020-04-03T14:31:26.200Z",
                 "_postman_exported_using": "Postman/4.8.0"
-            },            
+            },
         }, function (err) {
             if (err) { throw err; }
             console.log('collection run complete!');
