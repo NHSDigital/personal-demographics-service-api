@@ -63,7 +63,6 @@ function nhsIdLogin(username, password, login_url, callback) {
         await page.waitForNavigation();
 
         let credentialsJSON = await page.$eval('body > div > div > pre', e => e.innerText);
-        console.log(credentialsJSON.replace(/'/g, '"'));
         let credentials = JSON.parse(credentialsJSON.replace(/'/g, '"'));
         await browser.close();
         callback(credentials);
