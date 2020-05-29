@@ -1,0 +1,14 @@
+{
+  "patches": [
+    {
+      "op": "replace",
+      "path": "/address/0/line/0",
+      "value": "2 Whitehall Quay"
+    },
+    {
+      "op": "replace",
+      "path": "/address/0/postalCode",
+      "value": "LS1 4BU"
+    }
+  ]
+}
