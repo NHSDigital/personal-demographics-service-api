@@ -19,16 +19,44 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+async function retry(func, times) {
+    let result;
+    let success = false;
+    let error;
+
+    for (let i = 0; i < times; i++) {
+        try {
+            result = await f();
+            success = true;
+            break;
+        } catch (e) {
+            error = e;
+            console.error(e);
+        }
+    }
+
+    if (!success) {
+        throw e;
+    }
+
+    return result;
+}
+
+async function gotoLogin(browser) {
+    const page = await browser.newPage();
+    await page.goto(login_url, { waitUntil: 'networkidle2', timeout: 120000 });
+    await page.waitForSelector('#start', { timeout: 120000 });
+    await page.click("#start");
+    await sleep(10000); // Added in to pad out possible issues
+    await page.waitForSelector('#idToken1', { timeout: 120000 });
+    return page;
+}
+
 function nhsIdLogin(username, password, login_url, callback) {
     (async () => {
         console.log("Oauth journey on " + login_url);
         const browser = await puppeteer.launch({ headless: true });
-        const page = await browser.newPage();
-        await page.goto(login_url, { waitUntil: 'networkidle2', timeout: 120000 });
-        await page.waitForSelector('#start', { timeout: 120000 });
-        await page.click("#start");
-        await sleep(10000); // Added in to pad out possible issues
-        await page.waitForSelector('#idToken1', { timeout: 120000 });
+        const page = await retry(async () => { return await gotoLogin(browser); }, 3);
         await page.type('#idToken1', username);
         await page.type('#idToken2', password);
         await page.click('#loginButton_0');
