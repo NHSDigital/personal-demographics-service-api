@@ -26,7 +26,7 @@ async function retry(func, times) {
 
     for (let i = 0; i < times; i++) {
         try {
-            result = await f();
+            result = await func();
             success = true;
             break;
         } catch (e) {
