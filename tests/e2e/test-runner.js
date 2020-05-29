@@ -36,7 +36,7 @@ async function retry(func, times) {
     }
 
     if (!success) {
-        throw e;
+        throw error;
     }
 
     return result;
