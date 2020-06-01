@@ -576,7 +576,7 @@ paths:
         Alternatively, you can try out the sandbox using our Postman collection:
 
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
-      summary: "Retrieve a patient's record"
+      summary: "Retrieve a patient's resource"
       operationId: get-patient
       tags:
         - patients
@@ -631,22 +631,19 @@ paths:
         ## Overview
         Use this endpoint to update patient details in PDS.
 
-        This is a 'patch' operation, meaning you can update specific parts of the patient record (such as a name or an address), as opposed to having to update the entire record.
-        This is a 'patch' operation, meaning you can update specific parts of the patient record (such as a name or an address), without to having to update the entire record.
+        This is a 'patch' operation, meaning you can update specific parts of the patient resource (such as a name or an address), without to having to update the entire resource.
         The update process is asynchronous, so if the request is accepted a `202` response will be returned with a `Content-Location` header, use this location, which will be in the form `/Polling/<message id>` to poll the outcome. See the polling endoint for more details.
 
-        This is a 'patch' operation, meaning you can update specific parts of the patient record (such as a name or an address), as opposed to having to update the entire record.
-
         ## Patient resource versioning
-        To update a patient's record you must have retrieved it first.
+        To update a patient's resource you must have retrieved it first.
 
-        When you retrieve a patient record, you get a version number for the record (in the `ETag` response header and in the `versionId` field in the response).
+        When you retrieve a patient resource, you get a version number for the resource (in the `ETag` response header and in the `versionId` field in the response).
 
         You must then pass the resource's version number in the update request (in the `If-Match` response header).
 
-        The update will only succeed if the patient record has not been updated in our database in the meantime.
+        The update will only succeed if the patient resource has not been updated in our database in the meantime.
 
-        If the update succeeds, you will receive a copy of the update record in the response, including the new record version number.
+        If the update succeeds, on polling the outcome, you will receive a copy of the update resource in the response, including the new resource version number.
 
         If you have a subsequent update you must use the new version number.
 
@@ -1095,7 +1092,7 @@ paths:
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
 
 
-      summary: Update a patient's record
+      summary: Update a patient's resource
       operationId: update-patient-partial
       tags:
         - patients
@@ -1165,12 +1162,16 @@ paths:
       responses:
         '202':
           description: |
-            The patch was syntactically fine and was accepted. A polling location will be returned in the `Content-Location` header.
+            The patch was syntactically fine and was accepted.
+            
+            A polling location will be returned in the `Content-Location` header and the polling interval in the `Retry-After` header.
 
             Note, the patch may still fail after it is accepted, for example further validation of the patched patient may result in business rule failures. So you cannot assume what once the message has been accepted it will update the patient successfully.
           headers:
             Content-Location:
               $ref: components/schemas/ContentLocation.yaml
+            Retry-After:
+              $ref: components/schemas/RetryAfter.yaml
         '400':
           description: Client error.
           content:
@@ -1367,10 +1368,10 @@ paths:
         
         Once the request is accepted a `202` response will be returned with a `Content-Location` header, use this location, which will be in the form `/Polling/<message id>` to poll the outcome.
 
-        Requests should be sent to the polling endpoint until a non `202` response is returned and the response deal with appropriately.
+        Requests should be sent to the polling endpoint until a non `202` response is returned and the response dealt with appropriately.
 
-        Polls should be done at a reasonable frequency to avoid excess traffic; it is recommended requests wait at least 100ms between attempts.
-        The server will return a cached response if attempts are less than 100ms apart, so retrieval of the outcome will not occur any faster.
+        Polls should be done at a reasonable frequency to avoid excess traffic; use the `Retry-After` header for the time to wait in milliseconds between polls, although polling with a larger gap is also allowed.
+        The server will return a cached response if poll requests are less than the returned value apart, so retrieval of the outcome will not occur any faster by polling more frequently.
 
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
