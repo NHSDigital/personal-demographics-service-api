@@ -129,7 +129,7 @@ info:
 
     Alternatively, you can try out the sandbox using our Postman collection:
 
-    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/dc052f444e70d072e577)
+    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c2f31c73988a07a6f49d)
 
     ### Integration testing
     Our [integration test environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing):
@@ -250,13 +250,11 @@ paths:
         Use the `_exact-match` query parameter to return exact matches only - where the score is 1.0.
 
         ## Restricted patients
-        Some patients are tagged as restricted, or sensitive. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telecom` and `generalPractitioner` will be removed.
+        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telecom` and `generalPractitioner` will be removed.
 
         If `address-postcode` or `general-practitioner` are included in the search parameters, no restricted patients will be returned even if a match is identified.
 
         The restricted flag can be found in the data under `meta/security` on the patient resource.
-
-        NHS Digital guidance on restricting access to a patient's details can be found [here](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record)
 
         ## Number of results returned
         By default, the endpoint will return a maximum of 50 results.
@@ -264,6 +262,24 @@ paths:
         If there are more than 50 matching patients, the endpoint will return no results and the error response `TOO_MANY_MATCHES`.
         You can further limit the number of results using the `_max-results` query parameter.
         You can request a single, exact match using `_exact-match=true` and `_max-results=1`.
+
+        ## Patient data returned
+        The patient data returned on a search is not the full set of data that is returned on a retrieval. The following data is included:
+        * NHS Number
+        * name
+        * gender
+        * birth information
+        * death information
+        * home address
+        * contact details
+        * registered GP
+        * restricted patient flag
+
+        The following data is excluded:
+        * all addresses apart from home address
+        * pharmacy details
+        * communication details
+        * contact preferences
 
         ## Clinical safety and privacy
         This endpoint can return multiple matching patients for a given search, including partial matches.
@@ -273,30 +289,6 @@ paths:
         * the end user has access to patients’ personal data, so there is a risk to patient privacy
 
         In particular, it is almost certainly a good idea to display search results in descending score order - best match first.
-
-        ## Patient Data
-        The patient data returned on a search is not the full set of data that is returned on a retrieval. The following data is included:
-        * id
-        * identifier
-        * meta
-        * name
-        * gender
-        * birthDate
-        * deceasedDateTime
-        * address (only home address)
-        * telecom
-        * generalPractitioner
-        * extension
-          * death notification
-
-        The following data is excluded:
-        * address (all but the home address)
-        * extension
-          * nominated pharmacy
-          * dispensing doctor pharmacy
-          * medical appliance supplier pharmacy
-          * communication
-          * contact preference
 
         ## Sandbox testing
         You can test the following scenarios in our sandbox environment:
@@ -308,7 +300,7 @@ paths:
         | Search with limited results | `family`=`Sm*`, `gender`=`female`, `birthdate`=`eq2010-10-22`, `_max-results`=`2` | HTTP Status 200 with search result of two. |
         | Search with date range      | `family`=`Smith`, `gender`=`female`, `birthdate`=`ge2010-10-21`, `birthdate`=`le2010-10-23` | HTTP Status 200 with single search result. |
         | Fuzzy search                | `family`=`Smith`, `given`=`Jane` `gender`=`female`, `birthdate`=`eq2010-10-22`, `_fuzzy-match`=`true` | HTTP Status 200 with single search result. |
-        | Sensitive patient search    | `family`=`Smythe`, `given`=`Janet` `gender`=`female`, `birthdate`=`eq2005-06-16` | HTTP Status 200 with single search result without restricted data. |
+        | Restricted patient search   | `family`=`Smythe`, `given`=`Janet` `gender`=`female`, `birthdate`=`eq2005-06-16` | HTTP Status 200 with single search result with restricted data omitted. |
         | Unsuccessful search         | Any other valid search query parameters                      | HTTP Status 200 with no search results     |
         | Invalid date format         | `birthdate` or `death-date` query parameters with values not in format `YYYY-MM-DD` | HTTP Status 400 with problem description   |
         | Too few search parameters   | Any invalid combination of query parameters                  | HTTP Status 400 with problem description   |
@@ -317,7 +309,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/dc052f444e70d072e577)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c2f31c73988a07a6f49d)
       tags:
         - patients
       parameters:
@@ -559,11 +551,9 @@ paths:
         On retrieval of a superceded resource the new resource will be automatically returned in place of the requested resource.
 
         ## Restricted patients
-        Some patients are tagged as restricted, or sensitive. Restricted patients can be retrieved; however, location sensitive fields such as `address`, `telecom` and `generalPractitioner` will be removed.
+        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. Restricted patients can be retrieved; however, location sensitive fields such as `address`, `telecom` and `generalPractitioner` will be removed.
 
         The restricted flag can be found in the data under `meta/security` on the patient resource.
-
-        NHS Digital guidance on restricting access to a patient's details can be found [here](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record)
 
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
@@ -579,7 +569,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/dc052f444e70d072e577)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c2f31c73988a07a6f49d)
       summary: "Retrieve a patient's record"
       operationId: get-patient
       tags:
@@ -635,37 +625,464 @@ paths:
         ## Overview
         Use this endpoint to update patient details in PDS.
 
-        This is a 'patch' operation, meaning you can update specific parts of the patient record (such as a name or an address), as opposed to having to update the entire record.
+        This is a 'patch' operation, meaning you can update specific parts of the patient record (such as a name or an address), without to having to update the entire record.
 
-        ## Patient record versioning
+        ## Patient resource versioning
         To update a patient's record you must have retrieved it first.
-        When you retrieve a patient record, you get a version number for the record (in the `ETag` header and in the `versionId` field in the response).
-        You must then pass the record's version number in the update request (in the `If-Match` header).
+
+        When you retrieve a patient record, you get a version number for the record (in the `ETag` response header and in the `versionId` field in the response).
+
+        You must then pass the resource's version number in the update request (in the `If-Match` response header).
+
         The update will only succeed if the patient record has not been updated in our database in the meantime.
+
         If the update succeeds, you will receive a copy of the update record in the response, including the new record version number.
+
         If you have a subsequent update you must use the new version number.
 
-        ## Sandbox test scenarios
-        You can test the following scenarios in our sandbox environment.
-        Note that your changes will not be persisted.
-        JSON Patch operations themselves are validated, but the resulting resource is not validated for correctness.
+        ## JSON Patch
+        To update a patient a [JSON Patch](https://tools.ietf.org/html/rfc6902) should be sent. A JSON Patch consists of one or more patch objects within a list.
 
-        | Scenario                            | Request                                                      | Response                                         |
-        | ----------------------------------- | ------------------------------------------------------------ | ------------------------------------------------ |
-        | Successful update                   | `id`=`9000000009`<br />Body: One of the provided examples<br />Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json-patch+json` | HTTP Status 200 with updated patient in response (but note that the update won't be persisted) |
-        | Patient doesn't exist               | `id`=`9111231130` (or any other valid NHS Number)            | HTTP Status 404 with problem description         |
-        | Invalid NHS Number                  | `id`=`9000000000` (or any invalid NHS Number)                | HTTP Status 400 with problem description         |
-        | Missing resource version identifier | `If-Match` header missing or set to format other than `W/"<version>"` | HTTP Status 400 with problem description         |
-        | Incorrect resource version          | `If-Match`=`W/"1"`                                           | HTTP Status 412 with problem description         |
-        | Wrong content type                  | `Content-Type` header missing or other than `application/json-patch+json` | HTTP Status 415 with problem description         |
-        | No patches sent                     | Send body with no `patches` attribute                        | HTTP Status 400 with problem description         |
-        | Invalid patch operation(s)          | Send body with invalid JSON patches in `patches` attribute   | HTTP Status 400 with problem description         |
+        It is recommended that all desired updates are sent together in a single request as a list of patches.
+        This is the most efficient approach and will reduce the danger of race conditions occurring when updating the patient multiple times in a short period of time.
+
+        When processing the list of patch objects, each patch must be valid and pass all the business rules against the data. If one patch object fails, none of the patch objects will be applied.
+
+        A patch object consists of:
+        * an operation, `op` - this is required.
+        * a path to the data that you want to change, `path` - this is required.
+        * the value that will be assigned, `value` - this is required for `add`, `replace` and `test`; but should not be included for a `remove`.
+
+        The following operations are supported:
+        * `add` - to add a new value.
+        * `replace` - to replace an existing value.
+        * `remove` - to remove an existing value.
+        * `test` - to test the state of a value is as expected before continuing with the update.
+
+        Paths point to a single value, list or object, for example:
+        * `/gender` - pointing to the gender value.
+        * `/name` - point to the name list.
+        * `/name/0` - pointing to the 1st object in the name list.
+        * `/address/0/line/1` - pointing to the 2nd line string in the 1st address object.
+
+        The value can be set to any valid value for that path, so could be a null, a string, an object or a list.
+
+        ### Addition
+
+        `add` should be used to add new items to a patient.
+
+        Adding a simple data item such as the date of death can be done using a patch such as:
+
+        ```json
+        {
+            "patches": [
+              { "op": "add", "path": "/deceasedDate", "value": "2020-01-01" }
+          ]
+        }
+        ```
+
+        Adding to a list such as a `name` should be done by including the whole object in the value field. Note, the list index is `-` this is because when adding to a list as the index will not be known:
+
+        ```json
+        {
+            "patches": [
+              {
+                    "op": "add",
+                    "path": "/name/-",
+                    "value": {
+                        "use": "usual",
+                        "period": { "start": "2019-12-31" },
+                        "prefix": ["Dr"],
+                        "given": [
+                          "Joe",
+                          "Horation",
+                          "Maximus"
+                        ],
+                        "family": "Bloggs",
+                        "suffix": ["PhD"]
+                    }
+                }
+          ]
+        }
+        ```
+
+        When adding a list item, ensure the index is always `-`, otherwise the request will be rejected.
+
+        ### Replacing
+
+        `replace` should be used to alter existing items on the patient.
+
+        Replacing a simple data item such as the gender can be done using a patch such as:
+
+        ```json
+        {
+            "patches": [
+              { "op": "replace", "path": "/gender", "value": "male" }
+          ]
+        }
+        ```
+
+        Replacing a list item can be done in two ways which may be dependent on any external development libraries that can be used to create the patch.
+
+        The first approach is to replace the whole list item:
+
+        ```json
+        {
+            "patches": [
+              {
+                    "op": "replace",
+                    "path": "/name/0",
+                    "value": {
+                        "id": "123",
+                        "use": "usual",
+                        "period": { "start": "2019-12-31" },
+                        "prefix": ["Dr"],
+                        "given": [
+                          "Joe",
+                          "Horation",
+                          "Maximus"
+                        ],
+                        "family": "Bloggs",
+                        "suffix": ["PhD"]
+                    }
+                }
+          ]
+        }
+        ```
+
+        The second approach is to replace just a part, or parts, of the list object keys if all others will remain the same:
+
+        ```json
+        {
+            "patches": [
+              { "op": "replace", "path": "/name/0/id", "value": "123" },
+              { "op": "replace", "path": "/name/0/prefix/0", "value": "Mr" },
+              { "op": "replace", "path": "/name/0/family", "value": "Smith" }
+            ]
+        }
+        ```
+
+        An added requirement to ensure no accidental data loss or replacement of the wrong list item, you must always include the list `id` or `url`. This will be in the object on retrieval so just needs to be mirrored back. You should not include an id on an addition as this will be automatically generated by the system and is a unique object id, so only our system can guarantee that.
+
+        ### Removal
+
+        `remove` should be used to delete existing items on a patient.
+
+        Removing a simple data item such as the gender can be done using a patch such as:
+
+        ```json
+        {
+            "patches": [
+              { "op": "remove", "path": "/gender" }
+          ]
+        }
+        ```
+
+        Note, that in this scenario, although the patch is perfectly valid, the update will still be rejected as a patients gender cannot be removed.
+
+        Removing a list item should only be done on the whole item object, not individual sub-items; instead use the replace operation.
+
+        To remove a list item, a `test` operation must <u>immediately proceed</u> the `remove` . This is an added requirement to ensure no accidental data loss occurs or the wrong item is removed. The test operation should be used to assert either:
+
+        * the `id` - the object id for items that have one - for example `name`, `address` or `telecom`.
+        * the `url` - the url for the extension being removed.
+        * the whole object being removed.
+
+        An example of a list item removal using the `id` would be:
+
+        ```json
+        {
+            "patches": [
+              { "op": "test", "path": "/name/0/id", "value": "123" },
+              { "op": "remove", "path": "/name/0" }
+          ]
+        }
+        ```
+
+        An example of a extension list item removal using the `url` would be:
+
+        ```json
+        {
+            "patches": [
+              { "op": "test", "path": "/extension/0/url", "value": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus" },
+              { "op": "remove", "path": "/extension/0" }
+          ]
+        }
+        ```
+
+        An example of a list item removal using the whole object would be:
+
+        ```json
+        {
+            "patches": [
+              { 
+                    "op": "test",
+                    "path": "/name/0/",
+                    "value": {
+                        "id": "123",
+                        "use": "usual",
+                        "period": { "start": "2019-12-31" },
+                        "prefix": ["Dr"],
+                        "given": [
+                          "Joe",
+                          "Horation",
+                          "Maximus"
+                        ],
+                        "family": "Bloggs",
+                        "suffix": ["PhD"]
+                    }
+                },
+              { "op": "remove", "path": "/name/0" }
+          ]
+        }
+        ```
+
+        Special care should be taken when performing multiple removals in the same list; as removing a particular index could affect all subsequent index positions. The next two examples perform **<u>exactly</u>** the same operation.
+
+        Using the following initial (simplified) data, with the intention of removing the names in index 1 (Irwin) and 2 (Bruce):
+
+        ```json
+        {
+            "name": [
+                {"id": "2", "family": "Parker"},
+                {"id": "3", "family": "Irwin"},
+                {"id": "4", "family": "Bruce"},
+                {"id": "5", "family": "Sharpe"}
+            ]
+        }
+        ```
+
+        **Example 1**:
+
+        ```json
+        {
+            "patches": [
+              { "op": "test", "path": "/name/1/id", "value": "3" }
+              { "op": "remove", "path": "/name/1" },
+              { "op": "test", "path": "/name/1/id", "value": "4" }
+              { "op": "remove", "path": "/name/1" }
+          ]
+        }
+        ```
+
+        After the 1st removal the data will look like:
+
+        ```json
+        {
+            "name": [
+                {"id": "2", "family": "Parker"},
+                {"id": "4", "family": "Bruce"},
+                {"id": "5", "family": "Sharpe"}
+            ]
+        }
+        ```
+
+        meaning Irwin has been removed, Bruce has moved from index 2 -> 1 and Sharpe from 3 -> 2.
+
+        So after applying the 2nd removal the data will look like:
+
+        ```json
+        {
+            "name": [
+                {"id": "2", "family": "Parker"},
+                {"id": "5", "family": "Sharpe"}
+            ]
+        }
+        ```
+
+        Which is the intended outcome. Using the same index 1 for both removals may look unexpected, but the way JSON Patch works is iterating over each patch operation in turn and making the change to the list index positions. This means a developer needs to account for lists changing from one operation to the next.
+
+        **Example 2**:
+
+        ```json
+        {
+            "patches": [
+              { "op": "test", "path": "/name/2/id", "value": "4" }
+              { "op": "remove", "path": "/name/2" },
+              { "op": "test", "path": "/name/1/id", "value": "3" }
+              { "op": "remove", "path": "/name/1" }
+          ]
+        }
+        ```
+
+        After the 1st removal the data will look like:
+
+        ```json
+        {
+            "name": [
+                {"id": "2", "family": "Parker"},
+                {"id": "3", "family": "Irwin"},
+                {"id": "5", "family": "Sharpe"}
+            ]
+        }
+        ```
+
+        Applying the 2nd removal the data will look like:
+
+        ```json
+        {
+            "name": [
+                {"id": "2", "family": "Parker"},
+                {"id": "5", "family": "Sharpe"}
+            ]
+        }
+        ```
+
+        Which is the intended outcome. Providing the patches with the indexes descending means that the list stays in a stable format the whole way through as the only changes to the index positions are items have been passed over already.
+
+        **Example 3 - a failure**
+
+        ```json
+        {
+            "patches": [
+              { "op": "test", "path": "/name/1/id", "value": "3" },
+              { "op": "remove", "path": "/name/1" },
+              { "op": "test", "path": "/name/2/id", "value": "4" },
+              { "op": "remove", "path": "/name/2" }
+          ]
+        }
+        ```
+
+        After the 1st removal the data will look like:
+
+        ```json
+        {
+            "name": [
+                {"id": "2", "family": "Parker"},
+                {"id": "4", "family": "Bruce"},
+                {"id": "5", "family": "Sharpe"}
+            ]
+        }
+        ```
+
+        When applying the 2nd test, it will fail as the index 2 id is `5`, but the test was looking for `4`. An error will be returned and none of the updates provided would be made to the database.
+
+        This failure example is a good reason for forcing the use of the `test` operation. If there was no test, index 2 would have been blindly removed, meaning the final state of the data would look like:
+
+        ```json
+        {
+            "name": [
+                {"id": "2", "family": "Parker"},
+                {"id": "4", "family": "Bruce"}
+            ]
+        }
+        ```
+
+        Which is incorrect, as Irwin and Sharpe were removed instead of Irwin and Bruce.
+
+
+        ## Patient Data Fields
+
+        ### Date of Birth
+
+        Single item found under `birthDate` field.
+
+        In a JSON Patch request the path should be `/birthDate`.
+
+        When adding or updating the birth date, the update should be in the format `yyyy-mm-dd`.
+
+        There are a number of business rules that should be taken into account:
+        * Cannot be removed.
+        * Cannot be a date in the future.
+        * Cannot be after the deceased date, if present.
+
+        ### Date of Death
+
+        Single item found under `deceasedDateTime` field.
+
+        In a JSON Patch request the path should be `/deceasedDateTime`.
+
+        When adding or updating the deceased date time, the update should be in the format `yyyy-mm-ddTHH:MM:SS+HH:MM`.
+
+        There are a number of business rules that should be taken into account:
+        * Cannot be removed.
+        * Cannot be a date in the future.
+        * Cannot be before the birth date.
+        * Cannot be replaced if the death notification status is 2 (formal).
+        * When adding, a death notification status must also be added.
+
+        ### Death Notification
+
+        Single item found under `extension` with the extension url `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus`.
+
+        In a JSON Patch request the path should be:
+        * `/extension/0` if the death notification is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
+        * `/extension/-` when adding a death notification.
+
+        There are a number of business rules that should be taken into account:
+        * Cannot be removed.
+        * Cannot be replaced if the death notification status is formal (2).
+        * Only certain endpoints can set a death notification of formal (2).
+        * When adding, a deceased date time must also be added.
+
+        ### Gender
+
+        Single item found under `gender` field.
+
+        In a JSON Patch request the path should be `/gender`.
+
+        When setting a gender, the local system should encourage the user to select `male` or `female` rather than `unknown`.
+        The fourth value of gender, `other`, meaning indeterminate; i.e. unable to be classified as either male or female; should never pro-actively be set by local systems - although this value can be retrieved due to legacy data or data quality issues.
+
+        There are a number of business rules that should be taken into account:
+          * Cannot be removed.
+          * Can only be `male`, `female` or `unknown`.
+          * Cannot set gender to `other`.
+
+        ### Name
+
+        List item found under `name` field.
+
+        In a JSON Patch request the path should be:
+        * `/name/0` if the name to be replaced or removed is the first item in the list. If it is the second item in the list the path will be `/name/1`, and so on.
+        * `/name/-` when adding a new name.
+
+        There are a number of business rules that should be taken into account:
+        * Cannot add more than one `usual` name.
+        * Cannot remove the `usual` name.
+        * Cannot add more than one `nickname`.
+        * Can have multiple instances of all other name use types.
+        * Cannot replace the use type on an existing name. For example, once a name is a nickname, it cannot be changed directly to an alias. You must instead remove the nickname and add the alias.
+        * The first character of each `suffix` item must be `A-Z`.
+        * The date period is optional; where present they must a be valid dates and the `end` date cannot be before the `start` date.
+        * Supplied name data must be UTF-8 encodable.
+        * The `period` is optional, but if included the `end` date cannot be before the `start` date. They can however be in the past, present or future.
+        * The full available range of generally recognised titles are permitted, however, if any of the following are used then the value input must conform to the following format:
+            * Mr
+            * Mrs
+            * Ms
+            * Dr
+            * Rev
+            * Sir
+            * Lady
+            * Lord
+        * Any trailing full stops at the end of a prefix will be automatically removed; for example `Mrs.` will be changed to `Mrs`.
+
+
+        ## Sandbox test scenarios
+
+        You can test the following scenarios in our sandbox environment.
+
+        Things to note when using the sandbox for PATCH:
+        * Your changes will not be persisted.
+        * JSON Patch operations themselves are validated, but the resulting resource is not validated for correctness; meaning any business rules are not applied.
+
+        | Scenario                            | Request                                                                   | Response                                         |
+        | ----------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------ |
+        | Successful update                   | `id`=`9000000009`<br/><br/>Body: One of the provided examples or your own combination of patches<br/><br/>Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json-patch+json` | HTTP Status 200 with updated patient in response (but note that the update won't be persisted) |
+        | Patient doesn't exist               | `id`=`9111231130` (or any other valid NHS Number)                         | HTTP Status 404 with problem description         |
+        | Invalid NHS Number                  | `id`=`9000000000` (or any invalid NHS Number)                             | HTTP Status 400 with problem description         |
+        | Missing resource version identifier | `If-Match` header missing or set to format other than `W/"<version>"`     | HTTP Status 412 with problem description         |
+        | Incorrect resource version          | `If-Match`=`W/"1"`                                                        | HTTP Status 412 with problem description         |
+        | Wrong content type                  | `Content-Type` header missing or other than `application/json-patch+json` | HTTP Status 400 with problem description         |
+        | No patches sent                     | Send body with no `patches` attribute                                     | HTTP Status 400 with problem description         |
+        | Invalid patch operations            | Send body with invalid JSON patches in `patches` attribute                | HTTP Status 400 with problem description         |
 
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/dc052f444e70d072e577)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c2f31c73988a07a6f49d)
 
 
       summary: Update a patient's record
@@ -688,25 +1105,53 @@ paths:
               required:
                 - patches
               properties:
-                correction:
-                  description: Set to true if the update is correcting previously incorrect data.
-                  type: boolean
-                  default: false
                 patches:
                   $ref: components/schemas/JsonPatch.yaml
             examples:
+              add-deceased-date-time:
+                summary: Add a new single item (deceasedDateTime) to the patient
+                value:
+                  $ref: components/examples/requests/PatientPatch/add-deceased-date-time.json
               add-name:
-                summary: Add a new name to the patient
+                summary: Add a new list item (name) to the patient
                 value:
                   $ref: components/examples/requests/PatientPatch/add-name.json
-              update-name:
-                summary: Update the first given name entry
+              add-extension:
+                summary: Add a an extension (nominated pharmacy) to the Patient
                 value:
-                  $ref: components/examples/requests/PatientPatch/update-name.json
+                  $ref: components/examples/requests/PatientPatch/add-extension.json
+              update-gender:
+                summary: Update the simple item (gender)
+                value:
+                  $ref: components/examples/requests/PatientPatch/update-gender.json
+              update-address:
+                summary: Update specific fields on a list item (address)
+                value:
+                  $ref: components/examples/requests/PatientPatch/update-address.json
+              update-address-alternative:
+                summary: Update whole object on a list item (address)
+                value:
+                  $ref: components/examples/requests/PatientPatch/update-address-alternative.json
+              update-extension:
+                summary: Update an extension (death notification)
+                value:
+                  $ref: components/examples/requests/PatientPatch/update-extension.json
+              delete-gender:
+                summary: Remove a single item (gender) no longer in use
+                value:
+                  $ref: components/examples/requests/PatientPatch/delete-gender.json
               delete-name:
-                summary: Remove a name no longer in use
+                summary: Remove a list item (name) no longer in use, using test pointing to the name items id
                 value:
                   $ref: components/examples/requests/PatientPatch/delete-name.json
+              delete-name-alternative:
+                summary: Remove a list item (name) no longer in use, using test pointing to the name object
+                value:
+                  $ref: components/examples/requests/PatientPatch/delete-name-alternative.json
+              delete-extension:
+                summary: Remove an extension (dispensing doctor pharmacy) no longer in use
+                value:
+                  $ref: components/examples/requests/PatientPatch/delete-extension.json
       responses:
         '200':
           description: Patient updated.
@@ -794,7 +1239,9 @@ paths:
         Use this endpoint to get a patient's related people details from PDS for a given NHS Number. This is a list of people who can be contacted, and how, regarding the patient. These details may be useful for a practitioner to get in contact with a next of kin or guardian.
         
         ## Restricted patients
-        Some patients are tagged as restricted, or sensitive. Related people will not be returned for a restricted patient and an empty bundle will be returned.
+        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. Related people will not be returned for a restricted patient and an empty bundle will be returned.
+
+        If a related person only contains a patient reference reference, and when the patient is retrieved, it is restricted; location sensitive fields such as `address` and `telecom` will be removed.
 
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
@@ -809,7 +1256,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/dc052f444e70d072e577)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/c2f31c73988a07a6f49d)
       summary: "Retrieve a list of Related Person resources for a given patient"
       operationId: get-related-people
       tags:
@@ -933,7 +1380,7 @@ components:
       in: header
       name: NHSD-Session-URID
       description: |
-        A User Role ID (URID), also known as a User Role Profile ID (URPID), specifies the role the user is acting in. This dictates the actions they can perform.
+        A User Role ID (URID), also known as a User Role Profile ID (URPID), specifies the role the user is acting in.
 
         A URID belongs to a user (they are not generic) and a user may have more than one.
 
