@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "11630058-2cd5-4eea-8901-e80e355cd9f9",
+		"_postman_id": "085f3e40-21c7-417e-a41b-74b53f8ba3f0",
 		"name": "Personal Demographics Service - Sandbox",
 		"description": "Sandbox Testing",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -21,7 +21,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "202c8425-b567-4716-8a86-1ca84db20446",
+												"id": "fc4a7d5c-5a80-4432-ac9b-403eeb913cdd",
 												"exec": [
 													"pm.test(\"Returns status code 200 OK\", () =>{",
 													"    pm.response.to.have.status(200);",
@@ -39,7 +39,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "4d116cf6-0551-4e01-accc-d2001176624e",
+												"id": "30de35d4-ccde-4177-969c-822c07e8922c",
 												"exec": [
 													"var expected_response =",
 													"{",
@@ -234,12 +234,13 @@
 													"                                }",
 													"                            }",
 													"                        ],",
-													"                        \"id\": \"EC789\",",
+													"                        \"id\": \"OC789\",",
 													"                        \"period\": {",
 													"                            \"end\": \"2021-12-31\",",
 													"                            \"start\": \"2020-01-01\"",
 													"                        },",
-													"                        \"system\": \"phone\",",
+													"                        \"system\": \"other\",",
+													"                        \"use\": \"work\",",
 													"                        \"value\": \"01632960587\"",
 													"                    }",
 													"                ]",
@@ -431,12 +432,13 @@
 													"                                }",
 													"                            }",
 													"                        ],",
-													"                        \"id\": \"EC789\",",
+													"                        \"id\": \"OC789\",",
 													"                        \"period\": {",
 													"                            \"end\": \"2021-12-31\",",
 													"                            \"start\": \"2020-01-01\"",
 													"                        },",
-													"                        \"system\": \"phone\",",
+													"                        \"system\": \"other\",",
+													"                        \"use\": \"work\",",
 													"                        \"value\": \"01632960587\"",
 													"                    }",
 													"                ]",
@@ -486,7 +488,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "7654e3da-0ea6-4753-9db0-babbfe1dd21b",
+												"id": "da5b7f67-fd14-41ef-96e1-74431eef476b",
 												"exec": [
 													"pm.test(\"Returns status code 200 OK\", () =>{",
 													"    pm.response.to.have.status(200);",
@@ -504,13 +506,13 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "4763bf6a-c668-47b1-87bf-5136bc173da9",
+												"id": "e740e433-d7d0-45aa-b154-048645b6257c",
 												"exec": [
 													"var expected_response =",
 													"{",
 													"    \"resourceType\": \"Bundle\",",
 													"    \"type\": \"searchset\",",
-													"    \"timestamp\": \"2020-05-27T11:29:23+00:00\",",
+													"    \"timestamp\": \"2020-06-01T14:22:25+00:00\",",
 													"    \"total\": 2,",
 													"    \"entry\": [",
 													"        {",
@@ -699,12 +701,13 @@
 													"                                }",
 													"                            }",
 													"                        ],",
-													"                        \"id\": \"EC789\",",
+													"                        \"id\": \"OC789\",",
 													"                        \"period\": {",
 													"                            \"end\": \"2021-12-31\",",
 													"                            \"start\": \"2020-01-01\"",
 													"                        },",
-													"                        \"system\": \"phone\",",
+													"                        \"system\": \"other\",",
+													"                        \"use\": \"work\",",
 													"                        \"value\": \"01632960587\"",
 													"                    }",
 													"                ]",
@@ -896,12 +899,13 @@
 													"                                }",
 													"                            }",
 													"                        ],",
-													"                        \"id\": \"EC789\",",
+													"                        \"id\": \"OC789\",",
 													"                        \"period\": {",
 													"                            \"end\": \"2021-12-31\",",
 													"                            \"start\": \"2020-01-01\"",
 													"                        },",
-													"                        \"system\": \"phone\",",
+													"                        \"system\": \"other\",",
+													"                        \"use\": \"work\",",
 													"                        \"value\": \"01632960587\"",
 													"                    }",
 													"                ]",
@@ -956,7 +960,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "caea621a-4818-41d6-b04a-001426723c32",
+												"id": "b835df43-bb21-4ae9-b119-0610828afc50",
 												"exec": [
 													"pm.test(\"Returns status code 200 OK\", () =>{",
 													"    pm.response.to.have.status(200);",
@@ -974,13 +978,13 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "d50c4cc4-ed9d-44e0-8f85-d6749d6e79c7",
+												"id": "544fb966-18bb-4e24-8327-75747a0fa988",
 												"exec": [
 													"var expected_response =",
 													"{",
 													"    \"resourceType\": \"Bundle\",",
 													"    \"type\": \"searchset\",",
-													"    \"timestamp\": \"2020-05-27T11:29:40+00:00\",",
+													"    \"timestamp\": \"2020-06-01T14:22:35+00:00\",",
 													"    \"total\": 1,",
 													"    \"entry\": [",
 													"        {",
@@ -1169,12 +1173,13 @@
 													"                                }",
 													"                            }",
 													"                        ],",
-													"                        \"id\": \"EC789\",",
+													"                        \"id\": \"OC789\",",
 													"                        \"period\": {",
 													"                            \"end\": \"2021-12-31\",",
 													"                            \"start\": \"2020-01-01\"",
 													"                        },",
-													"                        \"system\": \"phone\",",
+													"                        \"system\": \"other\",",
+													"                        \"use\": \"work\",",
 													"                        \"value\": \"01632960587\"",
 													"                    }",
 													"                ]",
@@ -1236,7 +1241,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "0636bee0-ff43-431a-963b-95c5550aa7a8",
+												"id": "d2f7e035-682a-4c6b-b92b-06bc0991ee29",
 												"exec": [
 													"pm.test(\"Returns status code 200 OK\", () =>{",
 													"    pm.response.to.have.status(200);",
@@ -1254,13 +1259,13 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "492c2fc4-3224-4759-b6f5-fd4fb1e5cdbc",
+												"id": "84b26c52-0024-429a-a624-953bc32c0eec",
 												"exec": [
 													"var expected_response =",
 													"{",
 													"    \"resourceType\": \"Bundle\",",
 													"    \"type\": \"searchset\",",
-													"    \"timestamp\": \"2020-05-27T11:29:52+00:00\",",
+													"    \"timestamp\": \"2020-06-01T14:22:45+00:00\",",
 													"    \"total\": 1,",
 													"    \"entry\": [",
 													"        {",
@@ -1449,12 +1454,13 @@
 													"                                }",
 													"                            }",
 													"                        ],",
-													"                        \"id\": \"EC789\",",
+													"                        \"id\": \"OC789\",",
 													"                        \"period\": {",
 													"                            \"end\": \"2021-12-31\",",
 													"                            \"start\": \"2020-01-01\"",
 													"                        },",
-													"                        \"system\": \"phone\",",
+													"                        \"system\": \"other\",",
+													"                        \"use\": \"work\",",
 													"                        \"value\": \"01632960587\"",
 													"                    }",
 													"                ]",
@@ -1516,7 +1522,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "7afa7292-9a96-49af-87ab-6ada3c31ce38",
+										"id": "eb31d6f8-9508-4e4e-888e-f2c6c7629e06",
 										"exec": [
 											"pm.test(\"Returns status code 200 OK\", () =>{",
 											"    pm.response.to.have.status(200);",
@@ -1534,13 +1540,13 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "6a1f4f5e-26ed-470c-b653-87a741c88826",
+										"id": "2d0f718c-4246-4a54-b399-2cc6eea8c4ad",
 										"exec": [
 											"var expected_response =",
 											"{",
 											"    \"resourceType\": \"Bundle\",",
 											"    \"type\": \"searchset\",",
-											"    \"timestamp\": \"2020-05-27T11:30:05+00:00\",",
+											"    \"timestamp\": \"2020-06-01T14:22:57+00:00\",",
 											"    \"total\": 1,",
 											"    \"entry\": [",
 											"        {",
@@ -1729,12 +1735,13 @@
 											"                                }",
 											"                            }",
 											"                        ],",
-											"                        \"id\": \"EC789\",",
+											"                        \"id\": \"OC789\",",
 											"                        \"period\": {",
 											"                            \"end\": \"2021-12-31\",",
 											"                            \"start\": \"2020-01-01\"",
 											"                        },",
-											"                        \"system\": \"phone\",",
+											"                        \"system\": \"other\",",
+											"                        \"use\": \"work\",",
 											"                        \"value\": \"01632960587\"",
 											"                    }",
 											"                ]",
@@ -1785,7 +1792,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "de9b0e9a-0d2e-4fc7-ae37-044f77463762",
+										"id": "8e3f6a86-d8b1-404e-b582-058207796ec3",
 										"exec": [
 											"pm.test(\"Returns status code 200 OK\", () =>{",
 											"    pm.response.to.have.status(200);",
@@ -1803,7 +1810,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "50fa0468-67b1-4a28-8d6f-2882bc1f6d52",
+										"id": "f4f876b0-a28a-4de4-842f-3a6c571c814a",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -1950,7 +1957,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "929b6743-b9d4-4b36-a453-91d597f5f1a2",
+										"id": "45218edc-f132-4c8d-b1df-b2ff6246e593",
 										"exec": [
 											"pm.test(\"Returns status code 200 OK\", () =>{",
 											"    pm.response.to.have.status(200);",
@@ -2008,7 +2015,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "5f4da552-209e-4736-b76d-6e8955add73d",
+										"id": "48e762ea-2e7c-440e-8720-e413dea0a7ef",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -2082,7 +2089,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "96c51b04-abe9-45cd-a0df-65b6b81088b3",
+										"id": "f1e7bffc-c90b-4cc0-bca1-22d26bf6654e",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -2156,7 +2163,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "da0a6673-1a12-488d-9548-7aab319a4048",
+										"id": "15ab7e66-5e8c-439a-8834-e05c4146e843",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -2212,7 +2219,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "f9b31860-7428-4343-8546-cf050e9c2484",
+										"id": "2257d094-db4c-48f6-b186-d0760b169c8a",
 										"exec": [
 											"pm.test(\"Returns status code 200 OK\", () =>{",
 											"    pm.response.to.have.status(200);",
@@ -2232,7 +2239,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "eaebf2f1-5a20-4d53-bc3a-44dc40f00056",
+										"id": "29ecce4e-a363-41d5-a152-826216e37b42",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -2386,7 +2393,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "568eb058-ddfa-464c-94b1-7ac9a70dabb7",
+										"id": "172256c4-437b-48e3-adf5-f9851bcaf0f6",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -2412,7 +2419,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "03c5e1ab-3310-4df0-9ca3-c3fd82bb1036",
+										"id": "45797d04-4563-4d88-b3cc-dabb7665a006",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -2701,17 +2708,17 @@
 											"                    }",
 											"                }",
 											"            ],",
-											"            \"id\": \"EC789\",",
+											"            \"id\": \"OC789\",",
 											"            \"period\": {",
 											"                \"end\": \"2021-12-31\",",
 											"                \"start\": \"2020-01-01\"",
 											"            },",
-											"            \"system\": \"phone\",",
+											"            \"system\": \"other\",",
+											"            \"use\": \"work\",",
 											"            \"value\": \"01632960587\"",
 											"        }",
 											"    ]",
 											"}",
-											"",
 											"",
 											"pm.environment.set(\"expected_response\", expected_response);"
 										],
@@ -2742,7 +2749,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "bec28926-907d-48b1-9674-9cdc37b68504",
+										"id": "f8cd076c-8cae-4209-ad4c-f3aadbee4efe",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -2768,7 +2775,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "6b43e93f-26d3-4a91-9d30-e285e8bfb049",
+										"id": "470b9fe7-f908-44f0-bc32-94073f86c99d",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -2884,7 +2891,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "9a65981c-2d04-4b2c-ad6a-f770d0348248",
+										"id": "07f20076-9f8a-4b31-9eb8-6a730ee9799d",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -2941,7 +2948,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "9537406d-61dc-433e-ad23-1ea0c4d25b17",
+										"id": "7debfaaf-a497-4ca1-a042-152cd124413e",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -2998,7 +3005,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "712773d4-0967-4d56-9643-31208edffc22",
+										"id": "aedc8403-7553-4db3-8757-acdb5c68ba03",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -3055,7 +3062,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "cec6a0ee-c950-45f3-ae04-a4911eafe478",
+										"id": "34475bab-91e4-4677-aa40-00d0e3297431",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -3083,7 +3090,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "615523e5-202c-4a07-9063-456d38f3e4cd",
+										"id": "fe61e80f-ee5e-4deb-b024-4746c3131658",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -3207,7 +3214,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "dba0c985-07e5-4cc0-9373-2c5b665202cb",
+										"id": "2a92b95f-dc4d-4c26-a1ca-91332a79a2b3",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -3235,7 +3242,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "39c635cb-da37-466c-9adc-5f9424f128fc",
+										"id": "bc574fb8-37c1-4570-802e-06e336b1d6d2",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -3534,7 +3541,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "fa15481a-3f4d-43fb-8668-d93e06b73847",
+										"id": "0b9fab56-8dfd-4995-83cf-37845f467134",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -3592,7 +3599,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "7c369d3f-9929-4f31-9326-04120e263070",
+										"id": "0934c8c0-dbbd-4d58-b08b-f8d1854dd09c",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -3653,7 +3660,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "1228778a-2139-4cf1-8291-545517ec187f",
+										"id": "160befa8-3705-4e95-8f83-949c50a2a274",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -3679,7 +3686,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "b31ced47-33e0-4186-943d-4097bf2e2225",
+										"id": "637a43c7-81f9-4518-86d3-1f3f79c46763",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -3968,17 +3975,17 @@
 											"                    }",
 											"                }",
 											"            ],",
-											"            \"id\": \"EC789\",",
+											"            \"id\": \"OC789\",",
 											"            \"period\": {",
 											"                \"end\": \"2021-12-31\",",
 											"                \"start\": \"2020-01-01\"",
 											"            },",
-											"            \"system\": \"phone\",",
+											"            \"system\": \"other\",",
+											"            \"use\": \"work\",",
 											"            \"value\": \"01632960587\"",
 											"        }",
 											"    ]",
 											"}",
-											"",
 											"",
 											"pm.environment.set(\"expected_response\", expected_response);"
 										],
@@ -4023,7 +4030,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "182d8225-e486-4980-aa1b-fe0a08bf45e4",
+										"id": "e7c8c212-9cbc-430b-b756-d23f3164604a",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -4045,7 +4052,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "d60df554-2f76-4c45-bd4d-8633bda05423",
+										"id": "0b3736b0-f592-4a3c-b21b-58316ed9af69",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -4111,7 +4118,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "378d590a-e317-48e9-a3a8-d68332346a93",
+										"id": "fea1799c-3546-427f-95be-f37ce2a390df",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -4133,7 +4140,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "955aa3b9-aa49-4086-939a-37e857835e59",
+										"id": "7d67a56c-7311-4e27-b3a1-44b53206dfb0",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -4199,7 +4206,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "548a2ec5-e109-434f-b89e-16344fc5cb81",
+										"id": "783962d1-c1f1-4944-a91a-089f18720cd0",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -4221,7 +4228,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "24918e51-ab2c-4195-8891-51b3e6a04926",
+										"id": "774665f7-cc1b-4c73-85d9-75f5889fd199",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -4285,7 +4292,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "c3a189e9-71db-4d47-933e-20fbb285ac34",
+										"id": "d33b0d4c-00a9-4d57-bbf2-1799697cdafe",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -4307,7 +4314,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "62cca1b7-9da5-423a-931c-03f8c7d6c292",
+										"id": "049d0cde-73a3-441a-9170-2fbb5c202b3f",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -4376,7 +4383,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "147fd667-38f8-4455-85a1-f4478ca5c6ed",
+										"id": "6e9ad968-c1b8-4cc7-a57e-c41c97cd527c",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -4398,7 +4405,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "5cdfce6d-3742-4b4c-8888-76f64b05cc2b",
+										"id": "44899b38-8e0e-4fc4-b3d2-167c1c54a807",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -4464,7 +4471,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "ac2c956a-912b-421d-b315-72aa6426bee3",
+										"id": "a830da7c-9171-4c6f-9bf6-599db6e50eee",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -4486,7 +4493,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "c62826a2-fd15-45df-af32-1bd8e8c76cbc",
+										"id": "374f8029-3ecc-470c-8e8d-549eaa5c5115",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -4552,7 +4559,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "d83af328-70f8-4fb6-a132-cc9b256e18b7",
+										"id": "0deae5f9-9daf-48a7-b33d-3c8be59408e1",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -4574,7 +4581,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "d56eefe1-41d2-4d1c-b055-b99de49c7bdc",
+										"id": "60bb716f-7d73-448e-8ff2-e3b8bd077b99",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -4646,7 +4653,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "3d9bf7c8-87a8-435c-9283-e47953cc2084",
+				"id": "9b2e40f1-178e-41cf-be27-c9502a6f1707",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -4656,7 +4663,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "e535c5fd-9fd4-4967-88de-9a1a258a039b",
+				"id": "ab666e5e-f073-4598-83f4-4a7cdc27f49f",
 				"type": "text/javascript",
 				"exec": [
 					"pm.test(\"Returns fhirVersion 4.0 Content-Type header\", () =>{",

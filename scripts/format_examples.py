@@ -10,7 +10,7 @@ def _return_value(resource, key):
     return resource[key]
 
 
-def _format_telecom(resource, key, add_emergency_contact=True, whitelist=None):
+def _format_telecom(resource, key, add_textphone_extension=True, whitelist=None):
     """
     Return the telecom field with the correct values.
     Optionally adds additional emergency contact telecoms to ensure all
@@ -30,16 +30,15 @@ def _format_telecom(resource, key, add_emergency_contact=True, whitelist=None):
         resource[key].append(telecom)
 
     # Adding the emergency contact telecoms details.
-    if add_emergency_contact:
+    if add_textphone_extension:
         for telecom in deepcopy(telecoms):
             if "id" not in telecom:
                 continue
 
-            for key_to_delete in ["use"]:
-                del telecom[key_to_delete]
+            telecom["system"] = "other"
 
             # Ids need to be unique.
-            telecom["id"] = "EC{}".format(telecom["id"])
+            telecom["id"] = "OC{}".format(telecom["id"])
             resource[key].append(telecom)
 
     return resource[key]
@@ -58,7 +57,7 @@ def _format_contact(resource, key):
         contact["telecom"] = _format_telecom(
             contact,
             "telecom",
-            add_emergency_contact=False,
+            add_textphone_extension=False,
             whitelist=["id", "use", "period", "extension"]
         )
         resource[key].append(contact)
