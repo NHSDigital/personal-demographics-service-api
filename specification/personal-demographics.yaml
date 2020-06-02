@@ -1065,7 +1065,7 @@ paths:
             * Lord
         * any trailing full stops at the end of a prefix will be automatically removed; for example `Mrs.` will be changed to `Mrs`.
 
-        ## Pharmacy
+        ### Pharmacy
 
         Single item found under `extension` with one of the extension urls:
         * `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NominatedPharmacy`
@@ -1091,6 +1091,18 @@ paths:
         There are a number of business rules that should be taken into account:
         * Preferred language must not be supplied where it is English even though the [code list](https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage) contains a value for English (en).
         * Any language codes outside the accepted list will be rejected; such as local system `qa` codes.
+
+        ### Contact preferences
+        Single item found under `extension` with the extension url `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference`.
+
+        In a JSON Patch request the path should be:
+        * `/extension/0` if the contact preference is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
+        * `/extension/-` when adding a contact preference.
+
+        There are a number of business rules that should be taken into account:
+        * A patient can have `0` or `1` contact preference.
+        * Preferred contact time is a free-text field limited to 40 characters.
+        * Where a contact time is specified a contact method must also exist.
 
         ### General Practice
 
