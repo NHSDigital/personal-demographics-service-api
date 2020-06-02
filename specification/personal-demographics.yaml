@@ -978,9 +978,9 @@ paths:
         Which is incorrect, as Irwin and Sharpe were removed instead of Irwin and Bruce.
 
 
-        ## Patient Data Fields
+        ## Patient data fields
 
-        ### Date of Birth
+        ### Date of birth
 
         Single item found under `birthDate` field.
 
@@ -993,7 +993,7 @@ paths:
         * Cannot be a date in the future.
         * Cannot be after the deceased date, if present.
 
-        ### Date of Death
+        ### Date of death
 
         Single item found under `deceasedDateTime` field.
 
@@ -1008,7 +1008,7 @@ paths:
         * Cannot be replaced if the death notification status is 2 (formal).
         * When adding, a death notification status must also be added.
 
-        ### Death Notification
+        ### Death notification
 
         Single item found under `extension` with the extension url `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus`.
 
