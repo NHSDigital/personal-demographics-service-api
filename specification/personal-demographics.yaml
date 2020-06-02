@@ -1058,6 +1058,20 @@ paths:
             * Lord
         * Any trailing full stops at the end of a prefix will be automatically removed; for example `Mrs.` will be changed to `Mrs`.
 
+        ## Pharmacy
+
+        Single item found under `extension` with one of the extension urls:
+        * `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NominatedPharmacy`
+        * `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-MedicalApplianceSupplier`
+        * `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DispensingDoctor`
+
+        In a JSON Patch request the path should be:
+        * `/extension/0` if the pharmacy is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
+        * `/extension/-` when adding a pharmacy.
+
+        There are a number of business rules that should be taken into account:
+        * multiple pharmacies are allowed, however only one of each type.
+        * there are no effective date periods, only a single current instance of each type is supported.
 
         ## Sandbox test scenarios
 

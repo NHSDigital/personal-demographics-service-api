@@ -125,11 +125,7 @@
         "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y12345",
         "identifier": {
           "system": "https://fhir.nhs.uk/Id/ods-organization-code",
-          "value": "Y12345",
-          "period": {
-            "start": "2020-01-01",
-            "end": "2021-12-31"
-          }
+          "value": "Y12345"
         }
       }
     },
@@ -139,11 +135,7 @@
         "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y23456",
         "identifier": {
           "system": "https://fhir.nhs.uk/Id/ods-organization-code",
-          "value": "Y23456",
-          "period": {
-            "start": "2020-01-01",
-            "end": "2021-12-31"
-          }
+          "value": "Y23456"
         }
       }
     },
@@ -153,11 +145,7 @@
         "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y34567",
         "identifier": {
           "system": "https://fhir.nhs.uk/Id/ods-organization-code",
-          "value": "Y34567",
-          "period": {
-            "start": "2020-01-01",
-            "end": "2021-12-31"
-          }
+          "value": "Y34567"
         }
       }
     },

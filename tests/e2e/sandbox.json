@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6cf82421-72dd-4b64-a7c1-5c6371133523",
+		"_postman_id": "af854a47-f355-4443-992d-c82bd598f92a",
 		"name": "Personal Demographics Service - Sandbox",
 		"description": "Sandbox Testing",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -21,7 +21,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "1b3415b7-c082-4c78-b4b6-cb63b73196d1",
+												"id": "7207a7d5-9a35-4979-a05a-4eacc171579c",
 												"exec": [
 													"pm.test(\"Returns status code 200 OK\", () =>{",
 													"    pm.response.to.have.status(200);",
@@ -39,7 +39,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "41466647-cdb5-42bf-8d45-d5e5c47e092e",
+												"id": "bc2b9cd5-26cb-4c6a-a794-201489bc6dc5",
 												"exec": [
 													"var expected_response =",
 													"{",
@@ -394,7 +394,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "51a9402a-721a-4aad-aa59-bb20ffd7493e",
+												"id": "e80298bd-56d6-45e4-b8e6-b091586b3832",
 												"exec": [
 													"pm.test(\"Returns status code 200 OK\", () =>{",
 													"    pm.response.to.have.status(200);",
@@ -412,7 +412,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "8ca26d49-cdee-4438-a02f-f3ce835f3bed",
+												"id": "93c39c6e-5899-4962-9f8d-d17fce54a4aa",
 												"exec": [
 													"var expected_response =",
 													"{",
@@ -772,7 +772,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "41707200-a2e4-4fd7-90d7-343579569691",
+												"id": "13db04e1-5813-4f66-94ba-6ec96b5d9f30",
 												"exec": [
 													"pm.test(\"Returns status code 200 OK\", () =>{",
 													"    pm.response.to.have.status(200);",
@@ -790,7 +790,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "cdf44ede-aaa4-4d32-9f0b-26b384b46d14",
+												"id": "e6c6b71c-0ba7-4d9e-9b4b-86da7e8eda74",
 												"exec": [
 													"var expected_response =",
 													"{",
@@ -1006,7 +1006,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "677bd946-4a7f-451b-bf78-e5f679c8fa04",
+												"id": "9f8742c6-9f39-47b1-be6e-e2ba4176920a",
 												"exec": [
 													"pm.test(\"Returns status code 200 OK\", () =>{",
 													"    pm.response.to.have.status(200);",
@@ -1024,7 +1024,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "b73d7874-3ff4-4e8a-948e-03c1ccecd9d1",
+												"id": "af44416f-125c-4124-ace3-235ff44d6c80",
 												"exec": [
 													"var expected_response =",
 													"{",
@@ -1240,7 +1240,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "9efcddcb-98f4-4974-b8fd-05cc119a94cb",
+										"id": "74a95c86-d54f-418f-ad87-2b8bde749284",
 										"exec": [
 											"pm.test(\"Returns status code 200 OK\", () =>{",
 											"    pm.response.to.have.status(200);",
@@ -1258,7 +1258,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "ab99887f-ba8b-4aa6-a769-dcc2319c569a",
+										"id": "057a5422-44e4-41b7-a3e6-a57830824138",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -1463,7 +1463,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "b9c00911-0fe1-4e8d-8c4b-dab664e098e2",
+										"id": "479df768-6c3e-42b4-8c75-9a8b19e0228a",
 										"exec": [
 											"pm.test(\"Returns status code 200 OK\", () =>{",
 											"    pm.response.to.have.status(200);",
@@ -1481,7 +1481,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "a21f9a20-651c-4b4b-bab7-89753d7b13c8",
+										"id": "cb7e23f8-7ac7-4b4e-af8c-6bbeab1fa339",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -1627,7 +1627,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "9d10f8ff-864d-43b2-9190-a08800d905e9",
+										"id": "aa3f5522-5b62-4844-bb05-d311f36ef588",
 										"exec": [
 											"pm.test(\"Returns status code 200 OK\", () =>{",
 											"    pm.response.to.have.status(200);",
@@ -1685,7 +1685,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "ad68b3d3-4f89-4c9c-8484-9a0a451117c9",
+										"id": "2c79ccce-6e5f-4279-bab1-02a83095afe4",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -1759,7 +1759,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "95a5a32e-78b9-4ff1-84b6-fa91d1f12bd2",
+										"id": "aa2bf8a3-028e-42b7-bfbd-3ef214c704ab",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -1833,7 +1833,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "3497fa79-4df0-40bf-a0e4-143f10242d0f",
+										"id": "6d6da118-fad3-4a75-ab34-8b17bbac54e1",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -1889,7 +1889,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "ea4a6dd9-3077-4d03-baec-261a465ea5d3",
+										"id": "3e43af3b-5de5-431b-8253-15b93f6d716d",
 										"exec": [
 											"pm.test(\"Returns status code 200 OK\", () =>{",
 											"    pm.response.to.have.status(200);",
@@ -1909,7 +1909,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "c66af4e2-ea1c-4a35-9f93-c6b5e7b41800",
+										"id": "1131c9c3-7deb-4978-82ed-3fce23e457f9",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -2062,7 +2062,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "efb770e5-ba3a-4ee5-ad8c-ff323c733608",
+										"id": "12929fd4-f63d-494e-849c-cae23e9e3621",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -2088,7 +2088,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "09ca2b4d-f275-4b95-b9a1-0b8727a0aca1",
+										"id": "54c4a215-c58d-4ac2-9639-a3449f3a2273",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -2218,11 +2218,7 @@
 											"                \"reference\": \"https://directory.spineservices.nhs.uk/STU3/Organization/Y12345\",",
 											"                \"identifier\": {",
 											"                    \"system\": \"https://fhir.nhs.uk/Id/ods-organization-code\",",
-											"                    \"value\": \"Y12345\",",
-											"                    \"period\": {",
-											"                        \"start\": \"2020-01-01\",",
-											"                        \"end\": \"2021-12-31\"",
-											"                    }",
+											"                    \"value\": \"Y12345\"",
 											"                }",
 											"            }",
 											"        },",
@@ -2232,11 +2228,7 @@
 											"                \"reference\": \"https://directory.spineservices.nhs.uk/STU3/Organization/Y23456\",",
 											"                \"identifier\": {",
 											"                    \"system\": \"https://fhir.nhs.uk/Id/ods-organization-code\",",
-											"                    \"value\": \"Y23456\",",
-											"                    \"period\": {",
-											"                        \"start\": \"2020-01-01\",",
-											"                        \"end\": \"2021-12-31\"",
-											"                    }",
+											"                    \"value\": \"Y23456\"",
 											"                }",
 											"            }",
 											"        },",
@@ -2246,11 +2238,7 @@
 											"                \"reference\": \"https://directory.spineservices.nhs.uk/STU3/Organization/Y34567\",",
 											"                \"identifier\": {",
 											"                    \"system\": \"https://fhir.nhs.uk/Id/ods-organization-code\",",
-											"                    \"value\": \"Y34567\",",
-											"                    \"period\": {",
-											"                        \"start\": \"2020-01-01\",",
-											"                        \"end\": \"2021-12-31\"",
-											"                    }",
+											"                    \"value\": \"Y34567\"",
 											"                }",
 											"            }",
 											"        },",
@@ -2334,7 +2322,6 @@
 											"    ]",
 											"}",
 											"",
-											"",
 											"pm.environment.set(\"expected_response\", expected_response);"
 										],
 										"type": "text/javascript"
@@ -2364,7 +2351,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "969d887e-cc07-465b-a22e-1f34b5b36e63",
+										"id": "ace1b416-ecf5-44f5-a24f-e1e8e5d3255b",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -2390,7 +2377,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "9de17fdf-1465-4d9a-a3a4-e2c60d65ba4d",
+										"id": "93050359-c508-44a2-a1cf-676ea97e9b03",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -2505,7 +2492,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "66200a47-ee24-4cbc-b4c4-add1d35097db",
+										"id": "2fe868c0-de6b-45e4-985c-ac06ee97674d",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -2562,7 +2549,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "d54c6a12-e491-4133-be0b-4b5be6770333",
+										"id": "02df3536-8fa2-4a90-9fd4-275d83df2a88",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -2619,7 +2606,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "59fe46b0-7b37-4c46-b6a3-5fa0597163f7",
+										"id": "18cf760e-63c3-4176-ba8a-81cb856a53c3",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -2676,7 +2663,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "bdcf494d-9b6b-46eb-8af3-23bc0eaf72f2",
+										"id": "0524bbc0-e9b8-4f8f-980c-100cc60a306d",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -2704,7 +2691,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "1ead4283-2772-43d4-a027-5b07039297e9",
+										"id": "0097aee7-4267-4ba5-878d-86ae9e08e38e",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -2830,7 +2817,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "65704586-b6d3-4559-85f9-d7342eb6f7bc",
+										"id": "dfe537da-2143-45dc-be76-1c7d6ad04545",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -2858,7 +2845,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "acfd9360-e2a9-42a9-9b48-e76146a14bd9",
+										"id": "3edf1324-43b3-4628-9f81-44a6260cc350",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -3157,7 +3144,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "f607c356-96e0-4912-b52d-6fb23d8b8717",
+										"id": "c550c054-10dd-4919-bea5-e7b938f30493",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -3215,7 +3202,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "45225fb4-b475-45ad-b6d2-0278364ac368",
+										"id": "6ad3ac3e-5684-4577-aad7-39f97ef6491e",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -3276,7 +3263,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "866fdcdc-d983-45df-b69d-b15a59efade6",
+										"id": "67e10dd8-2866-4fa3-a935-e7fa67c8a790",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -3302,7 +3289,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "1520ab15-d260-43f2-a303-f122d9c0a317",
+										"id": "66dae517-c151-4b98-a982-321e67a22a6d",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -3432,11 +3419,7 @@
 											"                \"reference\": \"https://directory.spineservices.nhs.uk/STU3/Organization/Y12345\",",
 											"                \"identifier\": {",
 											"                    \"system\": \"https://fhir.nhs.uk/Id/ods-organization-code\",",
-											"                    \"value\": \"Y12345\",",
-											"                    \"period\": {",
-											"                        \"start\": \"2020-01-01\",",
-											"                        \"end\": \"2021-12-31\"",
-											"                    }",
+											"                    \"value\": \"Y12345\"",
 											"                }",
 											"            }",
 											"        },",
@@ -3446,11 +3429,7 @@
 											"                \"reference\": \"https://directory.spineservices.nhs.uk/STU3/Organization/Y23456\",",
 											"                \"identifier\": {",
 											"                    \"system\": \"https://fhir.nhs.uk/Id/ods-organization-code\",",
-											"                    \"value\": \"Y23456\",",
-											"                    \"period\": {",
-											"                        \"start\": \"2020-01-01\",",
-											"                        \"end\": \"2021-12-31\"",
-											"                    }",
+											"                    \"value\": \"Y23456\"",
 											"                }",
 											"            }",
 											"        },",
@@ -3460,11 +3439,7 @@
 											"                \"reference\": \"https://directory.spineservices.nhs.uk/STU3/Organization/Y34567\",",
 											"                \"identifier\": {",
 											"                    \"system\": \"https://fhir.nhs.uk/Id/ods-organization-code\",",
-											"                    \"value\": \"Y34567\",",
-											"                    \"period\": {",
-											"                        \"start\": \"2020-01-01\",",
-											"                        \"end\": \"2021-12-31\"",
-											"                    }",
+											"                    \"value\": \"Y34567\"",
 											"                }",
 											"            }",
 											"        },",
@@ -3548,7 +3523,6 @@
 											"    ]",
 											"}",
 											"",
-											"",
 											"pm.environment.set(\"expected_response\", expected_response);"
 										],
 										"type": "text/javascript"
@@ -3592,7 +3566,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "7dc7ad9f-b416-4112-ab0b-8d8d38977e3f",
+										"id": "59e6f4f4-d6fe-4c76-8c76-d762ee495e60",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -3614,7 +3588,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "47f58058-6d8e-4f97-a39b-f928664b79a3",
+										"id": "d5e94b7e-f0fe-4ffa-b4c9-b42182881dd2",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -3680,7 +3654,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "7c1be0fd-26ab-472e-86ae-9d161bfbf820",
+										"id": "c09d2d14-3b5f-4495-8949-d37b0252c130",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -3702,7 +3676,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "dc763d98-83ce-41c5-8a17-5059720ba0a2",
+										"id": "fa477fb8-731d-40a2-bfee-caa1ef2e8c40",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -3768,7 +3742,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "56a6390f-a1c9-407c-835d-ebf62f903755",
+										"id": "be08c717-30df-48a3-87f7-4a227c32c026",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -3790,7 +3764,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "4a3c7c98-5e1b-4020-8ac1-7948cd17231c",
+										"id": "2ad53c3a-65a7-4c17-b337-e1285d5dbd63",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -3854,7 +3828,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "4b54d532-65f6-45bb-8531-445a1aba1b23",
+										"id": "37ecbb77-1bc2-4cea-9885-cb5948225846",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -3876,7 +3850,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "ef824601-9c20-4e90-b9c7-7858e5d4e9f4",
+										"id": "6f5b37b1-5db2-4e31-b805-c6f37e0ca415",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -3945,7 +3919,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "1bdeb2ad-5537-489a-80e7-14e23595ae30",
+										"id": "b324b3a5-eef7-493f-9ab8-ac0e93e65431",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -3967,7 +3941,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "5c8e4634-a431-4d64-9cbe-9e2e975353ac",
+										"id": "32d78959-2bcf-430a-bbd1-658bdfb05597",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -4033,7 +4007,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "152933b2-4bde-4625-9624-399f581d29cd",
+										"id": "39f63555-26d8-4cdc-ba57-2499b0839230",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -4055,7 +4029,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "95c49a91-031d-4201-9dbd-77f1bc828051",
+										"id": "d4ecd6f5-8ab8-41a1-8b9d-79a98af1bdf8",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -4121,7 +4095,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "e5daef02-4e54-4dde-9df1-cc068395d426",
+										"id": "19c6f265-1850-4e34-b0b2-c9bdb7f7ac3e",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -4143,7 +4117,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "0676a068-97f1-4a34-b593-e15816a99515",
+										"id": "4fa08b9d-22ca-4941-b9b9-2396c76bcac6",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -4215,7 +4189,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "3d47d98c-460b-44e1-a3ab-e44715431f23",
+				"id": "976f7e65-830e-4429-9fc5-93e1f20d24ce",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -4225,7 +4199,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "f10a20e4-5a34-4dcc-8d67-ad1c9f15065c",
+				"id": "fdabdf57-c6d8-43e1-a290-b8e0930be2ef",
 				"type": "text/javascript",
 				"exec": [
 					"pm.test(\"Returns fhirVersion 4.0 Content-Type header\", () =>{",
