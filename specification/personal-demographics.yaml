@@ -982,9 +982,9 @@ paths:
         When adding or updating the birth date, the update should be in the format `yyyy-mm-dd`.
 
         There are a number of business rules that should be taken into account:
-        * Cannot be removed.
-        * Cannot be a date in the future.
-        * Cannot be after the deceased date, if present.
+        * cannot be removed.
+        * cannot be a date in the future.
+        * cannot be after the deceased date, if present.
 
         ### Date of Death
 
@@ -995,11 +995,11 @@ paths:
         When adding or updating the deceased date time, the update should be in the format `yyyy-mm-ddTHH:MM:SS+HH:MM`.
 
         There are a number of business rules that should be taken into account:
-        * Cannot be removed.
-        * Cannot be a date in the future.
-        * Cannot be before the birth date.
-        * Cannot be replaced if the death notification status is 2 (formal).
-        * When adding, a death notification status must also be added.
+        * cannot be removed.
+        * cannot be a date in the future.
+        * cannot be before the birth date.
+        * cannot be replaced if the death notification status is 2 (formal).
+        * when adding, a death notification status must also be added.
 
         ### Death Notification
 
@@ -1010,10 +1010,10 @@ paths:
         * `/extension/-` when adding a death notification.
 
         There are a number of business rules that should be taken into account:
-        * Cannot be removed.
-        * Cannot be replaced if the death notification status is formal (2).
-        * Only certain endpoints can set a death notification of formal (2).
-        * When adding, a deceased date time must also be added.
+        * cannot be removed.
+        * cannot be replaced if the death notification status is formal (2).
+        * only certain endpoints can set a death notification of formal (2).
+        * when adding, a deceased date time must also be added.
 
         ### Gender
 
@@ -1025,9 +1025,9 @@ paths:
         The fourth value of gender, `other`, meaning indeterminate; i.e. unable to be classified as either male or female; should never pro-actively be set by local systems - although this value can be retrieved due to legacy data or data quality issues.
 
         There are a number of business rules that should be taken into account:
-          * Cannot be removed.
-          * Can only be `male`, `female` or `unknown`.
-          * Cannot set gender to `other`.
+          * cannot be removed.
+          * can only be `male`, `female` or `unknown`.
+          * cannot set gender to `other`.
 
         ### Name
 
@@ -1038,16 +1038,16 @@ paths:
         * `/name/-` when adding a new name.
 
         There are a number of business rules that should be taken into account:
-        * Cannot add more than one `usual` name.
-        * Cannot remove the `usual` name.
-        * Cannot add more than one `nickname`.
-        * Can have multiple instances of all other name use types.
-        * Cannot replace the use type on an existing name. For example, once a name is a nickname, it cannot be changed directly to an alias. You must instead remove the nickname and add the alias.
-        * The first character of each `suffix` item must be `A-Z`.
-        * The date period is optional; where present they must a be valid dates and the `end` date cannot be before the `start` date.
-        * Supplied name data must be UTF-8 encodable.
-        * The `period` is optional, but if included the `end` date cannot be before the `start` date. They can however be in the past, present or future.
-        * The full available range of generally recognised titles are permitted, however, if any of the following are used then the value input must conform to the following format:
+        * cannot add more than one `usual` name.
+        * cannot remove the `usual` name.
+        * cannot add more than one `nickname`.
+        * can have multiple instances of all other name use types.
+        * cannot replace the use type on an existing name. For example, once a name is a nickname, it cannot be changed directly to an alias. You must instead remove the nickname and add the alias.
+        * the first character of each `suffix` item must be `A-Z`.
+        * the date period is optional; where present they must a be valid dates and the `end` date cannot be before the `start` date.
+        * supplied name data must be UTF-8 encodable.
+        * the `period` is optional, but if included the `end` date cannot be before the `start` date. They can however be in the past, present or future.
+        * the full available range of generally recognised titles are permitted, however, if any of the following are used then the value input must conform to the following format:
             * Mr
             * Mrs
             * Ms
@@ -1056,8 +1056,22 @@ paths:
             * Sir
             * Lady
             * Lord
-        * Any trailing full stops at the end of a prefix will be automatically removed; for example `Mrs.` will be changed to `Mrs`.
+        * any trailing full stops at the end of a prefix will be automatically removed; for example `Mrs.` will be changed to `Mrs`.
 
+        ### General Practice
+
+        List item found under `generalPractitioner` field. Although only a single general practice is allowed.
+
+        In a JSON Patch request the path should be:
+        * `/generalPractitioner/0` for replacing or removing the general practice.
+        * `/generalPractitioner/-` when adding a new general practice.
+
+        There are a number of business rules that should be taken into account:
+        * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes.
+        * the business effective `start` date is optional, however if provided cannot be a future date. If is is not provided it will default to the date of update.
+        * the business effective `end` date must not be provided.
+        * the general pratice should only be updated by primary care systems, [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
+        * only a single general practice is supported; emergency, temporary and additional practices must be maintained in the local system only.
 
         ## Sandbox test scenarios
 
