@@ -1578,6 +1578,8 @@ components:
 
         A URID belongs to a user (they are not generic) and a user may have more than one.
 
+        Find out more about [User role ID](https://digital.nhs.uk/developer/user-restricted-restful-apis#user-completes-authentication-and-authorisation)
+
         Note: This parameter is required unless interacting with the Sandbox.
       required: false
       schema:
