@@ -980,6 +980,30 @@ paths:
 
         ## Patient data fields
 
+        ### Communication
+
+        Single item found under `extension` with the extension url `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication`.
+
+        In a JSON Patch request the path should be:
+        * `/extension/0` if the communication extension is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and o on.
+        * `/extension/-` when adding a communication extension.
+
+        There are a number of business rules that should be taken into account:
+        * preferred language must not be supplied where it is English even though the [code list](https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage) contains a value for English (en).
+        * any language codes outside the accepted list will be rejected; such as local system `qa` codes.
+
+        ### Contact preferences
+        Single item found under `extension` with the extension url `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference`.
+
+        In a JSON Patch request the path should be:
+        * `/extension/0` if the contact preference is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
+        * `/extension/-` when adding a contact preference.
+
+        There are a number of business rules that should be taken into account:
+        * a patient can have `0` or `1` contact preference.
+        * preferred contact time is a free-text field limited to 40 characters.
+        * where a contact time is specified a contact method must also exist.
+
         ### Date of birth
 
         Single item found under `birthDate` field.
@@ -1036,6 +1060,21 @@ paths:
           * can only be `male`, `female` or `unknown`.
           * cannot set gender to `other`.
 
+        ### General practice
+
+        List item found under `generalPractitioner` field. Although only a single general practice is allowed.
+
+        In a JSON Patch request the path should be:
+        * `/generalPractitioner/0` for replacing or removing the general practice.
+        * `/generalPractitioner/-` when adding a new general practice.
+
+        There are a number of business rules that should be taken into account:
+        * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes.
+        * the business effective `start` date is optional, however if provided cannot be a future date. If is is not provided it will default to the date of update.
+        * the business effective `end` date must not be provided.
+        * the general pratice should only be updated by primary care systems, [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
+        * only a single general practice is supported; emergency, temporary and additional practices must be maintained in the local system only.
+
         ### Name
 
         List item found under `name` field.
@@ -1079,45 +1118,6 @@ paths:
         There are a number of business rules that should be taken into account:
         * multiple pharmacies are allowed, however only one of each type.
         * there are no effective date periods, only a single current instance of each type is supported.
-
-        ### Communication
-
-        Single item found under `extension` with the extension url `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication`.
-
-        In a JSON Patch request the path should be:
-        * `/extension/0` if the communication extension is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and o on.
-        * `/extension/-` when adding a communication extension.
-
-        There are a number of business rules that should be taken into account:
-        * Preferred language must not be supplied where it is English even though the [code list](https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage) contains a value for English (en).
-        * Any language codes outside the accepted list will be rejected; such as local system `qa` codes.
-
-        ### Contact preferences
-        Single item found under `extension` with the extension url `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference`.
-
-        In a JSON Patch request the path should be:
-        * `/extension/0` if the contact preference is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
-        * `/extension/-` when adding a contact preference.
-
-        There are a number of business rules that should be taken into account:
-        * A patient can have `0` or `1` contact preference.
-        * Preferred contact time is a free-text field limited to 40 characters.
-        * Where a contact time is specified a contact method must also exist.
-
-        ### General Practice
-
-        List item found under `generalPractitioner` field. Although only a single general practice is allowed.
-
-        In a JSON Patch request the path should be:
-        * `/generalPractitioner/0` for replacing or removing the general practice.
-        * `/generalPractitioner/-` when adding a new general practice.
-
-        There are a number of business rules that should be taken into account:
-        * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes.
-        * the business effective `start` date is optional, however if provided cannot be a future date. If is is not provided it will default to the date of update.
-        * the business effective `end` date must not be provided.
-        * the general pratice should only be updated by primary care systems, [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
-        * only a single general practice is supported; emergency, temporary and additional practices must be maintained in the local system only.
 
         ## Sandbox test scenarios
 
