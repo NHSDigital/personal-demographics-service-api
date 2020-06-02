@@ -1058,7 +1058,7 @@ paths:
             * Lord
         * Any trailing full stops at the end of a prefix will be automatically removed; for example `Mrs.` will be changed to `Mrs`.
 
-        ## Pharmacy
+        ### Pharmacy
 
         Single item found under `extension` with one of the extension urls:
         * `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NominatedPharmacy`
