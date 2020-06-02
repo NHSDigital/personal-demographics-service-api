@@ -35,5 +35,3 @@ properties:
             type: string
             description: Organisation code for the dispensing doctor, as held in the [Organisation Data Service](https://developer.nhs.uk/apis/ods/).
             example: Y23456
-          period:
-            $ref: "../Period.yaml"
