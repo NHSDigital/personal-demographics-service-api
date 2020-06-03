@@ -5,15 +5,18 @@ const Path = require('path')
 const Inert = require('inert')
 const routes = require('./routes/patient')
 
-const CONTENT_TYPE = 'application/fhir+json; fhirVersion=4.0'
+const CONTENT_TYPE = 'application/fhir+json'
 
 const preResponse = function (request, h) {
     const response = request.response
 
     // Don't reformat non-error responses, and don't reformat system (>=500) errors
     if (!response.isBoom) {
-        // Set Content-Type on all responses
-        response.type(CONTENT_TYPE)
+        let statusCode = response.statusCode
+        if (statusCode != 202) {
+            // Currently don't require a content-type on a 202 as there is no content.
+            response.type(CONTENT_TYPE)
+        }
         return h.continue
     }
 
@@ -36,10 +39,15 @@ const preResponse = function (request, h) {
         * data.operationOutcomeCode: from the [IssueType ValueSet](https://www.hl7.org/fhir/valueset-issue-type.html)
         * data.apiErrorCode: Our own code defined for each particular error. Refer to OAS.
     */
+    let severity = error.data.operationOutcomeSeverity
+    if (!severity) {
+        severity = "error"
+    }
+
     const fhirError = {
         resourceType: "OperationOutcome",
         issue: [{
-            severity: "error",
+            severity: severity,
             code: error.data.operationOutcomeCode,
             details: {
                 coding: [{
@@ -68,6 +76,12 @@ const init = async() => {
             }
         }
     })
+
+    // Binding some variables to allow for persistence on the server.
+    server.bind({
+        messages: {}
+    });
+
     server.ext('onPreResponse', preResponse);
 
     await server.register(Inert)
