@@ -25,7 +25,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           msg: |
-            This branch is work on a ticket in the NHS Digital APM JIRA Project. Here's a handy link to the ticket:
+            This branch is working on a ticket in the NHS Digital APM JIRA Project. Here's a handy link to the ticket:
             # [${{ env.TICKET_NAME }}](https://jira.digital.nhs.uk/browse/${{ env.TICKET_NAME}})
 
       - name: Grab branch name
@@ -37,5 +37,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           msg: |
-            This branch is work on a ticket is put on to the internal portal. Here's a handy link to the specification:
-            # [${{ github.event.pull_request.head.ref }} Specification](https://internal-portal.developer.nhs.uk/docs/personal-demographics-internal-dev-${{ env.SPEC_LINK }}/1/overview)
+            This branch is working on a ticket to deploy to internal-portal. Here's a handy link to the specification:
+            # [${{ github.event.pull_request.head.ref }} specification](https://internal-portal.developer.nhs.uk/docs/personal-demographics-internal-dev-${{ env.SPEC_LINK }}/1/overview)
