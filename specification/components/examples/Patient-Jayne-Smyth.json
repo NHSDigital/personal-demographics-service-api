@@ -68,10 +68,6 @@
       "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NominatedPharmacy",
       "valueReference": {
         "identifier": {
-          "period": {
-            "end": "2021-12-31",
-            "start": "2020-01-01"
-          },
           "system": "https://fhir.nhs.uk/Id/ods-organization-code",
           "value": "Y12345"
         },
@@ -82,10 +78,6 @@
       "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DispensingDoctor",
       "valueReference": {
         "identifier": {
-          "period": {
-            "end": "2021-12-31",
-            "start": "2020-01-01"
-          },
           "system": "https://fhir.nhs.uk/Id/ods-organization-code",
           "value": "Y23456"
         },
@@ -96,10 +88,6 @@
       "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-MedicalApplianceSupplier",
       "valueReference": {
         "identifier": {
-          "period": {
-            "end": "2021-12-31",
-            "start": "2020-01-01"
-          },
           "system": "https://fhir.nhs.uk/Id/ods-organization-code",
           "value": "Y34567"
         },

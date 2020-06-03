@@ -67,9 +67,11 @@ module.exports = [
                     `Invalid patch: ${patchingError}`,
                     {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE"})
             }
-            patchedPatient.meta.versionId++
+            patchedPatient.meta.versionId++;
 
-            return fhirHelper.createFhirResponse(h, patchedPatient, patchedPatient.meta.versionId)
+            const messageId = fhirHelper.createMessageId();
+            h.context.messages[messageId] = patchedPatient;
+            return fhirHelper.createAcceptedResponse(h, messageId);
         }
     }
 ]
