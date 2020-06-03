@@ -24,7 +24,14 @@ properties:
           example: 1.0.0
         code:
           type: string
-          description: Language code.
+          description: |
+            Language code based on [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) standard plus extensions for braille, makaton and sign languages, which are:
+            * `q1` - Braille
+            * `q2` - American Sign Language
+            * `q3` - Australian Sign Language
+            * `q4` - British Sign Language
+            * `q5` - Makaton
+            All valid codes combined can be found at https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage.
           example: fr
         display:
           type: string
