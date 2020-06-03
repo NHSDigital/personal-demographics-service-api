@@ -1017,26 +1017,6 @@ paths:
         * cannot be a date in the future.
         * cannot be after the deceased date, if present.
 
-        ## Multiple Birth order
-
-        Single item found under `multipleBirthInteger` field.
-
-        In a JSON Patch request the path should be `/multipleBirthInteger`.
-
-        When adding or updating the birth order, the update should be an integer in the range `1` - `9` inclusive.
-
-        ## Place of Birth
-
-        Single item found under `extension` with the extension url `http://hl7.org/fhir/StructureDefinition/patient-birthPlace`.
-
-        In a JSON Patch request the path should be:
-        * `/extension/0` if the place of birth is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
-        * `/extension/-` when adding a place of birth.
-
-        There are a number of business rules that should be taken into account:
-        * The three fields, `city`, `district` and `country` are all optional, however at least one of them must be provided.
-        * Country is a coded value and must be in the set of valid values.
-
         ### Date of death
 
         Single item found under `deceasedDateTime` field.
@@ -1095,6 +1075,14 @@ paths:
         * the general pratice should only be updated by primary care systems, [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
         * only a single general practice is supported; emergency, temporary and additional practices must be maintained in the local system only.
 
+        ## Multiple birth order
+
+        Single item found under `multipleBirthInteger` field.
+
+        In a JSON Patch request the path should be `/multipleBirthInteger`.
+
+        When adding or updating the birth order, the update should be an integer in the range `1` - `9` inclusive.
+
         ### Name
 
         List item found under `name` field.
@@ -1138,6 +1126,18 @@ paths:
         There are a number of business rules that should be taken into account:
         * multiple pharmacies are allowed, however only one of each type.
         * there are no effective date periods, only a single current instance of each type is supported.
+
+        ## Place of birth
+
+        Single item found under `extension` with the extension url `http://hl7.org/fhir/StructureDefinition/patient-birthPlace`.
+
+        In a JSON Patch request the path should be:
+        * `/extension/0` if the place of birth is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
+        * `/extension/-` when adding a place of birth.
+
+        There are a number of business rules that should be taken into account:
+        * the three fields, `city`, `district` and `country` are all optional, however at least one of them must be provided.
+        * country is a coded value and must be in the set of valid values.
 
         ## Sandbox test scenarios
 
