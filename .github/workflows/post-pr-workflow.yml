@@ -15,4 +15,5 @@ jobs:
           curl -X POST "https://dev.azure.com/NHSD-APIM/API%20Platform/_apis/build/builds?api-version=5.0" \
                -u ${{ secrets.AZURE_DEVOPS_USER }}:${{ secrets.AZURE_DEVOPS_TOKEN }} \
                -H "Content-Type: application/json; charset=utf-8" \
-               -d "{\"definition\": {\"id\": \"24\"}, \"parameters\": {\"TEARDOWN_BRANCH\": \"$GITHUB_REF\"}}" 
+               -d "{\"definition\": {\"id\": \"24\"}, \"parameters\": {\"TEARDOWN_BRANCH\": \"$GITHUB_REF\"}}" \
+               -v --fail
