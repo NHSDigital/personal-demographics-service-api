@@ -11,7 +11,7 @@ properties:
     readOnly: true
   valueReference:
     type: object
-    description: Reference to a Pharmacy Organization Resource.
+    description: Reference to a pharmacy `Organization` resource.
     required:
       - reference
       - identifier
@@ -35,5 +35,3 @@ properties:
             type: string
             description: Organisation code for the nominated pharmacy, as held in the [Organisation Data Service](https://developer.nhs.uk/apis/ods/).
             example: Y12345
-          period:
-            $ref: "../Period.yaml"

@@ -15,22 +15,53 @@ const docopt = require('docopt').docopt;
 const newman = require('newman');
 const puppeteer = require('puppeteer');
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function retry(func, times) {
+    let result;
+    let success = false;
+    let error;
+
+    for (let i = 0; i < times; i++) {
+        try {
+            result = await func();
+            success = true;
+            break;
+        } catch (e) {
+            error = e;
+            console.error(e);
+        }
+    }
+
+    if (!success) {
+        throw error;
+    }
+
+    return result;
+}
+
+async function gotoLogin(browser, login_url) {
+    const page = await browser.newPage();
+    await page.goto(login_url, { waitUntil: 'networkidle2', timeout: 30000 });
+    await page.waitForSelector('#start', { timeout: 30000 });
+    await page.click("#start");
+    await page.waitForSelector('#idToken1', { timeout: 30000 });
+    return page;
+}
 
 function nhsIdLogin(username, password, login_url, callback) {
     (async () => {
         console.log("Oauth journey on " + login_url);
         const browser = await puppeteer.launch({ headless: true });
-        const page = await browser.newPage();
-        await page.goto(login_url, { waitUntil: 'networkidle2' });
-        await page.click("#start");
-        await page.waitForSelector('#idToken1');
+        const page = await retry(async () => { return await gotoLogin(browser, login_url); }, 3);
         await page.type('#idToken1', username);
         await page.type('#idToken2', password);
         await page.click('#loginButton_0');
         await page.waitForNavigation();
 
         let credentialsJSON = await page.$eval('body > div > div > pre', e => e.innerText);
-        console.log(credentialsJSON.replace(/'/g, '"'));
         let credentials = JSON.parse(credentialsJSON.replace(/'/g, '"'));
         await browser.close();
         callback(credentials);
@@ -64,17 +95,17 @@ function collectionRunner(url, collection_path, environment_path) {
                     export: './test-report.xml'
                 }
             },
-            environment: environment,
+            environment: environment, // What is going on here?
             environment: {
                 "id": "0eba6cf0-3fd1-4b3f-b6be-4b20153baf8d",
                 "name": "environment-params",
-                "values": [                    
+                "values": [
                     {
                         "key": "environment",
                         "value": url,
                         "type": "text",
                         "enabled": true
-                    },                    
+                    },
                 ],
                 "timestamp": 1404119927461,
                 "_postman_variable_scope": "environment",
@@ -90,7 +121,7 @@ function collectionRunner(url, collection_path, environment_path) {
                         "value": credentials.access_token,
                         "type": "text",
                         "enabled": true
-                    },                                                                      
+                    },
                     {
                         "key": "nhsd-session-urid-header",
                         "value": "NHSD-Session-URID",
@@ -107,7 +138,7 @@ function collectionRunner(url, collection_path, environment_path) {
                 "_postman_variable_scope": "globals",
                 "_postman_exported_at": "2020-04-03T14:31:26.200Z",
                 "_postman_exported_using": "Postman/4.8.0"
-            },            
+            },
         }, function (err) {
             if (err) { throw err; }
             console.log('collection run complete!');
