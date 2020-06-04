@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Kickoff teardown pipeline
-        uses: Azure/pipelines@v1
-        with:
-          azure-devops-project-url: "https://dev.azure.com/NHSD-APIM/API Platform"
-          azure-pipeline-name: "PDS API Pull Request Teardown"
-          azure-devops-token: "${{ secrets.AZURE_DEVOPS_TOKEN }}"
+        run: |
+          curl -X POST "https://dev.azure.com/NHSD-APIM/API Platform/_apis/build/builds?api-version=5.0" \
+               -u ${{ secrets.AZURE_DEVOPS_USER }}:${{ secrets.AZURE_DEVOPS_TOKEN }}
+               -H "Content-type: application/json" \
+               -d '{"definition": {"id": 24}, "parameters": {"TEARDOWN_BRANCH": "$GITHUB_REF"}}' 
