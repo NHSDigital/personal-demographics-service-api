@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Kickoff teardown pipeline
         run: |
-          curl -X POST "https://dev.azure.com/NHSD-APIM/API Platform/_apis/build/builds?api-version=5.0" \
+          curl -X POST "https://dev.azure.com/NHSD-APIM/API%20Platform/_apis/build/builds?api-version=5.0" \
                -u ${{ secrets.AZURE_DEVOPS_USER }}:${{ secrets.AZURE_DEVOPS_TOKEN }} \
                -H "Content-Type: application/json" \
                -d '{"definition": {"id": 24}, "parameters": {"TEARDOWN_BRANCH": "$GITHUB_REF"}}' 
