@@ -54,6 +54,7 @@
   ],
   "gender": "female",
   "birthDate": "2010-10-22",
+  "multipleBirthInteger": 1,
   "deceasedDateTime": "2010-10-22T00:00:00+00:00",
   "address": [
     {
@@ -125,11 +126,7 @@
         "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y12345",
         "identifier": {
           "system": "https://fhir.nhs.uk/Id/ods-organization-code",
-          "value": "Y12345",
-          "period": {
-            "start": "2020-01-01",
-            "end": "2021-12-31"
-          }
+          "value": "Y12345"
         }
       }
     },
@@ -139,11 +136,7 @@
         "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y23456",
         "identifier": {
           "system": "https://fhir.nhs.uk/Id/ods-organization-code",
-          "value": "Y23456",
-          "period": {
-            "start": "2020-01-01",
-            "end": "2021-12-31"
-          }
+          "value": "Y23456"
         }
       }
     },
@@ -153,11 +146,7 @@
         "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y34567",
         "identifier": {
           "system": "https://fhir.nhs.uk/Id/ods-organization-code",
-          "value": "Y34567",
-          "period": {
-            "start": "2020-01-01",
-            "end": "2021-12-31"
-          }
+          "value": "Y34567"
         }
       }
     },
@@ -237,6 +226,14 @@
           "valueString": "Not after 7pm"
         }
       ]
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/patient-birthPlace",
+      "valueAddress": {
+        "city": "Manchester",
+        "district": "Greater Manchester",
+        "country": "GBR"
+      }
     }
   ]
 }
