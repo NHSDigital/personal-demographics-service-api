@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<VerifyAPIKey async="false" continueOnError="false" enabled="true" name="VerifyApiKey-Header">
+<VerifyAPIKey async="false" continueOnError="false" enabled="true" name="VerifyApiKey.Header">
     <APIKey ref="request.header.X-API-Key"/>
 </VerifyAPIKey>
