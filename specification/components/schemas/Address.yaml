@@ -23,7 +23,6 @@ properties:
   line:
     type: array
     description: All lines of the address except the postal code.
-    minItems: 5
     maxItems: 5
     items:
       type: string
