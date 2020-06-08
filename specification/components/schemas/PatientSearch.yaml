@@ -64,7 +64,7 @@ properties:
   contact:
     type: array
     description: |
-      List of patient contacts. This will only be contact details for Emergency Contacts, all other contacts should be added to the patient's related person.
+      A list of patient contacts. Only emergency contacts will be returned. Any other contacts will be returned on the patients `Related Person`.
 
       When a patient tagged as `restricted` or `very restricted` is retrieved, all contacts will be removed from the response.
     items:

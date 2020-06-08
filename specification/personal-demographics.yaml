@@ -1072,7 +1072,8 @@ paths:
         * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes.
         * the business effective `start` date is optional, however if provided cannot be a future date. If is is not provided it will default to the date of update.
         * the business effective `end` date must not be provided.
-        * the general pratice should only be updated by primary care systems, [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
+        * the general practice should only be updated by primary care systems, [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
+        * removal of a general practice can only be done by [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
         * only a single general practice is supported; emergency, temporary and additional practices must be maintained in the local system only.
 
         ### Name
