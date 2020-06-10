@@ -17,4 +17,7 @@ items:
         url: https://tools.ietf.org/html/rfc6901
     value:
       description: The information to be added or replaced. Should not be included on a remove.
-      type: string
+      oneOf:
+        - type: string
+        - type: integer
+        - type: object

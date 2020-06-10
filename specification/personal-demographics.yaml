@@ -449,7 +449,6 @@ paths:
           required: false
           schema:
             type: string
-            format: ods_code
       responses:
         '200':
           description: 'A completed search, containing zero, one, or many matching patients.'
@@ -1554,7 +1553,7 @@ components:
       required: true
       schema:
         type: string
-        format: "^W\\/\\\"[[:print:]]+\\\"$"  # Printable characters enclosed in quotes. See: https://tools.ietf.org/html/rfc7230#section-3.2.6
+        pattern: "^W\/\"[0-9]+\"$"  # Printable characters enclosed in quotes. See: https://tools.ietf.org/html/rfc7230#section-3.2.6
         example: 'W/"2"'
     RoleId:
       in: header
