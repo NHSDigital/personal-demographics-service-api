@@ -21,7 +21,7 @@
     "license-checker": "^25.0.1",
     "newman": "^4.6.1",
     "newman-reporter-html": "^1.0.5",
-    "newman-reporter-htmlextra": "^1.15.3",
+    "newman-reporter-htmlextra": "^1.15.4",
     "puppeteer": "^3.3.0",
     "apigeetool": "^0.14.2",
     "license-checker": "^25.0.1"
