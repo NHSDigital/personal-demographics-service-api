@@ -1272,23 +1272,6 @@ paths:
                               version: '1'
                               code: INVALID_UPDATE
                               display: Invalid update with error - Invalid payload received - incorrect format
-        '404':
-          description: Patient not found.
-          content:
-            application/fhir+json:
-              schema:
-                $ref: components/schemas/OperationOutcome.yaml
-              example:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: not-found
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: RESOURCE_NOT_FOUND
-                          display: Resource not found
         '412':
           $ref: '#/components/responses/412PreconditionFailed'
 
@@ -1512,6 +1495,8 @@ paths:
                           version: '1'
                           code: POLLING_ID_NOT_FOUND
                           display: The polling id was not found
+        '409':
+          $ref: '#/components/responses/409Conflict'
         '422':
           description: |
             The polling message id was found however the processing of the request failed in an unexpected way or was cancelled, so the update failed.
@@ -1625,7 +1610,7 @@ components:
                 resourceType: OperationOutcome
                 issue:
                   - severity: error
-                    code: conflict
+                    code: structure
                     details:
                       coding:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
@@ -1645,4 +1630,27 @@ components:
                           version: '1'
                           code: PRECONDITION_FAILED
                           display: Invalid update with error - If-Match header must be supplied to update this resource
+    409Conflict:
+      description: |
+        Version Conflict.
+
+        The version identifier submitted in the `If-Match` header was not the latest version of the resource.
+      content:
+        application/fhir+json:
+          schema:
+            $ref: components/schemas/OperationOutcome.yaml
+          examples:
+            version-mismatch:
+              summary: Version mis-match
+              value:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: conflict
+                    details:
+                      coding:
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                          version: '1'
+                          code: RESOURCE_VERSION_MISMATCH
+                          display: Resource version supplied does not match actual version
 
