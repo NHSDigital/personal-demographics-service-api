@@ -984,7 +984,7 @@ paths:
         Single item found under `extension` with the extension url `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication`.
 
         In a JSON Patch request the path should be:
-        * `/extension/0` if the communication extension is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and o on.
+        * `/extension/0` if the communication extension is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
         * `/extension/-` when adding a communication extension.
 
         There are a number of business rules that should be taken into account:
@@ -1029,7 +1029,7 @@ paths:
         * cannot be a date in the future.
         * cannot be before the birth date.
         * cannot be replaced if the death notification status is 2 (formal).
-        * when adding, a death notification status must also be added.
+        * when adding date of death, a death notification status must also be added.
 
         ### Death notification
 
@@ -1043,7 +1043,7 @@ paths:
         * cannot be removed.
         * cannot be replaced if the death notification status is formal (2).
         * only certain endpoints can set a death notification of formal (2).
-        * when adding, a deceased date time must also be added.
+        * when adding a death notification, a deceased date time must also be added.
 
         ### Gender
 
@@ -1069,8 +1069,8 @@ paths:
 
         There are a number of business rules that should be taken into account:
         * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes.
-        * the business effective `start` date is optional, however if provided cannot be a future date. If is is not provided it will default to the date of update.
-        * the business effective `end` date must not be provided.
+        * the business effective `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
+        * do not provide a business effective `end` date.
         * the general practice should only be updated by primary care systems, [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
         * removal of a general practice can only be done by [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
         * only a single general practice is supported; emergency, temporary and additional practices must be maintained in the local system only.
@@ -1569,7 +1569,7 @@ components:
       required: false
       schema:
         type: string
-        format: '^[0-9]+$'
+        pattern: '^[0-9]+$'
         example: '555021935107'
     BearerAuthorization:
       in: header
