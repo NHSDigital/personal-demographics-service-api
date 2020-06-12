@@ -28,12 +28,7 @@ info:
     * gender
     * addresses and contact details
     * birth information
-    ** date of birth
-    ** multiple birth order
-    ** place of birth
     * death information
-    ** date of death
-    ** death notification status
     * registered GP
     * nominated pharmacy
     * dispensing doctor pharmacy
@@ -274,7 +269,7 @@ paths:
         * NHS Number
         * name
         * gender
-        * birth information
+        * all birth information, apart from place of birth
         * death information
         * home address
         * contact details
@@ -282,6 +277,7 @@ paths:
         * restricted patient flag
 
         The following data is excluded:
+        * place of birth
         * all addresses apart from home address
         * pharmacy details
         * communication details
