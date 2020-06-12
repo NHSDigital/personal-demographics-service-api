@@ -714,6 +714,32 @@ paths:
 
         When adding a list item, ensure the index is always `-`, otherwise the request will be rejected.
 
+        If is possible to `add` a sub-element to an existing object in a patch request. If the object already exists and you have the object `id`, you must supply it or the update will be rejected.
+        The following patch is allowed:
+
+        ```json
+        {
+          "patches": [
+            {
+              "op": "add", "path": "/name/0/id", "value": "8F8B957D",
+              "op": "add", "path": "/name/0/given/-", "value": "Rose"
+            }
+          ]
+        }
+        ```
+
+        but the following is not allowed:
+        
+        ```json
+        {
+          "patches": [
+            {
+              "op": "add", "path": "/name/0/given/-", "value": "Rose"
+            }
+          ]
+        }
+        ```
+
         ### Replacing
 
         `replace` should be used to alter existing items on the patient.
