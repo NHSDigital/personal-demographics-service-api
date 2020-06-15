@@ -15,7 +15,7 @@
                       "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
                       "version": "1",
                       "code": "UNKNOWN_ERROR",
-                      "display": "An unknown error occurred processing this request. Contact us for assistance diagnosing this issue: https://digital.nhs.uk/developer/help-and-support"
+                      "display": "An unknown error occurred processing this request. Contact us for assistance diagnosing this issue: https://digital.nhs.uk/developer/help-and-support. (Message ID: {messageid})"
                     }
                   ]
                 }
