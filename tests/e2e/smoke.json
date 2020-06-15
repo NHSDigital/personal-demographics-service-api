@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "138a4806-74f8-406a-90cb-c2acb50630ea",
+		"_postman_id": "6a7f2780-c7a6-4016-a747-d629f88860db",
 		"name": "Personal Demographics Service - SmokeTest",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -11,7 +11,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "9ba9f64b-ae66-4e9f-93e8-e74f28f48a5c",
+						"id": "aa7a9136-1f4d-4f40-8a35-7d031961c9b7",
 						"exec": [
 							"pm.test(\"Returns Status code 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -50,6 +50,55 @@
 					],
 					"path": [
 						"healthcheck"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "_ping endpoint",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "520205f0-cfff-4f39-8a15-fb51b2bf37b0",
+						"exec": [
+							"pm.test(\"Status code\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var versionRegex = /v[0-9]+\\.[0-9]+\\.[0-9]+-\\w+/;",
+							"var onlyNumberRegex = /^\\d+$/;",
+							"",
+							"pm.test(\"Json body has version\", function () {",
+							"    var version = pm.response.json().version;",
+							"    pm.expect(versionRegex.test(version)).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Json body has revision\", function () {",
+							"    var revision = pm.response.json().revision;",
+							"    pm.expect(onlyNumberRegex.test(revision)).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Json body has releaseId\", function () {",
+							"    var releaseId = pm.response.json().releaseId;",
+							"    pm.expect(onlyNumberRegex.test(releaseId)).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{environment}}/_ping",
+					"host": [
+						"{{environment}}"
+					],
+					"path": [
+						"_ping"
 					]
 				}
 			},
