@@ -29,8 +29,8 @@ properties:
     type: array
     maxItems: 1
     description: |
-      Extension holding another contact system not available in the `use` enum. Either an `use` or an `extension` will be returned.
+      Extension that will only be returned when the communication type is `textphone`. The only code that will be returned is `textphone`, which means `Minicom (Textphone)`.
 
-      This will only be returned when the communication type is `textphone`. The only code that will be returned is `textphone`, which means `Minicom (Textphone)`. 
+      The `system` will only ever be `other` when the extension is included.
     items:
       $ref: 'extensions/OtherContactSystem.yaml'
