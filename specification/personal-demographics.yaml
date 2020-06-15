@@ -708,7 +708,21 @@ paths:
         }
         ```
 
-        When adding a list item, ensure the index is always `-`, otherwise the request will be rejected.
+        When adding a base level list item such as a new name or address, ensure the index is always `-`, otherwise the request will be rejected. For example, `/name/-`.
+        The reason for this is because the backend system will make the decision on the ordering of the listed objects to ensure they are always returned in the same order.
+
+        If you are adding to a sub-element that is a list, such as an additional given name, it is valid to provide an exact index. So the following is valid:
+
+        ```json
+        {
+          "patches": [
+            {
+              "op": "add", "path": "/name/0/id", "value": "8F8B957D",
+              "op": "add", "path": "/name/0/given/0", "value": "Rose"
+            }
+          ]
+        }
+        ```
 
         If is possible to `add` a sub-element to an existing object in a patch request. If the object already exists and you have the object `id`, you must supply it or the update will be rejected.
         The following patch is allowed:
