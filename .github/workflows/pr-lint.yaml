@@ -18,12 +18,24 @@ jobs:
         if: contains(github.event.pull_request.head.ref, 'apm-') || contains(github.event.pull_request.head.ref, 'APM-') || contains(github.event.pull_request.head.ref, 'apmspii-') || contains(github.event.pull_request.head.ref, 'APMSPII-')
         run: echo ::set-env name=TICKET_NAME::$(echo ${{ github.event.pull_request.head.ref }} | grep -i -o '\(apm-[0-9]\+\)\|\(apmspii-[0-9]\+\)' | tr '[:lower:]' '[:upper:]')
 
-      - name: Comment on PR
+      - name: Comment on PR with link to JIRA ticket
         if: contains(github.event.pull_request.head.ref, 'apm-') || contains(github.event.pull_request.head.ref, 'APM-') || contains(github.event.pull_request.head.ref, 'apmspii-') || contains(github.event.pull_request.head.ref, 'APMSPII-')
         uses: unsplash/comment-on-pr@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           msg: |
-            This branch is work on a ticket in the NHS Digital APM JIRA Project. Here's a handy link to the ticket:
+            This branch is working on a ticket in the NHS Digital APM JIRA Project. Here's a handy link to the ticket:
             # [${{ env.TICKET_NAME }}](https://jira.digital.nhs.uk/browse/${{ env.TICKET_NAME}})
+
+      - name: Grab branch name
+        run: echo ::set-env name=SPEC_LINK::$(echo ${{ github.event.pull_request.head.ref }} | tr '[:upper:]' '[:lower:]')
+
+      - name: Comment on PR with link to Spec
+        uses: unsplash/comment-on-pr@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          msg: |
+            This branch is working on a ticket to deploy to internal-portal. Here's a handy link to the specification:
+            # [${{ github.event.pull_request.head.ref }} specification](https://internal-portal.developer.nhs.uk/docs/personal-demographics-internal-dev-${{ env.SPEC_LINK }}/1/overview)
