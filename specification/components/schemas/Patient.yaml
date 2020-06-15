@@ -77,7 +77,8 @@ properties:
   extension:
     type: array
     description: |
-      Wrapper array for the patient's pharmacies, death notification status, communication details and contact preferences; these are all FHIR extensions. Always contains zero or one of each pharmacy object, zero or one death notification status object, zero or one communication details object, zero or one contact preference and zero or one place of birth object.
+      Wrapper array for the patient's pharmacies, death notification status, communication details, contact preferences and place of birth; these are all FHIR extensions.
+      Always contains zero or one of each pharmacy object, zero or one death notification status object, zero or one communication details object, zero or one contact preference and zero or one place of birth object.
 
       When a patient tagged as `restricted` or `very restricted` is retrieved, the pharmacy and birth place extensions will be removed from the response.
     items:
