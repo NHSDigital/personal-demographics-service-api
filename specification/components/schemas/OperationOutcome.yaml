@@ -6,10 +6,10 @@ description: |
   There are general outcomes:
   | Code                       | Response Code | Description                                   |
   | -------------------------- | ------------- | --------------------------------------------- |
-  | ACCESS_DENIED              | 401           | Used when the user does not have permission for a particular request. eg. when their asid does not have the correct interactions attached to it. |
+  | ACCESS_DENIED              | 401           | Used when the user does not have permission for a particular request. e.g. when their ASID does not have the correct interactions attached to it. |
   | FAILURE_TO_PROCESS_MESSAGE | 500           | A default message when something really bad has happened that the system could not handle.	|
   | UNABLE_TO_CALL_SERVICE     | 408           | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
-  | UNSUPPORTED_SERVICE        | 400           | The service the user requested is an endpoint that does not exist - so is unsupported. eg. /Patient/9999999999/Pets |
+  | UNSUPPORTED_SERVICE        | 400           | The service the user requested is an endpoint that does not exist - so is unsupported. e.g. /Patient/9999999999/Pets |
   | RESOURCE_NOT_FOUND         | 404           | The resource was not found. |
   | INVALID_RESOURCE_ID        | 400           | The resource ID was not valid. For example a NHS Number is presented which is not a valid NHS Number. |
   | INVALIDATED_RESOURCE       | 404           | The resource has been invalidated so could not be returned. |

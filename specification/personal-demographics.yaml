@@ -163,7 +163,7 @@ info:
     * `GET /Patient` - search for patients.
     * `GET /Patient/{id}` - get patient's personal details.
     * `GET /Patient/{id}/RelatedPerson` - get patient's related people details.
-    * `PATCH /Patient/{id}` - update patient's personal details (coming soon).
+    * `PATCH /Patient/{id}` - update patient's personal details.
 
   contact:
     name: Personal Demographics Service FHIR API Support
