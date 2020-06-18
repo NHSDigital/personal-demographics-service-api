@@ -1,5 +1,9 @@
 # Changelog
 
+## 2020-06-18
+* Added `_ping` endpoint to check health state of the proxy
+* Added payload to `_ping`, returning information about the deployed version
+
 ## 2020-05-28
 * Adding Polling endpoint.
 
@@ -116,7 +120,3 @@
 * `make publish` now adds version into output oas file
 * Added automatic version tagging to CI pipeline
 * Added changelog
-
-## 2020-06-11
-* Added `_ping` endpoint to check health state of the proxy
-* Added payload to `_ping`, returning information about the deployed version
