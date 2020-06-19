@@ -9,6 +9,16 @@
             </Response>
         <Condition>request.verb == "OPTIONS" AND request.header.origin != null AND request.header.Access-Control-Request-Method != null</Condition>
       </Flow>
+      <Flow name="AddPayloadToPing">
+        <Description/>
+        <Request/>
+        <Response>
+          <Step>
+            <Name>AssignMessage.AddPayloadToPing</Name>
+          </Step>
+        </Response>
+        <Condition>(proxy.pathsuffix MatchesPath "/_ping") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
+      </Flow>
     </Flows>
     <PreFlow/>
     <HTTPProxyConnection>
@@ -18,7 +28,10 @@
     <RouteRule name="NoRoute">
         <Condition>request.verb == "OPTIONS" AND request.header.origin != null AND request.header.Access-Control-Request-Method != null</Condition>
     </RouteRule>
-    <RouteRule name="sandbox">
+    <RouteRule name="NoRoutePing">
+      <Condition>(proxy.pathsuffix MatchesPath "/_ping") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
+    </RouteRule>
+  <RouteRule name="sandbox">
         <TargetEndpoint>sandbox</TargetEndpoint>
     </RouteRule>
 </ProxyEndpoint>
