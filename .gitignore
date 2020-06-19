@@ -5,6 +5,9 @@ build/
 public/
 newman/
 build/
+.idea
+.DS_Store
+venv
 
 .#*
 
