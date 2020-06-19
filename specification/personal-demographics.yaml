@@ -46,8 +46,8 @@ info:
 
     ## Related APIs
     The following APIs also give access to the Personal Demographics Service:
-    - [Personal Demographics Service (SMSP) API](https://digital.nhs.uk/developer/api-catalogue/pds/personal-demographics-service---smsp-api) - use this if you want to get PDS data without an authenticated end used (no smartcard required). It is, however, read-only and searches are limited to a single result.
-    - [Personal Demographics Service (HL7 V3) API](https://digital.nhs.uk/developer/api-catalogue/pds/personal-demographics-service-hl7-v3) - use this if you want to use functions that are not yet available on the FHIR API.
+    - [Personal Demographics Service (SMSP) API](https://digital.nhs.uk/services/spine/spine-mini-service-provider-for-personal-demographics-service) - use this if you want to get PDS data without an authenticated end used (no smartcard required). It is, however, read-only and searches are limited to a single result.
+    - [Personal Demographics Service (HL7 V3) API](https://digital.nhs.uk/developer/api-catalogue/pds-hl7) - use this if you want to use functions that are not yet available on the FHIR API.
 
     Once our roadmap is complete, the above APIs will become redundant.
 
@@ -140,7 +140,7 @@ info:
     2) the API is now available for onboarding for production use
     For more details on both of these enhancements, see the API specification. 
          
-    You can use our [PDS FHIR API test data pack](https://digital.nhs.uk/developer/api-specifications/pds-fhir-api-test-data) to test most common scenarios. You can also create your own test data.
+    You can use our [PDS FHIR API test data pack](https://digital.nhs.uk/developer/api-catalogue/pds-fhir) to test most common scenarios. You can also create your own test data.
 
     For more details see [integration testing with our RESTful APIs](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing-with-our-restful-apis).
 

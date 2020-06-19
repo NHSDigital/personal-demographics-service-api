@@ -1,5 +1,9 @@
 # Changelog
 
+## 2020-06-18
+* Added `_ping` endpoint to check health state of the proxy
+* Added payload to `_ping`, returning information about the deployed version
+
 ## 2020-05-28
 * Adding Polling endpoint.
 
@@ -25,7 +29,7 @@
 * Additional changes to support running tests in release pipeline
 
 ## 2020-04-23
-* Add step in pipeline to replace invalid characters in the branch name 
+* Add step in pipeline to replace invalid characters in the branch name
 
 ## 2020-04-09
 * No longer need to include `NHSD-Identity-JWT` header in API Calls

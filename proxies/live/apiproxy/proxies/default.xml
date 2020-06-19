@@ -1,15 +1,4 @@
 <ProxyEndpoint name="default">
-  <Flows>
-    <Flow name="OptionsPreFlight">
-      <Request />
-      <Response>
-        <Step>
-          <Name>AssignMessage.AddCors</Name>
-        </Step>
-      </Response>
-      <Condition>request.verb == "OPTIONS" AND request.header.origin != null AND request.header.Access-Control-Request-Method != null</Condition>
-    </Flow>
-  </Flows>
   <PreFlow>
     <Request>
       <Step>
@@ -40,6 +29,27 @@
       </Step>
     </Request>
   </PreFlow>
+  <Flows>
+    <Flow name="OptionsPreFlight">
+      <Request />
+      <Response>
+        <Step>
+          <Name>AssignMessage.AddCors</Name>
+        </Step>
+      </Response>
+      <Condition>request.verb == "OPTIONS" AND request.header.origin != null AND request.header.Access-Control-Request-Method != null</Condition>
+    </Flow>
+    <Flow name="AddPayloadToPing">
+      <Description />
+      <Request />
+      <Response>
+        <Step>
+          <Name>AssignMessage.AddPayloadToPing</Name>
+        </Step>
+      </Response>
+      <Condition>(proxy.pathsuffix MatchesPath "/_ping") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
+    </Flow>
+  </Flows>
   <HTTPProxyConnection>
     <BasePath>{{ SERVICE_BASE_PATH }}</BasePath>
     <VirtualHost>secure</VirtualHost>
@@ -49,6 +59,9 @@
   </RouteRule>
   <RouteRule name="ig3">
     <TargetEndpoint>ig3</TargetEndpoint>
+  </RouteRule>
+  <RouteRule name="NoRoutePing">
+    <Condition>(proxy.pathsuffix MatchesPath "/_ping") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
   </RouteRule>
   <FaultRules>
     <FaultRule name="access_token_expired">
