@@ -57,9 +57,6 @@ properties:
       required:
         - system
         - code
-      enum:
-        - http://hl7.org/fhir/ValueSet/relatedperson-relationshiptype
-        - https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole
       properties:
         system:
           type: string
@@ -67,6 +64,9 @@ properties:
           format: url
           readOnly: true
           default: https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole
+          enum:
+            - http://hl7.org/fhir/ValueSet/relatedperson-relationshiptype
+            - https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole
         code:
           type: string
           description: Symbol in syntax defined by the system.

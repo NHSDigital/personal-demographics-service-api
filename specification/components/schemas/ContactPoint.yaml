@@ -14,7 +14,7 @@ properties:
   system:
     description: Means of communication, such as phone or email.
     type: string
-    enum: [phone, fax, email, pager, sms, other]
+    enum: [phone, fax, email, other]
     example: phone
   value:
     description: Phone number, email address, or other identifier for use with contact system.
@@ -22,6 +22,15 @@ properties:
     example: '01632960587'
   use:
     type: string
-    description: Location associated with communication system, or marker to indicate it is temporary or outdated.
-    enum: [home, work, temp, old, mobile]
+    description: Location associated with communication system.
+    enum: [home, work, temp, mobile]
     example: work
+  extension:
+    type: array
+    maxItems: 1
+    description: |
+      Extension that will only be returned when the communication type is `textphone`. The only code that will be returned is `textphone`, which means `Minicom (Textphone)`.
+
+      The `system` will only ever be `other` when the extension is included.
+    items:
+      $ref: 'extensions/OtherContactSystem.yaml'

@@ -12,6 +12,7 @@ from docopt import docopt
 from jsonpath_rw import parse
 
 from format_examples import (
+    format_patient,
     slim_patient,
     sensitive_patient,
     related_person_reference_only,
@@ -23,7 +24,7 @@ from format_examples import (
 
 EXAMPLE_TYPES = {
     "Patient": [
-        {"type": "retrieval", "file_prefix": "", "slim_func": []},
+        {"type": "retrieval", "file_prefix": "", "slim_func": [format_patient]},
         {"type": "sensitive", "file_prefix": "Sensitive_", "slim_func": [sensitive_patient]},
     ],
     "PatientSearch": [
@@ -151,7 +152,9 @@ def main(arguments):
                 ),
                 "w",
             ) as out_file:
-                out_file.write(json.dumps(new_resource_example))
+                out_file.write(
+                    json.dumps(new_resource_example, indent=2, sort_keys=True)
+                )
 
     # Pull out responses
     match_expr = parse(
