@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.CatchallErrorMessage">
+    <DisplayName>Catchall error message</DisplayName>
+    <Set>
+        <Payload contentType="application/json">
+          {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "unknown",
+                "details": {
+                  "coding": [
+                    {
+                      "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+                      "version": "1",
+                      "code": "UNKNOWN_ERROR",
+                      "display": "An unknown error occurred processing this request. Contact us for assistance diagnosing this issue: https://digital.nhs.uk/developer/help-and-support. (Message ID: {messageid})"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        </Payload>
+        <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+        <AssignTo createNew="false" transport="https" type="request"/>
+    </Set>
+</AssignMessage>
