@@ -10,7 +10,11 @@ module.exports = {
     },
 
     validateContentTypeHeader: function (request) {
-        return request.headers["content-type"] && request.headers["content-type"].toLowerCase() === "application/json-patch+json"
+        // Allowing application/json-patch+json and application/json because of an issue with apigee and application/json-patch+json
+        return request.headers["content-type"] && (
+            request.headers["content-type"].toLowerCase() === "application/json-patch+json" ||
+            request.headers["content-type"].toLowerCase() === "application/json"
+        )
     },
 
     verifyPatchObjectHasBeenSubmitted: function(request) {
