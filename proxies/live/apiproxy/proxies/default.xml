@@ -28,11 +28,11 @@
   <RouteRule name="NoRoute">
     <Condition>request.verb == "OPTIONS" AND request.header.origin != null AND request.header.Access-Control-Request-Method != null</Condition>
   </RouteRule>
-  <RouteRule name="ig3">
-    <TargetEndpoint>ig3</TargetEndpoint>
-  </RouteRule>
   <RouteRule name="NoRoutePing">
     <Condition>(proxy.pathsuffix MatchesPath "/_ping") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
+  </RouteRule>
+  <RouteRule name="ig3">
+    <TargetEndpoint>ig3</TargetEndpoint>
   </RouteRule>
   <DefaultFaultRule>
     <Step>
