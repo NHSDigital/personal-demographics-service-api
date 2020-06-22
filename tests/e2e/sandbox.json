@@ -4296,7 +4296,7 @@
 									{
 										"key": "Content-Type",
 										"type": "text",
-										"value": "application/json"
+										"value": "text/xml"
 									},
 									{
 										"key": "If-Match",
