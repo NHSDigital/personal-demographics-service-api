@@ -21,6 +21,13 @@
       <Condition>(proxy.pathsuffix MatchesPath "/_ping") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
     </Flow>
   </Flows>
+  <PostClientFlow>
+    <Response>
+      <Step>
+        <Name>FlowCallout.Logging</Name>
+      </Step>
+    </Response>
+  </PostClientFlow>
   <HTTPProxyConnection>
     <BasePath>{{ SERVICE_BASE_PATH }}</BasePath>
     <VirtualHost>secure</VirtualHost>

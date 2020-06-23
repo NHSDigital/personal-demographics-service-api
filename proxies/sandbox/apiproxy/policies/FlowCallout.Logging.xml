@@ -1,0 +1,3 @@
+<FlowCallout async="false" continueOnError="false" enabled="true" name="FlowCallout.Logging">
+  <SharedFlowBundle>Logging</SharedFlowBundle>
+</FlowCallout>
