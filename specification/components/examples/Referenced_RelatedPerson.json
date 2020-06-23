@@ -54,7 +54,7 @@
           "valueCodeableConcept": {
             "coding": [
               {
-                "system": "https://fhir.nhs.uk/R4/ValueSet/UKCore-PreferredContactMethod",
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-PreferredContactMethod",
                 "code": "1",
                 "display": "Letter"
               }
