@@ -14,7 +14,7 @@ terraform {
 
 
 module "personal-demographics-service" {
-  source                   = "github.com/NHSDigital/api-platform-service-module"
+  source                   = "github.com/NHSDigital/api-platform-service-module?ref=apm-1100-no-proxy"
   name                     = "personal-demographics"
   path                     = "personal-demographics"
   apigee_environment       = var.apigee_environment
