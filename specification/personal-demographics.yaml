@@ -1118,7 +1118,7 @@ paths:
         In a JSON Patch request the path should be `/multipleBirthInteger`.
 
         When adding or updating the birth order, the update should be an integer in the range `1` - `9` inclusive. These values have differing meanings:
-        * 1 - 7 indicate the order of order, with 1 indicating the first or only birth in the sequence, 2 indicating the second birth in the sequence, 3 indicating the third, and so on up to 7.
+        * 1 - 7 indicates the order of birth, with 1 indicating the first or only birth in the sequence, 2 indicating the second birth in the sequence, 3 indicating the third, and so on up to 7.
         * 8 - `Not applicable`
         * 9 - `Not known`
 
