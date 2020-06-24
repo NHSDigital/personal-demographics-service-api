@@ -10,6 +10,61 @@ def _return_value(resource, key):
     return resource[key]
 
 
+def _format_telecom(resource, key, add_textphone_extension=True, whitelist=None):
+    """
+    Return the telecom field with the correct values.
+    Optionally adds additional emergency contact telecoms to ensure all
+    varieties are covered in the response.
+    """
+    if not whitelist:
+        whitelist = ["extension"]
+
+    telecoms = resource.pop(key)
+
+    resource[key] = []
+    for telecom in deepcopy(telecoms):
+        for key_to_delete in whitelist:
+            # Removing certain fields - for example extension is not needed when
+            # a use field is present.
+            del telecom[key_to_delete]
+        resource[key].append(telecom)
+
+    # Adding the emergency contact telecoms details.
+    if add_textphone_extension:
+        for telecom in deepcopy(telecoms):
+            if "id" not in telecom:
+                continue
+
+            telecom["system"] = "other"
+
+            # Ids need to be unique.
+            telecom["id"] = "OC{}".format(telecom["id"])
+            resource[key].append(telecom)
+
+    return resource[key]
+
+
+def _format_contact(resource, key):
+    """
+    Return the contact field with the correct values.
+    This is mainly stripping out the unecessary fields from the telecom part of
+    the response.
+    """
+    contacts = resource.pop(key)
+
+    resource[key] = []
+    for contact in contacts:
+        contact["telecom"] = _format_telecom(
+            contact,
+            "telecom",
+            add_textphone_extension=False,
+            whitelist=["id", "use", "period", "extension"]
+        )
+        resource[key].append(contact)
+
+    return resource[key]
+
+
 def _process_blacklist(resource, blacklist):
     """ Process a blacklist of keys """
     new_resource = {}
@@ -32,6 +87,20 @@ def _slim_extension(resource, key):
     ]
 
 
+def format_patient(resource):
+    """
+    Format the patient
+    """
+    formatters = {
+        "telecom": _format_telecom,
+        "contact": _format_contact,
+    }
+
+    for key, func in formatters.items():
+        resource[key] = func(resource, key)
+    return resource
+
+
 def slim_patient(resource):
     """
     Remove parts of the patient that will not be returned on a search response
@@ -50,7 +119,8 @@ def slim_patient(resource):
         "multipleBirthInteger": _return_value,
         "deceasedDateTime": _return_value,
         "address": _slim_address,
-        "telecom": _return_value,
+        "telecom": _format_telecom,
+        "contact": _format_contact,
         "generalPractitioner": _return_value,
         "extension": _slim_extension
     }
@@ -69,6 +139,7 @@ def sensitive_patient(resource):
     blacklist = [
         "address",
         "telecom",
+        "contact",
         "generalPractitioner"
     ]
 
@@ -89,7 +160,8 @@ def related_person_reference_only(resource):
     blacklist = [
         "name",
         "address",
-        "telecom"
+        "telecom",
+        "contact"
     ]
     return _process_blacklist(resource, blacklist)
 
@@ -115,9 +187,16 @@ def remove_list_id(resource):
         "telecom"
     ]
 
+    formatters = {
+        "telecom": _format_telecom
+    }
+
     for key in list_fields:
         for element in resource[key]:
             del element["id"]
+
+    for key, func in formatters.items():
+        resource[key] = func(resource, key)
 
     return resource
 

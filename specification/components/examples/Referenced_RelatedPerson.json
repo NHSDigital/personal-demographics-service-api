@@ -1,30 +1,5 @@
 {
-  "id": "B3380E98",
-  "resourceType": "RelatedPerson",
-  "patient": {
-    "type": "Patient",
-    "identifier": {
-      "system": "https://beta.api.digital.nhs.uk/personal-demographics/Patient",
-      "value": "90000000009"
-    },
-    "reference": "https://beta.api.digital.nhs.uk/personal-demographics/Patient/90000000009"
-  },
   "active": true,
-  "period": {
-    "start": "2020-01-01",
-    "end": "2021-12-31"
-  },
-  "relationship": [
-    {
-      "coding": [
-        {
-          "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole",
-          "code": "Guardian",
-          "display": "Guardian of patient"
-        }
-      ]
-    }
-  ],
   "extension": [
     {
       "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-CopyCorrespondenceIndicator",
@@ -35,16 +10,15 @@
       "valuePositiveInt": 1
     },
     {
-      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference",
       "extension": [
         {
           "url": "PreferredWrittenCommunicationFormat",
           "valueCodeableConcept": {
             "coding": [
               {
-                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-PreferredWrittenCommunicationFormat",
                 "code": "12",
-                "display": "Braille"
+                "display": "Braille",
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-PreferredWrittenCommunicationFormat"
               }
             ]
           }
@@ -54,9 +28,9 @@
           "valueCodeableConcept": {
             "coding": [
               {
-                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-PreferredContactMethod",
                 "code": "1",
-                "display": "Letter"
+                "display": "Letter",
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-PreferredContactMethod"
               }
             ]
           }
@@ -65,20 +39,20 @@
           "url": "PreferredContactTimes",
           "valueString": "Not after 7pm"
         }
-      ]
+      ],
+      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference"
     },
     {
-      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication",
       "extension": [
         {
           "url": "language",
           "valueCodeableConcept": {
             "coding": [
               {
-                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage",
-                "version": "1.0.0",
                 "code": "fr",
-                "display": "French"
+                "display": "French",
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage",
+                "version": "1.0.0"
               }
             ]
           }
@@ -87,7 +61,33 @@
           "url": "interpreterRequired",
           "valueBoolean": true
         }
+      ],
+      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication"
+    }
+  ],
+  "id": "B3380E98",
+  "patient": {
+    "identifier": {
+      "system": "https://beta.api.digital.nhs.uk/personal-demographics/Patient",
+      "value": "90000000009"
+    },
+    "reference": "https://beta.api.digital.nhs.uk/personal-demographics/Patient/90000000009",
+    "type": "Patient"
+  },
+  "period": {
+    "end": "2021-12-31",
+    "start": "2020-01-01"
+  },
+  "relationship": [
+    {
+      "coding": [
+        {
+          "code": "Guardian",
+          "display": "Guardian of patient",
+          "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole"
+        }
       ]
     }
-  ]
+  ],
+  "resourceType": "RelatedPerson"
 }

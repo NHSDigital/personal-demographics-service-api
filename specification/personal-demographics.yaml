@@ -251,7 +251,7 @@ paths:
         Use the `_exact-match` query parameter to return exact matches only - where the score is 1.0.
 
         ## Restricted patients
-        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telecom` and `generalPractitioner` will be removed.
+        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telecom`, `contact` and `generalPractitioner` will be removed.
 
         If `address-postcode` or `general-practitioner` are included in the search parameters, no restricted patients will be returned even if a match is identified.
 
@@ -445,7 +445,6 @@ paths:
           required: false
           schema:
             type: string
-            format: ods_code
       responses:
         '200':
           description: 'A completed search, containing zero, one, or many matching patients.'
@@ -709,7 +708,47 @@ paths:
         }
         ```
 
-        When adding a list item, ensure the index is always `-`, otherwise the request will be rejected.
+        When adding a base level list item such as a new name or address, ensure the index is always `-`, otherwise the request will be rejected. For example, `/name/-`.
+        The reason for this is because the backend system will make the decision on the ordering of the listed objects to ensure they are always returned in the same order.
+
+        If you are adding to a sub-element that is a list, such as an additional given name, it is valid to provide an exact index. So the following is valid:
+
+        ```json
+        {
+          "patches": [
+            {
+              "op": "add", "path": "/name/0/id", "value": "8F8B957D",
+              "op": "add", "path": "/name/0/given/0", "value": "Rose"
+            }
+          ]
+        }
+        ```
+
+        If is possible to `add` a sub-element to an existing object in a patch request. If the object already exists and you have the object `id`, you must supply it or the update will be rejected.
+        The following patch is allowed:
+
+        ```json
+        {
+          "patches": [
+            {
+              "op": "add", "path": "/name/0/id", "value": "8F8B957D",
+              "op": "add", "path": "/name/0/given/-", "value": "Rose"
+            }
+          ]
+        }
+        ```
+
+        but the following is not allowed:
+        
+        ```json
+        {
+          "patches": [
+            {
+              "op": "add", "path": "/name/0/given/-", "value": "Rose"
+            }
+          ]
+        }
+        ```
 
         ### Replacing
 
@@ -820,7 +859,7 @@ paths:
             "patches": [
               { 
                     "op": "test",
-                    "path": "/name/0/",
+                    "path": "/name/0",
                     "value": {
                         "id": "123",
                         "use": "usual",
@@ -981,7 +1020,7 @@ paths:
         Single item found under `extension` with the extension URL `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication`.
 
         In a JSON Patch request the path should be:
-        * `/extension/0` if the communication extension is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and o on.
+        * `/extension/0` if the communication extension is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
         * `/extension/-` when adding a communication extension.
 
         There are a number of business rules that should be taken into account:
@@ -1026,7 +1065,7 @@ paths:
         * cannot be a date in the future.
         * cannot be before the birth date.
         * cannot be replaced if the death notification status is 2 (formal).
-        * when adding, a death notification status must also be added.
+        * when adding date of death, a death notification status must also be added.
 
         ### Death notification
 
@@ -1040,7 +1079,7 @@ paths:
         * cannot be removed.
         * cannot be replaced if the death notification status is formal (2).
         * only certain endpoints can set a death notification of formal (2).
-        * when adding, a deceased date time must also be added.
+        * when adding a death notification, a deceased date time must also be added.
 
         ### Gender
 
@@ -1066,9 +1105,10 @@ paths:
 
         There are a number of business rules that should be taken into account:
         * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes.
-        * the business effective `start` date is optional, however if provided cannot be a future date. If is is not provided it will default to the date of update.
-        * the business effective `end` date must not be provided.
-        * the general pratice should only be updated by primary care systems, [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
+        * the business effective `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
+        * do not provide a business effective `end` date.
+        * the general practice should only be updated by primary care systems, [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
+        * removal of a general practice can only be done by [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
         * only a single general practice is supported; emergency, temporary and additional practices must be maintained in the local system only.
 
         ## Multiple birth order
@@ -1078,7 +1118,7 @@ paths:
         In a JSON Patch request the path should be `/multipleBirthInteger`.
 
         When adding or updating the birth order, the update should be an integer in the range `1` - `9` inclusive. These values have differing meanings:
-        * 1 - 7 indicate the order of order, with 1 indicating the first or only birth in the sequence, 2 indicating the second birth in the sequence, 3 indicating the third, and so on up to 7.
+        * 1 - 7 indicates the order of birth, with 1 indicating the first or only birth in the sequence, 2 indicating the second birth in the sequence, 3 indicating the third, and so on up to 7.
         * 8 - `Not applicable`
         * 9 - `Not known`
 
@@ -1292,23 +1332,6 @@ paths:
                               version: '1'
                               code: INVALID_UPDATE
                               display: Invalid update with error - Invalid payload received - incorrect format
-        '404':
-          description: Patient not found.
-          content:
-            application/fhir+json:
-              schema:
-                $ref: components/schemas/OperationOutcome.yaml
-              example:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: not-found
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: RESOURCE_NOT_FOUND
-                          display: Resource not found
         '412':
           $ref: '#/components/responses/412PreconditionFailed'
 
@@ -1534,6 +1557,8 @@ paths:
                           version: '1'
                           code: POLLING_ID_NOT_FOUND
                           display: The polling ID was not found
+        '409':
+          $ref: '#/components/responses/409Conflict'
         '422':
           description: |
             The polling message ID was found however the processing of the request failed in an unexpected way or was cancelled, so the update failed.
@@ -1591,7 +1616,7 @@ components:
       required: true
       schema:
         type: string
-        format: "^W\\/\\\"[[:print:]]+\\\"$"  # Printable characters enclosed in quotes. See: https://tools.ietf.org/html/rfc7230#section-3.2.6
+        pattern: "^W\/\"[0-9]+\"$"  # Printable characters enclosed in quotes. See: https://tools.ietf.org/html/rfc7230#section-3.2.6
         example: 'W/"2"'
     RoleId:
       in: header
@@ -1607,7 +1632,7 @@ components:
       required: false
       schema:
         type: string
-        format: '^[0-9]+$'
+        pattern: '^[0-9]+$'
         example: '555021935107'
     BearerAuthorization:
       in: header
@@ -1647,7 +1672,7 @@ components:
                 resourceType: OperationOutcome
                 issue:
                   - severity: error
-                    code: conflict
+                    code: structure
                     details:
                       coding:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
@@ -1667,4 +1692,27 @@ components:
                           version: '1'
                           code: PRECONDITION_FAILED
                           display: Invalid update with error - If-Match header must be supplied to update this resource
+    409Conflict:
+      description: |
+        Version Conflict.
+
+        The version identifier submitted in the `If-Match` header was not the latest version of the resource.
+      content:
+        application/fhir+json:
+          schema:
+            $ref: components/schemas/OperationOutcome.yaml
+          examples:
+            version-mismatch:
+              summary: Version mis-match
+              value:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: conflict
+                    details:
+                      coding:
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                          version: '1'
+                          code: RESOURCE_VERSION_MISMATCH
+                          display: Resource version supplied does not match actual version
 
