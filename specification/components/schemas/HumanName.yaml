@@ -2,6 +2,7 @@ type: object
 required:
   - use
   - family
+additionalProperties: false
 properties:
   id:
     type: string
