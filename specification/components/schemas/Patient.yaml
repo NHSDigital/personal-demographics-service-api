@@ -1,6 +1,7 @@
 type: object
 required:
   - id
+additionalProperties: false
 properties:
   resourceType:
     type: string
@@ -26,27 +27,11 @@ properties:
   gender:
     $ref: "Gender.yaml"
   birthDate:
-    description: |
-      The date on which the patient was born or is officially deemed to have been born.
-      
-      It is a date in the format `yyyy-mm-dd`. Due to data quality issues on a small number of patients `yyyy-mm` and `yyyy` format may also be returned.
-      
-      When a patient tagged as `very restricted` is retrieved, birth date will be removed from the response.
-    example: "2010-10-22"
-    type: string
-    format: date
+    $ref: "BirthDate.yaml"
   multipleBirthInteger:
     $ref: "MultipleBirthOrder.yaml"
   deceasedDateTime:
-    description: |
-      The date and time on which a person died or is officially deemed to have died, if applicable and known.
-      
-      It is a datetime in the format `yyyy-mm-ddTHH:MM:SS+HH:MM` or `yyyy-mm-dd`. Due to data quality issues on a small number of patients `yyyy-mm` and `yyyy` format may also be returned.
-      
-      When a patient tagged as `very restricted` is retrieved, death date will be removed from the response.
-    example: "2010-10-22T00:00:00+00:00"
-    type: string
-    format: date-time
+    $ref: "DeceasedDateTime.yaml"
   address:
     type: array
     description: | 
@@ -65,6 +50,17 @@ properties:
       When a patient tagged as `restricted` or `very restricted` is retrieved, all contact points will be removed from the response.
     items:
       $ref: "ContactPoint.yaml"
+  contact:
+    type: array
+    description: |
+      A list of patient contacts. Only emergency contacts will be returned and only emergency contacts should be added. Any other contacts should be added to the patients `Related Person`.
+
+      Patients designate here any contact number they desire to be used in case of an emergency.
+      Note, while a patient may also desire to record various related persons telecom details, these do not separately allow for a concept of emergency contact; only ranking. See RelatedPerson endpoint.
+
+      When a patient tagged as `restricted` or `very restricted` is retrieved, all contacts will be removed from the response.
+    items:
+      $ref: "Contact.yaml"
   generalPractitioner:
     type: array
     maxItems: 1
@@ -77,7 +73,8 @@ properties:
   extension:
     type: array
     description: |
-      Wrapper array for the patient's pharmacies, death notification status, communication details and contact preferences; these are all FHIR extensions. Always contains zero or one of each pharmacy object, zero or one death notification status object, zero or one communication details object, zero or one contact preference and zero or one place of birth object.
+      Wrapper array for the patient's pharmacies, death notification status, communication details, contact preferences and place of birth; these are all FHIR extensions.
+      Always contains zero or one of each pharmacy object, zero or one death notification status object, zero or one communication details object, zero or one contact preference and zero or one place of birth object.
 
       When a patient tagged as `restricted` or `very restricted` is retrieved, the pharmacy and birth place extensions will be removed from the response.
     items:

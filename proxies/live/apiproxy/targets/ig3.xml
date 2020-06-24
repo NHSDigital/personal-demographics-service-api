@@ -1,15 +1,4 @@
 <TargetEndpoint name="ig3">
-  <FaultRules>
-    <FaultRule name="access_token_expired">
-      <Step>
-        <Name>ExtractVariables.OAuthErrorFaultString</Name>
-      </Step>
-      <Step>
-        <Name>AssignMessage.OAuthPolicyErrorResponse</Name>
-      </Step>
-      <Condition>oauthV2.OauthV2.VerifyAccessToken.failed</Condition>
-    </FaultRule>
-  </FaultRules>
   <PreFlow>
     <Request>
       <Step>
@@ -41,6 +30,12 @@
     </Request>
   </PreFlow>
   <HTTPTargetConnection>
+    <Properties>
+      <!-- Whitelist the 'expected' error code responses so the responses pass unhindered to caller
+      Anything unexpected will be sanitsed by the DefaultFaultRule -
+      https://docs.apigee.com/api-platform/fundamentals/fault-handling#customhandlingofhttperrorcodesfromthetargetserver -->
+      <Property name="success.codes">1xx,2xx,3xx,4xx</Property>
+    </Properties>
     <SSLInfo>
       <Enabled>true</Enabled>
     </SSLInfo>
@@ -48,4 +43,20 @@
       <Server name="ig3" />
     </LoadBalancer>
   </HTTPTargetConnection>
+  <FaultRules>
+    <FaultRule name="access_token_expired">
+      <Step>
+        <Name>ExtractVariables.OAuthErrorFaultString</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.OAuthPolicyErrorResponse</Name>
+      </Step>
+      <Condition>oauthV2.OauthV2.VerifyAccessToken.failed</Condition>
+    </FaultRule>
+  </FaultRules>
+  <DefaultFaultRule>
+    <Step>
+      <Name>AssignMessage.CatchallErrorMessage</Name>
+    </Step>
+  </DefaultFaultRule>
 </TargetEndpoint>

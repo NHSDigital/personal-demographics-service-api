@@ -1,0 +1,28 @@
+title: Schema for a patient contact.
+type: object
+additionalProperties: false
+required:
+  - relationship
+  - telecom
+properties:
+  id:
+    type: string
+    example: C123
+  period:
+    "$ref": Period.yaml
+  relationship:
+    type: array
+    description: |
+      The contact relationship wrapper object that holds the details of the relationship to the patient.
+
+      This will only be return when an Emergency Contact number has been set on `telecom`. The only code that will be returned is `C`, which means `Emergency Contact`.
+    minItems: 1
+    maxItems: 1
+    items:
+      "$ref": codeable/ContactRelationship.yaml
+  telecom:
+    type: array
+    description: |
+      List of Telecom objects on the contact will only contain `system` and `value`.
+    items:
+      "$ref": ContactPoint.yaml
