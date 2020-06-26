@@ -8,11 +8,13 @@ properties:
     type: string
     description: Definition of communication extension.
     default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication
+    enum:
+      - https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication
     readOnly: true
   extension:
     type: array
     description: Definition of communication extension, The array must have two items, a valueCodeableConcept for the language and a valueBoolean for if an interpreter is required.
-    minItems: 2
+    minItems: 1
     maxItems: 2
     items:
       anyOf:
@@ -26,6 +28,8 @@ properties:
               type: string
               description: Key of this object. Always `language`.
               default: language
+              enum:
+                - language
               readOnly: true
             valueCodeableConcept:
               "$ref": "../codeable/Language.yaml"
@@ -39,6 +43,8 @@ properties:
               type: string
               description: Key of this object. Always `interpreterRequired`.
               default: interpreterRequired
+              enum:
+                - interpreterRequired
               readOnly: true
             valueBoolean:
               type: boolean

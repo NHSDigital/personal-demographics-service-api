@@ -190,7 +190,7 @@ paths:
       operationId: search-patient
       externalDocs:
         description: ODS codes and documentation.
-        url: https://digital.nhs.uk/services/organisation-data-service
+        url: https://fhir.nhs.uk/Id/ods-organization-code
       description: |
         ## Overview
         Use this endpoint to search for a patient in PDS.
