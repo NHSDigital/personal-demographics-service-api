@@ -1,74 +1,18 @@
 {
-  "resourceType": "Patient",
-  "id": "9000000025",
-  "identifier": [
-    {
-      "system": "https://fhir.nhs.uk/Id/nhs-number",
-      "value": "9000000025",
-      "extension": [
-        {
-          "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
-          "valueCodeableConcept": {
-            "coding": [
-              {
-                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-NHSNumberVerificationStatus",
-                "version": "1.0.0",
-                "code": "01",
-                "display": "Number present and verified"
-              }
-            ]
-          }
-        }
-      ]
-    }
-  ],
-  "meta": {
-    "versionId": "2",
-    "security": [
-      {
-        "system": "https://www.hl7.org/fhir/valueset-security-labels.html",
-        "code": "R",
-        "display": "restricted"
-      }
-    ]
-  },
-  "name": [
-    {
-      "id": "123",
-      "use": "usual",
-      "period": {
-        "start": "2020-01-01",
-        "end": "2021-12-31"
-      },
-      "given": [
-        "Janet"
-      ],
-      "family": "Smythe",
-      "prefix": [
-        "Mrs"
-      ],
-      "suffix": [
-        "MBE"
-      ]
-    }
-  ],
-  "gender": "female",
   "birthDate": "2010-10-22",
-  "multipleBirthInteger": 1,
   "deceasedDateTime": "2010-10-22T00:00:00+00:00",
   "extension": [
     {
-      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus",
       "extension": [
         {
           "url": "deathNotificationStatus",
           "valueCodeableConcept": {
             "coding": [
               {
-                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-DeathNotificationStatus",
-                "version": "1.0.0",
                 "code": "2",
-                "display": "Formal - death notice received from Registrar of Deaths"
+                "display": "Formal - death notice received from Registrar of Deaths",
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-DeathNotificationStatus",
+                "version": "1.0.0"
               }
             ]
           }
@@ -77,7 +21,63 @@
           "url": "systemEffectiveDate",
           "valueDateTime": "2010-10-22T00:00:00+00:00"
         }
-      ]
+      ],
+      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus"
     }
-  ]
+  ],
+  "gender": "female",
+  "id": "9000000025",
+  "identifier": [
+    {
+      "extension": [
+        {
+          "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "code": "01",
+                "display": "Number present and verified",
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      ],
+      "system": "https://fhir.nhs.uk/Id/nhs-number",
+      "value": "9000000025"
+    }
+  ],
+  "meta": {
+    "security": [
+      {
+        "code": "R",
+        "display": "restricted",
+        "system": "https://www.hl7.org/fhir/valueset-security-labels.html"
+      }
+    ],
+    "versionId": "2"
+  },
+  "multipleBirthInteger": 1,
+  "name": [
+    {
+      "family": "Smythe",
+      "given": [
+        "Janet"
+      ],
+      "id": "123",
+      "period": {
+        "end": "2021-12-31",
+        "start": "2020-01-01"
+      },
+      "prefix": [
+        "Mrs"
+      ],
+      "suffix": [
+        "MBE"
+      ],
+      "use": "usual"
+    }
+  ],
+  "resourceType": "Patient"
 }

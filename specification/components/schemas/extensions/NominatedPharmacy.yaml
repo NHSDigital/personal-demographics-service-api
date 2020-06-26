@@ -34,4 +34,5 @@ properties:
           value:
             type: string
             description: Organisation code for the nominated pharmacy, as held in the [Organisation Data Service](https://developer.nhs.uk/apis/ods/).
+            pattern: '^[A-Za-z0-9]{3,10}$'
             example: Y12345

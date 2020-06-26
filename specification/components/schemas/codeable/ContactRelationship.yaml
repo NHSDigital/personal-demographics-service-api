@@ -1,0 +1,28 @@
+type: object
+required:
+  - coding
+properties:
+  coding:
+    type: array
+    description: Exactly one contact relationship.
+    minItems: 1
+    maxItems: 1
+    items:
+      type: object
+      required:
+        - code
+      properties:
+        system:
+          type: string
+          description: URL of Code System that describes available contact relationships.
+          format: url
+          default: http://terminology.hl7.org/CodeSystem/v2-0131
+          readOnly: true
+        code:
+          type: string
+          description: Coded value for contact relationship.
+          example: C
+        display:
+          type: string
+          description: Display-friendly representation of the contact relationship code.
+          example: Emergency Contact

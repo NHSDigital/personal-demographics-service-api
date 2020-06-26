@@ -2,6 +2,7 @@ type: object
 required:
   - use
   - family
+additionalProperties: false
 properties:
   id:
     type: string
@@ -27,13 +28,19 @@ properties:
     $ref: "Period.yaml"
   given:
     type: array
-    description: Given names, including any middle names.
+    maxItems: 5
+    description: |
+      Given names, including any middle names.
+
+      Each name should be a separate item in the list and should not contain spaces; for example `Jane Adele` should be broken down into two list items `Jane` and `Adele`.
     example: [Jane, Adele]
     items:
       type: string
+      maxLength: 35
       example: Jane
   family:
     type: string
+    maxLength: 35
     description: Family name (often called Surname).
     example: Smith
   prefix:

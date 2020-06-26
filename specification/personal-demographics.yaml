@@ -163,7 +163,7 @@ info:
     * `GET /Patient` - search for patients.
     * `GET /Patient/{id}` - get patient's personal details.
     * `GET /Patient/{id}/RelatedPerson` - get patient's related people details.
-    * `PATCH /Patient/{id}` - update patient's personal details (coming soon).
+    * `PATCH /Patient/{id}` - update patient's personal details.
 
   contact:
     name: Personal Demographics Service FHIR API Support
@@ -251,7 +251,7 @@ paths:
         Use the `_exact-match` query parameter to return exact matches only - where the score is 1.0.
 
         ## Restricted patients
-        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telecom` and `generalPractitioner` will be removed.
+        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telecom`, `contact` and `generalPractitioner` will be removed.
 
         If `address-postcode` or `general-practitioner` are included in the search parameters, no restricted patients will be returned even if a match is identified.
 
@@ -445,7 +445,6 @@ paths:
           required: false
           schema:
             type: string
-            format: ods_code
       responses:
         '200':
           description: 'A completed search, containing zero, one, or many matching patients.'
@@ -627,8 +626,8 @@ paths:
         ## Overview
         Use this endpoint to update patient details in PDS.
 
-        This is a 'patch' operation, meaning you can update specific parts of the patient resource (such as a name or an address), without to having to update the entire resource.
-        The update process is asynchronous, so if the request is accepted a `202` response will be returned with a `Content-Location` header, use this location, which will be in the form `/Polling/<message id>` to poll the outcome. See the polling endoint for more details.
+        This is a 'patch' operation - you can update specific parts of the patient record, such as name or address, without having to update the entire record.
+        The update is asynchronous - this endpoint returns a confirmation that your request has been received, along with a URL which you can poll to confirm that the update has completed.
 
         ## Patient resource versioning
         To update a patient's resource you must have retrieved it first.
@@ -641,7 +640,7 @@ paths:
 
         If the update succeeds, on polling the outcome, you will receive a copy of the update resource in the response, including the new resource version number.
 
-        If you have a subsequent update you must use the new version number.
+        If you make a subsequent update you must use the new version number.
 
         ## JSON Patch
         To update a patient a [JSON Patch](https://tools.ietf.org/html/rfc6902) should be sent. A JSON Patch consists of one or more patch objects within a list.
@@ -709,7 +708,47 @@ paths:
         }
         ```
 
-        When adding a list item, ensure the index is always `-`, otherwise the request will be rejected.
+        When adding a base level list item such as a new name or address, ensure the index is always `-`, otherwise the request will be rejected. For example, `/name/-`.
+        The reason for this is because the backend system will make the decision on the ordering of the listed objects to ensure they are always returned in the same order.
+
+        If you are adding to a sub-element that is a list, such as an additional given name, it is valid to provide an exact index. So the following is valid:
+
+        ```json
+        {
+          "patches": [
+            {
+              "op": "add", "path": "/name/0/id", "value": "8F8B957D",
+              "op": "add", "path": "/name/0/given/0", "value": "Rose"
+            }
+          ]
+        }
+        ```
+
+        If is possible to `add` a sub-element to an existing object in a patch request. If the object already exists and you have the object `id`, you must supply it or the update will be rejected.
+        The following patch is allowed:
+
+        ```json
+        {
+          "patches": [
+            {
+              "op": "add", "path": "/name/0/id", "value": "8F8B957D",
+              "op": "add", "path": "/name/0/given/-", "value": "Rose"
+            }
+          ]
+        }
+        ```
+
+        but the following is not allowed:
+        
+        ```json
+        {
+          "patches": [
+            {
+              "op": "add", "path": "/name/0/given/-", "value": "Rose"
+            }
+          ]
+        }
+        ```
 
         ### Replacing
 
@@ -765,7 +804,7 @@ paths:
         }
         ```
 
-        An added requirement to ensure no accidental data loss or replacement of the wrong list item, you must always include the list `id` or `url`. This will be in the object on retrieval so just needs to be mirrored back. You should not include an id on an addition as this will be automatically generated by the system and is a unique object id, so only our system can guarantee that.
+        An added requirement to ensure no accidental data loss or replacement of the wrong list item, you must always include the list `id` or `url`. This will be in the object on retrieval so just needs to be mirrored back. You should not include an ID on an addition as this will be automatically generated by the system and is a unique object ID, so only our system can guarantee that.
 
         ### Removal
 
@@ -787,8 +826,8 @@ paths:
 
         To remove a list item, a `test` operation must <u>immediately proceed</u> the `remove` . This is an added requirement to ensure no accidental data loss occurs or the wrong item is removed. The test operation should be used to assert either:
 
-        * the `id` - the object id for items that have one - for example `name`, `address` or `telecom`.
-        * the `url` - the url for the extension being removed.
+        * the `id` - the object ID for items that have one - for example `name`, `address` or `telecom`.
+        * the `url` - the URL for the extension being removed.
         * the whole object being removed.
 
         An example of a list item removal using the `id` would be:
@@ -820,7 +859,7 @@ paths:
             "patches": [
               { 
                     "op": "test",
-                    "path": "/name/0/",
+                    "path": "/name/0",
                     "value": {
                         "id": "123",
                         "use": "usual",
@@ -958,7 +997,7 @@ paths:
         }
         ```
 
-        When applying the 2nd test, it will fail as the index 2 id is `5`, but the test was looking for `4`. An error will be returned and none of the updates provided would be made to the database.
+        When applying the 2nd test, it will fail as the index 2 ID is `5`, but the test was looking for `4`. An error will be returned and none of the updates provided would be made to the database.
 
         This failure example is a good reason for forcing the use of the `test` operation. If there was no test, index 2 would have been blindly removed, meaning the final state of the data would look like:
 
@@ -978,10 +1017,10 @@ paths:
 
         ### Communication
 
-        Single item found under `extension` with the extension url `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication`.
+        Single item found under `extension` with the extension URL `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication`.
 
         In a JSON Patch request the path should be:
-        * `/extension/0` if the communication extension is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and o on.
+        * `/extension/0` if the communication extension is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
         * `/extension/-` when adding a communication extension.
 
         There are a number of business rules that should be taken into account:
@@ -989,7 +1028,7 @@ paths:
         * any language codes outside the accepted list will be rejected; such as local system `qa` codes.
 
         ### Contact preferences
-        Single item found under `extension` with the extension url `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference`.
+        Single item found under `extension` with the extension URL `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference`.
 
         In a JSON Patch request the path should be:
         * `/extension/0` if the contact preference is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
@@ -1026,11 +1065,11 @@ paths:
         * cannot be a date in the future.
         * cannot be before the birth date.
         * cannot be replaced if the death notification status is 2 (formal).
-        * when adding, a death notification status must also be added.
+        * when adding date of death, a death notification status must also be added.
 
         ### Death notification
 
-        Single item found under `extension` with the extension url `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus`.
+        Single item found under `extension` with the extension URL `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus`.
 
         In a JSON Patch request the path should be:
         * `/extension/0` if the death notification is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
@@ -1040,7 +1079,7 @@ paths:
         * cannot be removed.
         * cannot be replaced if the death notification status is formal (2).
         * only certain endpoints can set a death notification of formal (2).
-        * when adding, a deceased date time must also be added.
+        * when adding a death notification, a deceased date time must also be added.
 
         ### Gender
 
@@ -1066,9 +1105,10 @@ paths:
 
         There are a number of business rules that should be taken into account:
         * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes.
-        * the business effective `start` date is optional, however if provided cannot be a future date. If is is not provided it will default to the date of update.
-        * the business effective `end` date must not be provided.
-        * the general pratice should only be updated by primary care systems, [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
+        * the business effective `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
+        * do not provide a business effective `end` date.
+        * the general practice should only be updated by primary care systems, [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
+        * removal of a general practice can only be done by [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
         * only a single general practice is supported; emergency, temporary and additional practices must be maintained in the local system only.
 
         ## Multiple birth order
@@ -1078,7 +1118,7 @@ paths:
         In a JSON Patch request the path should be `/multipleBirthInteger`.
 
         When adding or updating the birth order, the update should be an integer in the range `1` - `9` inclusive. These values have differing meanings:
-        * 1 - 7 indicate the order of order, with 1 indicating the first or only birth in the sequence, 2 indicating the second birth in the sequence, 3 indicating the third, and so on up to 7.
+        * 1 - 7 indicates the order of birth, with 1 indicating the first or only birth in the sequence, 2 indicating the second birth in the sequence, 3 indicating the third, and so on up to 7.
         * 8 - `Not applicable`
         * 9 - `Not known`
 
@@ -1128,7 +1168,7 @@ paths:
 
         ## Place of birth
 
-        Single item found under `extension` with the extension url `http://hl7.org/fhir/StructureDefinition/patient-birthPlace`.
+        Single item found under `extension` with the extension URL `http://hl7.org/fhir/StructureDefinition/patient-birthPlace`.
 
         In a JSON Patch request the path should be:
         * `/extension/0` if the place of birth is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
@@ -1148,7 +1188,7 @@ paths:
 
         | Scenario                            | Request                                                                   | Response                                         |
         | ----------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------ |
-        | Successful update                   | `id`=`9000000009`<br/><br/>Body: One of the provided examples or your own combination of patches<br/><br/>Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json-patch+json` | HTTP Status 202 with the message url to poll in the `Content-Location` |
+        | Successful update                   | `id`=`9000000009`<br/><br/>Body: One of the provided examples or your own combination of patches<br/><br/>Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json-patch+json` | HTTP Status 202 with the message URL to poll in the `Content-Location` header |
         | Patient doesn't exist               | `id`=`9111231130` (or any other valid NHS Number)                         | HTTP Status 404 with problem description         |
         | Invalid NHS Number                  | `id`=`9000000000` (or any invalid NHS Number)                             | HTTP Status 400 with problem description         |
         | Missing resource version identifier | `If-Match` header missing or set to format other than `W/"<version>"`     | HTTP Status 412 with problem description         |
@@ -1234,11 +1274,13 @@ paths:
       responses:
         '202':
           description: |
-            The patch was syntactically fine and was accepted.
+            The patch was syntactically correct and was accepted.
             
             A polling location will be returned in the `Content-Location` header and the polling interval in the `Retry-After` header.
 
-            Note, the patch may still fail after it is accepted, for example further validation of the patched patient may result in business rule failures. So you cannot assume what once the message has been accepted it will update the patient successfully.
+            Note, the patch may still fail after it is accepted, for example, further validation of the patch may still result in business rule failures. Therefore, it should not be assumed that the patient is successfully updated after receiving acceptance of the message.
+            
+            See the polling endpoint for more details.
           headers:
             Content-Location:
               $ref: components/schemas/ContentLocation.yaml
@@ -1290,23 +1332,6 @@ paths:
                               version: '1'
                               code: INVALID_UPDATE
                               display: Invalid update with error - Invalid payload received - incorrect format
-        '404':
-          description: Patient not found.
-          content:
-            application/fhir+json:
-              schema:
-                $ref: components/schemas/OperationOutcome.yaml
-              example:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: not-found
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: RESOURCE_NOT_FOUND
-                          display: Resource not found
         '412':
           $ref: '#/components/responses/412PreconditionFailed'
 
@@ -1436,14 +1461,16 @@ paths:
     get:
       description: |
         ## Overview
-        When updating resources the request is asynchronous.
+        Use this endpoint to poll for the outcome of an updated patient record.
+
+        When updating resources the request is dealt with in an asynchronous manner.
         
-        Once the request is accepted a `202` response will be returned with a `Content-Location` header, use this location, which will be in the form `/Polling/<message id>` to poll the outcome.
+        Once the initial request is accepted a `202` response will be returned with a `Content-Location` header, use this location to poll for the outcome. It will be in the form `/Polling/<message id>`.
 
-        Requests should be sent to the polling endpoint until a non `202` response is returned and the response dealt with appropriately.
+        Requests should be sent to the polling endpoint until a `202` response is no longer returned and the response is dealt with appropriately.
 
-        Polls should be done at a reasonable frequency to avoid excess traffic; use the `Retry-After` header for the time to wait in milliseconds between polls, although polling with a larger gap is also allowed.
-        The server will return a cached response if poll requests are less than the returned value apart, so retrieval of the outcome will not occur any faster by polling more frequently.
+        Polls should be done at a reasonable frequency to avoid excess traffic; the `Retry-After` header will provide the time to wait in milliseconds between polls, although polling with a larger gap is also allowed.
+        Retrieval of the outcome will not occur any faster by polling more frequently. The server will simply return a cached response.
 
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
@@ -1451,8 +1478,8 @@ paths:
         | Scenario                                                   | Request                                               | Response                                    |
         | ---------------------------------------------------------- | ----------------------------------------------------- | --------------------------------------------|
         | Perform a valid patch request and use the content-location | `message_id` whatever was in update accepted response | HTTP Status 200 with updated patient data   |
-        | Polling message id when update is not yet complete         | `message_id`=`20200522091633363041_000001`            | HTTP Status 202 with no data                |
-        | Polling message id not found                               | `message_id`=`20200522091633363041_000002`            | HTTP Status 404 with operation outcome body |
+        | Polling message ID when update is not yet complete         | `message_id`=`20200522091633363041_000001`            | HTTP Status 202 with no data                |
+        | Polling message ID not found                               | `message_id`=`20200522091633363041_000002`            | HTTP Status 404 with operation outcome body |
 
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
@@ -1514,7 +1541,7 @@ paths:
                               code: FORBIDDEN_UPDATE
                               display: Forbidden update with error - source not permitted to remove 'deceasedDateTime'
         '404':
-          description: The message id not found or you did not have permission to poll for that message.
+          description: The message ID not found or you did not have permission to poll for that message.
           content:
             application/fhir+json:
               schema:
@@ -1529,12 +1556,14 @@ paths:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
                           code: POLLING_ID_NOT_FOUND
-                          display: The polling id was not found
+                          display: The polling ID was not found
+        '409':
+          $ref: '#/components/responses/409Conflict'
         '422':
           description: |
-            The polling message id was found however the processing of the request failed in an unexpected way or was cancelled, so the update failed.
+            The polling message ID was found however the processing of the request failed in an unexpected way or was cancelled, so the update failed.
             
-            Please raise these occurrences with our team so we can investigate the issue. When raising, quote the message id you were polling for.
+            Please raise these occurrences with our team (via https://digital.nhs.uk/developer/help-and-support) so we can investigate the issue. When raising, quote the message ID you were polling for.
           content:
             application/fhir+json:
               schema:
@@ -1549,7 +1578,7 @@ paths:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
                           code: POLLING_MESSAGE_FAILURE
-                          display: The polling id was found however the processing of the request failed in an unexpected way or was cancelled
+                          display: The polling ID was found however the processing of the request failed in an unexpected way or was cancelled
 
 components:
   parameters:
@@ -1564,7 +1593,7 @@ components:
     MessageId:
       name: message_id
       in: path
-      description: The message id of the accepted update that needs to be submitted to confirm the resource a successfully updated.
+      description: The message ID of the accepted update that needs to be submitted to confirm the resource a successfully updated.
       required: true
       schema:
         type: string
@@ -1587,7 +1616,7 @@ components:
       required: true
       schema:
         type: string
-        format: "^W\\/\\\"[[:print:]]+\\\"$"  # Printable characters enclosed in quotes. See: https://tools.ietf.org/html/rfc7230#section-3.2.6
+        pattern: "^W\/\"[0-9]+\"$"  # Printable characters enclosed in quotes. See: https://tools.ietf.org/html/rfc7230#section-3.2.6
         example: 'W/"2"'
     RoleId:
       in: header
@@ -1603,7 +1632,7 @@ components:
       required: false
       schema:
         type: string
-        format: '^[0-9]+$'
+        pattern: '^[0-9]+$'
         example: '555021935107'
     BearerAuthorization:
       in: header
@@ -1643,7 +1672,7 @@ components:
                 resourceType: OperationOutcome
                 issue:
                   - severity: error
-                    code: conflict
+                    code: structure
                     details:
                       coding:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
@@ -1663,4 +1692,27 @@ components:
                           version: '1'
                           code: PRECONDITION_FAILED
                           display: Invalid update with error - If-Match header must be supplied to update this resource
+    409Conflict:
+      description: |
+        Version Conflict.
+
+        The version identifier submitted in the `If-Match` header was not the latest version of the resource.
+      content:
+        application/fhir+json:
+          schema:
+            $ref: components/schemas/OperationOutcome.yaml
+          examples:
+            version-mismatch:
+              summary: Version mis-match
+              value:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: conflict
+                    details:
+                      coding:
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                          version: '1'
+                          code: RESOURCE_VERSION_MISMATCH
+                          display: Resource version supplied does not match actual version
 
