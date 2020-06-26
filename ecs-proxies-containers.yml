@@ -1,0 +1,6 @@
+
+docker_containers:
+
+  - name: sync-wrap
+    dockerfile: "docker/sync-wrap/Dockerfile"
+    path: "docker/sync-wrap"
