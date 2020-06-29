@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "dc3a03c3-8711-48f9-b470-994db780a193",
+		"_postman_id": "4edce6a3-4c40-4a96-8397-df9a62faa8dd",
 		"name": "Personal Demographics Service",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -14,7 +14,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "e9d0bec5-7fcd-4916-8cbf-9738fed5a494",
+								"id": "574c72b0-b3d4-48da-946f-62727f9f4fdc",
 								"exec": [
 									"/*CreatePatient Function*/",
 									"",
@@ -90,7 +90,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d340cb0b-10b3-4279-8c7b-ef523e9f97e3",
+								"id": "80fae7f5-3c5f-45c4-a24a-e1d70d339173",
 								"exec": [
 									"eval(pm.globals.get(\"createPatient\"))();"
 								],
@@ -117,7 +117,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "70501c9a-2692-40b6-88bb-1a7c36f33f9d",
+								"id": "7c6b16d5-6d3e-4f74-a630-059dfe6045f2",
 								"exec": [
 									""
 								],
@@ -127,7 +127,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "ab8e9db0-aac6-4876-9fc1-554da8147139",
+								"id": "fc5d6ee3-3943-44f7-a2af-877d64cbd33f",
 								"exec": [
 									"// Error Message Validation: Provides tests to assert against FHIR error response",
 									"",
@@ -186,7 +186,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "7597d8c8-dd41-48f7-b146-6a704dcfe4ed",
+								"id": "6217e944-c64f-47af-8fce-747ee2bd0364",
 								"exec": [
 									"// Patient Utility: Provides key patient response related functions",
 									"pm.globals.set('patient', function patient() {",
@@ -253,7 +253,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "15c28c84-fd2f-47c7-9e32-362a341f2e06",
+								"id": "59728528-2006-4cba-babe-cc5a1b0d954e",
 								"exec": [
 									"// Assert utility: Tests for key aspects of the response",
 									"pm.globals.set(\"assertThatUtil\", function assertThatUtil() {",
@@ -299,7 +299,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "274baf7f-a235-4a49-bced-50871dc96c20",
+								"id": "e56b0eac-4d50-4cb0-8b46-b6bfcaf02a69",
 								"exec": [
 									"var BuildHL7Patient = () => {\r",
 									"    let givenName = 'Testing';\r",
@@ -352,7 +352,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6f700df1-b57a-4f76-8de9-27485c669578",
+								"id": "7a02e191-0e62-4bc8-be59-f9e1e20dd740",
 								"exec": [
 									""
 								],
@@ -405,7 +405,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "6cbf78f7-1b4c-4126-bdb4-acb8ae94a261",
+								"id": "03fd7e65-79a4-4a59-8524-1dfb74c062bc",
 								"exec": [
 									"/*This function Sends a PDS Search request to obbtain the Patient nhs Id & patient record version Id\r",
 									"====================================================================================================*/\r",
@@ -494,7 +494,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "3d240aba-8c2b-4004-ad4b-8fca935767f7",
+								"id": "e3c49321-59e4-4154-bad6-7c3dfc2578a4",
 								"exec": [
 									"/*This function builds and sends a HL7 Retrieve request and saves the response to a global variable: \"HL7RetrieveResponse\" for the purposes of asserting the payload\r",
 									"====================================================================================================================================================================*/\r",
@@ -543,7 +543,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "e30eaf61-4ea8-470a-8bf0-1f385429918c",
+								"id": "250f6940-3807-472e-b095-29c360ea8331",
 								"exec": [
 									""
 								],
@@ -575,7 +575,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "f7ba650d-d5b7-4d4f-a992-5bb4cf953b3f",
+								"id": "dc3a93d2-a65c-469a-8e48-7b06d17f9cd9",
 								"exec": [
 									"/* this function builds patches for the purposes of using in PDS Update patch requests when needed.  Each patch gets saved to a variable that is then called by createMeAPatchRequest\r",
 									"=====================================================================================================================================================*/\r",
@@ -665,7 +665,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "1bafd306-313a-4113-bf71-ebc3b5fdbd65",
+								"id": "c13e5048-989b-47b5-bc08-d3cb0b7872e1",
 								"exec": [
 									"/* This function creates Patch requests to be used as pm.send requests for the purposes of pre-requisites.\r",
 									"=========================================================================================================*/\r",
@@ -728,7 +728,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "b2f1ac27-af7e-42cb-8933-a4006ee9e7e5",
+								"id": "eefb5d16-b13c-45da-89ca-ce965b47cf80",
 								"exec": [
 									"var relatedPersonMappings = () => {\r",
 									"\r",
@@ -1215,7 +1215,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "8f16c21c-a882-442f-8621-d01659a26cba",
+								"id": "37028ca8-8c6a-4031-86ef-26fdaa123cf9",
 								"exec": [
 									"/*functions*/\r",
 									"var checkSearchMappings = () => {\r",
@@ -1598,7 +1598,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "30e3c3d1-b196-4764-91e0-a256257c3033",
+								"id": "3dedf707-48f8-4db9-afe8-4a0a8d168255",
 								"exec": [
 									"var checkRetrieveMappings = () => {\r",
 									"\r",
@@ -2070,7 +2070,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "958da442-d980-4c4f-b5f2-006dd73bbb79",
+								"id": "b1f3eb2f-db01-42da-86a2-fcea9e955a93",
 								"exec": [
 									"/*HL7 Retrieve Response Checks: Provides tests to assert against HL7 Retrieve responses\r",
 									"=======================================================================================*/\r",
@@ -2158,7 +2158,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "20ec8c80-d99c-4543-8b80-f632662de9ca",
+								"id": "e6776352-887e-444b-b216-61a8e115a464",
 								"exec": [
 									"/*HL7 Retrieve Response Checks: Provides tests to assert against HL7 Retrieve responses\r",
 									"=======================================================================================*/\r",
@@ -2362,7 +2362,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "3e0e7d47-1ca8-451f-90a9-809d99ea9b8b",
+								"id": "115bedb7-0a27-444a-b24b-d8402520fd8e",
 								"exec": [
 									"/*This function sets the contentLoaction from an Update Request response and then uses it to make a call to the message polling service\r",
 									"to retrieve the Update Response and save the response as a variable for subsequent tests*/\r",
@@ -2466,7 +2466,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "be18b440-1e9b-4504-844a-77ed70b1f000",
+												"id": "88e69fb6-bbee-41a0-8bd8-6249fb8ee1c9",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -2507,7 +2507,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "37fd4d51-ebef-4548-9e61-1bd97d125904",
+												"id": "659c516f-8bd0-48bf-b691-82775294ccd0",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -2577,7 +2577,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "92861e19-35a8-4ee9-85e7-ef0bfe03d8e0",
+												"id": "8d0d3079-5dd0-468d-87d0-d92c72fa7bf6",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -2616,7 +2616,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "15188c5a-545e-4840-92ce-394888849fa5",
+												"id": "afea0462-6c33-4853-a890-39e4d736bc4f",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -2686,7 +2686,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "b830b1cc-4ec4-4393-ba32-3dbff14f0057",
+												"id": "093a1ef4-43d8-4079-9eca-1368130af89f",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -2723,7 +2723,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "b3351aac-bcc7-4639-bad0-56acb10c534c",
+												"id": "7efd9a14-05b1-4827-a856-48b5ab31ebe9",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -2793,7 +2793,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "7db5bd48-f8b8-4d2d-909b-396cecb5ed85",
+												"id": "bf8904e1-84cb-429d-a9ff-d47d8cbc88ba",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -2807,7 +2807,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "4c2f92ab-eeaa-4ea2-8563-bba37c7b1326",
+												"id": "1a912e48-ca99-43f2-bc5e-cec2fb3ce892",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -2900,7 +2900,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "bc7052b6-03a9-4c40-92e0-0bdde594354f",
+												"id": "1b166700-ef9f-4e7c-854a-e374d9e81730",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -2914,7 +2914,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "21851ec7-842a-41cb-82db-025072fda713",
+												"id": "98550008-7d3c-4b48-ac0a-9c1d0440a944",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -3005,7 +3005,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "41625da2-c20b-4000-87e9-030de9dd6eb3",
+												"id": "c81535b5-a8e0-40c3-bdbc-58b52c3d773a",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -3019,7 +3019,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "8f5d868d-766b-4fe8-aefc-f29a3e2778be",
+												"id": "9e5704b8-0f92-47e0-a8a2-42754c3a09cd",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -3111,7 +3111,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "67010023-ae06-482b-a5bc-6b87213158f1",
+												"id": "f3ed736b-5d0a-4ebe-a23c-c733ab1f4905",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -3125,7 +3125,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "13c838ab-e5f4-45d8-97f5-cb908f28d3a0",
+												"id": "df0e72de-f5fb-43ae-ab5d-49267b91752f",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -3218,7 +3218,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "659ebf30-3bc6-463d-a92a-8819ab0b95dd",
+												"id": "3c7f863d-74d5-477a-b625-aa1383df6672",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -3232,7 +3232,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "d1835dd7-94ee-499e-9b46-32a2e0192961",
+												"id": "562eb686-99ad-45ee-8d9e-bc638e441bad",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -3326,7 +3326,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "cd1bc965-0c2a-4116-9619-0df74a57d516",
+												"id": "447234fb-fcab-4e87-b2c1-a924b6e8fec2",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -3369,7 +3369,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "71f8b000-027b-46ac-9168-0dfc744b6e23",
+												"id": "433cdc09-7965-4e53-9ecf-21c50c53853d",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -3437,7 +3437,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "df6f5a16-59fd-4bc8-8fbc-13460e72b688",
+												"id": "8963854b-8942-43d2-9ce3-78bea3afe800",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -3481,7 +3481,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "a17ab67e-22a2-475b-b52f-d0ba3221d5d2",
+												"id": "fb5eb0f5-c33e-4d62-becb-f6c89e9880f5",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -3553,7 +3553,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "ae20bc6f-53d8-4851-9076-4317a5925be4",
+												"id": "b392cfc4-192c-43be-9542-5fed26570ad7",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -3597,7 +3597,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "42c52ad3-0963-4a2a-b2d5-d814ed112bc4",
+												"id": "92c17346-262f-4fea-91cc-98192eea63fe",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -3665,7 +3665,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "d652b3ba-9cff-4850-a895-9c30f7a34985",
+												"id": "6d7e03c8-75c0-4958-9708-b834a4951b73",
 												"exec": [
 													"pm.variables.set(\"testData\", testData = [",
 													"    {",
@@ -3696,7 +3696,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "8241999c-2e5d-46a2-8ee7-aeb66f827d5c",
+												"id": "b2914090-acf9-45ba-a4f2-5d44be2e2205",
 												"exec": [
 													"let testScenarios = pm.variables.get('testData');",
 													"let asidHeader = pm.variables.get(\"asidHeader\");",
@@ -3771,7 +3771,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "54945cbf-a61f-405e-b77e-579601e6f4fe",
+												"id": "75b0f757-2c07-4b38-a5ed-c61ea3031ba4",
 												"exec": [
 													"pm.variables.set(\"testData\", testData = [",
 													"    {",
@@ -3798,7 +3798,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "dab25567-3df2-45ce-a4e1-47e86d39b646",
+												"id": "e7ff7da8-77cd-4a9e-b666-8096639e5eed",
 												"exec": [
 													"let testScenarios = pm.variables.get('testData');",
 													"let asidHeader = pm.variables.get(\"asidHeader\");",
@@ -3873,7 +3873,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "e5fb3c1e-d096-408d-bcd7-cbfc7fca0943",
+												"id": "3ec50817-b03f-42ba-a9b8-dfc04e05db7c",
 												"exec": [
 													"/*set variables for test*/",
 													"pm.variables.set(\"s-flagged\", true);",
@@ -3903,7 +3903,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "9dec5343-e083-46f1-a7ad-9cd70d3c8f82",
+												"id": "349be691-6dec-45ae-95ed-b852b0c73af0",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -3982,7 +3982,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "41448403-56e2-42a9-b021-af8faf464f8e",
+												"id": "ca38628a-0c9e-4904-b772-5a57d7d60c2d",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -4021,7 +4021,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "d47a7889-ff98-4317-a239-10ea8d6da2f9",
+												"id": "d6d0bb40-7ddc-4480-9b69-c705977c32f1",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -4096,7 +4096,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "d66a1667-71f0-4815-b89a-3e3d13555c2e",
+												"id": "a65e0aec-3be9-454f-aee5-fae0a1ef687b",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -4136,7 +4136,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "e29df5f9-b744-42bc-816b-9c8f7391f61d",
+												"id": "86b46465-5cff-4c37-9249-2cd787c8d6b9",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -4214,7 +4214,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "799919f8-9c64-4146-b567-7e6fb0809c74",
+												"id": "7a2d59be-2dd7-40b0-b489-7e49ba0ad095",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -4255,7 +4255,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "735fb95a-0ead-4627-a2be-726f4df7ad48",
+												"id": "33cc28ad-fa0d-4dc5-8a66-7c8edacebef7",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -4333,7 +4333,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "314be5b8-9d38-43c4-a776-409627cc65a8",
+												"id": "14fcf62e-3cd6-4e1f-be9e-733f59ac850f",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -4372,7 +4372,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "b92bbec8-1cd8-42d3-827d-40f007374f44",
+												"id": "46471cc5-2793-4c9c-b228-cdeb6a7a1d03",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -4446,7 +4446,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "53a23aa2-c498-4cc9-aae5-3d8ee4ae8bc8",
+												"id": "174434fc-da0c-4a85-965b-f51b22c15013",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -4485,7 +4485,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "db091cae-0384-4323-b443-e5f7d6c05262",
+												"id": "38ac2f0d-9a6c-4451-9675-89bbba79dd4d",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -4563,7 +4563,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "29229a04-d699-40b8-bc7f-f1e486d6c23d",
+												"id": "4d351dd5-af63-418b-b4af-0e46a5165fa1",
 												"exec": [
 													"/*set variables for test*/",
 													"",
@@ -4604,7 +4604,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "df051cda-2de4-4f43-9377-a84d487a629a",
+												"id": "e2f2c0be-6cff-40a1-bda1-7d8f6e665c76",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -4695,7 +4695,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "a699e9ed-3de4-4937-9257-cba4fa5abb94",
+																"id": "6022c90b-f5f3-4e90-99c4-6f0ef93f70ae",
 																"exec": [
 																	"/*set variables for test*/",
 																	"",
@@ -4738,7 +4738,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "0cb65b8c-d06c-45f5-8afb-df4b502c09a7",
+																"id": "ce67972a-3ad4-4c68-a21c-0b820264513c",
 																"exec": [
 																	"var response = pm.response.json();",
 																	"",
@@ -4806,7 +4806,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "1371799f-ebf2-4d9a-8373-b2ca4679cf3e",
+																"id": "e5bef114-7193-41f6-85e8-069bc8793efa",
 																"exec": [
 																	"/*set variables for test*/",
 																	"",
@@ -4849,7 +4849,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "cfcea087-6fe1-4594-83cf-668f64a1b3ff",
+																"id": "66a5d9eb-49cc-452e-9e08-2261a6ec407b",
 																"exec": [
 																	"var response = pm.response.json();",
 																	"",
@@ -4917,7 +4917,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "f4ad9468-6f57-4966-9c7e-cd53da08eb1f",
+																"id": "38ec8b5a-e88a-40fa-9a51-cc9dafb0d669",
 																"exec": [
 																	"/*set variables for test*/",
 																	"",
@@ -4960,7 +4960,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "639dd73c-bf80-4555-a1c5-74b06c3045ef",
+																"id": "9d2f2244-b972-47f3-8213-ddd23c3dfe4e",
 																"exec": [
 																	"var response = pm.response.json();",
 																	"",
@@ -5028,7 +5028,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "2b73d673-962f-4759-9b0f-5f2491da7834",
+																"id": "a5a3f5cb-ac57-4239-8fe9-b759a3b19e23",
 																"exec": [
 																	"/*set variables for test*/",
 																	"",
@@ -5047,7 +5047,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "d05a7c26-ffde-4ce8-a64b-f7261eb6db11",
+																"id": "48fbb9bc-ddd3-4890-bf95-553de3a3293b",
 																"exec": [
 																	"var response = pm.response.json();",
 																	"",
@@ -5119,7 +5119,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "90bac8ac-b1c7-4f6c-8746-476f47bdd77a",
+																"id": "a9e6c3e4-9f25-4721-be2f-ad44e5b421a0",
 																"exec": [
 																	"/*set variables for test*/",
 																	"",
@@ -5136,7 +5136,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "c4d7a361-4853-46b8-9bc6-204ceff270d3",
+																"id": "8fad0624-55f0-4989-baae-458804fc8cc5",
 																"exec": [
 																	"var response = pm.response.json();",
 																	"",
@@ -5215,7 +5215,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "ac5a8791-e2d9-436e-8251-35d4a8f4307f",
+																"id": "4c94113c-f388-4158-bb62-d42462329007",
 																"exec": [
 																	"/*set variables for test*/",
 																	"",
@@ -5258,7 +5258,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "668fdfe7-f752-4905-8864-e9e677267683",
+																"id": "5a22e40b-53ed-411b-a603-187138d59e6b",
 																"exec": [
 																	"var response = pm.response.json();",
 																	"",
@@ -5322,7 +5322,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "32c98982-44da-4cbb-b9f4-bffad5ef1319",
+																"id": "c356b360-49e8-4fba-a0a8-8f8b00bb123a",
 																"exec": [
 																	"/*set variables for test*/",
 																	"",
@@ -5365,7 +5365,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "93e0dc0e-7333-4cac-8d73-ba36b3e75576",
+																"id": "1ea9919a-2d76-4c4f-b3a7-1bf6d89e32b9",
 																"exec": [
 																	"var response = pm.response.json();",
 																	"",
@@ -5429,7 +5429,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "ab01079d-575c-46f8-8b0e-3465cc597ee0",
+																"id": "720dfb7f-5c50-49e9-9e19-aef6da6cae3f",
 																"exec": [
 																	"/*set variables for test*/",
 																	"",
@@ -5472,7 +5472,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "7a58cd0e-0fe4-446b-bbc4-4e5821dcebd5",
+																"id": "17537aa4-348b-47d7-8492-e1c7710b5987",
 																"exec": [
 																	"var response = pm.response.json();",
 																	"",
@@ -5536,7 +5536,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "30289d7f-2ef5-451f-9d73-47f9c6a1b91e",
+																"id": "17c2ce28-c2e6-4205-b12a-a3987f3d248b",
 																"exec": [
 																	"/*set variables for test*/",
 																	"",
@@ -5555,7 +5555,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "66a40277-0e64-4be9-93bc-7a948fcdb44d",
+																"id": "3be12f29-8c42-40dd-81e3-a2b4008ed801",
 																"exec": [
 																	"var response = pm.response.json();",
 																	"",
@@ -5623,7 +5623,7 @@
 														{
 															"listen": "prerequest",
 															"script": {
-																"id": "08ea60db-f633-47ea-a05a-5c027abf1da3",
+																"id": "8766d597-f80b-4fb5-8cc5-a1d92b6081ee",
 																"exec": [
 																	"/*set variables for test*/",
 																	"",
@@ -5642,7 +5642,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "989661ce-98f1-45ea-a50d-0db2afafc45e",
+																"id": "e7f0e709-28eb-49d1-8135-ed2df4ea9b49",
 																"exec": [
 																	"var response = pm.response.json();",
 																	"",
@@ -5721,7 +5721,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "9cc72099-db6e-4c2e-aa86-6c9510886425",
+														"id": "b3ed7c9d-d701-40f0-9897-927e565bf976",
 														"exec": [
 															"var response = JSON.parse(responseBody);",
 															"const util = eval(globals.patient);",
@@ -5802,7 +5802,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "777a41cc-9809-41ec-bb2a-4472b9b4e3f7",
+														"id": "094777f1-c737-45de-9473-8aaaff43ad31",
 														"exec": [
 															"var response = JSON.parse(responseBody);",
 															"const util = eval(globals.patient);",
@@ -5886,7 +5886,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "37b5fb21-bd19-4b9b-9af8-e8c810c051e1",
+														"id": "8b138093-6101-44c9-bcfd-fcf8f21e47cc",
 														"exec": [
 															"var response = JSON.parse(responseBody);",
 															"const util = eval(globals.patient);",
@@ -6042,7 +6042,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "1e1599d1-acc6-4342-8a8a-b53c3b465aed",
+														"id": "cc8a02be-0276-4f70-9e99-ccff4f968131",
 														"exec": [
 															"var response = JSON.parse(responseBody);",
 															"const util = eval(globals.patient);",
@@ -6070,7 +6070,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "998d67f6-af9c-4d87-bc23-bbafe8b8928b",
+														"id": "e66fce32-0e90-4e67-b1bb-321c97f29ca3",
 														"exec": [
 															""
 														],
@@ -6134,7 +6134,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "23a8efca-fe59-4695-8b43-99706537ba09",
+												"id": "588cf3de-e1a0-4446-b307-11d89e9dcb4d",
 												"type": "text/javascript",
 												"exec": [
 													""
@@ -6144,7 +6144,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "d20e7fc5-4f28-40e7-8dbd-ef876f7aa8b6",
+												"id": "43a89a56-955d-4983-9d5b-18550d0daf99",
 												"type": "text/javascript",
 												"exec": [
 													""
@@ -6164,7 +6164,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "3cf0a4e8-650c-41f8-a8f2-5911ad5454d1",
+														"id": "e9ee89f6-6b11-412d-aeaf-a09c262822e7",
 														"exec": [
 															"const nhsNumber = '5900002365';",
 															"let asidHeader = pm.environment.get(\"asidHeader\");",
@@ -6196,7 +6196,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "2278e08c-8e01-4280-8ed8-b08d5e017caa",
+														"id": "d8308e6b-c49b-4c76-9c3e-650cb115889c",
 														"exec": [
 															"eval(pm.globals.get(\"patient\"));",
 															"let response = pm.response.json();",
@@ -6281,7 +6281,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "0827e36f-e4cc-4e2c-991a-609840fab4b7",
+														"id": "21b5573c-e427-43e5-917d-f2046239013c",
 														"exec": [
 															"let asidHeader = pm.environment.get(\"asidHeader\");",
 															"let sessionURIDHeader = pm.environment.get(\"sessionURIDHeader\");",
@@ -6311,7 +6311,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "469164e1-71b7-4320-9de8-96d9c21577f8",
+														"id": "5e623671-4827-4801-a33f-4169672c5962",
 														"exec": [
 															"var response = pm.response.json().entry[0];",
 															"",
@@ -6400,7 +6400,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "48107a90-270b-4c6b-83b1-736d3e78b995",
+														"id": "87ee01f4-a82e-442a-bac2-cb511b3ea10d",
 														"exec": [
 															"const nhsNumber = '5900002365';",
 															"let asidHeader = pm.environment.get(\"asidHeader\");",
@@ -6432,7 +6432,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "58d74b1f-dcd5-46fe-a2d3-722d3e266f46",
+														"id": "d3284c57-3d0e-419d-98d7-1076f703e089",
 														"exec": [
 															"eval(pm.globals.get(\"patient\"));",
 															"let response = pm.response.json();",
@@ -6519,7 +6519,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "2f7b1e41-f99e-4c4d-90e3-b9e9bb2f0d16",
+														"id": "ec597db8-05f9-45f1-b0be-f81c87555671",
 														"exec": [
 															""
 														],
@@ -6529,7 +6529,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "985c4582-c179-4c8d-b463-a52343f21091",
+														"id": "633b9185-41c7-42fd-b8b9-2dc3245482ae",
 														"exec": [
 															"const assertThat = eval(pm.globals.get(\"assertThatUtil\"));",
 															"const patientUtil = eval(pm.globals.get(\"patient\"));",
@@ -6617,7 +6617,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "8316bc85-9c3e-4d5f-b0a7-15379f2b0122",
+														"id": "fd31adca-c76f-43b4-9726-779a4a3a0c44",
 														"exec": [
 															"pm.variables.set('params', params = [",
 															"   ",
@@ -6637,7 +6637,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "d1fcda79-5c03-40b6-9089-f94d0a9914bb",
+														"id": "069e7811-2d1c-455f-89fa-3c07823065ce",
 														"exec": [
 															"var response = pm.response.json();",
 															"",
@@ -6737,7 +6737,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "0cfae627-1cb0-478c-a1a1-c4417c6e81c8",
+														"id": "191fe635-1e21-4e9c-8f54-f37dcbabcdfa",
 														"exec": [
 															"let response = pm.response.json();",
 															"eval(pm.globals.get(\"assertThatUtil\"));",
@@ -6821,7 +6821,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "380e3314-814b-4840-9a68-a723c8781142",
+														"id": "16369dcf-86e0-49cd-bc01-0ed6863d9124",
 														"exec": [
 															"var response = pm.response.json();",
 															"eval(pm.globals.get(\"assertThatUtil\"));",
@@ -6876,7 +6876,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "65760372-cf34-47dc-810f-6db65d94d370",
+														"id": "ecb60575-57de-4807-a329-b7891e4c0512",
 														"exec": [
 															"var response = pm.response.json();",
 															"eval(pm.globals.get(\"assertThatUtil\"));",
@@ -6953,7 +6953,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "13a9e5c3-1eba-42ad-9bf3-ce7c7282bf9d",
+														"id": "4f16fd77-409a-4513-979c-610d788fb162",
 														"exec": [
 															"var response = pm.response.json();",
 															"let globalNhsNumber = response.entry[0].resource.id;",
@@ -7008,7 +7008,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "aa6f0b6b-e2e4-4030-ada6-1065f5678a88",
+														"id": "c8a65b2a-69bb-48a9-8b2d-0eb308d9ea8b",
 														"exec": [
 															""
 														],
@@ -7072,7 +7072,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "c5e231a5-3020-4057-83ac-8146589f5777",
+														"id": "fc93c1da-0b85-4889-bb58-be99439faa62",
 														"exec": [
 															"eval(pm.globals.get(\"patient\"));",
 															"let response = pm.response.json();",
@@ -7102,7 +7102,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "15e8b9bd-0a6d-4cf9-8639-e2f094379051",
+														"id": "834994ff-e8b5-4214-93e2-6f02a2d5cb3a",
 														"exec": [
 															"const nhsNumber = '9691183994';",
 															"let asidHeader = pm.environment.get(\"asidHeader\");",
@@ -7192,7 +7192,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "fd85d99b-0d82-4236-9f1d-b2a499ebea27",
+														"id": "4be109ac-a952-414b-8770-1937f1530714",
 														"exec": [
 															"eval(pm.globals.get(\"patient\"));",
 															"let response = pm.response.json();",
@@ -7223,7 +7223,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "9eb39b6c-f771-4902-985d-d5d04ca28532",
+														"id": "c189400c-f554-4788-80dc-c77a4f2cd1c8",
 														"exec": [
 															"const nhsNumber = '9691183994';",
 															"let asidHeader = pm.environment.get(\"asidHeader\");",
@@ -7313,7 +7313,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "909290dc-835f-4748-beff-6e2244e462c2",
+														"id": "62266ae7-028d-40a9-917a-a1f2b7ac9049",
 														"exec": [
 															"eval(pm.globals.get(\"patient\"));",
 															"let response = pm.response.json();",
@@ -7345,7 +7345,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "28bd3305-5458-444d-a329-feef7d4b9488",
+														"id": "4f7aad1b-31ea-4145-8903-5721b326925c",
 														"exec": [
 															"const nhsNumber = '9691183994';",
 															"let asidHeader = pm.environment.get(\"asidHeader\");",
@@ -7436,7 +7436,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "514c97b8-b45c-49f5-b609-bf385a193143",
+														"id": "15b58fc0-74e9-4788-85b0-abce80d29634",
 														"exec": [
 															"eval(pm.globals.get(\"patient\"));",
 															"let response = pm.response.json();",
@@ -7466,7 +7466,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "fcf311bb-5e77-4b70-ae18-39a06e187224",
+														"id": "64188b0c-b59c-4164-a37e-486042120da3",
 														"exec": [
 															"const nhsNumber = '9691183986';",
 															"let asidHeader = pm.environment.get(\"asidHeader\");",
@@ -7561,7 +7561,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "fc0d6281-923a-461c-b991-373229019d1e",
+														"id": "f7bde9df-4d13-45b9-976e-3981e066e668",
 														"exec": [
 															""
 														],
@@ -7571,7 +7571,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "c25fb5a2-4294-4f22-bed0-92cdc8986b57",
+														"id": "b1eec980-e20f-4137-9906-cbc20fe9f2d9",
 														"exec": [
 															"var response = pm.response.json();",
 															"eval(pm.globals.get(\"assertThatUtil\"));",
@@ -7664,7 +7664,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "d7fff078-ca87-41c1-8ca1-b7b215aff29c",
+														"id": "a0471341-24a7-487c-8821-f612978bc859",
 														"exec": [
 															""
 														],
@@ -7674,7 +7674,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "95a79ad0-c169-4a28-bb8a-759b8ab88dd4",
+														"id": "0ace24ae-da67-4943-b4b3-0de5f9246aed",
 														"exec": [
 															"var chai = require(\"chai\");",
 															"const assertThat = eval(pm.globals.get(\"assertThatUtil\"));",
@@ -7765,7 +7765,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "f4f9c60b-b3f7-4c27-bf35-401e7ec5965f",
+														"id": "3a35c5f0-2064-4ea7-a2f0-52c31fe6dc0e",
 														"exec": [
 															"/*set variables for test*/",
 															"",
@@ -7808,7 +7808,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "8c325be1-062d-4bf0-919e-ca957511e5fe",
+														"id": "01ef2725-7073-4860-bfe3-b1742184f617",
 														"exec": [
 															"var response = pm.response.json();",
 															"",
@@ -7878,7 +7878,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "b58c3eee-9d7a-4a5a-a305-1cbf59664b69",
+														"id": "5da0c806-d51a-48c3-a53d-7afa772ca206",
 														"exec": [
 															"/*set variables for test*/",
 															"",
@@ -7921,7 +7921,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "631788fd-b2f3-468c-8073-9f7edb3b7ac8",
+														"id": "234009cd-6e3a-4be1-9fab-5f88f658d24f",
 														"exec": [
 															"var response = pm.response.json();",
 															"",
@@ -7990,7 +7990,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "30370d62-ba60-4968-a215-64f5df093016",
+														"id": "0c5550a8-db77-4bac-8f77-1e22d88d0b82",
 														"exec": [
 															"/*set variables for test*/",
 															"",
@@ -8033,7 +8033,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "ecda2ec8-6260-416d-b944-5d22e9d3574c",
+														"id": "c4d582e8-58c0-4ba0-912d-af3cee63c16e",
 														"exec": [
 															"var response = pm.response.json();",
 															"",
@@ -8102,7 +8102,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "ce673f4c-7b6b-4906-bcf7-b2f41e3202c7",
+														"id": "9f5cefbd-40da-4e14-8ee9-9d8ee7b0908f",
 														"exec": [
 															"/*set variables for test*/",
 															"",
@@ -8147,7 +8147,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "9c5ec887-882b-40f7-9069-56772023ae0b",
+														"id": "50c61fc0-cb37-44af-bcb0-40fb07e3aa41",
 														"exec": [
 															"var response = pm.response.json();",
 															"",
@@ -8220,7 +8220,7 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "b65eae17-8efd-40ec-a91a-13924c7a1481",
+														"id": "4b140b01-7ea6-4c70-91ae-5ab1055ab8d6",
 														"exec": [
 															"let testScenarios = pm.variables.get('testData');",
 															"let asidHeader = pm.variables.get(\"asidHeader\");",
@@ -8282,7 +8282,7 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "7119ea58-4009-4acd-9372-e478e2fd0ee6",
+														"id": "7027651d-b739-4afe-833c-940b9ea7fed1",
 														"exec": [
 															"let simple = [",
 															"    {",
@@ -8431,7 +8431,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "1de73db1-947c-4955-81c3-18e338a3e2db",
+																"id": "3180f8c9-5e0f-4d39-8beb-166576e79eed",
 																"exec": [
 																	"eval(pm.globals.get(\"assertThatUtil\"));",
 																	"eval(pm.globals.get(\"errorMessage\"));",
@@ -8509,7 +8509,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "5829d017-8fea-4af9-a5a6-9be743a31678",
+																"id": "3a7c88a2-a18e-4910-aa8c-0b31ee209d31",
 																"exec": [
 																	"eval(pm.globals.get(\"assertThatUtil\"));",
 																	"eval(pm.globals.get(\"patient\"));",
@@ -8585,7 +8585,7 @@
 														{
 															"listen": "test",
 															"script": {
-																"id": "825d913f-4f5d-41c9-a937-1e5015de5fc8",
+																"id": "15864081-914c-4faf-a81c-18d565439736",
 																"exec": [
 																	"eval(pm.globals.get(\"assertThatUtil\"));",
 																	"eval(pm.globals.get(\"patient\"));",
@@ -8681,7 +8681,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "dc3f8a9f-921d-44d3-a63b-d242610a515c",
+												"id": "5df9c522-a28e-4ae7-b46f-480baba3708b",
 												"exec": [
 													"eval(pm.globals.get(\"patient\"));",
 													"",
@@ -8700,7 +8700,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "c332b747-6f97-4ec4-9325-368c33b23743",
+												"id": "b5fbabe9-0cce-4919-9ac6-ea227d32df67",
 												"exec": [
 													"let asidHeader = pm.variables.get(\"asidHeader\");",
 													"let sessionURIDHeader = pm.variables.get(\"sessionURIDHeader\");",
@@ -8786,7 +8786,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "b28eb13f-aedf-48a5-88d6-d6a642ff7283",
+												"id": "8270c518-4529-4f2c-9dfa-95acafcdccfb",
 												"exec": [
 													"var response = pm.response.json();",
 													"eval(pm.globals.get(\"assertThatUtil\"));",
@@ -8808,7 +8808,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "7aff9284-1b8a-40b8-b2bd-48d783a5818f",
+												"id": "2c5c023b-5cf0-443f-ae4c-022aa0aaf235",
 												"exec": [
 													"let asidHeader = pm.variables.get(\"asidHeader\");",
 													"let sessionURIDHeader = pm.variables.get(\"sessionURIDHeader\");",
@@ -8889,7 +8889,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "87249102-b1e5-4e01-9822-b6f5ceb89c47",
+												"id": "f8d0db0f-6883-4952-8feb-3e26a83c0a7e",
 												"exec": [
 													"eval(pm.globals.get(\"assertThatUtil\"));",
 													"eval(pm.globals.get(\"patient\"));",
@@ -8906,7 +8906,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "48cbf424-f45c-4964-8d6c-6c84694a1c7a",
+												"id": "0fbb0bcb-4575-49f9-bddb-cba95939f7f6",
 												"exec": [
 													"let asidHeader = pm.variables.get(\"asidHeader\");",
 													"let sessionURIDHeader = pm.variables.get(\"sessionURIDHeader\");",
@@ -8987,7 +8987,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "ac22a6e5-e736-4cee-9460-ce47aad64eb5",
+												"id": "2c06384c-beae-427b-b92e-1219fe88c4e8",
 												"exec": [
 													"var response = pm.response.json();",
 													"eval(pm.globals.get(\"assertThatUtil\"));",
@@ -9009,7 +9009,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "7eee4c56-43a5-441c-bad4-dcd4eae3395e",
+												"id": "9dde84cf-4d29-4682-87ff-829fddbcff09",
 												"exec": [
 													"let asidHeader = pm.variables.get(\"asidHeader\");",
 													"let sessionURIDHeader = pm.variables.get(\"sessionURIDHeader\");",
@@ -9090,7 +9090,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "848c49a1-bd7c-46d4-b61e-a4ad62feb39a",
+												"id": "50d08dc0-60b4-4163-be51-9f2402374d0c",
 												"exec": [
 													"var response = pm.response.json();",
 													"eval(pm.globals.get(\"assertThatUtil\"));",
@@ -9174,7 +9174,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "fc585546-566f-4e5b-abae-a0fd9bf6e6e6",
+												"id": "80a958db-152a-4b2b-a151-a7c2bce742c9",
 												"exec": [
 													"var response = pm.response.json();",
 													"eval(pm.globals.get(\"assertThatUtil\"));",
@@ -9200,7 +9200,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "4e34ed8f-5eff-43db-9bcc-d89d684dc9fe",
+												"id": "526149ff-89dd-4140-b0e7-6ad775cb5748",
 												"exec": [
 													"let asidHeader = pm.variables.get(\"asidHeader\");",
 													"let sessionURIDHeader = pm.variables.get(\"sessionURIDHeader\");",
@@ -9276,7 +9276,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "490b265f-8ba8-4d7c-a489-3e1b6df5183d",
+												"id": "b5f25290-f92f-4ee7-8a77-fbeda0ed1fcc",
 												"exec": [
 													"var response = pm.response.json();",
 													"eval(pm.globals.get(\"assertThatUtil\"));",
@@ -9304,7 +9304,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "e33e9ebe-be7d-4141-884d-d9513107490f",
+												"id": "eb2781aa-153d-4a0e-85d8-f2f9c4d708e7",
 												"exec": [
 													"let asidHeader = pm.variables.get(\"asidHeader\");",
 													"let sessionURIDHeader = pm.variables.get(\"sessionURIDHeader\");",
@@ -9380,7 +9380,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "158858ad-feb5-4987-8da4-84685b6e8cc5",
+												"id": "0ac2c510-ecde-4569-940a-a57b97c307a1",
 												"exec": [
 													"eval(pm.globals.get(\"assertThatUtil\"));",
 													"eval(pm.globals.get(\"patient\"));",
@@ -9397,7 +9397,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "498a986e-1384-4b9f-bbb9-24c92bb91bd0",
+												"id": "58e09f0b-3a11-47ab-8b2b-0c6a89c2cd0b",
 												"exec": [
 													""
 												],
@@ -9468,7 +9468,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "fbbb09df-a5b7-456c-bf27-b8c81c18a8c8",
+												"id": "78319a47-3f4f-4380-94ca-5f4d1bdf0c97",
 												"exec": [
 													""
 												],
@@ -9478,7 +9478,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "acbc0281-1199-47ae-873f-aef89944baca",
+												"id": "bc27a90d-d3ec-4439-be82-56f2774fc6e5",
 												"exec": [
 													"// This test should not be executed against apigee direct as apigee automatically sends a valid asid header",
 													"if (pm.environment.get('skipTest')) {",
@@ -9550,7 +9550,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "3cc8f7d7-4b4a-4520-93c3-e686dbeeec6b",
+												"id": "2e67e71a-e968-48ca-90d4-d8b7eb39a040",
 												"exec": [
 													"let asidHeader = pm.variables.get(\"asidHeader\");",
 													"let sessionURIDHeader = pm.variables.get(\"sessionURIDHeader\");",
@@ -9587,7 +9587,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "8358b40d-daf5-4ded-a079-5960028778a7",
+												"id": "c82a909a-f507-4e20-8ecd-45682528020e",
 												"exec": [
 													"pm.variables.set('testData', data = [",
 													"   { name: \"Invalid Max_results value - blank\", ",
@@ -9716,22 +9716,21 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "900928ee-f0ec-496f-939f-376b789b5058",
+												"id": "bbdaee71-9ba3-4f9c-a692-ba8d06ddab68",
 												"exec": [
 													"let sessionURIDHeader = pm.variables.get(\"sessionURIDHeader\");",
 													"let identityUUIDHeader = pm.variables.get(\"identityUUIDHeader\");",
-													"let authorization = pm.environment.get(\"authorizationHeader\");",
 													"",
 													"pm.variables.get('testData').forEach(scenario => {",
-													"\tlet asidHeader = getAsidHeader(scenario.asid);",
+													"\tlet asidTokenHeader = pm.environment.get('skipTest') ? getToken(scenario.asid) : getAsidHeader(scenario.asid)",
+													"",
 													"\tpm.sendRequest({",
 													"\t\turl: pm.environment.get(\"environment\") + '/Patient?' + scenario.query,",
 													"\t\tmethod: 'GET',",
 													"\t\theader: {",
-													"\t\t\tasidHeader,",
+													"\t\t\tasidTokenHeader,",
 													"\t\t\tsessionURIDHeader,",
-													"\t\t\tidentityUUIDHeader,",
-													"\t\t\tauthorization",
+													"\t\t\tidentityUUIDHeader\t\t\t",
 													"\t\t}",
 													"\t}, function (err, res) {",
 													"\t\tpm.test(scenario.name + \" Returns Status code \" + scenario.expectedStatus, function () {",
@@ -9752,6 +9751,25 @@
 													"",
 													"});",
 													"",
+													"function getToken(type) {",
+													"\tlet token;",
+													"\tswitch (type) {",
+													"\t\tcase 'valid':",
+													"\t\t\ttoken = pm.globals.get(\"token\");",
+													"\t\t\tbreak;",
+													"\t\tcase 'invalid':",
+													"\t\t\ttoken = '123456789';",
+													"\t\t\tbreak;",
+													"\t\tcase 'missing':",
+													"\t\t\ttoken = '';",
+													"\t\t\tbreak;",
+													"\t}",
+													"\t",
+													"\treturn {",
+													"\t\tkey: 'Authorization',",
+													"\t\tvalue: 'Bearer ' + token",
+													"\t}",
+													"}",
 													"",
 													"function getAsidHeader(type) {",
 													"\tlet asid;",
@@ -9770,6 +9788,7 @@
 													"\t\t\tasid = '';",
 													"\t\t\tbreak;",
 													"\t}",
+													"",
 													"\t",
 													"\treturn {",
 													"\t\tkey: pm.globals.get(\"nhsd-asid-header\"),",
@@ -9783,13 +9802,13 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "cbd002b5-213a-4822-a1c9-e50341f43e09",
+												"id": "9aa3f6a2-b022-4a54-8faa-7ecc0256e377",
 												"exec": [
 													"pm.variables.set('testData', data = [",
-													"    { name: \"Valid ASID and Invalid Search request\", asid: 'valid', query: 'faaaaamily=Smith&given=Jane&gender=female&birthdate=2010-10-22', expectedStatus: 400},",
-													"\t{ name: \"Invalid ASID and Invalid Search request\", asid: 'invalid', query: 'family=Smith&givvvvven=Jane&gender=female&birthdate=2010-10-22', expectedStatus: 401},",
-													"\t{ name: \"No ASID and Invalid Search request\", asid: 'missing', query: 'family=Smith&given=Jane&gender=female&birthhhhdate=2010-10-22', expectedStatus: 401},",
-													"\t{ name: \"No ASID and Valid Search request\", asid: 'missing', query: 'family=Smith&given=Jane&gender=female&birthdate=2010-10-22', expectedStatus: 401}",
+													"    { name: \"Valid asid/token and Invalid Search request\", asid: 'valid', query: 'faaaaamily=Smith&given=Jane&gender=female&birthdate=2010-10-22', expectedStatus: 400},",
+													"\t{ name: \"Invalid asid/token and Invalid Search request\", asid: 'invalid', query: 'family=Smith&givvvvven=Jane&gender=female&birthdate=2010-10-22', expectedStatus: 401},",
+													"\t{ name: \"No asid/token and Invalid Search request\", asid: 'missing', query: 'family=Smith&given=Jane&gender=female&birthhhhdate=2010-10-22', expectedStatus: 401},",
+													"\t{ name: \"No asid/token and Valid Search request\", asid: 'missing', query: 'family=Smith&given=Jane&gender=female&birthdate=2010-10-22', expectedStatus: 401}",
 													"]);"
 												],
 												"type": "text/javascript"
@@ -9831,7 +9850,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "702b861b-b9a4-414c-91b2-7b6adb1d8728",
+												"id": "fbccbc30-9489-46a8-b217-554d6e3918a9",
 												"exec": [
 													"let asidHeader = pm.variables.get(\"asidHeader\");",
 													"let sessionURIDHeader = pm.variables.get(\"sessionURIDHeader\");",
@@ -10123,7 +10142,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "b0233382-86c2-4595-8e2e-702a085dcfde",
+												"id": "8ccb471f-8794-41e7-bd5d-99d98b1e4e16",
 												"exec": [
 													"var response = pm.response.json();",
 													"const assertThat = eval(pm.globals.get(\"assertThatUtil\"));",
@@ -10195,7 +10214,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "31444c6c-25a6-4b45-911e-280d831eac2c",
+												"id": "6a3a52c9-206a-4b25-837b-d6ce83e756c1",
 												"exec": [
 													""
 												],
@@ -10205,7 +10224,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "6b5d02e2-1737-4f34-bc56-1c50aebe85bf",
+												"id": "912c58f3-dce1-47cc-a819-1f6ef960f281",
 												"exec": [
 													"const assertThat = eval(pm.globals.get(\"assertThatUtil\"));",
 													"const error = eval(pm.globals.get(\"errorMessage\"));",
@@ -10267,80 +10286,6 @@
 										"description": "Attempt a _fuzzy_match_ using a family name of 1 character returns _FUZZY_CRITERIA_NOT_MET error"
 									},
 									"response": [
-										{
-											"name": "FUZZY_CRITERIA_NOT_MET error message",
-											"originalRequest": {
-												"method": "GET",
-												"header": [
-													{
-														"key": "{{nhsd-asid-header}}",
-														"value": "200000000610"
-													},
-													{
-														"key": "{{nhsd-session-urid-header}}",
-														"value": "1234567890"
-													},
-													{
-														"key": "{{nhsd-identity-uuid-header}}",
-														"value": "1234567890"
-													}
-												],
-												"url": {
-													"raw": "{{environment}}/Patient?_fuzzy-match=true&family=S*&birthdate=2015-12-15&given=Fuzzy",
-													"host": [
-														"{{environment}}"
-													],
-													"path": [
-														"Patient"
-													],
-													"query": [
-														{
-															"key": "_fuzzy-match",
-															"value": "true"
-														},
-														{
-															"key": "family",
-															"value": "S*"
-														},
-														{
-															"key": "birthdate",
-															"value": "2015-12-15"
-														},
-														{
-															"key": "given",
-															"value": "Fuzzy"
-														}
-													]
-												}
-											},
-											"status": "Bad Request",
-											"code": 400,
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Server",
-													"value": "nginx"
-												},
-												{
-													"key": "Date",
-													"value": "Thu, 27 Feb 2020 15:59:27 GMT"
-												},
-												{
-													"key": "Content-Type",
-													"value": "application/json"
-												},
-												{
-													"key": "Content-Length",
-													"value": "605"
-												},
-												{
-													"key": "Connection",
-													"value": "keep-alive"
-												}
-											],
-											"cookie": [],
-											"body": "{\n    \"issue\": [\n        {\n            \"code\": \"invalid\",\n            \"details\": {\n                \"coding\": [\n                    {\n                        \"code\": \"FUZZY_CRITERIA_NOT_MET\",\n                        \"display\": \"A fuzzy search was requested however the data given did not meet the fuzzy search criteria\",\n                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",\n                        \"version\": \"1\"\n                    }\n                ]\n            },\n            \"severity\": \"error\"\n        }\n    ],\n    \"resourceType\": \"OperationOutcome\"\n}"
-										},
 										{
 											"name": "Fuzzy Search invalid search criteria",
 											"originalRequest": {
@@ -10414,6 +10359,80 @@
 											],
 											"cookie": [],
 											"body": "{\n    \"issue\": [\n        {\n            \"code\": \"invalid\",\n            \"details\": {\n                \"coding\": [\n                    {\n                        \"code\": \"NO_SEARCHES_PERFORMED\",\n                        \"display\": \"No searches were performed as the search criteria did not meet the minimum requirements\",\n                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",\n                        \"version\": 1\n                    }\n                ]\n            },\n            \"severity\": \"error\"\n        }\n    ],\n    \"resourceType\": \"OperationOutcome\"\n}"
+										},
+										{
+											"name": "FUZZY_CRITERIA_NOT_MET error message",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "{{nhsd-asid-header}}",
+														"value": "200000000610"
+													},
+													{
+														"key": "{{nhsd-session-urid-header}}",
+														"value": "1234567890"
+													},
+													{
+														"key": "{{nhsd-identity-uuid-header}}",
+														"value": "1234567890"
+													}
+												],
+												"url": {
+													"raw": "{{environment}}/Patient?_fuzzy-match=true&family=S*&birthdate=2015-12-15&given=Fuzzy",
+													"host": [
+														"{{environment}}"
+													],
+													"path": [
+														"Patient"
+													],
+													"query": [
+														{
+															"key": "_fuzzy-match",
+															"value": "true"
+														},
+														{
+															"key": "family",
+															"value": "S*"
+														},
+														{
+															"key": "birthdate",
+															"value": "2015-12-15"
+														},
+														{
+															"key": "given",
+															"value": "Fuzzy"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Server",
+													"value": "nginx"
+												},
+												{
+													"key": "Date",
+													"value": "Thu, 27 Feb 2020 15:59:27 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Content-Length",
+													"value": "605"
+												},
+												{
+													"key": "Connection",
+													"value": "keep-alive"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"issue\": [\n        {\n            \"code\": \"invalid\",\n            \"details\": {\n                \"coding\": [\n                    {\n                        \"code\": \"FUZZY_CRITERIA_NOT_MET\",\n                        \"display\": \"A fuzzy search was requested however the data given did not meet the fuzzy search criteria\",\n                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",\n                        \"version\": \"1\"\n                    }\n                ]\n            },\n            \"severity\": \"error\"\n        }\n    ],\n    \"resourceType\": \"OperationOutcome\"\n}"
 										}
 									]
 								},
@@ -10423,7 +10442,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "14af71a7-e58c-4257-a82e-858ac42acab0",
+												"id": "5c0576a8-50c6-46f3-9e89-39eebd103f09",
 												"exec": [
 													""
 												],
@@ -10433,7 +10452,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "d2276721-a2a2-4aea-8724-c8404f0b69b1",
+												"id": "386be6e5-95b9-4623-9456-b6b782da7f92",
 												"exec": [
 													"const assertThat = eval(pm.globals.get(\"assertThatUtil\"));",
 													"const error = eval(pm.globals.get(\"errorMessage\"));",
@@ -10505,7 +10524,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "2f06da07-2865-4f37-90db-bff5995ed4e0",
+												"id": "bd6b1ae6-9fd4-4737-b9f2-70363812e69e",
 												"exec": [
 													""
 												],
@@ -10515,7 +10534,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "80e4858a-e6e5-4059-bf44-3229765b755a",
+												"id": "a62614ab-e08f-4d35-9958-6513f2026057",
 												"exec": [
 													"const assertThat = eval(pm.globals.get(\"assertThatUtil\"));",
 													"const error = eval(pm.globals.get(\"errorMessage\"));",
@@ -10660,7 +10679,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "619d3f6c-cd12-4ab9-b4ab-dd816c16b5ab",
+												"id": "0bffc7b5-127c-4bb9-a0d5-06887c48eab5",
 												"exec": [
 													"pm.variables.set('testData', data = [",
 													"    { name: \"Invalid leading wildcards on given name\", ",
@@ -10706,7 +10725,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "1ef35897-44f9-48cd-a0aa-41f19a818e57",
+												"id": "458661c1-d4cf-4498-a5ab-6386f0a10298",
 												"exec": [
 													"let asidHeader = pm.variables.get(\"asidHeader\");",
 													"let sessionURIDHeader = pm.variables.get(\"sessionURIDHeader\");",
@@ -10798,7 +10817,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "ffb3d1ab-c16d-4df7-a7b9-218380a3a9a9",
+												"id": "d932817f-cbec-4df9-a72a-3a2f592ef86c",
 												"exec": [
 													"pm.variables.set('params', params = [",
 													"   ",
@@ -10814,7 +10833,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "50c9dff9-3e66-4f96-b27b-407d7ec2720a",
+												"id": "2db5c8d9-919a-41fd-9902-0b549b07ae21",
 												"exec": [
 													"var response = pm.response.json();",
 													"",
@@ -10906,12 +10925,12 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "bb88d7a7-9de9-49f2-aa8b-920e27bec2d7",
+												"id": "4bc334e7-51b7-4882-8e5d-f127a641205a",
 												"exec": [
 													"pm.variables.set('testData', data = [",
 													"    { name: \"missing mandatory fields - Birth\", ",
 													"      code: \"MISSING_VALUE\",",
-													"      display: \"Missing value - 'birth_date', 'birth_date_range_start' or 'birth_date_range_end' required\",",
+													"      display: \"Missing value - 'birth_date/birth_date_range_start/birth_date_range_end'\",",
 													"      severity: \"error\",",
 													"      query: '/Patient?family=Mapping&gender=female'},",
 													"",
@@ -10931,7 +10950,7 @@
 													"      code: \"INVALID_SEARCH_DATA\",",
 													"      display: \"Invalid search data provided - 'No searches were performed as the search criteria did not meet the minimum requirements'\",",
 													"      severity: \"error\",",
-													"      query: '/Patient?birthdate=2010-01-01'},",
+													"      query: '/Patient?birthdate=2010-01-01'}",
 													"]);"
 												],
 												"type": "text/javascript"
@@ -10940,7 +10959,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "c708618b-b958-4ddb-bf3e-b7e14ced3788",
+												"id": "b53132df-f5ee-435e-9af6-76137c32e503",
 												"exec": [
 													"let asidHeader = pm.variables.get(\"asidHeader\");",
 													"let sessionURIDHeader = pm.variables.get(\"sessionURIDHeader\");",
@@ -11029,7 +11048,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "febf91e4-b495-4e95-a727-41c83881e439",
+												"id": "41a070f8-a339-4e57-b347-3fce701611de",
 												"exec": [
 													"eval(pm.globals.get(\"assertThatUtil\"));",
 													"eval(pm.globals.get(\"patient\"));",
@@ -11184,7 +11203,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "39badd1a-cbc4-4d67-84f7-5aa0d06a2b5e",
+												"id": "5863d0d3-3f46-4bc5-9909-788b0e60bb0f",
 												"exec": [
 													""
 												],
@@ -11327,7 +11346,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "0bc1ee4c-a980-449e-b21b-09263bccb613",
+												"id": "185c2d57-3554-4b18-be5b-f38750810fca",
 												"exec": [
 													"let asidHeader = pm.environment.get(\"asidHeader\");",
 													"let sessionURIDHeader = pm.environment.get(\"sessionURIDHeader\");",
@@ -11357,7 +11376,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "c73afa9c-89a3-44b5-ab88-c62b8d6c0796",
+												"id": "b522a8b6-5407-47ec-aa01-83863f8d7efb",
 												"exec": [
 													"var response = pm.response.json();",
 													"const assertThat = eval(pm.globals.get(\"assertThatUtil\"));",
@@ -11448,7 +11467,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "b58403eb-33a5-4438-9f7b-de62a8802b29",
+												"id": "6b5fa229-5621-4154-b48a-9f7a0c491323",
 												"exec": [
 													"/*assign local scenario variable from \"scenario\" variable set in prerequisite script and also assign header variables from variables*/\r",
 													"\r",
@@ -11489,7 +11508,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "52ddcea7-2d27-4e5e-b689-9ef00d5f9fec",
+												"id": "7226b5bf-cdb9-4179-94ab-a124c8d2565e",
 												"exec": [
 													"/*Create dataSets for testing 'Retrieve Patient' Error Exceptions scenarios and assign the \"scenario\" array to a variable to be used in Test*/ \r",
 													"  \r",
@@ -11601,23 +11620,22 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "fc7925b7-265e-4df7-ae75-21e47af5b165",
+												"id": "7103bf87-4dc3-419e-bd76-f70746feebd2",
 												"exec": [
 													"let sessionURIDHeader = pm.variables.get(\"sessionURIDHeader\");",
 													"let identityUUIDHeader = pm.variables.get(\"identityUUIDHeader\");",
-													"let authorization = pm.environment.get(\"authorizationHeader\");",
 													"",
 													"",
-													"pm.variables.get('testData').forEach(scenario => {",
-													"\tlet asidHeader = getAsidHeader(scenario.asid);",
+													"pm.variables.get('testData').forEach(scenario => {\t\t",
+													"\tlet asidTokenHeader = pm.environment.get('skipTest') ? getToken(scenario.asid) : getAsidHeader(scenario.asid) ",
+													"",
 													"\tpm.sendRequest({",
 													"\t\turl: pm.environment.get(\"environment\") + '/Patient/' + scenario.nhsNumber,",
 													"\t\tmethod: 'GET',",
 													"\t\theader: {",
-													"\t\t\tasidHeader,",
+													"\t\t\tasidTokenHeader,",
 													"\t\t\tsessionURIDHeader,",
-													"\t\t\tidentityUUIDHeader,",
-													"\t\t\tauthorization",
+													"\t\t\tidentityUUIDHeader,\t\t\t",
 													"\t\t}",
 													"\t}, function (err, res) {",
 													"\t\tpm.test(scenario.name + \" Returns Status code \" + scenario.expectedStatus, function () {",
@@ -11638,6 +11656,26 @@
 													"",
 													"});",
 													"",
+													"",
+													"function getToken(type) {",
+													"\tlet token;",
+													"\tswitch (type) {",
+													"\t\tcase 'valid':",
+													"\t\t\ttoken = pm.globals.get(\"token\");",
+													"\t\t\tbreak;",
+													"\t\tcase 'invalid':",
+													"\t\t\ttoken = '123456789';",
+													"\t\t\tbreak;",
+													"\t\tcase 'missing':",
+													"\t\t\ttoken = '';",
+													"\t\t\tbreak;",
+													"\t}",
+													"\t",
+													"\treturn {",
+													"\t\tkey: 'Authorization',",
+													"\t\tvalue: 'Bearer ' + token",
+													"\t}",
+													"}",
 													"",
 													"function getAsidHeader(type) {",
 													"\tlet asid;",
@@ -11665,13 +11703,13 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "d99a36c3-15c5-47d5-a224-626cf89c7303",
+												"id": "62a83774-c608-442a-902c-a28d6aa18d2a",
 												"exec": [
 													"pm.variables.set('testData', data = [",
-													"    { name: \"Valid ASID and Invalid NHS Number\", asid: 'valid', nhsNumber: '1234', expectedStatus: 400}",
-													"\t// { name: \"Invalid ASID and Invalid NHS Number\", asid: 'invalid', nhsNumber: '1234', expectedStatus: 401},",
-													"\t// { name: \"No ASID and Invalid NHS Number\", asid: 'missing', nhsNumber: '1234', expectedStatus: 401},",
-													"\t// { name: \"No ASID and Valid NHS Number\", asid: 'missing', nhsNumber: '5900014061', expectedStatus: 401}",
+													"\t{ name: \"Valid asid/token and Invalid NHS Number\", asid: 'valid', nhsNumber: '1234', expectedStatus: 400},",
+													"\t{ name: \"Invalid asid/token and Invalid NHS Number\", asid: 'invalid', nhsNumber: '1234', expectedStatus: 401},",
+													"\t{ name: \"No asid/token and Invalid NHS Number\", asid: 'missing', nhsNumber: '1234', expectedStatus: 401},",
+													"\t{ name: \"No asid/token and Valid NHS Number\", asid: 'missing', nhsNumber: '5900014061', expectedStatus: 401}",
 													"]);"
 												],
 												"type": "text/javascript"
@@ -11721,7 +11759,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "41cf9b22-3728-410b-a301-335fb2de7697",
+										"id": "92dccf1d-f749-4753-9065-6ccb710d2622",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -11735,7 +11773,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "ce0c3959-a135-4aed-ab37-b96c11d52f7c",
+										"id": "9f125b05-5cc4-4031-8c2e-9d689a3979ae",
 										"exec": [
 											"/*set variables for checking mapping*/",
 											"",
@@ -11823,7 +11861,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "cc8770df-7ae5-442c-bc50-915f25eb9420",
+										"id": "34b048b9-5ee2-4d8d-9132-edcc990592d5",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -11838,7 +11876,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "5613ad6f-7374-40db-a8a5-f1e425a260c6",
+										"id": "c426caa0-adbf-4c25-892c-e36e11c8ee26",
 										"exec": [
 											"/*data variables being checked against.  These shall be replaced by the variables set when HL& is plugged in*/",
 											"pm.variables.set(\"nameType\", \"alias\");",
@@ -11925,7 +11963,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "72c1a202-b779-4974-86c2-83f872c5a31e",
+										"id": "e740776f-5d53-4a9e-a391-72d66e50f1ae",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -11939,7 +11977,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "22a79ecf-5a9d-4941-a1a4-080be5544ba4",
+										"id": "e304717b-6f06-476a-98ac-b8d4f3cceb8b",
 										"exec": [
 											"/*set variables for checking mapping*/",
 											"",
@@ -12032,7 +12070,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "1bcf0bda-ad26-439d-ac5b-9cd86709377f",
+										"id": "4b7e5092-f5e9-43b5-b618-df0ac1f8e6d5",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -12047,7 +12085,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "fc7baffb-4cbf-4be5-bceb-cdee56ff5ea9",
+										"id": "f01e3c9c-d30f-4ccc-a894-d1783ab97b4f",
 										"exec": [
 											"/*set variables for checking mapping*/",
 											"",
@@ -12118,7 +12156,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "939b98e3-c7fe-4f84-b6f1-ab5d4f73ebb3",
+										"id": "db33a297-d8b1-426b-a294-ba819cce0d24",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -12132,7 +12170,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "4a06d893-a3b9-4137-8bd1-0515d03c5dc9",
+										"id": "a7266757-a58e-49e5-a1de-3f89c9da456e",
 										"exec": [
 											"/*set variables for checking mapping*/",
 											"",
@@ -12207,7 +12245,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "50895f8b-cd10-44af-8f2e-282800c2513c",
+										"id": "1c8eb2c0-3a31-4c5f-b866-1a75bf2cbac4",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -12221,7 +12259,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "f4c55bad-1695-4d20-a575-dd0071f7b7c7",
+										"id": "930c9abc-d69e-4016-b8bf-b109d1f748d1",
 										"exec": [
 											"/*set variables for checking mapping*/",
 											"",
@@ -12295,7 +12333,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "e514861d-2ae0-4743-ab23-df72ba449ac0",
+										"id": "9d6a5104-3acd-4311-a48b-510036cbeb13",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -12309,7 +12347,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "add67fdd-1863-426c-8a91-dffc25bd8205",
+										"id": "071a08f6-bedf-4b23-84b6-c52bf36d5daa",
 										"exec": [
 											"/*set variables for checking mapping*/",
 											"",
@@ -12383,7 +12421,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "48270f36-0048-493b-8dce-4fc8a5bd17dd",
+										"id": "be0af1b4-986f-4a53-a83a-85ea38ac3e9f",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -12397,7 +12435,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "40ee7601-a16d-4cd2-97fb-ebade2593a6d",
+										"id": "f16487e3-60ed-499d-822b-5867efd9df14",
 										"exec": [
 											"/*set variables for checking mapping*/",
 											"",
@@ -12472,7 +12510,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "daeaed57-9de8-480c-975c-33e783bc5c10",
+										"id": "08a1db74-9f5a-47df-bdd3-a365dbb365a5",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -12486,7 +12524,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "6fa65691-dcbf-468f-b6e0-1bf47c708d82",
+										"id": "382ebd27-19e6-4fe8-924d-922f686e843a",
 										"exec": [
 											"/*set variables for checking mapping*/",
 											"",
@@ -12556,7 +12594,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "dc598ffe-75ed-42fe-b93a-a780308eac62",
+										"id": "6466a8eb-1f8c-4453-a1aa-8545f0448cb1",
 										"exec": [
 											"var response = pm.response.json();",
 											"eval(pm.globals.get(\"checkRetrieveMappings\"))();",
@@ -12568,7 +12606,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "4068245b-5edc-4c09-bc98-f94b8d9bad95",
+										"id": "bc27043d-9a15-46cd-a3f3-6532c64f03aa",
 										"exec": [
 											"pm.variables.set(\"s-flagged\", true);",
 											"",
@@ -12634,7 +12672,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "deeb6bcc-d809-4e11-8207-3c1a20647696",
+										"id": "cc30edd7-b868-428d-915b-3d289de0ae7c",
 										"exec": [
 											"let testScenarios = pm.variables.get(\"testData\");",
 											"let asidHeader = pm.environment.get(\"asidHeader\");",
@@ -12670,7 +12708,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "8bc20454-2951-41bf-b1ba-300950afff28",
+										"id": "c5e8e776-a74c-4391-b871-cee121b7c550",
 										"exec": [
 											"pm.variables.set(\"testData\", data = [",
 											"    {",
@@ -12745,7 +12783,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "749547ad-3811-4af0-bd01-a1f4821dd770",
+										"id": "a8e6b0e8-9c20-4f59-9401-f0e678ed0db3",
 										"exec": [
 											"let testScenarios = pm.variables.get(\"testData\");",
 											"let asidHeader = pm.environment.get(\"asidHeader\");",
@@ -12782,7 +12820,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "64ad6d76-8ed6-4a24-ad9b-31da5b00b9eb",
+										"id": "60b6b52c-d062-44c3-8ca6-8a33aa45cd02",
 										"exec": [
 											"pm.variables.set(\"testData\", data = [",
 											"    {",
@@ -12869,7 +12907,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "c9b46e37-6b11-4cb7-8bba-71d55a1681cb",
+										"id": "552e1b4b-100b-4f35-959b-8087bf879487",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -12884,7 +12922,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "efeb3bad-4505-4b9c-840e-88caf13f0a80",
+										"id": "e7eee862-3611-4a84-9b37-c3377dcfd07e",
 										"exec": [
 											"pm.variables.set(\"patientId\", \"5900009068\");",
 											"",
@@ -12969,7 +13007,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "813c3e43-ac02-4c1a-8a03-4aa4b5088878",
+										"id": "46b7d982-5300-40ac-b131-64dcb9b6dc2c",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -12984,7 +13022,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "b914ceee-6798-4848-81fb-4c73c257d951",
+										"id": "3821e3db-4e5f-43a5-a809-8f02c34cd814",
 										"exec": [
 											"pm.variables.set(\"patientId\", \"5900007820\");",
 											"",
@@ -13067,7 +13105,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "1ca75a68-59bd-42b3-884e-57c9e1bf7c5d",
+										"id": "2e2b923d-036a-4f94-8199-308cc177c943",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -13082,7 +13120,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "daf86b7a-540e-4308-b5bb-739143fe5da7",
+										"id": "c0076afc-dadc-4a32-8d3a-3cb6ca64b06b",
 										"exec": [
 											"pm.variables.set(\"patientId\", \"5900007073\");",
 											"",
@@ -13161,7 +13199,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "be2d84ad-aeae-4418-b840-b941da34ac4e",
+										"id": "938e6c5a-3466-4422-bad2-af80f581751d",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -13176,7 +13214,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "e17d1414-7dc8-455d-b403-3744b73b549c",
+										"id": "f0f10ec6-8e44-40b4-bd5c-78191c4edb31",
 										"exec": [
 											"pm.variables.set(\"patientId\", \"5900019241\");",
 											"",
@@ -13245,7 +13283,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "dd02dd8e-1aae-4c74-8528-35dff8970643",
+										"id": "4f38551d-2e1b-4dca-8b5d-c86a06fccdff",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -13260,7 +13298,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "9267e457-3234-45c5-8e7d-47078f9be19d",
+										"id": "3d3ef894-d5f6-4da1-b071-f0eb0e320dad",
 										"exec": [
 											"pm.variables.set(\"patientId\", \"5900008290\");",
 											"",
@@ -13331,7 +13369,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "d979838d-4e76-440d-bc61-e3ea782af826",
+										"id": "c8f7717f-7738-4c49-b76f-3c4d41c1a188",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -13346,7 +13384,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "f220b014-6539-4970-b1a1-969891084229",
+										"id": "ef73a619-2a93-43d3-a5ad-bfb0f93cbfe3",
 										"exec": [
 											"pm.variables.set(\"patientId\", \"5900005798\");",
 											"",
@@ -13415,7 +13453,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "40e50446-3b3b-44cd-a27b-f6f18e89cadf",
+										"id": "aed4b1d0-e3b2-4087-9e50-79aff13c1243",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -13430,7 +13468,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "4ef910f9-2cbf-4547-94dc-92183671c4c7",
+										"id": "bbba95d2-7c9b-4f43-ac61-efe6fec5575d",
 										"exec": [
 											"pm.variables.set(\"patientId\", \"5900000605\");",
 											"",
@@ -13497,7 +13535,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "d002f355-a8ab-4644-99f3-9e7a210d5a4e",
+										"id": "bcd47c95-6d74-47b0-a08a-5c183e3fe5ce",
 										"exec": [
 											"var response = pm.response.json(); ",
 											"eval(pm.globals.get(\"patient\"));",
@@ -13617,7 +13655,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "33bcefb1-fe1b-4364-b4bb-367a4ff765de",
+										"id": "d297bd48-003b-409c-93a3-df67ed349d29",
 										"exec": [
 											"pm.variables.set(\"patientId\", \"5900013863\");",
 											"",
@@ -13754,7 +13792,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "e3c5156e-df40-42e3-98b7-98496ba0d598",
+										"id": "15519b8f-9930-43eb-b8fd-fc130d6efc83",
 										"exec": [
 											"/*assign local scenario variable from \"scenario\" variable set in prerequisite script and also assign header variables from variables*/\r",
 											"\r",
@@ -13794,7 +13832,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "59763995-ca28-47b4-84db-8ffa362ce3cf",
+										"id": "cd7fb006-39fb-49a9-a13e-f1d460334d0c",
 										"exec": [
 											"pm.variables.set(\"patientId\", \"5900006360\"); ",
 											"",
@@ -13876,7 +13914,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "3352c5cf-c81e-4fec-be75-3190645fc95e",
+				"id": "dd26fa02-fbf4-41ea-b8f3-8a3d61caf6c0",
 				"type": "text/javascript",
 				"exec": [
 					"console.log('Running against environment ' + pm.environment.get('environment'));",
@@ -13930,7 +13968,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "335bc6d1-5586-4326-acba-7a6e7901b224",
+				"id": "0090a264-6e32-40e4-bd3d-e9c538322d84",
 				"type": "text/javascript",
 				"exec": [
 					""
