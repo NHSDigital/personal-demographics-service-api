@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<FlowCallout async="false" continueOnError="false" enabled="true" name="FlowCallout.LogToSplunk">
+    <DisplayName>FlowCallout.LogToSplunk</DisplayName>
+    <FaultRules/>
+    <Properties/>
+    <SharedFlowBundle>LogToSplunk</SharedFlowBundle>
+</FlowCallout>
