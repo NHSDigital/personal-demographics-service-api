@@ -13790,9 +13790,41 @@
 							"name": "Related Person Error Responses",
 							"event": [
 								{
+									"listen": "prerequest",
+									"script": {
+										"id": "bd5088b1-2f64-4f3a-a95a-c016d3b49d11",
+										"exec": [
+											"pm.variables.set(\"patientId\", \"5900006360\"); ",
+											"",
+											"/*Create dataSets for testing 'Retrieve Patient' Error Exceptions scenarios and assign the \"scenario\" array to a variable to be used in Test*/ ",
+											"  ",
+											"   let scenario = [",
+											"       {desc: \"INVALID_NHS_NUMBER - invalid check digit\", ",
+											"        nhs_id: \"9000000000\", ",
+											"        responseStatus: 400, ",
+											"        responseIssueCode: \"value\", ",
+											"        responseSeverity: \"error\", ",
+											"        responseCode: \"INVALID_RESOURCE_ID\", ",
+											"        responseDisplay: \"Resource Id is invalid\"},",
+											"        ",
+											"       {desc: \"Patient has no Related Persons associated\", ",
+											"        nhs_id: \"5900006360\", ",
+											"        responseStatus: 404, ",
+											"        responseIssueCode: \"not-found\", ",
+											"        responseSeverity: \"information\", ",
+											"        responseCode: \"RESOURCE_NOT_FOUND\", ",
+											"        responseDisplay: \"Resource not found\"}",
+											"       ]",
+											"       ",
+											"    pm.variables.set('scenario', scenario); "
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
 									"listen": "test",
 									"script": {
-										"id": "15519b8f-9930-43eb-b8fd-fc130d6efc83",
+										"id": "4dace49d-8664-4c24-a881-1004f84f311b",
 										"exec": [
 											"/*assign local scenario variable from \"scenario\" variable set in prerequisite script and also assign header variables from variables*/\r",
 											"\r",
@@ -13825,38 +13857,6 @@
 											"    })\r",
 											"\r",
 											"});"
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "cd7fb006-39fb-49a9-a13e-f1d460334d0c",
-										"exec": [
-											"pm.variables.set(\"patientId\", \"5900006360\"); ",
-											"",
-											"/*Create dataSets for testing 'Retrieve Patient' Error Exceptions scenarios and assign the \"scenario\" array to a variable to be used in Test*/ ",
-											"  ",
-											"   let scenario = [",
-											"       {desc: \"INVALID_NHS_NUMBER - invalid check digit\", ",
-											"        nhs_id: \"9000000000\", ",
-											"        responseStatus: 400, ",
-											"        responseIssueCode: \"value\", ",
-											"        responseSeverity: \"error\", ",
-											"        responseCode: \"INVALID_NHS_NUMBER\", ",
-											"        responseDisplay: \"NHS Number Invalid\"},",
-											"        ",
-											"       {desc: \"Patient has no Related Persons associated\", ",
-											"        nhs_id: \"5900006360\", ",
-											"        responseStatus: 404, ",
-											"        responseIssueCode: \"not-found\", ",
-											"        responseSeverity: \"information\", ",
-											"        responseCode: \"RESOURCE_NOT_FOUND\", ",
-											"        responseDisplay: \"Resource not found\"}",
-											"       ]",
-											"       ",
-											"    pm.variables.set('scenario', scenario); "
 										],
 										"type": "text/javascript"
 									}
