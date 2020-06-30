@@ -4,15 +4,9 @@
 
 docker_service:
 
-  - name: sync-wrap
+  - name: pdsapi
     expose: true
-    environment:
-      - name: NODE_ENV
-        value: production
-      - name: LOG_LEVEL
-        value: "{{ 'debug' if APIGEE_ENVIRONMENT == 'internal-dev' else 'info' }}"
-      - name: UPSTREAM
-        value: "{{ apigee_uri }}"
+    # TODO AMK need to implement the ping endpoint in the sandbox
     health_check:
       matcher: "200"
       path: "/_ping"
