@@ -5,6 +5,8 @@ properties:
   type:
     type: string
     default: Patient
+    enum:
+      - Patient
     readOnly: true
   identifier:
     type: object
@@ -23,6 +25,7 @@ properties:
         type: string
         description: NHS Number for the related person
         example: "90000000009"
+        pattern: "^\\d{10}$"
   reference:
     type: string
     description: URL for the FHIR Patient resource.

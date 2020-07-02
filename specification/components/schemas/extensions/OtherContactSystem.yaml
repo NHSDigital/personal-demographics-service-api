@@ -5,6 +5,8 @@ properties:
     type: string
     description: Definition of other contact system extension.
     default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-OtherContactSystem
+    enum:
+      - https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-OtherContactSystem
     readOnly: true
   valueCoding:
     type: object

@@ -27,7 +27,7 @@ properties:
         description: URL for the Organisation Data Service - who are responsible for publishing codes that identify organisations and individuals across health and social care.
         type: string
         readOnly: true
-        example: 'https://digital.nhs.uk/services/organisation-data-service'
+        example: 'https://fhir.nhs.uk/Id/ods-organization-code'
       value:
         description: Organisation code for the registered general practice, as held in the [Organisation Data Service](https://developer.nhs.uk/apis/ods/).
         type: string

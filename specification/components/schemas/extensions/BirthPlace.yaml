@@ -8,6 +8,8 @@ properties:
     type: string
     description: Definition of place of birth extension.
     default: http://hl7.org/fhir/StructureDefinition/patient-birthPlace
+    enum:
+      - http://hl7.org/fhir/StructureDefinition/patient-birthPlace
     readOnly: true
   valueAddress:
     type: object
