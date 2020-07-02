@@ -6,6 +6,8 @@ properties:
     type: string
     description: URL of the extension definition.
     default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus
+    enum:
+      - https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus
     readOnly: true
   valueCodeableConcept:
     $ref: "../codeable/NHSNumberVerificationStatus.yaml"
