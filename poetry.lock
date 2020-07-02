@@ -156,7 +156,7 @@ description = "Dump the software license list of Python packages installed with 
 name = "pip-licenses"
 optional = false
 python-versions = "~=3.5"
-version = "2.2.0"
+version = "2.2.1"
 
 [package.dependencies]
 PTable = "*"
@@ -253,7 +253,7 @@ python-versions = "*"
 version = "1.4.1"
 
 [metadata]
-content-hash = "5272dc04f68de9e6baf8b485f657b940edf005892a7a53a6ffa810e307ec6406"
+content-hash = "1541c43929429921efe4358b9e0fb95ee7592b81a849854335842b9f50eb5807"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -343,8 +343,8 @@ pathspec = [
     {file = "pathspec-0.7.0.tar.gz", hash = "sha256:562aa70af2e0d434367d9790ad37aed893de47f1693e4201fd1d3dca15d19b96"},
 ]
 pip-licenses = [
-    {file = "pip-licenses-2.2.0.tar.gz", hash = "sha256:b7922d95f3f294461c06c9d94b69eb8f546412f5f7f702dbb230177511ff7bc1"},
-    {file = "pip_licenses-2.2.0-py3-none-any.whl", hash = "sha256:c9d0be59fdcc643daba5133b1f0172527c4ef1bfd6a269f7e26767193041dc1c"},
+    {file = "pip-licenses-2.2.1.tar.gz", hash = "sha256:8c0ebe582ba9ae29cde6486b7dd77d58d92200ae2cb67c11761356ffaceb47c1"},
+    {file = "pip_licenses-2.2.1-py3-none-any.whl", hash = "sha256:01e1a5bf14b33f9ba8bfa446a80fc857d47bc821c3a574aa442e41a84c21e00f"},
 ]
 ply = [
     {file = "ply-3.11-py2.py3-none-any.whl", hash = "sha256:096f9b8350b65ebd2fd1346b12452efe5b9607f7482813ffca50c22722a807ce"},
