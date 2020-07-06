@@ -47,7 +47,7 @@ info:
     ## Related APIs
     The following APIs also give access to the Personal Demographics Service:
     - [Personal Demographics Service (SMSP) API](https://digital.nhs.uk/services/spine/spine-mini-service-provider-for-personal-demographics-service) - use this if you want to get PDS data without an authenticated end used (no smartcard required). It is, however, read-only and searches are limited to a single result.
-    - [Personal Demographics Service (HL7 V3) API](https://digital.nhs.uk/developer/api-catalogue/pds-hl7) - use this if you want to use functions that are not yet available on the FHIR API.
+    - [Personal Demographics Service (HL7 V3) API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3) - use this if you want to use functions that are not yet available on the FHIR API.
 
     Once our roadmap is complete, the above APIs will become redundant.
 
@@ -75,9 +75,9 @@ info:
     Please [contact us](https://digital.nhs.uk/developer/help-and-support) with any comments or suggestions.
 
     ## Technology
-    This API is [RESTful](https://digital.nhs.uk/developer/guides-and-documentation/introduction-to-apis#basic-rest).
+    This API is [RESTful](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#basic-rest).
 
-    It also conforms to the [FHIR](https://digital.nhs.uk/developer/guides-and-documentation/introduction-to-apis#fhir) global standard for health care data exchange.
+    It also conforms to the [FHIR](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#fhir) global standard for health care data exchange.
     Specifically, it is aligned with [FHIR UK Core](https://digital.nhs.uk/services/fhir-uk-core), which is built on FHIR Release 4.
 
     You don’t need to know much about FHIR to use this API - FHIR APIs are just RESTful APIs that follow specific rules.
@@ -114,7 +114,7 @@ info:
     | ----------------- | -------------------------------------------------------------- |
     | Sandbox           | `https://sandbox.api.service.nhs.uk/personal-demographics/`    |
     | Integration test  | `https://int.api.service.nhs.uk/personal-demographics/`        |
-    | Production        | `https://api.service.nhs.uk/personal-demographics`                                              |
+    | Production        | `https://api.service.nhs.uk/personal-demographics/`                                              |
 
     ### Sandbox testing
     Our [sandbox environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#sandbox-testing):
@@ -137,7 +137,7 @@ info:
       
     For more details on these enhancements, see the API specification. 
          
-    For read-only testing, you can either use our [PDS FHIR API test data pack](https://digital.nhs.uk/developer/api-catalogue/pds-fhir) or set up your own test data using our test data tool.
+    For read-only testing, you can either use our [PDS FHIR API test data pack](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-api-test-data) or set up your own test data using our test data tool.
     
     To test updating patient details, you must set up your own test data.
 
@@ -166,7 +166,7 @@ info:
 
   contact:
     name: Personal Demographics Service FHIR API Support
-    url: 'https://tbc.api.nhs.net'
+    url: 'https://digital.nhs.uk/developer/help-and-support'
     email: api.management@nhs.net
 servers:
   - url: 'https://sandbox.api.service.nhs.uk/personal-demographics'
@@ -174,7 +174,7 @@ servers:
   - url: 'https://int.api.service.nhs.uk/personal-demographics'
     description: Integration test environment.
   - url: 'https://api.service.nhs.uk/personal-demographics'
-    description: 'Production environment (not yet available: see "API status and roadmap").'
+    description: 'Production environment.'
 tags:
   - name: patients
   - name: polling
