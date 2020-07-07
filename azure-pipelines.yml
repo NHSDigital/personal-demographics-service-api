@@ -133,7 +133,7 @@ jobs:
         parameters:
           env_vars_dir: 'dist'
 
-
+          
       - publish: dist/
         artifact: personal-demographics-service-$(SPEC_VERSION)+$(Build.BuildNumber)
 
