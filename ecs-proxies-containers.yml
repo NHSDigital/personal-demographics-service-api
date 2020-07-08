@@ -2,5 +2,5 @@
 docker_containers:
 
   - name: pdsapi
-    dockerfile: "docker/pdsapi/Dockerfile"
-    path: "docker/pdsapi"
+    dockerfile: "sandbox/Dockerfile"
+    path: "sandbox"
