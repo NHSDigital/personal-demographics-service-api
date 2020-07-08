@@ -3,4 +3,3 @@
   <DisplayName>SpikeArrest</DisplayName>
   <Rate ref="apiproduct.ratelimit">5ps</Rate>
 </SpikeArrest>
-

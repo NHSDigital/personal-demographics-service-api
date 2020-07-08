@@ -1,4 +1,11 @@
 <ProxyEndpoint name="default">
+  <PreFlow>
+    <Step>
+        <Name>Quota</Name>
+      </Step>
+      <Step>
+        <Name>SpikeArrest</Name>
+      </Step>
   <PreFlow/>
   <Flows>
     <Flow name="OptionsPreFlight">
