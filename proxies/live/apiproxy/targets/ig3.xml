@@ -9,6 +9,13 @@
       <Step>
         <Name>OauthV2.VerifyAccessToken</Name>
       </Step>
+        <PreFlow>
+      <Step>
+        <Name>Quota</Name>
+      </Step>
+      <Step>
+        <Name>SpikeArrest</Name>
+      </Step>
       <Step>
         <Name>AssignMessage.AddUserIdHeader</Name>
       </Step>
