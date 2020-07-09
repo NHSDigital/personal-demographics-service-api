@@ -8,14 +8,16 @@ properties:
     type: string
     description: Definition of death notification extension.
     default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus
+    enum:
+      - https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus
     readOnly: true
   extension:
     type: array
     description: Array containing exactly one death notification status code object and exactly one effective date object.
-    minItems: 2
+    minItems: 1
     maxItems: 2
     items:
-      anyOf:
+      oneOf:
         - type: object
           description: Wrapper object for death notification status code.
           required:
@@ -26,6 +28,8 @@ properties:
               type: string
               description: Key of this object. Always `deathNotificationStatus`.
               default: deathNotificationStatus
+              enum:
+                - deathNotificationStatus
               readOnly: true
             valueCodeableConcept:
               $ref: "../codeable/DeathNotificationStatus.yaml"
@@ -40,6 +44,8 @@ properties:
               type: string
               description: Key of this object. Always `systemEffectiveDate`.
               default: systemEffectiveDate
+              enum:
+                - systemEffectiveDate
               readOnly: true
             valueDateTime:
               type: string
