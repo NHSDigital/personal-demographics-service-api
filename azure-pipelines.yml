@@ -121,7 +121,7 @@ jobs:
       - template: az/create-build-env-vars.yml@utils
         parameters:
           out_dir: 'dist'
-          service_id: 'pdsapi'
+          service_id: 'sandbox'
 
       - template: az/become-build-user.yml@utils
         parameters:

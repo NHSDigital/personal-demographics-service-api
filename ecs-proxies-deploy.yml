@@ -4,9 +4,8 @@
 
 docker_service:
 
-  - name: pdsapi
+  - name: sandbox
     expose: true
-    # TODO AMK need to implement the ping endpoint in the sandbox
     health_check:
       matcher: "200"
       path: "/_ping"
