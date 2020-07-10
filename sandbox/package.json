@@ -2,10 +2,10 @@
     "name": "pds-api-sandbox",
     "version": "0.0.1",
     "description": "Patient Information API Sandbox Server",
-    "main": "app.js",
+    "main": "src/app.js",
     "scripts": {
         "lint": "find . -type f -name '*.js' ! -name '.eslintrc.js' | grep -v 'node_modules/' | xargs eslint",
-        "start": "node app.js --use_strict"
+        "start": "node src/app.js --use_strict"
     },
     "author": "NHS Digital",
     "license": "MIT",

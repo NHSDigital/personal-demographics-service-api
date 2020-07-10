@@ -6,8 +6,8 @@ COPY package*.json ./
 
 RUN npm install --only=production
 
-#COPY src/ ./
-COPY * ./
+COPY src/ ./
+COPY mocks/ ./
 RUN chmod -R a+x /app
 
 USER nobody
