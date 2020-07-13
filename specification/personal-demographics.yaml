@@ -136,7 +136,7 @@ info:
 
     ###Download our collection:
 
-    If you already have the Postman client installed - click onto our postman collection - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
+    If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
     Postman client should then open showing our Patient Demographics Sandbox.
 
     If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
@@ -332,7 +332,7 @@ paths:
 
         ###Download our collection:
         
-        If you already have the Postman client installed - click onto our postman collection - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
+        If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
         Postman client should then open showing our Patient Demographics Sandbox.
           
         If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
@@ -604,7 +604,7 @@ paths:
 
         ###Download our collection:
 
-        If you already have the Postman client installed - click onto our postman collection - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
+        If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
         Postman client should then open showing our Patient Demographics Sandbox.
 
         If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
@@ -1251,7 +1251,7 @@ paths:
 
         ###Download our collection:
 
-        If you already have the Postman client installed - click onto our postman collection - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
+        If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
         Postman client should then open showing our Patient Demographics Sandbox.
 
         If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
@@ -1425,7 +1425,7 @@ paths:
 
         ###Download our collection:
 
-        If you already have the Postman client installed - click onto our postman collection - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
+        If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
         Postman client should then open showing our Patient Demographics Sandbox.
 
         If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
@@ -1561,7 +1561,7 @@ paths:
 
         ###Download our collection:
 
-        If you already have the Postman client installed - click onto our postman collection - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
+        If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
         Postman client should then open showing our Patient Demographics Sandbox.
 
         If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
