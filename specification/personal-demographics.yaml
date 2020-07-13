@@ -1036,6 +1036,9 @@ paths:
 
         When updating an address, lines 1 or 2, and line 4 must be populated; line 5 should not be included in vernacular addresses but may be included in PAF-derived addresses.
 
+        To ensure consistent data across all patient addresses it is advised that the address data supplied should be matched to the PAF and sent in that format including the PAF key.
+        If the PAF key is not included it will be added to the address if a match can be found, additionally the provided address lines and post code will be enriched and reformatted if necessary.
+
         The following address types are supported:
         * `home` - the home address is the patient’s normal residence. Home address is also known as `usual`, `main`, `registered`, `current` or `permanent` address.
         * `temp` - a temporary address is an address used for a set period of time, but where the patient's home, permanent address remains unchanged.
