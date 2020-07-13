@@ -94,7 +94,7 @@ description = "Python Git Library"
 name = "gitpython"
 optional = false
 python-versions = ">=3.4"
-version = "3.1.3"
+version = "3.1.6"
 
 [package.dependencies]
 gitdb = ">=4.0.1,<5"
@@ -253,7 +253,7 @@ python-versions = "*"
 version = "1.4.1"
 
 [metadata]
-content-hash = "1b7bdfcb277f4d9989994f656d9720131bba8f3074b43a8754016e6438873419"
+content-hash = "f491f1673cef3188195f912b0723013a5146db4f94bcb163bf479ac80d427709"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -289,8 +289,8 @@ gitdb = [
     {file = "gitdb-4.0.2.tar.gz", hash = "sha256:598e0096bb3175a0aab3a0b5aedaa18a9a25c6707e0eca0695ba1a0baf1b2150"},
 ]
 gitpython = [
-    {file = "GitPython-3.1.3-py3-none-any.whl", hash = "sha256:ef1d60b01b5ce0040ad3ec20bc64f783362d41fa0822a2742d3586e1f49bb8ac"},
-    {file = "GitPython-3.1.3.tar.gz", hash = "sha256:e107af4d873daed64648b4f4beb89f89f0cfbe3ef558fc7821ed2331c2f8da1a"},
+    {file = "GitPython-3.1.6-py3-none-any.whl", hash = "sha256:b742bc5010d9b69fc027f1be21443bc2ad87ffc81a365e958dbc275f3fe0475b"},
+    {file = "GitPython-3.1.6.tar.gz", hash = "sha256:b54969b3262d4647f80ace8e9dd4e3f99ac30cc0f3e766415b349208f810908f"},
 ]
 jinja2 = [
     {file = "Jinja2-2.11.2-py2.py3-none-any.whl", hash = "sha256:f0a4641d3cf955324a89c04f3d94663aa4d638abe8f733ecd3582848e1c37035"},
