@@ -11,8 +11,13 @@ class PersonalDemographicsUser(HttpUser):
     def on_start(self):
         authenticator = Authenticator()
         self.credentials = authenticator.login()
+        self.headers = { 
+            "Authorization": self.credentials["token_type"] + " " + self.credentials["access_token"],
+            "NHSD-Identity-UUID": "1234567890",
+            "NHSD-Session-URID": "1234567890",
+        }
 
     @task(1)
     def pds_api(self):
-        self.client.get("/personal-demographics")
+        self.client.get("/personal-demographics/Patient/5900018512", headers=self.headers)
 
