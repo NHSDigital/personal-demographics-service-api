@@ -627,7 +627,9 @@ paths:
         Use this endpoint to update patient details in PDS.
 
         This is a 'patch' operation - you can update specific parts of the patient record, such as name or gender, without having to update the entire record.
-        The update is asynchronous - this endpoint returns a confirmation that your request has been received, along with a URL which you can poll to confirm that the update has completed.
+
+        The update process is asynchronous - if the request is accepted, a 202 response is returned with a polling URL in the `Content-Location` header.
+        Poll this URL for the outcome of the update. See the polling endpoint `/Polling/{message id}` for more details.
         
         See the overview page to understand what data can be updated with this API in its current form.
 
@@ -1016,6 +1018,52 @@ paths:
 
 
         ## Patient data fields
+
+        ### Address
+
+        List item found under `address` field.
+
+        In a JSON Patch request the path should be:
+        * `/address/0` if the address to be replaced or removed is the first item in the list. If it is the second item in the list the path will be `/address/1`, and so on.
+        * `/address/-` when adding a new address.
+
+        An Address consists of 5 lines of unstructured text, postcode and PAF (Postcode Address File) key.
+        Local systems must apply the following formatting convention when adding or replacing addresses lines:
+        *	Line 1 - premises ID and/or house name, e.g. `Flat 1` or `The Old Schoolhouse`
+        *	Line 2 - house number, dependent thoroughfare name and descriptor (if present), thoroughfare name and descriptor, e.g. `23 Mill Lane`
+        *	Line 3 - dependent locality/village, locality (if present), e.g. `Boxgrove`
+        *	Line 4 - post town, e.g. `Leeds`
+        *	Line 5 - county (if present), e.g. `West Yorkshire`.
+
+        When updating an address, lines 1 or 2, and line 4 must be populated; line 5 should not be included in vernacular addresses but may be included in PAF-derived addresses.
+
+        To ensure consistent data across all patient addresses it is advised that the address data supplied should be matched to the PAF and sent in that format including the PAF key.
+        If the PAF key is not included it will be added to the address if a match can be found, additionally the provided address lines and post code will be enriched and reformatted if necessary.
+
+        The following address types are supported:
+        * `home` - the home address is the patient’s normal residence. Home address is also known as `usual`, `main`, `registered`, `current` or `permanent` address.
+        * `temp` - a temporary address is an address used for a set period of time, but where the patient's home, permanent address remains unchanged.
+        * `billing` - an address used for correspondence purposes only.
+
+        A patient should have no more than one current `temp` and/or `billing` address.
+        However, this is constrained only by the integration requirements and is not enforced so theoretically more than one can exist for a patient.
+        Where multiple instances already exist for the patient it is not expected that local systems should manage those, but should choose the most appropriate one to maintain (e.g. by examining business effective dates).
+
+        A `home` address is the patient's main residential address and should normally be used for all clinical and demographic purposes, including clinical and appointment correspondence.
+        However additionally, `temp` and `billing` addresses may be provided by a patient when there is a requirement to record an alternative location for the purposes of unbroken care.
+        When sending correspondence to a patient:
+        *	a present and valid `billing` address may take precedence over `home` and `temp` addresses. A patient should have only a single current `billing` address. An address is considered 'valid' according to its business effective from and to dates.
+        *	if no current `billing` address is provided, a `temp` address may take precedence over the `home` address, again if it is valid according to its business effective from and to dates.
+        * if there is no valid, current `billing` and/or `temp` address, the `home` address must be used.
+
+        It should be noted that not all local systems support `temp` and `billing` addresses, so these are not uniformly maintained. Therefore, where the patient contact has clinical or business significance, the precedence of these addresses over the `home` address should be determined by a user wherever possible.
+        When the end date for a `temp` or `billing` address passes, local systems should use the patient’s `home` address. It will be extremely rare that no home address is present on a patient record.
+
+        There are a number of business rules that should be taken into account:
+        * cannot add more than one `home` address.
+        * `work` address `use` type is a valid response but cannot be added or replaced as it is a legacy value. An address with the `work` type can be removed though.
+        * any `temp` address must have both a `business effective from` and a `business effective to` date. The provision of a business effective to date has particular importance in order to avoid temporary addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual business effective to is known is 30 days later than the business effective from, up to a maximum of 3 months.
+        * any `billing` address must have both a `business effective from` and a `business effective to` date. The provision of a business effective to date has particular importance in order to avoid correspondence addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual business effective to is known is 30 days later than the business effective from, up to a maximum of 12 months.
 
         ### Communication
 
