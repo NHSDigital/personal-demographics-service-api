@@ -15,7 +15,7 @@ properties:
     description: |
       Purpose of this address:
       * home - a communication address at a home.
-      * work - an office address. This can be returned due to legacy data but cannot be added.
+      * work - an office address. This can be returned due to legacy data but cannot be added or replaced on update.
       * temp - a temporary address. The period can provide more detailed information.
       * billing - a corresponding address nominated by the patient where communication can be sent.
     enum: [home, work, temp, billing]
