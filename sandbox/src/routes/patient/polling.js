@@ -14,7 +14,7 @@ module.exports = [
             * Unset/invalid Content-Type: 415 Unsupported Media Type
         */
         method: 'GET',
-        path: '/Polling/{messageId}',
+        path: '/_poll/{messageId}',
         handler: (request, h) => {
             const messageId = request.params.messageId
             const patchedPatient = h.context.messages[messageId];
