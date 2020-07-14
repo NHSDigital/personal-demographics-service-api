@@ -558,12 +558,13 @@ paths:
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
 
-        | Scenario                 | Request                                           | Response                                                                       |
-        | ------------------------ | ------------------------------------------------- | ------------------------------------------------------------------------------ |
-        | Patient exists           | `id`=`9000000009`                                 | HTTP Status 200 with patient data in response                                  |
-        | Sensitive patient exists | `id`=`9000000025`                                 | HTTP Status 200 with patient data in response with the restricted data removed |
-        | Patient doesn't exist    | `id`=`9111231130` (or any other valid NHS Number) | HTTP Status 404 with problem description                                       |
-        | Invalid NHS Number       | `id`=`9000000000` (or any invalid NHS Number)     | HTTP Status 400 with problem description                                       |
+        | Scenario                         | Request                                           | Response                                                                                                                                      |
+        | -------------------------------- | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+        | Patient exists                   | `id`=`9000000009`                                 | HTTP Status 200 with patient data in response                                                                                                 |
+        | Sensitive patient exists         | `id`=`9000000025`                                 | HTTP Status 200 with patient data in response with the restricted data removed                                                                |
+        | Patient exists with minimal data | `id`=`9000000033`                                 | HTTP Status 200 with patient data in response, there will be very little data so can be used as an example of a patient with bad data quality |
+        | Patient doesn't exist            | `id`=`9111231130` (or any other valid NHS Number) | HTTP Status 404 with problem description                                                                                                      |
+        | Invalid NHS Number               | `id`=`9000000000` (or any invalid NHS Number)     | HTTP Status 400 with problem description                                                                                                      |
 
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
@@ -1234,6 +1235,7 @@ paths:
         Things to note when using the sandbox for PATCH:
         * Your changes will not be persisted.
         * JSON Patch operations themselves are validated, but the resulting resource is not validated for correctness; meaning any business rules are not applied.
+        * You can use the patient with minimal data, `9000000033` to test adding all data types (as most of them are missing on this patient), that would normally be present (e.g. gender).
 
         | Scenario                            | Request                                                                   | Response                                         |
         | ----------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------ |
