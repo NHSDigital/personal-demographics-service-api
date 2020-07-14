@@ -129,12 +129,12 @@ info:
 
     [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
     
-    ###Download Postman client:
+    ### Download Postman client
 
-    If you don’t have it, you can download Postman here:  https://www.postman.com
+    If you don’t have it, you can download Postman [here](https://www.postman.com)
     Click on the download button in the top right corner and follow the instructions.
 
-    ###Download our collection:
+    ### Download our collection
 
     If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
     Postman client should then open showing our Patient Demographics Sandbox.
@@ -325,12 +325,12 @@ paths:
 
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
         
-        ###Download Postman client:
+        ### Download Postman client
 
-        If you don’t have it, you can download Postman here:  https://www.postman.com
+        If you don’t have it, you can download Postman [here](https://www.postman.com)
         Click on the download button in the top right corner and follow the instructions.
 
-        ###Download our collection:
+        ### Download our collection
         
         If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
         Postman client should then open showing our Patient Demographics Sandbox.
@@ -598,20 +598,18 @@ paths:
 
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
         
-        ###Download Postman client:
+        ### Download Postman client
 
-        If you don’t have it, you can download Postman here:  https://www.postman.com
+        If you don’t have it, you can download Postman [here](https://www.postman.com)
         Click on the download button in the top right corner and follow the instructions.
 
-        ###Download our collection:
+        ### Download our collection
 
         If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
         Postman client should then open showing our Patient Demographics Sandbox.
 
         If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
-
-        
-     summary: "Retrieve a patient's resource"
+      summary: "Retrieve a patient's resource"
       operationId: get-patient
       tags:
         - patients
@@ -1294,12 +1292,12 @@ paths:
 
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
         
-        ###Download Postman client:
+        ### Download Postman client
 
-        If you don’t have it, you can download Postman here:  https://www.postman.com
+        If you don’t have it, you can download Postman [here](https://www.postman.com)
         Click on the download button in the top right corner and follow the instructions.
 
-        ###Download our collection:
+        ### Download our collection
 
         If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
         Postman client should then open showing our Patient Demographics Sandbox.
@@ -1468,12 +1466,12 @@ paths:
 
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
         
-        ###Download Postman client:
+        ### Download Postman client
 
-        If you don’t have it, you can download Postman here:  https://www.postman.com
+        If you don’t have it, you can download Postman [here](https://www.postman.com)
         Click on the download button in the top right corner and follow the instructions.
 
-        ###Download our collection:
+        ### Download our collection
 
         If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
         Postman client should then open showing our Patient Demographics Sandbox.
@@ -1604,20 +1602,19 @@ paths:
 
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
         
-        ###Download Postman client:
+        ### Download Postman client
 
-        If you don’t have it, you can download Postman here:  https://www.postman.com
+        If you don’t have it, you can download Postman [here](https://www.postman.com)
         Click on the download button in the top right corner and follow the instructions.
 
-        ###Download our collection:
+        ### Download our collection
 
         If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
         Postman client should then open showing our Patient Demographics Sandbox.
 
         If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
 
-        
-     summary: Retrieve the outcome of the accepted update. 
+      summary: Retrieve the outcome of the accepted update. 
       operationId: polling
       tags:
         - polling
