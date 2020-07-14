@@ -5,13 +5,13 @@ import urllib.parse as urlparse
 from urllib.parse import parse_qs
 from bs4 import BeautifulSoup
 
-# Move to parameters 
-BASE_URL = "https://internal-dev.api.service.nhs.uk"
-
 class Auth:
 
-    def __init__(self):
+    def __init__(self, url, env, api_key):
         self.session = requests.Session()
+        self.base_url = url
+        self.env = env
+        self.api_key = api_key
 
     def login(self):
         state = self.get_state()
@@ -19,13 +19,13 @@ class Auth:
         return credentials
 
     def get_state(self):
-        url = f"{BASE_URL}/oauth2/authorize?client_id=Too5BdPayTQACdw1AJK1rD4nKUD0Ag7J&redirect_uri=https%3A%2F%2Fnhsd-apim-testing-internal-dev.herokuapp.com%2Fcallback&response_type=code&state=1234567890"
+        url = f"{self.base_url}/oauth2/authorize?client_id={self.api_key}&redirect_uri=https%3A%2F%2Fnhsd-apim-testing-{self.env}.herokuapp.com%2Fcallback&response_type=code&state=1234567890"
         response = self.session.get(url)
         parsed = urlparse.urlparse(response.url)
         return parse_qs(parsed.query)['state'][0]
 
     def get_access_token(self, state):
-        url = f"{BASE_URL}/oauth2/simulated_auth?response_type=code&client_id=some-client-id&redirect_uri={BASE_URL}/callback&scope=openid&state={state}"
+        url = f"{self.base_url}/oauth2/simulated_auth?response_type=code&client_id=some-client-id&redirect_uri={self.base_url}/callback&scope=openid&state={state}"
         headers = {
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
             "Accept-Encoding": "gzip,deflate,br",
