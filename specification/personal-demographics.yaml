@@ -13,10 +13,10 @@ info:
     * search for patients
     * get patient details
     * get patient related people
+    * update patient details
 
     You cannot currently use this API to:
     * check that you have the right NHS Number for a patient
-    * update patient details (coming soon)
     * create a new record for a birth
     * receive birth notifications
     * create a record for a new patient
@@ -26,14 +26,14 @@ info:
     * NHS Number
     * name
     * gender
-    * addresses and contact details
+    * addresses and contact details (read only - update coming soon)
     * birth information
     * death information
     * registered GP
     * nominated pharmacy
     * dispensing doctor pharmacy
     * medical appliance supplier pharmacy
-    * related people
+    * related people (read only - update coming soon)
     * consent information (coming soon)
 
     Currently, this API can only be accessed by healthcare professionals, authenticated with an NHS smartcard or equivalent.
@@ -47,7 +47,7 @@ info:
     ## Related APIs
     The following APIs also give access to the Personal Demographics Service:
     - [Personal Demographics Service (SMSP) API](https://digital.nhs.uk/services/spine/spine-mini-service-provider-for-personal-demographics-service) - use this if you want to get PDS data without an authenticated end used (no smartcard required). It is, however, read-only and searches are limited to a single result.
-    - [Personal Demographics Service (HL7 V3) API](https://digital.nhs.uk/developer/api-catalogue/pds-hl7) - use this if you want to use functions that are not yet available on the FHIR API.
+    - [Personal Demographics Service (HL7 V3) API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3) - use this if you want to use functions that are not yet available on the FHIR API.
 
     Once our roadmap is complete, the above APIs will become redundant.
 
@@ -64,10 +64,8 @@ info:
     The API is currently available for sandbox testing and integration testing, but not for production use.
 
     The following items are on our roadmap, in rough priority order:
-    - integration testing service - enhancement to support authorisation with NHS smartcards (now available)
-    - production service - beta - search for patient and retrieve patient details (target date: end of April 2020)
     - addition of data fields for consent information
-    - production service - beta - update patient (target date: end of May 2020)
+    - production service - beta - update patient (target date: end of July)
     - unauthenticated access - without NHS smartcard - similar to the PDS SMSP API (target date to be confirmed - please [contact us](https://digital.nhs.uk/developer/help-and-support) for more details)
     - access for citizens using NHS Login (target date to be confirmed - please [contact us](https://digital.nhs.uk/developer/help-and-support) for more details)
     - exit beta (target date: end of September 2020, subject to availability of beta testers)
@@ -77,9 +75,9 @@ info:
     Please [contact us](https://digital.nhs.uk/developer/help-and-support) with any comments or suggestions.
 
     ## Technology
-    This API is [RESTful](https://digital.nhs.uk/developer/guides-and-documentation/introduction-to-apis#basic-rest).
+    This API is [RESTful](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#basic-rest).
 
-    It also conforms to the [FHIR](https://digital.nhs.uk/developer/guides-and-documentation/introduction-to-apis#fhir) global standard for health care data exchange.
+    It also conforms to the [FHIR](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#fhir) global standard for health care data exchange.
     Specifically, it is aligned with [FHIR UK Core](https://digital.nhs.uk/services/fhir-uk-core), which is built on FHIR Release 4.
 
     You don’t need to know much about FHIR to use this API - FHIR APIs are just RESTful APIs that follow specific rules.
@@ -116,7 +114,7 @@ info:
     | ----------------- | -------------------------------------------------------------- |
     | Sandbox           | `https://sandbox.api.service.nhs.uk/personal-demographics/`    |
     | Integration test  | `https://int.api.service.nhs.uk/personal-demographics/`        |
-    | Production        | Not yet available                                              |
+    | Production        | `https://api.service.nhs.uk/personal-demographics/`                                              |
 
     ### Sandbox testing
     Our [sandbox environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#sandbox-testing):
@@ -133,14 +131,15 @@ info:
 
     ### Integration testing
     Our [integration test environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing):
-    
-    *Includes authorisation with either, a username/password or smartcard/PIN
-    
-    1) integration testing with smartcards is now available
-    2) the API is now available for onboarding for production use
-    For more details on both of these enhancements, see the API specification. 
+    * is for formal integration testing
+    * is stateful, so persists updates
+    * includes authorisation with either a username/password or smartcard/PIN
+      
+    For more details on these enhancements, see the API specification. 
          
-    You can use our [PDS FHIR API test data pack](https://digital.nhs.uk/developer/api-catalogue/pds-fhir) to test most common scenarios. You can also create your own test data.
+    For read-only testing, you can either use our [PDS FHIR API test data pack](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-api-test-data) or set up your own test data using our test data tool.
+    
+    To test updating patient details, you must set up your own test data.
 
     For more details see [integration testing with our RESTful APIs](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing-with-our-restful-apis).
 
@@ -167,7 +166,7 @@ info:
 
   contact:
     name: Personal Demographics Service FHIR API Support
-    url: 'https://tbc.api.nhs.net'
+    url: 'https://digital.nhs.uk/developer/help-and-support'
     email: api.management@nhs.net
 servers:
   - url: 'https://sandbox.api.service.nhs.uk/personal-demographics'
@@ -175,7 +174,7 @@ servers:
   - url: 'https://int.api.service.nhs.uk/personal-demographics'
     description: Integration test environment.
   - url: 'https://api.service.nhs.uk/personal-demographics'
-    description: 'Production environment (not yet available: see "API status and roadmap").'
+    description: 'Production environment.'
 tags:
   - name: patients
   - name: polling
@@ -190,7 +189,7 @@ paths:
       operationId: search-patient
       externalDocs:
         description: ODS codes and documentation.
-        url: https://digital.nhs.uk/services/organisation-data-service
+        url: https://fhir.nhs.uk/Id/ods-organization-code
       description: |
         ## Overview
         Use this endpoint to search for a patient in PDS.
@@ -626,8 +625,12 @@ paths:
         ## Overview
         Use this endpoint to update patient details in PDS.
 
-        This is a 'patch' operation - you can update specific parts of the patient record, such as name or address, without having to update the entire record.
-        The update is asynchronous - this endpoint returns a confirmation that your request has been received, along with a URL which you can poll to confirm that the update has completed.
+        This is a 'patch' operation - you can update specific parts of the patient record, such as name or gender, without having to update the entire record.
+
+        The update process is asynchronous - if the request is accepted, a 202 response is returned with a polling URL in the `Content-Location` header.
+        Poll this URL for the outcome of the update. See the polling endpoint `/Polling/{message id}` for more details.
+        
+        See the overview page to understand what data can be updated with this API in its current form.
 
         ## Patient resource versioning
         To update a patient's resource you must have retrieved it first.
@@ -1014,6 +1017,52 @@ paths:
 
 
         ## Patient data fields
+
+        ### Address
+
+        List item found under `address` field.
+
+        In a JSON Patch request the path should be:
+        * `/address/0` if the address to be replaced or removed is the first item in the list. If it is the second item in the list the path will be `/address/1`, and so on.
+        * `/address/-` when adding a new address.
+
+        An Address consists of 5 lines of unstructured text, postcode and PAF (Postcode Address File) key.
+        Local systems must apply the following formatting convention when adding or replacing addresses lines:
+        *	Line 1 - premises ID and/or house name, e.g. `Flat 1` or `The Old Schoolhouse`
+        *	Line 2 - house number, dependent thoroughfare name and descriptor (if present), thoroughfare name and descriptor, e.g. `23 Mill Lane`
+        *	Line 3 - dependent locality/village, locality (if present), e.g. `Boxgrove`
+        *	Line 4 - post town, e.g. `Leeds`
+        *	Line 5 - county (if present), e.g. `West Yorkshire`.
+
+        When updating an address, lines 1 or 2, and line 4 must be populated; line 5 should not be included in vernacular addresses but may be included in PAF-derived addresses.
+
+        To ensure consistent data across all patient addresses it is advised that the address data supplied should be matched to the PAF and sent in that format including the PAF key.
+        If the PAF key is not included it will be added to the address if a match can be found, additionally the provided address lines and post code will be enriched and reformatted if necessary.
+
+        The following address types are supported:
+        * `home` - the home address is the patient’s normal residence. Home address is also known as `usual`, `main`, `registered`, `current` or `permanent` address.
+        * `temp` - a temporary address is an address used for a set period of time, but where the patient's home, permanent address remains unchanged.
+        * `billing` - an address used for correspondence purposes only.
+
+        A patient should have no more than one current `temp` and/or `billing` address.
+        However, this is constrained only by the integration requirements and is not enforced so theoretically more than one can exist for a patient.
+        Where multiple instances already exist for the patient it is not expected that local systems should manage those, but should choose the most appropriate one to maintain (e.g. by examining business effective dates).
+
+        A `home` address is the patient's main residential address and should normally be used for all clinical and demographic purposes, including clinical and appointment correspondence.
+        However additionally, `temp` and `billing` addresses may be provided by a patient when there is a requirement to record an alternative location for the purposes of unbroken care.
+        When sending correspondence to a patient:
+        *	a present and valid `billing` address may take precedence over `home` and `temp` addresses. A patient should have only a single current `billing` address. An address is considered 'valid' according to its business effective from and to dates.
+        *	if no current `billing` address is provided, a `temp` address may take precedence over the `home` address, again if it is valid according to its business effective from and to dates.
+        * if there is no valid, current `billing` and/or `temp` address, the `home` address must be used.
+
+        It should be noted that not all local systems support `temp` and `billing` addresses, so these are not uniformly maintained. Therefore, where the patient contact has clinical or business significance, the precedence of these addresses over the `home` address should be determined by a user wherever possible.
+        When the end date for a `temp` or `billing` address passes, local systems should use the patient’s `home` address. It will be extremely rare that no home address is present on a patient record.
+
+        There are a number of business rules that should be taken into account:
+        * cannot add more than one `home` address.
+        * `work` address `use` type is a valid response but cannot be added or replaced as it is a legacy value. An address with the `work` type can be removed though.
+        * any `temp` address must have both a `business effective from` and a `business effective to` date. The provision of a business effective to date has particular importance in order to avoid temporary addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual business effective to is known is 30 days later than the business effective from, up to a maximum of 3 months.
+        * any `billing` address must have both a `business effective from` and a `business effective to` date. The provision of a business effective to date has particular importance in order to avoid correspondence addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual business effective to is known is 30 days later than the business effective from, up to a maximum of 12 months.
 
         ### Communication
 

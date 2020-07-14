@@ -5,6 +5,8 @@ properties:
     type: string
     description: URL of specification of the AddressKey extension.
     default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-AddressKey
+    enum:
+      - https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-AddressKey
     readOnly: true
   extension:
     type: array

@@ -189,7 +189,7 @@
           "end": "2021-12-31",
           "start": "2020-01-01"
         },
-        "system": "https://digital.nhs.uk/services/organisation-data-service",
+        "system": "https://fhir.nhs.uk/Id/ods-organization-code",
         "value": "Y12345"
       },
       "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y12345",
