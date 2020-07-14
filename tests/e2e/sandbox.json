@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "fb026028-3173-4890-a8e0-ceade316fef4",
+		"_postman_id": "09032463-00ca-4fcc-8ec4-6dd1a361b468",
 		"name": "Personal Demographics Service - Sandbox",
 		"description": "Sandbox Testing",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -21,7 +21,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "dd1ee34e-20f6-401f-969f-b135d0aa586a",
+												"id": "84b9c005-4e34-4eee-bda7-db8eede86965",
 												"exec": [
 													"pm.test(\"Returns status code 200 OK\", () =>{",
 													"    pm.response.to.have.status(200);",
@@ -39,7 +39,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "9a0a4ae1-2c4a-4417-801c-8413ff972b79",
+												"id": "521e3332-40ac-4d8f-a025-fe633105cb89",
 												"exec": [
 													"var expected_response =",
 													"{",
@@ -488,7 +488,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "b0833fa4-d9e7-4e0f-b68e-618f9818cf70",
+												"id": "b2d9335a-c62b-44bb-b9c2-6c13e8a74f54",
 												"exec": [
 													"pm.test(\"Returns status code 200 OK\", () =>{",
 													"    pm.response.to.have.status(200);",
@@ -506,7 +506,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "0c309605-215d-4fd6-8c8c-f7cd3ed4a851",
+												"id": "a3cd0d62-a9bd-4dc8-a083-13ff4970a3ca",
 												"exec": [
 													"var expected_response =",
 													"{",
@@ -960,7 +960,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "10702dd8-3290-4792-b6ee-5bddc951a246",
+												"id": "43f4369c-fd11-4de7-81ed-5a9d1a83aa92",
 												"exec": [
 													"pm.test(\"Returns status code 200 OK\", () =>{",
 													"    pm.response.to.have.status(200);",
@@ -978,7 +978,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "edee69d7-bdc6-4340-9427-3e8f203ed8ea",
+												"id": "b70287a0-de8b-4d24-9b49-71af931b381c",
 												"exec": [
 													"var expected_response =",
 													"{",
@@ -1241,7 +1241,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "3fb64b42-e0ef-48f1-9e00-427b5a9d68e0",
+												"id": "225e33bd-7999-421c-bb3f-c803ce7d895d",
 												"exec": [
 													"pm.test(\"Returns status code 200 OK\", () =>{",
 													"    pm.response.to.have.status(200);",
@@ -1259,7 +1259,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "b8c1f290-7d10-454d-b600-9af041a94bbe",
+												"id": "9788f6e1-926f-4a79-bb92-f8301575e0f3",
 												"exec": [
 													"var expected_response =",
 													"{",
@@ -1522,7 +1522,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "890b3319-6aa9-42cc-8e2a-da3f0a950bcc",
+										"id": "4e1faa99-1dd6-4ef9-b2ff-55000ca8edab",
 										"exec": [
 											"pm.test(\"Returns status code 200 OK\", () =>{",
 											"    pm.response.to.have.status(200);",
@@ -1540,7 +1540,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "429ce8eb-ecb6-4caa-bf70-da7fc6fe9f36",
+										"id": "49fe432a-232c-40f2-a962-bb413eac04dc",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -1792,7 +1792,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "a0aaae77-b5f8-4521-8efd-91ce9dddce1f",
+										"id": "402acd76-a7d3-4810-b7ea-a0759edeca5c",
 										"exec": [
 											"pm.test(\"Returns status code 200 OK\", () =>{",
 											"    pm.response.to.have.status(200);",
@@ -1810,7 +1810,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "deb65310-fd50-49b1-828a-626e0e6823d1",
+										"id": "336707ad-1d72-4dc3-a672-bf9f398fccc7",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -1957,7 +1957,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "d447f48b-7593-4da3-8a38-f43b79ea4347",
+										"id": "8a9c7a85-f49e-48d4-b711-6fef218ceffa",
 										"exec": [
 											"pm.test(\"Returns status code 200 OK\", () =>{",
 											"    pm.response.to.have.status(200);",
@@ -2015,7 +2015,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "950bceab-f962-4d36-aee8-386a15b226fb",
+										"id": "4f0631e1-bc92-488a-bf27-c5f04aad14f1",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -2089,7 +2089,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "3ccfd6a2-efd5-4a23-8db9-05adae499b66",
+										"id": "c9af5f37-748c-424b-95ac-6c2c8df8bd25",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -2163,7 +2163,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "6735cac4-26e7-4c39-87f6-ceccd465ef40",
+										"id": "a038099d-e5f5-467b-b276-3d2c017af8f9",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -2219,7 +2219,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "03751819-981f-4250-b842-f23f0fc0ed61",
+										"id": "cac4c3b7-c0bf-4218-9639-a2bce2e1ff4f",
 										"exec": [
 											"pm.test(\"Returns status code 200 OK\", () =>{",
 											"    pm.response.to.have.status(200);",
@@ -2239,7 +2239,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "55966a5f-0f7b-4147-8b92-6868ccded7cf",
+										"id": "638acf4f-65f5-4a20-bf36-0b394c866d3b",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -2393,7 +2393,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "05d94ff3-9586-49c2-9534-41795d38f8f2",
+										"id": "bdb990c2-09cf-4523-aafd-0be068f0ec96",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -2419,7 +2419,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "afeef2a1-0cd3-41ff-ad27-b178355da009",
+										"id": "8291b581-62fd-4e0b-93c7-968c2c458532",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -2737,7 +2737,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "e9b3d30f-4aae-4d58-a6b7-72ad58921075",
+										"id": "6a724189-b459-4aac-b8cd-286c700f449f",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -2763,7 +2763,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "724b7287-d510-48a1-a7b9-4ddc4776061c",
+										"id": "47fbc57a-f38e-431e-af30-ca7752456247",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -2879,7 +2879,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "8920196f-c2aa-4cb7-a2e7-c7bb5b8fd486",
+										"id": "afede431-db2f-4616-9122-ea8777060d3e",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -2936,7 +2936,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "90d5225b-e2c6-4501-a441-f256382b794c",
+										"id": "e25af031-ed7e-4593-966e-bf593c34543c",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -2993,7 +2993,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "a8f316a0-7251-4183-94bb-ef0ed39aae53",
+										"id": "e54a96ba-e83f-4aba-baa9-dac85734ebc6",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -3050,7 +3050,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "4a03a6a1-c323-4da9-8324-5ce4cc0cc0df",
+										"id": "be920f16-4b97-420d-88f0-79b0b9ad0fb9",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -3078,7 +3078,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "b24a1eeb-97ad-498a-a4d1-61f66ccdf0c3",
+										"id": "33b9dc49-81c7-41a1-b6d4-a1f0f142c80e",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -3188,6 +3188,100 @@
 								"description": "GIVEN I have a valid NHS Number\nWHEN I call the simple search query\nTHEN I should get the patients details"
 							},
 							"response": []
+						},
+						{
+							"name": "Retrieve: Patient Minimal Data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "9b52a450-7523-4b33-954e-f136d335b84b",
+										"exec": [
+											"var response = pm.response.json();",
+											"    ",
+											"",
+											"pm.test(\"Returns status code 200 OK\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Returns correct etag header\", function () {",
+											"    pm.response.to.have.header(\"etag\", \"W/\\\"2\\\"\");",
+											"});",
+											"",
+											"pm.test(\"Returns correct canned response\", () =>{",
+											"    var expected = JSON.stringify(pm.environment.get(\"expected_response\"));",
+											"    var actual = JSON.stringify(response);",
+											"    pm.expect(actual).to.eql(expected);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "3a61c119-e815-4947-b478-5d2f18d91e5c",
+										"exec": [
+											"var expected_response =",
+											"{",
+											"    \"id\": \"9000000033\",",
+											"    \"identifier\": [",
+											"        {",
+											"            \"extension\": [",
+											"                {",
+											"                    \"url\": \"https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus\",",
+											"                    \"valueCodeableConcept\": {",
+											"                        \"coding\": [",
+											"                            {",
+											"                                \"code\": \"01\",",
+											"                                \"display\": \"Number present and verified\",",
+											"                                \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/UKCore-NHSNumberVerificationStatus\",",
+											"                                \"version\": \"1.0.0\"",
+											"                            }",
+											"                        ]",
+											"                    }",
+											"                }",
+											"            ],",
+											"            \"system\": \"https://fhir.nhs.uk/Id/nhs-number\",",
+											"            \"value\": \"9000000033\"",
+											"        }",
+											"    ],",
+											"    \"meta\": {",
+											"        \"security\": [",
+											"            {",
+											"                \"code\": \"U\",",
+											"                \"display\": \"unrestricted\",",
+											"                \"system\": \"https://www.hl7.org/fhir/valueset-security-labels.html\"",
+											"            }",
+											"        ],",
+											"        \"versionId\": \"2\"",
+											"    },",
+											"    \"resourceType\": \"Patient\"",
+											"}",
+											"",
+											"pm.environment.set(\"expected_response\", expected_response);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{environment}}/Patient/9000000033",
+									"host": [
+										"{{environment}}"
+									],
+									"path": [
+										"Patient",
+										"9000000033"
+									]
+								},
+								"description": "GIVEN I have a valid NHS Number\nWHEN I call the simple search query\nTHEN I should get the patients details"
+							},
+							"response": []
 						}
 					],
 					"protocolProfileBehavior": {},
@@ -3202,7 +3296,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "319fd7e9-2ae9-4a3e-aadd-99c124c1e632",
+										"id": "d58729a3-eb10-4dff-9949-2671b3c3ddd8",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -3230,7 +3324,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "fa9094e0-0ff9-4873-95bb-810d60845cf1",
+										"id": "08d5f8ce-41c1-4c66-8887-a7e22556c027",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -3529,7 +3623,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "80505d08-f00b-4feb-b0eb-b365d7ca2b93",
+										"id": "074f6861-dbef-408d-999d-0f398e645a8a",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -3587,7 +3681,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "1dbeb9c2-e55f-4bff-b9d8-16b774df8738",
+										"id": "906d16e4-47f6-42ec-861e-8b82a185bb3d",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -3648,10 +3742,10 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "b4735523-6beb-406f-82ea-7da345e6e463",
+										"id": "9b662198-44b6-43bc-8202-ee492af9aa3d",
 										"exec": [
 											"",
-											"var messageId = pm.response.headers.get(\"content-location\").replace(\"/Polling/\", \"\")",
+											"var messageId = pm.response.headers.get(\"content-location\").replace(\"/_poll/\", \"\")",
 											"pm.environment.set(\"polling_id\", messageId)",
 											"",
 											"pm.test(\"Returns status code 202 Accepted\", function () {",
@@ -3669,7 +3763,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "53203480-1d0a-421e-bb57-b5f757c586d1",
+										"id": "94797012-1592-4663-95a3-2386125605fb",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -3992,7 +4086,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"patches\": [\n        {\n            \"op\": \"replace\",\n            \"path\": \"/name/0\",\n            \"value\": {\n                \"id\": \"123\",\n                \"use\": \"usual\",\n                \"period\": {\n                    \"start\": \"2020-01-01\",\n                    \"end\": \"2021-12-31\"\n                },\n                \"given\": [\n                    \"James\"\n                ],\n                \"family\": \"Smith\",\n                \"prefix\": [\n                    \"Mr\"\n                ],\n                \"suffix\": [\n                    \"MBE\"\n                ]\n            }\n        }\n    ]\n}"
+									"raw": "{\n    \"patches\": [\n        {\n            \"op\": \"replace\",\n            \"path\": \"/name/0\",\n            \"value\": {\n                \"id\": \"123\",\n                \"use\": \"usual\",\n                \"period\": {\n                    \"start\": \"2020-01-01\",\n                    \"end\": \"2021-12-31\"\n                },\n                \"given\": [\n                    \"James\"\n                ],\n                \"family\": \"Smith\",\n                \"prefix\": [\n                    \"Mr\"\n                ],\n                \"suffix\": [\n                    \"MBE\"\n                ]\n            }\n        }\n    ]\n}",
+									"options": {
+										"raw": {}
+									}
 								},
 								"url": {
 									"raw": "{{environment}}/Patient/9000000009",
@@ -4013,7 +4110,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "88ddcd90-12cc-443b-8a49-913e946df342",
+										"id": "fe816e63-6df8-474e-abcc-9c2220a55f52",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -4039,7 +4136,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "1b7099bc-91b2-4e8f-b1f6-6246551727b8",
+										"id": "8ff199e3-9355-461a-ba83-101df012d09c",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -4338,12 +4435,12 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{environment}}/Polling/{{polling_id}}",
+									"raw": "{{environment}}/_poll/{{polling_id}}",
 									"host": [
 										"{{environment}}"
 									],
 									"path": [
-										"Polling",
+										"_poll",
 										"{{polling_id}}"
 									]
 								}
@@ -4356,7 +4453,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "64396de5-fc07-46c5-b9aa-eb57838df25c",
+										"id": "8aacd78c-523f-4f40-bd43-7ef5d147be5d",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -4378,7 +4475,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "92de611e-8385-4d3f-a698-91a34e66f5d6",
+										"id": "2d909714-5da8-4642-a691-b11855850f96",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -4423,7 +4520,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"patches\": [\n        {\n            \"op\": \"replace\",\n            \"path\": \"/name/0\",\n            \"value\": {\n                \"id\": \"123\",\n                \"use\": \"usual\",\n                \"period\": {\n                    \"start\": \"2020-01-01\",\n                    \"end\": \"2021-12-31\"\n                },\n                \"given\": [\n                    \"James\"\n                ],\n                \"family\": \"Smith\",\n                \"prefix\": [\n                    \"Mr\"\n                ],\n                \"suffix\": [\n                    \"MBE\"\n                ]\n            }\n        }\n    ]\n}"
+									"raw": "{\n    \"patches\": [\n        {\n            \"op\": \"replace\",\n            \"path\": \"/name/0\",\n            \"value\": {\n                \"id\": \"123\",\n                \"use\": \"usual\",\n                \"period\": {\n                    \"start\": \"2020-01-01\",\n                    \"end\": \"2021-12-31\"\n                },\n                \"given\": [\n                    \"James\"\n                ],\n                \"family\": \"Smith\",\n                \"prefix\": [\n                    \"Mr\"\n                ],\n                \"suffix\": [\n                    \"MBE\"\n                ]\n            }\n        }\n    ]\n}",
+									"options": {
+										"raw": {}
+									}
 								},
 								"url": {
 									"raw": "{{environment}}/Patient/9111231130",
@@ -4444,7 +4544,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "813d8e4b-78c3-4f28-8723-f323923e2ca7",
+										"id": "007d7ef1-8eb3-48ea-85d7-36959c24f02e",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -4466,7 +4566,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "543a11db-21e7-4dbe-b6e3-d05dd8964b6a",
+										"id": "66c69572-436f-4772-b7f0-4b914223188f",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -4511,7 +4611,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"patches\": [\n        {\n            \"op\": \"replace\",\n            \"path\": \"/name/0\",\n            \"value\": {\n                \"id\": \"123\",\n                \"use\": \"usual\",\n                \"period\": {\n                    \"start\": \"2020-01-01\",\n                    \"end\": \"2021-12-31\"\n                },\n                \"given\": [\n                    \"James\"\n                ],\n                \"family\": \"Smith\",\n                \"prefix\": [\n                    \"Mr\"\n                ],\n                \"suffix\": [\n                    \"MBE\"\n                ]\n            }\n        }\n    ]\n}"
+									"raw": "{\n    \"patches\": [\n        {\n            \"op\": \"replace\",\n            \"path\": \"/name/0\",\n            \"value\": {\n                \"id\": \"123\",\n                \"use\": \"usual\",\n                \"period\": {\n                    \"start\": \"2020-01-01\",\n                    \"end\": \"2021-12-31\"\n                },\n                \"given\": [\n                    \"James\"\n                ],\n                \"family\": \"Smith\",\n                \"prefix\": [\n                    \"Mr\"\n                ],\n                \"suffix\": [\n                    \"MBE\"\n                ]\n            }\n        }\n    ]\n}",
+									"options": {
+										"raw": {}
+									}
 								},
 								"url": {
 									"raw": "{{environment}}/Patient/9000000000",
@@ -4532,7 +4635,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "2711e343-88ab-4c1e-bd30-019d95c91510",
+										"id": "caac8806-f84b-493b-b469-10debf5591ed",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -4554,7 +4657,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "71d6977c-e54c-4d6e-abbe-df1d5e5ef875",
+										"id": "f8893388-ef66-4351-a82a-167a6c605d77",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -4597,7 +4700,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"patches\": [\n        {\n            \"op\": \"replace\",\n            \"path\": \"/name/0\",\n            \"value\": {\n                \"id\": \"123\",\n                \"use\": \"usual\",\n                \"period\": {\n                    \"start\": \"2020-01-01\",\n                    \"end\": \"2021-12-31\"\n                },\n                \"given\": [\n                    \"James\"\n                ],\n                \"family\": \"Smith\",\n                \"prefix\": [\n                    \"Mr\"\n                ],\n                \"suffix\": [\n                    \"MBE\"\n                ]\n            }\n        }\n    ]\n}"
+									"raw": "{\n    \"patches\": [\n        {\n            \"op\": \"replace\",\n            \"path\": \"/name/0\",\n            \"value\": {\n                \"id\": \"123\",\n                \"use\": \"usual\",\n                \"period\": {\n                    \"start\": \"2020-01-01\",\n                    \"end\": \"2021-12-31\"\n                },\n                \"given\": [\n                    \"James\"\n                ],\n                \"family\": \"Smith\",\n                \"prefix\": [\n                    \"Mr\"\n                ],\n                \"suffix\": [\n                    \"MBE\"\n                ]\n            }\n        }\n    ]\n}",
+									"options": {
+										"raw": {}
+									}
 								},
 								"url": {
 									"raw": "{{environment}}/Patient/9000000009",
@@ -4618,7 +4724,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "9209f5cc-af10-4e96-989a-8457ca661db8",
+										"id": "0121a5ef-e2a1-4dc0-9e6a-7d298b269828",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -4640,7 +4746,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "3fd9e6ef-36c9-4d5f-a547-39d5006bad3f",
+										"id": "a444da90-688e-4204-9eff-46b369b322ac",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -4688,7 +4794,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"patches\": [\n        {\n            \"op\": \"replace\",\n            \"path\": \"/name/0\",\n            \"value\": {\n                \"id\": \"123\",\n                \"use\": \"usual\",\n                \"period\": {\n                    \"start\": \"2020-01-01\",\n                    \"end\": \"2021-12-31\"\n                },\n                \"given\": [\n                    \"James\"\n                ],\n                \"family\": \"Smith\",\n                \"prefix\": [\n                    \"Mr\"\n                ],\n                \"suffix\": [\n                    \"MBE\"\n                ]\n            }\n        }\n    ]\n}"
+									"raw": "{\n    \"patches\": [\n        {\n            \"op\": \"replace\",\n            \"path\": \"/name/0\",\n            \"value\": {\n                \"id\": \"123\",\n                \"use\": \"usual\",\n                \"period\": {\n                    \"start\": \"2020-01-01\",\n                    \"end\": \"2021-12-31\"\n                },\n                \"given\": [\n                    \"James\"\n                ],\n                \"family\": \"Smith\",\n                \"prefix\": [\n                    \"Mr\"\n                ],\n                \"suffix\": [\n                    \"MBE\"\n                ]\n            }\n        }\n    ]\n}",
+									"options": {
+										"raw": {}
+									}
 								},
 								"url": {
 									"raw": "{{environment}}/Patient/9000000009",
@@ -4709,7 +4818,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "f6eae8ea-098a-4c7c-9e4d-1eccafcfcb17",
+										"id": "cfc05124-4f20-4cdc-8be5-06b1669326bf",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -4731,7 +4840,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "04f58116-7c1d-4df5-9ab8-a81a50b6f188",
+										"id": "de5a71f7-3940-4350-b301-60a900b598d1",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -4776,7 +4885,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"patches\": [\n        {\n            \"op\": \"replace\",\n            \"path\": \"/name/0\",\n            \"value\": {\n                \"id\": \"123\",\n                \"use\": \"usual\",\n                \"period\": {\n                    \"start\": \"2020-01-01\",\n                    \"end\": \"2021-12-31\"\n                },\n                \"given\": [\n                    \"James\"\n                ],\n                \"family\": \"Smith\",\n                \"prefix\": [\n                    \"Mr\"\n                ],\n                \"suffix\": [\n                    \"MBE\"\n                ]\n            }\n        }\n    ]\n}"
+									"raw": "{\n    \"patches\": [\n        {\n            \"op\": \"replace\",\n            \"path\": \"/name/0\",\n            \"value\": {\n                \"id\": \"123\",\n                \"use\": \"usual\",\n                \"period\": {\n                    \"start\": \"2020-01-01\",\n                    \"end\": \"2021-12-31\"\n                },\n                \"given\": [\n                    \"James\"\n                ],\n                \"family\": \"Smith\",\n                \"prefix\": [\n                    \"Mr\"\n                ],\n                \"suffix\": [\n                    \"MBE\"\n                ]\n            }\n        }\n    ]\n}",
+									"options": {
+										"raw": {}
+									}
 								},
 								"url": {
 									"raw": "{{environment}}/Patient/9000000009",
@@ -4797,7 +4909,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "5283878d-5dba-4474-af3e-b5b800a8534c",
+										"id": "faf39d6d-a35c-49ae-9b87-b6d6ac736ec7",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -4819,7 +4931,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "e24949b6-9b12-4a70-997f-c1780c3856ab",
+										"id": "207d9d04-0168-459a-8930-581de3511723",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -4864,7 +4976,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"patches\": []\n}"
+									"raw": "{\n    \"patches\": []\n}",
+									"options": {
+										"raw": {}
+									}
 								},
 								"url": {
 									"raw": "{{environment}}/Patient/9000000009",
@@ -4885,7 +5000,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "7170b435-99f6-4eb7-bb52-a851085d94bf",
+										"id": "ecef019f-9ddc-41f5-9618-30b681419160",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -4907,7 +5022,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "7a52b88f-ce2a-493e-bf65-233e4cddf43b",
+										"id": "445d4cf9-e9e4-4ecc-b98e-556a1c14bb7c",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -4952,7 +5067,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"patches\": [\n        {\n            \"op\": \"bad_value\",\n            \"path\": \"not a path\"\n        }\n    ]\n}"
+									"raw": "{\n    \"patches\": [\n        {\n            \"op\": \"bad_value\",\n            \"path\": \"not a path\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {}
+									}
 								},
 								"url": {
 									"raw": "{{environment}}/Patient/9000000009",
@@ -4980,7 +5098,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "3854a3a5-5025-4e45-aa4b-d8c78edfe97d",
+										"id": "85237ce1-cc22-439d-a956-f7a028ff80b1",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -5001,7 +5119,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "b56c7693-a0f3-42fc-a882-abd4cf9119e1",
+										"id": "f90d150d-911d-43d9-8947-751cfb98a574",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -5047,12 +5165,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{environment}}/Polling/20200522091633363041_000002",
+									"raw": "{{environment}}/_poll/20200522091633363041_000002",
 									"host": [
 										"{{environment}}"
 									],
 									"path": [
-										"Polling",
+										"_poll",
 										"20200522091633363041_000002"
 									]
 								}
@@ -5065,14 +5183,14 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "f4e262ac-48c1-412d-a8b0-f43e6b069c09",
+										"id": "82297532-6b2b-49c2-9a61-f62626892c77",
 										"exec": [
 											"pm.test(\"Returns status code 202 Accepted\", function () {",
 											"    pm.response.to.have.status(202);",
 											"});",
 											"",
 											"pm.test(\"Returns correct content-location header\", function () {",
-											"    pm.response.to.have.header(\"content-location\", \"/Polling/20200522091633363041_000001\");",
+											"    pm.response.to.have.header(\"content-location\", \"/_poll/20200522091633363041_000001\");",
 											"});",
 											""
 										],
@@ -5082,7 +5200,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "ab979c1f-8db9-41e7-bc6a-59b4f33d0925",
+										"id": "f73ca1ce-a7bd-4660-b5fb-d8633a74055e",
 										"exec": [
 											""
 										],
@@ -5107,12 +5225,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{environment}}/Polling/20200522091633363041_000001",
+									"raw": "{{environment}}/_poll/20200522091633363041_000001",
 									"host": [
 										"{{environment}}"
 									],
 									"path": [
-										"Polling",
+										"_poll",
 										"20200522091633363041_000001"
 									]
 								}
@@ -5131,7 +5249,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "628c9fd6-46c8-41c2-b79e-73c9de96a9a8",
+				"id": "3b1ffd02-86ff-4801-8ecf-ac05e361229c",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -5141,7 +5259,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "616f3b76-7167-41aa-a0e1-bbf492778a26",
+				"id": "82434ebf-6b60-40be-b0d1-55e5b9b17b51",
 				"type": "text/javascript",
 				"exec": [
 					"",

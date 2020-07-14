@@ -558,12 +558,13 @@ paths:
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
 
-        | Scenario                 | Request                                           | Response                                                                       |
-        | ------------------------ | ------------------------------------------------- | ------------------------------------------------------------------------------ |
-        | Patient exists           | `id`=`9000000009`                                 | HTTP Status 200 with patient data in response                                  |
-        | Sensitive patient exists | `id`=`9000000025`                                 | HTTP Status 200 with patient data in response with the restricted data removed |
-        | Patient doesn't exist    | `id`=`9111231130` (or any other valid NHS Number) | HTTP Status 404 with problem description                                       |
-        | Invalid NHS Number       | `id`=`9000000000` (or any invalid NHS Number)     | HTTP Status 400 with problem description                                       |
+        | Scenario                         | Request                                           | Response                                                                                                                                      |
+        | -------------------------------- | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+        | Patient exists                   | `id`=`9000000009`                                 | HTTP Status 200 with patient data in response                                                                                                 |
+        | Sensitive patient exists         | `id`=`9000000025`                                 | HTTP Status 200 with patient data in response with the restricted data removed                                                                |
+        | Patient exists with minimal data | `id`=`9000000033`                                 | HTTP Status 200 with patient data in response, there will be very little data so can be used as an example of a patient with bad data quality |
+        | Patient doesn't exist            | `id`=`9111231130` (or any other valid NHS Number) | HTTP Status 404 with problem description                                                                                                      |
+        | Invalid NHS Number               | `id`=`9000000000` (or any invalid NHS Number)     | HTTP Status 400 with problem description                                                                                                      |
 
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
@@ -628,7 +629,7 @@ paths:
         This is a 'patch' operation - you can update specific parts of the patient record, such as name or gender, without having to update the entire record.
 
         The update process is asynchronous - if the request is accepted, a 202 response is returned with a polling URL in the `Content-Location` header.
-        Poll this URL for the outcome of the update. See the polling endpoint `/Polling/{message id}` for more details.
+        Poll this URL for the outcome of the update. See the polling endpoint `/_poll/{message id}` for more details.
         
         See the overview page to understand what data can be updated with this API in its current form.
 
@@ -1234,6 +1235,7 @@ paths:
         Things to note when using the sandbox for PATCH:
         * Your changes will not be persisted.
         * JSON Patch operations themselves are validated, but the resulting resource is not validated for correctness; meaning any business rules are not applied.
+        * You can use the patient with minimal data, `9000000033` to test adding all data types (as most of them are missing on this patient), that would normally be present (e.g. gender).
 
         | Scenario                            | Request                                                                   | Response                                         |
         | ----------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------ |
@@ -1502,7 +1504,7 @@ paths:
                           code: RESOURCE_NOT_FOUND
                           display: Resource not found
 
-  '/Polling/{message_id}':
+  '/_poll/{message_id}':
     parameters:
       - $ref: '#/components/parameters/MessageId'
       - $ref: '#/components/parameters/RoleId'
@@ -1514,7 +1516,7 @@ paths:
 
         When updating resources the request is dealt with in an asynchronous manner.
         
-        Once the initial request is accepted a `202` response will be returned with a `Content-Location` header, use this location to poll for the outcome. It will be in the form `/Polling/<message id>`.
+        Once the initial request is accepted a `202` response will be returned with a `Content-Location` header, use this location to poll for the outcome. It will be in the form `/_poll/<message id>`.
 
         Requests should be sent to the polling endpoint until a `202` response is no longer returned and the response is dealt with appropriately.
 
