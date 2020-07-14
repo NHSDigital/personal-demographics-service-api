@@ -629,7 +629,7 @@ paths:
         This is a 'patch' operation - you can update specific parts of the patient record, such as name or gender, without having to update the entire record.
 
         The update process is asynchronous - if the request is accepted, a 202 response is returned with a polling URL in the `Content-Location` header.
-        Poll this URL for the outcome of the update. See the polling endpoint `/Polling/{message id}` for more details.
+        Poll this URL for the outcome of the update. See the polling endpoint `/_poll/{message id}` for more details.
         
         See the overview page to understand what data can be updated with this API in its current form.
 
@@ -1504,7 +1504,7 @@ paths:
                           code: RESOURCE_NOT_FOUND
                           display: Resource not found
 
-  '/Polling/{message_id}':
+  '/_poll/{message_id}':
     parameters:
       - $ref: '#/components/parameters/MessageId'
       - $ref: '#/components/parameters/RoleId'
@@ -1516,7 +1516,7 @@ paths:
 
         When updating resources the request is dealt with in an asynchronous manner.
         
-        Once the initial request is accepted a `202` response will be returned with a `Content-Location` header, use this location to poll for the outcome. It will be in the form `/Polling/<message id>`.
+        Once the initial request is accepted a `202` response will be returned with a `Content-Location` header, use this location to poll for the outcome. It will be in the form `/_poll/<message id>`.
 
         Requests should be sent to the polling endpoint until a `202` response is no longer returned and the response is dealt with appropriately.
 

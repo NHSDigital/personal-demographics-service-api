@@ -3745,7 +3745,7 @@
 										"id": "9b662198-44b6-43bc-8202-ee492af9aa3d",
 										"exec": [
 											"",
-											"var messageId = pm.response.headers.get(\"content-location\").replace(\"/Polling/\", \"\")",
+											"var messageId = pm.response.headers.get(\"content-location\").replace(\"/_poll/\", \"\")",
 											"pm.environment.set(\"polling_id\", messageId)",
 											"",
 											"pm.test(\"Returns status code 202 Accepted\", function () {",
@@ -4435,12 +4435,12 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{environment}}/Polling/{{polling_id}}",
+									"raw": "{{environment}}/_poll/{{polling_id}}",
 									"host": [
 										"{{environment}}"
 									],
 									"path": [
-										"Polling",
+										"_poll",
 										"{{polling_id}}"
 									]
 								}
@@ -5165,12 +5165,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{environment}}/Polling/20200522091633363041_000002",
+									"raw": "{{environment}}/_poll/20200522091633363041_000002",
 									"host": [
 										"{{environment}}"
 									],
 									"path": [
-										"Polling",
+										"_poll",
 										"20200522091633363041_000002"
 									]
 								}
@@ -5190,7 +5190,7 @@
 											"});",
 											"",
 											"pm.test(\"Returns correct content-location header\", function () {",
-											"    pm.response.to.have.header(\"content-location\", \"/Polling/20200522091633363041_000001\");",
+											"    pm.response.to.have.header(\"content-location\", \"/_poll/20200522091633363041_000001\");",
 											"});",
 											""
 										],
@@ -5225,12 +5225,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{environment}}/Polling/20200522091633363041_000001",
+									"raw": "{{environment}}/_poll/20200522091633363041_000001",
 									"host": [
 										"{{environment}}"
 									],
 									"path": [
-										"Polling",
+										"_poll",
 										"20200522091633363041_000001"
 									]
 								}
