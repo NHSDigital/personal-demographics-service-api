@@ -2,7 +2,7 @@ doc = `
 API Management Postman Test Runner
 
 Usage:
-  test-runner.js <username> <password> <token_app_url> <environment_url> <collection_path> <environment_file_path>
+  test-runner.js <token_app_url> <environment_url> <collection_path> <environment_file_path>
   test-runner.js -h | --help
 
   -h --help  Show this text.
@@ -47,20 +47,16 @@ async function gotoLogin(browser, login_url) {
     await page.goto(login_url, { waitUntil: 'networkidle2', timeout: 30000 });
     await page.waitForSelector('#start', { timeout: 30000 });
     await page.click("#start");
-    await page.waitForSelector('#idToken1', { timeout: 30000 });
+    await page.waitForSelector('button[class="btn btn-lg btn-primary btn-block"]', {timeout: 30000});
+    await page.click('button[class="btn btn-lg btn-primary btn-block"]');    
     return page;
 }
 
-function nhsIdLogin(username, password, login_url, callback) {
+function nhsIdLogin(login_url, callback) {
     (async () => {
         console.log("Oauth journey on " + login_url);
         const browser = await puppeteer.launch({ headless: true });
-        const page = await retry(async () => { return await gotoLogin(browser, login_url); }, 3);
-        await page.type('#idToken1', username);
-        await page.type('#idToken2', password);
-        await page.click('#loginButton_0');
-        await page.waitForNavigation();
-
+        const page = await retry(async () => { return await gotoLogin(browser, login_url); }, 3);                
         let credentialsJSON = await page.$eval('body > div > div > pre', e => e.innerText);
         let credentials = JSON.parse(credentialsJSON.replace(/'/g, '"'));
         await browser.close();
@@ -151,9 +147,7 @@ function collectionRunner(url, collection_path, environment_path) {
 }
 
 function main(args) {
-    nhsIdLogin(
-        args['<username>'],
-        args['<password>'],
+    nhsIdLogin(        
         args['<token_app_url>'],
         collectionRunner(
             args['<environment_url>'],
