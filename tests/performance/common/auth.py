@@ -2,14 +2,13 @@ import requests
 import json
 import asyncio
 import urllib.parse as urlparse
-import pyppeteer
 from urllib.parse import parse_qs
 from bs4 import BeautifulSoup
 
 # Move to parameters 
 BASE_URL = "https://internal-dev.api.service.nhs.uk"
 
-class Authenticator:
+class Auth:
 
     def __init__(self):
         self.session = requests.Session()

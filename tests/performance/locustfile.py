@@ -1,7 +1,7 @@
 import requests
 import json
 import urllib.parse as urlparse
-from authenticator import Authenticator
+from common.auth import Auth
 from urllib.parse import parse_qs
 from locust import HttpUser, task, between
 
@@ -9,7 +9,7 @@ class PersonalDemographicsUser(HttpUser):
     wait_time = between(5, 9)
 
     def on_start(self):
-        authenticator = Authenticator()
+        authenticator = Auth()
         self.credentials = authenticator.login()
         self.headers = { 
             "Authorization": self.credentials["token_type"] + " " + self.credentials["access_token"],
