@@ -14,6 +14,7 @@ from jsonpath_rw import parse
 from format_examples import (
     format_patient,
     slim_patient,
+    minimal_patient,
     sensitive_patient,
     related_person_reference_only,
     related_person_no_reference,
@@ -26,13 +27,15 @@ EXAMPLE_TYPES = {
     "Patient": [
         {"type": "retrieval", "file_prefix": "", "slim_func": [format_patient]},
         {"type": "sensitive", "file_prefix": "Sensitive_", "slim_func": [sensitive_patient]},
+        {"type": "minimal", "file_prefix": "Minimal_", "slim_func": [format_patient, minimal_patient]}
     ],
     "PatientSearch": [
         {"type": "search", "file_prefix": "", "slim_func": [slim_patient]},
         {"type": "sensitive", "file_prefix": "Sensitive_", "slim_func": [
             slim_patient,
             sensitive_patient
-        ]}
+        ]},
+        {"type": "minimal", "file_prefix": "Minimal_", "slim_func": [slim_patient, minimal_patient]}
     ],
     "RelatedPerson": [
         {"type": "retrieval", "file_prefix": "", "slim_func": [remove_list_id]},

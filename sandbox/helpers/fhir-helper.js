@@ -24,7 +24,7 @@ module.exports = {
      */
     createAcceptedResponse: function(h, messageId) {
         const response = h.response(null);
-        response.header('content-location', "/Polling/" + messageId);
+        response.header('content-location', "/_poll/" + messageId);
         response.header('retry-after', 100);
         response.code(202)
         return response;
