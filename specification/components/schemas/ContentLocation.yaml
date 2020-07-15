@@ -1,4 +1,4 @@
 description: Polling location of the update
 schema:
   type: string
-  example: /Polling/20200522091633363041_461139_1524772598
+  example: /_poll/20200522091633363041_461139_1524772598

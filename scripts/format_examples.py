@@ -65,6 +65,15 @@ def _format_contact(resource, key):
     return resource[key]
 
 
+def _process_whitelist(resource, whitelist):
+    """ Process a whitelist of keys """
+    new_resource = {}
+    for key, value in resource.items():
+        if key in whitelist:
+            new_resource[key] = value
+    return new_resource
+
+
 def _process_blacklist(resource, blacklist):
     """ Process a blacklist of keys """
     new_resource = {}
@@ -99,6 +108,19 @@ def format_patient(resource):
     for key, func in formatters.items():
         resource[key] = func(resource, key)
     return resource
+
+
+def minimal_patient(resource):
+    """
+    Remove all but the mandatory details on the patient
+    """
+    whitelist = {
+        "id",
+        "identifier",
+        "meta",
+        "resourceType"
+    }
+    return _process_whitelist(resource, whitelist)
 
 
 def slim_patient(resource):
