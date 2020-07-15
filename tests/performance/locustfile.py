@@ -27,6 +27,6 @@ class PersonalDemographicsUser(HttpUser):
   
     @task(1)
     def pds_api(self):
-        self.client.get("/personal-demographics/Patient/5900018512", headers=self.headers)
+        self.client.get("/personal-demographics-APM-620-rate-limiting/Patient/5900018512", headers=self.headers)
 
 
