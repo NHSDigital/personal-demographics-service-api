@@ -29,3 +29,4 @@ class PersonalDemographicsUser(HttpUser):
     def pds_api(self):
         self.client.get("/personal-demographics/Patient/5900018512", headers=self.headers)
 
+
