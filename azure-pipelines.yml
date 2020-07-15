@@ -89,6 +89,9 @@ jobs:
       - bash: "make release"
         displayName: Build Release Package
 
+      - bash: "cp ecs-proxies-deploy.yml dist/ecs-deploy-all.yml"
+        displayName: copy proxies deployment config
+
       - template: az/build-prereqs.yml@utils
 
       - template: az/create-build-env-vars.yml@utils
@@ -104,7 +107,7 @@ jobs:
         parameters:
           env_vars_dir: 'dist'
 
-
       - publish: dist/
         artifact: personal-demographics-service-$(SPEC_VERSION)+$(Build.BuildNumber)
+
 
