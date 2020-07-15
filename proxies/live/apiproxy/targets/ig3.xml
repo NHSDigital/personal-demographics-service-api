@@ -9,7 +9,6 @@
       <Step>
         <Name>OauthV2.VerifyAccessToken</Name>
       </Step>
-        <PreFlow>
       <Step>
         <Name>Quota</Name>
       </Step>

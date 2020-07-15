@@ -24,7 +24,6 @@ class PersonalDemographicsUser(HttpUser):
             "NHSD-Identity-UUID": "1234567890",
             "NHSD-Session-URID": "1234567890",
         }
-    
   
     @task(1)
     def pds_api(self):
