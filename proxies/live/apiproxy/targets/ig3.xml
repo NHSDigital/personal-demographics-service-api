@@ -10,10 +10,7 @@
         <Name>OauthV2.VerifyAccessToken</Name>
       </Step>
       <Step>
-        <Name>Quota</Name>
-      </Step>
-      <Step>
-        <Name>SpikeArrest</Name>
+        <Name>FlowCalloutRateLimit</Name>
       </Step>
       <Step>
         <Name>AssignMessage.AddUserIdHeader</Name>
