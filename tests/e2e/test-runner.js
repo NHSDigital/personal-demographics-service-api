@@ -56,7 +56,8 @@ function nhsIdLogin(login_url, callback) {
     (async () => {
         console.log("Oauth journey on " + login_url);
         const browser = await puppeteer.launch({ headless: true });
-        const page = await retry(async () => { return await gotoLogin(browser, login_url); }, 3);                
+        const page = await retry(async () => { return await gotoLogin(browser, login_url); }, 3);       
+        await page.waitForSelector('body > div > div > pre', {timeout: 30000})
         let credentialsJSON = await page.$eval('body > div > div > pre', e => e.innerText);
         let credentials = JSON.parse(credentialsJSON.replace(/'/g, '"'));
         await browser.close();
