@@ -126,9 +126,9 @@ info:
     For more details on sandbox testing, or to try out the sandbox using our "Try this API" feature, see the documentation for each endpoint.
 
     Alternatively, you can try out the sandbox using our Postman collection:
-
-    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
     
+    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
+
     ### Download Postman client
 
     If you don’t have it, you can download Postman [here](https://www.postman.com).   
@@ -324,9 +324,9 @@ paths:
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
-
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
         
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
+
         ### Download Postman client
 
         If you don’t have it, you can download Postman [here](https://www.postman.com).   
@@ -600,9 +600,9 @@ paths:
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
-
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
         
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
+              
         ### Download Postman client
 
         If you don’t have it, you can download Postman [here](https://www.postman.com).   
@@ -1298,9 +1298,9 @@ paths:
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
-
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
         
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
+
         ### Download Postman client
 
         If you don’t have it, you can download Postman [here](https://www.postman.com).   
@@ -1475,22 +1475,24 @@ paths:
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
-
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
         
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
+
         ### Download Postman client
 
-        If you don’t have it, you can download Postman [here](https://www.postman.com)
+        If you don’t have it, you can download Postman [here](https://www.postman.com).   
+    
         Click on the download button in the top right corner and follow the instructions.
 
         ### Download our collection
 
         If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
+    
         Postman client should then open showing our Patient Demographics Sandbox.
 
         If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
 
-               
+       
       summary: "Retrieve a list of Related Person resources for a given patient"
       operationId: get-related-people
       tags:
@@ -1612,7 +1614,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
         
         ### Download Postman client
 
