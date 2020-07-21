@@ -57,7 +57,7 @@ info:
     ## API status and roadmap
     The search and retrieve endpoints are in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
     - we might make breaking changes, but only if we can't avoid it, and we'll give advance notice
-    - we can't guarantee availability or performance
+    - we can't guarantee availability or performance.
 
     The update endpoint is in [alpha](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status) - expect further breaking changes.
 
@@ -179,7 +179,7 @@ servers:
 tags:
   - name: patients
   - name: polling
-  - name: relatedperson
+  - name: relatedperson 
 paths:
   /Patient:
     parameters:
