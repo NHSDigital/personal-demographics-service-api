@@ -1,9 +1,5 @@
 import os
-import requests
-import json
-import urllib.parse as urlparse
 from common.auth import Auth
-from urllib.parse import parse_qs
 from locust import HttpUser, task, between
 
 class PersonalDemographicsUser(HttpUser):
@@ -12,11 +8,14 @@ class PersonalDemographicsUser(HttpUser):
     def auth(self):
         return Auth(
             os.environ["LOCUST_HOST"],
-            os.environ["APIGEE_ENVIRONMENT"],
-            os.environ["API_KEY"]
+            os.environ["TEST_APP"],
+            os.environ["CLIENT_ID"],
+            os.environ["CLIENT_SECRET"]
         )
 
     def on_start(self):
+        self.base_path = os.environ["BASE_PATH"]
+        self.patient_search = os.environ["PATIENT_SEARCH"]
         authenticator = self.auth()
         self.credentials = authenticator.login()
         self.headers = { 
@@ -27,6 +26,6 @@ class PersonalDemographicsUser(HttpUser):
   
     @task(1)
     def pds_api(self):
-        self.client.get("/personal-demographics-APM-620-rate-limiting/Patient/5900018512", headers=self.headers)
+        self.client.get(f"{self.base_path}/Patient/{self.patient_search}", headers=self.headers)
 
 

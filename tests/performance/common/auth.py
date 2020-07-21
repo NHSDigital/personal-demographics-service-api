@@ -7,28 +7,29 @@ from bs4 import BeautifulSoup
 
 class Auth:
 
-    def __init__(self, url, env, api_key):
+    def __init__(self, url, testing_url, client_id, client_secret):
         self.session = requests.Session()
         self.base_url = url
-        self.env = env
-        self.api_key = api_key
+        self.testing_url = testing_url
+        self.client_id = client_id
+        self.client_secret = client_secret
 
     def login(self):
         state = self.get_state()
-        credentials = self.get_access_token(state)
-        return credentials
+        code = self.get_auth_code(state)
+        self.get_access_token(code, state)
 
     def get_state(self):
-        url = f"{self.base_url}/oauth2/authorize?client_id={self.api_key}&redirect_uri=https%3A%2F%2Fnhsd-apim-testing-{self.env}.herokuapp.com%2Fcallback&response_type=code&state=1234567890"
+        url = f"{self.base_url}/oauth2/authorize?client_id={self.client_id}&redirect_uri={self.testing_url}/callback&response_type=code&state=1234567890"
         response = self.session.get(url)
         parsed = urlparse.urlparse(response.url)
         return parse_qs(parsed.query)['state'][0]
 
-    def get_access_token(self, state):
-        url = f"{self.base_url}/oauth2/simulated_auth?response_type=code&client_id=some-client-id&redirect_uri={self.base_url}/callback&scope=openid&state={state}"
+    def get_auth_code(self, state):
+        url = f"{self.base_url}/oauth2/simulated_auth?response_type=code&client_id={self.client_id}&redirect_uri={self.base_url}/callback&scope=openid&state={state}"
         headers = {
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-            "Accept-Encoding": "gzip,deflate,br",
+            "Accept": "*/*",
+            "Accept-Encoding": "gzip,deflate",
             "Cache-Control": "no-cache",
             "Content-Type": "application/x-www-form-urlencoded",
         }
@@ -36,8 +37,23 @@ class Auth:
             "state": state
         }
         response = self.session.post(url, data=payload, headers=headers)
-        soup = BeautifulSoup(response.text, features="html.parser")
-        credentials = soup.find('pre').text
-        credentials = credentials.replace("\'", "\"")
-        return json.loads(credentials)
-        
+        parsed = urlparse.urlparse(response.url)
+        code = parse_qs(parsed.query)["code"][0]
+        return code
+
+    def get_access_token(self, code, state):
+        url = f"{self.base_url}/oauth2/token"
+        headers = {
+            "Content-Type": "application/x-www-form-urlencoded",
+        }
+        payload = {
+            "grant_type": "authorization_code",
+            "code": code,
+            "redirect_uri": f"{self.base_url}/callback",
+            "client_id": self.client_id,
+            "client_secret": self.client_secret
+        }
+        response = self.session.post(url, data=payload, headers=headers)
+        print(response.status_code)
+        print(response.url)
+        print(response.text)
