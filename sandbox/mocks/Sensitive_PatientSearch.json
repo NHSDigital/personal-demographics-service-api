@@ -1,1 +1,83 @@
-../../specification/components/examples/Sensitive_PatientSearch.json
+{
+  "birthDate": "2005-06-16",
+  "deceasedDateTime": "2005-06-16T00:00:00+00:00",
+  "extension": [
+    {
+      "extension": [
+        {
+          "url": "deathNotificationStatus",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "code": "2",
+                "display": "Formal - death notice received from Registrar of Deaths",
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-DeathNotificationStatus",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        },
+        {
+          "url": "systemEffectiveDate",
+          "valueDateTime": "2005-06-16T00:00:00+00:00"
+        }
+      ],
+      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus"
+    }
+  ],
+  "gender": "female",
+  "id": "9000000025",
+  "identifier": [
+    {
+      "extension": [
+        {
+          "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "code": "01",
+                "display": "Number present and verified",
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        }
+      ],
+      "system": "https://fhir.nhs.uk/Id/nhs-number",
+      "value": "9000000025"
+    }
+  ],
+  "meta": {
+    "security": [
+      {
+        "code": "R",
+        "display": "restricted",
+        "system": "https://www.hl7.org/fhir/valueset-security-labels.html"
+      }
+    ],
+    "versionId": "2"
+  },
+  "multipleBirthInteger": 1,
+  "name": [
+    {
+      "family": "Smythe",
+      "given": [
+        "Janet"
+      ],
+      "id": "123",
+      "period": {
+        "end": "2021-12-31",
+        "start": "2020-01-01"
+      },
+      "prefix": [
+        "Mrs"
+      ],
+      "suffix": [
+        "MBE"
+      ],
+      "use": "usual"
+    }
+  ],
+  "resourceType": "Patient"
+}

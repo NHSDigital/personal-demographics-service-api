@@ -7,7 +7,7 @@ COPY package*.json ./
 RUN npm install --only=production
 
 COPY src/ ./
-COPY mocks/ ./
+COPY mocks/ mocks
 RUN chmod -R a+x /app
 
 USER nobody
