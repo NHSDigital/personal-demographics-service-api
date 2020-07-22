@@ -8,7 +8,7 @@ class PersonalDemographicsUser(HttpUser):
     def auth(self):
         return Auth(
             os.environ["LOCUST_HOST"],
-            os.environ["TEST_APP"],
+            os.environ["CALLBACK_URL"],
             os.environ["CLIENT_ID"],
             os.environ["CLIENT_SECRET"]
         )
