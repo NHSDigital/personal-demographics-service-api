@@ -1,6 +1,6 @@
 
 docker_containers:
 
-  - name: sandbox
+  - name: pds-sandbox
     dockerfile: "sandbox/Dockerfile"
     path: "sandbox"

@@ -4,7 +4,7 @@
 
 docker_service:
 
-  - name: sandbox
+  - name: pds-sandbox
     expose: true
     health_check:
       matcher: "200"
