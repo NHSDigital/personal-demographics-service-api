@@ -31,7 +31,6 @@ jsonpath-rw = "^1.4.0"
 semver = "^2.10.2"
 gitpython = "^3.1.7"
 requests = "^2.24.0"
-beautifulsoup4 = "^4.9.1"
 
 
 [tool.poetry.dev-dependencies]
