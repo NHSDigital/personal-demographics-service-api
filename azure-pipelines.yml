@@ -55,7 +55,7 @@ jobs:
 
       - bash: "python -m pip install --upgrade pip setuptools wheel && pip install poetry"
         displayName: Install python dependencies
-        
+
       - bash: "make install"
         displayName: Install repo
 
