@@ -1,5 +1,12 @@
 # Performance Testing
 
+## Install dependancies
+
+* To install the project dependancies:  
+    * ```$ poetry install```
+
+## Locust parameters
+
 * To run the performance tests against a particular service or API the tests need some configuration.
 * In order to run the tests it requires some values to run:
     * HOST: Which is the domain in which you intend to run against e.g. "https://nhsd-apim-testing.com"
