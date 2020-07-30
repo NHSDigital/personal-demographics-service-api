@@ -1,1 +1,158 @@
-../../specification/components/examples/RelatedPerson.json
+{
+  "active": true,
+  "address": [
+    {
+      "extension": [
+        {
+          "extension": [
+            {
+              "url": "type",
+              "valueCoding": {
+                "code": "PAF",
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-AddressKeyType"
+              }
+            },
+            {
+              "url": "value",
+              "valueString": "12345678"
+            }
+          ],
+          "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-AddressKey"
+        }
+      ],
+      "line": [
+        "1 Trevelyan Square",
+        "Boar Lane",
+        "City Centre",
+        "Leeds",
+        "West Yorkshire"
+      ],
+      "period": {
+        "end": "2021-12-31",
+        "start": "2020-01-01"
+      },
+      "postalCode": "LS1 6AE",
+      "use": "home"
+    }
+  ],
+  "extension": [
+    {
+      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-CopyCorrespondenceIndicator",
+      "valueBoolean": true
+    },
+    {
+      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactRank",
+      "valuePositiveInt": 1
+    },
+    {
+      "extension": [
+        {
+          "url": "PreferredWrittenCommunicationFormat",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "code": "12",
+                "display": "Braille",
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-PreferredWrittenCommunicationFormat"
+              }
+            ]
+          }
+        },
+        {
+          "url": "PreferredContactMethod",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "code": "1",
+                "display": "Letter",
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-PreferredContactMethod"
+              }
+            ]
+          }
+        },
+        {
+          "url": "PreferredContactTimes",
+          "valueString": "Not after 7pm"
+        }
+      ],
+      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference"
+    },
+    {
+      "extension": [
+        {
+          "url": "language",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "code": "fr",
+                "display": "French",
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage",
+                "version": "1.0.0"
+              }
+            ]
+          }
+        },
+        {
+          "url": "interpreterRequired",
+          "valueBoolean": true
+        }
+      ],
+      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication"
+    }
+  ],
+  "id": "507B7621",
+  "name": [
+    {
+      "family": "Smith",
+      "given": [
+        "Jane"
+      ],
+      "period": {
+        "end": "2021-12-31",
+        "start": "2020-01-01"
+      },
+      "prefix": [
+        "Mrs"
+      ],
+      "suffix": [
+        "MBE"
+      ],
+      "use": "usual"
+    }
+  ],
+  "patient": {
+    "identifier": {
+      "system": "https://beta.api.digital.nhs.uk/personal-demographics/Patient",
+      "value": "90000000009"
+    },
+    "reference": "https://beta.api.digital.nhs.uk/personal-demographics/Patient/90000000009",
+    "type": "Patient"
+  },
+  "period": {
+    "end": "2021-12-31",
+    "start": "2020-01-01"
+  },
+  "relationship": [
+    {
+      "coding": [
+        {
+          "code": "Guardian",
+          "display": "Guardian of patient",
+          "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole"
+        }
+      ]
+    }
+  ],
+  "resourceType": "RelatedPerson",
+  "telecom": [
+    {
+      "period": {
+        "end": "2021-12-31",
+        "start": "2020-01-01"
+      },
+      "system": "phone",
+      "use": "work",
+      "value": "01632960587"
+    }
+  ]
+}
