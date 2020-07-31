@@ -1085,7 +1085,7 @@ paths:
         When updating an address, lines 1 or 2, and line 4 must be populated; line 5 should not be included in manually created addresses but may be included in PAF derived addresses.
 
         Address lines should be populated otherwise the message may be rejected. There are exceptions:
-        * if a postcode and PAF key are submitted, in which case the lines will be automatically populated, however if there are no matches or too many matches they message will be rejected due to missing address lines.
+        * if a postcode and PAF key are submitted, in which case the lines will be automatically populated, however if there are no matches or too many matches the message will be rejected due to missing address lines.
         * a pseudo postcode is used. For example `ZZ99 3VZ` meaning `no fixed abode`.
 
         When creating the FHIR payload message, to be fully FHIR compliant all empty lines should be removed, so for example:
@@ -1148,7 +1148,7 @@ paths:
         * `work` address `use` type is a valid response but cannot be added or replaced as it is a legacy value. An address with the `work` type can be removed though.
         * any `temp` address must have both a `business effective from` and a `business effective to` date. The provision of a business effective to date has particular importance in order to avoid temporary addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual business effective to is known is 30 days later than the business effective from, up to a maximum of 3 months.
         * any `billing` address must have both a `business effective from` and a `business effective to` date. The provision of a business effective to date has particular importance in order to avoid correspondence addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual business effective to is known is 30 days later than the business effective from, up to a maximum of 12 months.
-        * the date period is optional; where present they must a be valid dates and the `end` date cannot be before the `start` date.
+        * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
         * the business effective `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
 
         Valid pseudo postcodes are:
@@ -1278,7 +1278,7 @@ paths:
         There are a number of business rules that should be taken into account:
         * in any telecom child object the `use` key should not be present.
         * in any telecom child object the system cannot be `fax`.
-        * the date period is optional; where present they must a be valid dates and the `end` date cannot be before the `start` date.
+        * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
         * the business effective `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
         * the date period, if present, should be on the parent `contact` object and not any `telecom` child objects.
 
@@ -1338,7 +1338,7 @@ paths:
         * can have multiple instances of all other name use types.
         * cannot replace the use type on an existing name. For example, once a name is a nickname, it cannot be changed directly to an alias. You must instead remove the nickname and add the alias.
         * the first character of each `suffix` item must be `A-Z`.
-        * the date period is optional; where present they must a be valid dates and the `end` date cannot be before the `start` date.
+        * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
         * the business effective `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
         * supplied name data must be UTF-8 encodable.
         * the `period` is optional, but if included the `end` date cannot be before the `start` date. They can however be in the past, present or future.
@@ -1391,7 +1391,7 @@ paths:
         Emergency contact details should not be added to the `telecom` field, instead they should be added to the `contact` field.
 
         There are a number of business rules that should be taken into account:
-        * the date period is optional; where present they must a be valid dates and the `end` date cannot be before the `start` date.
+        * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
         * the business effective `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
 
         ## Sandbox test scenarios
