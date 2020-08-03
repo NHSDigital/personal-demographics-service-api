@@ -1326,6 +1326,7 @@ paths:
         url: https://tools.ietf.org/html/rfc6902
       parameters:
         - $ref: '#/components/parameters/IfMatch'
+        - $ref: '#/components/parameters/CorrelationID'
       requestBody:
         required: true
         content:
@@ -1791,6 +1792,17 @@ components:
         type: string
         format: '^Bearer\ [[:ascii:]]+$'
         example: 'Bearer g1112R_ccQ1Ebbb4gtHBP1aaaNM'
+    CorrelationID:
+      in: header
+      name: NHSD-Correlation-ID
+      required: true
+      description:
+        A unique identifer should be created when making a request, this will assist with any problems that may occur and should be included when an issue is raised with the helpdesk.
+
+        It is recommended that the identifer is a universally unique identifier (UUID) version 4 with the alphabetic characters upper-cased.
+      schema:
+        type: string
+        example: 60E0B220-8136-4CA5-AE46-1D97EF59D068
   schemas:
     Patient:
       $ref: components/schemas/Patient.yaml
