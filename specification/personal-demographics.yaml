@@ -1074,19 +1074,19 @@ paths:
         * `/address/0` if the address to be replaced or removed is the first item in the list. If it is the second item in the list the path will be `/address/1`, and so on.
         * `/address/-` when adding a new address.
 
-        An Address consists of 5 lines of unstructured text, postcode and PAF (Postcode Address File) key.
+        An address consists of 5 lines of unstructured text, postcode and PAF (Postcode Address File) key.
         Local systems must apply the following formatting convention when adding or replacing addresses lines:
         *	Line 1 - premises ID and/or house name, e.g. `Flat 1` or `The Old Schoolhouse`
         *	Line 2 - house number, dependent thoroughfare name and descriptor (if present), thoroughfare name and descriptor, e.g. `23 Mill Lane`
         *	Line 3 - dependent locality/village, locality (if present), e.g. `Boxgrove`
         *	Line 4 - post town, e.g. `Leeds`
-        *	Line 5 - county (if present), e.g. `West Yorkshire`.
+        *	Line 5 - county (if present), e.g. `West Yorkshire`
 
         When updating an address, lines 1 or 2, and line 4 must be populated; line 5 should not be included in manually created addresses but may be included in PAF derived addresses.
 
         Address lines should be populated otherwise the message may be rejected. There are exceptions:
-        * if a postcode and PAF key are submitted, in which case the lines will be automatically populated, however if there are no matches or too many matches the message will be rejected due to missing address lines.
-        * a pseudo postcode is used. For example `ZZ99 3VZ` meaning `no fixed abode`.
+        * if a postcode and PAF key are submitted, in which case the lines will be automatically populated, however if there are no matches or too many matches the message will be rejected due to missing address lines
+        * a pseudo postcode is used. For example `ZZ99 3VZ` meaning `no fixed abode`
 
         When creating the FHIR payload message, to be fully FHIR compliant all empty lines should be removed, so for example:
         
@@ -1096,7 +1096,7 @@ paths:
                 "line": [
                     "",
                     "23 Mill Lane",
-                    ""
+                    "",
                     "Leeds",
                     ""
                 ]
@@ -1105,7 +1105,7 @@ paths:
         }
         ```
 
-        should be send in as:
+        should be sent in as:
 
         ```json
                 {
@@ -1125,9 +1125,9 @@ paths:
         If the PAF key is not included it will be added to the address if a match can be found, additionally the provided address lines and post code will be enriched and reformatted if necessary.
 
         The following address types are supported:
-        * `home` - the home address is the patient’s normal residence. Home address is also known as `usual`, `main`, `registered`, `current` or `permanent` address.
-        * `temp` - a temporary address is an address used for a set period of time, but where the patient's home, permanent address remains unchanged.
-        * `billing` - an address used for correspondence purposes only.
+        * `home` - the home address is the patient’s normal residence. Home address is also known as usual, main, registered, current or permanent address
+        * `temp` - a temporary address is an address used for a set period of time, but where the patient's home, permanent address remains unchanged
+        * `billing` - an address used for correspondence purposes only
 
         A patient should have no more than one current `temp` and/or `billing` address.
         However, this is constrained only by the integration requirements and is not enforced so theoretically more than one can exist for a patient.
