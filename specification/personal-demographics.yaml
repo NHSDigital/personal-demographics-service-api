@@ -40,7 +40,7 @@ info:
     Unauthenticated access and citizen access are on the roadmap.
 
     ## Legal use
-    This API can only be used where there is a legal basis to do so. You should [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) before you go too far with your development.
+    This API can only be used where there is a [legal basis](http://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) to do so. You should [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) before you go too far with your development.
     
     You must have made this request before you can go live (see ‘Onboarding’ below).
 
@@ -55,23 +55,17 @@ info:
     - [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) - use this to get full details for the organisations related to the patient, such as their registered GP or nominated pharmacy.
 
     ## API status and roadmap
-    The search and retrieve endpoints are in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
+    This API is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
     - we might make breaking changes, but only if we can't avoid it, and we'll give advance notice
     - we can't guarantee availability or performance
 
-    The update endpoint is in [alpha](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status) - expect further breaking changes.
-
-    The API is currently available for sandbox testing and integration testing, but not for production use.
-
     The following items are on our roadmap, in rough priority order:
     - addition of data fields for consent information
-    - production service - beta - update patient (target date: end of July)
-    - unauthenticated access - without NHS smartcard - similar to the PDS SMSP API (target date to be confirmed - please [contact us](https://digital.nhs.uk/developer/help-and-support) for more details)
-    - access for citizens using NHS Login (target date to be confirmed - please [contact us](https://digital.nhs.uk/developer/help-and-support) for more details)
-    - exit beta (target date: end of September 2020, subject to availability of beta testers)
+    - unauthenticated access - without NHS smartcard - similar to the PDS SMSP API
+    - access for citizens using NHS Login
+    - exit beta
 
-    We are extremely keen to receive feedback on the API during beta,
-    for example if there are data fields missing that you think you need.
+    We are extremely keen to receive feedback on the API during beta, for example if there are data fields missing that you think you need.
     Please [contact us](https://digital.nhs.uk/developer/help-and-support) with any comments or suggestions.
 
     ## Technology
