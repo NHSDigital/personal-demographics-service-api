@@ -71,7 +71,6 @@ def _format_address(resource, key):
     """
     addresses = resource.pop(key)
 
-
     resource[key] = []
     for addr in addresses:
         temp_address = None
@@ -241,7 +240,6 @@ def remove_list_id(resource):
 
     formatters = {
         "telecom": _format_telecom,
-        "address": _format_address,
         "address": _slim_address
     }
 
