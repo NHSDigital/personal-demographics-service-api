@@ -91,7 +91,7 @@ info:
     - a healthcare professional
     - strongly authenticated, using either an NHS smartcard or a modern alternative
 
-    The API uses Open ID Connect to authenticate the end user and OAuth 2.0 to authorise the calling system.
+    The API uses OAuth 2.0 to authorise the calling system.
     It supports the following security patterns:
     * user-restricted RESTful API - using NHS Identity - combined authentication and authorisation
     * user-restricted RESTful API - using NHS Identity - separate authentication and authorisation
@@ -1777,7 +1777,7 @@ components:
       in: header
       name: Authorization
       description: |
-        An OAuthV2 access token presented in Bearer format.
+        An [OAuth 2.0 bearer token](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis).
 
         Note: This parameter is required unless interacting with the Sandbox.
       required: false
