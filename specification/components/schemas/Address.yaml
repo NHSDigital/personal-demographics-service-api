@@ -20,9 +20,42 @@ properties:
       * billing - a corresponding address nominated by the patient where communication can be sent.
     enum: [home, work, temp, billing]
     example: home
+  text:
+    type: string
+    description: |
+      Where a `temp` address is provided a descriptor text must be sent.
+      The list of possible values is:
+      * `Second Home` - a patient's second home
+      * `Student Accommodation` - a patient's place of residence while at university
+      * `Respite Care Address` - where the patient resides during respite care
+      * `Temporary Residence Address` - where the patient resides for a specific period of time
+      * `Convalescence Home` - the address for a patient during a period of recovery
+      * `Mobile Home` - the address of a patient's mobile home, parked for a specific period of time, e.g. the address of a caravan park
+      * `Holiday Home` - the address for a patient during a holiday
+      
+      A patient can also register temporarily at a GP practice using a temporary address. Temporary GP registration information will not appear on the PDS, but the address used for it may.
+    enum:
+      - Second Home
+      - Student Accommodation
+      - Respite Care Address
+      - Temporary Residence Address
+      - Convalescence Home
+      - Mobile Home
+      - Holiday Home
+    example: Student Accommodation
   line:
     type: array
-    description: All lines of the address except the postal code.
+    description: |
+      All lines of the address except the postal code.
+
+      Systems must apply the following formatting convention when adding or replacing addresses lines:
+      *	line 1 - premises ID and/or house name, e.g. `Flat 1` or `The Old Schoolhouse`
+      *	line 2 - house number, dependent thoroughfare name and descriptor (if present), thoroughfare name and descriptor, e.g. `23 Mill Lane`
+      *	line 3 - dependent locality/village, locality (if present), e.g. `Boxgrove`
+      *	line 4 - post town, e.g. `Leeds`
+      *	line 5 - county (if present), e.g. `West Yorkshire`
+
+      If any of the lines are blank, they will not be returned due to FHIR conformance constraints.
     maxItems: 5
     items:
       type: string

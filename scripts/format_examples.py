@@ -65,6 +65,33 @@ def _format_contact(resource, key):
     return resource[key]
 
 
+def _format_address(resource, key):
+    """
+    Return the address field with the correct values.
+    """
+    addresses = resource.pop(key)
+
+
+    resource[key] = []
+    for addr in addresses:
+        temp_address = None
+        if addr["use"] == "home":
+            temp_address = deepcopy(addr)
+            temp_address["use"] = "temp"
+            if "id" in temp_address:
+                temp_address["id"] = "T{}".format(temp_address["id"])
+
+            # Remove 'text' from the home address as it should not have
+            # a description.
+            del addr["text"]
+
+        resource[key].append(addr)
+        if temp_address:
+            resource[key].append(temp_address)
+
+    return resource[key]
+
+
 def _process_whitelist(resource, whitelist):
     """ Process a whitelist of keys """
     new_resource = {}
@@ -85,6 +112,8 @@ def _process_blacklist(resource, blacklist):
 
 def _slim_address(resource, key):
     """ Only return the "home" address """
+    address = _format_address(resource, key)
+    resource[key] = address
     return [addr for addr in resource[key] if addr["use"] == "home"]
 
 
@@ -103,6 +132,7 @@ def format_patient(resource):
     formatters = {
         "telecom": _format_telecom,
         "contact": _format_contact,
+        "address": _format_address,
     }
 
     for key, func in formatters.items():
@@ -210,7 +240,9 @@ def remove_list_id(resource):
     ]
 
     formatters = {
-        "telecom": _format_telecom
+        "telecom": _format_telecom,
+        "address": _format_address,
+        "address": _slim_address
     }
 
     for key in list_fields:
