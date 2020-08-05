@@ -1361,6 +1361,7 @@ paths:
         There are a number of business rules that should be taken into account:
         * multiple pharmacies are allowed, however only one of each type.
         * there are no effective date periods, only a single current instance of each type is supported.
+        * only valid National Pharmacy codes may be used for the pharmacy identifier, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes.
 
         ### Place of birth
 
