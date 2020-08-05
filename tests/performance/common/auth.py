@@ -3,6 +3,7 @@ import json
 import urllib.parse as urlparse
 from urllib.parse import parse_qs
 
+
 class Auth:
 
     def __init__(self, url, callback_url, client_id, client_secret):
@@ -19,13 +20,26 @@ class Auth:
         return self.get_access_token(code)
 
     def get_state(self):
-        url = f"{self.base_url}/oauth2/authorize?client_id={self.client_id}&redirect_uri={self.callback_url}&response_type=code&state=1234567890"
-        response = self.session.get(url)
+        url = f"{self.base_url}/oauth2/authorize"
+        params = {
+            "client_id": self.client_id,
+            "redirect_uri": self.callback_url,
+            "response_type": "code",
+            "state": "1234567890"
+        }
+        response = self.session.get(url, params=params)
         parsed = urlparse.urlparse(response.url)
         return parse_qs(parsed.query)['state'][0]
 
     def get_redirect_callback(self, state):
-        url = f"{self.base_url}/oauth2/simulated_auth?response_type=code&client_id=some-client-id&redirect_uri={self.base_url}/callback&scope=openid&state={state}"
+        url = f"{self.base_url}/oauth2/simulated_auth"
+        params = {
+            "response_type": "code",
+            "client_id": "some-client-id",
+            "redirect_uri": f"{self.base_url}/callback",
+            "scope": "openid",
+            "state": state
+        }
         headers = {
             "Accept": "*/*",
             "Accept-Encoding": "gzip,deflate",
@@ -36,7 +50,7 @@ class Auth:
         payload = {
             "state": state
         }
-        response = self.session.post(url, data=payload, headers=headers, allow_redirects=False)
+        response = self.session.post(url, params=params, data=payload, headers=headers, allow_redirects=False)
         redirect = response.headers['Location']
         return redirect
 

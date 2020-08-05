@@ -2,6 +2,7 @@ import os
 from common.auth import Auth
 from locust import HttpUser, task, between
 
+
 class PersonalDemographicsUser(HttpUser):
     wait_time = between(5, 9)
 
@@ -18,14 +19,12 @@ class PersonalDemographicsUser(HttpUser):
         self.patient_search = os.environ["PATIENT_SEARCH"]
         authenticator = self.auth()
         self.credentials = authenticator.login()
-        self.headers = { 
+        self.headers = {
             "Authorization": self.credentials["token_type"] + " " + self.credentials["access_token"],
             "NHSD-Identity-UUID": "1234567890",
             "NHSD-Session-URID": "1234567890",
         }
-  
+
     @task(1)
     def pds_api(self):
         self.client.get(f"{self.base_path}/Patient/{self.patient_search}", headers=self.headers)
-
-
