@@ -40,7 +40,7 @@ info:
     Unauthenticated access and citizen access are on the roadmap.
 
     ## Legal use
-    This API can only be used where there is a legal basis to do so. You should [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) before you go too far with your development.
+    This API can only be used where there is a [legal basis](http://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) to do so. You should [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) before you go too far with your development.
     
     You must have made this request before you can go live (see ‘Onboarding’ below).
 
@@ -55,23 +55,17 @@ info:
     - [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) - use this to get full details for the organisations related to the patient, such as their registered GP or nominated pharmacy.
 
     ## API status and roadmap
-    The search and retrieve endpoints are in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
+    This API is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
     - we might make breaking changes, but only if we can't avoid it, and we'll give advance notice
     - we can't guarantee availability or performance
 
-    The update endpoint is in [alpha](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status) - expect further breaking changes.
-
-    The API is currently available for sandbox testing and integration testing, but not for production use.
-
     The following items are on our roadmap, in rough priority order:
     - addition of data fields for consent information
-    - production service - beta - update patient (target date: end of July)
-    - unauthenticated access - without NHS smartcard - similar to the PDS SMSP API (target date to be confirmed - please [contact us](https://digital.nhs.uk/developer/help-and-support) for more details)
-    - access for citizens using NHS Login (target date to be confirmed - please [contact us](https://digital.nhs.uk/developer/help-and-support) for more details)
-    - exit beta (target date: end of September 2020, subject to availability of beta testers)
+    - unauthenticated access - without NHS smartcard - similar to the PDS SMSP API
+    - access for citizens using NHS Login
+    - exit beta
 
-    We are extremely keen to receive feedback on the API during beta,
-    for example if there are data fields missing that you think you need.
+    We are extremely keen to receive feedback on the API during beta, for example if there are data fields missing that you think you need.
     Please [contact us](https://digital.nhs.uk/developer/help-and-support) with any comments or suggestions.
 
     ## Technology
@@ -97,7 +91,7 @@ info:
     - a healthcare professional
     - strongly authenticated, using either an NHS smartcard or a modern alternative
 
-    The API uses Open ID Connect to authenticate the end user and OAuth 2.0 to authorise the calling system.
+    The API uses OAuth 2.0 to authorise the calling system.
     It supports the following security patterns:
     * user-restricted RESTful API - using NHS Identity - combined authentication and authorisation
     * user-restricted RESTful API - using NHS Identity - separate authentication and authorisation
@@ -126,8 +120,23 @@ info:
     For more details on sandbox testing, or to try out the sandbox using our "Try this API" feature, see the documentation for each endpoint.
 
     Alternatively, you can try out the sandbox using our Postman collection:
+    
+    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
 
-    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
+    ### Download Postman client
+
+    If you don’t have it, you can download Postman [here](https://www.postman.com).   
+    
+    Click on the download button in the top right corner and follow the instructions.
+
+    ### Download our collection
+
+    If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
+    
+    Postman client should then open showing our Patient Demographics Sandbox.
+
+    If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
+
 
     ### Integration testing
     Our [integration test environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing):
@@ -309,8 +318,24 @@ paths:
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
+        
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
+        ### Download Postman client
+
+        If you don’t have it, you can download Postman [here](https://www.postman.com).   
+    
+        Click on the download button in the top right corner and follow the instructions.
+
+        ### Download our collection
+
+        If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
+    
+        Postman client should then open showing our Patient Demographics Sandbox.
+
+        If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
+
+
       tags:
         - patients
       parameters:
@@ -558,18 +583,35 @@ paths:
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
 
-        | Scenario                 | Request                                           | Response                                                                       |
-        | ------------------------ | ------------------------------------------------- | ------------------------------------------------------------------------------ |
-        | Patient exists           | `id`=`9000000009`                                 | HTTP Status 200 with patient data in response                                  |
-        | Sensitive patient exists | `id`=`9000000025`                                 | HTTP Status 200 with patient data in response with the restricted data removed |
-        | Patient doesn't exist    | `id`=`9111231130` (or any other valid NHS Number) | HTTP Status 404 with problem description                                       |
-        | Invalid NHS Number       | `id`=`9000000000` (or any invalid NHS Number)     | HTTP Status 400 with problem description                                       |
+        | Scenario                         | Request                                           | Response                                                                                                                                      |
+        | -------------------------------- | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+        | Patient exists                   | `id`=`9000000009`                                 | HTTP Status 200 with patient data in response                                                                                                 |
+        | Sensitive patient exists         | `id`=`9000000025`                                 | HTTP Status 200 with patient data in response with the restricted data removed                                                                |
+        | Patient exists with minimal data | `id`=`9000000033`                                 | HTTP Status 200 with patient data in response, there will be very little data so can be used as an example of a patient with bad data quality |
+        | Patient doesn't exist            | `id`=`9111231130` (or any other valid NHS Number) | HTTP Status 404 with problem description                                                                                                      |
+        | Invalid NHS Number               | `id`=`9000000000` (or any invalid NHS Number)     | HTTP Status 400 with problem description                                                                                                      |
 
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
+        
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
+              
+        ### Download Postman client
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
+        If you don’t have it, you can download Postman [here](https://www.postman.com).   
+    
+        Click on the download button in the top right corner and follow the instructions.
+
+        ### Download our collection
+
+        If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
+    
+        Postman client should then open showing our Patient Demographics Sandbox.
+
+        If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
+
+        
       summary: "Retrieve a patient's resource"
       operationId: get-patient
       tags:
@@ -626,7 +668,9 @@ paths:
         Use this endpoint to update patient details in PDS.
 
         This is a 'patch' operation - you can update specific parts of the patient record, such as name or gender, without having to update the entire record.
-        The update is asynchronous - this endpoint returns a confirmation that your request has been received, along with a URL which you can poll to confirm that the update has completed.
+
+        The update process is asynchronous - if the request is accepted, a 202 response is returned with a polling URL in the `Content-Location` header.
+        Poll this URL for the outcome of the update. See the polling endpoint `/_poll/{message id}` for more details.
         
         See the overview page to understand what data can be updated with this API in its current form.
 
@@ -1016,6 +1060,52 @@ paths:
 
         ## Patient data fields
 
+        ### Address
+
+        List item found under `address` field.
+
+        In a JSON Patch request the path should be:
+        * `/address/0` if the address to be replaced or removed is the first item in the list. If it is the second item in the list the path will be `/address/1`, and so on.
+        * `/address/-` when adding a new address.
+
+        An Address consists of 5 lines of unstructured text, postcode and PAF (Postcode Address File) key.
+        Local systems must apply the following formatting convention when adding or replacing addresses lines:
+        *	Line 1 - premises ID and/or house name, e.g. `Flat 1` or `The Old Schoolhouse`
+        *	Line 2 - house number, dependent thoroughfare name and descriptor (if present), thoroughfare name and descriptor, e.g. `23 Mill Lane`
+        *	Line 3 - dependent locality/village, locality (if present), e.g. `Boxgrove`
+        *	Line 4 - post town, e.g. `Leeds`
+        *	Line 5 - county (if present), e.g. `West Yorkshire`.
+
+        When updating an address, lines 1 or 2, and line 4 must be populated; line 5 should not be included in vernacular addresses but may be included in PAF-derived addresses.
+
+        To ensure consistent data across all patient addresses it is advised that the address data supplied should be matched to the PAF and sent in that format including the PAF key.
+        If the PAF key is not included it will be added to the address if a match can be found, additionally the provided address lines and post code will be enriched and reformatted if necessary.
+
+        The following address types are supported:
+        * `home` - the home address is the patient’s normal residence. Home address is also known as `usual`, `main`, `registered`, `current` or `permanent` address.
+        * `temp` - a temporary address is an address used for a set period of time, but where the patient's home, permanent address remains unchanged.
+        * `billing` - an address used for correspondence purposes only.
+
+        A patient should have no more than one current `temp` and/or `billing` address.
+        However, this is constrained only by the integration requirements and is not enforced so theoretically more than one can exist for a patient.
+        Where multiple instances already exist for the patient it is not expected that local systems should manage those, but should choose the most appropriate one to maintain (e.g. by examining business effective dates).
+
+        A `home` address is the patient's main residential address and should normally be used for all clinical and demographic purposes, including clinical and appointment correspondence.
+        However additionally, `temp` and `billing` addresses may be provided by a patient when there is a requirement to record an alternative location for the purposes of unbroken care.
+        When sending correspondence to a patient:
+        *	a present and valid `billing` address may take precedence over `home` and `temp` addresses. A patient should have only a single current `billing` address. An address is considered 'valid' according to its business effective from and to dates.
+        *	if no current `billing` address is provided, a `temp` address may take precedence over the `home` address, again if it is valid according to its business effective from and to dates.
+        * if there is no valid, current `billing` and/or `temp` address, the `home` address must be used.
+
+        It should be noted that not all local systems support `temp` and `billing` addresses, so these are not uniformly maintained. Therefore, where the patient contact has clinical or business significance, the precedence of these addresses over the `home` address should be determined by a user wherever possible.
+        When the end date for a `temp` or `billing` address passes, local systems should use the patient’s `home` address. It will be extremely rare that no home address is present on a patient record.
+
+        There are a number of business rules that should be taken into account:
+        * cannot add more than one `home` address.
+        * `work` address `use` type is a valid response but cannot be added or replaced as it is a legacy value. An address with the `work` type can be removed though.
+        * any `temp` address must have both a `business effective from` and a `business effective to` date. The provision of a business effective to date has particular importance in order to avoid temporary addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual business effective to is known is 30 days later than the business effective from, up to a maximum of 3 months.
+        * any `billing` address must have both a `business effective from` and a `business effective to` date. The provision of a business effective to date has particular importance in order to avoid correspondence addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual business effective to is known is 30 days later than the business effective from, up to a maximum of 12 months.
+
         ### Communication
 
         Single item found under `extension` with the extension URL `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication`.
@@ -1187,6 +1277,7 @@ paths:
         Things to note when using the sandbox for PATCH:
         * Your changes will not be persisted.
         * JSON Patch operations themselves are validated, but the resulting resource is not validated for correctness; meaning any business rules are not applied.
+        * You can use the patient with minimal data, `9000000033` to test adding all data types (as most of them are missing on this patient), that would normally be present (e.g. gender).
 
         | Scenario                            | Request                                                                   | Response                                         |
         | ----------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------ |
@@ -1202,10 +1293,25 @@ paths:
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
+        
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
+        ### Download Postman client
+
+        If you don’t have it, you can download Postman [here](https://www.postman.com).   
+    
+        Click on the download button in the top right corner and follow the instructions.
+
+        ### Download our collection
+
+        If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
+    
+        Postman client should then open showing our Patient Demographics Sandbox.
+
+        If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
 
 
+        
       summary: Update a patient's resource
       operationId: update-patient-partial
       tags:
@@ -1364,8 +1470,24 @@ paths:
         You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
+        
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
+        ### Download Postman client
+
+        If you don’t have it, you can download Postman [here](https://www.postman.com).   
+    
+        Click on the download button in the top right corner and follow the instructions.
+
+        ### Download our collection
+
+        If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
+    
+        Postman client should then open showing our Patient Demographics Sandbox.
+
+        If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
+
+       
       summary: "Retrieve a list of Related Person resources for a given patient"
       operationId: get-related-people
       tags:
@@ -1455,7 +1577,7 @@ paths:
                           code: RESOURCE_NOT_FOUND
                           display: Resource not found
 
-  '/Polling/{message_id}':
+  '/_poll/{message_id}':
     parameters:
       - $ref: '#/components/parameters/MessageId'
       - $ref: '#/components/parameters/RoleId'
@@ -1467,7 +1589,7 @@ paths:
 
         When updating resources the request is dealt with in an asynchronous manner.
         
-        Once the initial request is accepted a `202` response will be returned with a `Content-Location` header, use this location to poll for the outcome. It will be in the form `/Polling/<message id>`.
+        Once the initial request is accepted a `202` response will be returned with a `Content-Location` header, use this location to poll for the outcome. It will be in the form `/_poll/<message id>`.
 
         Requests should be sent to the polling endpoint until a `202` response is no longer returned and the response is dealt with appropriately.
 
@@ -1487,7 +1609,23 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/97e8db28d4f7264446fe)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
+        
+        ### Download Postman client
+
+        If you don’t have it, you can download Postman [here](https://www.postman.com).   
+    
+        Click on the download button in the top right corner and follow the instructions.
+
+        ### Download our collection
+
+        If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
+    
+        Postman client should then open showing our Patient Demographics Sandbox.
+
+        If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
+       
+        
       summary: Retrieve the outcome of the accepted update. 
       operationId: polling
       tags:
@@ -1640,7 +1778,7 @@ components:
       in: header
       name: Authorization
       description: |
-        An OAuthV2 access token presented in Bearer format.
+        An [OAuth 2.0 bearer token](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis).
 
         Note: This parameter is required unless interacting with the Sandbox.
       required: false
