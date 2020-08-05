@@ -12,8 +12,8 @@
       <Step>
         <Name>Quota</Name>
       </Step>
-      <Step>
-        <Name>SpikeArrest</Name>
+      <Step>	
+        <Name>SpikeArrest</Name>	
       </Step>
       <Step>
         <Name>AssignMessage.AddUserIdHeader</Name>
