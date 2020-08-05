@@ -312,13 +312,13 @@ description = "Dump the software license list of Python packages installed with 
 name = "pip-licenses"
 optional = false
 python-versions = "~=3.5"
-version = "2.2.1"
+version = "2.3.0"
 
 [package.dependencies]
 PTable = "*"
 
 [package.extras]
-test = ["pytest-cov", "pytest-pycodestyle", "pytest-runner"]
+test = ["docutils", "pytest-cov", "pytest-pycodestyle", "pytest-runner"]
 
 [[package]]
 category = "main"
@@ -778,8 +778,8 @@ pathspec = [
     {file = "pathspec-0.7.0.tar.gz", hash = "sha256:562aa70af2e0d434367d9790ad37aed893de47f1693e4201fd1d3dca15d19b96"},
 ]
 pip-licenses = [
-    {file = "pip-licenses-2.2.1.tar.gz", hash = "sha256:8c0ebe582ba9ae29cde6486b7dd77d58d92200ae2cb67c11761356ffaceb47c1"},
-    {file = "pip_licenses-2.2.1-py3-none-any.whl", hash = "sha256:01e1a5bf14b33f9ba8bfa446a80fc857d47bc821c3a574aa442e41a84c21e00f"},
+    {file = "pip-licenses-2.3.0.tar.gz", hash = "sha256:630f7e1b51ac0751c9c218e2ed76bb982e769301510a0bcca0dd4a47d05198fd"},
+    {file = "pip_licenses-2.3.0-py3-none-any.whl", hash = "sha256:b3922fc71e819c1a155460116d2fcf15eca85a22ebe057cd1e1dedb951b1199f"},
 ]
 ply = [
     {file = "ply-3.11-py2.py3-none-any.whl", hash = "sha256:096f9b8350b65ebd2fd1346b12452efe5b9607f7482813ffca50c22722a807ce"},

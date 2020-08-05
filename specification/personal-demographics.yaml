@@ -146,9 +146,9 @@ info:
       
     For more details on these enhancements, see the API specification. 
          
-    For read-only testing, you can either use our [PDS FHIR API test data pack](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-api-test-data) or set up your own test data using our test data tool.
+    For read-only testing, you can either use our [PDS FHIR API test data packs](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-api-test-data) or set up your own test data using our Test Data Self-Service Portal (TDSSP).
     
-    To test updating patient details, you must set up your own test data.
+    To test updating patient details, you must set up your own test data using our Test Data Self-Service Portal (TDSSP).
 
     For more details see [integration testing with our RESTful APIs](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing-with-our-restful-apis).
 
