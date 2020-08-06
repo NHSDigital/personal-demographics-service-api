@@ -12,18 +12,18 @@ info:
     You can:
     * search for patients
     * get patient details
-    * get patient related people
+    * get a patient's related people
     * update patient details
 
     You cannot currently use this API to:
-    * check that you have the right NHS Number for a patient
+    * check that you have the right NHS Number for a patient (although you could achieve this indirectly using either search for patient or get patient details)
     * create a new record for a birth
     * receive birth notifications
     * create a record for a new patient
     * register a new patient at a GP Practice - instead, use [National Health Application and Infrastructure Services (NHAIS)](https://digital.nhs.uk/services/nhais/nhais-developer-document-library)
 
-    You can access the following data:
-    * NHS Number
+    You can access (read and update) the following data:
+    * NHS Number (read only)
     * name
     * gender
     * addresses and contact details (read only - update coming soon)
@@ -34,10 +34,10 @@ info:
     * dispensing doctor pharmacy
     * medical appliance supplier pharmacy
     * related people (read only - update coming soon)
-    * consent information (coming soon)
+    * consent to share information (coming soon)
 
     Currently, this API can only be accessed by healthcare professionals, authenticated with an NHS smartcard or equivalent.
-    Unauthenticated access and citizen access are on the roadmap.
+    Unauthenticated access and citizen access are on the [roadmap](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
 
     ## Legal use
     This API can only be used where there is a [legal basis](http://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) to do so. You should [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) before you go too far with your development.
@@ -59,14 +59,9 @@ info:
     - we might make breaking changes, but only if we can't avoid it, and we'll give advance notice
     - we can't guarantee availability or performance
 
-    The following items are on our roadmap, in rough priority order:
-    - addition of data fields for consent information
-    - unauthenticated access - without NHS smartcard - similar to the PDS SMSP API
-    - access for citizens using NHS Login
-    - exit beta
-
-    We are extremely keen to receive feedback on the API during beta, for example if there are data fields missing that you think you need.
-    Please [contact us](https://digital.nhs.uk/developer/help-and-support) with any comments or suggestions.
+    For details of our roadmap, or to suggest, comment or vote on features for this API, see our [interactive product backlog](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
+    
+    If you have any other queries, please [contact us](https://digital.nhs.uk/developer/help-and-support).
 
     ## Technology
     This API is [RESTful](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#basic-rest).
@@ -76,7 +71,7 @@ info:
 
     You don’t need to know much about FHIR to use this API - FHIR APIs are just RESTful APIs that follow specific rules.
     In particular:
-    - resource names are capitalised and singular, for example the `/Patient` not `/patients`
+    - resource names are capitalised and singular, for example `/Patient` not `/patients`
     - array names are singular, for example `line` not `lines` for address lines
     - data items that are country-specific and thus not included in the FHIR global base resources are usually wrapped in an `extension` object
 
@@ -101,6 +96,8 @@ info:
     In due course we plan to add the following:
     - access for citizens, using NHS Login
     - unattended access - without smartcard - similar to the PDS SMSP API
+    
+    For more details, see our [interactive product backlog](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
 
     ## Environments and testing
 
@@ -159,17 +156,10 @@ info:
     * In step 1: to confirm your use case for this API, you need to [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service), even if you already access PDS via another method.
     * In step 6: when implementing your clinical risk management process, you must review and integrate the PDS FHIR API hazard log into your own risk log. You’ll find it embedded within the PDS FHIR API tab in the SCAL.
     * In step 8: you need to review and complete the PDS FHIR API risk log to show that you have understood and mitigated the various risks. You might be asked to provide some evidence to prove that controls have been put in place. You’ll find the risk log embedded within the PDS FHIR API tab in the SCAL. This is separate from the clinical safety hazard log mentioned above.
-    * In step 9: you must conduct penetration testing to [CHECK standards](https://www.ncsc.gov.uk/information/check-penetration-testing)
+    * In step 9: you must conduct penetration testing to [CHECK standards](https://www.ncsc.gov.uk/information/check-penetration-testing).
     * In step 10: when you complete the Service Desk Registration Form, send it to [api.management@nhs.net](mailto:api.management@nhs.net).
     * In step 11: submit your completed SCAL to [api.management@nhs.net](mailto:api.management@nhs.net).
     * In step 14: to request production access, contact us at [api.management@nhs.net](mailto:api.management@nhs.net).
-
-    ## Endpoints
-    To see details for specific endpoints, select from the list on the left hand side of the page:
-    * `GET /Patient` - search for patients.
-    * `GET /Patient/{id}` - get patient's personal details.
-    * `GET /Patient/{id}/RelatedPerson` - get patient's related people details.
-    * `PATCH /Patient/{id}` - update patient's personal details.
 
   contact:
     name: Personal Demographics Service FHIR API Support
@@ -192,7 +182,7 @@ paths:
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
     get:
-      summary: Search for patient
+      summary: Search for a patient
       operationId: search-patient
       externalDocs:
         description: ODS codes and documentation.
@@ -610,7 +600,7 @@ paths:
         If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
 
         
-      summary: "Retrieve a patient's resource"
+      summary: "Get patient details"
       operationId: get-patient
       tags:
         - patients
@@ -1309,7 +1299,7 @@ paths:
 
 
         
-      summary: Update a patient's resource
+      summary: Update patient details
       operationId: update-patient-partial
       tags:
         - patients
@@ -1485,7 +1475,7 @@ paths:
         If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
 
        
-      summary: "Retrieve a list of Related Person resources for a given patient"
+      summary: "Get a patient's related people"
       operationId: get-related-people
       tags:
         - relatedperson
@@ -1623,7 +1613,7 @@ paths:
         If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
        
         
-      summary: Retrieve the outcome of the accepted update. 
+      summary: Poll for the result of an update 
       operationId: polling
       tags:
         - polling
