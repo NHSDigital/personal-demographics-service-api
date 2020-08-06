@@ -22,8 +22,8 @@ info:
     * create a record for a new patient
     * register a new patient at a GP Practice - instead, use [National Health Application and Infrastructure Services (NHAIS)](https://digital.nhs.uk/services/nhais/nhais-developer-document-library)
 
-    You can access the following data:
-    * NHS Number
+    You can access (read and update) the following data:
+    * NHS Number (read only)
     * name
     * gender
     * addresses and contact details (read only - update coming soon)
@@ -34,10 +34,10 @@ info:
     * dispensing doctor pharmacy
     * medical appliance supplier pharmacy
     * related people (read only - update coming soon)
-    * consent information (coming soon)
+    * consent to share information (coming soon)
 
     Currently, this API can only be accessed by healthcare professionals, authenticated with an NHS smartcard or equivalent.
-    Unauthenticated access and citizen access are on the roadmap.
+    Unauthenticated access and citizen access are on the [roadmap](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
 
     ## Legal use
     This API can only be used where there is a [legal basis](http://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) to do so. You should [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) before you go too far with your development.
@@ -59,14 +59,9 @@ info:
     - we might make breaking changes, but only if we can't avoid it, and we'll give advance notice
     - we can't guarantee availability or performance
 
-    The following items are on our roadmap, in rough priority order:
-    - addition of data fields for consent information
-    - unauthenticated access - without NHS smartcard - similar to the PDS SMSP API
-    - access for citizens using NHS Login
-    - exit beta
-
-    We are extremely keen to receive feedback on the API during beta, for example if there are data fields missing that you think you need.
-    Please [contact us](https://digital.nhs.uk/developer/help-and-support) with any comments or suggestions.
+    For details of our roadmap, or to suggest, comment or vote on features for this API, see our [interactive product backlog](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
+    
+    If you have anyother queries, please [contact us](https://digital.nhs.uk/developer/help-and-support).
 
     ## Technology
     This API is [RESTful](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#basic-rest).
