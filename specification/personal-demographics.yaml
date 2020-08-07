@@ -12,7 +12,6 @@ info:
     You can:
     * search for patients
     * get patient details
-    * get a patient's related people, such as next of kin
     * update patient details
 
     You cannot currently use this API to:
@@ -33,7 +32,7 @@ info:
     * nominated pharmacy
     * dispensing doctor pharmacy
     * medical appliance supplier pharmacy
-    * related people (read only - update coming soon)
+    * related people, such as next of kin (read only - update coming soon)
     * consent to share information (coming soon)
 
     Currently, this API can only be accessed by healthcare professionals, authenticated with an NHS smartcard or equivalent.
@@ -556,7 +555,9 @@ paths:
     get:
       description: |
         ## Overview
-        Use this endpoint to get patient details from PDS for a given NHS Number.
+        Use this endpoint to get patient details from PDS for a given NHS Number. 
+        
+        You cannot get a patient's related people details, use the [RelatedPerson](https://portal.developer.nhs.uk/docs/personal-demographics-int/1/routes/Patient/%7Bid%7D/RelatedPerson/get) endpoint instead.
 
         ## Superceded patients
         Some patients are marked as superceded, this means that for some reason the original resource is no longer valid and has been replaced with a different resource.
