@@ -7,33 +7,32 @@ info:
   title: Personal Demographics Service (FHIR) API
   description: |
     ## Overview
-    Use this API to access the [Personal Demographics Service (PDS)](https://digital.nhs.uk/services/demographics) - the national electronic database of NHS patient details such as name, address, date of birth and NHS Number.
+    Use this API to access the [Personal Demographics Service (PDS)](https://digital.nhs.uk/services/demographics) - the national electronic database of NHS patient details such as name, address, date of birth, related people and NHS Number.
 
     You can:
     * search for patients
     * get patient details
-    * get a patient's related people
     * update patient details
 
     You cannot currently use this API to:
-    * check that you have the right NHS Number for a patient (although you could achieve this indirectly using either search for patient or get patient details)
+    * check that you have the right NHS Number for a patient (but you can achieve this indirectly using search for patient or get patient details)
     * create a new record for a birth
     * receive birth notifications
     * create a record for a new patient
     * register a new patient at a GP Practice - instead, use [National Health Application and Infrastructure Services (NHAIS)](https://digital.nhs.uk/services/nhais/nhais-developer-document-library)
 
-    You can access (read and update) the following data:
+    You can read and update the following data:
     * NHS Number (read only)
     * name
     * gender
-    * addresses and contact details (read only - update coming soon)
+    * addresses and contact details
     * birth information
     * death information
     * registered GP
     * nominated pharmacy
     * dispensing doctor pharmacy
     * medical appliance supplier pharmacy
-    * related people (read only - update coming soon)
+    * related people, such as next of kin (read only - update coming soon)
     * consent to share information (coming soon)
 
     Currently, this API can only be accessed by healthcare professionals, authenticated with an NHS smartcard or equivalent.
@@ -59,7 +58,7 @@ info:
     - we might make breaking changes, but only if we can't avoid it, and we'll give advance notice
     - we can't guarantee availability or performance
 
-    For details of our roadmap, or to suggest, comment or vote on features for this API, see our [interactive product backlog](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
+    To see our roadmap, or to suggest, comment or vote on features for this API, see our [interactive product backlog](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
     
     If you have any other queries, please [contact us](https://digital.nhs.uk/developer/help-and-support).
 
@@ -95,7 +94,7 @@ info:
 
     In due course we plan to add the following:
     - access for citizens, using NHS Login
-    - unattended access - without smartcard - similar to the PDS SMSP API
+    - unauthenticated access - without smartcard - similar to the PDS SMSP API
     
     For more details, see our [interactive product backlog](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
 
@@ -556,7 +555,9 @@ paths:
     get:
       description: |
         ## Overview
-        Use this endpoint to get patient details from PDS for a given NHS Number.
+        Use this endpoint to get patient details from PDS for a given NHS Number. 
+        
+        You cannot get a patient's related people details, use the [RelatedPerson](https://portal.developer.nhs.uk/docs/personal-demographics-int/1/routes/Patient/%7Bid%7D/RelatedPerson/get) endpoint instead.
 
         ## Superceded patients
         Some patients are marked as superceded, this means that for some reason the original resource is no longer valid and has been replaced with a different resource.
