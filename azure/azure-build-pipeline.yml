@@ -33,8 +33,10 @@ extends:
     post_dependancy_steps:
       - bash: "make sandbox &"
         displayName: Start Sandbox Server
+        workingDirectory: "${{ variables.service_name }}"
       - bash: "make validate"
         displayName: Validate FHIR
+        workingDirectory: "${{ variables.service_name }}"
     pre_package_steps:
       - task: PublishTestResults@2
         inputs:
