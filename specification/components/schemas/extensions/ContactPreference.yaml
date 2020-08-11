@@ -1,5 +1,5 @@
-title: Wrapper object for preferred contact details; the written communication format, preferred contact time and method. This will only be populated on a retrieval and not a search.
 type: object
+description: Wrapper object for preferred contact details; the written communication format, preferred contact time and method. This will only be populated on a retrieval and not a search.
 required:
   - url
   - extension
