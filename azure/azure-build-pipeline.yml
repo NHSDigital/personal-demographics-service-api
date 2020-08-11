@@ -22,7 +22,6 @@ resources:
 
 variables:
   - template: project.yml
-
 extends:
   template: azure/common/apigee-build.yml@common
   parameters:
@@ -31,3 +30,14 @@ extends:
     variables:
       API_TEST_ENV_FILE_PATH: "tests/e2e/environments/local.postman_environment.json"
       PIP_CACHE_DIR: ".poetry"
+    post_dependancy_steps:
+      - bash: "make sandbox &"
+        displayName: Start Sandbox Server
+      - bash: "make validate"
+        displayName: Validate FHIR
+    pre_package_steps:
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFormat: 'JUnit'
+          testResultsFiles: 'newman/*.xml'
+          failTaskOnFailedTests: true
