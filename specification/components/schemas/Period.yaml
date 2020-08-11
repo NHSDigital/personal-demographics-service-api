@@ -1,5 +1,6 @@
 type: object
-description: Time period when name was, is, or will be in use.
+description: |
+  Business effective period when name was, is, or will be in use.
 required:
   - start
 properties:
