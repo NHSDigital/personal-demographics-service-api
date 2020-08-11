@@ -1,0 +1,29 @@
+name: "$(SourceBranchName)+$(BuildID)"
+
+trigger:
+  branches:
+    include:
+      - tags/refs/v*
+  tags:
+    include:
+      - v*
+
+pr:
+  branches:
+    include: ['*']
+
+resources:
+  repositories:
+    - repository: common
+      type: github
+      name: NHSDigital/api-management-utils
+      endpoint: NHSDigital
+
+variables:
+  - template: project.yml
+
+extends:
+  template: azure/common/apigee-build.yml@common
+  parameters:
+    service_name: ${{ variables.service_name }}
+    short_service_name: ${{ variables.short_service_name }}
