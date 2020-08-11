@@ -17,6 +17,7 @@ resources:
     - repository: common
       type: github
       name: NHSDigital/api-management-utils
+      ref: refs/heads/APM-1315-build-steps
       endpoint: NHSDigital
 
 variables:
@@ -27,3 +28,6 @@ extends:
   parameters:
     service_name: ${{ variables.service_name }}
     short_service_name: ${{ variables.short_service_name }}
+    variables:
+      API_TEST_ENV_FILE_PATH: "tests/e2e/environments/local.postman_environment.json"
+      PIP_CACHE_DIR: ".poetry"
