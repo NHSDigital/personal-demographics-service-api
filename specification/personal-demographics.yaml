@@ -121,7 +121,7 @@ info:
 
     ### Download Postman client
 
-    If you don’t have it, you can download Postman [here](https://www.postman.com).   
+    If you don’t have it, you can download Postman [here](https://www.postman.com).
     
     Click on the download button in the top right corner and follow the instructions.
 
@@ -1057,43 +1057,124 @@ paths:
         * `/address/0` if the address to be replaced or removed is the first item in the list. If it is the second item in the list the path will be `/address/1`, and so on.
         * `/address/-` when adding a new address.
 
-        An Address consists of 5 lines of unstructured text, postcode and PAF (Postcode Address File) key.
+        An address consists of 5 lines of unstructured text, postcode and PAF (Postcode Address File) key.
         Local systems must apply the following formatting convention when adding or replacing addresses lines:
-        *	Line 1 - premises ID and/or house name, e.g. `Flat 1` or `The Old Schoolhouse`
-        *	Line 2 - house number, dependent thoroughfare name and descriptor (if present), thoroughfare name and descriptor, e.g. `23 Mill Lane`
-        *	Line 3 - dependent locality/village, locality (if present), e.g. `Boxgrove`
-        *	Line 4 - post town, e.g. `Leeds`
-        *	Line 5 - county (if present), e.g. `West Yorkshire`.
+        *	line 1 - premises ID and/or house name, e.g. `Flat 1` or `The Old Schoolhouse`
+        *	line 2 - house number, dependent thoroughfare name and descriptor (if present), thoroughfare name and descriptor, e.g. `23 Mill Lane`
+        *	line 3 - dependent locality/village, locality (if present), e.g. `Boxgrove`
+        *	line 4 - post town, e.g. `Leeds`
+        *	line 5 - county (if present), e.g. `West Yorkshire`
 
-        When updating an address, lines 1 or 2, and line 4 must be populated; line 5 should not be included in vernacular addresses but may be included in PAF-derived addresses.
+        When updating an address, lines 1 or 2, and line 4 should be populated; line 5 should not be included in manually created addresses but may be included in PAF derived addresses.
+
+        Address lines should be populated otherwise the message may be rejected. There are exceptions:
+        * if a postcode and PAF key are submitted, in which case the lines will be automatically populated, however if there are no matches or too many matches the message will be rejected due to missing address lines
+        * a pseudo postcode is used. For example `ZZ99 3VZ` meaning `no fixed abode`
+
+        When creating the FHIR payload message, to be fully FHIR compliant all empty lines should be removed, so for example:
+        
+        ```json
+        {
+            "address": {
+                "line": [
+                    "",
+                    "23 Mill Lane",
+                    "",
+                    "Leeds",
+                    ""
+                ]
+            }
+
+        }
+        ```
+
+        should be sent in as:
+
+        ```json
+                {
+                    "address": {
+                        "line": [
+                            "23 Mill Lane",
+                            "Leeds",
+                        ]
+                    }
+
+                }
+        ```
+
+        however if you do not do this the message will not be rejected; the response will be in that form though.
 
         To ensure consistent data across all patient addresses it is advised that the address data supplied should be matched to the PAF and sent in that format including the PAF key.
         If the PAF key is not included it will be added to the address if a match can be found, additionally the provided address lines and post code will be enriched and reformatted if necessary.
 
         The following address types are supported:
-        * `home` - the home address is the patient’s normal residence. Home address is also known as `usual`, `main`, `registered`, `current` or `permanent` address.
-        * `temp` - a temporary address is an address used for a set period of time, but where the patient's home, permanent address remains unchanged.
-        * `billing` - an address used for correspondence purposes only.
+        * `home` - the home address is the patient's normal residence. Home address is also known as usual, main, registered, current or permanent address
+        * `temp` - a temporary address is an address used for a set period of time, but where the patient's home, permanent address remains unchanged
+        * `billing` - an address used for correspondence purposes only
 
-        A patient should have no more than one current `temp` and/or `billing` address.
-        However, this is constrained only by the integration requirements and is not enforced so theoretically more than one can exist for a patient.
-        Where multiple instances already exist for the patient it is not expected that local systems should manage those, but should choose the most appropriate one to maintain (e.g. by examining business effective dates).
+        A patient should have no more than one current `temp` and/or `billing` address, attempting to add multiple will result in a error.
+        However, historically this was constrained only by the integration requirements and was not enforced so theoretically more than one can exist for a patient when retrieving.
+        Where multiple instances already exist for the patient it is not expected that local systems should manage those, but should choose the most appropriate one to maintain (e.g. by examining period dates).
 
         A `home` address is the patient's main residential address and should normally be used for all clinical and demographic purposes, including clinical and appointment correspondence.
         However additionally, `temp` and `billing` addresses may be provided by a patient when there is a requirement to record an alternative location for the purposes of unbroken care.
         When sending correspondence to a patient:
-        *	a present and valid `billing` address may take precedence over `home` and `temp` addresses. A patient should have only a single current `billing` address. An address is considered 'valid' according to its business effective from and to dates.
-        *	if no current `billing` address is provided, a `temp` address may take precedence over the `home` address, again if it is valid according to its business effective from and to dates.
+        *	a present and valid `billing` address may take precedence over `home` and `temp` addresses. A patient should have only a single current `billing` address. An address is considered 'valid' according to its period start and to dates.
+        *	if no current `billing` address is provided, a `temp` address may take precedence over the `home` address, again if it is valid according to its period start and to dates.
         * if there is no valid, current `billing` and/or `temp` address, the `home` address must be used.
 
         It should be noted that not all local systems support `temp` and `billing` addresses, so these are not uniformly maintained. Therefore, where the patient contact has clinical or business significance, the precedence of these addresses over the `home` address should be determined by a user wherever possible.
         When the end date for a `temp` or `billing` address passes, local systems should use the patient’s `home` address. It will be extremely rare that no home address is present on a patient record.
 
         There are a number of business rules that should be taken into account:
-        * cannot add more than one `home` address.
-        * `work` address `use` type is a valid response but cannot be added or replaced as it is a legacy value. An address with the `work` type can be removed though.
-        * any `temp` address must have both a `business effective from` and a `business effective to` date. The provision of a business effective to date has particular importance in order to avoid temporary addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual business effective to is known is 30 days later than the business effective from, up to a maximum of 3 months.
-        * any `billing` address must have both a `business effective from` and a `business effective to` date. The provision of a business effective to date has particular importance in order to avoid correspondence addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual business effective to is known is 30 days later than the business effective from, up to a maximum of 12 months.
+        * cannot add more than one of each address use types; `home`, `temp` or `billing`
+        * `work` address `use` type is a valid response but cannot be added or replaced as it is a legacy value. An address with the `work` type can be removed though
+        * any `temp` address must have both a `period start` and a `period end` date. The provision of a period end date has particular importance in order to avoid temporary addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 3 months.
+        * any `billing` address must have both a `period start` and a `period end` date. The provision of a period end date has particular importance in order to avoid correspondence addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 12 months.
+        * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date
+        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update
+
+        Valid pseudo postcodes are:
+
+        |Postcode|Description|
+        |--------|-----------|
+        |ZZ99 3VZ|No Fixed Abode|
+        |ZZ99 3WZ|Address Not Known|
+        |ZZ99 3CZ|England UK - not specified|
+        |ZZ99 3GZ|Wales|
+        |ZZ99 1WZ|Scotland|
+        |ZZ99 2WZ|Northern Ireland|
+        |ZZ99 4MZ|Austria|
+        |ZZ99 2DZ|Belgium|
+        |ZZ99 4UZ|Bulgaria|
+        |ZZ99 5VZ|Croatia|
+        |ZZ99 6AZ|Cyprus (Southern)|
+        |ZZ99 5XZ|Czech Republic|
+        |ZZ99 4FZ|Denmark|
+        |ZZ99 7LZ|Estonia|
+        |ZZ99 4BZ|Finland|
+        |ZZ99 4GZ|France|
+        |ZZ99 4QZ|Germany|
+        |ZZ99 4RZ|Greece|
+        |ZZ99 4XZ|Hungary|
+        |ZZ99 4CZ|Iceland|
+        |ZZ99 4LZ|Italy|
+        |ZZ99 7RZ|Latvia|
+        |ZZ99 2PZ|Liechtenstein|
+        |ZZ99 7SZ|Lithuania|
+        |ZZ99 2EZ|Luxembourg|
+        |ZZ99 5BZ|Malta|
+        |ZZ99 4EZ|Netherlands|
+        |ZZ99 2AZ|Norway|
+        |ZZ99 4YZ|Poland|
+        |ZZ99 4JZ|Portugal|
+        |ZZ99 3AZ|Republic of Ireland|
+        |ZZ99 4ZZ|Romania|
+        |ZZ99 5YZ|Slovakia|
+        |ZZ99 5UZ|Slovenia|
+        |ZZ99 4HZ|Spain|
+        |ZZ99 2CZ|Sweden|
+        |ZZ99 4PZ|Switzerland|
 
         ### Communication
 
@@ -1102,6 +1183,9 @@ paths:
         In a JSON Patch request the path should be:
         * `/extension/0` if the communication extension is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
         * `/extension/-` when adding a communication extension.
+
+        In a JSON Patch request where the extension has sub-extensions the path should be:
+        * `/extension/0/extension/1` if the communication extension is the first item in the list and the method is the second item in the sub-extension list.
 
         There are a number of business rules that should be taken into account:
         * preferred language must not be supplied where it is English even though the [code list](https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage) contains a value for English (en).
@@ -1113,6 +1197,9 @@ paths:
         In a JSON Patch request the path should be:
         * `/extension/0` if the contact preference is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
         * `/extension/-` when adding a contact preference.
+
+        In a JSON Patch request where the extension has sub-extensions the path should be:
+        * `/extension/0/extension/1` if the contact preference extension is the first item in the list and the method is the second item in the sub-extension list.
 
         There are a number of business rules that should be taken into account:
         * a patient can have `0` or `1` contact preference.
@@ -1161,6 +1248,23 @@ paths:
         * only certain endpoints can set a death notification of formal (2).
         * when adding a death notification, a deceased date time must also be added.
 
+        ### Emergency contact
+
+        List item found under `contact` field.
+
+        In a JSON Patch request the path should be:
+        * `/contact/0` if the contact to be replaced or removed is the first item in the list. If it is the second item in the list the path will be `/contact/1`, and so on.
+        * `/contact/-` when adding a new contact.
+
+        Only emergency contact details should be added to `contact`, regular telecommunication methods such as home phone should be added to the `telecom` field.
+
+        There are a number of business rules that should be taken into account:
+        * in any telecom child object the `use` key should not be present.
+        * in any telecom child object the system cannot be `fax`.
+        * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
+        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
+        * the date period, if present, should be on the parent `contact` object and not any `telecom` child objects.
+
         ### Gender
 
         Single item found under `gender` field.
@@ -1185,13 +1289,13 @@ paths:
 
         There are a number of business rules that should be taken into account:
         * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes.
-        * the business effective `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
-        * do not provide a business effective `end` date.
+        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
+        * do not provide a period `end` date.
         * the general practice should only be updated by primary care systems, [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
         * removal of a general practice can only be done by [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
         * only a single general practice is supported; emergency, temporary and additional practices must be maintained in the local system only.
 
-        ## Multiple birth order
+        ### Multiple birth order
 
         Single item found under `multipleBirthInteger` field.
 
@@ -1217,7 +1321,8 @@ paths:
         * can have multiple instances of all other name use types.
         * cannot replace the use type on an existing name. For example, once a name is a nickname, it cannot be changed directly to an alias. You must instead remove the nickname and add the alias.
         * the first character of each `suffix` item must be `A-Z`.
-        * the date period is optional; where present they must a be valid dates and the `end` date cannot be before the `start` date.
+        * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
+        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
         * supplied name data must be UTF-8 encodable.
         * the `period` is optional, but if included the `end` date cannot be before the `start` date. They can however be in the past, present or future.
         * the full available range of generally recognised titles are permitted, however, if any of the following are used then the value input must conform to the following format:
@@ -1236,27 +1341,42 @@ paths:
         Single item found under `extension` with one of the extension urls:
         * `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NominatedPharmacy`
         * `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-MedicalApplianceSupplier`
-        * `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DispensingDoctor`
+        * `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-PreferredDispenserOrganization`
 
         In a JSON Patch request the path should be:
-        * `/extension/0` if the pharmacy is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
-        * `/extension/-` when adding a pharmacy.
+        * `/extension/0` if the pharmacy is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on
+        * `/extension/-` when adding a pharmacy
 
         There are a number of business rules that should be taken into account:
-        * multiple pharmacies are allowed, however only one of each type.
-        * there are no effective date periods, only a single current instance of each type is supported.
+        * multiple pharmacies are allowed, however only one of each type
+        * there are no effective date periods, only a single current instance of each type is supported
+        * only valid National Pharmacy codes may be used for the pharmacy identifier, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes
 
-        ## Place of birth
+        ### Place of birth
 
         Single item found under `extension` with the extension URL `http://hl7.org/fhir/StructureDefinition/patient-birthPlace`.
 
         In a JSON Patch request the path should be:
-        * `/extension/0` if the place of birth is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
-        * `/extension/-` when adding a place of birth.
+        * `/extension/0` if the place of birth is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on
+        * `/extension/-` when adding a place of birth
 
         There are a number of business rules that should be taken into account:
-        * the three fields, `city`, `district` and `country` are all optional, however at least one of them must be provided.
-        * country is a coded value and must be in the set of valid values.
+        * the three fields, `city`, `district` and `country` are all optional, however at least one of them must be provided
+        * country is a coded value and must be in the set of valid values
+
+        ### Telecom
+
+        List item found under `telecom` field.
+
+        In a JSON Patch request the path should be:
+        * `/telecom/0` if the telecom to be replaced or removed is the first item in the list. If it is the second item in the list the path will be `/telecom/1`, and so on
+        * `/telecom/-` when adding a new telecom
+
+        Emergency contact details should not be added to the `telecom` field, instead they should be added to the `contact` field.
+
+        There are a number of business rules that should be taken into account:
+        * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date
+        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
 
         ## Sandbox test scenarios
 
@@ -1309,6 +1429,7 @@ paths:
         url: https://tools.ietf.org/html/rfc6902
       parameters:
         - $ref: '#/components/parameters/IfMatch'
+        - $ref: '#/components/parameters/CorrelationID'
       requestBody:
         required: true
         content:
@@ -1774,6 +1895,17 @@ components:
         type: string
         format: '^Bearer\ [[:ascii:]]+$'
         example: 'Bearer g1112R_ccQ1Ebbb4gtHBP1aaaNM'
+    CorrelationID:
+      in: header
+      name: NHSD-Correlation-ID
+      required: true
+      description:
+        A unique identifer should be created when making a request, this will assist with any problems that may occur and should be included when an issue is raised with the helpdesk.
+
+        It is recommended that the identifer is a universally unique identifier (UUID) version 4 with the alphabetic characters upper-cased.
+      schema:
+        type: string
+        example: 60E0B220-8136-4CA5-AE46-1D97EF59D068
   schemas:
     Patient:
       $ref: components/schemas/Patient.yaml
