@@ -7,46 +7,45 @@ info:
   title: Personal Demographics Service (FHIR) API
   description: |
     ## Overview
-    Use this API to access the [Personal Demographics Service (PDS)](https://digital.nhs.uk/services/demographics) - the national electronic database of NHS patient details such as name, address, date of birth and NHS Number.
+    Use this API to access the [Personal Demographics Service (PDS)](https://digital.nhs.uk/services/demographics) - the national electronic database of NHS patient details such as name, address, date of birth, related people and NHS Number.
 
     You can:
     * search for patients
     * get patient details
-    * get patient related people
     * update patient details
 
     You cannot currently use this API to:
-    * check that you have the right NHS Number for a patient
+    * check that you have the right NHS Number for a patient (but you can achieve this indirectly using search for patient or get patient details)
     * create a new record for a birth
     * receive birth notifications
     * create a record for a new patient
     * register a new patient at a GP Practice - instead, use [National Health Application and Infrastructure Services (NHAIS)](https://digital.nhs.uk/services/nhais/nhais-developer-document-library)
 
-    You can access the following data:
-    * NHS Number
+    You can read and update the following data:
+    * NHS Number (read only)
     * name
     * gender
-    * addresses and contact details (read only - update coming soon)
+    * addresses and contact details
     * birth information
     * death information
     * registered GP
     * nominated pharmacy
     * dispensing doctor pharmacy
     * medical appliance supplier pharmacy
-    * related people (read only - update coming soon)
-    * consent information (coming soon)
+    * related people, such as next of kin (read only - update coming soon)
+    * consent to share information (coming soon)
 
     Currently, this API can only be accessed by healthcare professionals, authenticated with an NHS smartcard or equivalent.
-    Unauthenticated access and citizen access are on the roadmap.
+    Unauthenticated access and citizen access are on the [roadmap](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
 
     ## Legal use
-    This API can only be used where there is a legal basis to do so. You should [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) before you go too far with your development.
+    This API can only be used where there is a [legal basis](http://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) to do so. You should [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) before you go too far with your development.
     
     You must have made this request before you can go live (see ‘Onboarding’ below).
 
     ## Related APIs
     The following APIs also give access to the Personal Demographics Service:
-    - [Personal Demographics Service (SMSP) API](https://digital.nhs.uk/services/spine/spine-mini-service-provider-for-personal-demographics-service) - use this if you want to get PDS data without an authenticated end used (no smartcard required). It is, however, read-only and searches are limited to a single result.
+    - [Personal Demographics Service (SMSP) API](https://digital.nhs.uk/services/spine/spine-mini-service-provider-for-personal-demographics-service) - use this if you want to get PDS data without an authenticated end user (no smartcard required). It is, however, read-only and searches are limited to a single result.
     - [Personal Demographics Service (HL7 V3) API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3) - use this if you want to use functions that are not yet available on the FHIR API.
 
     Once our roadmap is complete, the above APIs will become redundant.
@@ -55,24 +54,13 @@ info:
     - [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) - use this to get full details for the organisations related to the patient, such as their registered GP or nominated pharmacy.
 
     ## API status and roadmap
-    The search and retrieve endpoints are in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
+    This API is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
     - we might make breaking changes, but only if we can't avoid it, and we'll give advance notice
     - we can't guarantee availability or performance
 
-    The update endpoint is in [alpha](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status) - expect further breaking changes.
-
-    The API is currently available for sandbox testing and integration testing, but not for production use.
-
-    The following items are on our roadmap, in rough priority order:
-    - addition of data fields for consent information
-    - production service - beta - update patient (target date: end of July)
-    - unauthenticated access - without NHS smartcard - similar to the PDS SMSP API (target date to be confirmed - please [contact us](https://digital.nhs.uk/developer/help-and-support) for more details)
-    - access for citizens using NHS Login (target date to be confirmed - please [contact us](https://digital.nhs.uk/developer/help-and-support) for more details)
-    - exit beta (target date: end of September 2020, subject to availability of beta testers)
-
-    We are extremely keen to receive feedback on the API during beta,
-    for example if there are data fields missing that you think you need.
-    Please [contact us](https://digital.nhs.uk/developer/help-and-support) with any comments or suggestions.
+    To see our roadmap, or to suggest, comment or vote on features for this API, see our [interactive product backlog](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
+    
+    If you have any other queries, please [contact us](https://digital.nhs.uk/developer/help-and-support).
 
     ## Technology
     This API is [RESTful](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#basic-rest).
@@ -82,7 +70,7 @@ info:
 
     You don’t need to know much about FHIR to use this API - FHIR APIs are just RESTful APIs that follow specific rules.
     In particular:
-    - resource names are capitalised and singular, for example the `/Patient` not `/patients`
+    - resource names are capitalised and singular, for example `/Patient` not `/patients`
     - array names are singular, for example `line` not `lines` for address lines
     - data items that are country-specific and thus not included in the FHIR global base resources are usually wrapped in an `extension` object
 
@@ -97,7 +85,7 @@ info:
     - a healthcare professional
     - strongly authenticated, using either an NHS smartcard or a modern alternative
 
-    The API uses Open ID Connect to authenticate the end user and OAuth 2.0 to authorise the calling system.
+    The API uses OAuth 2.0 to authorise the calling system.
     It supports the following security patterns:
     * user-restricted RESTful API - using NHS Identity - combined authentication and authorisation
     * user-restricted RESTful API - using NHS Identity - separate authentication and authorisation
@@ -106,7 +94,9 @@ info:
 
     In due course we plan to add the following:
     - access for citizens, using NHS Login
-    - unattended access - without smartcard - similar to the PDS SMSP API
+    - unauthenticated access - without smartcard - similar to the PDS SMSP API
+    
+    For more details, see our [interactive product backlog](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
 
     ## Environments and testing
 
@@ -131,7 +121,7 @@ info:
 
     ### Download Postman client
 
-    If you don’t have it, you can download Postman [here](https://www.postman.com).   
+    If you don’t have it, you can download Postman [here](https://www.postman.com).
     
     Click on the download button in the top right corner and follow the instructions.
 
@@ -149,10 +139,8 @@ info:
     * is for formal integration testing
     * is stateful, so persists updates
     * includes authorisation with either a username/password or smartcard/PIN
-      
-    For more details on these enhancements, see the API specification. 
          
-    For read-only testing, you can either use our [PDS FHIR API test data pack](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-api-test-data) or set up your own test data using our test data tool.
+    For read-only testing, you can either use our [PDS FHIR API test data packs](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-api-test-data) or set up your own test data.
     
     To test updating patient details, you must set up your own test data.
 
@@ -167,17 +155,10 @@ info:
     * In step 1: to confirm your use case for this API, you need to [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service), even if you already access PDS via another method.
     * In step 6: when implementing your clinical risk management process, you must review and integrate the PDS FHIR API hazard log into your own risk log. You’ll find it embedded within the PDS FHIR API tab in the SCAL.
     * In step 8: you need to review and complete the PDS FHIR API risk log to show that you have understood and mitigated the various risks. You might be asked to provide some evidence to prove that controls have been put in place. You’ll find the risk log embedded within the PDS FHIR API tab in the SCAL. This is separate from the clinical safety hazard log mentioned above.
-    * In step 9: you must conduct penetration testing to [CHECK standards](https://www.ncsc.gov.uk/information/check-penetration-testing)
+    * In step 9: you must conduct penetration testing to [CHECK standards](https://www.ncsc.gov.uk/information/check-penetration-testing).
     * In step 10: when you complete the Service Desk Registration Form, send it to [api.management@nhs.net](mailto:api.management@nhs.net).
     * In step 11: submit your completed SCAL to [api.management@nhs.net](mailto:api.management@nhs.net).
     * In step 14: to request production access, contact us at [api.management@nhs.net](mailto:api.management@nhs.net).
-
-    ## Endpoints
-    To see details for specific endpoints, select from the list on the left hand side of the page:
-    * `GET /Patient` - search for patients.
-    * `GET /Patient/{id}` - get patient's personal details.
-    * `GET /Patient/{id}/RelatedPerson` - get patient's related people details.
-    * `PATCH /Patient/{id}` - update patient's personal details.
 
   contact:
     name: Personal Demographics Service FHIR API Support
@@ -200,7 +181,7 @@ paths:
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
     get:
-      summary: Search for patient
+      summary: Search for a patient
       operationId: search-patient
       externalDocs:
         description: ODS codes and documentation.
@@ -574,7 +555,9 @@ paths:
     get:
       description: |
         ## Overview
-        Use this endpoint to get patient details from PDS for a given NHS Number.
+        Use this endpoint to get patient details from PDS for a given NHS Number. 
+        
+        You cannot get a patient's related people details, use the [RelatedPerson](https://portal.developer.nhs.uk/docs/personal-demographics-int/1/routes/Patient/%7Bid%7D/RelatedPerson/get) endpoint instead.
 
         ## Superceded patients
         Some patients are marked as superceded, this means that for some reason the original resource is no longer valid and has been replaced with a different resource.
@@ -618,7 +601,7 @@ paths:
         If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
 
         
-      summary: "Retrieve a patient's resource"
+      summary: "Get patient details"
       operationId: get-patient
       tags:
         - patients
@@ -1074,43 +1057,124 @@ paths:
         * `/address/0` if the address to be replaced or removed is the first item in the list. If it is the second item in the list the path will be `/address/1`, and so on.
         * `/address/-` when adding a new address.
 
-        An Address consists of 5 lines of unstructured text, postcode and PAF (Postcode Address File) key.
+        An address consists of 5 lines of unstructured text, postcode and PAF (Postcode Address File) key.
         Local systems must apply the following formatting convention when adding or replacing addresses lines:
-        *	Line 1 - premises ID and/or house name, e.g. `Flat 1` or `The Old Schoolhouse`
-        *	Line 2 - house number, dependent thoroughfare name and descriptor (if present), thoroughfare name and descriptor, e.g. `23 Mill Lane`
-        *	Line 3 - dependent locality/village, locality (if present), e.g. `Boxgrove`
-        *	Line 4 - post town, e.g. `Leeds`
-        *	Line 5 - county (if present), e.g. `West Yorkshire`.
+        *	line 1 - premises ID and/or house name, e.g. `Flat 1` or `The Old Schoolhouse`
+        *	line 2 - house number, dependent thoroughfare name and descriptor (if present), thoroughfare name and descriptor, e.g. `23 Mill Lane`
+        *	line 3 - dependent locality/village, locality (if present), e.g. `Boxgrove`
+        *	line 4 - post town, e.g. `Leeds`
+        *	line 5 - county (if present), e.g. `West Yorkshire`
 
-        When updating an address, lines 1 or 2, and line 4 must be populated; line 5 should not be included in vernacular addresses but may be included in PAF-derived addresses.
+        When updating an address, lines 1 or 2, and line 4 should be populated; line 5 should not be included in manually created addresses but may be included in PAF derived addresses.
+
+        Address lines should be populated otherwise the message may be rejected. There are exceptions:
+        * if a postcode and PAF key are submitted, in which case the lines will be automatically populated, however if there are no matches or too many matches the message will be rejected due to missing address lines
+        * a pseudo postcode is used. For example `ZZ99 3VZ` meaning `no fixed abode`
+
+        When creating the FHIR payload message, to be fully FHIR compliant all empty lines should be removed, so for example:
+        
+        ```json
+        {
+            "address": {
+                "line": [
+                    "",
+                    "23 Mill Lane",
+                    "",
+                    "Leeds",
+                    ""
+                ]
+            }
+
+        }
+        ```
+
+        should be sent in as:
+
+        ```json
+                {
+                    "address": {
+                        "line": [
+                            "23 Mill Lane",
+                            "Leeds",
+                        ]
+                    }
+
+                }
+        ```
+
+        however if you do not do this the message will not be rejected; the response will be in that form though.
 
         To ensure consistent data across all patient addresses it is advised that the address data supplied should be matched to the PAF and sent in that format including the PAF key.
         If the PAF key is not included it will be added to the address if a match can be found, additionally the provided address lines and post code will be enriched and reformatted if necessary.
 
         The following address types are supported:
-        * `home` - the home address is the patient’s normal residence. Home address is also known as `usual`, `main`, `registered`, `current` or `permanent` address.
-        * `temp` - a temporary address is an address used for a set period of time, but where the patient's home, permanent address remains unchanged.
-        * `billing` - an address used for correspondence purposes only.
+        * `home` - the home address is the patient's normal residence. Home address is also known as usual, main, registered, current or permanent address
+        * `temp` - a temporary address is an address used for a set period of time, but where the patient's home, permanent address remains unchanged
+        * `billing` - an address used for correspondence purposes only
 
-        A patient should have no more than one current `temp` and/or `billing` address.
-        However, this is constrained only by the integration requirements and is not enforced so theoretically more than one can exist for a patient.
-        Where multiple instances already exist for the patient it is not expected that local systems should manage those, but should choose the most appropriate one to maintain (e.g. by examining business effective dates).
+        A patient should have no more than one current `temp` and/or `billing` address, attempting to add multiple will result in a error.
+        However, historically this was constrained only by the integration requirements and was not enforced so theoretically more than one can exist for a patient when retrieving.
+        Where multiple instances already exist for the patient it is not expected that local systems should manage those, but should choose the most appropriate one to maintain (e.g. by examining period dates).
 
         A `home` address is the patient's main residential address and should normally be used for all clinical and demographic purposes, including clinical and appointment correspondence.
         However additionally, `temp` and `billing` addresses may be provided by a patient when there is a requirement to record an alternative location for the purposes of unbroken care.
         When sending correspondence to a patient:
-        *	a present and valid `billing` address may take precedence over `home` and `temp` addresses. A patient should have only a single current `billing` address. An address is considered 'valid' according to its business effective from and to dates.
-        *	if no current `billing` address is provided, a `temp` address may take precedence over the `home` address, again if it is valid according to its business effective from and to dates.
+        *	a present and valid `billing` address may take precedence over `home` and `temp` addresses. A patient should have only a single current `billing` address. An address is considered 'valid' according to its period start and to dates.
+        *	if no current `billing` address is provided, a `temp` address may take precedence over the `home` address, again if it is valid according to its period start and to dates.
         * if there is no valid, current `billing` and/or `temp` address, the `home` address must be used.
 
         It should be noted that not all local systems support `temp` and `billing` addresses, so these are not uniformly maintained. Therefore, where the patient contact has clinical or business significance, the precedence of these addresses over the `home` address should be determined by a user wherever possible.
         When the end date for a `temp` or `billing` address passes, local systems should use the patient’s `home` address. It will be extremely rare that no home address is present on a patient record.
 
         There are a number of business rules that should be taken into account:
-        * cannot add more than one `home` address.
-        * `work` address `use` type is a valid response but cannot be added or replaced as it is a legacy value. An address with the `work` type can be removed though.
-        * any `temp` address must have both a `business effective from` and a `business effective to` date. The provision of a business effective to date has particular importance in order to avoid temporary addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual business effective to is known is 30 days later than the business effective from, up to a maximum of 3 months.
-        * any `billing` address must have both a `business effective from` and a `business effective to` date. The provision of a business effective to date has particular importance in order to avoid correspondence addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual business effective to is known is 30 days later than the business effective from, up to a maximum of 12 months.
+        * cannot add more than one of each address use types; `home`, `temp` or `billing`
+        * `work` address `use` type is a valid response but cannot be added or replaced as it is a legacy value. An address with the `work` type can be removed though
+        * any `temp` address must have both a `period start` and a `period end` date. The provision of a period end date has particular importance in order to avoid temporary addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 3 months.
+        * any `billing` address must have both a `period start` and a `period end` date. The provision of a period end date has particular importance in order to avoid correspondence addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 12 months.
+        * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date
+        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update
+
+        Valid pseudo postcodes are:
+
+        |Postcode|Description|
+        |--------|-----------|
+        |ZZ99 3VZ|No Fixed Abode|
+        |ZZ99 3WZ|Address Not Known|
+        |ZZ99 3CZ|England UK - not specified|
+        |ZZ99 3GZ|Wales|
+        |ZZ99 1WZ|Scotland|
+        |ZZ99 2WZ|Northern Ireland|
+        |ZZ99 4MZ|Austria|
+        |ZZ99 2DZ|Belgium|
+        |ZZ99 4UZ|Bulgaria|
+        |ZZ99 5VZ|Croatia|
+        |ZZ99 6AZ|Cyprus (Southern)|
+        |ZZ99 5XZ|Czech Republic|
+        |ZZ99 4FZ|Denmark|
+        |ZZ99 7LZ|Estonia|
+        |ZZ99 4BZ|Finland|
+        |ZZ99 4GZ|France|
+        |ZZ99 4QZ|Germany|
+        |ZZ99 4RZ|Greece|
+        |ZZ99 4XZ|Hungary|
+        |ZZ99 4CZ|Iceland|
+        |ZZ99 4LZ|Italy|
+        |ZZ99 7RZ|Latvia|
+        |ZZ99 2PZ|Liechtenstein|
+        |ZZ99 7SZ|Lithuania|
+        |ZZ99 2EZ|Luxembourg|
+        |ZZ99 5BZ|Malta|
+        |ZZ99 4EZ|Netherlands|
+        |ZZ99 2AZ|Norway|
+        |ZZ99 4YZ|Poland|
+        |ZZ99 4JZ|Portugal|
+        |ZZ99 3AZ|Republic of Ireland|
+        |ZZ99 4ZZ|Romania|
+        |ZZ99 5YZ|Slovakia|
+        |ZZ99 5UZ|Slovenia|
+        |ZZ99 4HZ|Spain|
+        |ZZ99 2CZ|Sweden|
+        |ZZ99 4PZ|Switzerland|
 
         ### Communication
 
@@ -1119,6 +1183,9 @@ paths:
         In a JSON Patch request the path should be:
         * `/extension/0` if the communication extension is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
         * `/extension/-` when adding a communication extension.
+
+        In a JSON Patch request where the extension has sub-extensions the path should be:
+        * `/extension/0/extension/1` if the communication extension is the first item in the list and the method is the second item in the sub-extension list.
 
         There are a number of business rules that should be taken into account:
         * preferred language must not be supplied where it is English even though the [code list](https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage) contains a value for English (en).
@@ -1130,6 +1197,9 @@ paths:
         In a JSON Patch request the path should be:
         * `/extension/0` if the contact preference is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
         * `/extension/-` when adding a contact preference.
+
+        In a JSON Patch request where the extension has sub-extensions the path should be:
+        * `/extension/0/extension/1` if the contact preference extension is the first item in the list and the method is the second item in the sub-extension list.
 
         There are a number of business rules that should be taken into account:
         * a patient can have `0` or `1` contact preference.
@@ -1178,6 +1248,23 @@ paths:
         * only certain endpoints can set a death notification of formal (2).
         * when adding a death notification, a deceased date time must also be added.
 
+        ### Emergency contact
+
+        List item found under `contact` field.
+
+        In a JSON Patch request the path should be:
+        * `/contact/0` if the contact to be replaced or removed is the first item in the list. If it is the second item in the list the path will be `/contact/1`, and so on.
+        * `/contact/-` when adding a new contact.
+
+        Only emergency contact details should be added to `contact`, regular telecommunication methods such as home phone should be added to the `telecom` field.
+
+        There are a number of business rules that should be taken into account:
+        * in any telecom child object the `use` key should not be present.
+        * in any telecom child object the system cannot be `fax`.
+        * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
+        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
+        * the date period, if present, should be on the parent `contact` object and not any `telecom` child objects.
+
         ### Gender
 
         Single item found under `gender` field.
@@ -1202,13 +1289,13 @@ paths:
 
         There are a number of business rules that should be taken into account:
         * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes.
-        * the business effective `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
-        * do not provide a business effective `end` date.
+        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
+        * do not provide a period `end` date.
         * the general practice should only be updated by primary care systems, [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
         * removal of a general practice can only be done by [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
         * only a single general practice is supported; emergency, temporary and additional practices must be maintained in the local system only.
 
-        ## Multiple birth order
+        ### Multiple birth order
 
         Single item found under `multipleBirthInteger` field.
 
@@ -1234,7 +1321,8 @@ paths:
         * can have multiple instances of all other name use types.
         * cannot replace the use type on an existing name. For example, once a name is a nickname, it cannot be changed directly to an alias. You must instead remove the nickname and add the alias.
         * the first character of each `suffix` item must be `A-Z`.
-        * the date period is optional; where present they must a be valid dates and the `end` date cannot be before the `start` date.
+        * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
+        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
         * supplied name data must be UTF-8 encodable.
         * the `period` is optional, but if included the `end` date cannot be before the `start` date. They can however be in the past, present or future.
         * the full available range of generally recognised titles are permitted, however, if any of the following are used then the value input must conform to the following format:
@@ -1253,27 +1341,42 @@ paths:
         Single item found under `extension` with one of the extension urls:
         * `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NominatedPharmacy`
         * `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-MedicalApplianceSupplier`
-        * `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DispensingDoctor`
+        * `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-PreferredDispenserOrganization`
 
         In a JSON Patch request the path should be:
-        * `/extension/0` if the pharmacy is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
-        * `/extension/-` when adding a pharmacy.
+        * `/extension/0` if the pharmacy is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on
+        * `/extension/-` when adding a pharmacy
 
         There are a number of business rules that should be taken into account:
-        * multiple pharmacies are allowed, however only one of each type.
-        * there are no effective date periods, only a single current instance of each type is supported.
+        * multiple pharmacies are allowed, however only one of each type
+        * there are no effective date periods, only a single current instance of each type is supported
+        * only valid National Pharmacy codes may be used for the pharmacy identifier, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes
 
-        ## Place of birth
+        ### Place of birth
 
         Single item found under `extension` with the extension URL `http://hl7.org/fhir/StructureDefinition/patient-birthPlace`.
 
         In a JSON Patch request the path should be:
-        * `/extension/0` if the place of birth is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
-        * `/extension/-` when adding a place of birth.
+        * `/extension/0` if the place of birth is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on
+        * `/extension/-` when adding a place of birth
 
         There are a number of business rules that should be taken into account:
-        * the three fields, `city`, `district` and `country` are all optional, however at least one of them must be provided.
-        * country is a coded value and must be in the set of valid values.
+        * the three fields, `city`, `district` and `country` are all optional, however at least one of them must be provided
+        * country is a coded value and must be in the set of valid values
+
+        ### Telecom
+
+        List item found under `telecom` field.
+
+        In a JSON Patch request the path should be:
+        * `/telecom/0` if the telecom to be replaced or removed is the first item in the list. If it is the second item in the list the path will be `/telecom/1`, and so on
+        * `/telecom/-` when adding a new telecom
+
+        Emergency contact details should not be added to the `telecom` field, instead they should be added to the `contact` field.
+
+        There are a number of business rules that should be taken into account:
+        * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date
+        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
 
         ## Sandbox test scenarios
 
@@ -1317,7 +1420,7 @@ paths:
 
 
         
-      summary: Update a patient's resource
+      summary: Update patient details
       operationId: update-patient-partial
       tags:
         - patients
@@ -1326,6 +1429,7 @@ paths:
         url: https://tools.ietf.org/html/rfc6902
       parameters:
         - $ref: '#/components/parameters/IfMatch'
+        - $ref: '#/components/parameters/CorrelationID'
       requestBody:
         required: true
         content:
@@ -1493,7 +1597,7 @@ paths:
         If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
 
        
-      summary: "Retrieve a list of Related Person resources for a given patient"
+      summary: "Get a patient's related people"
       operationId: get-related-people
       tags:
         - relatedperson
@@ -1631,7 +1735,7 @@ paths:
         If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
        
         
-      summary: Retrieve the outcome of the accepted update. 
+      summary: Poll for the result of an update 
       operationId: polling
       tags:
         - polling
@@ -1783,7 +1887,7 @@ components:
       in: header
       name: Authorization
       description: |
-        An OAuthV2 access token presented in Bearer format.
+        An [OAuth 2.0 bearer token](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis).
 
         Note: This parameter is required unless interacting with the Sandbox.
       required: false
@@ -1791,6 +1895,17 @@ components:
         type: string
         format: '^Bearer\ [[:ascii:]]+$'
         example: 'Bearer g1112R_ccQ1Ebbb4gtHBP1aaaNM'
+    CorrelationID:
+      in: header
+      name: NHSD-Correlation-ID
+      required: true
+      description:
+        A unique identifer should be created when making a request, this will assist with any problems that may occur and should be included when an issue is raised with the helpdesk.
+
+        It is recommended that the identifer is a universally unique identifier (UUID) version 4 with the alphabetic characters upper-cased.
+      schema:
+        type: string
+        example: 60E0B220-8136-4CA5-AE46-1D97EF59D068
   schemas:
     Patient:
       $ref: components/schemas/Patient.yaml

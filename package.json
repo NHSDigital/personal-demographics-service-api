@@ -8,7 +8,7 @@
     "test-pipeline": "node_modules/.bin/node tests/e2e/test-runner.js -url https://acme-health-lite.herokuapp.com/ -env https://internal-dev.api.service.nhs.uk",
     "publish": "mkdir -p build && node_modules/.bin/speccy resolve specification/personal-demographics.yaml -i | poetry run python scripts/yaml2json.py | poetry run python scripts/set_version.py > build/personal-demographics.json",
     "serve": "node_modules/.bin/speccy serve build/personal-demographics.json",
-    "check-licenses": "node_modules/.bin/license-checker --failOn GPL --failOn LGPL"
+    "check-licenses": "node_modules/.bin/license-checker --failOn GPL --failOn AGPL"
   },
   "author": "NHS Digital",
   "license": "MIT",
@@ -21,9 +21,7 @@
     "license-checker": "^25.0.1",
     "newman": "^4.6.1",
     "newman-reporter-html": "^1.0.5",
-    "newman-reporter-htmlextra": "^1.17.3",
-    "puppeteer": "^5.2.1",
-    "apigeetool": "^0.14.2",
-    "license-checker": "^25.0.1"
+    "newman-reporter-htmlextra": "^1.17.4",
+    "puppeteer": "^5.2.1"
   }
 }

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 LICENSES=$(poetry run pip-licenses)
-INCOMPATIBLE_LIBS=$(echo "$LICENSES" | grep 'GPL' || true)
+INCOMPATIBLE_LIBS=$(echo "$LICENSES" | grep 'GPL' | grep -v 'LGPL' || true)
 
 if [[ -z $INCOMPATIBLE_LIBS ]]; then
     exit 0

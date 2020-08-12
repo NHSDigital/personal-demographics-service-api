@@ -33,6 +33,41 @@
       },
       "postalCode": "LS1 6AE",
       "use": "home"
+    },
+    {
+      "extension": [
+        {
+          "extension": [
+            {
+              "url": "type",
+              "valueCoding": {
+                "code": "PAF",
+                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-AddressKeyType"
+              }
+            },
+            {
+              "url": "value",
+              "valueString": "12345678"
+            }
+          ],
+          "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-AddressKey"
+        }
+      ],
+      "id": "T456",
+      "line": [
+        "1 Trevelyan Square",
+        "Boar Lane",
+        "City Centre",
+        "Leeds",
+        "West Yorkshire"
+      ],
+      "period": {
+        "end": "2021-12-31",
+        "start": "2020-01-01"
+      },
+      "postalCode": "LS1 6AE",
+      "text": "Student Accommodation",
+      "use": "temp"
     }
   ],
   "birthDate": "2010-10-22",
@@ -75,7 +110,7 @@
       }
     },
     {
-      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DispensingDoctor",
+      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-PreferredDispenserOrganization",
       "valueReference": {
         "identifier": {
           "system": "https://fhir.nhs.uk/Id/ods-organization-code",

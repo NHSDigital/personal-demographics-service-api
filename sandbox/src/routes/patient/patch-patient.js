@@ -51,11 +51,30 @@ module.exports = [
                     {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE"})
             }
 
+            // Deep Copy the patient
+            let patchedPatient = JSON.parse(JSON.stringify(patientToUpdate));
+
+            // Ensure that missing array keys are added first before applying, otherwise patch will fail.
+            for (let i of Object.keys(request.payload.patches)) {
+                let path = request.payload.patches[i].path
+                if (!path.includes("/-")) {
+                    continue;
+                }
+                path = path.replace("/-", "");
+                var dataArray = jsonpatch.getValueByPointer(patientToUpdate, path);
+                if (!dataArray) {
+                    patchedPatient = jsonpatch.applyOperation(patchedPatient,
+                        { "op": "add", "path": path, "value": [] },
+                        true,
+                        false
+                    ).newDocument;
+                }
+            }
+
             // Apply the submitted patches
-            let patchedPatient
             try {
                 patchedPatient = jsonpatch.applyPatch(
-                    patientToUpdate,
+                    patchedPatient,
                     request.payload.patches,
                     true,
                     false

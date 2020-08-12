@@ -30,12 +30,14 @@ docopt = "^0.6.2"
 jsonpath-rw = "^1.4.0"
 semver = "^2.10.2"
 gitpython = "^3.1.7"
+requests = "^2.24.0"
+locust = "^1.1.1"
 
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.8.3"
 black = "^19.10b0"
-pip-licenses = "^2.2.1"
+pip-licenses = "^2.3.0"
 jinja2 = "^2.11.2"
 
 
