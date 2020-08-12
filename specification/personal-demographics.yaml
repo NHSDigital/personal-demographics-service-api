@@ -532,7 +532,8 @@ paths:
                             - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
                               code: INVALID_SEARCH_DATA
-                              display: Invalid search data provided - Not enough search parameters were provided to be able to make a search.
+                              display: Search data is invalid
+                        diagnostics: Invalid search data provided - Not enough search parameters were provided to be able to make a search
                 bad-combination:
                   summary: Invalid combination of search parameters
                   value:
@@ -545,7 +546,8 @@ paths:
                             - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
                               code: INVALID_SEARCH_DATA
-                              display: Invalid search data provided - 'Invalid Date Combination'
+                              display: Search data is invalid
+                        diagnostics: Invalid search data provided - 'Invalid Date Combination'
   '/Patient/{id}':
     parameters:
       - $ref: '#/components/parameters/Id'
@@ -1538,7 +1540,8 @@ paths:
                             - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
                               code: MISSING_VALUE
-                              display: Missing value - patches
+                              display: Required value is missing
+                        diagnostics: Missing value - patches
                 invalid-patch-operation:
                   summary: Invalid patch operation(s)
                   value:
@@ -1551,7 +1554,8 @@ paths:
                             - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
                               code: INVALID_UPDATE
-                              display: Invalid update with error - Invalid payload received - incorrect format
+                              display: Update is invalid
+                        diagnostics: Invalid update with error - Invalid payload received - incorrect format
         '412':
           $ref: '#/components/responses/412PreconditionFailed'
 
@@ -1771,7 +1775,8 @@ paths:
                             - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
                               code: INVALID_UPDATE
-                              display: Invalid update with error - business effective start date is after the end date
+                              display: Update is invalid
+                        diagnostics: Invalid update with error - business effective start date is after the end date
         '403':
           description: Part of your update could not be allowed as the change was forbidden.
           content:
@@ -1791,7 +1796,8 @@ paths:
                             - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
                               code: FORBIDDEN_UPDATE
-                              display: Forbidden update with error - source not permitted to remove 'deceasedDateTime'
+                              display: Update is forbidden
+                        diagnostics: Forbidden update with error - source not permitted to remove 'deceasedDateTime'
         '404':
           description: The message ID not found or you did not have permission to poll for that message.
           content:
@@ -1941,7 +1947,8 @@ components:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
                           code: PRECONDITION_FAILED
-                          display: Invalid update with error - This resource has changed since you last read. Please re-read and try again with the new version number.
+                          display: Required condition was not fulfilled
+                    diagnostics: Invalid update with error - This resource has changed since you last read. Please re-read and try again with the new version number
             missing-if-match:
               summary: Missing If-Match header
               value:
@@ -1954,7 +1961,8 @@ components:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
                           code: PRECONDITION_FAILED
-                          display: Invalid update with error - If-Match header must be supplied to update this resource
+                          display: Required condition was not fulfilled
+                    diagnostics: Invalid update with error - If-Match header must be supplied to update this resource
     409Conflict:
       description: |
         Version Conflict.

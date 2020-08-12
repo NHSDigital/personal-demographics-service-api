@@ -22,4 +22,4 @@ properties:
         display:
           type: string
           description: Representation defined by the system.
-          example: Invalid value - 2019-01 in field 'birthDate'
+          example: Provided value is invalid
