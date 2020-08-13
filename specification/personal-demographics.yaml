@@ -73,9 +73,13 @@ info:
     - array names are singular, for example `line` not `lines` for address lines
     - data items that are country-specific and thus not included in the FHIR global base resources are usually wrapped in an `extension` object
 
-    This API is available on the Internet, although access using NHS smartcards (see below)
-    currently requires a connection to the [Health and Social Care Network (HSCN)](https://digital.nhs.uk/services/health-and-social-care-network).
+    ## Network access
+    This API is available on the internet.
+    It is not available on the [Health and Social Care Network (HSCN)](https://digital.nhs.uk/services/health-and-social-care-network),
+    although access using NHS smartcards (see below) currently does require an HSCN connection.
 
+    For more details see [Network access for APIs](https://digital.nhs.uk/developer/guides-and-documentation/network-access-for-apis).
+    
     ## Authorisation
     This API is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis),
     meaning an end user must be present and authenticated to use it.
