@@ -1199,11 +1199,11 @@ paths:
         ### Contact preferences
         Single item found under `extension` with the extension URL `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference`.
 
-        In a JSON Patch request the path should be:
+        In a JSON Patch request, where the Contact Preference extension doesn't exist or you are replacing/removing the full list of Contact preferences, the path should be:
         * `/extension/0` if the contact preference is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
         * `/extension/-` when adding a contact preference.
 
-        In a JSON Patch request where the extension has sub-extensions the path should be:
+        Where the Contact Preference extension already exists and you wish to add, replace or remove a specific contact preference(s) sub-extension, then the path should be:
         * `/extension/0/extension/1` if the contact preference extension is the first item in the list and the method is the second item in the sub-extension list.
 
         There are a number of business rules that should be taken into account:
@@ -1270,7 +1270,7 @@ paths:
         * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
         * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
         * the date period, if present, should be on the parent `contact` object and not any `telecom` child objects.
-        * if the telecom system is `email`, the value must be a valid email format, for example `john.smith@nhs.net`; be more than 6 characters and less that 90 characters
+        * if the telecom system is `email`, the value must be a valid email format, for example `john.smith@nhs.net`; be more than 6 characters and less than 90 characters
         * the relationship can only be `C` meaning `Emergency Contact`
 
         ### Gender
