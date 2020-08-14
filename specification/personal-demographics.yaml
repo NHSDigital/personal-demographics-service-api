@@ -1199,11 +1199,11 @@ paths:
         ### Contact preferences
         Single item found under `extension` with the extension URL `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference`.
 
-        In a JSON Patch request the path should be:
+        In a JSON Patch request, where the Contact Preference extension doesn't exist or you are replacing/removing the full list of Contact preferences, the path should be:
         * `/extension/0` if the contact preference is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
         * `/extension/-` when adding a contact preference.
 
-        In a JSON Patch request where the extension has sub-extensions the path should be:
+        Where the Contact Preference extension already exists and you wish to add, replace or remove a specific contact preference(s) sub-extension, then the path should be:
         * `/extension/0/extension/1` if the contact preference extension is the first item in the list and the method is the second item in the sub-extension list.
 
         There are a number of business rules that should be taken into account:
