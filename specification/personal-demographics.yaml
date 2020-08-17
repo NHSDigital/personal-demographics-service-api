@@ -33,7 +33,6 @@ info:
     * dispensing doctor pharmacy
     * medical appliance supplier pharmacy
     * related people, such as next of kin (read only - update coming soon)
-    * consent to share information (coming soon)
 
     Currently, this API can only be accessed by healthcare professionals, authenticated with an NHS smartcard or equivalent.
     Unauthenticated access and citizen access are on the [roadmap](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
@@ -74,9 +73,13 @@ info:
     - array names are singular, for example `line` not `lines` for address lines
     - data items that are country-specific and thus not included in the FHIR global base resources are usually wrapped in an `extension` object
 
-    This API is available on the Internet, although access using NHS smartcards (see below)
-    currently requires a connection to the [Health and Social Care Network (HSCN)](https://digital.nhs.uk/services/health-and-social-care-network).
+    ## Network access
+    This API is available on the internet.
+    It is not available on the [Health and Social Care Network (HSCN)](https://digital.nhs.uk/services/health-and-social-care-network),
+    although access using NHS smartcards (see below) currently does require an HSCN connection.
 
+    For more details see [Network access for APIs](https://digital.nhs.uk/developer/guides-and-documentation/network-access-for-apis).
+    
     ## Authorisation
     This API is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis),
     meaning an end user must be present and authenticated to use it.
@@ -533,7 +536,8 @@ paths:
                             - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
                               code: INVALID_SEARCH_DATA
-                              display: Invalid search data provided - Not enough search parameters were provided to be able to make a search.
+                              display: Search data is invalid
+                        diagnostics: Invalid search data provided - Not enough search parameters were provided to be able to make a search
                 bad-combination:
                   summary: Invalid combination of search parameters
                   value:
@@ -546,7 +550,8 @@ paths:
                             - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
                               code: INVALID_SEARCH_DATA
-                              display: Invalid search data provided - 'Invalid Date Combination'
+                              display: Search data is invalid
+                        diagnostics: Invalid search data provided - 'Invalid Date Combination'
   '/Patient/{id}':
     parameters:
       - $ref: '#/components/parameters/Id'
@@ -1194,11 +1199,11 @@ paths:
         ### Contact preferences
         Single item found under `extension` with the extension URL `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference`.
 
-        In a JSON Patch request the path should be:
+        In a JSON Patch request, where the Contact Preference extension doesn't exist or you are replacing/removing the full list of Contact preferences, the path should be:
         * `/extension/0` if the contact preference is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
         * `/extension/-` when adding a contact preference.
 
-        In a JSON Patch request where the extension has sub-extensions the path should be:
+        Where the Contact Preference extension already exists and you wish to add, replace or remove a specific contact preference(s) sub-extension, then the path should be:
         * `/extension/0/extension/1` if the contact preference extension is the first item in the list and the method is the second item in the sub-extension list.
 
         There are a number of business rules that should be taken into account:
@@ -1265,7 +1270,7 @@ paths:
         * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
         * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
         * the date period, if present, should be on the parent `contact` object and not any `telecom` child objects.
-        * if the telecom system is `email`, the value must be a valid email format, for example `john.smith@nhs.net`; be more than 6 characters and less that 90 characters
+        * if the telecom system is `email`, the value must be a valid email format, for example `john.smith@nhs.net`; be more than 6 characters and less than 90 characters
         * the relationship can only be `C` meaning `Emergency Contact`
 
         ### Gender
@@ -1539,7 +1544,8 @@ paths:
                             - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
                               code: MISSING_VALUE
-                              display: Missing value - patches
+                              display: Required value is missing
+                        diagnostics: Missing value - patches
                 invalid-patch-operation:
                   summary: Invalid patch operation(s)
                   value:
@@ -1552,7 +1558,8 @@ paths:
                             - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
                               code: INVALID_UPDATE
-                              display: Invalid update with error - Invalid payload received - incorrect format
+                              display: Update is invalid
+                        diagnostics: Invalid update with error - Invalid payload received - incorrect format
         '412':
           $ref: '#/components/responses/412PreconditionFailed'
 
@@ -1772,7 +1779,8 @@ paths:
                             - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
                               code: INVALID_UPDATE
-                              display: Invalid update with error - business effective start date is after the end date
+                              display: Update is invalid
+                        diagnostics: Invalid update with error - business effective start date is after the end date
         '403':
           description: Part of your update could not be allowed as the change was forbidden.
           content:
@@ -1792,7 +1800,8 @@ paths:
                             - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                               version: '1'
                               code: FORBIDDEN_UPDATE
-                              display: Forbidden update with error - source not permitted to remove 'deceasedDateTime'
+                              display: Update is forbidden
+                        diagnostics: Forbidden update with error - source not permitted to remove 'deceasedDateTime'
         '404':
           description: The message ID not found or you did not have permission to poll for that message.
           content:
@@ -1942,7 +1951,8 @@ components:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
                           code: PRECONDITION_FAILED
-                          display: Invalid update with error - This resource has changed since you last read. Please re-read and try again with the new version number.
+                          display: Required condition was not fulfilled
+                    diagnostics: Invalid update with error - This resource has changed since you last read. Please re-read and try again with the new version number
             missing-if-match:
               summary: Missing If-Match header
               value:
@@ -1955,7 +1965,8 @@ components:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
                           code: PRECONDITION_FAILED
-                          display: Invalid update with error - If-Match header must be supplied to update this resource
+                          display: Required condition was not fulfilled
+                    diagnostics: Invalid update with error - If-Match header must be supplied to update this resource
     409Conflict:
       description: |
         Version Conflict.
