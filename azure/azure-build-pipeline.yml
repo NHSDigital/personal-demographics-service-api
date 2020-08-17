@@ -31,7 +31,7 @@ extends:
       API_TEST_ENV_FILE_PATH: "tests/e2e/environments/local.postman_environment.json"
       PIP_CACHE_DIR: ".poetry"
     post_dependancy_steps:
-      - bash: "make sandbox"
+      - bash: "make sandbox &"
         displayName: Start Sandbox Server
         workingDirectory: "${{ variables.service_name }}"
       - bash: "make validate"
