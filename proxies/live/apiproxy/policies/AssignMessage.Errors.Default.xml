@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage name="AssignMessage.SetDefaultErrors">
+    <!-- Setting Default Error responses that will be used as template value in AssignMessage.CatchallErrorMessage-->
+    <AssignVariable>
+        <Name>pds.error.code</Name>
+        <Value>unknown</Value>
+    </AssignVariable>
+    <AssignVariable>
+        <Name>pds.error.coding.code</Name>
+        <Value>UNKNOWN_ERROR</Value>
+    </AssignVariable>
+    <AssignVariable>
+        <Name>pds.error.coding.display</Name>
+        <Value>An unknown error occurred processing this request. Contact us for assistance diagnosing this issue: https://digital.nhs.uk/developer/help-and-support. (Message ID: {messageid})</Value>
+    </AssignVariable>
+</AssignMessage>

@@ -3,7 +3,7 @@
     <Set>
         <Headers>
             <Header name="NHSD-Request-ID">{message.header.X-Request-ID}</Header>
-            <Header name="NHSD-Correlation-ID">{message.header.X-Request-ID}.{message.header.X-Correlation-ID},{messageid}</Header>
+            <Header name="NHSD-Correlation-ID">{message.header.X-Request-ID}.{message.header.X-Correlation-ID}.{messageid}</Header>
         </Headers>
     </Set>
     <Remove>

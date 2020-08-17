@@ -183,6 +183,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
+      - $ref: '#/components/parameters/CorrelationID'
     get:
       summary: Search for a patient
       operationId: search-patient
@@ -1438,7 +1439,7 @@ paths:
         url: https://tools.ietf.org/html/rfc6902
       parameters:
         - $ref: '#/components/parameters/IfMatch'
-        - $ref: '#/components/parameters/CorrelationID'
+        - $ref: '#/components/parameters/RequestID'
       requestBody:
         required: true
         content:
@@ -1910,14 +1911,29 @@ components:
         example: 'Bearer g1112R_ccQ1Ebbb4gtHBP1aaaNM'
     CorrelationID:
       in: header
-      name: NHSD-Correlation-ID
+      name: X-Correlation-ID
       required: true
       description:
-        A unique identifer should be created when making a request, this will assist with any problems that may occur and should be included when an issue is raised with the helpdesk.
+        An identifer should be created when making a request, this will assist with any problems that may occur and should be included when an issue is raised with the helpdesk.
+        It should ideally be a unique value to make message tracing easier, but this is not enforced.
 
-        It is recommended that the identifer is a universally unique identifier (UUID) version 4 with the alphabetic characters upper-cased.
+        This will be mirrored back in the response headers.
       schema:
         type: string
+        example: 11C46F5F-CDEF-4865-94B2-0EE0EDCC26DA
+    RequestID:
+      in: header
+      name: X-Request-ID
+      required: true
+      description:
+        A *globally unique identifer (GUID)* should be created when making a request, this will be used in message de-duplication, meaning if you need to replay any messages an identical response will be returned as the first time.
+
+        The identifer must be a universally unique identifier (UUID) (ideally version 4) with the alphabetic characters *upper-cased*.
+
+        This will be mirrored back in the response headers.
+      schema:
+        type: string
+        pattern: '^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$'
         example: 60E0B220-8136-4CA5-AE46-1D97EF59D068
   schemas:
     Patient:
