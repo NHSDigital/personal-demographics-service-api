@@ -2,6 +2,12 @@
   <PreFlow>
     <Request>
       <Step>
+        <Name>AssignMessage.CopyRequestIDs</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.HandleRequestIDs</Name>
+      </Step>
+      <Step>
         <!-- Header NHSD-Session-URID must be present and not empty -->
         <Name>RaiseFault.400BadRequest</Name>
         <Condition>(request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+")</Condition>
@@ -28,6 +34,16 @@
         <Name>AssignMessage.AddAsidHeader</Name>
       </Step>
     </Request>
+    <Response>
+      <Step>
+        <Name>AssignMessage.MirrorCorrelationID</Name>
+        <Condition>(request-copy.header.X-Correlation-ID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.MirrorRequestID</Name>
+        <Condition>(request-copy.header.X-Request-ID ~~ ".+")</Condition>
+      </Step>
+    </Response>
   </PreFlow>
   <HTTPTargetConnection>
     <Properties>
@@ -51,12 +67,28 @@
       <Step>
         <Name>AssignMessage.OAuthPolicyErrorResponse</Name>
       </Step>
+      <Step>
+        <Name>AssignMessage.MirrorCorrelationID</Name>
+        <Condition>(request-copy.header.X-Correlation-ID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.MirrorRequestID</Name>
+        <Condition>(request-copy.header.X-Request-ID ~~ ".+")</Condition>
+      </Step>
       <Condition>oauthV2.OauthV2.VerifyAccessToken.failed</Condition>
     </FaultRule>
   </FaultRules>
   <DefaultFaultRule>
     <Step>
       <Name>AssignMessage.CatchallErrorMessage</Name>
+    </Step>
+    <Step>
+      <Name>AssignMessage.MirrorCorrelationID</Name>
+      <Condition>(request-copy.header.X-Correlation-ID ~~ ".+")</Condition>
+    </Step>
+    <Step>
+      <Name>AssignMessage.MirrorRequestID</Name>
+      <Condition>(request-copy.header.X-Request-ID ~~ ".+")</Condition>
     </Step>
   </DefaultFaultRule>
 </TargetEndpoint>
