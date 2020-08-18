@@ -3,7 +3,7 @@
     <DisplayName>AssignMessage.Mirror.CorrelationID</DisplayName>
     <Set>
         <Headers>
-            <Header name="X-Correlation-ID">{request-copy.header.X-Correlation-ID}</Header>
+            <Header name="X-Correlation-ID">{original-request-details.header.X-Correlation-ID}</Header>
         </Headers>
     </Set>
     <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>

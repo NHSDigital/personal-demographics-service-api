@@ -14,7 +14,7 @@
     </AssignVariable>
     <AssignVariable>
         <Name>pds.error.diagnostics</Name>
-        <Template>Invalid value - '{request-copy.header.X-Request-ID}' in header 'X-Request-ID'</Template>
+        <Template>Invalid value - '{original-request-details.header.X-Request-ID}' in header 'X-Request-ID'</Template>
     </AssignVariable>
     <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
 </AssignMessage>

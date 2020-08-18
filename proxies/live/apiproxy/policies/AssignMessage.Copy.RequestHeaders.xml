@@ -9,5 +9,5 @@
         </Headers>
     </Copy>
     <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
-    <AssignTo createNew="true" transport="http" type="request">request-copy</AssignTo>
+    <AssignTo createNew="true" transport="http" type="request">original-request-details</AssignTo>
 </AssignMessage>
