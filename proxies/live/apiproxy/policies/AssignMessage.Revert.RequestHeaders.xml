@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.MirrorCorrelationID">
-    <DisplayName>AssignMessage.MirrorCorrelationID</DisplayName>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.Revert.RequestHeaders">
     <Set>
         <Headers>
+            <Header name="X-Request-ID">{request-copy.header.X-Request-ID}</Header>
             <Header name="X-Correlation-ID">{request-copy.header.X-Correlation-ID}</Header>
         </Headers>
     </Set>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.HandleRequestIDs">
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.Swap.RequestHeaders">
     <Set>
         <Headers>
             <Header name="NHSD-Request-ID">{message.header.X-Request-ID}</Header>
