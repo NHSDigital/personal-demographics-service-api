@@ -1915,7 +1915,7 @@ components:
       required: true
       description:
         An identifer should be created when making a request, this will assist with any problems that may occur and should be included when an issue is raised with the helpdesk.
-        It should ideally be a unique value to make message tracing easier, but this is not enforced.
+        It should ideally be a unique value to make message tracing easier and we would advise that there are no `.` characters, but these are not enforced.
 
         This will be mirrored back in the response headers.
       schema:
