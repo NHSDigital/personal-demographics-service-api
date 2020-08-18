@@ -1922,7 +1922,7 @@ components:
     CorrelationID:
       in: header
       name: X-Correlation-ID
-      required: true
+      required: false
       description:
         An identifer should be created when making a request, this will assist with any problems that may occur and should be included when an issue is raised with the helpdesk.
         It should ideally be a unique value to make message tracing easier and we would advise that there are no `.` characters, but these are not enforced.

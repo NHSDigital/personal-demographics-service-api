@@ -3,12 +3,6 @@
     <PreFlow>
         <Request>
             <Step>
-                <Name>AssignMessage.Errors.Default</Name>
-            </Step>
-            <Step>
-                <Name>AssignMessage.Copy.RequestHeaders</Name>
-            </Step>
-            <Step>
                 <!-- Header NHSD-Session-URID must be present and not empty -->
                 <Name>RaiseFault.400BadRequest</Name>
                 <Condition>(request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+")</Condition>
