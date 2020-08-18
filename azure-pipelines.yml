@@ -89,7 +89,7 @@ jobs:
       - bash: "make release"
         displayName: Build Release Package
 
-      - bash: "for env in internal-dev-sandbox internal-dev internal-qa-sandbox sandbox; do cp ecs-proxies-deploy.yml dist/ecs-deploy-$env.yml; done"
+      - bash: "for env in internal-dev-sandbox internal-qa-sandbox sandbox; do cp ecs-proxies-deploy.yml dist/ecs-deploy-$env.yml; done"
         displayName: copy proxies deployment config
 
       - template: azure/build-prereqs.yml@utils
