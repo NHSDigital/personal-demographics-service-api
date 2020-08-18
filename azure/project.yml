@@ -1,5 +1,5 @@
 variables:
-  service_name: personal-demographics-service
+  service_name: personal-demographics
   short_service_name: pds
   service_base_path: personal-demographics
   product_display_name: Personal Demographics Service

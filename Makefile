@@ -41,7 +41,7 @@ clean:
 
 generate-examples: publish clean
 	mkdir -p build/examples
-	poetry run python scripts/generate_examples.py build/personal-demographics-service.json build/examples
+	poetry run python scripts/generate_examples.py build/personal-demographics.json build/examples
 	scripts/duplicate_examples.sh
 
 update-examples: generate-examples
