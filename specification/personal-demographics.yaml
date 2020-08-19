@@ -19,7 +19,7 @@ info:
     * create a new record for a birth
     * receive birth notifications
     * create a record for a new patient
-    * register a new patient at a GP Practice - instead, use [National Health Application and Infrastructure Services (NHAIS)](https://digital.nhs.uk/services/nhais/nhais-developer-document-library)
+    * register a new patient at a GP Practice - instead, use [NHAIS GP Links API](https://digital.nhs.uk/developer/api-catalogue/nhais-gp-links)
 
     You can read and update the following data:
     * NHS Number (read only)
