@@ -120,7 +120,7 @@ info:
 
     Alternatively, you can try out the sandbox using our Postman collection:
     
-    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
+    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/7ca0d7d9e12a851fd335)
 
     ### Download Postman client
 
@@ -310,7 +310,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/7ca0d7d9e12a851fd335)
 
         ### Download Postman client
 
@@ -558,6 +558,7 @@ paths:
       - $ref: '#/components/parameters/Id'
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
+      - $ref: '#/components/parameters/CorrelationID'
     get:
       description: |
         ## Overview
@@ -590,7 +591,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/7ca0d7d9e12a851fd335)
               
         ### Download Postman client
 
@@ -1422,7 +1423,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/7ca0d7d9e12a851fd335)
 
         ### Download Postman client
 
@@ -1579,6 +1580,7 @@ paths:
       - $ref: '#/components/parameters/Id'
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
+      - $ref: '#/components/parameters/CorrelationID'
     get:
       description: |
         ## Overview
@@ -1602,7 +1604,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/7ca0d7d9e12a851fd335)
 
         ### Download Postman client
 
@@ -1713,6 +1715,7 @@ paths:
       - $ref: '#/components/parameters/MessageId'
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
+      - $ref: '#/components/parameters/CorrelationID'
     get:
       description: |
         ## Overview
@@ -1740,7 +1743,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/7ca0d7d9e12a851fd335)
         
         ### Download Postman client
 

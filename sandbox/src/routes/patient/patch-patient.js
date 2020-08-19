@@ -26,7 +26,7 @@ module.exports = [
             if (!requestValidator.validateIfMatchParameter(request)) {
                 throw Boom.preconditionFailed(
                     "Invalid update with error - If-Match header must be supplied to update this resource",
-                    {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED"}
+                    {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED", display: "Required condition was not fulfilled"}
                 )
             }
 
@@ -34,7 +34,7 @@ module.exports = [
             if (!requestValidator.validateIfMatchHeaderIsCorrectVersion(request, patientToUpdate)) {
                 throw Boom.preconditionFailed(
                     "Invalid update with error - This resource has changed since you last read. Please re-read and try again with the new version number.",
-                    {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED"})
+                    {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED", display: "Required condition was not fulfilled"})
             }
 
             // Check Content-Type header
@@ -48,7 +48,7 @@ module.exports = [
             if (!requestValidator.verifyPatchObjectHasBeenSubmitted(request)) {
                 throw Boom.badRequest(
                     "Invalid update with error - No patches found",
-                    {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE"})
+                    {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid"})
             }
 
             // Deep Copy the patient
@@ -84,7 +84,7 @@ module.exports = [
                 const patchingError = e.message.slice(0, e.message.indexOf('\n')) // Just the first line; rest is tons of extraneous detail
                 throw Boom.badRequest(
                     `Invalid patch: ${patchingError}`,
-                    {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE"})
+                    {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid"})
             }
             patchedPatient.meta.versionId++;
 

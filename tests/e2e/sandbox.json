@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "78dfd142-1774-4740-8637-50a05622f84e",
+		"_postman_id": "6bf405fe-a970-4622-ad9b-69896f8171e8",
 		"name": "Personal Demographics Service - Sandbox",
 		"description": "Sandbox Testing",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -21,7 +21,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "be2d5185-f167-4646-ba23-7021dff6f34f",
+												"id": "ef4a35e3-f416-475e-b37c-8089e92b3b38",
 												"exec": [
 													"pm.test(\"Returns status code 200 OK\", () =>{",
 													"    pm.response.to.have.status(200);",
@@ -39,7 +39,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "8948a257-2ce2-4a64-a20e-93a539419249",
+												"id": "03191a0f-51e3-4856-bbfd-b4a5fa27782d",
 												"exec": [
 													"var expected_response =",
 													"{",
@@ -488,7 +488,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "7fe71e25-7fe9-41f5-8a18-972798058b39",
+												"id": "10b8fee5-1d81-46cd-bda9-921f975cfc13",
 												"exec": [
 													"pm.test(\"Returns status code 200 OK\", () =>{",
 													"    pm.response.to.have.status(200);",
@@ -506,7 +506,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "95b3276b-e839-4b16-aaf5-153c63e29034",
+												"id": "c701971b-875c-4cb1-81a8-022a38186e2e",
 												"exec": [
 													"var expected_response =",
 													"{",
@@ -960,7 +960,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "5dbd03f4-3982-405e-9470-bce577ab8c85",
+												"id": "b7c69fca-49de-4da3-adf2-820cb43d13fa",
 												"exec": [
 													"pm.test(\"Returns status code 200 OK\", () =>{",
 													"    pm.response.to.have.status(200);",
@@ -978,7 +978,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "5e81a30c-e6ac-438d-a2e2-e3d02dc387a2",
+												"id": "c712a7a8-e1fd-4af9-9f58-da5c7d4537ae",
 												"exec": [
 													"var expected_response =",
 													"{",
@@ -1241,7 +1241,7 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "7ff5fe64-28bf-4d7d-adfe-44616d2cf165",
+												"id": "d43b1d2c-8364-4010-a3c7-c48aad47aedd",
 												"exec": [
 													"pm.test(\"Returns status code 200 OK\", () =>{",
 													"    pm.response.to.have.status(200);",
@@ -1259,7 +1259,7 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "8fe1ab42-a721-4dd1-8ca9-7230da20611f",
+												"id": "c61331a8-4dbd-47f1-9b2e-b4fef33930e0",
 												"exec": [
 													"var expected_response =",
 													"{",
@@ -1522,7 +1522,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "423f4ed2-f4a4-4153-b420-cf789ff7e216",
+										"id": "3f7930fe-2991-4873-9263-d3e8eb975c95",
 										"exec": [
 											"pm.test(\"Returns status code 200 OK\", () =>{",
 											"    pm.response.to.have.status(200);",
@@ -1540,7 +1540,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "74f62887-33b5-4474-92e0-f42c39feab44",
+										"id": "563046cd-24fa-41c8-a6db-5b41862fde25",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -1792,7 +1792,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "fe5b8d66-9497-4dae-b5c4-039774b3e2b2",
+										"id": "3c60d71e-251c-44a6-854d-2fa60299eaee",
 										"exec": [
 											"pm.test(\"Returns status code 200 OK\", () =>{",
 											"    pm.response.to.have.status(200);",
@@ -1810,7 +1810,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "42523bc8-5e67-4dc0-9816-2ec2e988e168",
+										"id": "132665e9-5bb3-40a9-84ea-47ffb2641e90",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -1957,7 +1957,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "306533e4-8f87-4a60-bc93-a9406da10a31",
+										"id": "b1b32c99-095b-4c1c-bba4-6168d0246dff",
 										"exec": [
 											"pm.test(\"Returns status code 200 OK\", () =>{",
 											"    pm.response.to.have.status(200);",
@@ -2015,7 +2015,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "e26e2b3a-d6df-4dc6-94c6-26d44cbe0f04",
+										"id": "247568e3-f492-4826-9bb1-4f8237c7cf8d",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -2036,10 +2036,11 @@
 											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
 											"                        \"version\": \"1\",",
 											"                        \"code\": \"INVALID_SEARCH_DATA\",",
-											"                        \"display\": \"Invalid value - '20101022' in field 'birthdate'\"",
+											"                        \"display\": \"Search data is invalid\"",
 											"                    }",
 											"                ]",
-											"            }",
+											"            },",
+											"            \"diagnostics\": \"Invalid value - '20101022' in field 'birthdate'\"",
 											"        }",
 											"    ]",
 											"}));",
@@ -2089,7 +2090,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "be47bba5-4099-4ba2-a83e-32c6ecb4194f",
+										"id": "34ec9975-fe78-40dc-8424-efef3623b5d8",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -2110,10 +2111,11 @@
 											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
 											"                        \"version\": \"1\",",
 											"                        \"code\": \"INVALID_SEARCH_DATA\",",
-											"                        \"display\": \"Invalid value - '20101022' in field 'death-date'\"",
+											"                        \"display\": \"Search data is invalid\"",
 											"                    }",
 											"                ]",
-											"            }",
+											"            },",
+											"            \"diagnostics\": \"Invalid value - '20101022' in field 'death-date'\"",
 											"        }",
 											"    ]",
 											"}));",
@@ -2163,7 +2165,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "eaa5f499-4914-4007-a6c4-8b0b44ab5ef5",
+										"id": "2e892694-7edd-48eb-8e1f-0799d21ee1a3",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -2184,10 +2186,11 @@
 											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
 											"                        \"version\": \"1\",",
 											"                        \"code\": \"MISSING_VALUE\",",
-											"                        \"display\": \"Not enough search parameters were provided to be able to make a search\"",
+											"                        \"display\": \"Required value is missing\"",
 											"                    }",
 											"                ]",
-											"            }",
+											"            },",
+											"            \"diagnostics\": \"Not enough search parameters were provided to be able to make a search\"",
 											"        }",
 											"    ]",
 											"}));",
@@ -2219,7 +2222,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "b14ec620-61f1-4f19-94ac-be6e3de623f1",
+										"id": "dafdab1b-befd-428e-aa0c-84d7ad59a836",
 										"exec": [
 											"pm.test(\"Returns status code 200 OK\", () =>{",
 											"    pm.response.to.have.status(200);",
@@ -2239,7 +2242,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "dd3d3019-0bb3-43a4-b34d-6cd3067226dd",
+										"id": "fd841961-ce88-45df-99b1-883578b338c2",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -2393,7 +2396,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "9baa4c19-b91e-4722-b71a-fa5cd41f0c34",
+										"id": "3d3c90a9-fef8-4e9c-92fb-c85ba2fe1ad3",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -2419,7 +2422,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "edc2aeab-6ed1-44a4-95d0-224805206c89",
+										"id": "d482b458-b002-4331-bf93-58f6bb3b3f9b",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -2772,7 +2775,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "246ce920-8beb-449a-907a-f6a3f933323f",
+										"id": "5bdd788a-4929-4b3f-8956-adf356fb8034",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -2798,7 +2801,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "43e23530-3f3c-4b0d-af82-6cd49dd3da1e",
+										"id": "63801419-5846-485d-8c24-4ee7337dcc59",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -2914,7 +2917,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "f4ef7563-e84e-4377-b416-f8255b666c0a",
+										"id": "42c9163b-04a3-4d90-8a96-528504204415",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -2971,7 +2974,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "bed9308e-b803-495c-ad19-6a83578b192a",
+										"id": "a5fde871-2279-4100-919a-555a86f5b8a1",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -3028,7 +3031,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "edd0280d-dae4-48bd-8e80-023ac4bfa5cb",
+										"id": "ecfcc6ae-77a7-4ee7-95cc-8b692e55f0e9",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -3085,7 +3088,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "e914047a-2751-4d66-bb8f-984e6f9f32e2",
+										"id": "19028e1c-8af1-4785-9502-413a44a2f576",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -3113,7 +3116,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "44d6227b-8201-4283-841e-c152b912d9a1",
+										"id": "3ac1a45c-1c2c-407c-b220-f816c0251ea5",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -3230,7 +3233,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "18684a02-b795-4fb1-b855-51a1df545c2e",
+										"id": "ef08dd5d-72cd-452f-9930-bc66fbb430be",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -3256,7 +3259,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "cea41a2c-64e4-4289-9275-7a51e0747cbd",
+										"id": "da8fd987-3077-4f9d-8f14-5763746cdf9d",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -3331,7 +3334,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "b685a133-ff2c-4869-a2e6-d9c1c68aaa00",
+										"id": "3c65e32a-56fd-4e54-ab2d-926a6b31b542",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -3359,7 +3362,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "8aa93126-4f43-4e82-b967-113aa1fd5d6b",
+										"id": "a7cfc44d-23c3-4f2b-938b-746ede39ad0f",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -3658,7 +3661,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "908cd0bc-c1be-4dd6-bdff-6c0e5bc46a93",
+										"id": "26ebb1a4-53a0-4a95-ab71-8e47e1a27bd8",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -3716,7 +3719,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "a07fcea6-49f7-40a3-bf21-0edaf86b78cb",
+										"id": "48ceb91e-8639-4a32-a1f4-9774d1b10532",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -3777,7 +3780,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "e3cf5784-1abb-4507-9014-b42935babd1b",
+										"id": "5cb229aa-35c7-40bd-91b7-3fd806cd1a8e",
 										"exec": [
 											"",
 											"var messageId = pm.response.headers.get(\"content-location\").replace(\"/_poll/\", \"\")",
@@ -3790,6 +3793,14 @@
 											"pm.test(\"Returns retry-after header\", function () {",
 											"    pm.response.to.have.header(\"retry-after\", \"100\");",
 											"});",
+											"",
+											"pm.test(\"Mirrors X-Request-ID\", function () {",
+											"    pm.response.to.have.header(\"x-request-id\", pm.environment.get(\"request_id\"));",
+											"});",
+											"",
+											"pm.test(\"Mirrors X-Correlation-ID\", function () {",
+											"    pm.response.to.have.header(\"x-correlation-id\", pm.environment.get(\"correlation_id\"));",
+											"});",
 											""
 										],
 										"type": "text/javascript"
@@ -3798,8 +3809,12 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "1de839c5-7258-4357-8bbc-07f9e7bfadaa",
+										"id": "938220f0-914f-4382-99d8-77a370717061",
 										"exec": [
+											"var uuid = require(\"uuid\");",
+											"pm.environment.set(\"request_id\", uuid.v4());",
+											"pm.environment.set(\"correlation_id\", \"POSTMAN_123\")",
+											"",
 											"var expected_response =",
 											"{",
 											"    \"address\": [",
@@ -4099,7 +4114,8 @@
 											"    ]",
 											"}",
 											"",
-											"pm.environment.set(\"expected_response\", expected_response);"
+											"pm.environment.set(\"expected_response\", expected_response);",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -4116,6 +4132,16 @@
 									{
 										"key": "If-Match",
 										"value": "W/\"2\"",
+										"type": "text"
+									},
+									{
+										"key": "X-Request-ID",
+										"value": "{{request_id}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Correlation-ID",
+										"value": "{{correlation_id}}",
 										"type": "text"
 									}
 								],
@@ -4145,7 +4171,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "48ace797-0f33-4224-b3e0-650033a972a4",
+										"id": "140d558d-626b-4794-9106-11aa8e8431d7",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -4171,7 +4197,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "d7b5be09-a1cc-480f-b499-102dedb44523",
+										"id": "7ed390c7-07bf-45bd-93cb-185e1cd81588",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -4523,7 +4549,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "1ec21a40-3e08-4742-828d-97a8eddab586",
+										"id": "8da19d6c-fa16-4d06-9147-cef74d6b7f97",
 										"exec": [
 											"",
 											"var messageId = pm.response.headers.get(\"content-location\").replace(\"/_poll/\", \"\")",
@@ -4536,6 +4562,14 @@
 											"pm.test(\"Returns retry-after header\", function () {",
 											"    pm.response.to.have.header(\"retry-after\", \"100\");",
 											"});",
+											"",
+											"pm.test(\"Mirrors X-Request-ID\", function () {",
+											"    pm.response.to.have.header(\"x-request-id\", pm.environment.get(\"request_id\"));",
+											"});",
+											"",
+											"pm.test(\"X-Correlation-ID not mirrored when not present\", function () {",
+											"    pm.response.to.not.have.header(\"x-correlation-id\");",
+											"});",
 											""
 										],
 										"type": "text/javascript"
@@ -4544,7 +4578,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "b8617756-9af1-468c-a3a2-6d8af7d2ce29",
+										"id": "de681c68-5a9f-46fa-96b1-16394a97a18e",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -4845,7 +4879,10 @@
 											"    ]",
 											"}",
 											"",
-											"pm.environment.set(\"expected_response\", expected_response);"
+											"pm.environment.set(\"expected_response\", expected_response);",
+											"",
+											"var uuid = require(\"uuid\");",
+											"pm.environment.set(\"request_id\", uuid.v4());"
 										],
 										"type": "text/javascript"
 									}
@@ -4863,6 +4900,11 @@
 										"key": "If-Match",
 										"type": "text",
 										"value": "W/\"2\""
+									},
+									{
+										"key": "X-Request-ID",
+										"value": "{{request_id}}",
+										"type": "text"
 									}
 								],
 								"body": {
@@ -4891,7 +4933,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "3159b49f-8269-4dbc-a2d2-069059214dfb",
+										"id": "04890618-4748-4535-9f82-d6d141ce89ac",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -4917,7 +4959,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "f3af7d29-0933-4279-a4b9-d9b3b08512d6",
+										"id": "a1a0e4ef-3ea7-4f3b-8dde-8cbdc3066edc",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -5019,7 +5061,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "09bc8a55-3be3-4385-ae6e-d39ebbe93acc",
+										"id": "83b7b89b-5e99-4e93-b01d-5b3ccaef653c",
 										"exec": [
 											"",
 											"var messageId = pm.response.headers.get(\"content-location\").replace(\"/_poll/\", \"\")",
@@ -5032,6 +5074,10 @@
 											"pm.test(\"Returns retry-after header\", function () {",
 											"    pm.response.to.have.header(\"retry-after\", \"100\");",
 											"});",
+											"",
+											"pm.test(\"Mirrors X-Request-ID\", function () {",
+											"    pm.response.to.have.header(\"x-request-id\", pm.environment.get(\"request_id\"));",
+											"});",
 											""
 										],
 										"type": "text/javascript"
@@ -5040,7 +5086,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "7baf6f22-38bc-45f7-a3e9-918184147a5d",
+										"id": "5ca82969-ae03-4d11-b94b-809e5ee68e9c",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -5341,7 +5387,10 @@
 											"    ]",
 											"}",
 											"",
-											"pm.environment.set(\"expected_response\", expected_response);"
+											"pm.environment.set(\"expected_response\", expected_response);",
+											"",
+											"var uuid = require(\"uuid\");",
+											"pm.environment.set(\"request_id\", uuid.v4());"
 										],
 										"type": "text/javascript"
 									}
@@ -5359,6 +5408,11 @@
 										"key": "If-Match",
 										"type": "text",
 										"value": "W/\"2\""
+									},
+									{
+										"key": "X-Request-ID",
+										"value": "{{request_id}}",
+										"type": "text"
 									}
 								],
 								"body": {
@@ -5387,7 +5441,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "667e238b-0eb3-4f96-a5e0-179ea411a21d",
+										"id": "196b41a5-060a-480b-ba01-fc45818199df",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -5413,7 +5467,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "119108be-0007-44e7-a342-2fc47840d9e5",
+										"id": "d3a082ac-8006-413a-98aa-61512528e756",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -5500,7 +5554,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "58dc987d-04f0-4637-98e8-b6eed9bc6218",
+										"id": "fe56c4f2-5ea5-4a70-ac75-9f169cd902d7",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -5514,6 +5568,14 @@
 											"    var actual = JSON.stringify(response);",
 											"    pm.expect(actual).to.eql(expected);",
 											"});",
+											"",
+											"pm.test(\"Mirrors X-Request-ID\", function () {",
+											"    pm.response.to.have.header(\"x-request-id\", pm.environment.get(\"request_id\"));",
+											"});",
+											"",
+											"pm.test(\"Mirrors X-Correlation-ID\", function () {",
+											"    pm.response.to.have.header(\"x-correlation-id\", pm.environment.get(\"correlation_id\"));",
+											"});",
 											""
 										],
 										"type": "text/javascript"
@@ -5522,8 +5584,12 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "4901230f-3338-4e9f-b977-e5c0dad43e93",
+										"id": "7a8f5932-9136-4fb7-b907-1eb6c12e6b6e",
 										"exec": [
+											"var uuid = require(\"uuid\");",
+											"pm.environment.set(\"request_id\", uuid.v4());",
+											"pm.environment.set(\"correlation_id\", \"POSTMAN_123\")",
+											"",
 											"var expected_response =",
 											"{",
 											"    \"resourceType\": \"OperationOutcome\",",
@@ -5563,6 +5629,16 @@
 										"key": "If-Match",
 										"value": "W/\"2\"",
 										"type": "text"
+									},
+									{
+										"key": "X-Request-ID",
+										"value": "{{request_id}}",
+										"type": "text"
+									},
+									{
+										"key": "X-Correlation-ID",
+										"value": "{{correlation_id}}",
+										"type": "text"
 									}
 								],
 								"body": {
@@ -5591,7 +5667,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "b5a0af32-487c-4d16-bd1e-81045ebebd7d",
+										"id": "74fc2adb-d445-4651-aa76-df77f13eac6c",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -5605,6 +5681,10 @@
 											"    var actual = JSON.stringify(response);",
 											"    pm.expect(actual).to.eql(expected);",
 											"});",
+											"",
+											"pm.test(\"Mirrors X-Request-ID\", function () {",
+											"    pm.response.to.have.header(\"x-request-id\", pm.environment.get(\"request_id\"));",
+											"});",
 											""
 										],
 										"type": "text/javascript"
@@ -5613,8 +5693,11 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "e66e39be-97fa-4bd3-ba0b-b3ecb81f7d66",
+										"id": "b47620c2-d4aa-4589-a862-95313a6d606b",
 										"exec": [
+											"var uuid = require(\"uuid\");",
+											"pm.environment.set(\"request_id\", uuid.v4());",
+											"",
 											"var expected_response =",
 											"{",
 											"    \"resourceType\": \"OperationOutcome\",",
@@ -5654,6 +5737,11 @@
 										"key": "If-Match",
 										"type": "text",
 										"value": "W/\"2\""
+									},
+									{
+										"key": "X-Request-ID",
+										"value": "{{request_id}}",
+										"type": "text"
 									}
 								],
 								"body": {
@@ -5682,7 +5770,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "cf568d7d-97ed-4b68-9738-4a30b30e3c73",
+										"id": "842c8b2c-84e6-40e8-ad6e-6dd9024f2b6a",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -5696,6 +5784,10 @@
 											"    var actual = JSON.stringify(response);",
 											"    pm.expect(actual).to.eql(expected);",
 											"});",
+											"",
+											"pm.test(\"Mirrors X-Request-ID\", function () {",
+											"    pm.response.to.have.header(\"x-request-id\", pm.environment.get(\"request_id\"));",
+											"});",
 											""
 										],
 										"type": "text/javascript"
@@ -5704,8 +5796,11 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "8c5c7f52-749f-48a0-b3be-37fcc72ef042",
+										"id": "97d125a5-fd50-4e2e-ae96-db26a5386d34",
 										"exec": [
+											"var uuid = require(\"uuid\");",
+											"pm.environment.set(\"request_id\", uuid.v4());",
+											"",
 											"var expected_response =",
 											"{",
 											"    \"resourceType\": \"OperationOutcome\",",
@@ -5719,10 +5814,11 @@
 											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
 											"                        \"version\": \"1\",",
 											"                        \"code\": \"PRECONDITION_FAILED\",",
-											"                        \"display\": \"Invalid update with error - If-Match header must be supplied to update this resource\"",
+											"                        \"display\": \"Required condition was not fulfilled\"",
 											"                    }",
 											"                ]",
-											"            }",
+											"            },",
+											"            \"diagnostics\": \"Invalid update with error - If-Match header must be supplied to update this resource\"",
 											"        }",
 											"    ]",
 											"}",
@@ -5743,6 +5839,11 @@
 										"key": "Content-Type",
 										"type": "text",
 										"value": "application/json-patch+json"
+									},
+									{
+										"key": "X-Request-ID",
+										"value": "{{request_id}}",
+										"type": "text"
 									}
 								],
 								"body": {
@@ -5771,7 +5872,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "101c7cd4-f2b1-40c5-adca-5fe14afe51d0",
+										"id": "5e07e484-cfad-419c-aad6-bf97c9220928",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -5785,6 +5886,10 @@
 											"    var actual = JSON.stringify(response);",
 											"    pm.expect(actual).to.eql(expected);",
 											"});",
+											"",
+											"pm.test(\"Mirrors X-Request-ID\", function () {",
+											"    pm.response.to.have.header(\"x-request-id\", pm.environment.get(\"request_id\"));",
+											"});",
 											""
 										],
 										"type": "text/javascript"
@@ -5793,8 +5898,11 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "c82eca6e-3fcb-400c-ac58-63d37241df4c",
+										"id": "3a25e495-7bcc-4d40-acaa-6d2b3b44d468",
 										"exec": [
+											"var uuid = require(\"uuid\");",
+											"pm.environment.set(\"request_id\", uuid.v4());",
+											"",
 											"var expected_response =",
 											"{",
 											"    \"resourceType\": \"OperationOutcome\",",
@@ -5808,10 +5916,11 @@
 											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
 											"                        \"version\": \"1\",",
 											"                        \"code\": \"PRECONDITION_FAILED\",",
-											"                        \"display\": \"Invalid update with error - This resource has changed since you last read. Please re-read and try again with the new version number.\"",
+											"                        \"display\": \"Required condition was not fulfilled\"",
 											"                    }",
 											"                ]",
-											"            }",
+											"            },",
+											"            \"diagnostics\": \"Invalid update with error - This resource has changed since you last read. Please re-read and try again with the new version number.\"",
 											"        }",
 											"    ]",
 											"}",
@@ -5837,6 +5946,11 @@
 										"key": "If-Match",
 										"type": "text",
 										"value": "W/\"1\""
+									},
+									{
+										"key": "X-Request-ID",
+										"value": "{{request_id}}",
+										"type": "text"
 									}
 								],
 								"body": {
@@ -5865,7 +5979,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "2fac07dc-ca13-4955-b901-67733d13db6c",
+										"id": "4ced943d-c29e-4c13-ad27-c878c1dd6180",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -5879,6 +5993,10 @@
 											"    var actual = JSON.stringify(response);",
 											"    pm.expect(actual).to.eql(expected);",
 											"});",
+											"",
+											"pm.test(\"Mirrors X-Request-ID\", function () {",
+											"    pm.response.to.have.header(\"x-request-id\", pm.environment.get(\"request_id\"));",
+											"});",
 											""
 										],
 										"type": "text/javascript"
@@ -5887,8 +6005,11 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "dfd44b8f-133b-46ef-8ddb-1448e6436744",
+										"id": "67165800-4302-425d-bbdf-3dd04fe8c615",
 										"exec": [
+											"var uuid = require(\"uuid\");",
+											"pm.environment.set(\"request_id\", uuid.v4());",
+											"",
 											"var expected_response =",
 											"{",
 											"    \"resourceType\": \"OperationOutcome\",",
@@ -5928,6 +6049,11 @@
 										"key": "If-Match",
 										"type": "text",
 										"value": "W/\"2\""
+									},
+									{
+										"key": "X-Request-ID",
+										"value": "{{request_id}}",
+										"type": "text"
 									}
 								],
 								"body": {
@@ -5956,7 +6082,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "4dbc1ac7-1d1a-4e8f-9d88-79a98f835200",
+										"id": "93b6e935-d4fc-4f09-8f9d-3135567759eb",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -5970,6 +6096,10 @@
 											"    var actual = JSON.stringify(response);",
 											"    pm.expect(actual).to.eql(expected);",
 											"});",
+											"",
+											"pm.test(\"Mirrors X-Request-ID\", function () {",
+											"    pm.response.to.have.header(\"x-request-id\", pm.environment.get(\"request_id\"));",
+											"});",
 											""
 										],
 										"type": "text/javascript"
@@ -5978,8 +6108,11 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "0ba03817-2bd7-4c7f-989a-6bc78d1412c7",
+										"id": "de9e62f9-89a8-4966-9db0-5d12e335be82",
 										"exec": [
+											"var uuid = require(\"uuid\");",
+											"pm.environment.set(\"request_id\", uuid.v4());",
+											"",
 											"var expected_response =",
 											"{",
 											"    \"resourceType\": \"OperationOutcome\",",
@@ -5993,10 +6126,11 @@
 											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
 											"                        \"version\": \"1\",",
 											"                        \"code\": \"INVALID_UPDATE\",",
-											"                        \"display\": \"Invalid update with error - No patches found\"",
+											"                        \"display\": \"Update is invalid\"",
 											"                    }",
 											"                ]",
-											"            }",
+											"            },",
+											"            \"diagnostics\": \"Invalid update with error - No patches found\"",
 											"        }",
 											"    ]",
 											"}",
@@ -6019,6 +6153,11 @@
 										"key": "If-Match",
 										"type": "text",
 										"value": "W/\"2\""
+									},
+									{
+										"key": "X-Request-ID",
+										"value": "{{request_id}}",
+										"type": "text"
 									}
 								],
 								"body": {
@@ -6047,7 +6186,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "f1546650-4511-4101-8704-5b0fb9199a5f",
+										"id": "b8eac353-0e8b-4d9a-b337-81d62b20ab7d",
 										"exec": [
 											"var response = pm.response.json();",
 											"    ",
@@ -6061,6 +6200,10 @@
 											"    var actual = JSON.stringify(response);",
 											"    pm.expect(actual).to.eql(expected);",
 											"});",
+											"",
+											"pm.test(\"Mirrors X-Request-ID\", function () {",
+											"    pm.response.to.have.header(\"x-request-id\", pm.environment.get(\"request_id\"));",
+											"});",
 											""
 										],
 										"type": "text/javascript"
@@ -6069,8 +6212,11 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "6617e6e8-cfc9-4869-a86f-7688a1676af0",
+										"id": "d80cb449-2b50-415e-bc05-a35396669f46",
 										"exec": [
+											"var uuid = require(\"uuid\");",
+											"pm.environment.set(\"request_id\", uuid.v4());",
+											"",
 											"var expected_response =",
 											"{",
 											"    \"resourceType\": \"OperationOutcome\",",
@@ -6084,10 +6230,115 @@
 											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
 											"                        \"version\": \"1\",",
 											"                        \"code\": \"INVALID_UPDATE\",",
-											"                        \"display\": \"Invalid patch: Operation `op` property is not one of operations defined in RFC-6902\"",
+											"                        \"display\": \"Update is invalid\"",
 											"                    }",
 											"                ]",
-											"            }",
+											"            },",
+											"            \"diagnostics\": \"Invalid patch: Operation `op` property is not one of operations defined in RFC-6902\"",
+											"        }",
+											"    ]",
+											"}",
+											"",
+											"pm.environment.set(\"expected_response\", expected_response);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json-patch+json"
+									},
+									{
+										"key": "If-Match",
+										"type": "text",
+										"value": "W/\"2\""
+									},
+									{
+										"key": "X-Request-ID",
+										"value": "{{request_id}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"patches\": [\n        {\n            \"op\": \"bad_value\",\n            \"path\": \"not a path\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {}
+									}
+								},
+								"url": {
+									"raw": "{{environment}}/Patient/9000000009",
+									"host": [
+										"{{environment}}"
+									],
+									"path": [
+										"Patient",
+										"9000000009"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update: Missing Request ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "c7ab8a78-6207-4bfa-8c55-a5979a08df6f",
+										"exec": [
+											"var response = pm.response.json();",
+											"    ",
+											"",
+											"pm.test(\"Returns status code 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"Returns correct canned response\", () =>{",
+											"    var expected = JSON.stringify(pm.environment.get(\"expected_response\"));",
+											"    var actual = JSON.stringify(response);",
+											"    pm.expect(actual).to.eql(expected);",
+											"});",
+											"",
+											"pm.test(\"X-Request-ID not present\", function () {",
+											"    pm.response.to.not.have.header(\"x-request-id\");",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "3fb32d05-87fd-4585-bf64-8a9e999ed3fa",
+										"exec": [
+											"var uuid = require(\"uuid\");",
+											"pm.environment.set(\"request_id\", uuid.v4());",
+											"",
+											"var expected_response =",
+											"{",
+											"    \"resourceType\": \"OperationOutcome\",",
+											"    \"issue\": [",
+											"        {",
+											"            \"severity\": \"error\",",
+											"            \"code\": \"value\",",
+											"            \"details\": {",
+											"                \"coding\": [",
+											"                    {",
+											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
+											"                        \"version\": \"1\",",
+											"                        \"code\": \"MISSING_VALUE\",",
+											"                        \"display\": \"Required value is missing\"",
+											"                    }",
+											"                ]",
+											"            },",
+											"            \"diagnostics\": \"Missing value in header 'X-Request-ID'\"",
 											"        }",
 											"    ]",
 											"}",
@@ -6114,7 +6365,110 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"patches\": [\n        {\n            \"op\": \"bad_value\",\n            \"path\": \"not a path\"\n        }\n    ]\n}",
+									"raw": "{\n    \"patches\": [\n        {\n            \"op\": \"replace\",\n            \"path\": \"/name/0\",\n            \"value\": {\n                \"id\": \"123\",\n                \"use\": \"usual\",\n                \"period\": {\n                    \"start\": \"2020-01-01\",\n                    \"end\": \"2021-12-31\"\n                },\n                \"given\": [\n                    \"James\"\n                ],\n                \"family\": \"Smith\",\n                \"prefix\": [\n                    \"Mr\"\n                ],\n                \"suffix\": [\n                    \"MBE\"\n                ]\n            }\n        }\n    ]\n}",
+									"options": {
+										"raw": {}
+									}
+								},
+								"url": {
+									"raw": "{{environment}}/Patient/9000000009",
+									"host": [
+										"{{environment}}"
+									],
+									"path": [
+										"Patient",
+										"9000000009"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update: Invalid Request ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "246e5a52-2179-442c-8b2f-c6188b0f9e21",
+										"exec": [
+											"var response = pm.response.json();",
+											"    ",
+											"",
+											"pm.test(\"Returns status code 400 Bad Request\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"Returns correct canned response\", () =>{",
+											"    var expected = JSON.stringify(pm.environment.get(\"expected_response\"));",
+											"    var actual = JSON.stringify(response);",
+											"    pm.expect(actual).to.eql(expected);",
+											"});",
+											"",
+											"pm.test(\"Mirrors X-Request-ID\", function () {",
+											"    pm.response.to.have.header(\"x-request-id\", pm.environment.get(\"request_id\"));",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "98d98ff1-a054-4100-a63e-0bd41d726c2a",
+										"exec": [
+											"pm.environment.set(\"request_id\", \"1234\");",
+											"",
+											"var expected_response =",
+											"{",
+											"    \"resourceType\": \"OperationOutcome\",",
+											"    \"issue\": [",
+											"        {",
+											"            \"severity\": \"error\",",
+											"            \"code\": \"value\",",
+											"            \"details\": {",
+											"                \"coding\": [",
+											"                    {",
+											"                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode\",",
+											"                        \"version\": \"1\",",
+											"                        \"code\": \"INVALID_VALUE\",",
+											"                        \"display\": \"Provided value is invalid\"",
+											"                    }",
+											"                ]",
+											"            },",
+											"            \"diagnostics\": \"Invalid value - '1234' in header 'X-Request-ID'\"",
+											"        }",
+											"    ]",
+											"}",
+											"",
+											"pm.environment.set(\"expected_response\", expected_response);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json-patch+json"
+									},
+									{
+										"key": "If-Match",
+										"type": "text",
+										"value": "W/\"2\""
+									},
+									{
+										"key": "X-Request-ID",
+										"value": "{{request_id}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"patches\": [\n        {\n            \"op\": \"replace\",\n            \"path\": \"/name/0\",\n            \"value\": {\n                \"id\": \"123\",\n                \"use\": \"usual\",\n                \"period\": {\n                    \"start\": \"2020-01-01\",\n                    \"end\": \"2021-12-31\"\n                },\n                \"given\": [\n                    \"James\"\n                ],\n                \"family\": \"Smith\",\n                \"prefix\": [\n                    \"Mr\"\n                ],\n                \"suffix\": [\n                    \"MBE\"\n                ]\n            }\n        }\n    ]\n}",
 									"options": {
 										"raw": {}
 									}
@@ -6145,7 +6499,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "a05e1ba0-3747-4957-b6ac-8aeeff937a90",
+										"id": "35fcf700-05c8-4957-8b66-5efecc5caed7",
 										"exec": [
 											"var response = pm.response.json();",
 											"",
@@ -6166,7 +6520,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "50ea69f2-cc4f-48a1-a1da-b90222774a99",
+										"id": "c3642b4c-8334-4370-9fca-de6601f004a4",
 										"exec": [
 											"var expected_response =",
 											"{",
@@ -6230,7 +6584,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "c5fa4f21-04ce-470e-9204-a2ae03919e0b",
+										"id": "5b52cf58-3fe4-4a2b-9f0b-b980370fcd3f",
 										"exec": [
 											"pm.test(\"Returns status code 202 Accepted\", function () {",
 											"    pm.response.to.have.status(202);",
@@ -6247,7 +6601,7 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "b4ddea23-4010-4423-ac64-71e7fb8b6792",
+										"id": "d550ca73-f81c-4a0d-a34d-05be86916738",
 										"exec": [
 											""
 										],
@@ -6296,7 +6650,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "b8d3dd6f-20c0-4ee0-9165-cdcd4353ecc1",
+				"id": "4dcfef87-eb6f-40cf-a345-f238b995f86a",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -6306,7 +6660,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "3e939c03-72bd-49c2-a043-11538792d5ec",
+				"id": "c9598c52-cdc6-4d8b-89d2-728e96051c1a",
 				"type": "text/javascript",
 				"exec": [
 					"",
