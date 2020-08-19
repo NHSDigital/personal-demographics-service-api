@@ -1,0 +1,34 @@
+name: "$(SourceBranchName)+$(BuildID)"
+
+trigger: none
+pr: none
+
+resources:
+  repositories:
+    - repository: common
+      type: github
+      name: NHSDigital/api-management-utils
+      ref: refs/heads/APM-1315-build-steps
+      endpoint: NHSDigital
+  pipelines:
+  - pipeline: build_pipeline
+    source: "Personal-Demographics-Service-Build"
+    trigger:
+      branches:
+        include:
+          - refs/tags/v*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - template: project.yml
+
+extends:
+  template: azure/common/apigee-deployment.yml@common
+  parameters:
+    service_name: ${{ variables.service_name }}
+    service_base_path: ${{ variables.service_base_path }}
+    product_display_name: ${{ variables.product_display_name }}
+    product_description: ${{ variables.product_description }}
+    deploy_spec: true

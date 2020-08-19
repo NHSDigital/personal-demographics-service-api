@@ -35,4 +35,4 @@ extends:
     product_display_name: ${{ variables.product_display_name }}
     product_description: ${{ variables.product_description }}
     deploy_review_sandbox: true
-    deploy_review_spec: true
+    deploy_spec: true
