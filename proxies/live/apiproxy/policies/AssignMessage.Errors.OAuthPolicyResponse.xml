@@ -1,4 +1,4 @@
-<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.OAuthPolicyErrorResponse">
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.Errors.OAuthPolicyResponse">
   <Set>
     <StatusCode>401</StatusCode>
     <Payload contentType="application/json">
@@ -14,10 +14,11 @@
                   "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
                   "version": "1",
                   "code": "ACCESS_DENIED",
-                  "display": "{faultstring}"
+                  "display": "Access Denied - Unauthorised"
                 }
               ]
-            }
+            },
+            "diagnostics": "{faultstring}"
           }
         ]
       }

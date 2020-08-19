@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.Swap.RequestHeaders">
+    <Set>
+        <Headers>
+            <Header name="NHSD-Request-ID">{message.header.X-Request-ID}</Header>
+            <Header name="NHSD-Correlation-ID">{message.header.X-Request-ID}.{message.header.X-Correlation-ID}.{messageid}</Header>
+        </Headers>
+    </Set>
+    <Remove>
+        <Headers>
+            <Header name="X-Request-ID"/>
+            <Header name="X-Correlation-ID"/>
+        </Headers>
+    </Remove>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+    <AssignTo createNew="false" transport="http" type="request"/>
+</AssignMessage>
