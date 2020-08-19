@@ -184,6 +184,7 @@ paths:
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
       - $ref: '#/components/parameters/CorrelationID'
+      - $ref: '#/components/parameters/RequestID'
     get:
       summary: Search for a patient
       operationId: search-patient
@@ -559,6 +560,7 @@ paths:
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
       - $ref: '#/components/parameters/CorrelationID'
+      - $ref: '#/components/parameters/RequestID'
     get:
       description: |
         ## Overview
@@ -571,7 +573,7 @@ paths:
 
         On retrieval of a superseded resource the new resource will be automatically returned in place of the requested resource. You will be able to spot a superseded resource when the `id` is not the same as the one requested.
 
-        When retrieving a superseding resource we recommend that you update your system with the new resource and remove the superseded resource, ensuring that the same `id` does not exist against another resource in your system.
+        When retrieving a superseding resource you must update your system with the new resource and remove the superseded resource, ensuring that the same `id` does not exist against another resource in your system.
 
         ## Restricted patients
         Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. Restricted patients can be retrieved; however, location sensitive fields such as `address`, `telecom` and `generalPractitioner` will be removed.
@@ -1454,7 +1456,6 @@ paths:
         url: https://tools.ietf.org/html/rfc6902
       parameters:
         - $ref: '#/components/parameters/IfMatch'
-        - $ref: '#/components/parameters/RequestID'
       requestBody:
         required: true
         content:
@@ -1585,6 +1586,7 @@ paths:
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
       - $ref: '#/components/parameters/CorrelationID'
+      - $ref: '#/components/parameters/RequestID'
     get:
       description: |
         ## Overview
@@ -1892,8 +1894,8 @@ components:
       description: |
         Latest known version identifier enclosed in quotes preceded by `W/`.
 
-        Send the value of the patient's `ETag` response header (or `meta.versionId` property) when patient is retrieved when updating a patient.
-        This is to ensure that any updates are applied against an up-to-date version of the patient.
+        Send the value of the patient's `ETag` response header on patient retrieval when updating a patient.
+        This is to ensure that any updates are applied against an up-to-date version of the patient resource.
       required: true
       schema:
         type: string
@@ -1909,7 +1911,7 @@ components:
 
         Find out more about [User role ID](https://digital.nhs.uk/developer/user-restricted-restful-apis#user-completes-authentication-and-authorisation)
 
-        Note: This parameter is required unless interacting with the Sandbox.
+        **Note: This parameter is required unless interacting with the Sandbox.**
       required: false
       schema:
         type: string
@@ -1921,7 +1923,7 @@ components:
       description: |
         An [OAuth 2.0 bearer token](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis).
 
-        Note: This parameter is required unless interacting with the Sandbox.
+        **Note: This parameter is required unless interacting with the Sandbox.**
       required: false
       schema:
         type: string
@@ -1931,7 +1933,7 @@ components:
       in: header
       name: X-Correlation-ID
       required: false
-      description:
+      description: |
         An identifer should be created when making a request, this will assist with any problems that may occur and should be included when an issue is raised with the helpdesk.
         It should ideally be a unique value to make message tracing easier and we would advise that there are no `.` characters, but these are not enforced.
 
@@ -1942,16 +1944,18 @@ components:
     RequestID:
       in: header
       name: X-Request-ID
-      required: true
-      description:
-        A *globally unique identifer (GUID)* should be created when making a request, this will be used in message de-duplication, meaning if you need to replay any messages an identical response will be returned as the first time.
+      required: false
+      description: |
+        A **globally unique identifer (GUID)** should be created when making a request, this will be used in message de-duplication, meaning if you need to replay any messages an identical response will be returned as the first time.
 
-        The identifer must be a universally unique identifier (UUID) (ideally version 4) with the alphabetic characters *upper-cased*.
+        The identifer must be a universally unique identifier (UUID) (ideally version 4).
 
         This will be mirrored back in the response headers.
+
+        **Note: This parameter is required for `update` unless interacting with the Sandbox.**
       schema:
         type: string
-        pattern: '^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$'
+        pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
         example: 60E0B220-8136-4CA5-AE46-1D97EF59D068
   schemas:
     Patient:

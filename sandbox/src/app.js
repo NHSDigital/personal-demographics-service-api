@@ -14,16 +14,10 @@ const preHandler = function (request, h) {
     const checkRequestID = request.method === "patch"
 
     if (checkRequestID) {
-        // Missing X-Request-ID
-        if (!request.headers["x-request-id"]) {
-            throw Boom.badRequest(
-                "Missing value in header 'X-Request-ID'",
-                {operationOutcomeCode: "value", apiErrorCode: "MISSING_VALUE", display: "Required value is missing"}
-            )
-        }
-
+        // Missing X-Request-ID will be allowed in the sandbox, so not checking for it.
+        
         // Invalid X-Request-ID
-        if (!validator.isUUID(request.headers["x-request-id"])) {
+        if (request.headers["x-request-id"] && !validator.isUUID(request.headers["x-request-id"])) {
             throw Boom.badRequest(
                 "Invalid value - '" + request.headers["x-request-id"] + "' in header 'X-Request-ID'",
                 {operationOutcomeCode: "value", apiErrorCode: "INVALID_VALUE", display: "Provided value is invalid"}
