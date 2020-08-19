@@ -62,7 +62,7 @@ module.exports = [
             if (!patientSearcher.requestContainsParameters(request)) {
                 throw Boom.badRequest(
                     "Not enough search parameters were provided to be able to make a search",
-                    {operationOutcomeCode: "required", apiErrorCode: "MISSING_VALUE"})
+                    {operationOutcomeCode: "required", apiErrorCode: "MISSING_VALUE", display: "Required value is missing"})
             }
 
             if (request.query["birthdate"]) {
@@ -72,7 +72,7 @@ module.exports = [
                     if (dateValidator.dateSchema.validate(date).error) { 
                         throw Boom.badRequest(
                             `Invalid value - '${request.query["birthdate"]}' in field 'birthdate'`,
-                            {operationOutcomeCode: "value", apiErrorCode: "INVALID_SEARCH_DATA"})
+                            {operationOutcomeCode: "value", apiErrorCode: "INVALID_SEARCH_DATA", display: "Search data is invalid"})
                     }
                 }) 
             }
@@ -83,7 +83,7 @@ module.exports = [
                 if(dateValidator.dateSchema.validate(date).error) {
                     throw Boom.badRequest(
                         `Invalid value - '${request.query["death-date"]}' in field 'death-date'`,
-                        {operationOutcomeCode: "value", apiErrorCode: "INVALID_SEARCH_DATA"})
+                        {operationOutcomeCode: "value", apiErrorCode: "INVALID_SEARCH_DATA", display: "Search data is invalid"})
                 }
             }
 

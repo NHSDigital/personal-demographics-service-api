@@ -120,7 +120,7 @@ info:
 
     Alternatively, you can try out the sandbox using our Postman collection:
     
-    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
+    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/7ca0d7d9e12a851fd335)
 
     ### Download Postman client
 
@@ -184,6 +184,7 @@ paths:
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
       - $ref: '#/components/parameters/CorrelationID'
+      - $ref: '#/components/parameters/RequestID'
     get:
       summary: Search for a patient
       operationId: search-patient
@@ -310,7 +311,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/7ca0d7d9e12a851fd335)
 
         ### Download Postman client
 
@@ -558,17 +559,21 @@ paths:
       - $ref: '#/components/parameters/Id'
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
+      - $ref: '#/components/parameters/CorrelationID'
+      - $ref: '#/components/parameters/RequestID'
     get:
       description: |
         ## Overview
-        Use this endpoint to get patient details from PDS for a given NHS Number. 
+        Use this endpoint to get patient details from PDS for a given NHS Number.
         
         You cannot get a patient's related people details, use the [RelatedPerson](https://portal.developer.nhs.uk/docs/personal-demographics-int/1/routes/Patient/%7Bid%7D/RelatedPerson/get) endpoint instead.
 
-        ## Superceded patients
-        Some patients are marked as superceded, this means that for some reason the original resource is no longer valid and has been replaced with a different resource.
+        ## Superseded patients
+        Some patients are marked as superseded, this means that for some reason the original resource is no longer valid and has been replaced with a different resource.
 
-        On retrieval of a superceded resource the new resource will be automatically returned in place of the requested resource.
+        On retrieval of a superseded resource the new resource will be automatically returned in place of the requested resource. You will be able to spot a superseded resource when the `id` is not the same as the one requested.
+
+        When retrieving a superseding resource you must update your system with the new resource and remove the superseded resource, ensuring that the same `id` does not exist against another resource in your system.
 
         ## Restricted patients
         Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. Restricted patients can be retrieved; however, location sensitive fields such as `address`, `telecom` and `generalPractitioner` will be removed.
@@ -590,7 +595,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/7ca0d7d9e12a851fd335)
               
         ### Download Postman client
 
@@ -670,11 +675,13 @@ paths:
         See the overview page to understand what data can be updated with this API in its current form.
 
         ## Patient resource versioning
-        To update a patient's resource you must have retrieved it first.
+        To update a patient's resource you must have retrieved it first, to ensure you are working against an up-to-date patient resource.
 
-        When you retrieve a patient resource, you get a version number for the resource (in the `ETag` response header and in the `versionId` field in the response).
+        When you retrieve a patient resource, you get a version number for the resource (in the `ETag` response header in the form `W/"2"` and in the `versionId` field in the response, in the form `"2"`).
 
-        You must then pass the resource's version number in the update request (in the `If-Match` response header).
+        You must then pass the patient's version number in the update request (in the `If-Match` response header).
+
+        It is recommended you use the value from the `Etag` header as this is in the correct form the `If-Match` header is expected, for example `W/"2"` and can be mirrored back in the request.
 
         The update will only succeed if the patient resource has not been updated in our database in the meantime.
 
@@ -1422,7 +1429,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/7ca0d7d9e12a851fd335)
 
         ### Download Postman client
 
@@ -1449,7 +1456,6 @@ paths:
         url: https://tools.ietf.org/html/rfc6902
       parameters:
         - $ref: '#/components/parameters/IfMatch'
-        - $ref: '#/components/parameters/RequestID'
       requestBody:
         required: true
         content:
@@ -1579,6 +1585,8 @@ paths:
       - $ref: '#/components/parameters/Id'
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
+      - $ref: '#/components/parameters/CorrelationID'
+      - $ref: '#/components/parameters/RequestID'
     get:
       description: |
         ## Overview
@@ -1602,7 +1610,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/7ca0d7d9e12a851fd335)
 
         ### Download Postman client
 
@@ -1713,6 +1721,7 @@ paths:
       - $ref: '#/components/parameters/MessageId'
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
+      - $ref: '#/components/parameters/CorrelationID'
     get:
       description: |
         ## Overview
@@ -1740,7 +1749,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/83873e563505e688fb4a)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/7ca0d7d9e12a851fd335)
         
         ### Download Postman client
 
@@ -1885,7 +1894,8 @@ components:
       description: |
         Latest known version identifier enclosed in quotes preceded by `W/`.
 
-        Send the value of this resource's `ETag` response header (or `meta.versionId` property) as received.
+        Send the value of the patient's `ETag` response header on patient retrieval when updating a patient.
+        This is to ensure that any updates are applied against an up-to-date version of the patient resource.
       required: true
       schema:
         type: string
@@ -1901,7 +1911,7 @@ components:
 
         Find out more about [User role ID](https://digital.nhs.uk/developer/user-restricted-restful-apis#user-completes-authentication-and-authorisation)
 
-        Note: This parameter is required unless interacting with the Sandbox.
+        **Note: This parameter is required unless interacting with the Sandbox.**
       required: false
       schema:
         type: string
@@ -1913,7 +1923,7 @@ components:
       description: |
         An [OAuth 2.0 bearer token](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis).
 
-        Note: This parameter is required unless interacting with the Sandbox.
+        **Note: This parameter is required unless interacting with the Sandbox.**
       required: false
       schema:
         type: string
@@ -1923,7 +1933,7 @@ components:
       in: header
       name: X-Correlation-ID
       required: false
-      description:
+      description: |
         An identifer should be created when making a request, this will assist with any problems that may occur and should be included when an issue is raised with the helpdesk.
         It should ideally be a unique value to make message tracing easier and we would advise that there are no `.` characters, but these are not enforced.
 
@@ -1934,16 +1944,18 @@ components:
     RequestID:
       in: header
       name: X-Request-ID
-      required: true
-      description:
-        A *globally unique identifer (GUID)* should be created when making a request, this will be used in message de-duplication, meaning if you need to replay any messages an identical response will be returned as the first time.
+      required: false
+      description: |
+        A **globally unique identifer (GUID)** should be created when making a request, this will be used in message de-duplication, meaning if you need to replay any messages an identical response will be returned as the first time.
 
-        The identifer must be a universally unique identifier (UUID) (ideally version 4) with the alphabetic characters *upper-cased*.
+        The identifer must be a universally unique identifier (UUID) (ideally version 4).
 
         This will be mirrored back in the response headers.
+
+        **Note: This parameter is required for `update` unless interacting with the Sandbox.**
       schema:
         type: string
-        pattern: '^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$'
+        pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
         example: 60E0B220-8136-4CA5-AE46-1D97EF59D068
   schemas:
     Patient:
