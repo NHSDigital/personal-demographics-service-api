@@ -561,14 +561,16 @@ paths:
     get:
       description: |
         ## Overview
-        Use this endpoint to get patient details from PDS for a given NHS Number. 
+        Use this endpoint to get patient details from PDS for a given NHS Number.
         
         You cannot get a patient's related people details, use the [RelatedPerson](https://portal.developer.nhs.uk/docs/personal-demographics-int/1/routes/Patient/%7Bid%7D/RelatedPerson/get) endpoint instead.
 
-        ## Superceded patients
-        Some patients are marked as superceded, this means that for some reason the original resource is no longer valid and has been replaced with a different resource.
+        ## Superseded patients
+        Some patients are marked as superseded, this means that for some reason the original resource is no longer valid and has been replaced with a different resource.
 
-        On retrieval of a superceded resource the new resource will be automatically returned in place of the requested resource.
+        On retrieval of a superseded resource the new resource will be automatically returned in place of the requested resource. You will be able to spot a superseded resource when the `id` is not the same as the one requested.
+
+        When retrieving a superseding resource we recommend that you update your system with the new resource and remove the superseded resource, ensuring that the same `id` does not exist against another resource in your system.
 
         ## Restricted patients
         Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. Restricted patients can be retrieved; however, location sensitive fields such as `address`, `telecom` and `generalPractitioner` will be removed.
