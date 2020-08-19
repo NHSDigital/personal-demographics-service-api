@@ -31,7 +31,7 @@ jsonpath-rw = "^1.4.0"
 semver = "^2.10.2"
 gitpython = "^3.1.7"
 requests = "^2.24.0"
-locust = "^1.1.1"
+locust = "^1.2"
 
 
 [tool.poetry.dev-dependencies]
