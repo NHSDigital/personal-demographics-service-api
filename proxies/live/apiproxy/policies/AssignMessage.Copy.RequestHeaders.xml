@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.Copy.RequestHeaders">
+    <DisplayName>AssignMessage.Copy.RequestHeaders</DisplayName>
+    <Properties/>
+    <Copy source="request">
+        <Headers>
+            <Header name="X-Request-ID"/>
+            <Header name="X-Correlation-ID"/>
+        </Headers>
+    </Copy>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+    <AssignTo createNew="true" transport="http" type="request">original-request-details</AssignTo>
+</AssignMessage>
