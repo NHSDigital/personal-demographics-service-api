@@ -669,11 +669,13 @@ paths:
         See the overview page to understand what data can be updated with this API in its current form.
 
         ## Patient resource versioning
-        To update a patient's resource you must have retrieved it first.
+        To update a patient's resource you must have retrieved it first, to ensure you are working against an up-to-date patient resource.
 
-        When you retrieve a patient resource, you get a version number for the resource (in the `ETag` response header and in the `versionId` field in the response).
+        When you retrieve a patient resource, you get a version number for the resource (in the `ETag` response header in the form `W/"2"` and in the `versionId` field in the response, in the form `"2"`).
 
-        You must then pass the resource's version number in the update request (in the `If-Match` response header).
+        You must then pass the patient's version number in the update request (in the `If-Match` response header).
+
+        It is recommended you use the value from the `Etag` header as this is in the correct form the `If-Match` header is expected, for example `W/"2"` and can be mirrored back in the request.
 
         The update will only succeed if the patient resource has not been updated in our database in the meantime.
 
@@ -1874,7 +1876,8 @@ components:
       description: |
         Latest known version identifier enclosed in quotes preceded by `W/`.
 
-        Send the value of this resource's `ETag` response header (or `meta.versionId` property) as received.
+        Send the value of the patient's `ETag` response header (or `meta.versionId` property) when patient is retrieved when updating a patient.
+        This is to ensure that any updates are applied against an up-to-date version of the patient.
       required: true
       schema:
         type: string
