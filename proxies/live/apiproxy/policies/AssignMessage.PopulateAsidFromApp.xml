@@ -1,0 +1,6 @@
+<AssignMessage name="AssignMessage.AddAsidHeader" enabled="true">
+  <AssignVariable>
+    <Name>private.apigee.NHSD-ASID</Name>
+    <Ref>app.asid</Ref>
+  </AssignVariable>
+</AssignMessage>

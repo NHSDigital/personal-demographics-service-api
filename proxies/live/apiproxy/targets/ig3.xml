@@ -31,6 +31,10 @@
                 <Name>KeyValueMapOperations.GetSecureVariables</Name>
             </Step>
             <Step>
+              <Name>AssignMessage.PopulateAsidFromApp</Name>
+              <Condition>(app.asid IsNot null)</Condition>
+            </Step>
+            <Step>
                 <Name>AssignMessage.AddAsidHeader</Name>
             </Step>
 
