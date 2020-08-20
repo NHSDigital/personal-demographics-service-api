@@ -133,13 +133,15 @@ module.exports.search = function(request) {
     if (wildcardMatch && request.query["_max-results"]) {
         if (isNaN(request.query["_max-results"]) || request.query["_max-results"] < 1 || request.query["_max-results"] > 50) {
             // Invalid parameter (Not integer)
-            throw Boom.badRequest("TBC", {
-                operationOutcomeCode: "TBC", apiErrorCode: "TBC"
+            throw Boom.badRequest("Invalid value - '" + request.query["_max-results"] + "' in field '_max-results'", {
+                operationOutcomeCode: "value", apiErrorCode: "INVALID_VALUE", display: "Provided value is invalid"
             })
         } else if (request.query["_max-results"] < 2) {
             // max-result smaller than number of results
-            throw Boom.badRequest("TBC", {
-                operationOutcomeCode: "TBC", apiErrorCode: "TOO_MANY_RESULTS"
+            throw Boom.badRequest("Too Many Matches", {
+                operationOutcomeCode: "not-found", 
+                operationOutcomeSeverity: "information",
+                apiErrorCode: "TOO_MANY_MATCHES"
             })
         } else {
             // Return Max Result response

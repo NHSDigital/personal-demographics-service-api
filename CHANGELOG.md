@@ -1,5 +1,8 @@
 # Changelog
 
+## 2020-08-19
+* Adding `X-Request-ID` and `X-Correlation-ID` handling in apigee proxy and target
+
 ## 2020-07-14
 * Changed `Polling` endpoint to `_poll`
 
