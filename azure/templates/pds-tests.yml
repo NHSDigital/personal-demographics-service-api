@@ -1,0 +1,47 @@
+parameters:
+  - name: service_name
+    type: string
+  - name: test_pack_path
+    type: string
+  - name: test_type
+    type: string
+  - name: idp_url
+    type: string
+  - name: api_url
+    type: string
+
+steps:
+  - bash: |
+      if [ -d $(Pipeline.Workspace)/s/${{ parameters.service_name }}/$(SERVICE_ARTIFACT_NAME)/tests ]; then
+        cp $(postmanEnvironment.secureFilePath) $(Pipeline.Workspace)/s/${{ parameters.service_name }}/$(SERVICE_ARTIFACT_NAME)/tests/e2e/environments/deploy.postman-environment.json;
+      fi
+    displayName: 'Copy environment file to tests'
+  
+  - bash: |
+      set -euo pipefail
+      
+      if [ -d $(Pipeline.Workspace)/s/${{ parameters.service_name }}/$(SERVICE_ARTIFACT_NAME)/tests ]; then
+        echo "Running ${{ parameters.test_type }} tests"
+        
+        # Go to tests folder
+        cd $(Pipeline.Workspace)/s/${{ parameters.service_name }}/$(SERVICE_ARTIFACT_NAME)/tests
+      
+        # Install node
+        curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+      
+        # Install dependencies
+        npm install
+      
+        # Run tests
+        echo "node_modules/.bin/node --unhandled-rejections=strict e2e/test-runner.js $(IDP_URL) $(API_URL) ${{ parameters.test_pack_path }}  ./e2e/environments/deploy.postman-environment.json"
+        node_modules/.bin/node --unhandled-rejections=strict e2e/test-runner.js $(IDP_URL) $(API_URL) ${{ parameters.test_pack_path }}  ./e2e/environments/deploy.postman-environment.json;
+      fi
+    displayName: 'Run ${{ parameters.test_type }} tests'
+
+  - task: PublishTestResults@2
+    displayName: 'Publish ${{ parameters.test_type }} Test Results'
+    inputs:
+      testResultsFiles: |
+        $(Pipeline.Workspace)/s/${{ parameters.service_name }}/$(SERVICE_ARTIFACT_NAME)/tests/test-report.xml
+        $(Pipeline.Workspace)/s/${{ parameters.service_name }}/$(SERVICE_ARTIFACT_NAME)/tests/*.xml
+    failTaskOnFailedTests: true
