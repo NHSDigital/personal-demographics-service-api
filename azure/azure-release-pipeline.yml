@@ -33,3 +33,25 @@ extends:
     product_display_name: ${{ variables.product_display_name }}
     product_description: ${{ variables.product_description }}
     spec_file: ${{ variables.spec_file }}
+    apigee_deployments:
+      - environment: internal-dev
+      - environment: internal-qa
+      - environment: internal-qa-sandbox
+        proxy_path: sandbox
+      - environment: ref
+        depends_on:
+          - internal_qa
+          - internal_qa_sandbox
+      - environment: int
+        depends_on:
+          - internal_qa
+          - internal_qa_sandbox
+      - environment: sandbox
+        proxy_path: sandbox
+        depends_on:
+          - internal_qa
+          - internal_qa_sandbox
+      - environment: prod
+        depends_on:
+          - internal_qa
+          - internal_qa_sandbox
