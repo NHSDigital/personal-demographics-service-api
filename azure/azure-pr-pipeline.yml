@@ -34,15 +34,5 @@ extends:
     service_base_path: ${{ variables.service_base_path }}
     product_display_name: ${{ variables.product_display_name }}
     product_description: ${{ variables.product_description }}
+    spec_file: ${{ variables.spec_file }}
     deploy_review_sandbox: true
-    deploy_spec: true
-    # post_deploy:
-    #   - task: DownloadSecureFile@1
-    #     displayName: 'Download internal-dev postman environment'
-    #     inputs:
-    #       secureFile: 'internal-dev.postman_environment.json'
-    #   - template: ../templates/pds-tests.yml
-    #     parameters:
-    #       service_name: ${{ variables.service_name }}
-    #       test_pack_path: './e2e/smoke.json'
-    #       test_type: 'smoke'

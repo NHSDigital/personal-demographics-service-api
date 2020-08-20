@@ -4,4 +4,4 @@ variables:
   service_base_path: personal-demographics
   product_display_name: Personal Demographics Service
   product_description: Placeholder description
-  idp_url: https://nhsd-apim-testing-internal-dev.herokuapp.com
+  spec_file: personal-demographics.json
