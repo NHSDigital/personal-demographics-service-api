@@ -1,9 +1,4 @@
-
-#docker_service_cpu: 256
-#docker_service_memory: 512
-
 docker_service:
-
   - name: pds-sandbox
     expose: true
     health_check:
