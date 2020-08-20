@@ -41,6 +41,7 @@ extends:
         displayName: Wait for sandbox server to start
       - bash: "make test"
         displayName: Run sandbox tests
+        workingDirectory: "${{ variables.service_name }}"
       - task: PublishTestResults@2
         inputs:
           testResultsFormat: 'JUnit'
