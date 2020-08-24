@@ -36,9 +36,10 @@ extends:
     product_description: ${{ variables.product_description }}
     spec_file: ${{ variables.spec_file }}
     deploy_review_sandbox: true
-    post_deploy:
-      - template: ./templates/pds-tests.yml
-        parameters:
-          service_name: ${{ variables.service_name }}
-          test_pack_path: ./e2e/smoke.json
-          test_type: smoke
+    pr_proxy_deploy_steps:
+      post_deploy:
+        - template: ./templates/pds-tests.yml
+          parameters:
+            service_name: ${{ variables.service_name }}
+            test_pack_path: ./e2e/smoke.json
+            test_type: smoke
