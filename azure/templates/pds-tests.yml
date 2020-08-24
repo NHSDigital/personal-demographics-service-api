@@ -17,12 +17,16 @@ steps:
       if [ -d $(Pipeline.Workspace)/s/${{ parameters.service_name }}/$(SERVICE_ARTIFACT_NAME)/tests ]; then
         cp $(postman_environment.secureFilePath) $(Pipeline.Workspace)/s/${{ parameters.service_name }}/$(SERVICE_ARTIFACT_NAME)/tests/e2e/environments/deploy.postman-environment.json;
       fi
-    displayName: 'Copy $(APIGEE_ENVIRONMENT) environment file to tests'
+    displayName: 'Copy environment file to tests'
 
   - bash: |
       echo "##vso[task.setvariable variable=IDP_URL]https://nhsd-apim-testing-$(APIGEE_ENVIRONMENT).herokuapp.com"
       echo "##vso[task.setvariable variable=API_URL]https://$(APIGEE_ENVIRONMENT)/$(FULLY_QUALIFIED_SERVICE_NAME)"
     displayName: Set test urls
+
+  - bash: |
+      echo "$(IDP_URL)"
+      echo "$(API_URL)"
   
   - bash: |
       set -euo pipefail
