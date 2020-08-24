@@ -51,4 +51,4 @@ steps:
       testResultsFiles: |
         $(Pipeline.Workspace)/s/${{ parameters.service_name }}/$(SERVICE_ARTIFACT_NAME)/tests/test-report.xml
         $(Pipeline.Workspace)/s/${{ parameters.service_name }}/$(SERVICE_ARTIFACT_NAME)/tests/*.xml
-    failTaskOnFailedTests: true
+      failTaskOnFailedTests: true
