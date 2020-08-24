@@ -1136,16 +1136,6 @@ paths:
         *	if no current `billing` address is provided, a `temp` address may take precedence over the `home` address, again if it is valid according to its period start and to dates.
         * if there is no valid, current `billing` and/or `temp` address, the `home` address must be used.
 
-        Where a `temp` address is provided a description must be sent.
-        The list of possible values are:
-        * `Second Home` - a patient's second home
-        * `Student Accommodation` - a patient's place of residence while at university
-        * `Respite Care Address` - where the patient resides during respite care
-        * `Temporary Residence Address` - where the patient resides for a specific period of time
-        * `Convalescence Home` - the address for a patient during a period of recovery
-        * `Mobile Home` - the address of a patient's mobile home, parked for a specific period of time, e.g. the address of a caravan park
-        * `Holiday Home` - the address for a patient during a holiday
-
         It should be noted that not all local systems support `temp` and `billing` addresses, so these are not uniformly maintained. Therefore, where the patient contact has clinical or business significance, the precedence of these addresses over the `home` address should be determined by a user wherever possible.
         When the end date for a `temp` or `billing` address passes, local systems should use the patient’s `home` address. It will be extremely rare that no home address is present on a patient record.
 
@@ -1156,6 +1146,14 @@ paths:
         * any `billing` address must have both a `period start` and a `period end` date. The provision of a period end date has particular importance in order to avoid correspondence addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 12 months.
         * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date
         * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update
+        * where a `temp` address is provided a description must be sent using the `text` field, the list of possible values are:
+        ** `Second Home` - a patient's second home
+        ** `Student Accommodation` - a patient's place of residence while at university
+        ** `Respite Care Address` - where the patient resides during respite care
+        ** `Temporary Residence Address` - where the patient resides for a specific period of time
+        ** `Convalescence Home` - the address for a patient during a period of recovery
+        ** `Mobile Home` - the address of a patient's mobile home, parked for a specific period of time, e.g. the address of a caravan park
+        ** `Holiday Home` - the address for a patient during a holiday
 
         Valid pseudo postcodes are:
 
