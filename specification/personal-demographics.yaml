@@ -1147,13 +1147,13 @@ paths:
         * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date
         * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update
         * where a `temp` address is provided a description must be sent using the `text` field, the list of possible values are:
-        ** `Second Home` - a patient's second home
-        ** `Student Accommodation` - a patient's place of residence while at university
-        ** `Respite Care Address` - where the patient resides during respite care
-        ** `Temporary Residence Address` - where the patient resides for a specific period of time
-        ** `Convalescence Home` - the address for a patient during a period of recovery
-        ** `Mobile Home` - the address of a patient's mobile home, parked for a specific period of time, e.g. the address of a caravan park
-        ** `Holiday Home` - the address for a patient during a holiday
+          * `Second Home` - a patient's second home
+          * `Student Accommodation` - a patient's place of residence while at university
+          * `Respite Care Address` - where the patient resides during respite care
+          * `Temporary Residence Address` - where the patient resides for a specific period of time
+          * `Convalescence Home` - the address for a patient during a period of recovery
+          * `Mobile Home` - the address of a patient's mobile home, parked for a specific period of time, e.g. the address of a caravan park
+          * `Holiday Home` - the address for a patient during a holiday
 
         Valid pseudo postcodes are:
 
