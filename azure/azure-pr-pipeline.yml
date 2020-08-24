@@ -38,7 +38,7 @@ extends:
     deploy_review_sandbox: true
     pr_proxy_deploy_steps:
       post_deploy:
-        - template: ./templates/pds-tests.yml
+        - template: templates/pds-tests.yml
           parameters:
             service_name: ${{ variables.service_name }}
             test_pack_path: ./e2e/smoke.json
