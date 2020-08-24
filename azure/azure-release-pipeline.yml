@@ -55,5 +55,3 @@ extends:
         depends_on:
           - internal_qa
           - internal_qa_sandbox
-
-    # TODO: Add pds test to release pipeline
