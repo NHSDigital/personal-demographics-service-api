@@ -8,7 +8,6 @@ resources:
     - repository: common
       type: github
       name: NHSDigital/api-management-utils
-      ref: refs/heads/APM-1315-build-steps
       endpoint: NHSDigital
   pipelines:
   - pipeline: build_pipeline
@@ -36,9 +35,7 @@ extends:
     product_description: ${{ variables.product_description }}
     spec_file: ${{ variables.spec_file }}
     deploy_review_sandbox: true
-
-    # Tests are disabled due to issue with '_ping' endpoint
-    
+    # Tests need updating to accomodate ping endpoint changes
     # post_deploy:
     #   - template: templates/pds-tests.yml
     #     parameters:
