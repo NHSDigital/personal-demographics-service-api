@@ -261,7 +261,7 @@ description = "Developer friendly load testing framework"
 name = "locust"
 optional = false
 python-versions = ">=3.6"
-version = "1.2.1"
+version = "1.2.2"
 
 [package.dependencies]
 ConfigArgParse = ">=1.0"
@@ -711,8 +711,8 @@ jsonpath-rw = [
     {file = "jsonpath-rw-1.4.0.tar.gz", hash = "sha256:05c471281c45ae113f6103d1268ec7a4831a2e96aa80de45edc89b11fac4fbec"},
 ]
 locust = [
-    {file = "locust-1.2.1-py3-none-any.whl", hash = "sha256:41ef9b1c3bcf00c71b06441f98649fe34528addab1be8259ef370a04e55945f1"},
-    {file = "locust-1.2.1.tar.gz", hash = "sha256:288ca88de6ef8f6864cebd34ba68f2d5587c64013623cfe4f73c3ce5be0b0fe2"},
+    {file = "locust-1.2.2-py3-none-any.whl", hash = "sha256:2ba4e6f6052089b070717fd26ae0e97da140ee8100f938020c673ac76a679bb9"},
+    {file = "locust-1.2.2.tar.gz", hash = "sha256:b1cf521031769d9577938afae7e9596a4a0d1aae1a5569eeb569f71cc7fb5b32"},
 ]
 markupsafe = [
     {file = "MarkupSafe-1.1.1-cp27-cp27m-macosx_10_6_intel.whl", hash = "sha256:09027a7803a62ca78792ad89403b1b7a73a01c8cb65909cd876f7fcebd79b161"},
