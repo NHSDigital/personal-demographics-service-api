@@ -30,6 +30,12 @@
             <Step>
                 <Name>KeyValueMapOperations.GetSecureVariables</Name>
             </Step>
+            {% if REQUIRE_ASID %}
+            <Step>
+                <Name>RaiseFault.400BadRequest</Name> <!-- Might want something better here... -->
+                <Condition>(app.asid Is null)</Condition>
+            </Step>
+            {% endif %}
             <Step>
               <Name>AssignMessage.PopulateAsidFromApp</Name>
               <Condition>(app.asid IsNot null)</Condition>
