@@ -44,3 +44,5 @@ extends:
                 test_type: smoke
         - environment: internal-dev-sandbox
           proxy_path: sandbox
+    jinja_templates:
+      REQUIRE_ASID: true
