@@ -37,12 +37,11 @@ extends:
     deploy_review_sandbox: true
     apigee_deployments:
         - environment: internal-dev
+          post_deploy:
+            - template: templates/pds-tests.yml
+              parameters:
+                service_name: ${{ variables.service_name }}
+                test_pack_path: ./e2e/smoke.json
+                test_type: smoke
         - environment: internal-dev-sandbox
           proxy_path: sandbox
-          post_deploy: []
-    post_deploy:
-      - template: templates/pds-tests.yml
-        parameters:
-          service_name: ${{ variables.service_name }}
-          test_pack_path: ./e2e/smoke.json
-          test_type: smoke
