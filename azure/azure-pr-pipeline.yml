@@ -39,6 +39,7 @@ extends:
         - environment: internal-dev
         - environment: internal-dev-sandbox
           proxy_path: sandbox
+          post_deploy: []
     post_deploy:
       - template: templates/pds-tests.yml
         parameters:
