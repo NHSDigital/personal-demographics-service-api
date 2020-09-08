@@ -41,6 +41,10 @@
 					{
 						"key": "NHSD-Session-URID",
 						"value": "1234567890"
+					},
+					{
+						"key": "NHSD-ASID",
+						"value": "1234567890"
 					}
 				],
 				"url": {
