@@ -74,10 +74,10 @@ info:
     - data items that are country-specific and thus not included in the FHIR global base resources are usually wrapped in an `extension` object
 
     ## Network access
-    This API is available on the internet.
-    It is not available on the [Health and Social Care Network (HSCN)](https://digital.nhs.uk/services/health-and-social-care-network),
-    although access using NHS smartcards (see below) currently does require an HSCN connection.
+    This API is available on the internet and, indirectly, on the [Health and Social Care Network (HSCN)](https://digital.nhs.uk/services/health-and-social-care-network).
 
+    To use this API with NHS smartcards (see below) you do need an HSCN connection, although internet-facing alternatives are available.
+    
     For more details see [Network access for APIs](https://digital.nhs.uk/developer/guides-and-documentation/network-access-for-apis).
     
     ## Authorisation
