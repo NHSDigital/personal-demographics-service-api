@@ -33,7 +33,7 @@
             {% if REQUIRE_ASID %}
             <Step>
                 <Name>RaiseFault.400BadRequest</Name> <!-- Might want something better here... -->
-                <Condition>(app.asid Is null)</Condition>
+                <Condition>(request.header.NHSD-ASID is null) or (not request.header.NHSD-ASID ~~ ".+")</Condition>
             </Step>
             {% endif %}
             <Step>
