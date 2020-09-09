@@ -141,7 +141,7 @@ info:
     Our [integration test environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing):
     * is for formal integration testing
     * is stateful, so persists updates
-    * includes authorisation with either a username/password or smartcard/PIN
+    * includes authorisation, with smartcard and non-smartcard options
          
     For read-only testing, you can either use our [PDS FHIR API test data packs](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-api-test-data) or set up your own test data.
     
