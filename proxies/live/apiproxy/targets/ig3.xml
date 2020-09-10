@@ -127,6 +127,23 @@
                 <Name>AssignMessage.Errors.CatchAllMessage</Name>
             </Step>
         </FaultRule>
+        <FaultRule name="no_asid_provided">
+            <Condition>(request.header.NHSD-ASID is null) or (not request.header.NHSD-ASID ~~ ".+")</Condition>
+            <Step>
+                <Name>AssignMessage.Errors.MissingASID</Name>
+            </Step>
+            <Step>
+                <Name>AssignMessage.Mirror.CorrelationID</Name>
+                <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>
+            </Step>
+            <Step>
+                <Name>AssignMessage.Mirror.RequestID</Name>
+                <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
+            </Step>
+            <Step>
+                <Name>AssignMessage.Errors.CatchAllMessage</Name>
+            </Step>
+        </FaultRule>
     </FaultRules>
     <DefaultFaultRule>
         <Step>
