@@ -9,7 +9,6 @@ resources:
       type: github
       name: NHSDigital/api-management-utils
       endpoint: NHSDigital
-      ref: refs/heads/apm-1276-fix-formatting
   pipelines:
   - pipeline: build_pipeline
     source: "Personal-Demographics-Service-Build"
