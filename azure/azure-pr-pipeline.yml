@@ -40,9 +40,7 @@ extends:
           post_deploy:
             - template: templates/pds-tests.yml
               parameters:
-                service_name: ${{ variables.service_name }}
                 test_pack_path: ./e2e/smoke.json
                 test_type: smoke
-                service_base_path: "${{ variables.service_base_path }}-${{ replace(replace(replace(variables['Build.SourceBranch'], '/merge', ''), 'refs/pull/', ''), '/', '_') }}"
         - environment: internal-dev-sandbox
           proxy_path: sandbox
