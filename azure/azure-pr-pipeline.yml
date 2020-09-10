@@ -35,9 +35,14 @@ extends:
     product_description: ${{ variables.product_description }}
     spec_file: ${{ variables.spec_file }}
     deploy_review_sandbox: true
-    post_deploy:
-      - template: templates/pds-tests.yml
-        parameters:
-          service_name: ${{ variables.service_name }}
-          test_pack_path: ./e2e/smoke.json
-          test_type: smoke
+    apigee_deployments:
+        - environment: internal-dev
+          post_deploy:
+            - template: templates/pds-tests.yml
+              parameters:
+                service_name: ${{ variables.service_name }}
+                test_pack_path: ./e2e/smoke.json
+                test_type: smoke
+                service_base_path: ${{ variables.service_base_path }}
+        - environment: internal-dev-sandbox
+          proxy_path: sandbox
