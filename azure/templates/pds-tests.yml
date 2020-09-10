@@ -5,6 +5,8 @@ parameters:
     type: string
   - name: test_type
     type: string
+  - name: service_base_path
+    type: string
 
 steps:
   - task: DownloadSecureFile@1
@@ -21,24 +23,24 @@ steps:
 
   - bash: |
       echo "##vso[task.setvariable variable=IDP_URL]https://nhsd-apim-testing-$(APIGEE_ENVIRONMENT).herokuapp.com"
-      echo "##vso[task.setvariable variable=API_URL]https://$(APIGEE_ENVIRONMENT).api.service.nhs.uk/$(FULLY_QUALIFIED_SERVICE_NAME)"
+      echo "##vso[task.setvariable variable=API_URL]https://$(APIGEE_ENVIRONMENT).api.service.nhs.uk/${{ parameters.service_base_path }}"
     displayName: Set test urls
-  
+
   - bash: |
       set -euo pipefail
-      
+
       if [ -d $(Pipeline.Workspace)/s/${{ parameters.service_name }}/$(SERVICE_ARTIFACT_NAME)/tests ]; then
         echo "Running ${{ parameters.test_type }} tests"
-        
+
         # Go to tests folder
         cd $(Pipeline.Workspace)/s/${{ parameters.service_name }}/$(SERVICE_ARTIFACT_NAME)/tests
-      
+
         # Install node
         curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
-      
+
         # Install dependencies
         npm install
-      
+
         # Run tests
         echo "node_modules/.bin/node --unhandled-rejections=strict e2e/test-runner.js $(IDP_URL) $(API_URL) ${{ parameters.test_pack_path }}  ./e2e/environments/deploy.postman-environment.json"
         node_modules/.bin/node --unhandled-rejections=strict e2e/test-runner.js $(IDP_URL) $(API_URL) ${{ parameters.test_pack_path }}  ./e2e/environments/deploy.postman-environment.json;

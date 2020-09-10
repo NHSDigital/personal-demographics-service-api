@@ -34,13 +34,14 @@ extends:
     spec_file: ${{ variables.spec_file }}
     apigee_deployments:
       - environment: internal-dev
+      - environment: internal-qa
         post_deploy:
             - template: templates/pds-tests.yml
               parameters:
                 service_name: ${{ variables.service_name }}
                 test_pack_path: ./e2e/smoke.json
                 test_type: smoke
-      - environment: internal-qa
+                service_base_path: ${{ variables.service_base_path }}
       - environment: internal-qa-sandbox
         proxy_path: sandbox
       - environment: ref
