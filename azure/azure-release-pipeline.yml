@@ -44,10 +44,6 @@ extends:
                 service_base_path: ${{ variables.service_base_path }}
       - environment: internal-qa-sandbox
         proxy_path: sandbox
-      - environment: ref
-        depends_on:
-          - internal_qa
-          - internal_qa_sandbox
       - environment: int
         depends_on:
           - internal_qa
