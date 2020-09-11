@@ -74,10 +74,10 @@ info:
     - data items that are country-specific and thus not included in the FHIR global base resources are usually wrapped in an `extension` object
 
     ## Network access
-    This API is available on the internet.
-    It is not available on the [Health and Social Care Network (HSCN)](https://digital.nhs.uk/services/health-and-social-care-network),
-    although access using NHS smartcards (see below) currently does require an HSCN connection.
+    This API is available on the internet and, indirectly, on the [Health and Social Care Network (HSCN)](https://digital.nhs.uk/services/health-and-social-care-network).
 
+    To use this API with NHS smartcards (see below) you do need an HSCN connection, although internet-facing alternatives are available.
+    
     For more details see [Network access for APIs](https://digital.nhs.uk/developer/guides-and-documentation/network-access-for-apis).
     
     ## Authorisation
@@ -141,7 +141,7 @@ info:
     Our [integration test environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing):
     * is for formal integration testing
     * is stateful, so persists updates
-    * includes authorisation with either a username/password or smartcard/PIN
+    * includes authorisation, with smartcard and non-smartcard options
          
     For read-only testing, you can either use our [PDS FHIR API test data packs](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-api-test-data) or set up your own test data.
     
@@ -307,7 +307,7 @@ paths:
         | Invalid date format         | `birthdate` or `death-date` query parameters with values not in format `YYYY-MM-DD` | HTTP Status 400 with problem description   |
         | Too few search parameters   | Any invalid combination of query parameters                  | HTTP Status 400 with problem description   |
 
-        You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
+        You can try out the sandbox using the "Try this API" feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
@@ -566,7 +566,7 @@ paths:
         ## Overview
         Use this endpoint to get patient details from PDS for a given NHS Number.
         
-        You cannot get a patient's related people details, use the [RelatedPerson](https://portal.developer.nhs.uk/docs/personal-demographics-int/1/routes/Patient/%7Bid%7D/RelatedPerson/get) endpoint instead.
+        You cannot get a patient's related people details, use the RelatedPerson endpoint instead.
 
         ## Superseded patients
         Some patients are marked as superseded, this means that for some reason the original resource is no longer valid and has been replaced with a different resource.
@@ -591,7 +591,7 @@ paths:
         | Patient doesn't exist            | `id`=`9111231130` (or any other valid NHS Number) | HTTP Status 404 with problem description                                                                                                      |
         | Invalid NHS Number               | `id`=`9000000000` (or any invalid NHS Number)     | HTTP Status 400 with problem description                                                                                                      |
 
-        You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
+        You can try out the sandbox using the "Try this API" feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
@@ -1423,7 +1423,7 @@ paths:
         | No patches sent                     | Send body with no `patches` attribute                                     | HTTP Status 400 with problem description         |
         | Invalid patch operations            | Send body with invalid JSON patches in `patches` attribute                | HTTP Status 400 with problem description         |
 
-        You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
+        You can try out the sandbox using the "Try this API" feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
@@ -1604,7 +1604,7 @@ paths:
         | Single related person exists    | `id`=`9000000017`                             | HTTP Status 200 with related person data in a response Bundle |
         | Related people do not exist     | `id`=`9000000025`                             | HTTP Status 404 with problem description                      |
 
-        You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
+        You can try out the sandbox using the "Try this API" feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
@@ -1743,7 +1743,7 @@ paths:
         | Polling message ID when update is not yet complete         | `message_id`=`20200522091633363041_000001`            | HTTP Status 202 with no data                |
         | Polling message ID not found                               | `message_id`=`20200522091633363041_000002`            | HTTP Status 404 with operation outcome body |
 
-        You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
+        You can try out the sandbox using the "Try this API" feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
 

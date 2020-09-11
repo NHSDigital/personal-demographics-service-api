@@ -1,0 +1,57 @@
+name: "$(SourceBranchName)+$(BuildID)"
+
+trigger: none
+pr: none
+
+resources:
+  repositories:
+    - repository: common
+      type: github
+      name: NHSDigital/api-management-utils
+      endpoint: NHSDigital
+  pipelines:
+  - pipeline: build_pipeline
+    source: "Personal-Demographics-Service-Build"
+    trigger:
+      branches:
+        include:
+          - refs/tags/v*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - template: project.yml
+
+extends:
+  template: azure/common/apigee-deployment.yml@common
+  parameters:
+    service_name: ${{ variables.service_name }}
+    short_service_name: ${{ variables.short_service_name }}
+    service_base_path: ${{ variables.service_base_path }}
+    product_display_name: ${{ variables.product_display_name }}
+    product_description: ${{ variables.product_description }}
+    spec_file: ${{ variables.spec_file }}
+    apigee_deployments:
+      - environment: internal-dev
+      - environment: internal-qa
+        post_deploy:
+            - template: templates/pds-tests.yml
+              parameters:
+                test_pack_path: ./e2e/smoke.json
+                test_type: smoke
+      - environment: internal-qa-sandbox
+        proxy_path: sandbox
+      - environment: int
+        depends_on:
+          - internal_qa
+          - internal_qa_sandbox
+      - environment: sandbox
+        proxy_path: sandbox
+        depends_on:
+          - internal_qa
+          - internal_qa_sandbox
+      - environment: prod
+        depends_on:
+          - internal_qa
+          - internal_qa_sandbox

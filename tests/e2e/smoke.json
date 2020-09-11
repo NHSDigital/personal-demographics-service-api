@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6a7f2780-c7a6-4016-a747-d629f88860db",
+		"_postman_id": "5281483e-8922-4dae-a174-a44b39c77b99",
 		"name": "Personal Demographics Service - SmokeTest",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -11,7 +11,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "aa7a9136-1f4d-4f40-8a35-7d031961c9b7",
+						"id": "12b28e5d-0931-43da-b17e-18ec9ea61c22",
 						"exec": [
 							"pm.test(\"Returns Status code 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -61,7 +61,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "520205f0-cfff-4f39-8a15-fb51b2bf37b0",
+						"id": "48548bdf-4c8b-4fef-b3dd-317e020f15aa",
 						"exec": [
 							"pm.test(\"Status code\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -72,7 +72,8 @@
 							"",
 							"pm.test(\"Json body has version\", function () {",
 							"    var version = pm.response.json().version;",
-							"    pm.expect(versionRegex.test(version)).to.be.true;",
+							"    var path = pm.request.url.path[0];  ",
+							"    path == \"personal-demographics\" ? pm.expect(versionRegex.test(version)).to.be.true : pm.expect(version).to.equal(path);    ",
 							"});",
 							"",
 							"pm.test(\"Json body has revision\", function () {",

@@ -74,4 +74,6 @@ release: clean publish build-proxy
 	cp -R tests dist
 
 	cp ecs-proxies-deploy.yml dist/ecs-deploy-sandbox.yml
+	cp ecs-proxies-deploy.yml dist/ecs-deploy-internal-qa-sandbox.yml
+	cp ecs-proxies-deploy.yml dist/ecs-deploy-internal-dev-sandbox.yml
 
