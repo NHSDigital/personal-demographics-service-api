@@ -28,9 +28,6 @@ jobs:
             This branch is working on a ticket in the NHS Digital APM JIRA Project. Here's a handy link to the ticket:
             # [${{ env.TICKET_NAME }}](https://nhsd-jira.digital.nhs.uk/browse/${{ env.TICKET_NAME}})
 
-      - name: Grab branch name
-        run: echo ::set-env name=SPEC_LINK::$(echo ${{ github.event.pull_request.head.ref }} | tr '[:upper:]' '[:lower:]')
-
       - name: Comment on PR with link to Spec
         uses: unsplash/comment-on-pr@master
         env:
@@ -38,4 +35,4 @@ jobs:
         with:
           msg: |
             This branch is working on a ticket to deploy to internal-portal. Here's a handy link to the specification:
-            # [${{ github.event.pull_request.head.ref }} specification](https://internal-portal.developer.nhs.uk/docs/personal-demographics-internal-dev-${{ env.SPEC_LINK }}/1/overview)
+            # [${{ github.event.pull_request.head.ref }} specification](https://internal-portal.developer.nhs.uk/docs/personal-demographics-pr-${{ github.event.number }}/1/overview)
