@@ -30,20 +30,19 @@
             <Step>
                 <Name>KeyValueMapOperations.GetSecureVariables</Name>
             </Step>
-            {% if REQUIRE_ASID %}
-            <Step>
-                <Name>RaiseFault.400BadRequest</Name> <!-- Might want something better here... -->
-                <Condition>(request.header.NHSD-ASID is null) or (not request.header.NHSD-ASID ~~ ".+")</Condition>
-            </Step>
-            {% endif %}
             <Step>
               <Name>AssignMessage.PopulateAsidFromApp</Name>
               <Condition>(app.asid IsNot null)</Condition>
             </Step>
+            {% if REQUIRE_ASID %}
+            <Step>
+                <Name>RaiseFault.400BadRequest</Name>
+                <Condition>(private.apigee.NHSD-ASID is null) or (not private.apigee.NHSD-ASID ~~ ".+")</Condition>
+            </Step>
+            {% endif %}
             <Step>
                 <Name>AssignMessage.AddAsidHeader</Name>
             </Step>
-
             <Step>
                 <!--This should always be the last Step - as it is just before the message is sent - so the initial request stays intact for as long as possible.
                     The Swapping of the Request Headers converts X-Request-ID and X-Correlation-ID to NHSD-Request-ID and NHSD-Correlation-ID before sending to backend. -->
