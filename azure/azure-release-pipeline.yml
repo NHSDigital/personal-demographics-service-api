@@ -32,6 +32,8 @@ extends:
     product_display_name: ${{ variables.product_display_name }}
     product_description: ${{ variables.product_description }}
     spec_file: ${{ variables.spec_file }}
+    jinja_templates:
+      REQUIRE_ASID: false
     apigee_deployments:
       - environment: internal-dev
       - environment: internal-qa
@@ -55,3 +57,5 @@ extends:
         depends_on:
           - internal_qa
           - internal_qa_sandbox
+        jinja_templates:
+          REQUIRE_ASID: true
