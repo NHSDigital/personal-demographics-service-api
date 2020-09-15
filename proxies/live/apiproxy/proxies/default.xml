@@ -36,6 +36,29 @@
       </Response>
       <Condition>(proxy.pathsuffix MatchesPath "/_ping") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
     </Flow>
+
+    <Flow name="DebugRequestData">
+      <Response>
+        <Step>
+          <AssignMessage>
+            <Payload contentType="application/json" variablePrefix="%" variableSuffix="#">
+              {
+                "request": {
+                  "uri": "%escapeJSON(request.uri)#",
+                  "verb": "%escapeJSON(request.verb)#",
+                  "contentType": "%escapeJSON(request.header.Content-Type)#",
+                  "contentLength": "%client.received.content.length#",
+                  "contentEncoding": "%escapeJSON(request.header.Content-Encoding)#",
+                  "requestID": "%request.header.X-Request-ID#",
+                  "correlationID": "%request.header.X-Correlation-ID#"
+                }
+              }
+            </Payload>
+          </AssignMessage>
+        </Step>
+      </Response>
+    </Flow>
+
   </Flows>
   <PostClientFlow name="PostClientFlow">
     <Response>
