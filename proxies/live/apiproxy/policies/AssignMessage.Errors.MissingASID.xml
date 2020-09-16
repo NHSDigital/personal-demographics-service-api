@@ -14,7 +14,7 @@
     </AssignVariable>
     <AssignVariable>
         <Name>pds.error.diagnostics</Name>
-        <Template>Missing value in header 'NHSD-ASID'</Template>
+        <Template>No ASID is associated with your app. Please contact support.</Template>
     </AssignVariable>
     <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
 </AssignMessage>
