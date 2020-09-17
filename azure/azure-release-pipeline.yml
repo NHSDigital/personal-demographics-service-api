@@ -32,22 +32,18 @@ extends:
     product_display_name: ${{ variables.product_display_name }}
     product_description: ${{ variables.product_description }}
     spec_file: ${{ variables.spec_file }}
+    jinja_templates:
+      REQUIRE_ASID: false
     apigee_deployments:
       - environment: internal-dev
       - environment: internal-qa
         post_deploy:
             - template: templates/pds-tests.yml
               parameters:
-                service_name: ${{ variables.service_name }}
                 test_pack_path: ./e2e/smoke.json
                 test_type: smoke
-                service_base_path: ${{ variables.service_base_path }}
       - environment: internal-qa-sandbox
         proxy_path: sandbox
-      - environment: ref
-        depends_on:
-          - internal_qa
-          - internal_qa_sandbox
       - environment: int
         depends_on:
           - internal_qa
@@ -61,3 +57,5 @@ extends:
         depends_on:
           - internal_qa
           - internal_qa_sandbox
+        jinja_templates:
+          REQUIRE_ASID: true

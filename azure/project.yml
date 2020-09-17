@@ -3,5 +3,5 @@ variables:
   short_service_name: pds
   service_base_path: personal-demographics
   product_display_name: Personal Demographics Service
-  product_description: Personal Demographics Service
+  product_description: " "
   spec_file: personal-demographics.json

@@ -307,7 +307,7 @@ paths:
         | Invalid date format         | `birthdate` or `death-date` query parameters with values not in format `YYYY-MM-DD` | HTTP Status 400 with problem description   |
         | Too few search parameters   | Any invalid combination of query parameters                  | HTTP Status 400 with problem description   |
 
-        You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
+        You can try out the sandbox using the "Try this API" feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
@@ -1423,7 +1423,7 @@ paths:
         | No patches sent                     | Send body with no `patches` attribute                                     | HTTP Status 400 with problem description         |
         | Invalid patch operations            | Send body with invalid JSON patches in `patches` attribute                | HTTP Status 400 with problem description         |
 
-        You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
+        You can try out the sandbox using the "Try this API" feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
@@ -1604,7 +1604,7 @@ paths:
         | Single related person exists    | `id`=`9000000017`                             | HTTP Status 200 with related person data in a response Bundle |
         | Related people do not exist     | `id`=`9000000025`                             | HTTP Status 404 with problem description                      |
 
-        You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
+        You can try out the sandbox using the "Try this API" feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
@@ -1743,7 +1743,7 @@ paths:
         | Polling message ID when update is not yet complete         | `message_id`=`20200522091633363041_000001`            | HTTP Status 202 with no data                |
         | Polling message ID not found                               | `message_id`=`20200522091633363041_000002`            | HTTP Status 404 with operation outcome body |
 
-        You can try out the sandbox using the "Try this API" feature on the right hand side of this page.
+        You can try out the sandbox using the "Try this API" feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
 

@@ -31,9 +31,18 @@
                 <Name>KeyValueMapOperations.GetSecureVariables</Name>
             </Step>
             <Step>
+              <Name>AssignMessage.PopulateAsidFromApp</Name>
+              <Condition>(app.asid IsNot null)</Condition>
+            </Step>
+            {% if REQUIRE_ASID %}
+            <Step>
+                <Name>RaiseFault.400BadRequest</Name>
+                <Condition>(private.apigee.NHSD-ASID is null) or (not private.apigee.NHSD-ASID ~~ ".+")</Condition>
+            </Step>
+            {% endif %}
+            <Step>
                 <Name>AssignMessage.AddAsidHeader</Name>
             </Step>
-
             <Step>
                 <!--This should always be the last Step - as it is just before the message is sent - so the initial request stays intact for as long as possible.
                     The Swapping of the Request Headers converts X-Request-ID and X-Correlation-ID to NHSD-Request-ID and NHSD-Correlation-ID before sending to backend. -->
@@ -104,6 +113,23 @@
             <Condition>(request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+")</Condition>
             <Step>
                 <Name>AssignMessage.Errors.MissingUserRoleID</Name>
+            </Step>
+            <Step>
+                <Name>AssignMessage.Mirror.CorrelationID</Name>
+                <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>
+            </Step>
+            <Step>
+                <Name>AssignMessage.Mirror.RequestID</Name>
+                <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
+            </Step>
+            <Step>
+                <Name>AssignMessage.Errors.CatchAllMessage</Name>
+            </Step>
+        </FaultRule>
+        <FaultRule name="no_asid_provided">
+            <Condition>(request.header.NHSD-ASID is null) or (not request.header.NHSD-ASID ~~ ".+")</Condition>
+            <Step>
+                <Name>AssignMessage.Errors.MissingASID</Name>
             </Step>
             <Step>
                 <Name>AssignMessage.Mirror.CorrelationID</Name>
