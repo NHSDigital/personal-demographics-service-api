@@ -37,7 +37,7 @@
             {% if REQUIRE_ASID %}
             <Step>
                 <Name>RaiseFault.400BadRequest</Name>
-                <Condition>(private.apigee.NHSD-ASID is null) or (not private.apigee.NHSD-ASID ~~ ".+")</Condition>
+                <Condition>(app.asid is null)</Condition>
             </Step>
             {% endif %}
             <Step>
