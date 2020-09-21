@@ -1,0 +1,31 @@
+<TargetEndpoint name="sync-wrap">
+  <FaultRules>
+    <FaultRule name="access_token_expired">
+      <Step>
+        <Name>ExtractVariables.OAuthErrorFaultString</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.OAuthPolicyErrorResponse</Name>
+      </Step>
+      <Condition>oauthV2.OauthV2.VerifyAccessToken.failed</Condition>
+    </FaultRule>
+  </FaultRules>
+  <PreFlow>
+    <Request>
+      <Step>
+        <Name>OauthV2.VerifyAccessToken</Name>
+      </Step>
+      <Step>
+        <Name>Quota</Name>
+      </Step>
+      <Step>
+        <Name>SpikeArrest</Name>
+      </Step>
+    </Request>
+  </PreFlow>
+  <LocalTargetConnection>
+    <APIProxy>sync-wrap-{{ APIGEE_ENVIRONMENT }}</APIProxy>
+    <ProxyEndpoint>default</ProxyEndpoint>
+    <Path>/sync-wrap{{ SERVICE_BASE_PATH }}</Path>
+  </LocalTargetConnection>
+</TargetEndpoint>
