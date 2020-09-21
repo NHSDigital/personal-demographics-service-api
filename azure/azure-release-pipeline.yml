@@ -45,6 +45,7 @@ extends:
       - environment: internal-qa-sandbox
         proxy_path: sandbox
       - environment: int
+        make_spec_visible: true
         depends_on:
           - internal_qa
           - internal_qa_sandbox
@@ -54,6 +55,7 @@ extends:
           - internal_qa
           - internal_qa_sandbox
       - environment: prod
+        make_spec_visible: true
         depends_on:
           - internal_qa
           - internal_qa_sandbox
