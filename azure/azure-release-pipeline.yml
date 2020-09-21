@@ -36,6 +36,7 @@ extends:
       REQUIRE_ASID: false
     apigee_deployments:
       - environment: internal-dev
+        make_spec_visible: true
       - environment: internal-qa
         post_deploy:
             - template: templates/pds-tests.yml
