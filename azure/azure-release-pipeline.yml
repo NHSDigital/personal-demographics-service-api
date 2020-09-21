@@ -38,12 +38,14 @@ extends:
       - environment: internal-dev
         make_spec_visible: true
       - environment: internal-qa
+        make_spec_visible: true
         post_deploy:
             - template: templates/pds-tests.yml
               parameters:
                 test_pack_path: ./e2e/smoke.json
                 test_type: smoke
       - environment: internal-qa-sandbox
+        make_spec_visible: true
         proxy_path: sandbox
       - environment: int
         make_spec_visible: true
