@@ -40,7 +40,7 @@ info:
     ## Legal use
     This API can only be used where there is a [legal basis](http://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) to do so. Make sure you have a valid use case before you go too far with your development.  To do this, make a [PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service). 
     
-    You must do this before you can go live (see ‘Onboarding’ below)
+    You must do this before you can go live (see ‘Onboarding’ below).
 
     ## Related APIs
     The following APIs also give access to the Personal Demographics Service:
