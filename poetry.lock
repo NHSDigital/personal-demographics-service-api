@@ -249,11 +249,12 @@ description = "Developer friendly load testing framework"
 name = "locust"
 optional = false
 python-versions = ">=3.6"
-version = "1.2.1"
+version = "1.2.3"
 
 [package.dependencies]
 ConfigArgParse = ">=1.0"
 Flask-BasicAuth = ">=0.2.0"
+Werkzeug = ">=1.0.1"
 flask = ">=1.1.2"
 gevent = ">=1.5.0"
 geventhttpclient = ">=1.4.4"
@@ -711,8 +712,8 @@ jsonpath-rw = [
     {file = "jsonpath-rw-1.4.0.tar.gz", hash = "sha256:05c471281c45ae113f6103d1268ec7a4831a2e96aa80de45edc89b11fac4fbec"},
 ]
 locust = [
-    {file = "locust-1.2.1-py3-none-any.whl", hash = "sha256:41ef9b1c3bcf00c71b06441f98649fe34528addab1be8259ef370a04e55945f1"},
-    {file = "locust-1.2.1.tar.gz", hash = "sha256:288ca88de6ef8f6864cebd34ba68f2d5587c64013623cfe4f73c3ce5be0b0fe2"},
+    {file = "locust-1.2.3-py3-none-any.whl", hash = "sha256:2257d13d75e0fe69446a5178f84f0f698443e191d4c8083779e9e21a9708dd2e"},
+    {file = "locust-1.2.3.tar.gz", hash = "sha256:ba9f9f50e0ae0658b14dffb507a6ba47b34682e6ed91905a3861b11d8b1bf4fc"},
 ]
 markupsafe = [
     {file = "MarkupSafe-1.1.1-cp27-cp27m-macosx_10_6_intel.whl", hash = "sha256:09027a7803a62ca78792ad89403b1b7a73a01c8cb65909cd876f7fcebd79b161"},
