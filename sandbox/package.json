@@ -20,6 +20,6 @@
         "validator": "^13.1.17"
     },
     "devDependencies": {
-        "eslint": "^7.8.0"
+        "eslint": "^7.10.0"
     }
 }
