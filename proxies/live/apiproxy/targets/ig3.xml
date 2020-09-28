@@ -34,6 +34,7 @@
               <Name>AssignMessage.PopulateAsidFromApp</Name>
               <Condition>(app.asid IsNot null)</Condition>
             </Step>
+            <!-- {{ REQUIRE_ASID }} -->
             {% if REQUIRE_ASID == 'true' %}
             <Step>
                 <Name>RaiseFault.400BadRequest</Name>
