@@ -90,8 +90,8 @@ info:
 
     The API uses OAuth 2.0 to authorise the calling system.
     It supports the following security patterns:
-    * user-restricted RESTful API - using NHS Identity - combined authentication and authorisation
-    * user-restricted RESTful API - using NHS Identity - separate authentication and authorisation
+    * [user-restricted RESTful API - using NHS Identity - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-combined-authentication-and-authorisation)
+    * [user-restricted RESTful API - using NHS Identity - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-separate-authentication-and-authorisation)
 
     For more details, see [user-restricted APIs](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis).
 
