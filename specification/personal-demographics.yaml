@@ -1199,11 +1199,13 @@ paths:
 
         Single item found under `extension` with the extension URL `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication`.
 
-        In a JSON Patch request the path should be:
-        * `/extension/0` if the communication extension is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
+        In a JSON Patch request, where the communication extension doesn't exist the path should be:
         * `/extension/-` when adding a communication extension.
-
-        In a JSON Patch request where the extension has sub-extensions the path should be:
+        
+        Where you are replacing/removing the full communication extension, the path should be:
+        * `/extension/0` if the communication extension is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
+        
+        Where the communication extension already exists and you wish to replace specific sub-extension, then the path should be:
         * `/extension/0/extension/1` if the communication extension is the first item in the list and the method is the second item in the sub-extension list.
 
         There are a number of business rules that should be taken into account:
