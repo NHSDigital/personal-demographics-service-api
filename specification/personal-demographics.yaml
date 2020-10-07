@@ -90,10 +90,8 @@ info:
 
     The API uses OAuth 2.0 to authorise the calling system.
     It supports the following security patterns:
-    * user-restricted RESTful API - using NHS Identity - combined authentication and authorisation
-    * user-restricted RESTful API - using NHS Identity - separate authentication and authorisation
-
-    For more details, see [user-restricted APIs](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis).
+    * [user-restricted RESTful API - using NHS Identity - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-combined-authentication-and-authorisation)
+    * [user-restricted RESTful API - using NHS Identity - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-separate-authentication-and-authorisation)
 
     In due course we plan to add the following:
     - access for citizens, using NHS Login
@@ -1201,13 +1199,15 @@ paths:
 
         Single item found under `extension` with the extension URL `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication`.
 
-        In a JSON Patch request the path should be:
-        * `/extension/0` if the communication extension is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
+        In a JSON Patch request, where the communication extension doesn't exist the path should be:
         * `/extension/-` when adding a communication extension.
 
-        In a JSON Patch request where the extension has sub-extensions the path should be:
-        * `/extension/0/extension/1` if the communication extension is the first item in the list and the method is the second item in the sub-extension list.
+        Where you are replacing/removing the full communication extension, the path should be:
+        * `/extension/0` if the communication extension is the first item in the list. If it is the second item in the list the path will be /extension/1, and so on.
 
+        Where the communication extension already exists and you wish to replace specific sub-extension, then the path should be:
+        * `/extension/0/extension/1` if the communication extension is the first item in the list and the sub-extension is the second item in the list.
+        
         There are a number of business rules that should be taken into account:
         * preferred language must not be supplied where it is English even though the [code list](https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage) contains a value for English (en).
         * any language codes outside the accepted list will be rejected; such as local system `qa` codes.
@@ -1950,7 +1950,7 @@ components:
 
         This will be mirrored back in the response headers.
 
-        **Note: This parameter is required for `update` unless interacting with the Sandbox.**
+        **Note: This parameter is required for `update`, `get` and `search` unless interacting with the Sandbox.**
       schema:
         type: string
         pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
