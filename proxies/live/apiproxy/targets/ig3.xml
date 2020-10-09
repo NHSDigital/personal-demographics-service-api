@@ -44,6 +44,10 @@
                 <Name>AssignMessage.AddAsidHeader</Name>
             </Step>
             <Step>
+                <Name>AssignMessage.setURLForStatusEndpoint</Name>
+                <Condition>(proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
+            </Step>
+            <Step>
                 <!--This should always be the last Step - as it is just before the message is sent - so the initial request stays intact for as long as possible.
                     The Swapping of the Request Headers converts X-Request-ID and X-Correlation-ID to NHSD-Request-ID and NHSD-Correlation-ID before sending to backend. -->
                 <Name>AssignMessage.Swap.RequestHeaders</Name>
