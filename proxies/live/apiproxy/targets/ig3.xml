@@ -44,8 +44,7 @@
                 <Name>AssignMessage.AddAsidHeader</Name>
             </Step>
             <Step>
-                <Name>AssignMessage.setURLForStatusEndpoint</Name>
-                <Condition>(proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
+                <Name>javascript.SetTargetBasePath</Name>
             </Step>
             <Step>
                 <!--This should always be the last Step - as it is just before the message is sent - so the initial request stays intact for as long as possible.
@@ -77,6 +76,7 @@
         <LoadBalancer>
             <Server name="ig3"/>
         </LoadBalancer>
+        <Path>{targetBasePath}</Path>
     </HTTPTargetConnection>
     <FaultRules>
         <FaultRule name="access_token_expired">

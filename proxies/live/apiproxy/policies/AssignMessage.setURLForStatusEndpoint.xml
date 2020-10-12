@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<AssignMessage name="AssignMessage.setURLForStatusEndpoint">
-    <AssignVariable>
-        <Name>target.url</Name>
-        <Value>healthcheck</Value>
-    </AssignVariable>
-    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
-</AssignMessage>
