@@ -36,3 +36,5 @@ var response = {
 
 
 context.proxyResponse.content = JSON.stringify(response);
+
+context.setVariable("response.header.Content-Type", "application/json");
