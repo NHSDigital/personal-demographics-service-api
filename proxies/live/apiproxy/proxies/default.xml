@@ -41,7 +41,7 @@
       <Request/>
       <Response>
         <Step>
-          <Name>AssignMessage.AddPayloadToHealthcheck</Name>
+          <Name>javascript.SetStatusResponse</Name>
         </Step>
       </Response>
       <Condition>(proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>

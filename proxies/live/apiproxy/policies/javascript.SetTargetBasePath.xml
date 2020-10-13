@@ -2,5 +2,5 @@
 <Javascript async="false" continueOnError="false" enabled="true" timeLimit="200" name="javascript.SetTargetBasePath">
     <DisplayName>javascript.SetTargetBasePath</DisplayName>
     <Properties/>
-    <ResourceURL>jsc://setTargetBasePath.js</ResourceURL>
+    <ResourceURL>jsc://SetTargetBasePath.js</ResourceURL>
 </Javascript>
