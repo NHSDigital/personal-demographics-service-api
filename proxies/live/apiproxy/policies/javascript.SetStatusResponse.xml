@@ -2,5 +2,5 @@
 <Javascript async="false" continueOnError="false" enabled="true" timeLimit="200" name="javascript.SetStatusResponse">
     <DisplayName>javascript.SetStatusResponse</DisplayName>
     <Properties/>
-    <ResourceURL>jsc://SetTargetBasePath.js</ResourceURL>
+    <ResourceURL>jsc://SetStatusResponse.js</ResourceURL>
 </Javascript>
