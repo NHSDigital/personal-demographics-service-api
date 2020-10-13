@@ -1,6 +1,7 @@
 
 var apiproxy_revision = context.getVariable('apiproxy.revision');
 var spine_response_code = context.getVariable('response.status.code');
+var spine_response = context.getVariable('response.content');
 
 var spine_status = "fail";
 
@@ -14,13 +15,14 @@ var spine_service = {
     "status": spine_status, 
     "timeout" : "false",
     "responseCode" : spine_response_code,
+    "outcome": spine_response
    }]
-}
+};
 
-var apigee_status = "pass"
+var apigee_status = "pass";
 
 if(spine_status != "pass"){
-    apigee_status = "fail"
+    apigee_status = "fail";
 }
 
 
@@ -38,3 +40,4 @@ var response = {
 context.proxyResponse.content = JSON.stringify(response);
 
 context.setVariable("response.header.Content-Type", "application/json");
+
