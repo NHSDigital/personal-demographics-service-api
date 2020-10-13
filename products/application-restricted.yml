@@ -1,0 +1,3 @@
+name: application-restricted # Will have SERVICE_NAME- prepended to this
+displayName: Personal Demographics Service - Application Restricted
+description: Access the Personal Demographics Service with reduced permisions.
