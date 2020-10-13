@@ -3,11 +3,15 @@ var apiproxy_revision = context.getVariable('apiproxy.revision');
 var spine_response_code = context.getVariable('response.status.code');
 var spine_response = context.getVariable('response.content');
 
+var spine_request_url= context.getVariable('request.url');
+
 var spine_status = "fail";
 
 if(spine_response_code/ 100 == 2){
     spine_status = "pass";
 }
+
+
 
 var spine_service = {
 "spine:status" : [
@@ -15,7 +19,8 @@ var spine_service = {
     "status": spine_status, 
     "timeout" : "false",
     "responseCode" : spine_response_code,
-    "outcome": spine_response
+    "outcome": spine_response,
+    "links" : {"self": spine_request_url}
    }]
 };
 
