@@ -76,7 +76,7 @@
         <LoadBalancer>
             <Server name="ig3"/>
         </LoadBalancer>
-        <Path>{targetBasePath}</Path>
+        <Path>{targetPath}</Path>
     </HTTPTargetConnection>
     <FaultRules>
         <FaultRule name="access_token_expired">
