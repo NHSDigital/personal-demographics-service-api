@@ -44,7 +44,7 @@
                 <Name>AssignMessage.AddAsidHeader</Name>
             </Step>
             <Step>
-                <Name>javascript.SetTargetBasePath</Name>
+                <Name>javascript.SetTargetPath</Name>
             </Step>
             <Step>
                 <!--This should always be the last Step - as it is just before the message is sent - so the initial request stays intact for as long as possible.
