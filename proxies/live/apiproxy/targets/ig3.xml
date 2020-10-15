@@ -143,12 +143,6 @@
                 <Name>AssignMessage.Errors.CatchAllMessage</Name>
             </Step>
         </FaultRule>
-        <FaultRule name="healthcheck_endpoint_failure">
-            <Condition>(proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
-            <Step>
-                <Name>javascript.SetStatusResponse</Name>
-            </Step>
-        </FaultRule>
     </FaultRules>
     <DefaultFaultRule>
         <Step>
