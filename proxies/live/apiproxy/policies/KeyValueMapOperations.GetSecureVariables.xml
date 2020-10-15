@@ -5,4 +5,9 @@
             <Parameter>NHSD-ASID</Parameter>
         </Key>
     </Get>
+    <Get assignTo="private.apigee.status-endpoint-api-key" index="1">
+        <Key>
+            <Parameter>status-endpoint-api-key</Parameter>
+        </Key>
+    </Get>
 </KeyValueMapOperations>

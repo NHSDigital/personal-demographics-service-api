@@ -40,6 +40,13 @@
       <Description/>
       <Request>
         <Step>
+          <Name>KeyValueMapOperations.GetSecureVariables</Name>
+        </Step>
+        <Step>
+          <Condition>private.apigee.status-endpoint-api-key NotEquals request.header.apikey</Condition>
+          <Name>RaiseFault.400BadRequest</Name>
+        </Step>
+        <Step>
           <Name>ServiceCallout.CallSpineHealthcheck</Name>
         </Step>
       </Request>
