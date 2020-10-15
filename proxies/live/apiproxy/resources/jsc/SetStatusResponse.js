@@ -1,9 +1,10 @@
-
 var apiproxy_revision = context.getVariable('apiproxy.revision');
-var spine_response_code = context.getVariable('response.status.code');
-var spine_response = context.getVariable('response.content');
+var spine_response_code = context.getVariable('spineHealthcheckResponse.status.code');
+var spine_response = context.getVariable('spineHealthcheckResponse.content');
 
 var spine_request_url= context.getVariable('request.url');
+
+
 
 var spine_status = "fail";
 
@@ -34,10 +35,10 @@ if(spine_status != "pass"){
 
 var response = { 
 "status" : apigee_status,
-"version" : "{{ DEPLOYED_VERSION }}" ,
+"version" : "personal-demographics-pr-394" ,
 "revision" : apiproxy_revision, 
-"releaseId" : "{{ RELEASE_RELEASEID }}", 
-"commitId": "{{ SOURCE_COMMIT_ID }}",
+"releaseId" : "10485", 
+"commitId": "f70bde83654790c2540621be9f1e3f40d7debdb8",
 "checks" : spine_service
 };
 
@@ -45,4 +46,3 @@ var response = {
 context.proxyResponse.content = JSON.stringify(response);
 
 context.setVariable("response.header.Content-Type", "application/json");
-

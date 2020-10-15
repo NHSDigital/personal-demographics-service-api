@@ -36,9 +36,13 @@
       </Response>
       <Condition>(proxy.pathsuffix MatchesPath "/_ping") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
     </Flow>
-    <Flow name="AddPayloadToHealthcheck">
+    <Flow name="StatusEndpoint">
       <Description/>
-      <Request/>
+      <Request>
+        <Step>
+          <Name>ServiceCallout.CallSpineHealthcheck</Name>
+        </Step>
+      </Request>
       <Response>
         <Step>
           <Name>javascript.SetStatusResponse</Name>
