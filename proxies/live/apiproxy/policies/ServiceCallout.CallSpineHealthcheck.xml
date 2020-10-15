@@ -2,7 +2,7 @@
 <ServiceCallout async="false" continueOnError="true" enabled="true" name="ServiceCallout.CallSpineHealthcheck">
     <DisplayName>ServiceCallout.CallSpineHealthcheck</DisplayName>
     <Properties/>
-    <Request clearPayload="true" variable="myRequest">
+    <Request clearPayload="true" variable="spineHealthcheckRequest">
         <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
     </Request>
     <Response>spineHealthcheckResponse</Response>

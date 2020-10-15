@@ -1,10 +1,8 @@
 var apiproxy_revision = context.getVariable('apiproxy.revision');
+
 var spine_response_code = context.getVariable('spineHealthcheckResponse.status.code');
 var spine_response = context.getVariable('spineHealthcheckResponse.content');
-
-var spine_request_url= context.getVariable('request.url');
-
-
+var spine_request_url= context.getVariable('spineHealthcheckRequest.url');
 
 var spine_status = "fail";
 
