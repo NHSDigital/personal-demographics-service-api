@@ -44,7 +44,7 @@
         </Step>
         <Step>
           <Condition>private.apigee.status-endpoint-api-key NotEquals request.header.apikey</Condition>
-          <Name>RaiseFault.400BadRequest</Name>
+          <Name>RaiseFault.401Unauthorized</Name>
         </Step>
         <Step>
           <Name>ServiceCallout.CallSpineHealthcheck</Name>
