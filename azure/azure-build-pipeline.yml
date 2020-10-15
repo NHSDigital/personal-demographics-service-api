@@ -45,5 +45,5 @@ extends:
       - task: PublishTestResults@2
         inputs:
           testResultsFormat: 'JUnit'
-          testResultsFiles: '$(Pipeline.Workspace)/s/${{ parameters.service_name }}/$(SERVICE_ARTIFACT_NAME)/newman/*.xml'
+          testResultsFiles: '$(Pipeline.Workspace)/s/${{ variables.service_name }}/$(SERVICE_ARTIFACT_NAME)/newman/*.xml'
           failTaskOnFailedTests: true
