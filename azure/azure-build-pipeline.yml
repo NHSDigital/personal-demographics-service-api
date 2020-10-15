@@ -41,6 +41,7 @@ extends:
       - bash: "make test"
         displayName: Run sandbox tests
         workingDirectory: "${{ variables.service_name }}"
+      - bash: ls -R
       - task: PublishTestResults@2
         inputs:
           testResultsFormat: 'JUnit'
