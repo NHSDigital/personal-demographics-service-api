@@ -1,4 +1,4 @@
-name: ''
+name: '' # Will have SERVICE_NAME- prepended to this
 displayName: Personal Demographics Service - User Restricted
 description: Full access to PDS functionality
 scopes:
