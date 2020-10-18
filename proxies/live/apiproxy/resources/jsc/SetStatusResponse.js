@@ -41,10 +41,10 @@ if(spine_status != "pass"){
 
 var response = { 
 "status" : apigee_status,
-"version" : "personal-demographics-pr-394" ,
+"version" : "{{ DEPLOYED_VERSION }}" ,
 "revision" : apiproxy_revision, 
-"releaseId" : "10485", 
-"commitId": "f70bde83654790c2540621be9f1e3f40d7debdb8",
+"releaseId" : "{{ RELEASE_RELEASEID }}", 
+"commitId": "{{ SOURCE_COMMIT_ID }}",
 "checks" : spine_service
 };
 
