@@ -81,7 +81,6 @@
   <RouteRule name="ig3">
     <TargetEndpoint>ig3</TargetEndpoint>
   </RouteRule>
-  <FaultRules>
   <DefaultFaultRule>
     <Step>
       <Name>AssignMessage.Errors.CatchAllMessage</Name>
