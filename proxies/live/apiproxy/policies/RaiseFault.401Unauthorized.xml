@@ -9,6 +9,22 @@
             <StatusCode>401</StatusCode>
             <ReasonPhrase>Server Error</ReasonPhrase>
         </Set>
+        <AssignVariable>
+            <Name>pds.error.code</Name>
+            <Value>forbidden</Value>
+        </AssignVariable>
+        <AssignVariable>
+            <Name>pds.error.coding.code</Name>
+            <Value>ACCESS_DENIED</Value>
+        </AssignVariable>
+        <AssignVariable>
+            <Name>pds.error.coding.display</Name>
+            <Value>Access Denied - Unauthorised</Value>
+        </AssignVariable>
+        <AssignVariable>
+            <Name>pds.error.diagnostics</Name>
+            <Value>Invalid Api Key</Value>
+        </AssignVariable>
     </FaultResponse>
     <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
 </RaiseFault>

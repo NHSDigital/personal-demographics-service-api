@@ -82,14 +82,6 @@
     <TargetEndpoint>ig3</TargetEndpoint>
   </RouteRule>
   <FaultRules>
-    <FaultRule name="allow_raisefaults">
-        <Step>
-          <Name>AssignMessage.Errors.CatchAllMessage</Name>
-          <Condition>(fault.name NotEquals "RaiseFault")</Condition>
-        </Step>
-      <Condition>(fault.name Equals "RaiseFault")</Condition>
-    </FaultRule>
-  </FaultRules>
   <DefaultFaultRule>
     <Step>
       <Name>AssignMessage.Errors.CatchAllMessage</Name>
