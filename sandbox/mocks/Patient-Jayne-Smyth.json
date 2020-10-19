@@ -223,7 +223,7 @@
         },
         "system": "https://fhir.nhs.uk/Id/ods-organization-code",
         "value": "Y12345"
-      }
+      },
       "type": "Organization"
     }
   ],
