@@ -14,7 +14,7 @@ if(spine_response_code/ 100 == 2){
 
 timeout = "false";
 
-if(spine_response_code == 500 && spine_request_has_failed){
+if(spine_response_code == null && spine_request_has_failed){
     timeout = "true";
 }
 

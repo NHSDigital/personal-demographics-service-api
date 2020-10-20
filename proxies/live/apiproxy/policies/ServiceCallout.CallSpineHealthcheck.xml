@@ -15,4 +15,5 @@
         </LoadBalancer>
         <Path>/healthcheck</Path>
     </HTTPTargetConnection>
+    <Timeout>20000</Timeout>
 </ServiceCallout>
