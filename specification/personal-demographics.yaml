@@ -1950,7 +1950,7 @@ components:
 
         This will be mirrored back in the response headers.
 
-        **Note: This parameter is required for `update`, `get`, `search` and 'relatedPerson' unless interacting with the Sandbox.**
+        **Note: This parameter is required for `update`, `get`, `search` and `relatedPerson` unless interacting with the Sandbox.**
       schema:
         type: string
         pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
