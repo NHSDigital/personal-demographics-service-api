@@ -1,48 +1,49 @@
 name: "$(SourceBranchName)+$(BuildID)"
 
 trigger:
-  branches:
-    include:
-      - tags/refs/v*
-  tags:
-    include:
-      - v*
+    branches:
+        include:
+            - tags/refs/v*
+    tags:
+        include:
+            - v*
 
 pr:
-  branches:
-    include: ['*']
+    branches:
+        include: ["*"]
 
 resources:
-  repositories:
-    - repository: common
-      type: github
-      name: NHSDigital/api-management-utils
-      endpoint: NHSDigital
+    repositories:
+        - repository: common
+          type: github
+          name: NHSDigital/api-management-utils
+          endpoint: NHSDigital
+          ref: APM-1400-improve-ansible-debug-messages
 
 variables:
-  - template: project.yml
+    - template: project.yml
 extends:
-  template: azure/common/apigee-build.yml@common
-  parameters:
-    service_name: ${{ variables.service_name }}
-    short_service_name: ${{ variables.short_service_name }}
-    variables:
-      API_TEST_ENV_FILE_PATH: "tests/e2e/environments/local.postman_environment.json"
-      PIP_CACHE_DIR: ".poetry"
-    test_steps:
-      - bash: "make sandbox &"
-        displayName: Start Sandbox Server
-        workingDirectory: "${{ variables.service_name }}"
-      - bash: "make validate"
-        displayName: Validate FHIR
-        workingDirectory: "${{ variables.service_name }}"
-      - bash: "sleep 30"
-        displayName: Wait for sandbox server to start
-      - bash: "make test"
-        displayName: Run sandbox tests
-        workingDirectory: "${{ variables.service_name }}"
-      - task: PublishTestResults@2
-        inputs:
-          testResultsFormat: 'JUnit'
-          testResultsFiles: './${{ variables.service_name }}/newman/test-report.xml'
-          failTaskOnFailedTests: true
+    template: azure/common/apigee-build.yml@common
+    parameters:
+        service_name: ${{ variables.service_name }}
+        short_service_name: ${{ variables.short_service_name }}
+        variables:
+            API_TEST_ENV_FILE_PATH: "tests/e2e/environments/local.postman_environment.json"
+            PIP_CACHE_DIR: ".poetry"
+        test_steps:
+            - bash: "make sandbox &"
+              displayName: Start Sandbox Server
+              workingDirectory: "${{ variables.service_name }}"
+            - bash: "make validate"
+              displayName: Validate FHIR
+              workingDirectory: "${{ variables.service_name }}"
+            - bash: "sleep 30"
+              displayName: Wait for sandbox server to start
+            - bash: "make test"
+              displayName: Run sandbox tests
+              workingDirectory: "${{ variables.service_name }}"
+            - task: PublishTestResults@2
+              inputs:
+                  testResultsFormat: "JUnit"
+                  testResultsFiles: "./${{ variables.service_name }}/newman/test-report.xml"
+                  failTaskOnFailedTests: true
