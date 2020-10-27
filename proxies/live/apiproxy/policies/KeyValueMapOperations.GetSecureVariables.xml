@@ -5,7 +5,7 @@
             <Parameter>NHSD-ASID</Parameter>
             <gsdkl>
         </Key>
-        </dsklf>
+        </dskldf>
     </Get>
     <Get assignTo="private.apigee.status-endpoint-api-key" index="1">
         <Key>
