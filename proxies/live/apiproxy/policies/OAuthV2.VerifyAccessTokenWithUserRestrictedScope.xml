@@ -1,4 +1,5 @@
 <OAuthV2 async="false" continueOnError="false" enabled="true" name="OauthV2.VerifyAccessTokenWithUserRestrictedScope">
   <Operation>VerifyAccessToken</Operation>
-  <Scope>personal-demographics-service:USER-RESTRICTED</Scope>
+  <!-- <Scope>personal-demographics-service:USER-RESTRICTED</Scope> -->
+  <Scope>personal-demographics-service:INVALIDSCOPE</Scope>
 </OAuthV2>
