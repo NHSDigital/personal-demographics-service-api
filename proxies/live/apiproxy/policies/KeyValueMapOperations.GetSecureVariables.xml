@@ -10,9 +10,4 @@
             <Parameter>status-endpoint-api-key</Parameter>
         </Key>
     </Get>
-    <Get>
-        <Key>
-            <Parameter>Foobar1</Parameter>
-        </Key>
-    </Get>
 </KeyValueMapOperations>
