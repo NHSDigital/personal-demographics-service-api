@@ -3,13 +3,16 @@
     <Get assignTo="private.apigee.NHSD-ASID" index="1">
         <Key>
             <Parameter>NHSD-ASID</Parameter>
-            <gsdkl>
         </Key>
-        </dskdf>
     </Get>
     <Get assignTo="private.apigee.status-endpoint-api-key" index="1">
         <Key>
             <Parameter>status-endpoint-api-key</Parameter>
+        </Key>
+    </Get>
+    <Get>
+        <Key>
+            <Parameter>Foobar1</Parameter>
         </Key>
     </Get>
 </KeyValueMapOperations>
