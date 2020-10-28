@@ -10,21 +10,16 @@ const routes = require('./routes/patient')
 const CONTENT_TYPE = 'application/fhir+json'
 
 const preHandler = function (request, h) {
-    // Going forward there will be more routes requiring a request id.
-    const checkRequestID = request.method === "patch"
 
-    if (checkRequestID) {
-        // Missing X-Request-ID will be allowed in the sandbox, so not checking for it.
-        
-        // Invalid X-Request-ID
-        if (request.headers["x-request-id"] && !validator.isUUID(request.headers["x-request-id"])) {
-            throw Boom.badRequest(
-                "Invalid value - '" + request.headers["x-request-id"] + "' in header 'X-Request-ID'",
-                {operationOutcomeCode: "value", apiErrorCode: "INVALID_VALUE", display: "Provided value is invalid"}
-            )
-        }
+    // Missing X-Request-ID will be allowed in the sandbox, so not checking for it.     
+    // Invalid X-Request-ID
+    if (request.headers["x-request-id"] && !validator.isUUID(request.headers["x-request-id"])) {
+        throw Boom.badRequest(
+            "Invalid value - '" + request.headers["x-request-id"] + "' in header 'X-Request-ID'",
+            {operationOutcomeCode: "value", apiErrorCode: "INVALID_VALUE", display: "Provided value is invalid"}
+        )
     }
-
+ 
     return h.continue
 }
 
