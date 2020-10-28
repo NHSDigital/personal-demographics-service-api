@@ -68,10 +68,10 @@
   "id": "B3380E98",
   "patient": {
     "identifier": {
-      "system": "https://beta.api.digital.nhs.uk/personal-demographics/Patient",
+      "system": "https://api.service.nhs.uk/personal-demographics/Patient",
       "value": "90000000009"
     },
-    "reference": "https://beta.api.digital.nhs.uk/personal-demographics/Patient/90000000009",
+    "reference": "https://api.service.nhs.uk/personal-demographics/Patient/90000000009",
     "type": "Patient"
   },
   "period": {
