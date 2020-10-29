@@ -32,6 +32,7 @@ extends:
     product_display_name: ${{ variables.product_display_name }}
     product_description: ${{ variables.product_description }}
     spec_file: ${{ variables.spec_file }}
+    enable_monitoring: true 
     jinja_templates:
       REQUIRE_ASID: false
     apigee_deployments:
