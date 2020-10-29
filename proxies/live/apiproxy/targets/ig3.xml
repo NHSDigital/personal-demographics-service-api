@@ -25,6 +25,7 @@
             <Step>
                 <Name>SpikeArrest</Name>
             </Step>
+            <!-- TEMP log message to deploy new branch -->
             <Step>
                 <Name>AssignMessage.AddUserIdHeader</Name>
             </Step>
