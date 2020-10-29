@@ -8,7 +8,6 @@ resources:
     - repository: common
       type: github
       name: NHSDigital/api-management-utils
-      ref: refs/heads/APM-1523-build-reporting
       endpoint: NHSDigital
   pipelines:
   - pipeline: build_pipeline

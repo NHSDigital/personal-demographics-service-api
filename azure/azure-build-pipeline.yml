@@ -17,7 +17,6 @@ resources:
     - repository: common
       type: github
       name: NHSDigital/api-management-utils
-      ref: refs/heads/APM-1523-build-reporting
       endpoint: NHSDigital
 
 variables:
@@ -25,7 +24,6 @@ variables:
 extends:
   template: azure/common/apigee-build.yml@common
   parameters:
-    notify: true
     service_name: ${{ variables.service_name }}
     short_service_name: ${{ variables.short_service_name }}
     variables:
