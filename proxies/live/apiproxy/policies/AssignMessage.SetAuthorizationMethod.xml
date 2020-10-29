@@ -1,6 +1,0 @@
-<AssignMessage name="AssignMessage.SetAuthorizationMethod">
-    <AssignVariable>
-      <Name>apigee.authorization_method</Name>
-      <Ref>oauthV2.OauthV2.VerifyAccessToken.grant_type</Ref>
-    </AssignVariable>
-  </AssignMessage>

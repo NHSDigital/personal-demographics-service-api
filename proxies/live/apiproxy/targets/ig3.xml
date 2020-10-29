@@ -10,12 +10,9 @@
                 <Condition>(request.method == "PATCH")</Condition>
             </Step>
             <Step>
-                <Name>AssignMessage.SetAuthorizationMethod</Name>
-            </Step>
-            <Step>
                 <!-- Header NHSD-Session-URID must be present and not empty -->
                 <Name>RaiseFault.400BadRequest</Name>
-                <Condition>(apigee.authorization_method is "authorization_code") and ((request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+"))</Condition>
+                <Condition>(grant_type is "authorization_code") and ((request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+"))</Condition>
             </Step>
             <Step>
                 <!-- Header NHSD-Request-ID must be in the correct format (GUID) -->
