@@ -17,7 +17,7 @@
             </Step>
             <Step>
                 <Name>OauthV2.VerifyAccessTokenWithUserRestrictedScope</Name>
-                <Condition>(request.method == "PATCH")</Condition>
+                <Condition>(request.verb == "PATCH") or (request.queryparam._max-results != "1") or (request.queryparam._exact-match != "true")</Condition>
             </Step>
             <Step>
                 <Name>Quota</Name>
