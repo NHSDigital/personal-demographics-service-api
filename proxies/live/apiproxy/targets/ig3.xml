@@ -10,7 +10,7 @@
                 <Condition>(request.method == "PATCH")</Condition>
             </Step>
             <Step>
-                <!-- Header NHSD-Session-URID must be present and not empty -->
+                <!-- Header NHSD-Session-URID must be present and not empty for 'authorization_code'-->
                 <Name>RaiseFault.400BadRequest</Name>
                 <Condition>(grant_type is "authorization_code") and ((request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+"))</Condition>
             </Step>
