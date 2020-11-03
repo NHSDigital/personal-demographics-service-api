@@ -1203,13 +1203,13 @@ paths:
         * `/extension/-` when adding a communication extension.
 
         Where you are replacing/removing the full communication extension, the path should be:
-        * `/extension/0` if the communication extension is the first item in the list. If it is the second item in the list the path will be /extension/1, and so on.
+        * `/extension/0` if the communication extension is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
 
-        Where the communication extension already exists and you wish to replace specific sub-extension, then the path should be:
+        Where the communication extension already exists and you wish to replace a specific sub-extension, then the path should be:
         * `/extension/0/extension/1` if the communication extension is the first item in the list and the sub-extension is the second item in the list.
         
         There are a number of business rules that should be taken into account:
-        * preferred language must not be supplied where it is English even though the [code list](https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage) contains a value for English (en).
+        * preferred language must not be supplied where it is English even though the [code list](https://simplifier.net/ukcore/codesystem-ukcore-humanlanguage) contains a value for English (en).
         * any language codes outside the accepted list will be rejected; such as local system `qa` codes.
 
         ### Contact preferences
@@ -1907,7 +1907,7 @@ components:
 
         A URID belongs to a user (they are not generic) and a user may have more than one.
 
-        Find out more about [User role ID](https://digital.nhs.uk/developer/user-restricted-restful-apis#user-completes-authentication-and-authorisation)
+        Find out more about [User role ID](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-combined-authentication-and-authorisation#step-6-determine-the-user-s-role)
 
         **Note: This parameter is required unless interacting with the Sandbox.**
       required: false
@@ -1950,7 +1950,7 @@ components:
 
         This will be mirrored back in the response headers.
 
-        **Note: This parameter is required for `update`, `get` and `search` unless interacting with the Sandbox.**
+        **Note: This parameter is required for `update`, `get`, `search` and `relatedPerson` unless interacting with the Sandbox.**
       schema:
         type: string
         pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'

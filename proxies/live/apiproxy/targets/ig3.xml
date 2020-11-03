@@ -16,6 +16,10 @@
                 <Name>OauthV2.VerifyAccessToken</Name>
             </Step>
             <Step>
+                <Name>OauthV2.VerifyAccessTokenWithUserRestrictedScope</Name>
+                <Condition>(request.method == "PATCH")</Condition>
+            </Step>
+            <Step>
                 <Name>Quota</Name>
             </Step>
             <Step>
@@ -31,8 +35,8 @@
                 <Name>KeyValueMapOperations.GetSecureVariables</Name>
             </Step>
             <Step>
-              <Name>AssignMessage.PopulateAsidFromApp</Name>
-              <Condition>(app.asid IsNot null)</Condition>
+                <Name>AssignMessage.PopulateAsidFromApp</Name>
+                <Condition>(app.asid IsNot null)</Condition>
             </Step>
             {% if REQUIRE_ASID == 'True' %}
             <Step>
@@ -125,6 +129,15 @@
             <Step>
                 <Name>AssignMessage.Errors.CatchAllMessage</Name>
             </Step>
+        </FaultRule>
+        <FaultRule name="insufficient_scope">
+            <Condition>(fault.name == "InsufficientScope")</Condition>
+            <Step>
+                <Name>AssignMessage.Errors.InsufficientScope</Name>
+            </Step>
+            <Step>
+                <Name>AssignMessage.Errors.CatchAllMessage</Name>
+            </Step>            
         </FaultRule>
         <FaultRule name="no_asid_provided">
             <Condition>(request.header.NHSD-ASID is null) or (not request.header.NHSD-ASID ~~ ".+")</Condition>

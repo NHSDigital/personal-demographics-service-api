@@ -44,5 +44,5 @@ extends:
       - task: PublishTestResults@2
         inputs:
           testResultsFormat: 'JUnit'
-          testResultsFiles: 'newman/*.xml'
+          testResultsFiles: './${{ variables.service_name }}/newman/test-report.xml'
           failTaskOnFailedTests: true
