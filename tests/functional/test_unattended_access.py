@@ -4,11 +4,9 @@ import jwt
 import uuid
 import time
 import requests
-from pytest import fixture, skip
+import pytest
+from pytest import fixture
 from pytest_bdd import scenario, given, when, then, parsers
-
-
-skip("unfinished code", allow_module_level=True)
 
 
 @fixture
@@ -37,6 +35,21 @@ def api_key():
     return key
 
 
+def get_patient_request(headers: dict):
+    return requests.get(
+        (
+            "https://internal-dev.api.service.nhs.uk/"
+            "personal-demographics/"
+            "Patient?"
+            "family=Smith"
+            "&gender=female"
+            "&birthdate=eq2010-10-22"
+        ),
+        headers=headers
+    )
+
+
+@pytest.mark.skip(reason="unfinished code")
 @scenario(
     "features/unattended_access.feature",
     "PDS FHIR API accepts request with valid access token",
@@ -45,6 +58,7 @@ def test_valid():
     pass
 
 
+@pytest.mark.skip(reason="unfinished code")
 @scenario(
     "features/unattended_access.feature",
     "PDS FHIR API rejects request with invalid access token",
@@ -53,6 +67,7 @@ def test_invalid():
     pass
 
 
+@pytest.mark.skip(reason="unfinished code")
 @scenario(
     "features/unattended_access.feature",
     "PDS FHIR API rejects request with missing access token",
@@ -61,6 +76,7 @@ def test_missing():
     pass
 
 
+@pytest.mark.skip(reason="unfinished code")
 @scenario(
     "features/unattended_access.feature",
     "PDS FHIR API rejects request with expired access token",
@@ -80,7 +96,7 @@ def set_valid_access_token(auth, signing_key, api_key):
         "sub": api_key,
         "iss": api_key,
         "jti": str(uuid.uuid4()),
-        "aud": "https://api.service.nhs.uk/oauth2/token",
+        "aud": "https://internal-dev.api.service.nhs.uk/oauth2/token",
         "exp": int(time.time()) + 300,
     }
 
@@ -95,9 +111,9 @@ def set_valid_access_token(auth, signing_key, api_key):
         },
     )
 
-    print(response.json())
+    auth["response"] = response.json()
 
-    assert False
+    assert {"access_token", "expires_in", "token_type"} == auth["response"].keys()
 
 
 @given("I have an invalid access token")
@@ -148,13 +164,12 @@ def get_patient(auth, context):
     if authentication is not None:
         authentication = f"Bearer {authentication}"
 
-    response = requests.get(
-        "https://internal-dev.api.service.nhs.uk/personal-demographics/Patient/9000000009",
-        headers={
+    headers = {
             "NHSD-SESSION-URID": "123",
             "Authorization": f"Bearer {authentication}",
-        },
-    )
+        }
+
+    response = get_patient_request(headers)
 
     context["response"] = response.json()
     context["status"] = response.status_code
@@ -172,7 +187,13 @@ def check_status(status, context):
 
 @then("I get a Patient resource in the response")
 def check_patient_resource(context):
-    assert False
+    expected_keys = {
+        "resourceType",
+        "timestamp",
+        "total",
+        "type"
+    }
+    assert context["response"].keys() == expected_keys
 
 
 @then("I get a diagnosis of invalid access token")
@@ -188,3 +209,26 @@ def check_diagnosis_expired(context):
 @then("I get an error response")
 def check_error_response(context):
     assert context["response"]["issue"][0]["severity"] == "error"
+
+
+@scenario(
+    "features/unattended_access.feature",
+    "PDS FHIR API accepts request without user role ID",
+)
+def test_valid_when_without_user_id():
+    pass
+
+
+@when("I GET a patient without a user role ID")
+def get_patient_without_user_role_id(auth, context):
+    access_token = auth["response"]["access_token"]
+
+    headers = {
+            "Authorization": f"Bearer {access_token}",
+            "X-Request-ID": str(uuid.uuid4())
+        }
+
+    response = get_patient_request(headers)
+
+    context["response"] = response.json()
+    context["status"] = response.status_code
