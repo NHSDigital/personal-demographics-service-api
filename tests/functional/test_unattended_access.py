@@ -21,11 +21,6 @@ def signing_key():
     return key
 
 
-@fixture
-def api_key():
-    return config.UNATTENDED_ACCESS_API_KEY
-
-
 # simple patient request
 def get_patient_request(headers: dict):
     return requests.get(
@@ -81,7 +76,7 @@ def auth():
 
 
 @given("I have a valid access token")
-def set_valid_access_token(auth, signing_key, api_key):
+def set_valid_access_token(auth, signing_key):
     claims = {
         "sub": config.UNATTENDED_ACCESS_API_KEY,
         "iss": config.UNATTENDED_ACCESS_API_KEY,
@@ -121,7 +116,7 @@ def set_no_access_token(auth):
 
 
 @given("I have an expired access token")
-def set_expired_access_token(auth, signing_key, api_key):
+def set_expired_access_token(auth, signing_key):
     claims = {
         "sub": config.UNATTENDED_ACCESS_API_KEY,
         "iss": config.UNATTENDED_ACCESS_API_KEY,
