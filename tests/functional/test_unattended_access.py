@@ -4,8 +4,7 @@ import jwt
 import uuid
 import time
 import requests
-import pytest
-from pytest import fixture
+from pytest import fixture, mark
 from pytest_bdd import scenario, given, when, then, parsers
 
 
@@ -49,7 +48,7 @@ def get_patient_request(headers: dict):
     )
 
 
-@pytest.mark.skip(reason="unfinished code")
+@mark.skip(reason="unfinished code")
 @scenario(
     "features/unattended_access.feature",
     "PDS FHIR API accepts request with valid access token",
@@ -58,7 +57,7 @@ def test_valid():
     pass
 
 
-@pytest.mark.skip(reason="unfinished code")
+@mark.skip(reason="unfinished code")
 @scenario(
     "features/unattended_access.feature",
     "PDS FHIR API rejects request with invalid access token",
@@ -67,7 +66,7 @@ def test_invalid():
     pass
 
 
-@pytest.mark.skip(reason="unfinished code")
+@mark.skip(reason="unfinished code")
 @scenario(
     "features/unattended_access.feature",
     "PDS FHIR API rejects request with missing access token",
@@ -76,7 +75,7 @@ def test_missing():
     pass
 
 
-@pytest.mark.skip(reason="unfinished code")
+@mark.skip(reason="unfinished code")
 @scenario(
     "features/unattended_access.feature",
     "PDS FHIR API rejects request with expired access token",
