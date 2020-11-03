@@ -160,7 +160,8 @@ def get_patient(auth, context):
     authentication = auth["access_token"]
 
     if authentication is not None:
-        authentication = f"Bearer {authentication}"
+        token_type = auth["token_type"]
+        authentication = f"{token_type} {authentication}"
 
     headers = {
             "NHSD-SESSION-URID": "123",
