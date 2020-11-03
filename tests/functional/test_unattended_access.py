@@ -1,19 +1,16 @@
-import os
-import os.path
+import datetime
 import jwt
 import uuid
 import time
 import requests
+from .config_files import config
 from pytest import fixture, mark
 from pytest_bdd import scenario, given, when, then, parsers
 
 
 @fixture
 def signing_key():
-    try:
-        keypath = os.path.abspath(os.getenv("UNATTENDED_ACCESS_SIGNING_KEY_PATH"))
-    except TypeError:
-        raise RuntimeError("UNATTENDED_ACCESS_SIGNING_KEY_PATH is blank or not set")
+    keypath = config.UNATTENDED_ACCESS_SIGNING_KEY_PATH
 
     with open(keypath, "r") as f:
         key = f.read()
@@ -26,25 +23,19 @@ def signing_key():
 
 @fixture
 def api_key():
-    key = os.getenv("UNATTENDED_ACCESS_API_KEY")
-
-    if not key:
-        raise RuntimeError("No key found. Check UNATTENDED_ACCESS_API_KEY.")
-
-    return key
+    return config.UNATTENDED_ACCESS_API_KEY
 
 
+# simple patient request
 def get_patient_request(headers: dict):
     return requests.get(
-        (
-            "https://internal-dev.api.service.nhs.uk/"
-            "personal-demographics/"
-            "Patient?"
-            "family=Smith"
-            "&gender=female"
-            "&birthdate=eq2010-10-22"
-        ),
-        headers=headers
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient?",
+        headers=headers,
+        params={
+            "family": "Smith",
+            "gender": "female",
+            "birthdate": "eq2010-10-22"
+        }
     )
 
 
@@ -92,17 +83,21 @@ def auth():
 @given("I have a valid access token")
 def set_valid_access_token(auth, signing_key, api_key):
     claims = {
-        "sub": api_key,
-        "iss": api_key,
+        "sub": config.UNATTENDED_ACCESS_API_KEY,
+        "iss": config.UNATTENDED_ACCESS_API_KEY,
         "jti": str(uuid.uuid4()),
-        "aud": "https://internal-dev.api.service.nhs.uk/oauth2/token",
+        "aud": f"{config.BASE_URL}/oauth2/token",
         "exp": int(time.time()) + 300,
     }
 
-    encoded_jwt = jwt.encode(claims, signing_key, algorithm="RS512", headers={"kid": "test-1"})
+    headers = {
+        "kid": config.KEY_ID
+        }
+
+    encoded_jwt = jwt.encode(claims, signing_key, algorithm="RS512", headers=headers)
 
     response = requests.post(
-        "https://internal-dev.api.service.nhs.uk/oauth2/token",
+        f"{config.BASE_URL}/oauth2/token",
         data={
             "grant_type": "client_credentials",
             "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
@@ -128,22 +123,26 @@ def set_no_access_token(auth):
 @given("I have an expired access token")
 def set_expired_access_token(auth, signing_key, api_key):
     claims = {
-        "sub": api_key,
-        "iss": api_key,
+        "sub": config.UNATTENDED_ACCESS_API_KEY,
+        "iss": config.UNATTENDED_ACCESS_API_KEY,
         "jti": str(uuid.uuid4()),
-        "aud": "https://api.service.nhs.uk/oauth2/token",
+        "aud": f"{config.BASE_URL}/oauth2/token",
         "exp": int(time.time()),
     }
 
-    encoded_jwt = jwt.encode(claims, signing_key, algorithm="RS512", headers={"kid": "test-1"})
+    headers = {
+        "kid": config.KEY_ID
+        }
+
+    encoded_jwt = jwt.encode(claims, signing_key, algorithm="RS512", headers=headers)
 
     response = requests.post(
-        "https://internal-dev.api.service.nhs.uk/oauth2/token",
+        f"{config.BASE_URL}/oauth2/token",
         data={
             "grant_type": "client_credentials",
             "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
             "client_assertion": encoded_jwt,
-        },
+        }
     )
 
     print(response.json())
@@ -193,6 +192,14 @@ def check_patient_resource(context):
         "type"
     }
     assert context["response"].keys() == expected_keys
+    assert context["response"]["resourceType"] == "Bundle"
+    assert context["response"]["total"] == 0
+    assert context["response"]["type"] == "searchset"
+
+    try:
+        datetime.datetime.strptime(context["response"]["timestamp"], '%Y-%m-%dT%H:%M:%S+00:00')
+    except ValueError:
+        raise ValueError("Incorrect data format, should be YYYY-MM-DDThh-mm-ss+00:00")
 
 
 @then("I get a diagnosis of invalid access token")
