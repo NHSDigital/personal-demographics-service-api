@@ -1,0 +1,4 @@
+pyjwt
+requests
+pytest
+pytest-bdd
