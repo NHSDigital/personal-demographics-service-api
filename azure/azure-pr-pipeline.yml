@@ -50,6 +50,7 @@ extends:
                 test_pack_path: ./e2e/smoke.json
                 test_type: smoke
         - environment: internal-dev
+          make_spec_visible: true
           service_name: ${{ variables.service_name }}-asid-required
           short_service_name: ${{ variables.short_service_name }}-asid
           product_display_name: ${{ variables.product_display_name }} (ASID Required)
