@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="0.541" timestamp="2020-11-04T14:30:45.905544" hostname="Henry.local"><testcase classname="" name="test_application_restricted" time="0.000"><error message="collection failure">test_application_restricted.py:6: in &lt;module&gt;
-    from .config_files import config
-config_files/config.py:1: in &lt;module&gt;
-    from .environment import ENV
-config_files/environment.py:32: in &lt;module&gt;
-    "signing_key": get_env_file("APPLICATION_RESTRICTED_SIGNING_KEY_PATH"),
-config_files/environment.py:22: in get_env_file
-    with open(path, "r") as f:
-E   FileNotFoundError: [Errno 2] No such file or directory: '/Users/HIwanejko/Documents/GIT/personal-demographics-service-api/tests/functional/jwtRS512.key'</error></testcase></testsuite></testsuites>
