@@ -114,7 +114,7 @@
             </Step>
         </FaultRule>
         <FaultRule name="invalid_user_role_id">
-            <Condition>(request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+")</Condition>
+            <Condition>(grant_type is "authorization_code") and ((request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+"))</Condition>
             <Step>
                 <Name>AssignMessage.Errors.MissingUserRoleID</Name>
             </Step>
