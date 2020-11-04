@@ -58,7 +58,7 @@ steps:
     displayName: Setup application restricted tests
   
   - bash: |
-      source ./tests/functional/test_env/activate
+      source ./tests/functional/test_env/bin/activate
 
       APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
       APPLICATION_RESTRICTED_API_KEY="$(JWT_TESTING_API_KEY)"
