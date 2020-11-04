@@ -4,21 +4,8 @@ import uuid
 import time
 import requests
 from .config_files import config
-from pytest import fixture, mark
+from pytest import mark
 from pytest_bdd import scenario, given, when, then, parsers
-
-
-@fixture
-def signing_key():
-    keypath = config.UNATTENDED_ACCESS_SIGNING_KEY_PATH
-
-    with open(keypath, "r") as f:
-        key = f.read()
-
-    if not key:
-        raise RuntimeError("Key empty. Check UNATTENDED_ACCESS_SIGNING_KEY_PATH.")
-
-    return key
 
 
 # simple patient request
@@ -76,7 +63,7 @@ def auth():
 
 
 @given("I have a valid access token")
-def set_valid_access_token(auth, signing_key):
+def set_valid_access_token(auth):
     claims = {
         "sub": config.UNATTENDED_ACCESS_API_KEY,
         "iss": config.UNATTENDED_ACCESS_API_KEY,
@@ -89,7 +76,7 @@ def set_valid_access_token(auth, signing_key):
         "kid": config.KEY_ID
         }
 
-    encoded_jwt = jwt.encode(claims, signing_key, algorithm="RS512", headers=headers)
+    encoded_jwt = jwt.encode(claims, config.SIGNING_KEY, algorithm="RS512", headers=headers)
 
     response = requests.post(
         f"{config.BASE_URL}/oauth2/token",
@@ -100,9 +87,9 @@ def set_valid_access_token(auth, signing_key):
         },
     )
 
-    auth["response"] = response.json()
+    assert {"access_token", "expires_in", "token_type"} == response.json().keys()
 
-    assert {"access_token", "expires_in", "token_type"} == auth["response"].keys()
+    auth["response"] = response.json()
 
 
 @given("I have an invalid access token")
@@ -116,7 +103,7 @@ def set_no_access_token(auth):
 
 
 @given("I have an expired access token")
-def set_expired_access_token(auth, signing_key):
+def set_expired_access_token(auth):
     claims = {
         "sub": config.UNATTENDED_ACCESS_API_KEY,
         "iss": config.UNATTENDED_ACCESS_API_KEY,
@@ -129,7 +116,7 @@ def set_expired_access_token(auth, signing_key):
         "kid": config.KEY_ID
         }
 
-    encoded_jwt = jwt.encode(claims, signing_key, algorithm="RS512", headers=headers)
+    encoded_jwt = jwt.encode(claims, config.SIGNING_KEY, algorithm="RS512", headers=headers)
 
     response = requests.post(
         f"{config.BASE_URL}/oauth2/token",
