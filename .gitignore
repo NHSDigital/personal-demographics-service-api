@@ -5,6 +5,7 @@ build/
 public/
 newman/
 build/
+tests/functional/test_env/
 .idea
 .DS_Store
 venv

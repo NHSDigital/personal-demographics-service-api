@@ -4,14 +4,14 @@ Testing the API depending on mode of authentication.
 ​
 This test suite uses [pytest](https://docs.pytest.org/en/stable/)
 ​
-​
-​
-## Install dependancies
+## Setting up virtual env and installing dependancies
 ​
 * To install the project dependancies:  
-    * ```$ poetry install```
-​
-​
+  * ```$ cd tests/functional```
+  * ```$ pip install virtualenv```
+  * ```$ virtualenv test_env```
+  * ```$ source ./test_env/bin/activate```
+  * ```$ pip install -r requirements.txt```
 ​
 ## Configuration through Environment Varibles
 ​
@@ -22,9 +22,7 @@ This test suite uses [pytest](https://docs.pytest.org/en/stable/)
   - ```APIGEE_ENVIRONMENT``` The Apigee Environment you are working in.
   - ```KEY_ID``` The identifier for the key in the key store.
 ​
-​
-​
 ## Run
 ​
 * To run the pytest script:
-    * ```$ poetry run pytest```
+  * ```$ pytest -v tests/functional/test_application_restricted.py```
