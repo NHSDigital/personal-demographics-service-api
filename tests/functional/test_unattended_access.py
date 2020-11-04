@@ -80,14 +80,23 @@ def set_valid_access_token(auth):
 
     response = requests.post(
         f"{config.BASE_URL}/oauth2/token",
-        data={
+        data={ 
             "grant_type": "client_credentials",
             "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
             "client_assertion": encoded_jwt,
         },
     )
 
-    assert {"access_token", "expires_in", "token_type"} == response.json().keys()
+    response_json = response.json()
+
+    assert {"access_token", "expires_in", "token_type"} == response_json.keys()
+    assert response_json["access_token"] is not None
+    assert response_json["token_type"] == "Bearer"
+    try:
+        response_expires_in = int(response_json["expires_in"])
+        assert response_expires_in >= 0
+    except:
+        assert False, "Invalid 'expires_in' value. Must be an integer."
 
     auth["response"] = response.json()
 
