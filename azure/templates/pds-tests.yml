@@ -56,9 +56,9 @@ steps:
       APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
       KEY_ID="test-1"
 
-      poetry run pytest -v functional/test_application_restricted.py --junitxml=functional-test-report.xml
-    displayName: Run applcation restricted tests
-    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests"
+      poetry run pytest -v functional/test_application_restricted.py --junitxml=tests/functional-test-report.xml
+    displayName: Run application restricted tests
+    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
   
   - task: PublishTestResults@2
     displayName: 'Publish application restricted test results'
