@@ -95,7 +95,7 @@ def set_valid_access_token(auth):
     try:
         response_expires_in = int(response_json["expires_in"])
         assert response_expires_in >= 0
-    except:
+    except ValueError:
         assert False, "Invalid 'expires_in' value. Must be an integer."
 
     auth["response"] = response.json()
