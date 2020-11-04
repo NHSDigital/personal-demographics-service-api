@@ -23,7 +23,7 @@ def get_patient_request(headers: dict):
 
 @mark.skip(reason="unfinished code")
 @scenario(
-    "features/unattended_access.feature",
+    "features/application_restricted.feature",
     "PDS FHIR API accepts request with valid access token",
 )
 def test_valid():
@@ -32,7 +32,7 @@ def test_valid():
 
 @mark.skip(reason="unfinished code")
 @scenario(
-    "features/unattended_access.feature",
+    "features/application_restricted.feature",
     "PDS FHIR API rejects request with invalid access token",
 )
 def test_invalid():
@@ -41,7 +41,7 @@ def test_invalid():
 
 @mark.skip(reason="unfinished code")
 @scenario(
-    "features/unattended_access.feature",
+    "features/application_restricted.feature",
     "PDS FHIR API rejects request with missing access token",
 )
 def test_missing():
@@ -50,7 +50,7 @@ def test_missing():
 
 @mark.skip(reason="unfinished code")
 @scenario(
-    "features/unattended_access.feature",
+    "features/application_restricted.feature",
     "PDS FHIR API rejects request with expired access token",
 )
 def test_expired():
@@ -65,8 +65,8 @@ def auth():
 @given("I have a valid access token")
 def set_valid_access_token(auth):
     claims = {
-        "sub": config.UNATTENDED_ACCESS_API_KEY,
-        "iss": config.UNATTENDED_ACCESS_API_KEY,
+        "sub": config.APPLICATION_RESTRICTED_API_KEY,
+        "iss": config.APPLICATION_RESTRICTED_API_KEY,
         "jti": str(uuid.uuid4()),
         "aud": f"{config.BASE_URL}/oauth2/token",
         "exp": int(time.time()) + 300,
@@ -114,8 +114,8 @@ def set_no_access_token(auth):
 @given("I have an expired access token")
 def set_expired_access_token(auth):
     claims = {
-        "sub": config.UNATTENDED_ACCESS_API_KEY,
-        "iss": config.UNATTENDED_ACCESS_API_KEY,
+        "sub": config.APPLICATION_RESTRICTED_API_KEY,
+        "iss": config.APPLICATION_RESTRICTED_API_KEY,
         "jti": str(uuid.uuid4()),
         "aud": f"{config.BASE_URL}/oauth2/token",
         "exp": int(time.time()),
@@ -210,7 +210,7 @@ def check_error_response(context):
 
 
 @scenario(
-    "features/unattended_access.feature",
+    "features/application_restricted.feature",
     "PDS FHIR API accepts request without user role ID",
 )
 def test_valid_when_without_user_id():

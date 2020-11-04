@@ -45,6 +45,7 @@ extends:
               parameters:
                 test_pack_path: ./e2e/smoke.json
                 test_type: smoke
+            - template: templates/application-restricted-tests.yml
         - environment: internal-dev
           service_name: ${{ variables.service_name }}-asid-required
           short_service_name: ${{ variables.short_service_name }}-asid

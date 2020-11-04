@@ -29,8 +29,8 @@ def get_env_file(variable_name: str) -> str:
 
 
 ENV = {
-    "signing_key": get_env_file("UNATTENDED_ACCESS_SIGNING_KEY_PATH"),
-    "unattended_access_api_key": get_env("UNATTENDED_ACCESS_API_KEY"),
+    "signing_key": get_env_file("APPLICATION_RESTRICTED_SIGNING_KEY_PATH"),
+    "application_restricted_api_key": get_env("APPLICATION_RESTRICTED_API_KEY"),
     "pds_base_path": get_env("PDS_BASE_PATH"),
     "environment": get_env("APIGEE_ENVIRONMENT"),
     "key_id": get_env("KEY_ID")
