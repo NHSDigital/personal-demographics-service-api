@@ -80,7 +80,7 @@ def set_valid_access_token(auth):
 
     response = requests.post(
         f"{config.BASE_URL}/oauth2/token",
-        data={ 
+        data={
             "grant_type": "client_credentials",
             "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
             "client_assertion": encoded_jwt,
