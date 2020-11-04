@@ -54,7 +54,7 @@ steps:
       virtualenv test_env
       source ./test_env/bin/activate
       pip install -r requirements.txt
-    workingDirectory: $(Pipeline.Workspace)/s/${{ parameters.service_name }}/$(SERVICE_ARTIFACT_NAME)/tests/functional
+    workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/functional
     displayName: Setup application restricted tests
   
   - bash: |
