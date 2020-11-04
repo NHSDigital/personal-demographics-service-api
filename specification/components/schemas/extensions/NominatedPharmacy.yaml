@@ -18,10 +18,6 @@ properties:
       - reference
       - identifier
     properties:
-      reference:
-        type: string
-        description: URL of the FHIR Organization resource for the nominated pharmacy. See [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details.
-        example: 'https://directory.spineservices.nhs.uk/STU3/Organization/Y12345'
       identifier:
         type: object
         description: Wrapper object for the patient's nominated pharmacy organisation code.
