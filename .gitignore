@@ -14,5 +14,6 @@ venv
 __pycache__/
 .envrc
 .vscode
+.mypy_cache
 
 tests/test-report.xml
