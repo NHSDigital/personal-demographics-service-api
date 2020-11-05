@@ -15,6 +15,12 @@
             <Step>
                 <Name>OauthV2.VerifyAccessToken</Name>
             </Step>
+
+            <!-- Check scopes variable contains personal-demographics-service:USER-RESTRICTED, if not... -->
+            <!-- Check that _max-results/_exact-match are empty or the correct value, if not error and say you can't use them in APPLICATION-RESTRICTED mode -->
+            <!-- Set _max-results and _exact-match to the correct values -->
+            <!-- Exact match is case insensitive True, true, TRUE, tRUE all seem to work -->
+            <!-- Test app has incorrect scope, so as is existing tests will fail (though the proxy does get deployed by the pipeline) -->
             <Step>
                 <Name>OauthV2.VerifyAccessTokenWithUserRestrictedScope</Name>
                 <Condition>(request.verb == "PATCH") or (request.queryparam._max-results != "1") or (request.queryparam._exact-match != "true")</Condition>
