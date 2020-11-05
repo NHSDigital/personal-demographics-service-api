@@ -26,7 +26,7 @@ function buildBundleResponse(exampleResources = [], nhsNumber) {
     if (exampleResources.length > 0) {
         exampleResources.forEach(resource => {
             response.entry.push({
-                fullUrl: "https://beta.api.digital.nhs.uk/personal-demographics/Patient/" + nhsNumber + "/RelatedPerson/" + resource["id"],
+                fullUrl: "https://api.service.nhs.uk/personal-demographics/Patient/" + nhsNumber + "/RelatedPerson/" + resource["id"],
                 resource: resource,
             })
         });
