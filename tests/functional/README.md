@@ -4,14 +4,10 @@ Testing the API depending on mode of authentication.
 ​
 This test suite uses [pytest](https://docs.pytest.org/en/stable/)
 ​
-## Setting up virtual env and installing dependancies
+## Installing dependancies
 ​
 * To install the project dependancies:  
-  * ```$ cd tests/functional```
-  * ```$ pip install virtualenv```
-  * ```$ virtualenv test_env```
-  * ```$ source ./test_env/bin/activate```
-  * ```$ pip install -r requirements.txt```
+  * ```$ poetry install```
 ​
 ## Configuration through Environment Varibles
 ​
@@ -25,4 +21,4 @@ This test suite uses [pytest](https://docs.pytest.org/en/stable/)
 ## Run
 ​
 * To run the pytest script:
-  * ```$ pytest -v tests/functional/test_application_restricted.py```
+  * ```$ poetry run pytest -v tests/functional/test_application_restricted.py```

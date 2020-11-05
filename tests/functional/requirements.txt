@@ -1,5 +1,0 @@
-PyJwt
-requests
-pytest
-pytest-bdd
-cryptography

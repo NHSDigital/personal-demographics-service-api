@@ -49,24 +49,18 @@ steps:
         $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/*.xml
       failTaskOnFailedTests: true
 
-  - bash: |
-      pip install virtualenv
-      virtualenv test_env
-      source ./test_env/bin/activate
-      pip install -r requirements.txt
-    workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/functional
+  - bash: poetry install
+    workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
     displayName: Setup application restricted tests
   
   - bash: |
-      source ./tests/functional/test_env/bin/activate
-
       export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
       export APPLICATION_RESTRICTED_API_KEY="$(JWT_TESTING_API_KEY)"
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
       export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
       export KEY_ID="test-1"
 
-      pytest -v tests/functional/test_application_restricted.py --junitxml=tests/functional-test-report.xml
+      poetry run pytest -v tests/functional/test_application_restricted.py --junitxml=tests/functional-test-report.xml
     displayName: Run application restricted tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
   

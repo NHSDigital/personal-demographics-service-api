@@ -92,11 +92,7 @@ def set_valid_access_token(auth):
     assert {"access_token", "expires_in", "token_type"} == response_json.keys()
     assert response_json["access_token"] is not None
     assert response_json["token_type"] == "Bearer"
-    try:
-        response_expires_in = int(response_json["expires_in"])
-        assert response_expires_in >= 0
-    except ValueError:
-        assert False, "Invalid 'expires_in' value. Must be an integer."
+    assert response_json["expires_in"] and int(response_json["expires_in"]) > 0
 
     auth["response"] = response.json()
 
@@ -187,11 +183,7 @@ def check_patient_resource(context):
     assert context["response"]["resourceType"] == "Bundle"
     assert context["response"]["total"] == 0
     assert context["response"]["type"] == "searchset"
-
-    try:
-        datetime.datetime.strptime(context["response"]["timestamp"], '%Y-%m-%dT%H:%M:%S+00:00')
-    except ValueError:
-        raise ValueError("Incorrect data format, should be YYYY-MM-DDThh-mm-ss+00:00")
+    assert datetime.datetime.strptime(context["response"]["timestamp"], '%Y-%m-%dT%H:%M:%S+00:00')
 
 
 @then("I get a diagnosis of invalid access token")
