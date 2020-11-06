@@ -43,3 +43,13 @@ Feature: Unattended Access
     Then I get a 401 HTTP response
     And I get an error response
     And I get a diagnosis of expired access token
+
+  Scenario: PDS FHIR API accepts request without user role ID
+    Given I am authenticating using unattended access
+    And I have a valid access token
+    And I have a request context
+
+    When I GET a patient without a user role ID
+
+    Then I get a 200 HTTP response
+    And I get a Patient resource in the response

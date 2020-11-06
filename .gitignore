@@ -5,6 +5,7 @@ build/
 public/
 newman/
 build/
+tests/functional/test_env/
 .idea
 .DS_Store
 venv
@@ -17,3 +18,4 @@ __pycache__/
 .mypy_cache
 
 tests/test-report.xml
+tests/functional-test-report.xml
