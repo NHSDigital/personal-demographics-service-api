@@ -4,11 +4,9 @@ import uuid
 import time
 import requests
 from .config_files import config
-from pytest import mark
 from pytest_bdd import scenario, given, when, then, parsers
 
 
-# simple patient request
 def get_patient_request(headers: dict):
     return requests.get(
         f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient?",
