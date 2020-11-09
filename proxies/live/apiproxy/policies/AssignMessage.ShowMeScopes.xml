@@ -1,7 +1,0 @@
-<AssignMessage continueOnError="false" enabled="true" name="AssignMessage.ShowMeScopes">
-  <Add>
-    <Headers>
-      <Header name="x-scope">{scope}</Header>
-    </Headers>
-  </Add>
-</AssignMessage>

@@ -6,6 +6,13 @@
         <Name>OauthV2.VerifyAccessToken</Name>
       </Step>
       <Step>
+        <Name>AssignMessage.SetAccessModeApplicationRestricted</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.SetAccessModeUserRestricted</Name>
+        <Condition>(scope JavaRegex "(\ personal-demographics-service:USER-RESTRICTED\ |^personal-demographics-service:USER-RESTRICTED\ |\ personal-demographics-service:USER-RESTRICTED$|^personal-demographics-service:USER-RESTRICTED$)")</Condition>
+      </Step>
+      <Step>
         <!-- Header NHSD-Session-URID must be present and not empty for 'authorization_code'-->
         <Name>RaiseFault.400BadRequest</Name>
         <Condition>(grant_type is "authorization_code") and ((request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+"))</Condition>
@@ -54,9 +61,6 @@
       </Step>
     </Request>
     <Response>
-      <Step>
-        <Name>AssignMessage.ShowMeScopes</Name>
-      </Step>
       <Step>
         <Name>AssignMessage.Mirror.CorrelationID</Name>
         <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>

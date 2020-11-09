@@ -1,0 +1,6 @@
+<AssignMessage continueOnError="false" enabled="true" name="AssignMessage.SetAccessModeApplicationRestricted">
+  <AssignVariable>
+    <Name>access-mode</Name>
+    <Value>application-restricted</Value>
+  </AssignVariable>
+</AssignMessage>
