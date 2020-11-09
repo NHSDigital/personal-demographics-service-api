@@ -71,7 +71,22 @@
       </Step>
     </Response>
   </PreFlow>
-
+  <Flows>
+    <Flow name="application_restricted">
+      <!-- Check scopes variable contains personal-demographics-service:USER-RESTRICTED, if not... -->
+      <!-- Check that _max-results/_exact-match are empty or the correct value, if not error and say you can't use them in APPLICATION-RESTRICTED mode -->
+      <!-- Set _max-results and _exact-match to the correct values -->
+      <!-- Exact match is case insensitive True, true, TRUE, tRUE all seem to work -->
+      <!-- Test app has incorrect scope, so as is existing tests will fail (though the proxy does get deployed by the pipeline) -->
+      <Request>
+        <Step>
+          <Name>RaiseFault.InsufficientScope</Name>
+          <Condition>(request.verb Equals "PATCH")</Condition>
+        </Step>
+      </Request>
+      <Condition>(access_mode Equals "application-restricted")</Condition>
+    </Flow>
+  </Flows>
   <HTTPTargetConnection>
     <Properties>
       <!-- Whitelist the 'expected' error code responses so the responses pass unhindered to caller
