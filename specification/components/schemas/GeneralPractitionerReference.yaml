@@ -13,10 +13,6 @@ properties:
     type: string
     readOnly: true
     example: 'Organization'
-  reference:
-    description: URL for the FHIR Organization resource for the registered general practice. See [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details.
-    type: string
-    example: "https://directory.spineservices.nhs.uk/STU3/Organization/Y12345"
   identifier:
     description: Identifier and system of identification used for this Organisation.
     type: object

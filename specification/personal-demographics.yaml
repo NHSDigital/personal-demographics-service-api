@@ -494,7 +494,7 @@ paths:
                         fullUrl:
                           type: string
                           description: Absolute URL of the resource described in this item.
-                          example: 'https://beta.api.digital.nhs.uk/personal-demographics/Patient/9000000009'
+                          example: 'https://api.service.nhs.uk/personal-demographics/Patient/9000000009'
                         search:
                           type: object
                           properties:
@@ -512,7 +512,7 @@ paths:
                 timestamp: '2019-12-25T12:00:00+00:00'
                 total: 1
                 entry:
-                  - fullUrl: 'https://beta.api.digital.nhs.uk/personal-demographics/Patient/9000000009'
+                  - fullUrl: 'https://api.service.nhs.uk/personal-demographics/Patient/9000000009'
                     search:
                       score: 1
                     resource:
@@ -1667,7 +1667,7 @@ paths:
                         fullUrl:
                           type: string
                           description: Absolute URL of the resource described in this item.
-                          example: 'https://beta.api.digital.nhs.uk/personal-demographics/Patient/9000000009/RelatedPerson/507B7621'
+                          example: 'https://api.service.nhs.uk/personal-demographics/Patient/9000000009/RelatedPerson/507B7621'
                         resource:
                           $ref: components/schemas/RelatedPerson.yaml
               example:
@@ -1676,7 +1676,7 @@ paths:
                 timestamp: '2019-12-25T12:00:00+00:00'
                 total: 1
                 entry:
-                  - fullUrl: 'https://beta.api.digital.nhs.uk/personal-demographics/Patient/9000000009/RelatedPerson/507B7621'
+                  - fullUrl: 'https://api.service.nhs.uk/personal-demographics/Patient/9000000009/RelatedPerson/507B7621'
                     resource:
                       $ref: components/examples/RelatedPerson.json
         '400':
