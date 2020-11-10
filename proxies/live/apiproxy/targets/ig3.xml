@@ -21,10 +21,6 @@
         <Name>RaiseFault.400BadRequest</Name>
         <Condition>(grant_type is "authorization_code") and ((request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+"))</Condition>
       </Step>
-      <!-- <Step>
-        <Name>OauthV2.VerifyAccessTokenWithUserRestrictedScope</Name>
-        <Condition>(request.verb == "PATCH") or (request.queryparam._max-results != "1") or (request.queryparam._exact-match != "true")</Condition>
-      </Step> -->
       <Step>
         <!-- Header NHSD-Request-ID must be in the correct format (GUID) -->
         <Name>RaiseFault.400BadRequest</Name>
