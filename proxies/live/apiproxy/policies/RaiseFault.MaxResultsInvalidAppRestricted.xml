@@ -1,10 +1,10 @@
-<RaiseFault async="false" continueOnError="false" enabled="true" name="RaiseFault.InsufficientScope">
+<RaiseFault async="false" continueOnError="false" enabled="true" name="RaiseFault.MaxResultsInvalidAppRestricted">
   <FaultResponse>
     <Set>
       <Headers />
       <Payload contentType="text/plain" />
-      <StatusCode>401</StatusCode>
-      <ReasonPhrase>Unauthorized</ReasonPhrase>
+      <StatusCode>403</StatusCode>
+      <ReasonPhrase>Forbidden</ReasonPhrase>
     </Set>
     <AssignVariable>
       <Name>pds.error.code</Name>
@@ -12,15 +12,15 @@
     </AssignVariable>
     <AssignVariable>
       <Name>pds.error.coding.code</Name>
-      <Value>INVALID_SCOPE</Value>
+      <Value>INVALID_VALUE</Value>
     </AssignVariable>
     <AssignVariable>
       <Name>pds.error.coding.display</Name>
-      <Value>Access token has invalid scope for your request</Value>
+      <Value>Cannot retrieve more than one result with Application Restricted access token</Value>
     </AssignVariable>
     <AssignVariable>
       <Name>pds.error.diagnostics</Name>
-      <Template>Your app has insufficient permissions to use this method. Please contact support.</Template>
+      <Template>Your app has insufficient permissions to perform this search. Please contact support.</Template>
     </AssignVariable>
   </FaultResponse>
   <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>

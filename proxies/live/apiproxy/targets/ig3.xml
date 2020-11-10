@@ -81,7 +81,7 @@
       <Request>
         <!-- Prevent use of PATCH method in application restricted mode -->
         <Step>
-          <Name>RaiseFault.InsufficientScope</Name>
+          <Name>RaiseFault.PatchMethodNotAllowedAppRestricted</Name>
           <Condition>(request.verb Equals "PATCH")</Condition>
         </Step>
         <!-- If _max-results or _exact-match params are unset, set them to allowed values for application-restricted mode -->
@@ -95,11 +95,11 @@
         </Step>
         <!-- If _max-results or _exact-match are set to anything other than 1/True, prevent query -->
         <Step>
-          <Name>RaiseFault.InsufficientScope</Name>
+          <Name>RaiseFault.MaxResultsInvalidAppRestricted</Name>
           <Condition>(proxy.pathsuffix MatchesPath "/Patient" and request.verb Equals "GET" and request.queryparam._max-results NotEquals "1")</Condition>
         </Step>
         <Step>
-          <Name>RaiseFault.InsufficientScope</Name>
+          <Name>RaiseFault.ExactMatchInvalidAppRestricted</Name>
           <Condition>(proxy.pathsuffix MatchesPath "/Patient" and request.verb Equals "GET" and request.queryparam._exact-match EqualsCaseInsensitive "false")</Condition>
         </Step>
       </Request>

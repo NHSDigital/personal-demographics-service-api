@@ -1,0 +1,27 @@
+<RaiseFault async="false" continueOnError="false" enabled="true" name="RaiseFault.ExactMatchInvalidAppRestricted">
+  <FaultResponse>
+    <Set>
+      <Headers />
+      <Payload contentType="text/plain" />
+      <StatusCode>403</StatusCode>
+      <ReasonPhrase>Forbidden</ReasonPhrase>
+    </Set>
+    <AssignVariable>
+      <Name>pds.error.code</Name>
+      <Value>token</Value>
+    </AssignVariable>
+    <AssignVariable>
+      <Name>pds.error.coding.code</Name>
+      <Value>INVALID_VALUE</Value>
+    </AssignVariable>
+    <AssignVariable>
+      <Name>pds.error.coding.display</Name>
+      <Value>Must perform an Exact Match search with Application Restricted access token</Value>
+    </AssignVariable>
+    <AssignVariable>
+      <Name>pds.error.diagnostics</Name>
+      <Template>Your app has insufficient permissions to perform this search. Please contact support.</Template>
+    </AssignVariable>
+  </FaultResponse>
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</RaiseFault>
