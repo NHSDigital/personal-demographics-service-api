@@ -5,22 +5,26 @@
       <Step>
         <Name>OauthV2.VerifyAccessToken</Name>
       </Step>
+      <!-- Set flow variable 'access-mode' by inspecting the token's scopes.
+      First set to least-privilege (application restricted) then look for scopes indicating higher privilege, overwriting as appropriate.
+      'scope' is a space-separated string of scopes, determined by the Application's API Product assignments.
+      Follow pattern used in AssignMessage.SetAccessModeUserRestricted condition. See Apigee docs for JavaRegex gotchas (uses '.match()' behaviour matching whole string only). -->
       <Step>
         <Name>AssignMessage.SetAccessModeApplicationRestricted</Name>
       </Step>
       <Step>
         <Name>AssignMessage.SetAccessModeUserRestricted</Name>
-        <Condition>(scope JavaRegex "(\ personal-demographics-service:USER-RESTRICTED\ |^personal-demographics-service:USER-RESTRICTED\ |\ personal-demographics-service:USER-RESTRICTED$|^personal-demographics-service:USER-RESTRICTED$)")</Condition>
+        <Condition>(scope JavaRegex "(.+\ personal-demographics-service:USER-RESTRICTED\ .+|^personal-demographics-service:USER-RESTRICTED\ .+|.+\ personal-demographics-service:USER-RESTRICTED$|^personal-demographics-service:USER-RESTRICTED$)")</Condition>
       </Step>
       <Step>
         <!-- Header NHSD-Session-URID must be present and not empty for 'authorization_code'-->
         <Name>RaiseFault.400BadRequest</Name>
         <Condition>(grant_type is "authorization_code") and ((request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+"))</Condition>
       </Step>
-      <Step>
+      <!-- <Step>
         <Name>OauthV2.VerifyAccessTokenWithUserRestrictedScope</Name>
         <Condition>(request.verb == "PATCH") or (request.queryparam._max-results != "1") or (request.queryparam._exact-match != "true")</Condition>
-      </Step>
+      </Step> -->
       <Step>
         <!-- Header NHSD-Request-ID must be in the correct format (GUID) -->
         <Name>RaiseFault.400BadRequest</Name>
@@ -73,7 +77,6 @@
   </PreFlow>
   <Flows>
     <Flow name="application_restricted">
-      <!-- Check scopes variable contains personal-demographics-service:USER-RESTRICTED, if not... -->
       <!-- Check that _max-results/_exact-match are empty or the correct value, if not error and say you can't use them in APPLICATION-RESTRICTED mode -->
       <!-- Set _max-results and _exact-match to the correct values -->
       <!-- Exact match is case insensitive True, true, TRUE, tRUE all seem to work -->
@@ -84,7 +87,7 @@
           <Condition>(request.verb Equals "PATCH")</Condition>
         </Step>
       </Request>
-      <Condition>(access_mode Equals "application-restricted")</Condition>
+      <Condition>(access-mode Equals "application-restricted")</Condition>
     </Flow>
   </Flows>
   <HTTPTargetConnection>
@@ -153,7 +156,7 @@
         <Name>AssignMessage.Errors.CatchAllMessage</Name>
       </Step>
     </FaultRule>
-    <FaultRule name="insufficient_scope">
+    <!-- <FaultRule name="insufficient_scope">
       <Condition>(fault.name == "InsufficientScope")</Condition>
       <Step>
         <Name>AssignMessage.Errors.InsufficientScope</Name>
@@ -161,7 +164,7 @@
       <Step>
         <Name>AssignMessage.Errors.CatchAllMessage</Name>
       </Step>
-    </FaultRule>
+    </FaultRule> -->
     <FaultRule name="no_asid_provided">
       <Condition>(request.header.NHSD-ASID is null) or (not request.header.NHSD-ASID ~~ ".+")</Condition>
       <Step>
