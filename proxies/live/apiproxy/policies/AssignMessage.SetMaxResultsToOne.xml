@@ -1,0 +1,7 @@
+<AssignMessage continueOnError="false" enabled="true" name="AssignMessage.SetMaxResultsToOne" >
+  <Add>
+    <QueryParams>
+      <QueryParam name="_max-results">1</QueryParam>
+    </QueryParams>
+  </Add>
+</AssignMessage>

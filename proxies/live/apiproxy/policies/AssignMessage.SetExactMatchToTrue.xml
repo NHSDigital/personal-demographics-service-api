@@ -1,0 +1,7 @@
+<AssignMessage continueOnError="false" enabled="true" name="AssignMessage.SetExactMatchToTrue" >
+  <Add>
+    <QueryParams>
+      <QueryParam name="_exact-match">True</QueryParam>
+    </QueryParams>
+  </Add>
+</AssignMessage>
