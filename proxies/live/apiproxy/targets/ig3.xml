@@ -171,15 +171,6 @@
         <Name>AssignMessage.Errors.CatchAllMessage</Name>
       </Step>
     </FaultRule>
-    <!-- <FaultRule name="insufficient_scope">
-      <Condition>(fault.name == "InsufficientScope")</Condition>
-      <Step>
-        <Name>AssignMessage.Errors.InsufficientScope</Name>
-      </Step>
-      <Step>
-        <Name>AssignMessage.Errors.CatchAllMessage</Name>
-      </Step>
-    </FaultRule> -->
     <FaultRule name="no_asid_provided">
       <Condition>(request.header.NHSD-ASID is null) or (not request.header.NHSD-ASID ~~ ".+")</Condition>
       <Step>
