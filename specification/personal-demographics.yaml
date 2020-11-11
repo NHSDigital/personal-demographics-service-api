@@ -64,7 +64,7 @@ info:
     - we can't guarantee availability or performance
     
     ### Application-restricted access
-     This access mode is in [alpha](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
+    This access mode is in [alpha](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
     - it is available for testing but not yet for production use
     - we might make breaking changes
      
