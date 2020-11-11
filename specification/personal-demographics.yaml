@@ -66,7 +66,7 @@ info:
     ### Application-restricted access
      This access mode is in [alpha](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
     - it is available for testing but not yet for production use
-     - we might make breaking changes
+    - we might make breaking changes
      
     ### Citizen access
     This access mode is not available yet.
@@ -714,7 +714,7 @@ paths:
         The update process is asynchronous - if the request is accepted, a 202 response is returned with a polling URL in the `Content-Location` header.
         Poll this URL for the outcome of the update. See the polling endpoint `/_poll/{message id}` for more details.
         
-         The behaviour of this endpoint depends on which access mode you are using:
+        The behaviour of this endpoint depends on which access mode you are using:
         
         | Access mode                    | Behaviour restrictions              |
         | ------------------------------ | ----------------------------------- |
