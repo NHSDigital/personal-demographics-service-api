@@ -35,11 +35,11 @@ info:
     * related people, such as next of kin (read only - update coming soon)
 
     This API has three access modes:
-    | Access mode       | End user authentication | Functions          | Availability |
-    | ----------------- | ----------------------- | ------------------ | ------------ |
+    | Access mode                    | End user authentication                             | Functions          | Availability |
+    | ------------------------------ | --------------------------------------------------- | ------------------ | ------------ |
     | Healthcare professional access | NHS Identity (NHS smartcard or modern alternative)  | Search for patients (multiple results), Get patient details, Update patient details | Available in production (beta) |
-    | Application-restricted access |None     | Search for patients (single result), Get patient details | Available for testing (alpha) 
-    | Citizen access        | NHS Login      | Get own details, Update own details (limited) | Not available yet, see [backlog] (https://nhs-digital-api-management.featureupvote.com/suggestions/107446/pds-fhir-api-citizen-access-using-nhs-login) for details   |
+    | Application-restricted access  | None                                                | Search for patients (single result), Get patient details | Available for testing (alpha) 
+    | Citizen access                 | NHS Login                                           | Get own details, Update own details (limited) | Not available yet, see [backlog] (https://nhs-digital-api-management.featureupvote.com/suggestions/107446/pds-fhir-api-citizen-access-using-nhs-login) for details   |
 
   
     ## Legal use
@@ -238,11 +238,11 @@ paths:
           
         The behaviour of this endpoint depends on which access mode you are using:
         
-        | Access mode       | Behaviour restrictions                                                   |
-        | ---------------------- | -------------------------------------------------------------- |
-        | Healthcare professional access         | Full behaviour available   |
-        | Application-restricted access | Limited to a single unique result       |
-        | Citizen access        | Not yet available                              |
+        | Access mode                    | Behaviour restrictions            |
+        | ------------------------------ | --------------------------------- |
+        | Healthcare professional access | Full behaviour available          |
+        | Application-restricted access  | Limited to a single unique result |
+        | Citizen access                 | Not yet available                 |
 
         ## Matching rules
         Search parameters are not case sensitive.
@@ -716,11 +716,11 @@ paths:
         
          The behaviour of this endpoint depends on which access mode you are using:
         
-        | Access mode       | Behaviour restrictions                                                   |
-        | ---------------------- | -------------------------------------------------------------- |
-        | Healthcare professional access         | Full behaviour available   |
-        | Application-restricted access | Limited to a single unique result       |
-        | Citizen access        | Not yet available                              |
+        | Access mode                    | Behaviour restrictions              |
+        | ------------------------------ | ----------------------------------- |
+        | Healthcare professional access | Full behaviour available            |
+        | Application-restricted access  | Limited to a single unique result   |
+        | Citizen access                 | Not yet available                   |
 
         ## Patient resource versioning
         To update a patient's resource you must have retrieved it first, to ensure you are working against an up-to-date patient resource.
