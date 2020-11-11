@@ -5,4 +5,6 @@
     <Interval ref="apiproduct.developer.quota.interval">1</Interval>
     <TimeUnit ref="apiproduct.developer.quota.timeunit">minute</TimeUnit>
     <StartTime>2020-3-30 12:00:00</StartTime>
+    <Distributed>true</Distributed>
+    <Synchronous>true</Synchronous>
 </Quota>
