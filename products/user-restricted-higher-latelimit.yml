@@ -1,0 +1,15 @@
+name: ''
+displayName: Personal Demographics Service - User Restricted
+description: Full access to PDS functionality
+scopes:
+  - personal-demographics-service:USER-RESTRICTED
+environments:
+  - internal-dev
+attributes:
+  - name: access
+    value: public
+  - name: ratelimit
+    value: 130ps
+quota: 7800
+quotaInterval: 1
+quotaTimeUnit: minute

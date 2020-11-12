@@ -1,0 +1,13 @@
+name: application-restricted # Will have SERVICE_NAME- prepended to this
+displayName: Personal Demographics Service - Application Restricted
+description: Access the Personal Demographics Service with reduced permisions.
+environments:
+  - internal-dev
+attributes:
+  - name: access
+    value: public
+  - name: ratelimit
+    value: 130ps
+quota: 7800
+quotaInterval: 1
+quotaTimeUnit: minute
