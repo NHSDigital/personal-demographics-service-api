@@ -3,3 +3,12 @@ displayName: Personal Demographics Service - User Restricted
 description: Full access to PDS functionality
 scopes:
   - personal-demographics-service:USER-RESTRICTED
+environments:
+  - internal-dev
+  - internal-qa
+  - internal-qa-sandbox
+  - sandbox
+  - dev
+  - ref
+  - int
+  - prod
