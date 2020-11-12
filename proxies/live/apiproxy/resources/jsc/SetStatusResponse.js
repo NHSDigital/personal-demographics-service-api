@@ -48,6 +48,6 @@ var response = {
 "checks" : spine_service
 };
 
-
+context.setVariable("status.response", JSON.stringify(response));
 context.setVariable("response.content", JSON.stringify(response));
 context.setVariable("response.header.Content-Type", "application/json");
