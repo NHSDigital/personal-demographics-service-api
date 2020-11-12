@@ -4,7 +4,7 @@ description: Full access to PDS functionality
 scopes:
   - personal-demographics-service:USER-RESTRICTED
 environments:
-  - internal-dev
+  - internal-dev-sandbox
 attributes:
   - name: access
     value: public

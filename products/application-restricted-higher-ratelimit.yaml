@@ -2,7 +2,7 @@ name: application-restricted # Will have SERVICE_NAME- prepended to this
 displayName: Personal Demographics Service - Application Restricted
 description: Access the Personal Demographics Service with reduced permisions.
 environments:
-  - internal-dev
+  - internal-dev-sandbox
 attributes:
   - name: access
     value: public
