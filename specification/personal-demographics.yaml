@@ -39,7 +39,7 @@ info:
     | ------------------------------ | --------------------------------------------------- | ------------------ | ------------ |
     | Healthcare professional access | NHS Identity (NHS smartcard or modern alternative)  | Search for patients (multiple results), Get patient details, Update patient details | Available in production (beta) |
     | Application-restricted access  | None                                                | Search for patients (single result), Get patient details | Available for testing (alpha) 
-    | Citizen access                 | NHS Login                                           | Get own details, Update own details (limited) | Not available yet, see [backlog] (https://nhs-digital-api-management.featureupvote.com/suggestions/107446/pds-fhir-api-citizen-access-using-nhs-login) for details   |
+    | Citizen access                 | NHS login                                           | Get own details, Update own details (limited) | Not available yet, see [backlog] (https://nhs-digital-api-management.featureupvote.com/suggestions/107446/pds-fhir-api-citizen-access-using-nhs-login) for details   |
 
   
     ## Legal use
@@ -122,7 +122,7 @@ info:
     This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis), meaning we authenticate the calling application but not the end user.
     
     In particular, we use following security pattern:
-    * [Application-restricted RESTful API - signed JWT authentication] (https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-signed-jwt-authentication)
+    * [Application-restricted RESTful API - signed JWT authentication](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-signed-jwt-authentication)
     
     You can use this access mode as follows:
     * unattended (end user not present), for example as part of a back end process to check NHS numbers for data flowing from one system to another
@@ -298,13 +298,17 @@ paths:
         The restricted flag can be found in the data under `meta/security` on the patient resource.
 
         ## Number of results returned
+        ###Healthcare professional access mode
+        
         By default, the endpoint will return a maximum of 50 results.
 
         If there are more than 50 matching patients, the endpoint will return no results and the error response `TOO_MANY_MATCHES`.
         You can further limit the number of results using the `_max-results` query parameter.
         You can request a single, exact match using `_exact-match=true` and `_max-results=1`.
         
-        If you are using the API in application-restricted access mode, you must set `_max-results=1`.
+        ###Application-restricted access mode
+        
+        The endpoint will only return one result. If there is more than one matching patient, the endpoint will return no results and the error response `TOO_MANY_MATCHES`.
 
         ## Patient data returned
         The patient data returned on a search is not the full set of data that is returned on a retrieval. The following data is included:
@@ -398,14 +402,13 @@ paths:
             type: boolean
             default: false
         - name: _max-results
-          description: The maximum number of results to return between 1 and 50. The default is 50. If you are using the API in application-restricted access mode, you must set `_max-results=1`.
+          description: The maximum number of matching patients to return. For user-restricted access, this must be between 1 and 50, and the default is 50. For application-restricted access, this must be 1, and the default is 1. If too many patients match the search criteria, the API returns a `TOO_MANY_MATCHES` error.
           example: 1
           in: query
           required: false
           schema:
             type: integer
             format: int32
-            default: 50
         - name: family
           description: |
             The patient's family name (surname).
@@ -1971,7 +1974,7 @@ components:
       description: |
         An [OAuth 2.0 bearer token](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis).
 
-        **Note: This parameter is required unless interacting with the Sandbox.**
+        **Note: This parameter is required for user-restricted access but optional for application-restricted access. It is also optional in the sandbox environment.**
       required: false
       schema:
         type: string
