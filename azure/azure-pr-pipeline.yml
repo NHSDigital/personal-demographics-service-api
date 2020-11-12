@@ -9,6 +9,7 @@ resources:
       type: github
       name: NHSDigital/api-management-utils
       endpoint: NHSDigital
+      ref: APM-1553-custom-environment-products
   pipelines:
   - pipeline: build_pipeline
     source: "Personal-Demographics-Service-Build"
