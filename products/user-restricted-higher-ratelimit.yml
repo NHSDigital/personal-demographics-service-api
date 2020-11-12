@@ -1,5 +1,5 @@
-name: ''
-displayName: Personal Demographics Service - User Restricted
+name: user-restricted-higher-ratelimit
+displayName: Personal Demographics Service - User Restricted - Prod Rate Limit
 description: Full access to PDS functionality
 scopes:
   - personal-demographics-service:USER-RESTRICTED
