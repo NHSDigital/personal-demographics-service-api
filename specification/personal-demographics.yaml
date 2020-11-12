@@ -1961,8 +1961,9 @@ components:
         A URID belongs to a user (they are not generic) and a user may have more than one.
 
         Find out more about [User role ID](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-combined-authentication-and-authorisation#step-6-determine-the-user-s-role)
-
-        **Note: This parameter is required unless interacting with the Sandbox.**
+        
+        **Note: This parameter is required for user-restricted access but optional for application-restricted access. It is also optional in the sandbox environment.**
+       
       required: false
       schema:
         type: string
@@ -1974,7 +1975,7 @@ components:
       description: |
         An [OAuth 2.0 bearer token](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis).
 
-        **Note: This parameter is required for user-restricted access but optional for application-restricted access. It is also optional in the sandbox environment.**
+        **Note: This parameter is required unless interacting with the Sandbox.**      
       required: false
       schema:
         type: string
