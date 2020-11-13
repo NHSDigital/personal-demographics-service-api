@@ -6,7 +6,6 @@
       "value": {
         "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NominatedPharmacy",
         "valueReference": {
-          "reference": "https://directory.spineservices.nhs.uk/STU3/Organization/Y12345",
           "identifier": {
             "system": "https://fhir.nhs.uk/Id/ods-organization-code",
             "value": "Y12345",

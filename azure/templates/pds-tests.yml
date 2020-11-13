@@ -48,3 +48,24 @@ steps:
         $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/test-report.xml
         $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/*.xml
       failTaskOnFailedTests: true
+
+  - bash: poetry install
+    workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
+    displayName: Setup application restricted tests
+  
+  - bash: |
+      export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
+      export APPLICATION_RESTRICTED_API_KEY="$(JWT_TESTING_API_KEY)"
+      export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
+      export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
+      export KEY_ID="test-1"
+
+      poetry run pytest -v tests/functional/test_application_restricted.py --junitxml=tests/functional-test-report.xml
+    displayName: Run application restricted tests
+    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+  
+  - task: PublishTestResults@2
+    displayName: 'Publish application restricted test results'
+    inputs:
+      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/functional-test-report.xml
+      failTaskOnFailedTests: true

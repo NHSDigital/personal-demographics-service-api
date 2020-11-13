@@ -35,16 +35,25 @@ extends:
     enable_monitoring: true 
     jinja_templates:
       REQUIRE_ASID: false
+    secret_ids:
+      - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_API_KEY
+    secret_file_ids:
+      - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_PRIVATE_KEY
     apigee_deployments:
       - environment: internal-dev
         make_spec_visible: true
+        post_deploy:
+          - template: templates/pds-tests.yml
+            parameters:
+              test_pack_path: ./e2e/smoke.json
+              test_type: smoke
       - environment: internal-qa
         make_spec_visible: true
         post_deploy:
-            - template: templates/pds-tests.yml
-              parameters:
-                test_pack_path: ./e2e/smoke.json
-                test_type: smoke
+          - template: templates/pds-tests.yml
+            parameters:
+              test_pack_path: ./e2e/smoke.json
+              test_type: smoke
       - environment: internal-qa-sandbox
         make_spec_visible: true
         proxy_path: sandbox

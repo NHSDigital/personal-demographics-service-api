@@ -1,0 +1,10 @@
+[api]
+id = "31f8f52b-6a4b-486e-ab34-4db466f2b721"
+name = "personal-demographics"
+short-name = "pds"
+human-readable-name = "Personal Demographics Service"
+
+[specs.fhir-r4]
+id = "eef32850-52ae-46da-9dbd-d9f3df818846"
+title = "Personal Demographics Service FHIR API"
+path = "dist/personal-demographics-service.yaml"
