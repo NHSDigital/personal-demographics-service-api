@@ -149,6 +149,11 @@
 						"key": "NHSD-Session-URID",
 						"type": "text",
 						"value": "1234"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer  {{token}}",
+						"type": "text"
 					}
 				],
 				"url": {
