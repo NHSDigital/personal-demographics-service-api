@@ -35,6 +35,8 @@ info:
     * related people, such as next of kin (read only - update coming soon)
 
     This API has three access modes:
+    
+    
     | Access mode                    | End user authentication                             | Functions          | Availability |
     | ------------------------------ | --------------------------------------------------- | ------------------ | ------------ |
     | Healthcare professional access | NHS Identity (NHS smartcard or modern alternative)  | Search for patients (multiple results), Get patient details, Update patient details | Available in production (beta) |
