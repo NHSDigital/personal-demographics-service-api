@@ -122,6 +122,7 @@
 					"script": {
 						"id": "83669b08-42c4-4363-b1d1-cf7e84e38b02",
 						"exec": [
+							"console.log(pm.response.text())\r",
 							"var response = pm.response.json();\r",
 							"\r",
 							"//check status\r",
@@ -143,12 +144,7 @@
 					{
 						"key": "NHSD-Session-URID",
 						"type": "text",
-						"value": "123456789"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer  {{token}}",
-						"type": "text"
+						"value": "1234"
 					}
 				],
 				"url": {
