@@ -18,6 +18,7 @@ resources:
       type: github
       name: NHSDigital/api-management-utils
       endpoint: NHSDigital
+      ref: APM-1425-view-apigee-proxy-errors
 
 variables:
   - template: project.yml
