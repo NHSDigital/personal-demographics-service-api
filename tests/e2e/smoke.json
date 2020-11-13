@@ -26,11 +26,6 @@
 				"method": "GET",
 				"header": [
 					{
-						"key": "NHSD-Identity-UUID",
-						"value": "1234567890",
-						"disabled": true
-					},
-					{
 						"key": "Authorization",
 						"value": "Bearer  {{token}}"
 					},
@@ -181,6 +176,44 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "0edd5108-d02e-4512-8e9c-8d0657d995ec",
+				"type": "text/javascript",
+				"exec": [
+					"// set Authorization header",
+					"    pm.request.headers.add({",
+					"        key: 'Authorization',",
+					"        value: 'Bearer ' + pm.globals.get(\"token\")",
+					"    });",
+					"",
+					"    // set X-Request-ID header",
+					"    pm.request.headers.add({",
+					"        key: 'X-Request-ID',",
+					"        value: pm.variables.replaceIn('{{$guid}}')",
+					"    })",
+					"",
+					"    // set X-Correlation-ID header",
+					"    pm.request.headers.add({",
+					"        key: 'X-Correlation-ID',",
+					"        value: pm.variables.replaceIn('{{$guid}}')",
+					"    })"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "bb2bd18f-82aa-422d-beee-af529e9cc923",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	],
 	"protocolProfileBehavior": {}
