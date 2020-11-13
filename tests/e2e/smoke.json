@@ -124,6 +124,7 @@
 						"exec": [
 							"console.log(pm.response.text())\r",
 							"var response = pm.response.json();\r",
+              "console.log(response)\r",
 							"\r",
 							"//check status\r",
 							"pm.test(\"Response has a status of 200\", function () {\r",
