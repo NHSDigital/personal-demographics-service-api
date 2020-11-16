@@ -15,6 +15,11 @@
                 <Condition>(grant_type is "authorization_code") and ((request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+"))</Condition>
             </Step>
             <Step>
+                <!-- Header X-Request-ID must be present and not empty -->
+                <Name>RaiseFault.400BadRequest</Name>
+                <Condition>(original-request-details.header.X-Request-ID is null) or (not original-request-details.header.X-Request-ID ~~ ".+")</Condition>
+            </Step>
+            <Step>
                 <!-- Header NHSD-Request-ID must be in the correct format (GUID) -->
                 <Name>RaiseFault.400BadRequest</Name>
                 <Condition>(original-request-details.header.X-Request-ID != null) and (not original-request-details.header.X-Request-ID ~~ "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")</Condition>
@@ -94,6 +99,15 @@
             </Step>
             <Step>
                 <Name>AssignMessage.Errors.OAuthPolicyResponse</Name>
+            </Step>
+        </FaultRule>
+        <FaultRule name="no_request_id_provided">
+            <Condition>(original-request-details.header.X-Request-ID is null) or (not original-request-details.header.X-Request-ID ~~ ".+")</Condition>
+            <Step>
+                <Name>AssignMessage.Errors.MissingRequestId</Name>
+            </Step>
+            <Step>
+                <Name>AssignMessage.Errors.CatchAllMessage</Name>
             </Step>
         </FaultRule>
         <FaultRule name="invalid_request_id">

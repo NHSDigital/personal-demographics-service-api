@@ -10,7 +10,7 @@ This is a RESTful HL7® FHIR® API specification for the *Personal Demographics 
 * `apiproxy/` The Apigee API Proxy
 
 Consumers of the API will find developer documentation on the [NHS Digital Developer Hub](https://portal.developer.nhs.uk/docs/personal-demographics-int/1/overview).
-
+ 
 ## Contributing
 Contributions to this project are welcome from anyone, providing that they conform to the [guidelines for contribution](https://github.com/NHSDigital/personal-demographics-service-api/blob/master/CONTRIBUTING.md) and the [community code of conduct](https://github.com/NHSDigital/personal-demographics-service-api/blob/master/CODE_OF_CONDUCT.md).
 
