@@ -65,3 +65,11 @@ extends:
                 test_type: smoke
         - environment: internal-dev-sandbox
           proxy_path: sandbox
+          attributes:
+            - name: access
+              value: public
+            - name: ratelimit
+              value: 130ps
+          quota: 7800
+          quotaInterval: 1
+          quotaTimeUnit: minute
