@@ -7,11 +7,14 @@ from .config_files import config
 from pytest_bdd import scenario, given, when, then, parsers
 
 
-def get_patient_request(headers: dict):
+def get_patient_request(headers: dict, extra_params: dict=None):
+    params = {"family": "Smith", "gender": "female", "birthdate": "eq2010-10-22"}
+    if extra_params:
+        params = {**params, **extra_params}
     return requests.get(
         f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient?",
         headers=headers,
-        params={"family": "Smith", "gender": "female", "birthdate": "eq2010-10-22"},
+        params=params,
     )
 
 
@@ -54,6 +57,26 @@ def test_expired():
 def test_valid_when_without_user_id():
     pass
 
+@scenario(
+    "features/application_restricted.feature",
+    "PDS FHIR API rejects request for more than one result",
+)
+def test_rejects_request_for_two_results():
+    pass
+
+@scenario(
+    "features/application_restricted.feature",
+    "PDS FHIR API accepts request for one result",
+)
+def test_accepts_request_for_one_result():
+    pass
+
+@scenario(
+    "features/application_restricted.feature",
+    "PDS FHIR API rejects PATCH requests",
+)
+def test_rejects_patch_request():
+    pass
 
 @given("I am authenticating using unattended access", target_fixture="auth")
 def auth():
@@ -169,6 +192,72 @@ def get_patient(auth, context):
     context["response"] = response.json()
     context["status"] = response.status_code
 
+@when("I GET a patient asking for two results")
+def get_patient_two_results(auth, context):
+    authentication = auth["access_token"]
+
+    if authentication is not None:
+        token_type = auth["token_type"]
+        authentication = f"{token_type} {authentication}"
+
+    response = get_patient_request(
+        headers={
+            "NHSD-SESSION-URID": "123",
+            "Authorization": f"{authentication}",
+            "X-Request-ID": str(uuid.uuid4()),
+        },
+        extra_params={
+            "_max-results": "2"
+        }
+    )
+
+    context["response"] = response.json()
+    context["status"] = response.status_code
+
+@when("I PATCH a patient")
+def patch_patient(auth, context):
+    authentication = auth["access_token"]
+
+    if authentication is not None:
+        token_type = auth["token_type"]
+        authentication = f"{token_type} {authentication}"
+
+    headers={
+        "NHSD-SESSION-URID": "123",
+        "Authorization": f"{authentication}",
+        "X-Request-ID": str(uuid.uuid4()),
+    }
+
+    response = requests.patch(
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9123123123",
+        headers=headers,
+    )
+
+    context["response"] = response.json()
+    context["status"] = response.status_code
+
+@when("I GET a patient asking for one result")
+def get_patient_one_result(auth, context):
+    authentication = auth["access_token"]
+
+    if authentication is not None:
+        token_type = auth["token_type"]
+        authentication = f"{token_type} {authentication}"
+
+    response = get_patient_request(
+        headers={
+            "NHSD-SESSION-URID": "123",
+            "Authorization": f"{authentication}",
+            "X-Request-ID": str(uuid.uuid4()),
+        },
+        extra_params={
+            "_max-results": "1"
+        }
+    )
+
+    context["response"] = response.json()
+    context["status"] = response.status_code
+
 
 @when("I GET a patient without a user role ID")
 def get_patient_without_user_role_id(auth, context):
@@ -208,6 +297,14 @@ def check_bundle_resource(context):
 @then("I get a diagnosis of Invalid Access Token")
 def check_diagnosis_invalid(context):
     assert context["response"]["issue"][0]["diagnostics"] == "Invalid Access Token"
+
+@then("I get a diagnosis of insufficient permissions")
+def check_diagnosis_insufficient_perms(context):
+    assert context["response"]["issue"][0]["diagnostics"] == "Your app has insufficient permissions to perform this search. Please contact support."
+
+@then("I get a diagnosis of insufficient permissions to use this method")
+def check_diagnosis_invalid_method(context):
+    assert context["response"]["issue"][0]["diagnostics"] == "Your app has insufficient permissions to use this method. Please contact support."
 
 
 # This needs to be changed, as it's a confusing message
