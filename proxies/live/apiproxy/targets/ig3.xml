@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<TargetEndpoint name="{{ PDS_TARGET_SERVER }}">
+<TargetEndpoint name="ig3">
     <PreFlow>
         <Request>
             <Step>
