@@ -6,8 +6,8 @@ install-python:
 	poetry install
 
 install-node:
-	npm install
-	cd sandbox && npm install
+	yarn install
+	cd sandbox && yarn install
 
 install-hooks:
 	cp scripts/pre-commit .git/hooks/pre-commit
