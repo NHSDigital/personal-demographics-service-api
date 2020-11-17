@@ -9,6 +9,7 @@ resources:
       type: github
       name: NHSDigital/api-management-utils
       endpoint: NHSDigital
+      ref: apm-1162-fix-base-image
   pipelines:
   - pipeline: build_pipeline
     source: "Personal-Demographics-Service-Build"
