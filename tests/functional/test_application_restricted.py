@@ -205,6 +205,7 @@ def check_error_response(context):
     "features/application_restricted.feature",
     "PDS FHIR API accepts request without user role ID",
 )
+@mark.skip(reason="broken on internal-qa")
 def test_valid_when_without_user_id():
     pass
 
