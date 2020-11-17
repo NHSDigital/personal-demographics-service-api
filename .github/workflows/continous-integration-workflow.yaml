@@ -72,6 +72,8 @@ jobs:
 
       - name: Set SPEC_VERSION env var
         run: echo ::set-env name=SPEC_VERSION::$(poetry run python scripts/calculate_version.py)
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
       - name: Create release (master only)
         id: create-release
