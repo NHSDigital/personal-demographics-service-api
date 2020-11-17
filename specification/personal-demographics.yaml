@@ -1958,13 +1958,12 @@ components:
       in: header
       name: NHSD-Session-URID
       description: |
-        A User Role ID (URID), also known as a User Role Profile ID (URPID), specifies the role the user is acting in.
+      
+        The user role ID (URID) for the current session. Also known as a user role profile ID (URPID).
 
-        A URID belongs to a user (they are not generic) and a user may have more than one.
-
-        Find out more about [User role ID](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-combined-authentication-and-authorisation#step-6-determine-the-user-s-role)
-        
-        **Note: This parameter is required for user-restricted access but optional for application-restricted access. It is also optional in the sandbox environment.**
+        For more details, see [determine the user’s role](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-combined-authentication-and-authorisation#step-6-determine-the-user-s-role).
+      
+        This parameter is required for user-restricted access but optional for application-restricted access. It is also optional in the sandbox environment.
        
       required: false
       schema:
@@ -1977,7 +1976,7 @@ components:
       description: |
         An [OAuth 2.0 bearer token](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis).
 
-        **Note: This parameter is required unless interacting with the Sandbox.**      
+        This parameter is required unless interacting with the Sandbox. 
       required: false
       schema:
         type: string
@@ -1988,10 +1987,7 @@ components:
       name: X-Correlation-ID
       required: false
       description: |
-        An identifer should be created when making a request, this will assist with any problems that may occur and should be included when an issue is raised with the helpdesk.
-        It should ideally be a unique value to make message tracing easier and we would advise that there are no `.` characters, but these are not enforced.
-
-        This will be mirrored back in the response headers.
+        A globally unique identifier (GUID) for the request. We use this to trace the message if you raise an issue with our helpdesk. It is mirrored back in a response header.
       schema:
         type: string
         example: 11C46F5F-CDEF-4865-94B2-0EE0EDCC26DA
@@ -2000,13 +1996,11 @@ components:
       name: X-Request-ID
       required: false
       description: |
-        A **globally unique identifer (GUID)** should be created when making a request, this will be used in message de-duplication, meaning if you need to replay any messages an identical response will be returned as the first time.
+        A globally unique identifier (GUID) for the request. We use this to de-duplicate repeated requests, so if you re-send a failed request, use the same value in this header. It is mirrored back in a response header.
 
-        The identifer must be a universally unique identifier (UUID) (ideally version 4).
+        This must be a universally unique identifier (UUID) (ideally version 4).
 
-        This will be mirrored back in the response headers.
-
-        **Note: This parameter is required for `update`, `get`, `search` and `relatedPerson` unless interacting with the Sandbox.**
+        This parameter is required for `update`, `get`, `search` and `relatedPerson` unless interacting with the Sandbox.
       schema:
         type: string
         pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
