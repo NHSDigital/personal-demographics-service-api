@@ -224,3 +224,27 @@ def check_diagnosis_expired(context):
 @then("I get an error response")
 def check_error_response(context):
     assert context["response"]["issue"][0]["severity"] == "error"
+
+
+@mark.skip(reason="broken on internal-qa")
+@scenario(
+    "features/application_restricted.feature",
+    "PDS FHIR API accepts request without user role ID",
+)
+def test_valid_when_without_user_id():
+    pass
+
+
+@when("I GET a patient without a user role ID")
+def get_patient_without_user_role_id(auth, context):
+    access_token = auth["response"]["access_token"]
+
+    headers = {
+            "Authorization": f"Bearer {access_token}",
+            "X-Request-ID": str(uuid.uuid4())
+        }
+
+    response = get_patient_request(headers)
+
+    context["response"] = response.json()
+    context["status"] = response.status_code
