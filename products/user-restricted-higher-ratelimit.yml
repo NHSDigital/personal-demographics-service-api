@@ -1,10 +1,10 @@
 name: ""
-displayName: Personal Demographics Service - User Restricted - Prod Rate Limit
+displayName: Personal Demographics Service - User Restricted
 description: Full access to PDS functionality
 scopes:
   - personal-demographics-service:USER-RESTRICTED
 environments:
-  - internal-dev-sandbox
+  - prod
 attributes:
   - name: access
     value: public
