@@ -11,6 +11,9 @@ jobs:
   link-ticket:
     runs-on: ubuntu-latest
     steps:
+      - name: Enable Unsecure Commands
+        run: export ACTIONS_ALLOW_UNSECURE_COMMANDS=true
+
       - name: Check ticket name conforms to requirements
         run: echo ${{ github.event.pull_request.head.ref }} | grep -i -E -q "(apm-[0-9]+)|(apmspii-[0-9]+)|(adz-[0-9]+)|(dependabot\/)"
 
