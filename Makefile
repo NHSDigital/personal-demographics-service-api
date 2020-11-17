@@ -50,7 +50,7 @@ update-examples: generate-examples
 
 check-licenses:
 	npm run check-licenses
-	poetry run scripts/check_python_licenses.sh
+	scripts/check_python_licenses.sh
 
 deploy-proxy: update-examples
 	scripts/deploy_proxy.sh
