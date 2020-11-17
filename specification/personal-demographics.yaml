@@ -1833,6 +1833,8 @@ paths:
             application/fhir+json:
               schema:
                 $ref: components/schemas/Patient.yaml
+              example:
+                $ref: components/examples/Patient.json                
         '400':
           description: Client error after the patch was accepted and patient was not updated.
           content:
