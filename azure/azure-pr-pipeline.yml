@@ -37,7 +37,7 @@ extends:
     deploy_review_sandbox: true
     jinja_templates:
       REQUIRE_ASID: false
-      PDS_TARGET_SERVER: "ig3"
+      PDS_TARGET_SERVER: ig3
     secret_ids:
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_API_KEY
     secret_file_ids:
@@ -58,7 +58,7 @@ extends:
           stage_name: internal_dev_asid_required
           jinja_templates:
             REQUIRE_ASID: true
-            PDS_TARGET_SERVER: "ig3"
+            PDS_TARGET_SERVER: ig3
           post_deploy:
             - template: templates/pds-tests.yml
               parameters:
@@ -74,4 +74,4 @@ extends:
           stage_name: internal_dev_int
           jinja_templates:
             REQUIRE_ASID: false
-            PDS_TARGET_SERVER: "ig3-int"
+            PDS_TARGET_SERVER: ig3-int
