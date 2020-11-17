@@ -118,7 +118,7 @@ info:
     
     The API itself does not perform any authorisation checks. Rather, the calling application must perform them. The authorisation rules are specified in our national Role Based Access Control (RBAC) database.
     
-    For more details, contact us (https://digital.nhs.uk/developer/help-and-support).
+    For more details, [contact us](https://digital.nhs.uk/developer/help-and-support).
     
     ### Application-restricted access
     This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis), meaning we authenticate the calling application but not the end user.
