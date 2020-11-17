@@ -1,4 +1,4 @@
-name: application-restricted-higher-ratelimit # Will have SERVICE_NAME- prepended to this
+name: application-restricted # Will have SERVICE_NAME- prepended to this
 displayName: Personal Demographics Service - Application Restricted - Prod Rate Limit
 description: Access the Personal Demographics Service with reduced permisions.
 environments:
