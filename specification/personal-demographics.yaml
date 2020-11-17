@@ -300,7 +300,7 @@ paths:
         The restricted flag can be found in the data under `meta/security` on the patient resource.
 
         ## Number of results returned
-        ###Healthcare professional access mode
+        ### Healthcare professional access mode
         
         By default, the endpoint will return a maximum of 50 results.
 
@@ -308,7 +308,7 @@ paths:
         You can further limit the number of results using the `_max-results` query parameter.
         You can request a single, exact match using `_exact-match=true` and `_max-results=1`.
         
-        ###Application-restricted access mode
+        ### Application-restricted access mode
         
         The endpoint will only return one result. If there is more than one matching patient, the endpoint will return no results and the error response `TOO_MANY_MATCHES`.
 
@@ -1833,6 +1833,8 @@ paths:
             application/fhir+json:
               schema:
                 $ref: components/schemas/Patient.yaml
+              example:
+                $ref: components/examples/Patient.json                
         '400':
           description: Client error after the patch was accepted and patient was not updated.
           content:
