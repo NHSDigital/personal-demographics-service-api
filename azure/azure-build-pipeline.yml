@@ -18,7 +18,6 @@ resources:
       type: github
       name: NHSDigital/api-management-utils
       endpoint: NHSDigital
-      ref: APM-1553-custom-environment-products
 
 variables:
   - template: project.yml
