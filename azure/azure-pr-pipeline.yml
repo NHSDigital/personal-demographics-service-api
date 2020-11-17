@@ -35,9 +35,6 @@ extends:
     product_description: ${{ variables.product_description }}
     spec_file: ${{ variables.spec_file }}
     deploy_review_sandbox: true
-    jinja_templates:
-      REQUIRE_ASID: false
-      PDS_TARGET_SERVER: ig3
     secret_ids:
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_API_KEY
     secret_file_ids:
