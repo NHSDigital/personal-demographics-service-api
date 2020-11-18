@@ -39,7 +39,7 @@ if(spine_status != "pass"){
 
 
 
-var response = { 
+var response = {  
 "status" : apigee_status,
 "version" : "{{ DEPLOYED_VERSION }}" ,
 "revision" : apiproxy_revision, 
@@ -48,7 +48,6 @@ var response = {
 "checks" : spine_service
 };
 
-
-context.proxyResponse.content = JSON.stringify(response);
-
+context.setVariable("status.response", JSON.stringify(response));
+context.setVariable("response.content", JSON.stringify(response));
 context.setVariable("response.header.Content-Type", "application/json");
