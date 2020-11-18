@@ -817,22 +817,26 @@ paths:
         {
           "patches": [
             {
-              "op": "add", "path": "/name/0/id", "value": "8F8B957D",
+              "op": "add", "path": "/name/0/id", "value": "8F8B957D"
+            },
+            {
               "op": "add", "path": "/name/0/given/0", "value": "Rose"
             }
           ]
         }
         ```
 
-        If is possible to `add` a sub-element to an existing object in a patch request. If the object already exists and you have the object `id`, you must supply it or the update will be rejected.
+        It is possible to `add` a sub-element to an existing object in a patch request. If the object already exists and you have the object `id`, you must supply it or the update will be rejected.
         The following patch is allowed:
 
         ```json
         {
           "patches": [
             {
-              "op": "add", "path": "/name/0/id", "value": "8F8B957D",
-              "op": "add", "path": "/name/0/given/-", "value": "Rose"
+              "op": "add", "path": "/name/0/id", "value": "8F8B957D"
+            },
+            {
+              "op": "add", "path": "/name/0/given/0", "value": "Rose"
             }
           ]
         }
@@ -999,9 +1003,9 @@ paths:
         ```json
         {
             "patches": [
-              { "op": "test", "path": "/name/1/id", "value": "3" }
+              { "op": "test", "path": "/name/1/id", "value": "3" },
               { "op": "remove", "path": "/name/1" },
-              { "op": "test", "path": "/name/1/id", "value": "4" }
+              { "op": "test", "path": "/name/1/id", "value": "4" },
               { "op": "remove", "path": "/name/1" }
           ]
         }
@@ -1039,9 +1043,9 @@ paths:
         ```json
         {
             "patches": [
-              { "op": "test", "path": "/name/2/id", "value": "4" }
+              { "op": "test", "path": "/name/2/id", "value": "4" },
               { "op": "remove", "path": "/name/2" },
-              { "op": "test", "path": "/name/1/id", "value": "3" }
+              { "op": "test", "path": "/name/1/id", "value": "3" },
               { "op": "remove", "path": "/name/1" }
           ]
         }
@@ -1161,7 +1165,7 @@ paths:
                     "address": {
                         "line": [
                             "23 Mill Lane",
-                            "Leeds",
+                            "Leeds"
                         ]
                     }
 

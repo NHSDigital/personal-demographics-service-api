@@ -24,7 +24,7 @@ properties:
     type: string
     description: Location associated with communication system.
     enum: [home, work, temp, mobile]
-    example: work
+    example: home
   extension:
     type: array
     maxItems: 1
