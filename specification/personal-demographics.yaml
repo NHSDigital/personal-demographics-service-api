@@ -20,7 +20,7 @@ info:
     * receive birth notifications
     * create a record for a new patient
     * register a new patient at a GP Practice - instead, use [NHAIS GP Links API](https://digital.nhs.uk/developer/api-catalogue/nhais-gp-links)
-
+ 
     You can read and update the following data:
     * NHS Number (read only)
     * name
@@ -263,12 +263,12 @@ paths:
         Wildcards cannot be used with a fuzzy search.
 
         ## Search parameter options
-        For a non-fuzzy search, the minimum set of search parameters is:
+        For a non-fuzzy search (`_fuzzy-match`=`false`), the minimum set of search parameters is:
         * family name - but it can include wildcards
         * gender
         * date of birth - but it can be a range
 
-        For a fuzzy search, use one of the following search parameter combinations:
+        For a fuzzy search (`_fuzzy-match`=`true`), use one of the following search parameter combinations:
         * given name, family name and date of birth
         * family name, date of birth, gender and postcode
         * given name, date of birth, gender and postcode
