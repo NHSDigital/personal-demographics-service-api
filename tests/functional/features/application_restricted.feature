@@ -9,7 +9,7 @@ Feature: Unattended Access
     When I GET a patient
 
     Then I get a 200 HTTP response
-    And I get a Patient resource in the response
+    And I get a Bundle resource in the response
 
   Scenario: PDS FHIR API rejects request with invalid access token
     Given I am authenticating using unattended access
@@ -20,7 +20,7 @@ Feature: Unattended Access
 
     Then I get a 401 HTTP response
     And I get an error response
-    And I get a diagnosis of invalid access token
+    And I get a diagnosis of Invalid Access Token
 
   Scenario: PDS FHIR API rejects request with missing access token
     Given I am authenticating using unattended access
@@ -31,7 +31,7 @@ Feature: Unattended Access
 
     Then I get a 401 HTTP response
     And I get an error response
-    And I get a diagnosis of invalid access token
+    And I get a diagnosis of Invalid access token
 
   Scenario: PDS FHIR API rejects request with expired access token
     Given I am authenticating using unattended access
@@ -52,4 +52,4 @@ Feature: Unattended Access
     When I GET a patient without a user role ID
 
     Then I get a 200 HTTP response
-    And I get a Patient resource in the response
+    And I get a Bundle resource in the response
