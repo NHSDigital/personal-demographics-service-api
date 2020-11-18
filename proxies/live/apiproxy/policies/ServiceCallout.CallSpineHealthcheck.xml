@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ServiceCallout async="false" continueOnError="true" enabled="true" name="ServiceCallout.CallSpineHealthcheck">
+    <DisplayName>ServiceCallout.CallSpineHealthcheck</DisplayName>
+    <Properties/>
+    <Request clearPayload="true" variable="spineHealthcheckRequest">
+        <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    </Request>
+    <Response>spineHealthcheckResponse</Response>
+    <HTTPTargetConnection>
+        <SSLInfo>
+            <Enabled>true</Enabled>
+        </SSLInfo>
+        <LoadBalancer>
+            <Server name="ig3"/>
+        </LoadBalancer>
+        <Path>/healthcheck</Path>
+    </HTTPTargetConnection>
+    <Timeout>20000</Timeout>
+</ServiceCallout>

@@ -5,6 +5,7 @@ build/
 public/
 newman/
 build/
+tests/functional/test_env/
 .idea
 .DS_Store
 venv
@@ -14,5 +15,7 @@ venv
 __pycache__/
 .envrc
 .vscode
+.mypy_cache
 
 tests/test-report.xml
+tests/functional-test-report.xml
