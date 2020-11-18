@@ -8,7 +8,7 @@ from pytest import mark
 from pytest_bdd import scenario, given, when, then, parsers
 
 
-def get_patient_request(headers: dict, extra_params: dict=None):
+def get_patient_request(headers: dict, extra_params: dict = None):
     params = {"family": "Smith", "gender": "female", "birthdate": "eq2010-10-22"}
     if extra_params:
         params = {**params, **extra_params}
@@ -59,12 +59,14 @@ def test_expired():
 def test_valid_when_without_user_id():
     pass
 
+
 @scenario(
     "features/application_restricted.feature",
     "PDS FHIR API rejects request for more than one result",
 )
 def test_rejects_request_for_two_results():
     pass
+
 
 @scenario(
     "features/application_restricted.feature",
@@ -73,12 +75,14 @@ def test_rejects_request_for_two_results():
 def test_accepts_request_for_one_result():
     pass
 
+
 @scenario(
     "features/application_restricted.feature",
     "PDS FHIR API rejects PATCH requests",
 )
 def test_rejects_patch_request():
     pass
+
 
 @given("I am authenticating using unattended access", target_fixture="auth")
 def auth():
@@ -194,6 +198,7 @@ def get_patient(auth, context):
     context["response"] = response.json()
     context["status"] = response.status_code
 
+
 @when("I GET a patient asking for two results")
 def get_patient_two_results(auth, context):
     authentication = auth["access_token"]
@@ -208,13 +213,12 @@ def get_patient_two_results(auth, context):
             "Authorization": f"{authentication}",
             "X-Request-ID": str(uuid.uuid4()),
         },
-        extra_params={
-            "_max-results": "2"
-        }
+        extra_params={"_max-results": "2"},
     )
 
     context["response"] = response.json()
     context["status"] = response.status_code
+
 
 @when("I PATCH a patient")
 def patch_patient(auth, context):
@@ -224,7 +228,7 @@ def patch_patient(auth, context):
         token_type = auth["token_type"]
         authentication = f"{token_type} {authentication}"
 
-    headers={
+    headers = {
         "NHSD-SESSION-URID": "123",
         "Authorization": f"{authentication}",
         "X-Request-ID": str(uuid.uuid4()),
@@ -237,6 +241,7 @@ def patch_patient(auth, context):
 
     context["response"] = response.json()
     context["status"] = response.status_code
+
 
 @when("I GET a patient asking for one result")
 def get_patient_one_result(auth, context):
@@ -252,9 +257,7 @@ def get_patient_one_result(auth, context):
             "Authorization": f"{authentication}",
             "X-Request-ID": str(uuid.uuid4()),
         },
-        extra_params={
-            "_max-results": "1"
-        }
+        extra_params={"_max-results": "1"},
     )
 
     context["response"] = response.json()
@@ -300,13 +303,21 @@ def check_bundle_resource(context):
 def check_diagnosis_invalid(context):
     assert context["response"]["issue"][0]["diagnostics"] == "Invalid Access Token"
 
+
 @then("I get a diagnosis of insufficient permissions")
 def check_diagnosis_insufficient_perms(context):
-    assert context["response"]["issue"][0]["diagnostics"] == "Your app has insufficient permissions to perform this search. Please contact support."
+    assert (
+        context["response"]["issue"][0]["diagnostics"]
+        == "Your app has insufficient permissions to perform this search. Please contact support."
+    )
+
 
 @then("I get a diagnosis of insufficient permissions to use this method")
 def check_diagnosis_invalid_method(context):
-    assert context["response"]["issue"][0]["diagnostics"] == "Your app has insufficient permissions to use this method. Please contact support."
+    assert (
+        context["response"]["issue"][0]["diagnostics"]
+        == "Your app has insufficient permissions to use this method. Please contact support."
+    )
 
 
 # This needs to be changed, as it's a confusing message
