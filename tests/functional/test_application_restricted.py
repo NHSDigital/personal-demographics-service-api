@@ -201,6 +201,7 @@ def check_error_response(context):
     assert context["response"]["issue"][0]["severity"] == "error"
 
 
+@mark.skip(reason="broken on internal-qa")
 @scenario(
     "features/application_restricted.feature",
     "PDS FHIR API accepts request without user role ID",

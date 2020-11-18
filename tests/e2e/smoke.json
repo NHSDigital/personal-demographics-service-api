@@ -45,6 +45,10 @@
 					{
 						"key": "NHSD-ASID",
 						"value": "1234567890"
+					},
+					{
+						"key": "X-Request-ID",
+						"value": "b866937c-0329-4aea-92ad-fee4863e7858"
 					}
 				],
 				"url": {
