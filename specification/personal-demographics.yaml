@@ -20,7 +20,7 @@ info:
     * receive birth notifications
     * create a record for a new patient
     * register a new patient at a GP Practice - instead, use [NHAIS GP Links API](https://digital.nhs.uk/developer/api-catalogue/nhais-gp-links)
-
+ 
     You can read and update the following data:
     * NHS Number (read only)
     * name
@@ -34,9 +34,16 @@ info:
     * medical appliance supplier pharmacy
     * related people, such as next of kin (read only - update coming soon)
 
-    Currently, this API can only be accessed by healthcare professionals, authenticated with an NHS smartcard or equivalent.
-    Unauthenticated access and citizen access are on the [roadmap](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
+    This API has three access modes:
+    
+    
+    | Access mode                    | End user authentication                             | Functions          | Availability |
+    | ------------------------------ | --------------------------------------------------- | ------------------ | ------------ |
+    | Healthcare professional access | NHS Identity (NHS smartcard or modern alternative)  | Search for patients (multiple results), Get patient details, Update patient details | Available in production (beta) |
+    | Application-restricted access  | None                                                | Search for patients (single result), Get patient details | Available for testing (alpha) 
+    | Citizen access                 | NHS login                                           | Get own details, Update own details (limited) | Not available yet, see [backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/107446/pds-fhir-api-citizen-access-using-nhs-login) for details   |
 
+  
     ## Legal use
     This API can only be used where there is a [legal basis](http://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) to do so. Make sure you have a valid use case before you go too far with your development.  To do this, make a [PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service). 
     
@@ -53,10 +60,20 @@ info:
     - [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) - use this to get full details for the organisations related to the patient, such as their registered GP or nominated pharmacy.
 
     ## API status and roadmap
-    This API is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
+    ### Healthcare professional access
+    This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
     - we might make breaking changes, but only if we can't avoid it, and we'll give advance notice
     - we can't guarantee availability or performance
-
+    
+    ### Application-restricted access
+    This access mode is in [alpha](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
+    - it is available for testing but not yet for production use
+    - we might make breaking changes
+     
+    ### Citizen access
+    This access mode is not available yet.
+    
+    ### Roadmap
     To see our roadmap, or to suggest, comment or vote on features for this API, see our [interactive product backlog](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
     
     If you have any other queries, please [contact us](https://digital.nhs.uk/developer/help-and-support).
@@ -80,8 +97,9 @@ info:
     
     For more details see [Network access for APIs](https://digital.nhs.uk/developer/guides-and-documentation/network-access-for-apis).
     
-    ## Authorisation
-    This API is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis),
+    ## Security and authorisation
+    ### Healthcare professional access
+    This access mode is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis),
     meaning an end user must be present and authenticated to use it.
 
     The end user must be:
@@ -89,14 +107,32 @@ info:
     - strongly authenticated, using either an NHS smartcard or a modern alternative
 
     The API uses OAuth 2.0 to authorise the calling system.
+    
     It supports the following security patterns:
     * [user-restricted RESTful API - using NHS Identity - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-combined-authentication-and-authorisation)
     * [user-restricted RESTful API - using NHS Identity - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-separate-authentication-and-authorisation)
 
-    In due course we plan to add the following:
-    - access for citizens, using NHS Login
-    - unauthenticated access - without smartcard - similar to the PDS SMSP API
+    In this access mode, all endpoints are fully available.
     
+    In addition, the end user must be authorised to perform the various activities.
+    
+    The API itself does not perform any authorisation checks. Rather, the calling application must perform them. The authorisation rules are specified in our national Role Based Access Control (RBAC) database.
+    
+    For more details, [contact us](https://digital.nhs.uk/developer/help-and-support).
+    
+    ### Application-restricted access
+    This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis), meaning we authenticate the calling application but not the end user.
+    
+    In particular, we use following security pattern:
+    * [Application-restricted RESTful API - signed JWT authentication](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-signed-jwt-authentication)
+    
+    You can use this access mode as follows:
+    * unattended (end user not present), for example as part of a back end process to check NHS numbers for data flowing from one system to another
+    * attended (end user present) - in which case, you must ensure the end user is authenticated and suitably authorised locally by the calling application
+    
+    ### Citizen access
+    This access mode is not available yet. 
+        
     For more details, see our [interactive product backlog](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
 
     ## Environments and testing
@@ -139,7 +175,7 @@ info:
     Our [integration test environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing):
     * is for formal integration testing
     * is stateful, so persists updates
-    * includes authorisation, with smartcard and non-smartcard options
+    * includes authorisation, with options for user-restricted access (with or without smartcard) and application-restricted access
          
     For read-only testing, you can either use our [PDS FHIR API test data packs](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-api-test-data) or set up your own test data.
     
@@ -201,6 +237,14 @@ paths:
           * date of birth (range)
           * date of death (range)
           * registered GP practice
+          
+        The behaviour of this endpoint depends on which access mode you are using:
+        
+        | Access mode                    | Behaviour restrictions            |
+        | ------------------------------ | --------------------------------- |
+        | Healthcare professional access | Full behaviour available          |
+        | Application-restricted access  | Limited to a single unique result |
+        | Citizen access                 | Not yet available                 |
 
         ## Matching rules
         Search parameters are not case sensitive.
@@ -219,12 +263,12 @@ paths:
         Wildcards cannot be used with a fuzzy search.
 
         ## Search parameter options
-        For a non-fuzzy search, the minimum set of search parameters is:
+        For a non-fuzzy search (`_fuzzy-match`=`false`), the minimum set of search parameters is:
         * family name - but it can include wildcards
         * gender
         * date of birth - but it can be a range
 
-        For a fuzzy search, use one of the following search parameter combinations:
+        For a fuzzy search (`_fuzzy-match`=`true`), use one of the following search parameter combinations:
         * given name, family name and date of birth
         * family name, date of birth, gender and postcode
         * given name, date of birth, gender and postcode
@@ -256,11 +300,17 @@ paths:
         The restricted flag can be found in the data under `meta/security` on the patient resource.
 
         ## Number of results returned
+        ### Healthcare professional access mode
+        
         By default, the endpoint will return a maximum of 50 results.
 
         If there are more than 50 matching patients, the endpoint will return no results and the error response `TOO_MANY_MATCHES`.
         You can further limit the number of results using the `_max-results` query parameter.
         You can request a single, exact match using `_exact-match=true` and `_max-results=1`.
+        
+        ### Application-restricted access mode
+        
+        The endpoint will only return one result. If there is more than one matching patient, the endpoint will return no results and the error response `TOO_MANY_MATCHES`.
 
         ## Patient data returned
         The patient data returned on a search is not the full set of data that is returned on a retrieval. The following data is included:
@@ -354,14 +404,13 @@ paths:
             type: boolean
             default: false
         - name: _max-results
-          description: The maximum number of results to return between 1 and 50. The default is 50.
+          description: The maximum number of matching patients to return. For user-restricted access, this must be between 1 and 50, and the default is 50. For application-restricted access, this must be 1, and the default is 1. If too many patients match the search criteria, the API returns a `TOO_MANY_MATCHES` error.
           example: 1
           in: query
           required: false
           schema:
             type: integer
             format: int32
-            default: 50
         - name: family
           description: |
             The patient's family name (surname).
@@ -670,7 +719,13 @@ paths:
         The update process is asynchronous - if the request is accepted, a 202 response is returned with a polling URL in the `Content-Location` header.
         Poll this URL for the outcome of the update. See the polling endpoint `/_poll/{message id}` for more details.
         
-        See the overview page to understand what data can be updated with this API in its current form.
+        The behaviour of this endpoint depends on which access mode you are using:
+        
+        | Access mode                    | Behaviour restrictions              |
+        | ------------------------------ | ----------------------------------- |
+        | Healthcare professional access | Full behaviour available            |
+        | Application-restricted access  | Limited to a single unique result   |
+        | Citizen access                 | Not yet available                   |
 
         ## Patient resource versioning
         To update a patient's resource you must have retrieved it first, to ensure you are working against an up-to-date patient resource.
@@ -1784,6 +1839,8 @@ paths:
             application/fhir+json:
               schema:
                 $ref: components/schemas/Patient.yaml
+              example:
+                $ref: components/examples/Patient.json                
         '400':
           description: Client error after the patch was accepted and patient was not updated.
           content:
@@ -1909,13 +1966,13 @@ components:
       in: header
       name: NHSD-Session-URID
       description: |
-        A User Role ID (URID), also known as a User Role Profile ID (URPID), specifies the role the user is acting in.
+      
+        The user role ID (URID) for the current session. Also known as a user role profile ID (URPID).
 
-        A URID belongs to a user (they are not generic) and a user may have more than one.
-
-        Find out more about [User role ID](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-combined-authentication-and-authorisation#step-6-determine-the-user-s-role)
-
-        **Note: This parameter is required unless interacting with the Sandbox.**
+        For more details, see [determine the user’s role](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-combined-authentication-and-authorisation#step-6-determine-the-user-s-role).
+      
+        This parameter is required for user-restricted access but optional for application-restricted access. It is also optional in the sandbox environment.
+       
       required: false
       schema:
         type: string
@@ -1927,7 +1984,7 @@ components:
       description: |
         An [OAuth 2.0 bearer token](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis).
 
-        **Note: This parameter is required unless interacting with the Sandbox.**
+        This parameter is required unless interacting with the Sandbox. 
       required: false
       schema:
         type: string
@@ -1938,10 +1995,7 @@ components:
       name: X-Correlation-ID
       required: false
       description: |
-        An identifer should be created when making a request, this will assist with any problems that may occur and should be included when an issue is raised with the helpdesk.
-        It should ideally be a unique value to make message tracing easier and we would advise that there are no `.` characters, but these are not enforced.
-
-        This will be mirrored back in the response headers.
+        A globally unique identifier (GUID) for the request. We use this to trace the message if you raise an issue with our helpdesk. It is mirrored back in a response header.
       schema:
         type: string
         example: 11C46F5F-CDEF-4865-94B2-0EE0EDCC26DA
@@ -1950,13 +2004,11 @@ components:
       name: X-Request-ID
       required: false
       description: |
-        A **globally unique identifer (GUID)** should be created when making a request, this will be used in message de-duplication, meaning if you need to replay any messages an identical response will be returned as the first time.
+        A globally unique identifier (GUID) for the request. We use this to de-duplicate repeated requests, so if you re-send a failed request, use the same value in this header. It is mirrored back in a response header.
 
-        The identifer must be a universally unique identifier (UUID) (ideally version 4).
+        This must be a universally unique identifier (UUID) (ideally version 4).
 
-        This will be mirrored back in the response headers.
-
-        **Note: This parameter is required for `update`, `get`, `search` and `relatedPerson` unless interacting with the Sandbox.**
+        This parameter is required for `update`, `get`, `search` and `relatedPerson` unless interacting with the Sandbox.
       schema:
         type: string
         pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
