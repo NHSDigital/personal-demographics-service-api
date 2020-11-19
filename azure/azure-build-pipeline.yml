@@ -34,9 +34,9 @@ extends:
       - bash: "make sandbox &"
         displayName: Start Sandbox Server
         workingDirectory: "${{ variables.service_name }}"
-      # - bash: "make validate"
-      #   displayName: Validate FHIR
-      #   workingDirectory: "${{ variables.service_name }}"
+      - bash: "make validate"
+        displayName: Validate FHIR
+        workingDirectory: "${{ variables.service_name }}"
       - bash: "sleep 30"
         displayName: Wait for sandbox server to start
       - bash: "make test"
