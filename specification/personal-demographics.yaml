@@ -817,22 +817,26 @@ paths:
         {
           "patches": [
             {
-              "op": "add", "path": "/name/0/id", "value": "8F8B957D",
+              "op": "add", "path": "/name/0/id", "value": "8F8B957D"
+            },
+            {
               "op": "add", "path": "/name/0/given/0", "value": "Rose"
             }
           ]
         }
         ```
 
-        If is possible to `add` a sub-element to an existing object in a patch request. If the object already exists and you have the object `id`, you must supply it or the update will be rejected.
+        It is possible to `add` a sub-element to an existing object in a patch request. If the object already exists and you have the object `id`, you must supply it or the update will be rejected.
         The following patch is allowed:
 
         ```json
         {
           "patches": [
             {
-              "op": "add", "path": "/name/0/id", "value": "8F8B957D",
-              "op": "add", "path": "/name/0/given/-", "value": "Rose"
+              "op": "add", "path": "/name/0/id", "value": "8F8B957D"
+            },
+            {
+              "op": "add", "path": "/name/0/given/0", "value": "Rose"
             }
           ]
         }
@@ -999,9 +1003,9 @@ paths:
         ```json
         {
             "patches": [
-              { "op": "test", "path": "/name/1/id", "value": "3" }
+              { "op": "test", "path": "/name/1/id", "value": "3" },
               { "op": "remove", "path": "/name/1" },
-              { "op": "test", "path": "/name/1/id", "value": "4" }
+              { "op": "test", "path": "/name/1/id", "value": "4" },
               { "op": "remove", "path": "/name/1" }
           ]
         }
@@ -1039,9 +1043,9 @@ paths:
         ```json
         {
             "patches": [
-              { "op": "test", "path": "/name/2/id", "value": "4" }
+              { "op": "test", "path": "/name/2/id", "value": "4" },
               { "op": "remove", "path": "/name/2" },
-              { "op": "test", "path": "/name/1/id", "value": "3" }
+              { "op": "test", "path": "/name/1/id", "value": "3" },
               { "op": "remove", "path": "/name/1" }
           ]
         }
@@ -1161,7 +1165,7 @@ paths:
                     "address": {
                         "line": [
                             "23 Mill Lane",
-                            "Leeds",
+                            "Leeds"
                         ]
                     }
 
@@ -1971,7 +1975,7 @@ components:
 
         For more details, see [determine the user’s role](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-combined-authentication-and-authorisation#step-6-determine-the-user-s-role).
       
-        This parameter is required for user-restricted access but optional for application-restricted access. It is also optional in the sandbox environment.
+        Required for user-restricted access but optional for application-restricted access. Also optional in sandbox.
        
       required: false
       schema:
@@ -1984,7 +1988,7 @@ components:
       description: |
         An [OAuth 2.0 bearer token](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis).
 
-        This parameter is required unless interacting with the Sandbox. 
+        Required in all environments except sandbox.
       required: false
       schema:
         type: string
@@ -1995,7 +1999,11 @@ components:
       name: X-Correlation-ID
       required: false
       description: |
-        A globally unique identifier (GUID) for the request. We use this to trace the message if you raise an issue with our helpdesk. It is mirrored back in a response header.
+        A globally unique identifier (GUID) for the request, which we use to trace the request if you contact our helpdesk.
+        
+        Mirrored back in a response header.
+        
+        Avoid `.` characters.
       schema:
         type: string
         example: 11C46F5F-CDEF-4865-94B2-0EE0EDCC26DA
@@ -2004,11 +2012,15 @@ components:
       name: X-Request-ID
       required: false
       description: |
-        A globally unique identifier (GUID) for the request. We use this to de-duplicate repeated requests, so if you re-send a failed request, use the same value in this header. It is mirrored back in a response header.
+        A globally unique identifier (GUID) for the request, which we use to de-duplicate repeated requests.
+        
+        Must be a universally unique identifier (UUID) (ideally version 4).
 
-        This must be a universally unique identifier (UUID) (ideally version 4).
+        If you re-send a failed request, use the same value in this header.
 
-        This parameter is required for `update`, `get`, `search` and `relatedPerson` unless interacting with the Sandbox.
+        Mirrored back in a response header.
+
+        Required in all environments except sandbox.
       schema:
         type: string
         pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
