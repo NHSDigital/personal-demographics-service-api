@@ -1,4 +1,4 @@
-import datetime
+import dateutil.parser
 import jwt
 import uuid
 import time
@@ -8,20 +8,14 @@ from pytest import mark
 from pytest_bdd import scenario, given, when, then, parsers
 
 
-# simple patient request
 def get_patient_request(headers: dict):
     return requests.get(
         f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient?",
         headers=headers,
-        params={
-            "family": "Smith",
-            "gender": "female",
-            "birthdate": "eq2010-10-22"
-        }
+        params={"family": "Smith", "gender": "female", "birthdate": "eq2010-10-22"},
     )
 
 
-@mark.skip(reason="unfinished code")
 @scenario(
     "features/application_restricted.feature",
     "PDS FHIR API accepts request with valid access token",
@@ -30,7 +24,6 @@ def test_valid():
     pass
 
 
-@mark.skip(reason="unfinished code")
 @scenario(
     "features/application_restricted.feature",
     "PDS FHIR API rejects request with invalid access token",
@@ -39,7 +32,6 @@ def test_invalid():
     pass
 
 
-@mark.skip(reason="unfinished code")
 @scenario(
     "features/application_restricted.feature",
     "PDS FHIR API rejects request with missing access token",
@@ -48,12 +40,20 @@ def test_missing():
     pass
 
 
-@mark.skip(reason="unfinished code")
 @scenario(
     "features/application_restricted.feature",
     "PDS FHIR API rejects request with expired access token",
 )
 def test_expired():
+    pass
+
+
+@mark.skip(reason="broken on internal-qa")
+@scenario(
+    "features/application_restricted.feature",
+    "PDS FHIR API accepts request without user role ID",
+)
+def test_valid_when_without_user_id():
     pass
 
 
@@ -72,11 +72,11 @@ def set_valid_access_token(auth):
         "exp": int(time.time()) + 300,
     }
 
-    headers = {
-        "kid": config.KEY_ID
-        }
+    headers = {"kid": config.KEY_ID}
 
-    encoded_jwt = jwt.encode(claims, config.SIGNING_KEY, algorithm="RS512", headers=headers)
+    encoded_jwt = jwt.encode(
+        claims, config.SIGNING_KEY, algorithm="RS512", headers=headers
+    )
 
     response = requests.post(
         f"{config.BASE_URL}/oauth2/token",
@@ -94,17 +94,21 @@ def set_valid_access_token(auth):
     assert response_json["token_type"] == "Bearer"
     assert response_json["expires_in"] and int(response_json["expires_in"]) > 0
 
-    auth["response"] = response.json()
+    auth["response"] = response_json
+    auth["access_token"] = response_json["access_token"]
+    auth["token_type"] = response_json["token_type"]
 
 
 @given("I have an invalid access token")
 def set_invalid_access_token(auth):
     auth["access_token"] = "INVALID_ACCESS_TOKEN"
+    auth["token_type"] = "Bearer"
 
 
 @given("I have no access token")
 def set_no_access_token(auth):
     auth["access_token"] = None
+    auth["token_type"] = "Bearer"
 
 
 @given("I have an expired access token")
@@ -114,27 +118,33 @@ def set_expired_access_token(auth):
         "iss": config.APPLICATION_RESTRICTED_API_KEY,
         "jti": str(uuid.uuid4()),
         "aud": f"{config.BASE_URL}/oauth2/token",
-        "exp": int(time.time()),
+        "exp": int(time.time()) + 300,
     }
 
-    headers = {
-        "kid": config.KEY_ID
-        }
-
-    encoded_jwt = jwt.encode(claims, config.SIGNING_KEY, algorithm="RS512", headers=headers)
+    encoded_jwt = jwt.encode(
+        claims, config.SIGNING_KEY, algorithm="RS512", headers={"kid": config.KEY_ID}
+    )
 
     response = requests.post(
         f"{config.BASE_URL}/oauth2/token",
         data={
+            "_access_token_expiry_ms": "1",
             "grant_type": "client_credentials",
             "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
             "client_assertion": encoded_jwt,
-        }
+        },
     )
 
-    print(response.json())
+    response_json = response.json()
 
-    assert False
+    assert {"access_token", "expires_in", "token_type"} == response_json.keys()
+    assert response_json["access_token"] is not None
+    assert response_json["token_type"] == "Bearer"
+    assert response_json["expires_in"] and int(response_json["expires_in"]) == 0
+
+    auth["response"] = response_json
+    auth["access_token"] = response_json["access_token"]
+    auth["token_type"] = response_json["token_type"]
 
 
 @given("I have a request context", target_fixture="context")
@@ -150,10 +160,26 @@ def get_patient(auth, context):
         token_type = auth["token_type"]
         authentication = f"{token_type} {authentication}"
 
-    headers = {
+    response = get_patient_request(
+        headers={
             "NHSD-SESSION-URID": "123",
-            "Authorization": f"Bearer {authentication}",
+            "Authorization": f"{authentication}",
+            "X-Request-ID": str(uuid.uuid4()),
         }
+    )
+
+    context["response"] = response.json()
+    context["status"] = response.status_code
+
+
+@when("I GET a patient without a user role ID")
+def get_patient_without_user_role_id(auth, context):
+    access_token = auth["response"]["access_token"]
+
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "X-Request-ID": str(uuid.uuid4()),
+    }
 
     response = get_patient_request(headers)
 
@@ -167,58 +193,36 @@ def get_patient(auth, context):
     )
 )
 def check_status(status, context):
-    print(context["response"])
     assert context["status"] == status
 
 
-@then("I get a Patient resource in the response")
-def check_patient_resource(context):
-    expected_keys = {
-        "resourceType",
-        "timestamp",
-        "total",
-        "type"
-    }
-    assert context["response"].keys() == expected_keys
-    assert context["response"]["resourceType"] == "Bundle"
-    assert context["response"]["total"] == 0
-    assert context["response"]["type"] == "searchset"
-    assert datetime.datetime.strptime(context["response"]["timestamp"], '%Y-%m-%dT%H:%M:%S+00:00')
+@then("I get a Bundle resource in the response")
+def check_bundle_resource(context):
+    response = context["response"]
+    EXPECTED_KEYS = {"resourceType", "timestamp", "total", "type"}
+    assert response.keys() == EXPECTED_KEYS
+    assert response["resourceType"] == "Bundle"
+    assert response["type"] == "searchset"
+    assert response["total"] >= 0
+    assert dateutil.parser.parse(response["timestamp"])
 
 
-@then("I get a diagnosis of invalid access token")
+@then("I get a diagnosis of Invalid Access Token")
 def check_diagnosis_invalid(context):
     assert context["response"]["issue"][0]["diagnostics"] == "Invalid Access Token"
 
 
+# This needs to be changed, as it's a confusing message
+@then("I get a diagnosis of Invalid access token")
+def check_diagnosis_missing(context):
+    assert context["response"]["issue"][0]["diagnostics"] == "Invalid access token"
+
+
 @then("I get a diagnosis of expired access token")
 def check_diagnosis_expired(context):
-    assert False
+    assert context["response"]["issue"][0]["diagnostics"] == "Access Token expired"
 
 
 @then("I get an error response")
 def check_error_response(context):
     assert context["response"]["issue"][0]["severity"] == "error"
-
-
-@scenario(
-    "features/application_restricted.feature",
-    "PDS FHIR API accepts request without user role ID",
-)
-def test_valid_when_without_user_id():
-    pass
-
-
-@when("I GET a patient without a user role ID")
-def get_patient_without_user_role_id(auth, context):
-    access_token = auth["response"]["access_token"]
-
-    headers = {
-            "Authorization": f"Bearer {access_token}",
-            "X-Request-ID": str(uuid.uuid4())
-        }
-
-    response = get_patient_request(headers)
-
-    context["response"] = response.json()
-    context["status"] = response.status_code
