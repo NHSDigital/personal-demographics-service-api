@@ -31,8 +31,11 @@ validate: generate-examples
 publish: clean
 	mkdir -p build
 	node_modules/.bin/speccy resolve specification/personal-demographics.yaml -i > build/personal-demographics-resolved.yaml
+  head -n 10 build/personal-demographics-resolved.yaml
 	poetry run python scripts/yaml2json.py < build/personal-demographics-resolved.yaml > build/personal-demographics-resolved.json
+  head -n 10 build/personal-demographics-resolved.json
 	poetry run python scripts/set_version.py < build/personal-demographics-resolved.json > build/personal-demographics.json
+  head -n 10 build/personal-demographics.json
 	rm build/personal-demographics-resolved.*
 
 serve: update-examples
