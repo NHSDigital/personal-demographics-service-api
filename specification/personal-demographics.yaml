@@ -154,7 +154,7 @@ info:
 
     Alternatively, you can try out the sandbox using our Postman collection:
     
-    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/7ca0d7d9e12a851fd335)
+    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
 
     ### Download Postman client
 
@@ -359,7 +359,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/7ca0d7d9e12a851fd335)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
 
         ### Download Postman client
 
@@ -642,7 +642,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/7ca0d7d9e12a851fd335)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
               
         ### Download Postman client
 
@@ -1267,6 +1267,8 @@ paths:
         Where the communication extension already exists and you wish to replace a specific sub-extension, then the path should be:
         * `/extension/0/extension/1` if the communication extension is the first item in the list and the sub-extension is the second item in the list.
         
+        You can find examples of the above requests in our sandbox Postman collection
+
         There are a number of business rules that should be taken into account:
         * preferred language must not be supplied where it is English even though the [code list](https://simplifier.net/ukcore/codesystem-ukcore-humanlanguage) contains a value for English (en).
         * any language codes outside the accepted list will be rejected; such as local system `qa` codes.
@@ -1280,6 +1282,8 @@ paths:
 
         Where the Contact Preference extension already exists and you wish to add, replace or remove a specific contact preference(s) sub-extension, then the path should be:
         * `/extension/0/extension/1` if the contact preference extension is the first item in the list and the method is the second item in the sub-extension list.
+        
+        You can find examples of the above requests in our sandbox Postman collection 
 
         There are a number of business rules that should be taken into account:
         * a patient can have `0` or `1` contact preference.
@@ -1321,6 +1325,8 @@ paths:
         In a JSON Patch request the path should be:
         * `/extension/0` if the death notification is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
         * `/extension/-` when adding a death notification.
+        
+        You can find examples of the above requests in our sandbox Postman collection
 
         There are a number of business rules that should be taken into account:
         * cannot be removed.
@@ -1486,7 +1492,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/7ca0d7d9e12a851fd335)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
 
         ### Download Postman client
 
@@ -1667,7 +1673,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/7ca0d7d9e12a851fd335)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
 
         ### Download Postman client
 
@@ -1806,11 +1812,11 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/7ca0d7d9e12a851fd335)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
         
         ### Download Postman client
 
-        If you don’t have it, you can download Postman [here](https://www.postman.com).   
+        If you don’t have it, you can download Postman [here](https://www.postman.com).
     
         Click on the download button in the top right corner and follow the instructions.
 
