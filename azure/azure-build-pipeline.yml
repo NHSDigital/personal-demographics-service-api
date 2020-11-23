@@ -17,7 +17,6 @@ resources:
     - repository: common
       type: github
       name: NHSDigital/api-management-utils
-      ref: refs/heads/mm-apm-1552-api-gateway-client-cert-hosted-containers
       endpoint: NHSDigital
 
 variables:
