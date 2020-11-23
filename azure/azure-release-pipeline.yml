@@ -8,6 +8,7 @@ resources:
     - repository: common
       type: github
       name: NHSDigital/api-management-utils
+      ref: refs/heads/mm-apm-1552-api-gateway-client-cert-hosted-containers
       endpoint: NHSDigital
   pipelines:
   - pipeline: build_pipeline
@@ -32,7 +33,7 @@ extends:
     product_display_name: ${{ variables.product_display_name }}
     product_description: ${{ variables.product_description }}
     spec_file: ${{ variables.spec_file }}
-    enable_monitoring: true 
+    enable_monitoring: true
     jinja_templates:
       REQUIRE_ASID: false
       PDS_TARGET_SERVER: ig3
