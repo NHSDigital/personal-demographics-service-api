@@ -1,0 +1,27 @@
+<RaiseFault async="false" continueOnError="false" enabled="true" name="RaiseFault.PatchMethodNotAllowedAppRestricted">
+  <FaultResponse>
+    <Set>
+      <Headers />
+      <Payload contentType="text/plain" />
+      <StatusCode>403</StatusCode>
+      <ReasonPhrase>Forbidden</ReasonPhrase>
+    </Set>
+    <AssignVariable>
+      <Name>pds.error.code</Name>
+      <Value>token</Value>
+    </AssignVariable>
+    <AssignVariable>
+      <Name>pds.error.coding.code</Name>
+      <Value>INVALID_METHOD</Value>
+    </AssignVariable>
+    <AssignVariable>
+      <Name>pds.error.coding.display</Name>
+      <Value>Cannot update resource with Application-Restricted access token</Value>
+    </AssignVariable>
+    <AssignVariable>
+      <Name>pds.error.diagnostics</Name>
+      <Template>Your app has insufficient permissions to use this method. Please contact support.</Template>
+    </AssignVariable>
+  </FaultResponse>
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</RaiseFault>

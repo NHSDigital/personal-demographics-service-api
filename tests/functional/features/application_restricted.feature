@@ -1,6 +1,6 @@
 Feature: Unattended Access
   Authentication using the signed JWT method.
-  
+
   Scenario: PDS FHIR API accepts request with valid access token
     Given I am authenticating using unattended access
     And I have a valid access token
@@ -53,3 +53,35 @@ Feature: Unattended Access
 
     Then I get a 200 HTTP response
     And I get a Bundle resource in the response
+
+  Scenario: PDS FHIR API rejects request for more than one result
+    Given I am authenticating using unattended access
+    And I have a valid access token
+    And I have a request context
+
+    When I GET a patient asking for two results
+
+    Then I get a 403 HTTP response
+    And I get an error response
+    And I get a diagnosis of insufficient permissions
+
+  Scenario: PDS FHIR API accepts request for one result
+    Given I am authenticating using unattended access
+    And I have a valid access token
+    And I have a request context
+
+    When I GET a patient asking for one result
+
+    Then I get a 200 HTTP response
+    And I get a Bundle resource in the response
+
+  Scenario: PDS FHIR API rejects PATCH requests
+    Given I am authenticating using unattended access
+    And I have a valid access token
+    And I have a request context
+
+    When I PATCH a patient
+
+    Then I get a 403 HTTP response
+    And I get an error response
+    And I get a diagnosis of insufficient permissions to use this method
