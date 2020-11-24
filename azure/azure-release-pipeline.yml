@@ -38,7 +38,9 @@ extends:
       PDS_TARGET_SERVER: ig3
     secret_ids:
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_API_KEY
+      - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_WITH_ASID_API_KEY
     secret_file_ids:
+      - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_WITH_ASID_PRIVATE_KEY
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_PRIVATE_KEY
     apigee_deployments:
       - environment: internal-dev

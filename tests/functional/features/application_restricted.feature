@@ -1,6 +1,9 @@
 Feature: Unattended Access
   Authentication using the signed JWT method.
 
+  Background:
+    Given I determine whether an asid is required
+
   Scenario: PDS FHIR API accepts request with valid access token
     Given I am authenticating using unattended access
     And I have a valid access token
