@@ -75,3 +75,4 @@ extends:
           - internal_qa_sandbox
         jinja_templates:
           REQUIRE_ASID: true
+          PDS_TARGET_SERVER: ig3
