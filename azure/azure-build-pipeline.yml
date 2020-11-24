@@ -17,6 +17,7 @@ resources:
     - repository: common
       type: github
       name: NHSDigital/api-management-utils
+      ref: APM-1187-speed-up-builds
       endpoint: NHSDigital
 
 variables:
