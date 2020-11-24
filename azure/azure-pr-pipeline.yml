@@ -35,6 +35,7 @@ extends:
     product_description: ${{ variables.product_description }}
     spec_file: ${{ variables.spec_file }}
     deploy_review_sandbox: true
+    portal_api_requires_callback_url: false
     jinja_templates:
       REQUIRE_ASID: false
     secret_ids:
