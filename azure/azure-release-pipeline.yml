@@ -35,6 +35,7 @@ extends:
     enable_monitoring: true
     jinja_templates:
       REQUIRE_ASID: false
+      PDS_TARGET_SERVER: ig3
     secret_ids:
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_API_KEY
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_WITH_ASID_API_KEY
