@@ -32,13 +32,16 @@ extends:
     product_display_name: ${{ variables.product_display_name }}
     product_description: ${{ variables.product_description }}
     spec_file: ${{ variables.spec_file }}
-    enable_monitoring: true 
+    enable_monitoring: true
     portal_api_requires_callback_url: false
     jinja_templates:
       REQUIRE_ASID: false
+      PDS_TARGET_SERVER: ig3
     secret_ids:
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_API_KEY
+      - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_WITH_ASID_API_KEY
     secret_file_ids:
+      - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_WITH_ASID_PRIVATE_KEY
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_PRIVATE_KEY
     apigee_deployments:
       - environment: internal-dev

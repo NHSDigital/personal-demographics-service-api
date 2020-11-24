@@ -1,187 +1,193 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <TargetEndpoint name="ig3">
-    <PreFlow>
-        <Request>
-            <Step>
-                <Name>OauthV2.VerifyAccessToken</Name>
-            </Step>
-            <Step>
-                <Name>OauthV2.VerifyAccessTokenWithUserRestrictedScope</Name>
-                <Condition>(request.method == "PATCH")</Condition>
-            </Step>
-            <Step>
-                <!-- Header NHSD-Session-URID must be present and not empty for 'authorization_code'-->
-                <Name>RaiseFault.400BadRequest</Name>
-                <Condition>(grant_type is "authorization_code") and ((request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+"))</Condition>
-            </Step>
-            <Step>
-                <!-- Header X-Request-ID must be present and not empty -->
-                <Name>RaiseFault.400BadRequest</Name>
-                <Condition>(original-request-details.header.X-Request-ID is null) or (not original-request-details.header.X-Request-ID ~~ ".+")</Condition>
-            </Step>
-            <Step>
-                <!-- Header NHSD-Request-ID must be in the correct format (GUID) -->
-                <Name>RaiseFault.400BadRequest</Name>
-                <Condition>(original-request-details.header.X-Request-ID != null) and (not original-request-details.header.X-Request-ID ~~ "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")</Condition>
-            </Step>
-            <Step>
-                <Name>Quota</Name>
-            </Step>
-            <Step>
-                <Name>SpikeArrest</Name>
-            </Step>
-            <Step>
-                <Name>AssignMessage.AddUserIdHeader</Name>
-            </Step>
-            <Step>
-                <Name>AssignMessage.AddIssuerHeader</Name>
-            </Step>
-            <Step>
-                <Name>KeyValueMapOperations.GetSecureVariables</Name>
-            </Step>
-            <Step>
-                <Name>AssignMessage.PopulateAsidFromApp</Name>
-                <Condition>(app.asid IsNot null)</Condition>
-            </Step>
-            {% if REQUIRE_ASID == 'True' %}
-            <Step>
-                <Name>RaiseFault.400BadRequest</Name>
-                <Condition>(app.asid is null)</Condition>
-            </Step>
-            {% endif %}
-            <Step>
-                <Name>AssignMessage.AddAsidHeader</Name>
-            </Step>
-            <Step>
-                <!--This should always be the last Step - as it is just before the message is sent - so the initial request stays intact for as long as possible.
+  <PreFlow>
+    <Request>
+      <Step>
+        <Name>OauthV2.VerifyAccessToken</Name>
+      </Step>
+      <!-- Set flow variable 'access-mode' by inspecting the token's scopes.
+      First set to least-privilege (application restricted) then look for scopes indicating higher privilege, overwriting as appropriate.
+      'scope' is a space-separated string of scopes, determined by the Application's API Product assignments.
+      Follow pattern used in AssignMessage.SetAccessModeUserRestricted condition. See Apigee docs for JavaRegex gotchas (uses '.match()' behaviour matching whole string only). -->
+      <Step>
+        <Name>AssignMessage.SetAccessModeApplicationRestricted</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.SetAccessModeUserRestricted</Name>
+        <Condition>(scope JavaRegex "(.+\ personal-demographics-service:USER-RESTRICTED\ .+|^personal-demographics-service:USER-RESTRICTED\ .+|.+\ personal-demographics-service:USER-RESTRICTED$|^personal-demographics-service:USER-RESTRICTED$)")</Condition>
+      </Step>
+      <Step>
+        <!-- Header NHSD-Session-URID must be present and not empty for 'authorization_code'-->
+        <Name>RaiseFault.400BadRequest</Name>
+        <Condition>(grant_type is "authorization_code") and ((request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+"))</Condition>
+      </Step>
+      <Step>
+        <!-- Header NHSD-Request-ID must be in the correct format (GUID) -->
+        <Name>RaiseFault.400BadRequest</Name>
+        <Condition>(original-request-details.header.X-Request-ID != null) and (not original-request-details.header.X-Request-ID ~~ "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")</Condition>
+      </Step>
+      <Step>
+        <Name>Quota</Name>
+      </Step>
+      <Step>
+        <Name>SpikeArrest</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.AddUserIdHeader</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.AddIssuerHeader</Name>
+      </Step>
+      <Step>
+        <Name>KeyValueMapOperations.GetSecureVariables</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.PopulateAsidFromApp</Name>
+        <Condition>(app.asid IsNot null)</Condition>
+      </Step>
+      {% if REQUIRE_ASID == 'True' %}
+      <Step>
+        <Name>RaiseFault.400BadRequest</Name>
+        <Condition>(app.asid is null)</Condition>
+      </Step>
+      {% endif %}
+      <Step>
+        <Name>AssignMessage.AddAsidHeader</Name>
+      </Step>
+      <Step>
+        <!--This should always be the last Step - as it is just before the message is sent - so the initial request stays intact for as long as possible.
                     The Swapping of the Request Headers converts X-Request-ID and X-Correlation-ID to NHSD-Request-ID and NHSD-Correlation-ID before sending to backend. -->
-                <Name>AssignMessage.Swap.RequestHeaders</Name>
-            </Step>
-        </Request>
-        <Response>
-            <Step>
-                <Name>AssignMessage.Mirror.CorrelationID</Name>
-                <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>
-            </Step>
-            <Step>
-                <Name>AssignMessage.Mirror.RequestID</Name>
-                <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
-            </Step>
-        </Response>
-    </PreFlow>
-    <HTTPTargetConnection>
-        <Properties>
-            <!-- Whitelist the 'expected' error code responses so the responses pass unhindered to caller
+        <Name>AssignMessage.Swap.RequestHeaders</Name>
+      </Step>
+    </Request>
+    <Response>
+      <Step>
+        <Name>AssignMessage.Mirror.CorrelationID</Name>
+        <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Mirror.RequestID</Name>
+        <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
+      </Step>
+    </Response>
+  </PreFlow>
+  <Flows>
+    <Flow name="application_restricted">
+      <Condition>(access-mode Equals "application-restricted")</Condition>
+      <Request>
+        <!-- Prevent use of PATCH method in application restricted mode -->
+        <Step>
+          <Name>RaiseFault.PatchMethodNotAllowedAppRestricted</Name>
+          <Condition>(request.verb Equals "PATCH")</Condition>
+        </Step>
+        <!-- If _max-results param is unset, set to allowed value for application-restricted mode -->
+        <Step>
+          <Name>AssignMessage.SetMaxResultsToOne</Name>
+          <Condition>(proxy.pathsuffix MatchesPath "/Patient" and request.verb Equals "GET" and request.queryparam._max-results Is null)</Condition>
+        </Step>
+        <!-- If _max-results is set to anything other than 1, prevent query -->
+        <Step>
+          <Name>RaiseFault.MaxResultsInvalidAppRestricted</Name>
+          <Condition>(proxy.pathsuffix MatchesPath "/Patient" and request.verb Equals "GET" and request.queryparam._max-results NotEquals "1")</Condition>
+        </Step>
+      </Request>
+    </Flow>
+  </Flows>
+  <HTTPTargetConnection>
+    <Properties>
+      <!-- Whitelist the 'expected' error code responses so the responses pass unhindered to caller
                  Anything unexpected will be sanitsed by the DefaultFaultRule -
                  https://docs.apigee.com/api-platform/fundamentals/fault-handling#customhandlingofhttperrorcodesfromthetargetserver -->
-            <Property name="success.codes">1xx,2xx,3xx,4xx</Property>
-        </Properties>
-        <SSLInfo>
-            <Enabled>true</Enabled>
-        </SSLInfo>
-        <LoadBalancer>
-            <Server name="ig3"/>
-        </LoadBalancer>
-    </HTTPTargetConnection>
-    <FaultRules>
-        <FaultRule name="access_token_expired">
-            <Condition>oauthV2.OauthV2.VerifyAccessToken.failed</Condition>
-            <Step>
-                <Name>ExtractVariables.OAuthErrorFaultString</Name>
-            </Step>
-            <Step>
-                <Name>AssignMessage.Mirror.CorrelationID</Name>
-                <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>
-            </Step>
-            <Step>
-                <Name>AssignMessage.Mirror.RequestID</Name>
-                <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
-            </Step>
-            <Step>
-                <Name>AssignMessage.Errors.OAuthPolicyResponse</Name>
-            </Step>
-        </FaultRule>
-        <FaultRule name="no_request_id_provided">
-            <Condition>(original-request-details.header.X-Request-ID is null) or (not original-request-details.header.X-Request-ID ~~ ".+")</Condition>
-            <Step>
-                <Name>AssignMessage.Errors.MissingRequestId</Name>
-            </Step>
-            <Step>
-                <Name>AssignMessage.Errors.CatchAllMessage</Name>
-            </Step>
-        </FaultRule>
-        <FaultRule name="invalid_request_id">
-            <Condition>(original-request-details.header.X-Request-ID != null) and (not original-request-details.header.X-Request-ID ~~ "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")</Condition>
-            <Step>
-                <Name>AssignMessage.Errors.InvalidRequestID</Name>
-            </Step>
-            <Step>
-                <Name>AssignMessage.Mirror.CorrelationID</Name>
-                <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>
-            </Step>
-            <Step>
-                <Name>AssignMessage.Mirror.RequestID</Name>
-                <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
-            </Step>
-            <Step>
-                <Name>AssignMessage.Errors.CatchAllMessage</Name>
-            </Step>
-        </FaultRule>
-        <FaultRule name="invalid_user_role_id">
-            <Condition>(grant_type is "authorization_code") and ((request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+"))</Condition>
-            <Step>
-                <Name>AssignMessage.Errors.MissingUserRoleID</Name>
-            </Step>
-            <Step>
-                <Name>AssignMessage.Mirror.CorrelationID</Name>
-                <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>
-            </Step>
-            <Step>
-                <Name>AssignMessage.Mirror.RequestID</Name>
-                <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
-            </Step>
-            <Step>
-                <Name>AssignMessage.Errors.CatchAllMessage</Name>
-            </Step>
-        </FaultRule>
-        <FaultRule name="insufficient_scope">
-            <Condition>(fault.name == "InsufficientScope")</Condition>
-            <Step>
-                <Name>AssignMessage.Errors.InsufficientScope</Name>
-            </Step>
-            <Step>
-                <Name>AssignMessage.Errors.CatchAllMessage</Name>
-            </Step>            
-        </FaultRule>
-        <FaultRule name="no_asid_provided">
-            <Condition>(request.header.NHSD-ASID is null) or (not request.header.NHSD-ASID ~~ ".+")</Condition>
-            <Step>
-                <Name>AssignMessage.Errors.MissingASID</Name>
-            </Step>
-            <Step>
-                <Name>AssignMessage.Mirror.CorrelationID</Name>
-                <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>
-            </Step>
-            <Step>
-                <Name>AssignMessage.Mirror.RequestID</Name>
-                <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
-            </Step>
-            <Step>
-                <Name>AssignMessage.Errors.CatchAllMessage</Name>
-            </Step>
-        </FaultRule>
-    </FaultRules>
-    <DefaultFaultRule>
-        <Step>
-            <Name>AssignMessage.Errors.CatchAllMessage</Name>
-        </Step>
-        <Step>
-            <Name>AssignMessage.Mirror.CorrelationID</Name>
-            <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>
-        </Step>
-        <Step>
-            <Name>AssignMessage.Mirror.RequestID</Name>
-            <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
-        </Step>
-    </DefaultFaultRule>
+      <Property name="success.codes">1xx,2xx,3xx,4xx</Property>
+    </Properties>
+    <SSLInfo>
+      <Enabled>true</Enabled>
+    </SSLInfo>
+    <LoadBalancer>
+      <Server name="{{ PDS_TARGET_SERVER }}" />
+    </LoadBalancer>
+  </HTTPTargetConnection>
+  <FaultRules>
+    <FaultRule name="access_token_expired">
+      <Condition>oauthV2.OauthV2.VerifyAccessToken.failed</Condition>
+      <Step>
+        <Name>ExtractVariables.OAuthErrorFaultString</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Mirror.CorrelationID</Name>
+        <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Mirror.RequestID</Name>
+        <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Errors.OAuthPolicyResponse</Name>
+      </Step>
+    </FaultRule>
+    <FaultRule name="invalid_request_id">
+      <Condition>(original-request-details.header.X-Request-ID != null) and (not original-request-details.header.X-Request-ID ~~ "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")</Condition>
+      <Step>
+        <Name>AssignMessage.Errors.InvalidRequestID</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Mirror.CorrelationID</Name>
+        <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Mirror.RequestID</Name>
+        <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Errors.CatchAllMessage</Name>
+      </Step>
+    </FaultRule>
+    <FaultRule name="invalid_user_role_id">
+      <Condition>(grant_type is "authorization_code") and ((request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+"))</Condition>
+      <Step>
+        <Name>AssignMessage.Errors.MissingUserRoleID</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Mirror.CorrelationID</Name>
+        <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Mirror.RequestID</Name>
+        <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Errors.CatchAllMessage</Name>
+      </Step>
+    </FaultRule>
+    <FaultRule name="no_asid_provided">
+      <Condition>(request.header.NHSD-ASID is null) or (not request.header.NHSD-ASID ~~ ".+")</Condition>
+      <Step>
+        <Name>AssignMessage.Errors.MissingASID</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Mirror.CorrelationID</Name>
+        <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Mirror.RequestID</Name>
+        <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Errors.CatchAllMessage</Name>
+      </Step>
+    </FaultRule>
+  </FaultRules>
+  <DefaultFaultRule>
+    <Step>
+      <Name>AssignMessage.Errors.CatchAllMessage</Name>
+    </Step>
+    <Step>
+      <Name>AssignMessage.Mirror.CorrelationID</Name>
+      <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>
+    </Step>
+    <Step>
+      <Name>AssignMessage.Mirror.RequestID</Name>
+      <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
+    </Step>
+  </DefaultFaultRule>
 </TargetEndpoint>

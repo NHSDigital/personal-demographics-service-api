@@ -37,10 +37,13 @@ extends:
     deploy_review_sandbox: true
     portal_api_requires_callback_url: false
     jinja_templates:
+      PDS_TARGET_SERVER: ig3
       REQUIRE_ASID: false
     secret_ids:
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_API_KEY
+      - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_WITH_ASID_API_KEY
     secret_file_ids:
+      - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_WITH_ASID_PRIVATE_KEY
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_PRIVATE_KEY
     apigee_deployments:
         - environment: internal-dev
@@ -57,6 +60,7 @@ extends:
           service_base_path: ${{ variables.service_base_path }}-asid-required
           stage_name: internal_dev_asid_required
           jinja_templates:
+            PDS_TARGET_SERVER: ig3
             REQUIRE_ASID: true
           post_deploy:
             - template: templates/pds-tests.yml
@@ -65,3 +69,12 @@ extends:
                 test_type: smoke
         - environment: internal-dev-sandbox
           proxy_path: sandbox
+        - environment: internal-dev
+          service_name: ${{ variables.service_name }}-int
+          short_service_name: ${{ variables.short_service_name }}-int
+          product_display_name: ${{ variables.product_display_name }} (INT Testing)
+          service_base_path: ${{ variables.service_base_path }}-int
+          stage_name: internal_dev_int
+          jinja_templates:
+            PDS_TARGET_SERVER: ig3-int
+            REQUIRE_ASID: false
