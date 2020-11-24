@@ -4,6 +4,7 @@ import uuid
 import time
 import requests
 from .config_files import config
+from .config_files.environment import ENV
 from pytest import mark
 from pytest_bdd import scenario, given, when, then, parsers
 
@@ -17,6 +18,13 @@ def get_patient_request(headers: dict, extra_params: dict = None):
         headers=headers,
         params=params,
     )
+
+
+@given("I determine whether an asid is required")
+def check_which_test_app_to_use():
+    if "asid-required" in config.PDS_BASE_PATH:
+        config.APPLICATION_RESTRICTED_API_KEY = ENV["application_restricted_with_asid_api_key"]
+        config.SIGNING_KEY = ENV["signing_key_with_asid"]
 
 
 @scenario(
