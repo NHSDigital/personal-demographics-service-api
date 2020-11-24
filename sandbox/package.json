@@ -10,7 +10,7 @@
     "author": "NHS Digital",
     "license": "MIT",
     "dependencies": {
-        "@hapi/hapi": "20.0.0",
+        "@hapi/hapi": "20.0.3",
         "@hapi/joi": "^17.1.0",
         "date-fns": "^2.16.1",
         "fast-json-patch": "^3.0.0-1",
