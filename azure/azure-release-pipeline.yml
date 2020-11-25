@@ -9,6 +9,7 @@ resources:
       type: github
       name: NHSDigital/api-management-utils
       endpoint: NHSDigital
+      ref: refs/heads/APM-616-manual-approval-gates
   pipelines:
   - pipeline: build_pipeline
     source: "Personal-Demographics-Service-Build"
