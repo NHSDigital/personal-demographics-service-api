@@ -79,3 +79,5 @@ extends:
             REQUIRE_ASID: false
           post_deploy:
             - template: templates/pds-int-tests.yml
+              parameters:
+                environment: internal-dev
