@@ -70,7 +70,7 @@ extends:
         - environment: manual-intervention
         - environment: internal-dev-sandbox
           depends_on:
-            - manual-intervention
+            - manual_intervention
           proxy_path: sandbox
         - environment: internal-dev
           service_name: ${{ variables.service_name }}-int
