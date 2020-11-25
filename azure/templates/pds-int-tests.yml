@@ -33,8 +33,8 @@ steps:
         npm install
 
         # Run tests
-        echo "node_modules/.bin/node --unhandled-rejections=strict e2e/test-runner.js $(IDP_URL) $(API_URL) ./e2e/User-Restricted-Smoke-Tests-INT.json ./e2e/environments/deploy.postman-environment.json"
-        node_modules/.bin/node --unhandled-rejections=strict e2e/test-runner.js $(IDP_URL) $(API_URL) ./e2e/User-Restricted-Smoke-Tests-INT.json ./e2e/environments/deploy.postman-environment.json;
+        echo "node_modules/.bin/node --unhandled-rejections=strict e2e/test-runner.js $(IDP_URL) $(API_URL) ./e2e/user-restricted-smoke.json ./e2e/environments/deploy.postman-environment.json"
+        node_modules/.bin/node --unhandled-rejections=strict e2e/test-runner.js $(IDP_URL) $(API_URL) ./e2e/user-restricted-smoke.json ./e2e/environments/deploy.postman-environment.json;
       fi
     displayName: 'Run User-Restricted-Smoke-Tests-INT tests'
 
