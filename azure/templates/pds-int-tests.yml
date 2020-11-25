@@ -1,0 +1,44 @@
+steps:
+  - task: DownloadSecureFile@1
+    displayName: 'Download postman environment'
+    name: postman_environment
+    inputs:
+      secureFile: '$(ENVIRONMENT).postman_environment.json'
+
+  - bash: |
+      if [ -d $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests ]; then
+        cp $(postman_environment.secureFilePath) $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/e2e/environments/deploy.postman-environment.json;
+      fi
+    displayName: 'Copy environment file to tests'
+
+  - bash: |
+      echo "##vso[task.setvariable variable=IDP_URL]https://nhsd-apim-testing-$(ENVIRONMENT).herokuapp.com"
+      echo "##vso[task.setvariable variable=API_URL]https://$(ENVIRONMENT).api.service.nhs.uk/$(SERVICE_BASE_PATH)"
+    displayName: Set test urls
+
+  - bash: |
+      set -euo pipefail
+
+      if [ -d $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests ]; then
+        # Go to tests folder
+        cd $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests
+
+        # Install node
+        curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+
+        # Install dependencies
+        npm install
+
+        # Run tests
+        echo "node_modules/.bin/node --unhandled-rejections=strict e2e/test-runner.js $(IDP_URL) $(API_URL) User-Restricted-Smoke-Tests-INT  ./e2e/environments/deploy.postman-environment.json"
+        node_modules/.bin/node --unhandled-rejections=strict e2e/test-runner.js $(IDP_URL) $(API_URL) User-Restricted-Smoke-Tests-INT  ./e2e/environments/deploy.postman-environment.json;
+      fi
+    displayName: 'Run User-Restricted-Smoke-Tests-INT tests'
+
+  - task: PublishTestResults@2
+    displayName: 'Publish User-Restricted-Smoke-Tests-INT Test Results'
+    inputs:
+      testResultsFiles: |
+        $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/test-report.xml
+        $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/*.xml
+      failTaskOnFailedTests: true

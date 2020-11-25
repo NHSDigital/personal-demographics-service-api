@@ -77,3 +77,5 @@ extends:
           jinja_templates:
             PDS_TARGET_SERVER: ig3-int
             REQUIRE_ASID: false
+          post_deploy:
+            - template: templates/pds-int-tests.yml
