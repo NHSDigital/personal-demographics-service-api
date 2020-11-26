@@ -59,7 +59,7 @@ def test_expired():
     pass
 
 
-@mark.skip(reason="broken on internal-qa")
+@mark.skip(reason="broken test on internal-qa")
 @scenario(
     "features/application_restricted.feature",
     "PDS FHIR API accepts request without user role ID",
