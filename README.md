@@ -129,6 +129,8 @@ Update the API Specification and derived documentation in the Portal.
 ### API Proxy & Sandbox Service
 Redeploy the API Proxy and hosted Sandbox service.
 
+'change'
+
 `make deploy-proxy` with environment variables:
 
 * `APIGEE_USERNAME`
