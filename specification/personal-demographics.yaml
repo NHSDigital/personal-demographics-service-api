@@ -1351,7 +1351,7 @@ paths:
         * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
         * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
         * the date period, if present, should be on the parent `contact` object and not any `telecom` child objects.
-        * if the telecom system is `email`, the value must be a valid email format, for example `john.smith@nhs.net`; be more than 6 characters and less than 90 characters
+        * if the system is email, the value must be a valid email format, for example john.smith@nhs.net; and must be more than 6 characters and less that 90 characters
         * the relationship can only be `C` meaning `Emergency Contact`
 
         ### Gender
