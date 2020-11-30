@@ -145,8 +145,8 @@ Redeploy the API Proxy and hosted Sandbox service.
 Successful deployment of the API Proxy requires:
 
  1. *Target Servers*:
-    1. `ig3`: Gateway to PDS API
-    2. `ig3-int` Gateway to PDS INT API (Only avaliable for pull requests)
+    1. `spine-demographics`: Gateway to PDS API
+    2. `spine-demographics-int` Gateway to PDS INT API (Only avaliable for pull requests)
     3. `identity-server` - Identity Provider's OAuth server
  2. An **encrypted** (for production) *Key-Value Map* named `pds-variables-encrypted`, containing:
     1. Key: `NHSD-ASID`, Value: Accredited System ID (ASID) identifying the API Gateway
