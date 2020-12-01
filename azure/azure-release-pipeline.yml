@@ -65,6 +65,11 @@ extends:
         depends_on:
           - internal_qa
           - internal_qa_sandbox
+      - environment: ref
+        make_spec_visible: true
+        depends_on:
+          - internal_qa
+          - internal_qa_sandbox
       - environment: sandbox
         proxy_path: sandbox
         depends_on:
