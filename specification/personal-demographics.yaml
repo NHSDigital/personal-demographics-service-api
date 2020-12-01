@@ -209,7 +209,7 @@ servers:
   - url: 'https://api.service.nhs.uk/personal-demographics'
     description: 'Production environment.'
 tags:
-  - name: patient
+  - name: patients
   - name: polling
   - name: relatedperson
 paths:
