@@ -2,9 +2,6 @@
   <FaultRules/>
   <PreFlow/>
   <HTTPTargetConnection>
-    <SSLInfo>
-      <Enabled>true</Enabled>
-    </SSLInfo>
-    <URL>https://{{ APIM_PROXY_HOSTNAME }}</URL>
+    {{ HOSTED_TARGET_CONNECTION }}
   </HTTPTargetConnection>
 </TargetEndpoint>

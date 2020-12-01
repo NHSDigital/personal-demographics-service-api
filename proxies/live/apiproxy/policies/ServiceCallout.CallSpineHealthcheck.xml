@@ -11,7 +11,7 @@
             <Enabled>true</Enabled>
         </SSLInfo>
         <LoadBalancer>
-            <Server name="ig3"/>
+            <Server name="{{ PDS_TARGET_SERVER }}"/>
         </LoadBalancer>
         <Path>/healthcheck</Path>
     </HTTPTargetConnection>
