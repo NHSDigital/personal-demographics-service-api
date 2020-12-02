@@ -215,10 +215,10 @@ tags:
 paths:
   /Patient:
     parameters:
-      - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
-      - $ref: '#/components/parameters/CorrelationID'
+      - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/RequestID'
+      - $ref: '#/components/parameters/CorrelationID'
     get:
       summary: Search for a patient
       operationId: search-patient
@@ -604,10 +604,10 @@ paths:
   '/Patient/{id}':
     parameters:
       - $ref: '#/components/parameters/Id'
-      - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
-      - $ref: '#/components/parameters/CorrelationID'
+      - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/RequestID'
+      - $ref: '#/components/parameters/CorrelationID'
     get:
       description: |
         ## Overview
@@ -1646,10 +1646,10 @@ paths:
   '/Patient/{id}/RelatedPerson':
     parameters:
       - $ref: '#/components/parameters/Id'
-      - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
-      - $ref: '#/components/parameters/CorrelationID'
+      - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/RequestID'
+      - $ref: '#/components/parameters/CorrelationID'
     get:
       description: |
         ## Overview
@@ -1782,8 +1782,8 @@ paths:
   '/_poll/{message_id}':
     parameters:
       - $ref: '#/components/parameters/MessageId'
-      - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
+      - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/CorrelationID'
     get:
       description: |
@@ -1994,37 +1994,35 @@ components:
         type: string
         format: '^Bearer\ [[:ascii:]]+$'
         example: 'Bearer g1112R_ccQ1Ebbb4gtHBP1aaaNM'
-    CorrelationID:
-      in: header
-      name: X-Correlation-ID
-      required: false
-      description: |
-        A globally unique identifier (GUID) for the request, which we use to trace the request if you contact our helpdesk.
-        
-        Mirrored back in a response header.
-        
-        Avoid `.` characters.
-      schema:
-        type: string
-        example: 11C46F5F-CDEF-4865-94B2-0EE0EDCC26DA
     RequestID:
       in: header
       name: X-Request-ID
       required: false
       description: |
-        A globally unique identifier (GUID) for the request, which we use to de-duplicate repeated requests.
+        A globally unique identifier (GUID) for the request, which we use to de-duplicate repeated requests and to trace the request if you contact our helpdesk.
         
         Must be a universally unique identifier (UUID) (ideally version 4).
 
-        If you re-send a failed request, use the same value in this header.
-
         Mirrored back in a response header.
+
+        If you re-send a failed request, use the same value in this header.
 
         Required in all environments except sandbox.
       schema:
         type: string
         pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
         example: 60E0B220-8136-4CA5-AE46-1D97EF59D068
+    CorrelationID:
+      in: header
+      name: X-Correlation-ID
+      required: false
+      description: |
+        An optional ID which you can use to track transactions across multiple systems. It can take any value, but we recommend avoiding `.` characters.
+        
+        Mirrored back in a response header.
+      schema:
+        type: string
+        example: 11C46F5F-CDEF-4865-94B2-0EE0EDCC26DA
   schemas:
     Patient:
       $ref: components/schemas/Patient.yaml
