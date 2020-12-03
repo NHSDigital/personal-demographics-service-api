@@ -40,7 +40,7 @@
       <Description/>
       <Request>
         <Step>
-          <Name>KeyValueMapOperations.GetSecureVariables</Name>
+          <Name>KeyValueMapOperations.GetSharedSecureVariables</Name>
         </Step>
         <Step>
           <Condition>private.apigee.status-endpoint-api-key NotEquals request.header.apikey</Condition>
