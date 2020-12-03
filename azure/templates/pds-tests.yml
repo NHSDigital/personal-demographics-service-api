@@ -1,12 +1,9 @@
 parameters:
   - name: test_pack_path
   - name: test_type
-  - name: environment
 
 steps:
   - template: ./common/setup-newman-tests.yml
-    parameters:
-      environment: ${{ parameters.environment }}
 
   - bash: |
       set -euo pipefail
