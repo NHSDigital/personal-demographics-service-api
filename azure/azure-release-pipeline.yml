@@ -50,6 +50,7 @@ extends:
             parameters:
               test_pack_path: ./e2e/smoke.json
               test_type: smoke
+              environment: internal-dev
       - environment: internal-qa
         make_spec_visible: true
         post_deploy:
@@ -57,6 +58,7 @@ extends:
             parameters:
               test_pack_path: ./e2e/smoke.json
               test_type: smoke
+              environment: internal-qa
       - environment: internal-qa-sandbox
         make_spec_visible: true
         proxy_path: sandbox
