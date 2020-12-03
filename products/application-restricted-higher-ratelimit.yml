@@ -3,6 +3,7 @@ displayName: Personal Demographics Service - Application Restricted
 description: Access the Personal Demographics Service with reduced permisions.
 environments:
   - prod
+  - ref
 attributes:
   - name: access
     value: public
