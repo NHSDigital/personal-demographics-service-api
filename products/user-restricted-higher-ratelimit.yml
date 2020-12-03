@@ -5,6 +5,7 @@ scopes:
   - personal-demographics-service:USER-RESTRICTED
 environments:
   - prod
+  - ref
 attributes:
   - name: access
     value: public

@@ -10,5 +10,4 @@ environments:
   - internal-qa-sandbox
   - sandbox
   - dev
-  - ref
   - int
