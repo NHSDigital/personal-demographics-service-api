@@ -1,12 +1,9 @@
-parameters:
-  - name: environment
-
 steps:
   - task: DownloadSecureFile@1
-    displayName: 'Download ${{ parameters.environment }} postman environment'
+    displayName: 'Download postman environment'
     name: postman_environment
     inputs:
-      secureFile: '${{ parameters.environment }}.postman_environment.json'
+      secureFile: 'internal-dev.postman_environment.json'
 
   - bash: |
       if [ -d $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests ]; then
