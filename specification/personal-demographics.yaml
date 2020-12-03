@@ -100,35 +100,26 @@ info:
     ## Security and authorisation
     ### Healthcare professional access
     This access mode is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis),
-    meaning an end user must be present and authenticated to use it.
+    meaning an end user must be present, authenticated and authorised.
 
     The end user must be:
     - a healthcare professional
     - strongly authenticated, using either an NHS smartcard or a modern alternative
+    - authorised, using [national role-based access control (RBAC)](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/national-rbac-for-developers)
 
-    The API uses OAuth 2.0 to authorise the calling system.
-    
-    It supports the following security patterns:
+    To use this access mode, use one of the following security patterns:
     * [user-restricted RESTful API - using NHS Identity - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-combined-authentication-and-authorisation)
     * [user-restricted RESTful API - using NHS Identity - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-separate-authentication-and-authorisation)
 
-    In this access mode, all endpoints are fully available.
-    
-    In addition, the end user must be authorised to perform the various activities.
-    
-    The API itself does not perform any authorisation checks. Rather, the calling application must perform them. The authorisation rules are specified in our national Role Based Access Control (RBAC) database.
-    
-    For more details, [contact us](https://digital.nhs.uk/developer/help-and-support).
-    
     ### Application-restricted access
     This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis), meaning we authenticate the calling application but not the end user.
-    
-    In particular, we use following security pattern:
-    * [Application-restricted RESTful API - signed JWT authentication](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-signed-jwt-authentication)
     
     You can use this access mode as follows:
     * unattended (end user not present), for example as part of a back end process to check NHS numbers for data flowing from one system to another
     * attended (end user present) - in which case, you must ensure the end user is authenticated and suitably authorised locally by the calling application
+    
+    To use this access mode, use the following security pattern:
+    * [Application-restricted RESTful API - signed JWT authentication](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-signed-jwt-authentication)
     
     ### Citizen access
     This access mode is not available yet. 
