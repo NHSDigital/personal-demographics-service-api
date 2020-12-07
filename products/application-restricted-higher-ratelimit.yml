@@ -8,7 +8,7 @@ attributes:
   - name: access
     value: public
   - name: ratelimit
-    value: 18000pm  # Approx 300ps, higher than quota to allow short burst loads
+    value: 7800pm # 130tps in 1s buckets
 quota: 39000 # 130tps
-quotaInterval: 5 # Smoothed to 5 limits to be kind to bursty loads
+quotaInterval: 1
 quotaTimeUnit: minute
