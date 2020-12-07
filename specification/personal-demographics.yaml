@@ -151,7 +151,7 @@ info:
     2. If you already have the Postman desktop client installed:
     
         a.  click onto our postman collection (button below)
-      
+        
         b.  click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version and follow the instructions.
     
     Note: If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
