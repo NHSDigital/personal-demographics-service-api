@@ -145,22 +145,16 @@ info:
 
     Alternatively, you can try out the sandbox using our Postman collection:
     
+    ### Download Postman desktop client & our Postman Collection
+    
+    1. If you don’t have it, you can download Postman [here](https://www.postman.com/downloads/), by choosing the desktop app option.
+    2. If you already have the Postman desktop client installed:
+      a. click onto our postman collection (button below)
+      b. click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version and follow the instructions.
+    
+    Note: If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
+
     [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
-
-    ### Download Postman client
-
-    If you don’t have it, you can download Postman [here](https://www.postman.com).
-    
-    Click on the download button in the top right corner and follow the instructions.
-
-    ### Download our collection
-
-    If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
-    
-    Postman client should then open showing our Patient Demographics Sandbox.
-
-    If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
-
 
     ### Integration testing
     Our [integration test environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing):
