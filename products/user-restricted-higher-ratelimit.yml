@@ -11,6 +11,6 @@ attributes:
     value: public
   - name: ratelimit
     value: 7800pm # 130tps in 1s buckets
-quota: 39000 # 130tps
+quota: 7800 # 130tps
 quotaInterval: 1
 quotaTimeUnit: minute
