@@ -141,7 +141,7 @@ info:
     * is stateless, so does not actually persist any updates
     * is open access, so does not allow you to test authorisation
 
-    For details sandbox test scenarios, or to try out the sandbox using our 'Try this API' feature, see the documentation for each endpoint.
+    For details of sandbox test scenarios, or to try out the sandbox using our 'Try this API' feature, see the documentation for each endpoint.
 
     Alternatively, you can try out the sandbox using our Postman collection:
     
