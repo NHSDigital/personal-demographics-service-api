@@ -138,24 +138,13 @@ info:
     Our [sandbox environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#sandbox-testing):
     * is for early developer testing
     * only covers a limited set of scenarios
-    * is stateless, so it does not actually persist any updates
+    * is stateless, so does not actually persist any updates
     * is open access, so does not allow you to test authorisation
 
-    For more details on sandbox testing, or to try out the sandbox using our "Try this API" feature, see the documentation for each endpoint.
+    For details sandbox test scenarios, or to try out the sandbox using our 'Try this API' feature, see the documentation for each endpoint.
 
     Alternatively, you can try out the sandbox using our Postman collection:
     
-    ### Download Postman desktop client & our Postman Collection
-    
-    1. If you don’t have it, you can download Postman [here](https://www.postman.com/downloads/), by choosing the desktop app option.
-    2. If you already have the Postman desktop client installed:
-    
-        a.  click onto our postman collection (button below)
-        
-        b.  click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version and follow the instructions.
-    
-    Note: If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
-
     [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
 
     ### Integration testing
@@ -342,26 +331,12 @@ paths:
         | Invalid date format         | `birthdate` or `death-date` query parameters with values not in format `YYYY-MM-DD` | HTTP Status 400 with problem description   |
         | Too few search parameters   | Any invalid combination of query parameters                  | HTTP Status 400 with problem description   |
 
-        You can try out the sandbox using the "Try this API" feature on this page.
+        You can try out the sandbox using the 'Try this API' feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
+        
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
-
-        ### Download Postman client
-
-        If you don’t have it, you can download Postman [here](https://www.postman.com).   
-    
-        Click on the download button in the top right corner and follow the instructions.
-
-        ### Download our collection
-
-        If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
-    
-        Postman client should then open showing our Patient Demographics Sandbox.
-
-        If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
-
 
       tags:
         - patients
@@ -625,27 +600,13 @@ paths:
         | Patient doesn't exist            | `id`=`9111231130` (or any other valid NHS Number) | HTTP Status 404 with problem description                                                                                                      |
         | Invalid NHS Number               | `id`=`9000000000` (or any invalid NHS Number)     | HTTP Status 400 with problem description                                                                                                      |
 
-        You can try out the sandbox using the "Try this API" feature on this page.
+        You can try out the sandbox using the 'Try this API' feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
               
-        ### Download Postman client
-
-        If you don’t have it, you can download Postman [here](https://www.postman.com).   
-    
-        Click on the download button in the top right corner and follow the instructions.
-
-        ### Download our collection
-
-        If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
-    
-        Postman client should then open showing our Patient Demographics Sandbox.
-
-        If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
-
-        
+         
       summary: "Get patient details"
       operationId: get-patient
       tags:
@@ -1475,26 +1436,11 @@ paths:
         | No patches sent                     | Send body with no `patches` attribute                                     | HTTP Status 400 with problem description         |
         | Invalid patch operations            | Send body with invalid JSON patches in `patches` attribute                | HTTP Status 400 with problem description         |
 
-        You can try out the sandbox using the "Try this API" feature on this page.
+        You can try out the sandbox using the 'Try this API' feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
-
-        ### Download Postman client
-
-        If you don’t have it, you can download Postman [here](https://www.postman.com).   
-    
-        Click on the download button in the top right corner and follow the instructions.
-
-        ### Download our collection
-
-        If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
-    
-        Postman client should then open showing our Patient Demographics Sandbox.
-
-        If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
-
 
         
       summary: Update patient details
@@ -1656,25 +1602,11 @@ paths:
         | Single related person exists    | `id`=`9000000017`                             | HTTP Status 200 with related person data in a response Bundle |
         | Related people do not exist     | `id`=`9000000025`                             | HTTP Status 404 with problem description                      |
 
-        You can try out the sandbox using the "Try this API" feature on this page.
+        You can try out the sandbox using the 'Try this API' feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
-
-        ### Download Postman client
-
-        If you don’t have it, you can download Postman [here](https://www.postman.com).   
-    
-        Click on the download button in the top right corner and follow the instructions.
-
-        ### Download our collection
-
-        If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
-    
-        Postman client should then open showing our Patient Demographics Sandbox.
-
-        If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
 
        
       summary: "Get a patient's related people"
@@ -1795,26 +1727,12 @@ paths:
         | Polling message ID when update is not yet complete         | `message_id`=`20200522091633363041_000001`            | HTTP Status 202 with no data                |
         | Polling message ID not found                               | `message_id`=`20200522091633363041_000002`            | HTTP Status 404 with operation outcome body |
 
-        You can try out the sandbox using the "Try this API" feature on this page.
+        You can try out the sandbox using the 'Try this API' feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
-        
-        ### Download Postman client
-
-        If you don’t have it, you can download Postman [here](https://www.postman.com).
-    
-        Click on the download button in the top right corner and follow the instructions.
-
-        ### Download our collection
-
-        If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
-    
-        Postman client should then open showing our Patient Demographics Sandbox.
-
-        If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
-       
+              
         
       summary: Poll for the result of an update 
       operationId: polling
