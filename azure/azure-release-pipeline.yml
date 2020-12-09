@@ -33,6 +33,7 @@ extends:
     product_description: ${{ variables.product_description }}
     spec_file: ${{ variables.spec_file }}
     enable_monitoring: true
+    enable_status_monitoring: true
     jinja_templates:
       REQUIRE_ASID: false
       PDS_TARGET_SERVER: ig3
