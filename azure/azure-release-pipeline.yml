@@ -8,6 +8,7 @@ resources:
     - repository: common
       type: github
       name: NHSDigital/api-management-utils
+      ref: refs/heads/apm-1645-prod-deployment-gate
       endpoint: NHSDigital
   pipelines:
   - pipeline: build_pipeline
@@ -33,7 +34,6 @@ extends:
     product_description: ${{ variables.product_description }}
     spec_file: ${{ variables.spec_file }}
     enable_monitoring: true
-    enable_status_monitoring: true
     jinja_templates:
       REQUIRE_ASID: false
       PDS_TARGET_SERVER: ig3
@@ -51,6 +51,7 @@ extends:
             parameters:
               test_pack_path: ./e2e/smoke.json
               test_type: smoke
+              environment: internal-dev
       - environment: internal-qa
         make_spec_visible: true
         post_deploy:
@@ -58,6 +59,7 @@ extends:
             parameters:
               test_pack_path: ./e2e/smoke.json
               test_type: smoke
+              environment: internal-qa
       - environment: internal-qa-sandbox
         make_spec_visible: true
         proxy_path: sandbox
