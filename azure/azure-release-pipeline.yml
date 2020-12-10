@@ -45,45 +45,45 @@ extends:
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_PRIVATE_KEY
     prod_requires_approval: true
     apigee_deployments:
-      - environment: internal-dev
-        make_spec_visible: true
-        post_deploy:
-          - template: templates/pds-tests.yml
-            parameters:
-              test_pack_path: ./e2e/smoke.json
-              test_type: smoke
-              environment: internal-dev
-      - environment: internal-qa
-        make_spec_visible: true
-        post_deploy:
-          - template: templates/pds-tests.yml
-            parameters:
-              test_pack_path: ./e2e/smoke.json
-              test_type: smoke
-              environment: internal-qa
-      - environment: internal-qa-sandbox
-        make_spec_visible: true
-        proxy_path: sandbox
-      - environment: int
-        make_spec_visible: true
-        depends_on:
-          - internal_qa
-          - internal_qa_sandbox
-      - environment: ref
-        make_spec_visible: true
-        depends_on:
-          - internal_qa
-          - internal_qa_sandbox
-      - environment: sandbox
-        proxy_path: sandbox
-        depends_on:
-          - internal_qa
-          - internal_qa_sandbox
-      - environment: prod
-        make_spec_visible: true
-        depends_on:
-          - internal_qa
-          - internal_qa_sandbox
-        jinja_templates:
-          REQUIRE_ASID: true
-          PDS_TARGET_SERVER: ig3
+        - environment: internal-dev
+          make_spec_visible: true
+          post_deploy:
+            - template: templates/pds-tests.yml
+              parameters:
+                test_pack_path: ./e2e/smoke.json
+                test_type: smoke
+                environment: internal-dev
+        - environment: internal-qa
+          make_spec_visible: true
+          post_deploy:
+            - template: templates/pds-tests.yml
+              parameters:
+                test_pack_path: ./e2e/smoke.json
+                test_type: smoke
+                environment: internal-qa
+        - environment: internal-qa-sandbox
+          make_spec_visible: true
+          proxy_path: sandbox
+        - environment: int
+          make_spec_visible: true
+          depends_on:
+            - internal_qa
+            - internal_qa_sandbox
+        - environment: ref
+          make_spec_visible: true
+          depends_on:
+            - internal_qa
+            - internal_qa_sandbox
+        - environment: sandbox
+          proxy_path: sandbox
+          depends_on:
+            - internal_qa
+            - internal_qa_sandbox
+        - environment: prod
+          make_spec_visible: true
+          depends_on:
+            - internal_qa
+            - internal_qa_sandbox
+          jinja_templates:
+            REQUIRE_ASID: true
+            PDS_TARGET_SERVER: ig3
