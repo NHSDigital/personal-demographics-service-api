@@ -42,10 +42,13 @@
             <Condition>private.apigee.status-endpoint-api-key NotEquals request.header.apikey</Condition>
             <Name>RaiseFault.401Unauthorized</Name>
           </Step>
+          <Step>
+            <Name>ServiceCallout.CallSandboxHealthcheck</Name>
+          </Step>
         </Request>
         <Response>
           <Step>
-            <Name>AssignMessage.AddPayloadToStatus</Name>
+            <Name>javascript.SetStatusResponse</Name>
           </Step>
         </Response>
         <Condition>(proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
