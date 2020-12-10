@@ -1,4 +1,14 @@
 <ProxyEndpoint name="default">
+    <PreFlow>
+      <Request>
+        <Step>
+            <Name>AssignMessage.Errors.Default</Name>
+        </Step>
+        <Step>
+            <Name>AssignMessage.Copy.RequestHeaders</Name>
+        </Step>
+      </Request>
+    </PreFlow>
     <Flows>
       <Flow name="OptionsPreFlight">
             <Request/>
@@ -44,7 +54,6 @@
         <Condition>(proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
       </Flow>
     </Flows>
-    <PreFlow/>
     <PostClientFlow name="PostClientFlow">
       <Response>
         <Step>
