@@ -1,14 +1,4 @@
 <ProxyEndpoint name="default">
-    <PreFlow>
-      <Request>
-        <Step>
-            <Name>AssignMessage.Errors.Default</Name>
-        </Step>
-        <Step>
-            <Name>AssignMessage.Copy.RequestHeaders</Name>
-        </Step>
-      </Request>
-    </PreFlow>
     <Flows>
       <Flow name="OptionsPreFlight">
             <Request/>
