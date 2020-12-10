@@ -42,9 +42,6 @@
             <Condition>private.apigee.status-endpoint-api-key NotEquals request.header.apikey</Condition>
             <Name>RaiseFault.401Unauthorized</Name>
           </Step>
-          <!-- <Step>
-            <Name>ServiceCallout.CallSpineHealthcheck</Name>
-          </Step> -->
         </Request>
         <Response>
           <Step>
@@ -78,3 +75,4 @@
         <TargetEndpoint>apim</TargetEndpoint>
     </RouteRule>
 </ProxyEndpoint>
+
