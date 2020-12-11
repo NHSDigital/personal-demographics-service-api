@@ -24,9 +24,9 @@ class PersonalDemographicsUser(HttpUser):
             "Authorization": self.credentials["token_type"] + " " + self.credentials["access_token"],
             "NHSD-Identity-UUID": "1234567890",
             "NHSD-Session-URID": "1234567890",
-            "X-Request-ID": uuid.uuid4(),
+            "X-Request-ID": str(uuid4()),
         }
 
     @task(1)
     def pds_api(self):
-        self.client.get(f"{self.base_path}/Patient/{self.patient_search}", headers=self.headers)
+        self.client.get(f"{self.base_path}/Patient{self.patient_search}", headers=self.headers)
