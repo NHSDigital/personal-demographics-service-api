@@ -1,6 +1,7 @@
 import os
 from common.auth import Auth
 from locust import HttpUser, task, between
+from uuid import uuid4
 
 
 class PersonalDemographicsUser(HttpUser):
@@ -23,6 +24,7 @@ class PersonalDemographicsUser(HttpUser):
             "Authorization": self.credentials["token_type"] + " " + self.credentials["access_token"],
             "NHSD-Identity-UUID": "1234567890",
             "NHSD-Session-URID": "1234567890",
+            "X-Request-ID": uuid.uuid4(),
         }
 
     @task(1)
