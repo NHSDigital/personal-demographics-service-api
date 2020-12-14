@@ -34,4 +34,3 @@ class PersonalDemographicsUser(HttpUser):
     @task(1)
     def pds_api(self):
         self.client.get(f"{self.base_path}/_ping", headers=self.headers)
-    
