@@ -8,6 +8,7 @@ resources:
     - repository: common
       type: github
       name: NHSDigital/api-management-utils
+      ref: APM-1646-manifest-for-portal-flags
       endpoint: NHSDigital
   pipelines:
   - pipeline: build_pipeline
