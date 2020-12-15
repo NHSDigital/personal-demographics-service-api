@@ -1,0 +1,86 @@
+# Templating vars
+APIGEE_ENVIRONMENTS:
+  - name: internal-dev
+    display_name_suffix: Internal Development
+    service_name_suffixes: ['', '-int', '-asid-required']
+    service_display_name_suffixes: ['', ' (INT Testing) ', ' (ASID Required) ']
+  - name: internal-dev-sandbox
+    display_name_suffix: Internal Development Sandbox
+  - name: internal-qa
+    display_name_suffix: Internal QA
+  - name: internal-qa
+    display_name_suffix: Internal QA Sandbox
+  - name: ref
+    display_name_suffix: Reference
+  - name: sandbox
+    display_name_suffix: Sandbox
+  - name: int
+    display_name_suffix: Integration
+    ratelimit: '15000pm'
+    quota: '78000'
+  - name: prod
+    display_name_suffix: Production
+    ratelimit: '15000pm'
+    quota: '78000'
+
+ACCESS_MODES:
+  - name: user-restricted
+    nameSuffix: ''
+    displayName: User Restricted
+    scopes: ['personal-demographics:USER-RESTRICTED']
+    requireCallbackUrl: true
+    description: Access the Personal Demographics Service with reduced permisions.
+  - name: application-restricted
+    nameSuffix: -application-restricted
+    displayName: Application Restricted
+    scopes: []
+    requireCallbackUrl: false
+    description: Full access to PDS functionality
+---
+
+# Manifest definition
+version: 0
+service-name: personal-demographics
+apigee:
+  environments:
+{% for env in APIGEE_ENVIRONMENTS %}
+    - name: {{ env.name }}
+      products:
+{% for service_name_suffix in env.service_name_suffixes | default(['']) %}
+{% set service_display_name_suffix = env.service_display_name_suffixes[loop.index-1] | default('') %}
+{% for mode in ACCESS_MODES %}
+      - name: personal-demographics{{ service_name_suffix }}-{{ env.name }}{{ mode.nameSuffix }}
+        approvalType: auto
+        attributes:
+          - name: access
+            value: public
+          - name: ratelimit
+            value: {{ env.ratelimit | default('5ps') }}
+        description: {{ mode.description }}
+        displayName: Personal Demographics Service{{ service_display_name_suffix }} - {{ mode.displayName }} ({{ env.display_name_suffix }})
+        environments: [ {{ env.name }} ]
+        proxies:
+          - personal-demographics{{ service_name_suffix }}-{{ env.name }}
+          - identity-service-{{ env.name }}
+        scopes: {{ mode.scopes }}
+        quota: {{ env.quota | default('300') }}
+        quotaInterval: '1'
+        quotaTimeUnit: minute
+{% endfor %}
+{% endfor %}
+      specs:
+      - name: personal-demographics-{{ env.name }}
+        path: personal-demographics.json
+      portals:
+{% for service_name_suffix in env.service_name_suffixes | default(['']) %}
+{% for mode in ACCESS_MODES %}
+      - edgeAPIProductName: personal-demographics{{ service_name_suffix }}-{{ env.name }}{{ mode.nameSuffix }}
+        anonAllowed: true
+        description: {{ mode.displayName }}
+        requireCallbackUrl: {{ mode.requireCallbackUrl }}
+        title: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
+        visibility: true
+        specId: personal-demographics-{{ env.name }}
+{% endfor %}
+{% endfor %}
+{% endfor %}
