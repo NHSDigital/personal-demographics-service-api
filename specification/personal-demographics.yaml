@@ -610,28 +610,13 @@ paths:
               example:
                 $ref: components/examples/Patient.json
         '400':
-          description: Invalid NHS number supplied (error code INVALID_RESOURCE_ID).
-          content:
-            application/fhir+json:
-              schema:
-                $ref: components/schemas/OperationOutcome.yaml
-              example:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: value
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: INVALID_RESOURCE_ID
-                          display: Resource Id is invalid
+          $ref: '#/components/responses/400InvalidNHSNumber'
         '401':
           description: Calling application not configured for this operation in Spine (error code ACCESS_DENIED).
         '404':
           description: Patient not found (error code RESOURCE_NOT_FOUND).
         '404':
-          description: Invalidated or superseded patient record (error code INVALIDATED_RESOURCE).
+          $ref: '#/components/responses/404InvalidatedPatient'
     patch:
       description: |
         ## Overview
@@ -1501,6 +1486,8 @@ paths:
             Retry-After:
               $ref: components/schemas/RetryAfter.yaml
         '400':
+          $ref: '#/components/responses/400InvalidNHSNumber'
+        '400':
           description: Client error.
           content:
             application/fhir+json:
@@ -1582,7 +1569,6 @@ paths:
         Alternatively, you can try out the sandbox using our Postman collection:
         
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
-
        
       summary: "Get a patient's related people"
       operationId: get-related-people
@@ -1639,22 +1625,7 @@ paths:
                     resource:
                       $ref: components/examples/RelatedPerson.json
         '400':
-          description: Invalid NHS number supplied.
-          content:
-            application/fhir+json:
-              schema:
-                $ref: components/schemas/OperationOutcome.yaml
-              example:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: value
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: INVALID_RESOURCE_ID
-                          display: Resource Id is invalid
+          $ref: '#/components/responses/400InvalidNHSNumber'
         '404':
           description: Related People not found.
           content:
@@ -1672,6 +1643,8 @@ paths:
                           version: '1'
                           code: RESOURCE_NOT_FOUND
                           display: Resource not found
+        '404':
+          $ref: '#/components/responses/404InvalidatedPatient'
 
   '/_poll/{message_id}':
     parameters:
@@ -1974,4 +1947,22 @@ components:
                           version: '1'
                           code: RESOURCE_VERSION_MISMATCH
                           display: Resource version supplied does not match actual version
-
+    400InvalidNHSNumber:
+      description: Invalid NHS Number supplied (error code INVALID_RESOURCE_ID).
+      content:
+        application/fhir+json:
+          schema:
+            $ref: components/schemas/OperationOutcome.yaml
+          example:
+            resourceType: OperationOutcome
+            issue:
+              - severity: error
+                code: value
+                details:
+                  coding:
+                    - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                      version: '1'
+                      code: INVALID_RESOURCE_ID
+                      display: Resource Id is invalid
+    404InvalidatedPatient:
+      description: Invalidated or superseded patient record (error code INVALIDATED_RESOURCE).
