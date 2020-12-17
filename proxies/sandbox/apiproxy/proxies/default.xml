@@ -19,8 +19,28 @@
         </Response>
         <Condition>(proxy.pathsuffix MatchesPath "/_ping") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
       </Flow>
+      <Flow name="StatusEndpoint">
+        <Description/>
+        <Request>
+          <Step>
+            <Name>KeyValueMapOperations.GetSharedSecureVariables</Name>
+          </Step>
+          <Step>
+            <Condition>private.apigee.status-endpoint-api-key NotEquals request.header.apikey</Condition>
+            <Name>RaiseFault.401Unauthorized</Name>
+          </Step>
+          <Step>
+            <Name>ServiceCallout.CallSandboxHealthcheck</Name>
+          </Step>
+        </Request>
+        <Response>
+          <Step>
+            <Name>javascript.SetStatusResponse</Name>
+          </Step>
+        </Response>
+        <Condition>(proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
+      </Flow>
     </Flows>
-    <PreFlow/>
     <PostClientFlow name="PostClientFlow">
       <Response>
         <Step>
@@ -38,7 +58,11 @@
     <RouteRule name="NoRoutePing">
       <Condition>(proxy.pathsuffix MatchesPath "/_ping") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
     </RouteRule>
+    <RouteRule name="NoRouteStatus">
+      <Condition>(proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
+    </RouteRule>
   <RouteRule name="sandbox">
         <TargetEndpoint>apim</TargetEndpoint>
     </RouteRule>
 </ProxyEndpoint>
+
