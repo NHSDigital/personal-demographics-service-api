@@ -1086,7 +1086,7 @@ paths:
         An address consists of 5 lines of unstructured text, postcode and PAF (Postcode Address File) key.
         
         Postcode is optional but strongly encouraged.
-        If the address has no postcode, use a (pseudo postcode from the list defined by the Office for National Statistics)[https://digital.nhs.uk/services/organisation-data-service/data-downloads/office-for-national-statistics-data] (see the ‘look_ups’ file).
+        If the address has no postcode, use a [pseudo postcode from the list defined by the Office for National Statistics](https://digital.nhs.uk/services/organisation-data-service/data-downloads/office-for-national-statistics-data) (see the ‘look_ups’ file).
         
         In particular, for a patient at no fixed abode, use the pseudo postcode `ZZ99 3VZ`.
         
