@@ -274,6 +274,10 @@ paths:
         If `address-postcode` or `general-practitioner` are included in the search parameters, no restricted patients will be returned even if a match is identified.
 
         The restricted flag can be found in the data under `meta/security` on the patient resource.
+        
+        ## Invalidated patients
+        Some patients are marked as invalidated in PDS - also known as redacted in FHIR terminology. Invalidated patient records are not returned in search results.
+        If an invalidated patient record has been superseded, the superseding record is returned.
 
         ## Number of results returned
         ### Healthcare professional access mode
