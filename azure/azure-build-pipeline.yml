@@ -17,6 +17,7 @@ resources:
     - repository: common
       type: github
       name: NHSDigital/api-management-utils
+      ref: refs/heads/APM-1693-products-use-namespace-naem
       endpoint: NHSDigital
 
 variables:
