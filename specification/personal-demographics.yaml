@@ -33,7 +33,11 @@ info:
     * dispensing doctor pharmacy
     * medical appliance supplier pharmacy
     * related people, such as next of kin (read only - update coming soon)
-
+    
+    PDS includes all patients who are registered for health and care services commissioned by the NHS in England, Wales and the Isle of Man.
+    They might actually live elsewhere, for example in Scotland, Ireland or the Channel Islands.
+    This API is only to be used for patients registered in England and the Isle of Man, not Wales.
+    
     This API has three access modes:
     
     
