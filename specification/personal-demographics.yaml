@@ -528,41 +528,27 @@ paths:
                       score: 1
                     resource:
                       $ref: components/examples/PatientSearch.json
-        '400':
-          description: Invalid search paramaters supplied.
+        '200':
+          description: Number of matches exceeded `max_results` parameter (error code `TOO_MANY_MATCHES`).
           content:
             application/fhir+json:
               schema:
                 $ref: components/schemas/OperationOutcome.yaml
-              examples:
-                not-enough:
-                  summary: too few search params
-                  value:
-                    resourceType: OperationOutcome
-                    issue:
-                      - severity: error
-                        code: value
-                        details:
-                          coding:
-                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                              version: '1'
-                              code: INVALID_SEARCH_DATA
-                              display: Search data is invalid
-                        diagnostics: Invalid search data provided - Not enough search parameters were provided to be able to make a search
-                bad-combination:
-                  summary: Invalid combination of search parameters
-                  value:
-                    resourceType: OperationOutcome
-                    issue:
-                      - severity: error
-                        code: value
-                        details:
-                          coding:
-                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                              version: '1'
-                              code: INVALID_SEARCH_DATA
-                              display: Search data is invalid
-                        diagnostics: Invalid search data provided - 'Invalid Date Combination'
+              example:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: value
+                    details:
+                      coding:
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                          version: '1'
+                          code: TOO_MANY_MATCHES
+                          display: Too many matches
+        '400':
+          description: Invalid search paramaters (error code `INVALID_SEARCH_DATA` - see `diagnostics` field for further details).
+        '401':
+          description: Calling application not configured for this operation in Spine (error code ACCESS_DENIED).
   '/Patient/{id}':
     parameters:
       - $ref: '#/components/parameters/Id'
@@ -624,7 +610,7 @@ paths:
               example:
                 $ref: components/examples/Patient.json
         '400':
-          description: Invalid NHS number supplied.
+          description: Invalid NHS number supplied (error code INVALID_RESOURCE_ID).
           content:
             application/fhir+json:
               schema:
@@ -640,23 +626,12 @@ paths:
                           version: '1'
                           code: INVALID_RESOURCE_ID
                           display: Resource Id is invalid
+        '401':
+          description: Calling application not configured for this operation in Spine (error code ACCESS_DENIED).
         '404':
-          description: Patient not found.
-          content:
-            application/fhir+json:
-              schema:
-                $ref: components/schemas/OperationOutcome.yaml
-              example:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: not-found
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: RESOURCE_NOT_FOUND
-                          display: Resource not found
+          description: Patient not found (error code RESOURCE_NOT_FOUND).
+        '404':
+          description: Invalidated or superseded patient record (error code INVALIDATED_RESOURCE).
     patch:
       description: |
         ## Overview
