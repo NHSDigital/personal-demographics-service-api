@@ -1076,18 +1076,24 @@ paths:
         * `/address/-` when adding a new address.
 
         An address consists of 5 lines of unstructured text, postcode and PAF (Postcode Address File) key.
-        Local systems must apply the following formatting convention when adding or replacing addresses lines:
-        *	line 1 - premises ID and/or house name, e.g. `Flat 1` or `The Old Schoolhouse`
-        *	line 2 - house number, dependent thoroughfare name and descriptor (if present), thoroughfare name and descriptor, e.g. `23 Mill Lane`
-        *	line 3 - dependent locality/village, locality (if present), e.g. `Boxgrove`
-        *	line 4 - post town, e.g. `Leeds`
-        *	line 5 - county (if present), e.g. `West Yorkshire`
+        
+        Postcode is optional but strongly encouraged.
+        If the address has no postcode, use a (pseudo postcode from the list defined by the Office for National Statistics)[https://digital.nhs.uk/services/organisation-data-service/data-downloads/office-for-national-statistics-data] (see the ‘look_ups’ file).
+        
+        In particular, for a patient at no fixed abode, use the pseudo postcode `ZZ99 3VZ`.
+        
+        When adding or replacing address lines, use the following rules:
+        *	line 1 - premises ID and/or house name, for example `Flat 1` or `The Old Schoolhouse`
+        *	line 2 - house number, dependent thoroughfare name and descriptor (if present), thoroughfare name and descriptor, for example `23 Mill Lane`
+        *	line 3 - dependent locality/village, locality (if present), for example `Boxgrove`
+        *	line 4 - post town, for example `Leeds`
+        *	line 5 - county (if present), for example `West Yorkshire`
+        
+        When updating an address, you must populate lines 1 or 2, and line 4. You should not include line 5 in manually created addresses but you may include it in PAF-derived addresses.
 
-        When updating an address, lines 1 or 2, and line 4 should be populated; line 5 should not be included in manually created addresses but may be included in PAF derived addresses.
-
-        Address lines should be populated otherwise the message may be rejected. There are exceptions:
-        * if a postcode and PAF key are submitted, in which case the lines will be automatically populated, however if there are no matches or too many matches the message will be rejected due to missing address lines
-        * a pseudo postcode is used. For example `ZZ99 3VZ` meaning `no fixed abode`
+        There are exceptions:
+        * if you submit a postcode and PAF key, in which case the lines will be automatically populated, however if there are no matches or too many matches the message will be rejected due to missing address lines
+        * if you use a pseudo postcode, for example `ZZ99 3VZ` meaning `no fixed abode`
 
         When creating the FHIR payload message, to be fully FHIR compliant all empty lines should be removed, so for example:
         
@@ -1122,17 +1128,18 @@ paths:
 
         however if you do not do this the message will not be rejected; the response will be in that form though.
 
-        To ensure consistent data across all patient addresses it is advised that the address data supplied should be matched to the PAF and sent in that format including the PAF key.
-        If the PAF key is not included it will be added to the address if a match can be found, additionally the provided address lines and post code will be enriched and reformatted if necessary.
+        To ensure consistent data across all patient addresses, you should match addresses to the PAF and send them in PAF format including the PAF key.
+        If you do not include the PAF key it will be added to the address if a match can be found
+        Additionally the provided address lines and post code will be enriched and reformatted if necessary.
 
         The following address types are supported:
         * `home` - the home address is the patient's normal residence. Home address is also known as usual, main, registered, current or permanent address
         * `temp` - a temporary address is an address used for a set period of time, but where the patient's home, permanent address remains unchanged
         * `billing` - an address used for correspondence purposes only
 
-        A patient should have no more than one current `temp` and/or `billing` address, attempting to add multiple will result in a error.
+        A patient must have no more than one current `temp` and/or `billing` address.
         However, historically this was constrained only by the integration requirements and was not enforced so theoretically more than one can exist for a patient when retrieving.
-        Where multiple instances already exist for the patient it is not expected that local systems should manage those, but should choose the most appropriate one to maintain (e.g. by examining period dates).
+        Where multiple instances already exist for the patient it is not expected that local systems should manage those, but should choose the most appropriate one to maintain (for example by examining period dates).
 
         A `home` address is the patient's main residential address and should normally be used for all clinical and demographic purposes, including clinical and appointment correspondence.
         However additionally, `temp` and `billing` addresses may be provided by a patient when there is a requirement to record an alternative location for the purposes of unbroken care.
@@ -1141,11 +1148,11 @@ paths:
         *	if no current `billing` address is provided, a `temp` address may take precedence over the `home` address, again if it is valid according to its period start and to dates.
         * if there is no valid, current `billing` and/or `temp` address, the `home` address must be used.
 
-        It should be noted that not all local systems support `temp` and `billing` addresses, so these are not uniformly maintained. Therefore, where the patient contact has clinical or business significance, the precedence of these addresses over the `home` address should be determined by a user wherever possible.
+        Not all local systems support `temp` and `billing` addresses, so these are not uniformly maintained. Therefore, where the patient contact has clinical or business significance, the precedence of these addresses over the `home` address should be determined by a user wherever possible.
         When the end date for a `temp` or `billing` address passes, local systems should use the patient’s `home` address. It will be extremely rare that no home address is present on a patient record.
 
-        There are a number of business rules that should be taken into account:
-        * cannot add more than one of each address use types; `home`, `temp` or `billing`
+        Be aware of the following business rules:
+        * you cannot add more than one of each address use types; `home`, `temp` or `billing`
         * `work` address `use` type is a valid response but cannot be added or replaced as it is a legacy value. An address with the `work` type can be removed though
         * any `temp` address must have both a `period start` and a `period end` date. The provision of a period end date has particular importance in order to avoid temporary addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 3 months.
         * any `billing` address must have both a `period start` and a `period end` date. The provision of a period end date has particular importance in order to avoid correspondence addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 12 months.
@@ -1159,48 +1166,6 @@ paths:
           * `Convalescence Home` - the address for a patient during a period of recovery
           * `Mobile Home` - the address of a patient's mobile home, parked for a specific period of time, e.g. the address of a caravan park
           * `Holiday Home` - the address for a patient during a holiday
-
-        Valid pseudo postcodes are:
-
-        |Postcode|Description|
-        |--------|-----------|
-        |ZZ99 3VZ|No Fixed Abode|
-        |ZZ99 3WZ|Address Not Known|
-        |ZZ99 3CZ|England UK - not specified|
-        |ZZ99 3GZ|Wales|
-        |ZZ99 1WZ|Scotland|
-        |ZZ99 2WZ|Northern Ireland|
-        |ZZ99 4MZ|Austria|
-        |ZZ99 2DZ|Belgium|
-        |ZZ99 4UZ|Bulgaria|
-        |ZZ99 5VZ|Croatia|
-        |ZZ99 6AZ|Cyprus (Southern)|
-        |ZZ99 5XZ|Czech Republic|
-        |ZZ99 4FZ|Denmark|
-        |ZZ99 7LZ|Estonia|
-        |ZZ99 4BZ|Finland|
-        |ZZ99 4GZ|France|
-        |ZZ99 4QZ|Germany|
-        |ZZ99 4RZ|Greece|
-        |ZZ99 4XZ|Hungary|
-        |ZZ99 4CZ|Iceland|
-        |ZZ99 4LZ|Italy|
-        |ZZ99 7RZ|Latvia|
-        |ZZ99 2PZ|Liechtenstein|
-        |ZZ99 7SZ|Lithuania|
-        |ZZ99 2EZ|Luxembourg|
-        |ZZ99 5BZ|Malta|
-        |ZZ99 4EZ|Netherlands|
-        |ZZ99 2AZ|Norway|
-        |ZZ99 4YZ|Poland|
-        |ZZ99 4JZ|Portugal|
-        |ZZ99 3AZ|Republic of Ireland|
-        |ZZ99 4ZZ|Romania|
-        |ZZ99 5YZ|Slovakia|
-        |ZZ99 5UZ|Slovenia|
-        |ZZ99 4HZ|Spain|
-        |ZZ99 2CZ|Sweden|
-        |ZZ99 4PZ|Switzerland|
 
         ### Communication
 
