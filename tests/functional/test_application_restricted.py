@@ -5,7 +5,6 @@ import time
 import requests
 from .config_files import config
 from .config_files.environment import ENV
-from pytest import mark
 from pytest_bdd import scenario, given, when, then, parsers
 
 
@@ -59,7 +58,6 @@ def test_expired():
     pass
 
 
-@mark.skip(reason="broken on internal-qa")
 @scenario(
     "features/application_restricted.feature",
     "PDS FHIR API accepts request without user role ID",

@@ -1,0 +1,29 @@
+steps:
+  - template: ./common/setup-newman-tests.yml
+
+  - bash: |
+      set -euo pipefail
+
+      if [ -d $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests ]; then
+        # Go to tests folder
+        cd $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests
+
+        # Install node
+        curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+
+        # Install dependencies
+        npm install
+
+        # Run tests
+        echo "node_modules/.bin/node --unhandled-rejections=strict e2e/test-runner.js $(IDP_URL) $(API_URL) ./e2e/user-restricted-smoke.json ./e2e/environments/deploy.postman-environment.json"
+        node_modules/.bin/node --unhandled-rejections=strict e2e/test-runner.js $(IDP_URL) $(API_URL) ./e2e/user-restricted-smoke.json ./e2e/environments/deploy.postman-environment.json;
+      fi
+    displayName: 'Run User-Restricted-Smoke-Tests-INT tests'
+
+  - task: PublishTestResults@2
+    displayName: 'Publish User-Restricted-Smoke-Tests-INT Test Results'
+    inputs:
+      testResultsFiles: |
+        $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/test-report.xml
+        $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/*.xml
+      failTaskOnFailedTests: true

@@ -33,7 +33,11 @@ info:
     * dispensing doctor pharmacy
     * medical appliance supplier pharmacy
     * related people, such as next of kin (read only - update coming soon)
-
+    
+    PDS includes all patients who are registered for health and care services commissioned by the NHS in England, Wales and the Isle of Man.
+    They might actually live elsewhere, for example in Scotland, Ireland or the Channel Islands.
+    This API is only to be used for patients registered in England and the Isle of Man, not Wales.
+    
     This API has three access modes:
     
     
@@ -100,35 +104,26 @@ info:
     ## Security and authorisation
     ### Healthcare professional access
     This access mode is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis),
-    meaning an end user must be present and authenticated to use it.
+    meaning an end user must be present, authenticated and authorised.
 
     The end user must be:
     - a healthcare professional
     - strongly authenticated, using either an NHS smartcard or a modern alternative
+    - authorised, using [national role-based access control (RBAC)](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/national-rbac-for-developers)
 
-    The API uses OAuth 2.0 to authorise the calling system.
-    
-    It supports the following security patterns:
+    To use this access mode, use one of the following security patterns:
     * [user-restricted RESTful API - using NHS Identity - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-combined-authentication-and-authorisation)
     * [user-restricted RESTful API - using NHS Identity - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-separate-authentication-and-authorisation)
 
-    In this access mode, all endpoints are fully available.
-    
-    In addition, the end user must be authorised to perform the various activities.
-    
-    The API itself does not perform any authorisation checks. Rather, the calling application must perform them. The authorisation rules are specified in our national Role Based Access Control (RBAC) database.
-    
-    For more details, [contact us](https://digital.nhs.uk/developer/help-and-support).
-    
     ### Application-restricted access
     This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis), meaning we authenticate the calling application but not the end user.
-    
-    In particular, we use following security pattern:
-    * [Application-restricted RESTful API - signed JWT authentication](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-signed-jwt-authentication)
     
     You can use this access mode as follows:
     * unattended (end user not present), for example as part of a back end process to check NHS numbers for data flowing from one system to another
     * attended (end user present) - in which case, you must ensure the end user is authenticated and suitably authorised locally by the calling application
+    
+    To use this access mode, use the following security pattern:
+    * [Application-restricted RESTful API - signed JWT authentication](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-signed-jwt-authentication)
     
     ### Citizen access
     This access mode is not available yet. 
@@ -147,29 +142,14 @@ info:
     Our [sandbox environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#sandbox-testing):
     * is for early developer testing
     * only covers a limited set of scenarios
-    * is stateless, so it does not actually persist any updates
+    * is stateless, so does not actually persist any updates
     * is open access, so does not allow you to test authorisation
 
-    For more details on sandbox testing, or to try out the sandbox using our "Try this API" feature, see the documentation for each endpoint.
+    For details of sandbox test scenarios, or to try out the sandbox using our 'Try this API' feature, see the documentation for each endpoint.
 
     Alternatively, you can try out the sandbox using our Postman collection:
     
     [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
-
-    ### Download Postman client
-
-    If you don’t have it, you can download Postman [here](https://www.postman.com).
-    
-    Click on the download button in the top right corner and follow the instructions.
-
-    ### Download our collection
-
-    If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
-    
-    Postman client should then open showing our Patient Demographics Sandbox.
-
-    If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
-
 
     ### Integration testing
     Our [integration test environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing):
@@ -215,10 +195,10 @@ tags:
 paths:
   /Patient:
     parameters:
-      - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
-      - $ref: '#/components/parameters/CorrelationID'
+      - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/RequestID'
+      - $ref: '#/components/parameters/CorrelationID'
     get:
       summary: Search for a patient
       operationId: search-patient
@@ -298,6 +278,10 @@ paths:
         If `address-postcode` or `general-practitioner` are included in the search parameters, no restricted patients will be returned even if a match is identified.
 
         The restricted flag can be found in the data under `meta/security` on the patient resource.
+        
+        ## Invalidated patients
+        Some patients are marked as invalidated in PDS - also known as redacted in FHIR terminology. Invalidated patient records are not returned in search results.
+        If an invalidated patient record has been superseded, the superseding record is returned.
 
         ## Number of results returned
         ### Healthcare professional access mode
@@ -355,26 +339,12 @@ paths:
         | Invalid date format         | `birthdate` or `death-date` query parameters with values not in format `YYYY-MM-DD` | HTTP Status 400 with problem description   |
         | Too few search parameters   | Any invalid combination of query parameters                  | HTTP Status 400 with problem description   |
 
-        You can try out the sandbox using the "Try this API" feature on this page.
+        You can try out the sandbox using the 'Try this API' feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
+        
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
-
-        ### Download Postman client
-
-        If you don’t have it, you can download Postman [here](https://www.postman.com).   
-    
-        Click on the download button in the top right corner and follow the instructions.
-
-        ### Download our collection
-
-        If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
-    
-        Postman client should then open showing our Patient Demographics Sandbox.
-
-        If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
-
 
       tags:
         - patients
@@ -604,10 +574,10 @@ paths:
   '/Patient/{id}':
     parameters:
       - $ref: '#/components/parameters/Id'
-      - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
-      - $ref: '#/components/parameters/CorrelationID'
+      - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/RequestID'
+      - $ref: '#/components/parameters/CorrelationID'
     get:
       description: |
         ## Overview
@@ -638,27 +608,13 @@ paths:
         | Patient doesn't exist            | `id`=`9111231130` (or any other valid NHS Number) | HTTP Status 404 with problem description                                                                                                      |
         | Invalid NHS Number               | `id`=`9000000000` (or any invalid NHS Number)     | HTTP Status 400 with problem description                                                                                                      |
 
-        You can try out the sandbox using the "Try this API" feature on this page.
+        You can try out the sandbox using the 'Try this API' feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
               
-        ### Download Postman client
-
-        If you don’t have it, you can download Postman [here](https://www.postman.com).   
-    
-        Click on the download button in the top right corner and follow the instructions.
-
-        ### Download our collection
-
-        If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
-    
-        Postman client should then open showing our Patient Demographics Sandbox.
-
-        If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
-
-        
+         
       summary: "Get patient details"
       operationId: get-patient
       tags:
@@ -783,7 +739,7 @@ paths:
         }
         ```
 
-        Adding to a list such as a `name` should be done by including the whole object in the value field. Note, the list index is `-` this is because when adding to a list as the index will not be known:
+        Adding to a list such as a `name` should be done by including the whole object in the value field. Note, the list index is `-` this is because when adding to a list, the index will not be known:
 
         ```json
         {
@@ -1128,18 +1084,24 @@ paths:
         * `/address/-` when adding a new address.
 
         An address consists of 5 lines of unstructured text, postcode and PAF (Postcode Address File) key.
-        Local systems must apply the following formatting convention when adding or replacing addresses lines:
-        *	line 1 - premises ID and/or house name, e.g. `Flat 1` or `The Old Schoolhouse`
-        *	line 2 - house number, dependent thoroughfare name and descriptor (if present), thoroughfare name and descriptor, e.g. `23 Mill Lane`
-        *	line 3 - dependent locality/village, locality (if present), e.g. `Boxgrove`
-        *	line 4 - post town, e.g. `Leeds`
-        *	line 5 - county (if present), e.g. `West Yorkshire`
+        
+        Postcode is optional but strongly encouraged.
+        If the address has no postcode, use a [pseudo postcode from the list defined by the Office for National Statistics](https://digital.nhs.uk/services/organisation-data-service/data-downloads/office-for-national-statistics-data) (see the ‘look_ups’ file).
+        
+        In particular, for a patient at no fixed abode, use the pseudo postcode `ZZ99 3VZ`.
+        
+        When adding or replacing address lines, use the following rules:
+        *	line 1 - premises ID and/or house name, for example `Flat 1` or `The Old Schoolhouse`
+        *	line 2 - house number, dependent thoroughfare name and descriptor (if present), thoroughfare name and descriptor, for example `23 Mill Lane`
+        *	line 3 - dependent locality/village, locality (if present), for example `Boxgrove`
+        *	line 4 - post town, for example `Leeds`
+        *	line 5 - county (if present), for example `West Yorkshire`
+        
+        When updating an address, you must populate lines 1 or 2, and line 4. You should not include line 5 in manually created addresses but you may include it in PAF-derived addresses.
 
-        When updating an address, lines 1 or 2, and line 4 should be populated; line 5 should not be included in manually created addresses but may be included in PAF derived addresses.
-
-        Address lines should be populated otherwise the message may be rejected. There are exceptions:
-        * if a postcode and PAF key are submitted, in which case the lines will be automatically populated, however if there are no matches or too many matches the message will be rejected due to missing address lines
-        * a pseudo postcode is used. For example `ZZ99 3VZ` meaning `no fixed abode`
+        There are exceptions:
+        * if you submit a postcode and PAF key, in which case the lines will be automatically populated, however if there are no matches or too many matches the message will be rejected due to missing address lines
+        * if you use a pseudo postcode, for example `ZZ99 3VZ` meaning `no fixed abode`
 
         When creating the FHIR payload message, to be fully FHIR compliant all empty lines should be removed, so for example:
         
@@ -1174,17 +1136,18 @@ paths:
 
         however if you do not do this the message will not be rejected; the response will be in that form though.
 
-        To ensure consistent data across all patient addresses it is advised that the address data supplied should be matched to the PAF and sent in that format including the PAF key.
-        If the PAF key is not included it will be added to the address if a match can be found, additionally the provided address lines and post code will be enriched and reformatted if necessary.
+        To ensure consistent data across all patient addresses, you should match addresses to the PAF and send them in PAF format including the PAF key.
+        If you do not include the PAF key it will be added to the address if a match can be found
+        Additionally the provided address lines and post code will be enriched and reformatted if necessary.
 
         The following address types are supported:
         * `home` - the home address is the patient's normal residence. Home address is also known as usual, main, registered, current or permanent address
         * `temp` - a temporary address is an address used for a set period of time, but where the patient's home, permanent address remains unchanged
         * `billing` - an address used for correspondence purposes only
 
-        A patient should have no more than one current `temp` and/or `billing` address, attempting to add multiple will result in a error.
+        A patient must have no more than one current `temp` and/or `billing` address.
         However, historically this was constrained only by the integration requirements and was not enforced so theoretically more than one can exist for a patient when retrieving.
-        Where multiple instances already exist for the patient it is not expected that local systems should manage those, but should choose the most appropriate one to maintain (e.g. by examining period dates).
+        Where multiple instances already exist for the patient it is not expected that local systems should manage those, but should choose the most appropriate one to maintain (for example by examining period dates).
 
         A `home` address is the patient's main residential address and should normally be used for all clinical and demographic purposes, including clinical and appointment correspondence.
         However additionally, `temp` and `billing` addresses may be provided by a patient when there is a requirement to record an alternative location for the purposes of unbroken care.
@@ -1193,11 +1156,11 @@ paths:
         *	if no current `billing` address is provided, a `temp` address may take precedence over the `home` address, again if it is valid according to its period start and to dates.
         * if there is no valid, current `billing` and/or `temp` address, the `home` address must be used.
 
-        It should be noted that not all local systems support `temp` and `billing` addresses, so these are not uniformly maintained. Therefore, where the patient contact has clinical or business significance, the precedence of these addresses over the `home` address should be determined by a user wherever possible.
+        Not all local systems support `temp` and `billing` addresses, so these are not uniformly maintained. Therefore, where the patient contact has clinical or business significance, the precedence of these addresses over the `home` address should be determined by a user wherever possible.
         When the end date for a `temp` or `billing` address passes, local systems should use the patient’s `home` address. It will be extremely rare that no home address is present on a patient record.
 
-        There are a number of business rules that should be taken into account:
-        * cannot add more than one of each address use types; `home`, `temp` or `billing`
+        Be aware of the following business rules:
+        * you cannot add more than one of each address use types; `home`, `temp` or `billing`
         * `work` address `use` type is a valid response but cannot be added or replaced as it is a legacy value. An address with the `work` type can be removed though
         * any `temp` address must have both a `period start` and a `period end` date. The provision of a period end date has particular importance in order to avoid temporary addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 3 months.
         * any `billing` address must have both a `period start` and a `period end` date. The provision of a period end date has particular importance in order to avoid correspondence addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 12 months.
@@ -1211,48 +1174,6 @@ paths:
           * `Convalescence Home` - the address for a patient during a period of recovery
           * `Mobile Home` - the address of a patient's mobile home, parked for a specific period of time, e.g. the address of a caravan park
           * `Holiday Home` - the address for a patient during a holiday
-
-        Valid pseudo postcodes are:
-
-        |Postcode|Description|
-        |--------|-----------|
-        |ZZ99 3VZ|No Fixed Abode|
-        |ZZ99 3WZ|Address Not Known|
-        |ZZ99 3CZ|England UK - not specified|
-        |ZZ99 3GZ|Wales|
-        |ZZ99 1WZ|Scotland|
-        |ZZ99 2WZ|Northern Ireland|
-        |ZZ99 4MZ|Austria|
-        |ZZ99 2DZ|Belgium|
-        |ZZ99 4UZ|Bulgaria|
-        |ZZ99 5VZ|Croatia|
-        |ZZ99 6AZ|Cyprus (Southern)|
-        |ZZ99 5XZ|Czech Republic|
-        |ZZ99 4FZ|Denmark|
-        |ZZ99 7LZ|Estonia|
-        |ZZ99 4BZ|Finland|
-        |ZZ99 4GZ|France|
-        |ZZ99 4QZ|Germany|
-        |ZZ99 4RZ|Greece|
-        |ZZ99 4XZ|Hungary|
-        |ZZ99 4CZ|Iceland|
-        |ZZ99 4LZ|Italy|
-        |ZZ99 7RZ|Latvia|
-        |ZZ99 2PZ|Liechtenstein|
-        |ZZ99 7SZ|Lithuania|
-        |ZZ99 2EZ|Luxembourg|
-        |ZZ99 5BZ|Malta|
-        |ZZ99 4EZ|Netherlands|
-        |ZZ99 2AZ|Norway|
-        |ZZ99 4YZ|Poland|
-        |ZZ99 4JZ|Portugal|
-        |ZZ99 3AZ|Republic of Ireland|
-        |ZZ99 4ZZ|Romania|
-        |ZZ99 5YZ|Slovakia|
-        |ZZ99 5UZ|Slovenia|
-        |ZZ99 4HZ|Spain|
-        |ZZ99 2CZ|Sweden|
-        |ZZ99 4PZ|Switzerland|
 
         ### Communication
 
@@ -1351,7 +1272,7 @@ paths:
         * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
         * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
         * the date period, if present, should be on the parent `contact` object and not any `telecom` child objects.
-        * if the telecom system is `email`, the value must be a valid email format, for example `john.smith@nhs.net`; be more than 6 characters and less than 90 characters
+        * if the system is email, the value must be a valid email format, for example john.smith@nhs.net; and must be more than 6 characters and less than 90 characters
         * the relationship can only be `C` meaning `Emergency Contact`
 
         ### Gender
@@ -1466,7 +1387,7 @@ paths:
         There are a number of business rules that should be taken into account:
         * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date
         * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
-        * if the system is `email`, the value must be a valid email format, for example `john.smith@nhs.net`; be more than 6 characters and less that 90 characters
+        * if the telecom system is email, the value must be a valid email format, for example john.smith@nhs.net; and must be more than 6 characters and less than 90 characters
 
         ## Sandbox test scenarios
 
@@ -1488,26 +1409,11 @@ paths:
         | No patches sent                     | Send body with no `patches` attribute                                     | HTTP Status 400 with problem description         |
         | Invalid patch operations            | Send body with invalid JSON patches in `patches` attribute                | HTTP Status 400 with problem description         |
 
-        You can try out the sandbox using the "Try this API" feature on this page.
+        You can try out the sandbox using the 'Try this API' feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
-
-        ### Download Postman client
-
-        If you don’t have it, you can download Postman [here](https://www.postman.com).   
-    
-        Click on the download button in the top right corner and follow the instructions.
-
-        ### Download our collection
-
-        If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
-    
-        Postman client should then open showing our Patient Demographics Sandbox.
-
-        If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
-
 
         
       summary: Update patient details
@@ -1646,10 +1552,10 @@ paths:
   '/Patient/{id}/RelatedPerson':
     parameters:
       - $ref: '#/components/parameters/Id'
-      - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
-      - $ref: '#/components/parameters/CorrelationID'
+      - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/RequestID'
+      - $ref: '#/components/parameters/CorrelationID'
     get:
       description: |
         ## Overview
@@ -1669,25 +1575,11 @@ paths:
         | Single related person exists    | `id`=`9000000017`                             | HTTP Status 200 with related person data in a response Bundle |
         | Related people do not exist     | `id`=`9000000025`                             | HTTP Status 404 with problem description                      |
 
-        You can try out the sandbox using the "Try this API" feature on this page.
+        You can try out the sandbox using the 'Try this API' feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
-
-        ### Download Postman client
-
-        If you don’t have it, you can download Postman [here](https://www.postman.com).   
-    
-        Click on the download button in the top right corner and follow the instructions.
-
-        ### Download our collection
-
-        If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
-    
-        Postman client should then open showing our Patient Demographics Sandbox.
-
-        If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
 
        
       summary: "Get a patient's related people"
@@ -1782,8 +1674,8 @@ paths:
   '/_poll/{message_id}':
     parameters:
       - $ref: '#/components/parameters/MessageId'
-      - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/BearerAuthorization'
+      - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/CorrelationID'
     get:
       description: |
@@ -1808,26 +1700,12 @@ paths:
         | Polling message ID when update is not yet complete         | `message_id`=`20200522091633363041_000001`            | HTTP Status 202 with no data                |
         | Polling message ID not found                               | `message_id`=`20200522091633363041_000002`            | HTTP Status 404 with operation outcome body |
 
-        You can try out the sandbox using the "Try this API" feature on this page.
+        You can try out the sandbox using the 'Try this API' feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
 
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
-        
-        ### Download Postman client
-
-        If you don’t have it, you can download Postman [here](https://www.postman.com).
-    
-        Click on the download button in the top right corner and follow the instructions.
-
-        ### Download our collection
-
-        If you already have the Postman client installed - click onto our postman collection (button above) - then click onto the ‘Postman for Windows’ or ‘Postman for Mac’ version - and click Open when prompted.
-    
-        Postman client should then open showing our Patient Demographics Sandbox.
-
-        If you have already downloaded the Sandbox collection from one of our other endpoints, found under the PDS FHIR API pages, you don't have to download it again as the same collection covers all endpoints.
-       
+              
         
       summary: Poll for the result of an update 
       operationId: polling
@@ -1994,37 +1872,35 @@ components:
         type: string
         format: '^Bearer\ [[:ascii:]]+$'
         example: 'Bearer g1112R_ccQ1Ebbb4gtHBP1aaaNM'
-    CorrelationID:
-      in: header
-      name: X-Correlation-ID
-      required: false
-      description: |
-        A globally unique identifier (GUID) for the request, which we use to trace the request if you contact our helpdesk.
-        
-        Mirrored back in a response header.
-        
-        Avoid `.` characters.
-      schema:
-        type: string
-        example: 11C46F5F-CDEF-4865-94B2-0EE0EDCC26DA
     RequestID:
       in: header
       name: X-Request-ID
       required: false
       description: |
-        A globally unique identifier (GUID) for the request, which we use to de-duplicate repeated requests.
+        A globally unique identifier (GUID) for the request, which we use to de-duplicate repeated requests and to trace the request if you contact our helpdesk.
         
         Must be a universally unique identifier (UUID) (ideally version 4).
 
-        If you re-send a failed request, use the same value in this header.
-
         Mirrored back in a response header.
+
+        If you re-send a failed request, use the same value in this header.
 
         Required in all environments except sandbox.
       schema:
         type: string
         pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
         example: 60E0B220-8136-4CA5-AE46-1D97EF59D068
+    CorrelationID:
+      in: header
+      name: X-Correlation-ID
+      required: false
+      description: |
+        An optional ID which you can use to track transactions across multiple systems. It can take any value, but we recommend avoiding `.` characters.
+        
+        Mirrored back in a response header.
+      schema:
+        type: string
+        example: 11C46F5F-CDEF-4865-94B2-0EE0EDCC26DA
   schemas:
     Patient:
       $ref: components/schemas/Patient.yaml

@@ -9,7 +9,7 @@ This is a RESTful HL7® FHIR® API specification for the *Personal Demographics 
 * `scripts/` Utilities helpful to developers of this specification.
 * `apiproxy/` The Apigee API Proxy
 
-Consumers of the API will find developer documentation on the [NHS Digital Developer Hub](https://portal.developer.nhs.uk/docs/personal-demographics-int/1/overview).
+Consumers of the API will find developer documentation on the [NHS Digital Developer Hub](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir).
  
 ## Contributing
 Contributions to this project are welcome from anyone, providing that they conform to the [guidelines for contribution](https://github.com/NHSDigital/personal-demographics-service-api/blob/master/CONTRIBUTING.md) and the [community code of conduct](https://github.com/NHSDigital/personal-demographics-service-api/blob/master/CODE_OF_CONDUCT.md).
@@ -145,8 +145,8 @@ Redeploy the API Proxy and hosted Sandbox service.
 Successful deployment of the API Proxy requires:
 
  1. *Target Servers*:
-    1. `ig3`: Gateway to PDS API
-    2. `ig3-int` Gateway to PDS INT API (Only avaliable for pull requests)
+    1. `spine-demographics`: Gateway to PDS API
+    2. `spine-demographics-int` Gateway to PDS INT API (Only avaliable for pull requests)
     3. `identity-server` - Identity Provider's OAuth server
  2. An **encrypted** (for production) *Key-Value Map* named `pds-variables-encrypted`, containing:
     1. Key: `NHSD-ASID`, Value: Accredited System ID (ASID) identifying the API Gateway
