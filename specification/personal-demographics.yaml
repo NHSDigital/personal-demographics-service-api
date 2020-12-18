@@ -528,8 +528,19 @@ paths:
                       score: 1
                     resource:
                       $ref: components/examples/PatientSearch.json
-        '200':
-          description: Number of matches exceeded `max_results` parameter (error code `TOO_MANY_MATCHES`).
+        '4XX':
+          description: |
+            An error occurred as follows:
+            
+            | HTTP status | `code`                     | Description |
+            | ----------- | -------------------------- | --------------------------------------------- |
+            | 400         | INVALID_RESOURCE_ID        | Invalid NHS Number. |
+            | 400         | INVALID_SEARCH_DATA	       | Invalid combination of search parameters. For details, see the `diagnostics` field. |
+            | 401         | ACCESS_DENIED              | Calling application not configured for this operation in Spine. |
+            | 404         | RESOURCE_NOT_FOUND         | No matching patients. |
+            | 200         | TOO_MANY_MATCHES           | Too many matches were found - user should be told to refine their search parameters.	|
+            | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
+  
           content:
             application/fhir+json:
               schema:
@@ -543,12 +554,8 @@ paths:
                       coding:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
-                          code: TOO_MANY_MATCHES
-                          display: Too many matches
-        '400':
-          description: Invalid search paramaters (error code `INVALID_SEARCH_DATA` - see `diagnostics` field for further details).
-        '401':
-          description: Calling application not configured for this operation in Spine (error code ACCESS_DENIED).
+                          code: INVALID_RESOURCE_ID
+                          display: Resource Id is invalid
   '/Patient/{id}':
     parameters:
       - $ref: '#/components/parameters/Id'
