@@ -39,8 +39,11 @@ ACCESS_MODES:
 ---
 
 # Manifest definition
-version: 0
-service-name: personal-demographics
+meta:
+  version: 0
+  api:
+    name: personal-demographics
+    id: eef32850-52ae-46da-9dbd-d9f3df818846
 apigee:
   environments:
 {% for env in APIGEE_ENVIRONMENTS %}
