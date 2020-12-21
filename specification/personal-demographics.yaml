@@ -532,30 +532,17 @@ paths:
           description: |
             An error occurred as follows:
             
-            | HTTP status | `code`                     | Description |
+            | HTTP status | Error code                 | Description |
             | ----------- | -------------------------- | --------------------------------------------- |
+            | 200         | TOO_MANY_MATCHES           | Too many matches were found - user should be told to refine their search parameters.	|
             | 400         | INVALID_RESOURCE_ID        | Invalid NHS Number. |
             | 400         | INVALID_SEARCH_DATA	       | Invalid combination of search parameters. For details, see the `diagnostics` field. |
             | 401         | ACCESS_DENIED              | Calling application not configured for this operation in Spine. |
             | 404         | RESOURCE_NOT_FOUND         | No matching patients. |
-            | 200         | TOO_MANY_MATCHES           | Too many matches were found - user should be told to refine their search parameters.	|
             | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
   
           content:
-            application/fhir+json:
-              schema:
-                $ref: components/schemas/OperationOutcome.yaml
-              example:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: value
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: INVALID_RESOURCE_ID
-                          display: Resource Id is invalid
+            $ref: '#/components/responseContents/4XXOperationOutcome'
   '/Patient/{id}':
     parameters:
       - $ref: '#/components/parameters/Id'
@@ -1967,3 +1954,19 @@ components:
                       display: Resource Id is invalid
     404InvalidatedPatient:
       description: Invalidated or superseded patient record (error code INVALIDATED_RESOURCE).
+  responseContents:
+    4XXOperationOutcome:
+      application/fhir+json:
+        schema:
+          $ref: '#/components/schemas/OperationOutcome'
+        example:
+          resourceType: OperationOutcome
+          issue:
+            - severity: error
+              code: value
+              details:
+                coding:
+                  - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                    version: '1'
+                    code: INVALID_RESOURCE_ID
+                    display: Resource Id is invalid
