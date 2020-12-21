@@ -621,8 +621,6 @@ paths:
         '401':
           description: Calling application not configured for this operation in Spine (error code ACCESS_DENIED).
         '404':
-          description: Patient not found (error code RESOURCE_NOT_FOUND).
-        '404':
           $ref: '#/components/responses/404InvalidatedPatient'
     patch:
       description: |
@@ -1493,8 +1491,6 @@ paths:
             Retry-After:
               $ref: components/schemas/RetryAfter.yaml
         '400':
-          $ref: '#/components/responses/400InvalidNHSNumber'
-        '400':
           description: Client error.
           content:
             application/fhir+json:
@@ -1650,8 +1646,6 @@ paths:
                           version: '1'
                           code: RESOURCE_NOT_FOUND
                           display: Resource not found
-        '404':
-          $ref: '#/components/responses/404InvalidatedPatient'
 
   '/_poll/{message_id}':
     parameters:
