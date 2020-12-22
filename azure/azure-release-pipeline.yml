@@ -8,7 +8,7 @@ resources:
     - repository: common
       type: github
       name: NHSDigital/api-management-utils
-      ref: refs/tags/v0.0.1
+      ref: refs/heads/mm-apm-1351-aws-build-agents
       endpoint: NHSDigital
   pipelines:
   - pipeline: build_pipeline
@@ -19,7 +19,7 @@ resources:
           - refs/tags/v*
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: 'AWS-ECS'
 
 variables:
   - template: project.yml
