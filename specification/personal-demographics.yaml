@@ -542,7 +542,11 @@ paths:
             | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
   
           content:
-            $ref: '#/components/responseContents/4XXOperationOutcome'
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/OperationOutcome'
+              example:
+                $ref: '#/components/examples/OperationOutcome'
   '/Patient/{id}':
     parameters:
       - $ref: '#/components/parameters/Id'
@@ -1873,6 +1877,18 @@ components:
       $ref: components/schemas/RelatedPerson.yaml
     OperationOutcome:
       $ref: components/schemas/OperationOutcome.yaml
+  examples:
+    OperationOutcome:
+      resourceType: OperationOutcome
+      issue:
+        - severity: error
+          code: value
+          details:
+            coding:
+              - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                version: '1'
+                code: INVALID_RESOURCE_ID
+                display: Resource Id is invalid
   responses:
     412PreconditionFailed:
       description: |
@@ -1954,19 +1970,3 @@ components:
                       display: Resource Id is invalid
     404InvalidatedPatient:
       description: Invalidated or superseded patient record (error code INVALIDATED_RESOURCE).
-  responseContents:
-    4XXOperationOutcome:
-      application/fhir+json:
-        schema:
-          $ref: '#/components/schemas/OperationOutcome'
-        example:
-          resourceType: OperationOutcome
-          issue:
-            - severity: error
-              code: value
-              details:
-                coding:
-                  - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                    version: '1'
-                    code: INVALID_RESOURCE_ID
-                    display: Resource Id is invalid
