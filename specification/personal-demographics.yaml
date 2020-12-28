@@ -1879,16 +1879,18 @@ components:
       $ref: components/schemas/OperationOutcome.yaml
   examples:
     OperationOutcome:
-      resourceType: OperationOutcome
-      issue:
-        - severity: error
-          code: value
-          details:
-            coding:
-              - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                version: '1'
-                code: INVALID_RESOURCE_ID
-                display: Resource Id is invalid
+      summary: OperationOutcome example
+      value:
+        resourceType: OperationOutcome
+        issue:
+          - severity: error
+            code: value
+            details:
+              coding:
+                - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                  version: '1'
+                  code: INVALID_RESOURCE_ID
+                  display: Resource Id is invalid
   responses:
     412PreconditionFailed:
       description: |
