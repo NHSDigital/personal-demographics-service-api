@@ -546,7 +546,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/OperationOutcome'
               example:
-                $ref: '#/components/examples/OperationOutcome'
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: value
+                    details:
+                      coding:
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                          version: '1'
+                          code: INVALID_RESOURCE_ID
+                          display: Resource Id is invalid
   '/Patient/{id}':
     parameters:
       - $ref: '#/components/parameters/Id'
