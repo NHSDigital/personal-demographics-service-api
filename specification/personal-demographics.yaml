@@ -616,12 +616,33 @@ paths:
                 $ref: components/schemas/Patient.yaml
               example:
                 $ref: components/examples/Patient.json
-        '400':
-          $ref: '#/components/responses/400InvalidNHSNumber'
-        '401':
-          description: Calling application not configured for this operation in Spine (error code ACCESS_DENIED).
-        '404':
-          $ref: '#/components/responses/404InvalidatedPatient'
+        '4XX':
+          description: |
+            An error occurred as follows:
+            
+            | HTTP status | Error code                 | Description |
+            | ----------- | -------------------------- | --------------------------------------------- |
+            | 400         | INVALID_RESOURCE_ID        | Invalid NHS Number. |
+            | 401         | ACCESS_DENIED              | Calling application not configured for this operation in Spine. |
+            | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS Number. |
+            | 404         | INVALIDATED_RESOURCE       | Patient did exist for given NHS Number, but has been invalidated and not superseded by another NHS Number. |
+            | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
+  
+          content:
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/OperationOutcome'
+              example:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: value
+                    details:
+                      coding:
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                          version: '1'
+                          code: INVALID_RESOURCE_ID
+                          display: Resource Id is invalid
     patch:
       description: |
         ## Overview
@@ -1490,56 +1511,40 @@ paths:
               $ref: components/schemas/ContentLocation.yaml
             Retry-After:
               $ref: components/schemas/RetryAfter.yaml
-        '400':
-          description: Client error.
+        '4XX':
+          description: |
+            An error occurred as follows:
+            
+            | HTTP status | Error code                 | Description |
+            | ----------- | -------------------------- | --------------------------------------------- |
+            | 400         | INVALID_RESOURCE_ID        | Invalid NHS Number. |
+            | 400         | VALIDATION_ERROR           | This it the "default" error thrown when no others are applicable. |
+            | 400         | MISSING_VALUE              | There was a missing value in the request. For example - a name update that is missing the surname. The missing value will be presented in the display. |
+            | 400         | INVALID_VALUE              | There was an invalid value in the request. For example - a name update where the surname is too long. The invalid value and field will be presented in the display. |
+            | 400         | UNSUPPORTED_VALUE          | There was an unsupported value in the request. The value may be valid in the schema - however it could be a legacy value that we do not allow to be set anymore. For example - setting the death notification status to 'removed'. The invalid value and field will be presented in the display. |
+            | 400         | TOO_FEW_VALUES_SUBMITTED   | The field in question has a minimum number of items and the user sent too few. |
+            | 400         | TOO_MANY_VALUES_SUBMITTED  | The field in question has a maximum number of items and the user sent too many. |
+            | 400         | ADDITIONAL_PROPERTIES      | The user sent additional properties within the dictionary. For example sending a patient patch and attempting to add 'pets', which is not an allowed field within the patient resource. |
+            | 401         | ACCESS_DENIED              | Calling application not configured for this operation in Spine. |
+            | 404         | RESOURCE_NOT_FOUND         | No matching patient for given NHS Number. |
+            | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS Number has been invalidated and not superseded by another NHS Number. |
+            | 412         | PRECONDITION_FAILED        | Request missing basic requirements such as If-Match header (or invalid headers). |
+  
           content:
             application/fhir+json:
               schema:
-                $ref: components/schemas/OperationOutcome.yaml
-              examples:
-                invalid-nhs-number:
-                  summary: Invalid NHS number supplied
-                  value:
-                    resourceType: OperationOutcome
-                    issue:
-                      - severity: error
-                        code: value
-                        details:
-                          coding:
-                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                              version: '1'
-                              code: INVALID_RESOURCE_ID
-                              display: Resource Id is invalid
-                no-patches-submitted:
-                  summary: No patches submitted
-                  value:
-                    resourceType: OperationOutcome
-                    issue:
-                      - severity: error
-                        code: required
-                        details:
-                          coding:
-                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                              version: '1'
-                              code: MISSING_VALUE
-                              display: Required value is missing
-                        diagnostics: Missing value - patches
-                invalid-patch-operation:
-                  summary: Invalid patch operation(s)
-                  value:
-                    resourceType: OperationOutcome
-                    issue:
-                      - severity: error
-                        code: value
-                        details:
-                          coding:
-                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                              version: '1'
-                              code: INVALID_UPDATE
-                              display: Update is invalid
-                        diagnostics: Invalid update with error - Invalid payload received - incorrect format
-        '412':
-          $ref: '#/components/responses/412PreconditionFailed'
+                $ref: '#/components/schemas/OperationOutcome'
+              example:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: value
+                    details:
+                      coding:
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                          version: '1'
+                          code: INVALID_RESOURCE_ID
+                          display: Resource Id is invalid
 
   '/Patient/{id}/RelatedPerson':
     parameters:
@@ -1627,25 +1632,33 @@ paths:
                   - fullUrl: 'https://api.service.nhs.uk/personal-demographics/Patient/9000000009/RelatedPerson/507B7621'
                     resource:
                       $ref: components/examples/RelatedPerson.json
-        '400':
-          $ref: '#/components/responses/400InvalidNHSNumber'
-        '404':
-          description: Related People not found.
+        '4XX':
+          description: |
+            An error occurred as follows:
+            
+            | HTTP status | Error code                 | Description |
+            | ----------- | -------------------------- | --------------------------------------------- |
+            | 400         | INVALID_RESOURCE_ID        | Invalid NHS Number. |
+            | 401         | ACCESS_DENIED              | Calling application not configured for this operation in Spine. |
+            | 404         | RESOURCE_NOT_FOUND         | No related people exist for given NHS Number. |
+            | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS Number has been invalidated and not superseded by another NHS Number. |
+            | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
+  
           content:
             application/fhir+json:
               schema:
-                $ref: components/schemas/OperationOutcome.yaml
+                $ref: '#/components/schemas/OperationOutcome'
               example:
                 resourceType: OperationOutcome
                 issue:
                   - severity: error
-                    code: not-found
+                    code: value
                     details:
                       coding:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
-                          code: RESOURCE_NOT_FOUND
-                          display: Resource not found
+                          code: INVALID_RESOURCE_ID
+                          display: Resource Id is invalid
 
   '/_poll/{message_id}':
     parameters:
@@ -1681,7 +1694,6 @@ paths:
         Alternatively, you can try out the sandbox using our Postman collection:
 
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
-              
         
       summary: Poll for the result of an update 
       operationId: polling
@@ -1699,87 +1711,37 @@ paths:
                 $ref: components/schemas/Patient.yaml
               example:
                 $ref: components/examples/Patient.json                
-        '400':
-          description: Client error after the patch was accepted and patient was not updated.
-          content:
-            application/fhir+json:
-              schema:
-                $ref: components/schemas/OperationOutcome.yaml
-              examples:
-                business-rule-failure:
-                  summary: Business rule failure; start date was after the end date.
-                  value:
-                    resourceType: OperationOutcome
-                    issue:
-                      - severity: error
-                        code: structure
-                        details:
-                          coding:
-                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                              version: '1'
-                              code: INVALID_UPDATE
-                              display: Update is invalid
-                        diagnostics: Invalid update with error - business effective start date is after the end date
-        '403':
-          description: Part of your update could not be allowed as the change was forbidden.
-          content:
-            application/fhir+json:
-              schema:
-                $ref: components/schemas/OperationOutcome.yaml
-              examples:
-                business-rule-failure:
-                  summary: Date of death cannot be removed once it has been set.
-                  value:
-                    resourceType: OperationOutcome
-                    issue:
-                      - severity: information
-                        code: forbidden
-                        details:
-                          coding:
-                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                              version: '1'
-                              code: FORBIDDEN_UPDATE
-                              display: Update is forbidden
-                        diagnostics: Forbidden update with error - source not permitted to remove 'deceasedDateTime'
-        '404':
-          description: The message ID not found or you did not have permission to poll for that message.
-          content:
-            application/fhir+json:
-              schema:
-                $ref: components/schemas/OperationOutcome.yaml
-              example:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: information
-                    code: not-found
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: POLLING_ID_NOT_FOUND
-                          display: The polling ID was not found
-        '409':
-          $ref: '#/components/responses/409Conflict'
-        '422':
+        '4XX':
           description: |
-            The polling message ID was found however the processing of the request failed in an unexpected way or was cancelled, so the update failed.
+            An error occurred as follows:
             
-            Please raise these occurrences with our team (via https://digital.nhs.uk/developer/help-and-support) so we can investigate the issue. When raising, quote the message ID you were polling for.
+            | HTTP status | Error code                 | Description |
+            | ----------- | -------------------------- | --------------------------------------------- |
+            | 400         | INVALID_UPDATE             | Client error after the patch was accepted and patient was not updated. For example, a start date was after the corresponding end date. |
+            | 401         | ACCESS_DENIED              | Calling application not configured for this operation in Spine. |
+            | 404         | RESOURCE_NOT_FOUND         | No related people exist for given NHS Number. |
+            | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS Number has been invalidated and not superseded by another NHS Number. |
+            | 404         | POLLING_ID_NOT_FOUND       | The message ID not found or you did not have permission to poll for that message. |
+            | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
+            | 403         | FORBIDDEN_UPDATE           | The user is not permitted to update certain resources or elements, for example most users are not allowed to update the date of death once it has been set. A detailed description will be added to the display. For example - updating a sensitive patient or adding a formal death notification is only permitted from certain systems. |
+            | 409         | RESOURCE_VERSION_MISMATCH  | The resource version has changed since your last read, so the update has been rejected. |
+            | 422         | POLLING_MESSAGE_FAILURE    | The polling message ID was found however the processing of the request failed in an unexpected way or was cancelled, so the update failed. Please raise these occurrences with our team (via https://digital.nhs.uk/developer/help-and-support) so we can investigate the issue. When raising, quote the message ID you were polling for. |
+
           content:
             application/fhir+json:
               schema:
-                $ref: components/schemas/OperationOutcome.yaml
+                $ref: '#/components/schemas/OperationOutcome'
               example:
                 resourceType: OperationOutcome
                 issue:
                   - severity: error
-                    code: processing
+                    code: value
                     details:
                       coding:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
-                          code: POLLING_MESSAGE_FAILURE
-                          display: The polling ID was found however the processing of the request failed in an unexpected way or was cancelled
+                          code: INVALID_RESOURCE_ID
+                          display: Resource Id is invalid
 
 components:
   parameters:
@@ -1939,29 +1901,6 @@ components:
                           code: PRECONDITION_FAILED
                           display: Required condition was not fulfilled
                     diagnostics: Invalid update with error - If-Match header must be supplied to update this resource
-    409Conflict:
-      description: |
-        Version Conflict.
-
-        The version identifier submitted in the `If-Match` header was not the latest version of the resource.
-      content:
-        application/fhir+json:
-          schema:
-            $ref: components/schemas/OperationOutcome.yaml
-          examples:
-            version-mismatch:
-              summary: Version mis-match
-              value:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: conflict
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: RESOURCE_VERSION_MISMATCH
-                          display: Resource version supplied does not match actual version
     400InvalidNHSNumber:
       description: Invalid NHS Number supplied (error code INVALID_RESOURCE_ID).
       content:
