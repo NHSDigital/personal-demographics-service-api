@@ -8,6 +8,7 @@ resources:
     - repository: common
       type: github
       name: NHSDigital/api-management-utils
+      ref: refs/tags/v0.0.1
       endpoint: NHSDigital
   pipelines:
   - pipeline: build_pipeline
@@ -36,7 +37,7 @@ extends:
     enable_status_monitoring: true
     jinja_templates:
       REQUIRE_ASID: false
-      PDS_TARGET_SERVER: ig3
+      PDS_TARGET_SERVER: spine-demographics
     secret_ids:
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_API_KEY
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_WITH_ASID_API_KEY
@@ -83,4 +84,4 @@ extends:
           - internal_qa_sandbox
         jinja_templates:
           REQUIRE_ASID: true
-          PDS_TARGET_SERVER: ig3
+          PDS_TARGET_SERVER: spine-demographics
