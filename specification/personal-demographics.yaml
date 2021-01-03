@@ -548,6 +548,7 @@ paths:
             | 401         | ACCESS_DENIED              | Calling application not configured for this operation in Spine. |
             | 404         | RESOURCE_NOT_FOUND         | No matching patients. |
             | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
+            | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
   
           content:
             application/fhir+json:
@@ -635,6 +636,7 @@ paths:
             | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS Number. |
             | 404         | INVALIDATED_RESOURCE       | Patient did exist for given NHS Number, but has been invalidated and not superseded by another NHS Number. |
             | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
+            | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
   
           content:
             application/fhir+json:
@@ -1502,6 +1504,7 @@ paths:
             | 404         | RESOURCE_NOT_FOUND         | No matching patient for given NHS Number. |
             | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS Number has been invalidated and not superseded by another NHS Number. |
             | 412         | PRECONDITION_FAILED        | Request missing basic requirements such as If-Match header (or invalid headers). |
+            | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
   
           content:
             application/fhir+json:
@@ -1616,6 +1619,7 @@ paths:
             | 404         | RESOURCE_NOT_FOUND         | No related people exist for given NHS Number. |
             | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS Number has been invalidated and not superseded by another NHS Number. |
             | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
+            | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
   
           content:
             application/fhir+json:
@@ -1699,6 +1703,7 @@ paths:
             | 403         | FORBIDDEN_UPDATE           | The user is not permitted to update certain resources or elements, for example most users are not allowed to update the date of death once it has been set. A detailed description will be added to the display. For example - updating a sensitive patient or adding a formal death notification is only permitted from certain systems. |
             | 409         | RESOURCE_VERSION_MISMATCH  | The resource version has changed since your last read, so the update has been rejected. |
             | 422         | POLLING_MESSAGE_FAILURE    | The polling message ID was found however the processing of the request failed in an unexpected way or was cancelled, so the update failed. Please raise these occurrences with our team (via https://digital.nhs.uk/developer/help-and-support) so we can investigate the issue. When raising, quote the message ID you were polling for. |
+            | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
 
           content:
             application/fhir+json:
@@ -1835,61 +1840,3 @@ components:
                   version: '1'
                   code: INVALID_RESOURCE_ID
                   display: Resource Id is invalid
-  responses:
-    412PreconditionFailed:
-      description: |
-        Precondition failed.
-
-        The version identifier submitted in the `If-Match` header was not the latest version of the resource.
-      content:
-        application/fhir+json:
-          schema:
-            $ref: components/schemas/OperationOutcome.yaml
-          examples:
-            invalid-if-match:
-              summary: Invalid If-Match header
-              value:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: structure
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: PRECONDITION_FAILED
-                          display: Required condition was not fulfilled
-                    diagnostics: Invalid update with error - This resource has changed since you last read. Please re-read and try again with the new version number
-            missing-if-match:
-              summary: Missing If-Match header
-              value:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: required
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: PRECONDITION_FAILED
-                          display: Required condition was not fulfilled
-                    diagnostics: Invalid update with error - If-Match header must be supplied to update this resource
-    400InvalidNHSNumber:
-      description: Invalid NHS Number supplied (error code INVALID_RESOURCE_ID).
-      content:
-        application/fhir+json:
-          schema:
-            $ref: components/schemas/OperationOutcome.yaml
-          example:
-            resourceType: OperationOutcome
-            issue:
-              - severity: error
-                code: value
-                details:
-                  coding:
-                    - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                      version: '1'
-                      code: INVALID_RESOURCE_ID
-                      display: Resource Id is invalid
-    404InvalidatedPatient:
-      description: Invalidated or superseded patient record (error code INVALIDATED_RESOURCE).
