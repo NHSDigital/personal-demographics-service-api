@@ -543,11 +543,13 @@ paths:
             | HTTP status | Error code                 | Description |
             | ----------- | -------------------------- | --------------------------------------------- |
             | 200         | TOO_MANY_MATCHES           | Too many matches were found - user should be told to refine their search parameters.	|
-            | 400         | INVALID_RESOURCE_ID        | Invalid NHS Number. |
             | 400         | INVALID_SEARCH_DATA	       | Invalid combination of search parameters. For details, see the `diagnostics` field. |
+            | 400         | MISSING_VALUE              | Missing header parameter. For details, see the `diagnostics` field. |
+            | 400         | INVALID_VALUE              | Invalid header parameter. For details, see the `diagnostics` field. |
             | 401         | ACCESS_DENIED              | Calling application not configured for this operation in Spine. |
             | 404         | RESOURCE_NOT_FOUND         | No matching patients. |
             | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
+            | 412         | PRECONDITION_FAILED        | Problem with request. For details, see the `diagnostics` field. |
             | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
   
           content:
@@ -632,12 +634,15 @@ paths:
             | HTTP status | Error code                 | Description |
             | ----------- | -------------------------- | --------------------------------------------- |
             | 400         | INVALID_RESOURCE_ID        | Invalid NHS Number. |
+            | 400         | MISSING_VALUE              | Missing header parameter. For details, see the `diagnostics` field. |
+            | 400         | INVALID_VALUE              | Invalid header parameter. For details, see the `diagnostics` field. |
             | 401         | ACCESS_DENIED              | Calling application not configured for this operation in Spine. |
             | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS Number. |
             | 404         | INVALIDATED_RESOURCE       | Patient did exist for given NHS Number, but has been invalidated and not superseded by another NHS Number. |
             | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
+            | 412         | PRECONDITION_FAILED        | Problem with request. For details, see the `diagnostics` field. |
             | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
-  
+    
           content:
             application/fhir+json:
               schema:
@@ -1493,9 +1498,9 @@ paths:
             | HTTP status | Error code                 | Description |
             | ----------- | -------------------------- | --------------------------------------------- |
             | 400         | INVALID_RESOURCE_ID        | Invalid NHS Number. |
+            | 400         | MISSING_VALUE              | Missing header parameter. For details, see the `diagnostics` field. |
+            | 400         | INVALID_VALUE              | Invalid header parameter. For details, see the `diagnostics` field. |
             | 400         | VALIDATION_ERROR           | This it the "default" error thrown when no others are applicable. |
-            | 400         | MISSING_VALUE              | There was a missing value in the request. For example - a name update that is missing the surname. The missing value will be presented in the display. |
-            | 400         | INVALID_VALUE              | There was an invalid value in the request. For example - a name update where the surname is too long. The invalid value and field will be presented in the display. |
             | 400         | UNSUPPORTED_VALUE          | There was an unsupported value in the request. The value may be valid in the schema - however it could be a legacy value that we do not allow to be set anymore. For example - setting the death notification status to 'removed'. The invalid value and field will be presented in the display. |
             | 400         | TOO_FEW_VALUES_SUBMITTED   | The field in question has a minimum number of items and the user sent too few. |
             | 400         | TOO_MANY_VALUES_SUBMITTED  | The field in question has a maximum number of items and the user sent too many. |
@@ -1503,9 +1508,9 @@ paths:
             | 401         | ACCESS_DENIED              | Calling application not configured for this operation in Spine. |
             | 404         | RESOURCE_NOT_FOUND         | No matching patient for given NHS Number. |
             | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS Number has been invalidated and not superseded by another NHS Number. |
-            | 412         | PRECONDITION_FAILED        | Request missing basic requirements such as If-Match header (or invalid headers). |
+            | 412         | PRECONDITION_FAILED        | Problem with request, for example missing `If-Match` header. For details, see the `diagnostics` field. |
             | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
-  
+
           content:
             application/fhir+json:
               schema:
@@ -1615,12 +1620,15 @@ paths:
             | HTTP status | Error code                 | Description |
             | ----------- | -------------------------- | --------------------------------------------- |
             | 400         | INVALID_RESOURCE_ID        | Invalid NHS Number. |
+            | 400         | MISSING_VALUE              | Missing header parameter. For details, see the `diagnostics` field. |
+            | 400         | INVALID_VALUE              | Invalid header parameter. For details, see the `diagnostics` field. |
             | 401         | ACCESS_DENIED              | Calling application not configured for this operation in Spine. |
             | 404         | RESOURCE_NOT_FOUND         | No related people exist for given NHS Number. |
             | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS Number has been invalidated and not superseded by another NHS Number. |
             | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
+            | 412         | PRECONDITION_FAILED        | Problem with request. For details, see the `diagnostics` field. |
             | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
-  
+
           content:
             application/fhir+json:
               schema:
@@ -1695,6 +1703,7 @@ paths:
             | HTTP status | Error code                 | Description |
             | ----------- | -------------------------- | --------------------------------------------- |
             | 400         | INVALID_UPDATE             | Client error after the patch was accepted and patient was not updated. For example, a start date was after the corresponding end date. |
+            | 400         | MISSING_VALUE              | Missing header parameter. For details, see the `diagnostics` field. |
             | 401         | ACCESS_DENIED              | Calling application not configured for this operation in Spine. |
             | 404         | RESOURCE_NOT_FOUND         | No related people exist for given NHS Number. |
             | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS Number has been invalidated and not superseded by another NHS Number. |
