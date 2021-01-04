@@ -17,7 +17,7 @@ resources:
     - repository: common
       type: github
       name: NHSDigital/api-management-utils
-      ref: refs/heads/mm-apm-1351-aws-build-agents
+      ref: refs/heads/stable
       endpoint: NHSDigital
 
 variables:
