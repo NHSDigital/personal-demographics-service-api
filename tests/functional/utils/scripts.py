@@ -58,9 +58,10 @@ class PDS:
     #  Arguments accepted are the actual Response & expected Response.
     def check_retrieve_response_body(response, expected_response):
         response_body = json.loads(response.text)
-        with check: assert response_body == expected_response, f"UNEXPECTED RESPONSE: " \
-                                                               f"actual response_body is: {response_body}" \
-                                                               f"expected response_body is: {expected_response}"
+        with check:
+            assert response_body == expected_response, f"UNEXPECTED RESPONSE: " \
+                                                       f"actual response_body is: {response_body}" \
+                                                       f"expected response_body is: {expected_response}"
 
     @staticmethod
     #  A Function to check the Response Body of an Update Request.
@@ -80,18 +81,20 @@ class PDS:
     #  Arguments accepted are the actual Response & expected Response.
     def check_search_response_body(response, expected_response):
         response_body = PDS.remove_time_stamp_on_search_response(json.loads(response.text))
-        with check: assert response_body == expected_response, f"UNEXPECTED RESPONSE: " \
-                                                               f"actual response_body is: {response_body}" \
-                                                               f"expected response_body is: {expected_response}"
+        with check:
+            assert response_body == expected_response, f"UNEXPECTED RESPONSE: " \
+                                                       f"actual response_body is: {response_body}" \
+                                                       f"expected response_body is: {expected_response}"
 
     @staticmethod
     #  A Function to check the Response Status Code of a response.  Arguments accepted are the
     #  actual Response & expected Response.
     def check_response_status_code(response, expected_status):
-        with check: assert response.status_code == expected_status, \
-            f"UNEXPECTED RESPONSE: " \
-            f"actual response_status is: {response.status_code} " \
-            f"expected response_status is: {expected_status}"
+        with check:
+            assert response.status_code == expected_status, \
+                f"UNEXPECTED RESPONSE: " \
+                f"actual response_status is: {response.status_code} " \
+                f"expected response_status is: {expected_status}"
 
     @staticmethod
     #  A Function to check the Response Headers.  Arguments accepted are the actual Response & expected Response.

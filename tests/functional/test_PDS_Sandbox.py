@@ -184,7 +184,7 @@ class TestPDSSandboxUpdateSuite:
         PDS.check_response_headers(update_response)
 
     def test_update_incorrect_content_type(self):
-        headers = {"Content-Type": "text/xml", "If-Match": f'W/"2"'}
+        headers = {"Content-Type": "text/xml", "If-Match": 'W/"2"'}
         update_response = PDS.update_patient_invalid_headers(update[7]["patient"],
                                                              update[7]["patch"], headers)
         PDS.check_update_response_body(update_response, update[7]["response"])
