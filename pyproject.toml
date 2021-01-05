@@ -44,6 +44,16 @@ black = "^20.8b1"
 pip-licenses = "^2.3.0"
 jinja2 = "^2.11.2"
 pytest = "^6.1.2"
+pytest_check = "^1.0.1"
+rope = "^0.18.0"
 
 
 [tool.poetry.scripts]
+
+[tool.pytest.ini_options]
+markers = [
+    "retrieve_scenarios",
+    "search_scenarios",
+    "update_scenarios",
+    "related_person_scenarios",
+]
