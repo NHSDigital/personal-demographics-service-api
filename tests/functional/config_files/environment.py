@@ -29,6 +29,7 @@ def get_env_file(variable_name: str) -> str:
 
 
 ENV = {
+
     "signing_key": get_env_file("APPLICATION_RESTRICTED_SIGNING_KEY_PATH"),
     "signing_key_with_asid": get_env_file("APPLICATION_RESTRICTED_WITH_ASID_SIGNING_KEY_PATH"),
     "application_restricted_api_key": get_env("APPLICATION_RESTRICTED_API_KEY"),
@@ -37,3 +38,4 @@ ENV = {
     "environment": get_env("APIGEE_ENVIRONMENT"),
     "key_id": get_env("KEY_ID")
 }
+
