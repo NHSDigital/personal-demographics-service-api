@@ -33,7 +33,11 @@ info:
     * dispensing doctor pharmacy
     * medical appliance supplier pharmacy
     * related people, such as next of kin (read only - update coming soon)
-
+    
+    PDS includes all patients who are registered for health and care services commissioned by the NHS in England, Wales and the Isle of Man.
+    They might actually live elsewhere, for example in Scotland, Ireland or the Channel Islands.
+    This API is only to be used for patients registered in England and the Isle of Man, not Wales.
+    
     This API has three access modes:
     
     
@@ -274,6 +278,10 @@ paths:
         If `address-postcode` or `general-practitioner` are included in the search parameters, no restricted patients will be returned even if a match is identified.
 
         The restricted flag can be found in the data under `meta/security` on the patient resource.
+        
+        ## Invalidated patients
+        Some patients are marked as invalidated in PDS - also known as redacted in FHIR terminology. Invalidated patient records are not returned in search results.
+        If an invalidated patient record has been superseded, the superseding record is returned.
 
         ## Number of results returned
         ### Healthcare professional access mode
@@ -528,41 +536,37 @@ paths:
                       score: 1
                     resource:
                       $ref: components/examples/PatientSearch.json
-        '400':
-          description: Invalid search paramaters supplied.
+        '4XX':
+          description: |
+            An error occurred as follows:
+            
+            | HTTP status | Error code                 | Description |
+            | ----------- | -------------------------- | --------------------------------------------- |
+            | 200         | TOO_MANY_MATCHES           | Too many matches were found - user should be told to refine their search parameters.	|
+            | 400         | INVALID_SEARCH_DATA	       | Invalid combination of search parameters. For details, see the `diagnostics` field. |
+            | 400         | MISSING_VALUE              | Missing header parameter. For details, see the `diagnostics` field. |
+            | 400         | INVALID_VALUE              | Invalid header parameter. For details, see the `diagnostics` field. |
+            | 401         | ACCESS_DENIED              | Calling application not configured for this operation in Spine. |
+            | 404         | RESOURCE_NOT_FOUND         | No matching patients. |
+            | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
+            | 412         | PRECONDITION_FAILED        | Problem with request. For details, see the `diagnostics` field. |
+            | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
+  
           content:
             application/fhir+json:
               schema:
-                $ref: components/schemas/OperationOutcome.yaml
-              examples:
-                not-enough:
-                  summary: too few search params
-                  value:
-                    resourceType: OperationOutcome
-                    issue:
-                      - severity: error
-                        code: value
-                        details:
-                          coding:
-                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                              version: '1'
-                              code: INVALID_SEARCH_DATA
-                              display: Search data is invalid
-                        diagnostics: Invalid search data provided - Not enough search parameters were provided to be able to make a search
-                bad-combination:
-                  summary: Invalid combination of search parameters
-                  value:
-                    resourceType: OperationOutcome
-                    issue:
-                      - severity: error
-                        code: value
-                        details:
-                          coding:
-                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                              version: '1'
-                              code: INVALID_SEARCH_DATA
-                              display: Search data is invalid
-                        diagnostics: Invalid search data provided - 'Invalid Date Combination'
+                $ref: '#/components/schemas/OperationOutcome'
+              example:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: value
+                    details:
+                      coding:
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                          version: '1'
+                          code: INVALID_RESOURCE_ID
+                          display: Resource Id is invalid
   '/Patient/{id}':
     parameters:
       - $ref: '#/components/parameters/Id'
@@ -623,12 +627,26 @@ paths:
                 $ref: components/schemas/Patient.yaml
               example:
                 $ref: components/examples/Patient.json
-        '400':
-          description: Invalid NHS number supplied.
+        '4XX':
+          description: |
+            An error occurred as follows:
+            
+            | HTTP status | Error code                 | Description |
+            | ----------- | -------------------------- | --------------------------------------------- |
+            | 400         | INVALID_RESOURCE_ID        | Invalid NHS Number. |
+            | 400         | MISSING_VALUE              | Missing header parameter. For details, see the `diagnostics` field. |
+            | 400         | INVALID_VALUE              | Invalid header parameter. For details, see the `diagnostics` field. |
+            | 401         | ACCESS_DENIED              | Calling application not configured for this operation in Spine. |
+            | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS Number. |
+            | 404         | INVALIDATED_RESOURCE       | Patient did exist for given NHS Number, but has been invalidated and not superseded by another NHS Number. |
+            | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
+            | 412         | PRECONDITION_FAILED        | Problem with request. For details, see the `diagnostics` field. |
+            | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
+    
           content:
             application/fhir+json:
               schema:
-                $ref: components/schemas/OperationOutcome.yaml
+                $ref: '#/components/schemas/OperationOutcome'
               example:
                 resourceType: OperationOutcome
                 issue:
@@ -640,23 +658,6 @@ paths:
                           version: '1'
                           code: INVALID_RESOURCE_ID
                           display: Resource Id is invalid
-        '404':
-          description: Patient not found.
-          content:
-            application/fhir+json:
-              schema:
-                $ref: components/schemas/OperationOutcome.yaml
-              example:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: not-found
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: RESOURCE_NOT_FOUND
-                          display: Resource not found
     patch:
       description: |
         ## Overview
@@ -731,7 +732,7 @@ paths:
         }
         ```
 
-        Adding to a list such as a `name` should be done by including the whole object in the value field. Note, the list index is `-` this is because when adding to a list as the index will not be known:
+        Adding to a list such as a `name` should be done by including the whole object in the value field. Note, the list index is `-` this is because when adding to a list, the index will not be known:
 
         ```json
         {
@@ -1076,18 +1077,24 @@ paths:
         * `/address/-` when adding a new address.
 
         An address consists of 5 lines of unstructured text, postcode and PAF (Postcode Address File) key.
-        Local systems must apply the following formatting convention when adding or replacing addresses lines:
-        *	line 1 - premises ID and/or house name, e.g. `Flat 1` or `The Old Schoolhouse`
-        *	line 2 - house number, dependent thoroughfare name and descriptor (if present), thoroughfare name and descriptor, e.g. `23 Mill Lane`
-        *	line 3 - dependent locality/village, locality (if present), e.g. `Boxgrove`
-        *	line 4 - post town, e.g. `Leeds`
-        *	line 5 - county (if present), e.g. `West Yorkshire`
+        
+        Postcode is optional but strongly encouraged.
+        If the address has no postcode, use a [pseudo postcode from the list defined by the Office for National Statistics](https://digital.nhs.uk/services/organisation-data-service/data-downloads/office-for-national-statistics-data) (see the ‘look_ups’ file).
+        
+        In particular, for a patient at no fixed abode, use the pseudo postcode `ZZ99 3VZ`.
+        
+        When adding or replacing address lines, use the following rules:
+        *	line 1 - premises ID and/or house name, for example `Flat 1` or `The Old Schoolhouse`
+        *	line 2 - house number, dependent thoroughfare name and descriptor (if present), thoroughfare name and descriptor, for example `23 Mill Lane`
+        *	line 3 - dependent locality/village, locality (if present), for example `Boxgrove`
+        *	line 4 - post town, for example `Leeds`
+        *	line 5 - county (if present), for example `West Yorkshire`
+        
+        When updating an address, you must populate lines 1 or 2, and line 4. You should not include line 5 in manually created addresses but you may include it in PAF-derived addresses.
 
-        When updating an address, lines 1 or 2, and line 4 should be populated; line 5 should not be included in manually created addresses but may be included in PAF derived addresses.
-
-        Address lines should be populated otherwise the message may be rejected. There are exceptions:
-        * if a postcode and PAF key are submitted, in which case the lines will be automatically populated, however if there are no matches or too many matches the message will be rejected due to missing address lines
-        * a pseudo postcode is used. For example `ZZ99 3VZ` meaning `no fixed abode`
+        There are exceptions:
+        * if you submit a postcode and PAF key, in which case the lines will be automatically populated, however if there are no matches or too many matches the message will be rejected due to missing address lines
+        * if you use a pseudo postcode, for example `ZZ99 3VZ` meaning `no fixed abode`
 
         When creating the FHIR payload message, to be fully FHIR compliant all empty lines should be removed, so for example:
         
@@ -1122,17 +1129,18 @@ paths:
 
         however if you do not do this the message will not be rejected; the response will be in that form though.
 
-        To ensure consistent data across all patient addresses it is advised that the address data supplied should be matched to the PAF and sent in that format including the PAF key.
-        If the PAF key is not included it will be added to the address if a match can be found, additionally the provided address lines and post code will be enriched and reformatted if necessary.
+        To ensure consistent data across all patient addresses, you should match addresses to the PAF and send them in PAF format including the PAF key.
+        If you do not include the PAF key it will be added to the address if a match can be found
+        Additionally the provided address lines and post code will be enriched and reformatted if necessary.
 
         The following address types are supported:
         * `home` - the home address is the patient's normal residence. Home address is also known as usual, main, registered, current or permanent address
         * `temp` - a temporary address is an address used for a set period of time, but where the patient's home, permanent address remains unchanged
         * `billing` - an address used for correspondence purposes only
 
-        A patient should have no more than one current `temp` and/or `billing` address, attempting to add multiple will result in a error.
+        A patient must have no more than one current `temp` and/or `billing` address.
         However, historically this was constrained only by the integration requirements and was not enforced so theoretically more than one can exist for a patient when retrieving.
-        Where multiple instances already exist for the patient it is not expected that local systems should manage those, but should choose the most appropriate one to maintain (e.g. by examining period dates).
+        Where multiple instances already exist for the patient it is not expected that local systems should manage those, but should choose the most appropriate one to maintain (for example by examining period dates).
 
         A `home` address is the patient's main residential address and should normally be used for all clinical and demographic purposes, including clinical and appointment correspondence.
         However additionally, `temp` and `billing` addresses may be provided by a patient when there is a requirement to record an alternative location for the purposes of unbroken care.
@@ -1141,11 +1149,11 @@ paths:
         *	if no current `billing` address is provided, a `temp` address may take precedence over the `home` address, again if it is valid according to its period start and to dates.
         * if there is no valid, current `billing` and/or `temp` address, the `home` address must be used.
 
-        It should be noted that not all local systems support `temp` and `billing` addresses, so these are not uniformly maintained. Therefore, where the patient contact has clinical or business significance, the precedence of these addresses over the `home` address should be determined by a user wherever possible.
+        Not all local systems support `temp` and `billing` addresses, so these are not uniformly maintained. Therefore, where the patient contact has clinical or business significance, the precedence of these addresses over the `home` address should be determined by a user wherever possible.
         When the end date for a `temp` or `billing` address passes, local systems should use the patient’s `home` address. It will be extremely rare that no home address is present on a patient record.
 
-        There are a number of business rules that should be taken into account:
-        * cannot add more than one of each address use types; `home`, `temp` or `billing`
+        Be aware of the following business rules:
+        * you cannot add more than one of each address use types; `home`, `temp` or `billing`
         * `work` address `use` type is a valid response but cannot be added or replaced as it is a legacy value. An address with the `work` type can be removed though
         * any `temp` address must have both a `period start` and a `period end` date. The provision of a period end date has particular importance in order to avoid temporary addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 3 months.
         * any `billing` address must have both a `period start` and a `period end` date. The provision of a period end date has particular importance in order to avoid correspondence addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 12 months.
@@ -1159,48 +1167,6 @@ paths:
           * `Convalescence Home` - the address for a patient during a period of recovery
           * `Mobile Home` - the address of a patient's mobile home, parked for a specific period of time, e.g. the address of a caravan park
           * `Holiday Home` - the address for a patient during a holiday
-
-        Valid pseudo postcodes are:
-
-        |Postcode|Description|
-        |--------|-----------|
-        |ZZ99 3VZ|No Fixed Abode|
-        |ZZ99 3WZ|Address Not Known|
-        |ZZ99 3CZ|England UK - not specified|
-        |ZZ99 3GZ|Wales|
-        |ZZ99 1WZ|Scotland|
-        |ZZ99 2WZ|Northern Ireland|
-        |ZZ99 4MZ|Austria|
-        |ZZ99 2DZ|Belgium|
-        |ZZ99 4UZ|Bulgaria|
-        |ZZ99 5VZ|Croatia|
-        |ZZ99 6AZ|Cyprus (Southern)|
-        |ZZ99 5XZ|Czech Republic|
-        |ZZ99 4FZ|Denmark|
-        |ZZ99 7LZ|Estonia|
-        |ZZ99 4BZ|Finland|
-        |ZZ99 4GZ|France|
-        |ZZ99 4QZ|Germany|
-        |ZZ99 4RZ|Greece|
-        |ZZ99 4XZ|Hungary|
-        |ZZ99 4CZ|Iceland|
-        |ZZ99 4LZ|Italy|
-        |ZZ99 7RZ|Latvia|
-        |ZZ99 2PZ|Liechtenstein|
-        |ZZ99 7SZ|Lithuania|
-        |ZZ99 2EZ|Luxembourg|
-        |ZZ99 5BZ|Malta|
-        |ZZ99 4EZ|Netherlands|
-        |ZZ99 2AZ|Norway|
-        |ZZ99 4YZ|Poland|
-        |ZZ99 4JZ|Portugal|
-        |ZZ99 3AZ|Republic of Ireland|
-        |ZZ99 4ZZ|Romania|
-        |ZZ99 5YZ|Slovakia|
-        |ZZ99 5UZ|Slovenia|
-        |ZZ99 4HZ|Spain|
-        |ZZ99 2CZ|Sweden|
-        |ZZ99 4PZ|Switzerland|
 
         ### Communication
 
@@ -1525,56 +1491,41 @@ paths:
               $ref: components/schemas/ContentLocation.yaml
             Retry-After:
               $ref: components/schemas/RetryAfter.yaml
-        '400':
-          description: Client error.
+        '4XX':
+          description: |
+            An error occurred as follows:
+            
+            | HTTP status | Error code                 | Description |
+            | ----------- | -------------------------- | --------------------------------------------- |
+            | 400         | INVALID_RESOURCE_ID        | Invalid NHS Number. |
+            | 400         | MISSING_VALUE              | Missing header parameter. For details, see the `diagnostics` field. |
+            | 400         | INVALID_VALUE              | Invalid header parameter. For details, see the `diagnostics` field. |
+            | 400         | VALIDATION_ERROR           | This it the "default" error thrown when no others are applicable. |
+            | 400         | UNSUPPORTED_VALUE          | There was an unsupported value in the request. The value may be valid in the schema - however it could be a legacy value that we do not allow to be set anymore. For example - setting the death notification status to 'removed'. The invalid value and field will be presented in the display. |
+            | 400         | TOO_FEW_VALUES_SUBMITTED   | The field in question has a minimum number of items and the user sent too few. |
+            | 400         | TOO_MANY_VALUES_SUBMITTED  | The field in question has a maximum number of items and the user sent too many. |
+            | 400         | ADDITIONAL_PROPERTIES      | The user sent additional properties within the dictionary. For example sending a patient patch and attempting to add 'pets', which is not an allowed field within the patient resource. |
+            | 401         | ACCESS_DENIED              | Calling application not configured for this operation in Spine. |
+            | 404         | RESOURCE_NOT_FOUND         | No matching patient for given NHS Number. |
+            | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS Number has been invalidated and not superseded by another NHS Number. |
+            | 412         | PRECONDITION_FAILED        | Problem with request, for example missing `If-Match` header. For details, see the `diagnostics` field. |
+            | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
+
           content:
             application/fhir+json:
               schema:
-                $ref: components/schemas/OperationOutcome.yaml
-              examples:
-                invalid-nhs-number:
-                  summary: Invalid NHS number supplied
-                  value:
-                    resourceType: OperationOutcome
-                    issue:
-                      - severity: error
-                        code: value
-                        details:
-                          coding:
-                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                              version: '1'
-                              code: INVALID_RESOURCE_ID
-                              display: Resource Id is invalid
-                no-patches-submitted:
-                  summary: No patches submitted
-                  value:
-                    resourceType: OperationOutcome
-                    issue:
-                      - severity: error
-                        code: required
-                        details:
-                          coding:
-                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                              version: '1'
-                              code: MISSING_VALUE
-                              display: Required value is missing
-                        diagnostics: Missing value - patches
-                invalid-patch-operation:
-                  summary: Invalid patch operation(s)
-                  value:
-                    resourceType: OperationOutcome
-                    issue:
-                      - severity: error
-                        code: value
-                        details:
-                          coding:
-                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                              version: '1'
-                              code: INVALID_UPDATE
-                              display: Update is invalid
-                        diagnostics: Invalid update with error - Invalid payload received - incorrect format
-        '412':
-          $ref: '#/components/responses/412PreconditionFailed'
+                $ref: '#/components/schemas/OperationOutcome'
+              example:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: value
+                    details:
+                      coding:
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                          version: '1'
+                          code: INVALID_RESOURCE_ID
+                          display: Resource Id is invalid
 
   '/Patient/{id}/RelatedPerson':
     parameters:
@@ -1607,7 +1558,6 @@ paths:
         Alternatively, you can try out the sandbox using our Postman collection:
         
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
-
        
       summary: "Get a patient's related people"
       operationId: get-related-people
@@ -1663,12 +1613,26 @@ paths:
                   - fullUrl: 'https://api.service.nhs.uk/personal-demographics/Patient/9000000009/RelatedPerson/507B7621'
                     resource:
                       $ref: components/examples/RelatedPerson.json
-        '400':
-          description: Invalid NHS number supplied.
+        '4XX':
+          description: |
+            An error occurred as follows:
+            
+            | HTTP status | Error code                 | Description |
+            | ----------- | -------------------------- | --------------------------------------------- |
+            | 400         | INVALID_RESOURCE_ID        | Invalid NHS Number. |
+            | 400         | MISSING_VALUE              | Missing header parameter. For details, see the `diagnostics` field. |
+            | 400         | INVALID_VALUE              | Invalid header parameter. For details, see the `diagnostics` field. |
+            | 401         | ACCESS_DENIED              | Calling application not configured for this operation in Spine. |
+            | 404         | RESOURCE_NOT_FOUND         | No related people exist for given NHS Number. |
+            | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS Number has been invalidated and not superseded by another NHS Number. |
+            | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
+            | 412         | PRECONDITION_FAILED        | Problem with request. For details, see the `diagnostics` field. |
+            | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
+
           content:
             application/fhir+json:
               schema:
-                $ref: components/schemas/OperationOutcome.yaml
+                $ref: '#/components/schemas/OperationOutcome'
               example:
                 resourceType: OperationOutcome
                 issue:
@@ -1680,23 +1644,6 @@ paths:
                           version: '1'
                           code: INVALID_RESOURCE_ID
                           display: Resource Id is invalid
-        '404':
-          description: Related People not found.
-          content:
-            application/fhir+json:
-              schema:
-                $ref: components/schemas/OperationOutcome.yaml
-              example:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: not-found
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: RESOURCE_NOT_FOUND
-                          display: Resource not found
 
   '/_poll/{message_id}':
     parameters:
@@ -1732,7 +1679,6 @@ paths:
         Alternatively, you can try out the sandbox using our Postman collection:
 
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
-              
         
       summary: Poll for the result of an update 
       operationId: polling
@@ -1750,87 +1696,39 @@ paths:
                 $ref: components/schemas/Patient.yaml
               example:
                 $ref: components/examples/Patient.json                
-        '400':
-          description: Client error after the patch was accepted and patient was not updated.
-          content:
-            application/fhir+json:
-              schema:
-                $ref: components/schemas/OperationOutcome.yaml
-              examples:
-                business-rule-failure:
-                  summary: Business rule failure; start date was after the end date.
-                  value:
-                    resourceType: OperationOutcome
-                    issue:
-                      - severity: error
-                        code: structure
-                        details:
-                          coding:
-                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                              version: '1'
-                              code: INVALID_UPDATE
-                              display: Update is invalid
-                        diagnostics: Invalid update with error - business effective start date is after the end date
-        '403':
-          description: Part of your update could not be allowed as the change was forbidden.
-          content:
-            application/fhir+json:
-              schema:
-                $ref: components/schemas/OperationOutcome.yaml
-              examples:
-                business-rule-failure:
-                  summary: Date of death cannot be removed once it has been set.
-                  value:
-                    resourceType: OperationOutcome
-                    issue:
-                      - severity: information
-                        code: forbidden
-                        details:
-                          coding:
-                            - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                              version: '1'
-                              code: FORBIDDEN_UPDATE
-                              display: Update is forbidden
-                        diagnostics: Forbidden update with error - source not permitted to remove 'deceasedDateTime'
-        '404':
-          description: The message ID not found or you did not have permission to poll for that message.
-          content:
-            application/fhir+json:
-              schema:
-                $ref: components/schemas/OperationOutcome.yaml
-              example:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: information
-                    code: not-found
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: POLLING_ID_NOT_FOUND
-                          display: The polling ID was not found
-        '409':
-          $ref: '#/components/responses/409Conflict'
-        '422':
+        '4XX':
           description: |
-            The polling message ID was found however the processing of the request failed in an unexpected way or was cancelled, so the update failed.
+            An error occurred as follows:
             
-            Please raise these occurrences with our team (via https://digital.nhs.uk/developer/help-and-support) so we can investigate the issue. When raising, quote the message ID you were polling for.
+            | HTTP status | Error code                 | Description |
+            | ----------- | -------------------------- | --------------------------------------------- |
+            | 400         | INVALID_UPDATE             | Client error after the patch was accepted and patient was not updated. For example, a start date was after the corresponding end date. |
+            | 400         | MISSING_VALUE              | Missing header parameter. For details, see the `diagnostics` field. |
+            | 401         | ACCESS_DENIED              | Calling application not configured for this operation in Spine. |
+            | 404         | RESOURCE_NOT_FOUND         | No related people exist for given NHS Number. |
+            | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS Number has been invalidated and not superseded by another NHS Number. |
+            | 404         | POLLING_ID_NOT_FOUND       | The message ID not found or you did not have permission to poll for that message. |
+            | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
+            | 403         | FORBIDDEN_UPDATE           | The user is not permitted to update certain resources or elements, for example most users are not allowed to update the date of death once it has been set. A detailed description will be added to the display. For example - updating a sensitive patient or adding a formal death notification is only permitted from certain systems. |
+            | 409         | RESOURCE_VERSION_MISMATCH  | The resource version has changed since your last read, so the update has been rejected. |
+            | 422         | POLLING_MESSAGE_FAILURE    | The polling message ID was found however the processing of the request failed in an unexpected way or was cancelled, so the update failed. Please raise these occurrences with our team (via https://digital.nhs.uk/developer/help-and-support) so we can investigate the issue. When raising, quote the message ID you were polling for. |
+            | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
+
           content:
             application/fhir+json:
               schema:
-                $ref: components/schemas/OperationOutcome.yaml
+                $ref: '#/components/schemas/OperationOutcome'
               example:
                 resourceType: OperationOutcome
                 issue:
                   - severity: error
-                    code: processing
+                    code: value
                     details:
                       coding:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
-                          code: POLLING_MESSAGE_FAILURE
-                          display: The polling ID was found however the processing of the request failed in an unexpected way or was cancelled
+                          code: INVALID_RESOURCE_ID
+                          display: Resource Id is invalid
 
 components:
   parameters:
@@ -1937,66 +1835,17 @@ components:
       $ref: components/schemas/RelatedPerson.yaml
     OperationOutcome:
       $ref: components/schemas/OperationOutcome.yaml
-  responses:
-    412PreconditionFailed:
-      description: |
-        Precondition failed.
-
-        The version identifier submitted in the `If-Match` header was not the latest version of the resource.
-      content:
-        application/fhir+json:
-          schema:
-            $ref: components/schemas/OperationOutcome.yaml
-          examples:
-            invalid-if-match:
-              summary: Invalid If-Match header
-              value:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: structure
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: PRECONDITION_FAILED
-                          display: Required condition was not fulfilled
-                    diagnostics: Invalid update with error - This resource has changed since you last read. Please re-read and try again with the new version number
-            missing-if-match:
-              summary: Missing If-Match header
-              value:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: required
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: PRECONDITION_FAILED
-                          display: Required condition was not fulfilled
-                    diagnostics: Invalid update with error - If-Match header must be supplied to update this resource
-    409Conflict:
-      description: |
-        Version Conflict.
-
-        The version identifier submitted in the `If-Match` header was not the latest version of the resource.
-      content:
-        application/fhir+json:
-          schema:
-            $ref: components/schemas/OperationOutcome.yaml
-          examples:
-            version-mismatch:
-              summary: Version mis-match
-              value:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: conflict
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: RESOURCE_VERSION_MISMATCH
-                          display: Resource version supplied does not match actual version
-
+  examples:
+    OperationOutcome:
+      summary: OperationOutcome example
+      value:
+        resourceType: OperationOutcome
+        issue:
+          - severity: error
+            code: value
+            details:
+              coding:
+                - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                  version: '1'
+                  code: INVALID_RESOURCE_ID
+                  display: Resource Id is invalid
