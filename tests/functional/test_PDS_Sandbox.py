@@ -126,7 +126,8 @@ class TestPDSSandboxUpdateSuite:
 
     def test_update_replace_given_name(self, additional_headers):
         # send update request
-        update_response = PDS.update_patient(update[1]["patient"], update[1]["patient_record"], update[1]["patch"], additional_headers)
+        update_response = PDS.update_patient(update[1]["patient"], update[1]["patient_record"],
+                                             update[1]["patch"], additional_headers)
         PDS.check_update_response_body(update_response, "")
         PDS.check_response_status_code(update_response, 202)
         PDS.check_response_headers(update_response, additional_headers)
@@ -137,7 +138,8 @@ class TestPDSSandboxUpdateSuite:
 
     def test_update_suffix_from_name(self, additional_headers):
         # send update request
-        update_response = PDS.update_patient(update[2]["patient"], update[2]["patient_record"], update[2]["patch"], additional_headers)
+        update_response = PDS.update_patient(update[2]["patient"], update[2]["patient_record"],
+                                             update[2]["patch"], additional_headers)
         PDS.check_update_response_body(update_response, "")
         PDS.check_response_status_code(update_response, 202)
         PDS.check_response_headers(update_response, additional_headers)
@@ -148,59 +150,68 @@ class TestPDSSandboxUpdateSuite:
 
     def test_update_no_patch_sent(self, additional_headers):
         # send update request
-        update_response = PDS.update_patient(update[3]["patient"], update[3]["patient_record"], update[3]["patch"], additional_headers)
+        update_response = PDS.update_patient(update[3]["patient"], update[3]["patient_record"],
+                                             update[3]["patch"], additional_headers)
         PDS.check_update_response_body(update_response, update[3]["response"])
         PDS.check_response_status_code(update_response, 400)
         PDS.check_response_headers(update_response, additional_headers)
 
     def test_update_incorrect_resource_version(self, additional_headers):
         # send update request
-        update_response = PDS.update_patient(update[4]["patient"], update[4]["patient_record"], update[4]["patch"], additional_headers)
+        update_response = PDS.update_patient(update[4]["patient"], update[4]["patient_record"],
+                                             update[4]["patch"], additional_headers)
         PDS.check_update_response_body(update_response, update[4]["response"])
         PDS.check_response_status_code(update_response, 412)
         PDS.check_response_headers(update_response, additional_headers)
 
     def test_update_invalid_x_request_id(self):
         # send update request
-        update_response = PDS.update_patient(update[5]["patient"], update[5]["patient_record"], update[5]["patch"], {"x-request-id": "12345"})
+        update_response = PDS.update_patient(update[5]["patient"], update[5]["patient_record"],
+                                             update[5]["patch"], {"x-request-id": "12345"})
         PDS.check_update_response_body(update_response, update[5]["response"])
         PDS.check_response_status_code(update_response, 400)
         PDS.check_response_headers(update_response, {"X-Request-ID": "12345"})
 
     def test_update_missing_if_match_header(self):
         headers = {"Content-Type": "application/json-patch+json"}
-        update_response = PDS.update_patient_invalid_headers(update[6]["patient"], update[6]["patch"], headers)
+        update_response = PDS.update_patient_invalid_headers(update[6]["patient"],
+                                                             update[6]["patch"], headers)
         PDS.check_update_response_body(update_response, update[6]["response"])
         PDS.check_response_status_code(update_response, 412)
         PDS.check_response_headers(update_response)
 
     def test_update_incorrect_content_type(self):
         headers = {"Content-Type": "text/xml", "If-Match": f'W/"2"'}
-        update_response = PDS.update_patient_invalid_headers(update[7]["patient"], update[7]["patch"], headers)
+        update_response = PDS.update_patient_invalid_headers(update[7]["patient"],
+                                                             update[7]["patch"], headers)
         PDS.check_update_response_body(update_response, update[7]["response"])
         PDS.check_response_status_code(update_response, 400)
         PDS.check_response_headers(update_response)
 
     def test_update_invalid_patch(self, additional_headers):
         # send update request
-        update_response = PDS.update_patient(update[8]["patient"], update[8]["patient_record"], update[8]["patch"], additional_headers)
+        update_response = PDS.update_patient(update[8]["patient"], update[8]["patient_record"],
+                                             update[8]["patch"], additional_headers)
         PDS.check_update_response_body(update_response, update[8]["response"])
         PDS.check_response_status_code(update_response, 400)
         PDS.check_response_headers(update_response, additional_headers)
 
     def test_invalid_nhs_number(self, additional_headers):
         # send update request
-        update_response = PDS.update_patient(update[9]["patient"], update[9]["patient_record"], update[9]["patch"], additional_headers)
+        update_response = PDS.update_patient(update[9]["patient"], update[9]["patient_record"],
+                                             update[9]["patch"], additional_headers)
         PDS.check_update_response_body(update_response, update[9]["response"])
         PDS.check_response_status_code(update_response, 400)
         PDS.check_response_headers(update_response, additional_headers)
 
     def test_patient_does_not_exist(self, additional_headers):
         # send update request
-        update_response = PDS.update_patient(update[10]["patient"], update[10]["patient_record"], update[10]["patch"], additional_headers)
+        update_response = PDS.update_patient(update[10]["patient"], update[10]["patient_record"],
+                                             update[10]["patch"], additional_headers)
         PDS.check_update_response_body(update_response, update[10]["response"])
         PDS.check_response_status_code(update_response, 404)
         PDS.check_response_headers(update_response, additional_headers)
+
 
 @pytest.mark.related_person_scenarios
 class TestSandboxRelatedPersonSuite:
