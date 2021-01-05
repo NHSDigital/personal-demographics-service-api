@@ -29,13 +29,13 @@ ACCESS_MODES:
     displayName: User Restricted
     scopes: ['personal-demographics:USER-RESTRICTED']
     requireCallbackUrl: true
-    description: Access the Personal Demographics Service with reduced permisions.
+    description: Hello.
   - name: application-restricted
     nameSuffix: -application-restricted
     displayName: Application Restricted
     scopes: []
     requireCallbackUrl: false
-    description: Full access to PDS functionality
+    description: World
 ---
 
 # Manifest definition
