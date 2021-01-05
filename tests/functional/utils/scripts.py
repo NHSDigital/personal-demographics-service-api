@@ -54,7 +54,8 @@ class PDS:
         return response
 
     @staticmethod
-    #  A Function to check the Response Body of a Retrieve or Polling Request.  Arguments accepted are the actual Response & expected Response.
+    #  A Function to check the Response Body of a Retrieve or Polling Request.
+    #  Arguments accepted are the actual Response & expected Response.
     def check_retrieve_response_body(response, expected_response):
         response_body = json.loads(response.text)
         with check: assert response_body == expected_response, f"UNEXPECTED RESPONSE: " \
@@ -84,24 +85,28 @@ class PDS:
                                                                f"expected response_body is: {expected_response}"
 
     @staticmethod
-    #  A Function to check the Response Status Code of a response.  Arguments accepted are the actual Response & expected Response.
+    #  A Function to check the Response Status Code of a response.  Arguments accepted are the
+    #  actual Response & expected Response.
     def check_response_status_code(response, expected_status):
-        with check: assert response.status_code == expected_status, f"UNEXPECTED RESPONSE: " \
-                                                                    f"actual response_status is: {response.status_code} " \
-                                                                    f"expected response_status is: {expected_status}"
+        with check: assert response.status_code == expected_status, \
+            f"UNEXPECTED RESPONSE: " \
+            f"actual response_status is: {response.status_code} " \
+            f"expected response_status is: {expected_status}"
 
     @staticmethod
     #  A Function to check the Response Headers.  Arguments accepted are the actual Response & expected Response.
     def check_response_headers(response, expected_headers={}):
         if 'X-Request-ID' in expected_headers:
             with check:
-                assert response.headers['X-Request-ID'] == expected_headers['X-Request-ID'], f"UNEXPECTED RESPONSE: " \
-                                                                                             f"actual X-Request-ID is: {response.headers['X-Request-ID']} " \
-                                                                                             f"expected X-Request-ID is: {expected_headers['X-Request-ID']}"
+                assert response.headers['X-Request-ID'] == expected_headers['X-Request-ID'], \
+                    f"UNEXPECTED RESPONSE: " \
+                    f"actual X-Request-ID is: {response.headers['X-Request-ID']} " \
+                    f"expected X-Request-ID is: {expected_headers['X-Request-ID']}"
         else:
             with check:
-                assert 'X-Request-ID' not in response.headers, f"UNEXPECTED RESPONSE: expected X-Request-ID not to be present " \
-                                                               f"but {response.headers['X-Request-ID']} found in response header"
+                assert 'X-Request-ID' not in response.headers, \
+                    f"UNEXPECTED RESPONSE: expected X-Request-ID not to be present " \
+                    f"but {response.headers['X-Request-ID']} found in response header"
 
         if 'X-Correlation-ID' in expected_headers:
             with check:
@@ -112,8 +117,9 @@ class PDS:
 
         else:
             with check:
-                assert 'X-Correlation-ID' not in response.headers, f"UNEXPECTED RESPONSE: expected X-Correlation-ID not to be present " \
-                                                                   f"but {response.headers['X-Correlation-ID']} found in response header"
+                assert 'X-Correlation-ID' not in response.headers, \
+                    f"UNEXPECTED RESPONSE: expected X-Correlation-ID not to be present " \
+                    f"but {response.headers['X-Correlation-ID']} found in response header"
 
     @staticmethod
     def remove_time_stamp_on_search_response(response_body):

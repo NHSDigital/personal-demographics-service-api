@@ -38,4 +38,3 @@ ENV = {
     "environment": get_env("APIGEE_ENVIRONMENT"),
     "key_id": get_env("KEY_ID")
 }
-

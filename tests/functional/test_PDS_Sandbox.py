@@ -10,6 +10,7 @@ search = data_bank.sandbox_search_scenarios
 update = data_bank.sandbox_update_scenarios
 relatedPerson = data_bank.sandbox_relatedPerson_scenarios
 
+
 @ pytest.fixture()
 def additional_headers():
     headers = {'X-Request-ID': str(uuid.uuid1()), 'X-Correlation-ID': str(uuid.uuid1())}
@@ -50,6 +51,7 @@ class TestPDSSandboxRetrieveSuite:
         PDS.check_response_status_code(response, 400)
         PDS.check_response_headers(response, {"X-Request-ID": "1234"})
 
+
 @pytest.mark.search_scenarios
 class TestPDSSandboxSearchSuite:
     """Sandbox PDS Search Scenarios. Checks performed: canned Response_Bodies, Status_Codes and Headers"""
@@ -73,7 +75,8 @@ class TestPDSSandboxSearchSuite:
         PDS.check_response_headers(response, additional_headers)
 
     def test_sandbox_date_range_search(self, additional_headers):
-        response = PDS.search_patient("family=Smith&gender=female&birthdate=ge2010-10-21&birthdate=le2010-10-23", additional_headers)
+        response = PDS.search_patient("family=Smith&gender=female&birthdate=ge2010-10-21&birthdate=le2010-10-23",
+                                      additional_headers)
         PDS.check_search_response_body(response, search[3]["response"])
         PDS.check_response_status_code(response, 200)
         PDS.check_response_headers(response, additional_headers)
