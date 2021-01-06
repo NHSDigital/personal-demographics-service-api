@@ -34,9 +34,9 @@ steps:
 #         $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/*.xml
 #       failTaskOnFailedTests: true
 
-#   - bash: poetry install
-#     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
-#     displayName: Setup application restricted tests
+  - bash: poetry install
+    workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
+    displayName: Setup sandbox tests
 
   - bash: |
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
