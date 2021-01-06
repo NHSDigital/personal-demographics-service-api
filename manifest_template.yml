@@ -29,13 +29,13 @@ ACCESS_MODES:
     displayName: User Restricted
     scopes: ['personal-demographics:USER-RESTRICTED']
     requireCallbackUrl: true
-    description: Hello.
+    description: User restricted
   - name: application-restricted
     nameSuffix: -application-restricted
     displayName: Application Restricted
     scopes: []
     requireCallbackUrl: false
-    description: World
+    description: Application restricted
 ---
 
 # Manifest definition
