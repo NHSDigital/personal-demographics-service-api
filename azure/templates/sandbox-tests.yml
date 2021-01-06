@@ -1,0 +1,53 @@
+# parameters:
+#   - name: test_pack_path
+#   - name: test_type
+
+steps:
+#   - template: ./common/setup-newman-tests.yml
+
+#   - bash: |
+#       set -euo pipefail
+
+#       if [ -d $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests ]; then
+#         echo "Running ${{ parameters.test_type }} tests"
+
+#         # Go to tests folder
+#         cd $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests
+
+#         # Install node
+#         curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+
+#         # Install dependencies
+#         npm install
+
+#         # Run tests
+#         echo "node_modules/.bin/node --unhandled-rejections=strict e2e/test-runner.js $(IDP_URL) $(API_URL) ${{ parameters.test_pack_path }}  ./e2e/environments/deploy.postman-environment.json"
+#         node_modules/.bin/node --unhandled-rejections=strict e2e/test-runner.js $(IDP_URL) $(API_URL) ${{ parameters.test_pack_path }}  ./e2e/environments/deploy.postman-environment.json;
+#       fi
+#     displayName: 'Run ${{ parameters.test_type }} tests'
+
+#   - task: PublishTestResults@2
+#     displayName: 'Publish ${{ parameters.test_type }} Test Results'
+#     inputs:
+#       testResultsFiles: |
+#         $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/test-report.xml
+#         $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/*.xml
+#       failTaskOnFailedTests: true
+
+#   - bash: poetry install
+#     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
+#     displayName: Setup application restricted tests
+
+  - bash: |
+      export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
+      export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
+
+      poetry run pytest -v tests/sandbox/test_PDS_sandbox.py --junitxml=tests/sandbox-test-report.xml
+    displayName: Run sandbox tests
+    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+
+  - task: PublishTestResults@2
+    displayName: 'Publish sandbox test results'
+    inputs:
+      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/sandbox-test-report.xml
+      failTaskOnFailedTests: true
