@@ -17,7 +17,7 @@ resources:
     - repository: common
       type: github
       name: NHSDigital/api-management-utils
-      ref: APM-1646-debug
+      ref: refs/heads/edge
       endpoint: NHSDigital
 
 variables:
