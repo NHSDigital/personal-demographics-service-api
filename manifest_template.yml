@@ -64,7 +64,6 @@ apigee:
           - name: ratelimit
             value: {{ env.ratelimit | default('5ps') }}
         description: {{ mode.description }}
-        Personal Demographics Service - User Restricted (Production)
         displayName: Personal Demographics Service{{ service_display_name_suffix }} - {{ mode.displayName }} ({{ env.display_name_suffix }})
         environments: [ {{ env.name }} ]
         proxies:
@@ -84,12 +83,13 @@ apigee:
         path: personal-demographics.json
       portals:
 {% for service_name_suffix in env.service_name_suffixes | default(['']) %}
+{% set service_display_name_suffix = env.service_display_name_suffixes[loop.index-1] | default('') %}
 {% for mode in ACCESS_MODES %}
       - edgeAPIProductName: personal-demographics{{ service_name_suffix }}-{{ env.name }}{{ mode.nameSuffix }}
         anonAllowed: true
         description: {{ mode.catalogDescription }}
         requireCallbackUrl: {{ mode.requireCallbackUrl }}
-        title: Personal Demographics Service {{ mode.displayName }} ({{ env.display_name_suffix }})
+        title: Personal Demographics Service{{ service_display_name_suffix }} - {{ mode.displayName }} ({{ env.display_name_suffix }})
         visibility: portal_visibility
         specId: personal-demographics-{{ env.name }}
 {% endfor %}
