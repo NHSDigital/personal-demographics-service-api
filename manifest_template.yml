@@ -90,7 +90,7 @@ apigee:
         description: {{ mode.catalogDescription }}
         requireCallbackUrl: {{ mode.requireCallbackUrl }}
         title: Personal Demographics Service{{ service_display_name_suffix }} - {{ mode.displayName }} ({{ env.display_name_suffix }})
-        visibility: portal_visibility
+        visibility: {{ portal_visibility }}
         specId: personal-demographics-{{ env.name }}
 {% endfor %}
 {% endfor %}
