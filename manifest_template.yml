@@ -8,34 +8,36 @@ APIGEE_ENVIRONMENTS:
     display_name_suffix: Internal Development Sandbox
   - name: internal-qa
     display_name_suffix: Internal QA
-  - name: internal-qa
+  - name: internal-qa-sandbox
     display_name_suffix: Internal QA Sandbox
   - name: ref
     display_name_suffix: Reference
   - name: sandbox
-    display_name_suffix: Sandbox
+    display_name_suffix: Sandbox Environment
+    portal_visibility: false
   - name: int
-    display_name_suffix: Integration
-    ratelimit: '15000pm'
-    quota: '78000'
+    display_name_suffix: Integration Environment
   - name: prod
-    display_name_suffix: Production
+    approval_type: manual
+    display_name_suffix: Live Environment
     ratelimit: '15000pm'
-    quota: '78000'
+    quota: '7800'
 
 ACCESS_MODES:
   - name: user-restricted
     nameSuffix: ''
     displayName: User Restricted
-    scopes: ['personal-demographics:USER-RESTRICTED']
+    catalogDescription: Full access to PDS functionality
+    scopes: ['personal-demographics-service:USER-RESTRICTED']
     requireCallbackUrl: true
     description: User restricted
   - name: application-restricted
     nameSuffix: -application-restricted
     displayName: Application Restricted
+    catalogDescription: Access the Personal Demographics Service with reduced permisions.
     scopes: []
     requireCallbackUrl: false
-    description: Application restricted
+    description: Application Restricted
 ---
 
 # Manifest definition
@@ -47,24 +49,30 @@ meta:
 apigee:
   environments:
 {% for env in APIGEE_ENVIRONMENTS %}
+{% set portal_visibility = env.portal_visibility | default('true') %}
     - name: {{ env.name }}
       products:
 {% for service_name_suffix in env.service_name_suffixes | default(['']) %}
 {% set service_display_name_suffix = env.service_display_name_suffixes[loop.index-1] | default('') %}
+{% set approval_type = env.approval_type | default('auto') %}
 {% for mode in ACCESS_MODES %}
       - name: personal-demographics{{ service_name_suffix }}-{{ env.name }}{{ mode.nameSuffix }}
-        approvalType: auto
+        approvalType: {{ approval_type }}
         attributes:
           - name: access
             value: public
           - name: ratelimit
             value: {{ env.ratelimit | default('5ps') }}
         description: {{ mode.description }}
+        Personal Demographics Service - User Restricted (Production)
         displayName: Personal Demographics Service{{ service_display_name_suffix }} - {{ mode.displayName }} ({{ env.display_name_suffix }})
         environments: [ {{ env.name }} ]
         proxies:
           - personal-demographics{{ service_name_suffix }}-{{ env.name }}
           - identity-service-{{ env.name }}
+{% if env.name == 'int' %}
+          - identity-service-{{ env.name }}-no-smartcard
+{% endif %}
         scopes: {{ mode.scopes }}
         quota: {{ env.quota | default('300') }}
         quotaInterval: '1'
@@ -79,10 +87,10 @@ apigee:
 {% for mode in ACCESS_MODES %}
       - edgeAPIProductName: personal-demographics{{ service_name_suffix }}-{{ env.name }}{{ mode.nameSuffix }}
         anonAllowed: true
-        description: {{ mode.displayName }}
+        description: {{ mode.catalogDescription }}
         requireCallbackUrl: {{ mode.requireCallbackUrl }}
-        title: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
-        visibility: true
+        title: Personal Demographics Service{{ service_display_name_suffix }} - {{ mode.displayName }} ({{ env.display_name_suffix }})
+        visibility: portal_visibility
         specId: personal-demographics-{{ env.name }}
 {% endfor %}
 {% endfor %}
