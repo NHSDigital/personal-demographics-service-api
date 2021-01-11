@@ -81,7 +81,7 @@ apigee:
       specs:
       - name: personal-demographics-{{ env.name }}
         path: personal-demographics.json
-      portals:
+      api_catalog:
 {% for service_name_suffix in env.service_name_suffixes | default(['']) %}
 {% set service_display_name_suffix = env.service_display_name_suffixes[loop.index-1] | default('') %}
 {% for mode in ACCESS_MODES %}
