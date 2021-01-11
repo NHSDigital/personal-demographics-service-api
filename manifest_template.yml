@@ -42,7 +42,7 @@ ACCESS_MODES:
 
 # Manifest definition
 meta:
-  version: 0
+  schema_version: 1
   api:
     name: personal-demographics
     id: eef32850-52ae-46da-9dbd-d9f3df818846
