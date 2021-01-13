@@ -13,28 +13,26 @@ APIGEE_ENVIRONMENTS:
   - name: ref
     display_name_suffix: Reference
   - name: sandbox
-    display_name_suffix: Sandbox Environment
+    display_name_suffix: Sandbox
     portal_visibility: false
   - name: int
-    display_name_suffix: Integration Environment
+    display_name_suffix: Integration Testing
   - name: prod
     approval_type: manual
-    display_name_suffix: Live Environment
+    display_name_suffix: Production
     ratelimit: '15000pm'
     quota: '7800'
 
 ACCESS_MODES:
   - name: user-restricted
     nameSuffix: ''
-    displayName: User Restricted
-    catalogDescription: Full access to PDS functionality
+    displayName: User-Restricted
     scopes: ['personal-demographics-service:USER-RESTRICTED']
     requireCallbackUrl: true
     description: User restricted
   - name: application-restricted
     nameSuffix: -application-restricted
-    displayName: Application Restricted
-    catalogDescription: Access the Personal Demographics Service with reduced permisions.
+    displayName: Application-Restricted
     scopes: []
     requireCallbackUrl: false
     description: Application Restricted
@@ -87,7 +85,7 @@ apigee:
 {% for mode in ACCESS_MODES %}
       - edgeAPIProductName: personal-demographics{{ service_name_suffix }}-{{ env.name }}{{ mode.nameSuffix }}
         anonAllowed: true
-        description: {{ mode.catalogDescription }}
+        description: Personal Demographics Service FHIR API - {{ mode.displayName }} access mode - {{ env.display_name_suffix }} environment
         requireCallbackUrl: {{ mode.requireCallbackUrl }}
         title: Personal Demographics Service{{ service_display_name_suffix }} - {{ mode.displayName }} ({{ env.display_name_suffix }})
         visibility: {{ portal_visibility }}
