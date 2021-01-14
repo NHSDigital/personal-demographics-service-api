@@ -209,8 +209,6 @@ paths:
         ## Overview
         Use this endpoint to search for a patient in PDS.
         
-        There are various search options, such as fuzzy search, exact match, wildcards and history.
-
         You can search using various combinations of:
           * given name
           * family name
@@ -220,13 +218,16 @@ paths:
           * date of death (range)
           * registered GP practice
           
+        There are various search options, such as fuzzy search, exact match, history and wildcards.
+
         If you are using application-restricted access mode, you are limited to a single unique match.
 
         ## Search options
         How you search depends on your use case. The following sections explain your options, but you’ll need to decide which options are most appropriate for you.
         
         ### Healthcare worker access mode
-        In this access mode - where the end user is strongly authenticated - you can get up to 50 matching patient records, allowing the end user to choose the best match.
+        In this access mode - where the end user is a strongly authenticated healthcare worker - you can get up to 50 matching patient records.
+        This allows the end user to choose the best match.
         
         You should choose search parameters that:
           * are relevant to your use case - for example date of death is not always appropriate
@@ -235,23 +236,23 @@ paths:
         For more details, see the following sections.
 
         ### Application-restricted access mode
-        In this mode, you only get a single matching patient record, and only if it is a unique match.
+        In this access mode, you only get a single matching patient record, and only if it's a unique match.
 
-        You should use a search that is likely to find a unique match. In our experience, the following approach works well:
+        You should choose search options that are likely to find a unique match. In our experience, the following works well:
           * non-fuzzy search
-          * include history
-          * search on family name, postcode, date of birth and gender - do not include given name
-          * for family name, use the first three characters and a wildcard, for example to search for `Smith`, use `Smi*`
-          * for postcode, use the first two characters and a wildcard, for example to search for `LS11 6AD`, use `LS*`
           * non-exact match
+          * include history
+          * search on given name, family name, postcode, date of birth and gender
+          * for given name, use the first three characters and a wildcard, for example to search for `Smith`, use `Smi*`
+          * for postcode, use the first two characters and a wildcard, for example to search for `LS11 6AD`, use `LS*`
 
         For more details, see the following sections.
 
         ### Fuzzy search
         A fuzzy search:
-          * matches common homophones, such as `Smith` and `Smythe`, using the Soundex algorithm
+          * matches common homophones, such as `Smith` and `Smythe`, using the [Soundex](https://en.wikipedia.org/wiki/Soundex) algorithm
           * checks for transposed names, such as `Adam Thomas` and `Thomas Adam`
-          * always searches historic information, such as previous names and addresses
+          * always searches history, such as previous names and addresses
 
         It is more likely to include false positives, so is not ideal for finding a unique match.
 
@@ -260,13 +261,13 @@ paths:
           * family name, date of birth, gender and postcode
           * given name, date of birth, gender and postcode
 
-        If you include the date of death or registered GP Practice query parameters, they are not used in the search. However they do affect the patient's matching score - a mismatch reduces the returned score.
+        If you include the date of death or registered GP practice query parameters, they are not used in the search. However they do affect the patient's matching score - a mismatch reduces the returned score.
 
         ### Non-fuzzy search
         A non-fuzzy search:
           * won’t match homophones or transposed names
           * but does allow wildcards
-          * can optionally search historic information, such as previous names and addresses
+          * can optionally search history, such as previous names and addresses
 
         The minimum search parameters are:
           * family name - which can include wildcards
@@ -294,33 +295,38 @@ paths:
 
         To deal with some of these issues:
           * we always search all given names
+          * we search across all types of name - usual, nickname and temporary
           * a fuzzy search matches homophones, transposed names and previous names
-          * for a non fuzzy search, you can optionally use wildcards and match previous names
+          * for a non fuzzy search, you can optionally use wildcards and search previous names
           * searching on family name, date of birth and postcode is one way to deal with abbreviated names whilst avoiding too many false positives
 
         ### Gender
-        PDS has four options for gender - female, male, unknown and unspecified. For some people, the gender held in PDS might not match the gender they identify with. Also, some people have two active records in PDS where the only difference is gender.
+        PDS has four options for gender - `male`, `female`, `other` and `unknown`.
+        For some people, the gender held in PDS might not match the gender they identify with.
+        Also, some people accidentally have duplicate records in PDS with different genders.
 
-        For these reasons, including gender in a search can result in:
-          * no match
+        For these reasons, searching by gender can result in:
+          * no match - if the gender in PDS doesn't match
           * a single match when there should be two matches - a duplicate record
         
         These are edge cases but are important to consider because gender can be a sensitive issue for the people in question.
           
-        Currently, gender is a mandatory parameter for non-fuzzy search. We are working to make it optional - for more details, see our [roadmap](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
+        Currently, gender is a mandatory parameter for a non-fuzzy search. We are working to make it optional - for more details, see our [roadmap](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
 
         ### Date of birth and death
-        Sometimes, the exact date of birth or death is not known when doing a search. Sometimes, the exact date of birth or death is not recorded in PDS. For example, if only the year of birth is known, it is common to record the date of birth as the first of January in that year.
+        Sometimes, the exact date of birth or death is not known when doing a search.
+        Sometimes, the exact date of birth or death is not recorded in PDS.
+        For example, if only the year of birth is known, the day and month of birth might be recorded as the first of January.
 
         In such cases, searching for a range of dates can help. This can, of course, result in false positives, so won’t work well when searching for a unique match.
 
         ### Postcode
-        It is quite common for people to move locally and not update their address, meaning the postcode in PDS is out of date but does at least match the first two characters of the patient’s current postcode.
+        People sometimes move locally but do not update their address, meaning the postcode in PDS is out of date, but does at least match on the first two characters.
 
         For this reason, for a non-fuzzy search, searching for the first two characters of the postcode and a wildcard can work well. For example, to search for `LS11 6AD`, use `LS*`.
 
         ### General practitioner
-        TBC
+        This is an ODS code. If you use it, it must match exactly.
 
         ## Scoring
         Every matched patient in the result list includes a score to indicate how closely the patient matched the search parameters.
@@ -358,7 +364,7 @@ paths:
         The restricted flag can be found in the data under `meta/security` on the patient resource.
         
         ## Invalidated patients
-        Some patients are marked as invalidated in PDS - also known as redacted in FHIR terminology. Invalidated patient records are not returned in search results.
+        Some patients are marked as invalidated in PDS - also known as `redacted` in FHIR terminology. Invalidated patient records are not returned in search results.
         If an invalidated patient record has been superseded, the superseding record is returned.
 
         ## Clinical safety and privacy
