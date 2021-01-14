@@ -8,33 +8,33 @@ jobs:
       if: (github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]') && contains(github.event.pull_request.labels.*.name, 'security')
       with:
         github-token: "${{ secrets.GITHUB_TOKEN }}"
-  link-ticket:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check ticket name conforms to requirements
-        run: echo ${{ github.event.pull_request.head.ref }} | grep -i -E -q "(apm-[0-9]+)|(apmspii-[0-9]+)|(adz-[0-9]+)|(dependabot\/)"
+  # link-ticket:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Check ticket name conforms to requirements
+  #       run: echo ${{ github.event.pull_request.head.ref }} | grep -i -E -q "(apm-[0-9]+)|(apmspii-[0-9]+)|(adz-[0-9]+)|(dependabot\/)"
 
-      - name: Grab ticket name
-        if: contains(github.event.pull_request.head.ref, 'apm-') || contains(github.event.pull_request.head.ref, 'APM-') || contains(github.event.pull_request.head.ref, 'apmspii-') || contains(github.event.pull_request.head.ref, 'APMSPII-') || contains(github.event.pull_request.head.ref, 'adz-') || contains(github.event.pull_request.head.ref, 'ADZ-')
-        run: echo ::set-env name=TICKET_NAME::$(echo ${{ github.event.pull_request.head.ref }} | grep -i -o '\(apm-[0-9]\+\)\|\(apmspii-[0-9]\+\)\|\(adz-[0-9]\+\)' | tr '[:lower:]' '[:upper:]')
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+  #     - name: Grab ticket name
+  #       if: contains(github.event.pull_request.head.ref, 'apm-') || contains(github.event.pull_request.head.ref, 'APM-') || contains(github.event.pull_request.head.ref, 'apmspii-') || contains(github.event.pull_request.head.ref, 'APMSPII-') || contains(github.event.pull_request.head.ref, 'adz-') || contains(github.event.pull_request.head.ref, 'ADZ-')
+  #       run: echo ::set-env name=TICKET_NAME::$(echo ${{ github.event.pull_request.head.ref }} | grep -i -o '\(apm-[0-9]\+\)\|\(apmspii-[0-9]\+\)\|\(adz-[0-9]\+\)' | tr '[:lower:]' '[:upper:]')
+  #       env:
+  #         ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
-      - name: Comment on PR with link to JIRA ticket
-        if: contains(github.event.pull_request.head.ref, 'apm-') || contains(github.event.pull_request.head.ref, 'APM-') || contains(github.event.pull_request.head.ref, 'apmspii-') || contains(github.event.pull_request.head.ref, 'APMSPII-') || contains(github.event.pull_request.head.ref, 'adz-') || contains(github.event.pull_request.head.ref, 'ADZ-')
-        uses: unsplash/comment-on-pr@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          msg: |
-            This branch is working on a ticket in the NHS Digital APM JIRA Project. Here's a handy link to the ticket:
-            # [${{ env.TICKET_NAME }}](https://nhsd-jira.digital.nhs.uk/browse/${{ env.TICKET_NAME}})
+  #     - name: Comment on PR with link to JIRA ticket
+  #       if: contains(github.event.pull_request.head.ref, 'apm-') || contains(github.event.pull_request.head.ref, 'APM-') || contains(github.event.pull_request.head.ref, 'apmspii-') || contains(github.event.pull_request.head.ref, 'APMSPII-') || contains(github.event.pull_request.head.ref, 'adz-') || contains(github.event.pull_request.head.ref, 'ADZ-')
+  #       uses: unsplash/comment-on-pr@master
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         msg: |
+  #           This branch is working on a ticket in the NHS Digital APM JIRA Project. Here's a handy link to the ticket:
+  #           # [${{ env.TICKET_NAME }}](https://nhsd-jira.digital.nhs.uk/browse/${{ env.TICKET_NAME}})
 
-      - name: Comment on PR with link to Spec
-        uses: unsplash/comment-on-pr@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          msg: |
-            This branch is working on a ticket to deploy to internal-portal. Here's a handy link to the specification:
-            # [${{ github.event.pull_request.head.ref }} specification](https://internal-portal.developer.nhs.uk/docs/personal-demographics-pr-${{ github.event.number }}/1/overview)
+  #     - name: Comment on PR with link to Spec
+  #       uses: unsplash/comment-on-pr@master
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         msg: |
+  #           This branch is working on a ticket to deploy to internal-portal. Here's a handy link to the specification:
+  #           # [${{ github.event.pull_request.head.ref }} specification](https://internal-portal.developer.nhs.uk/docs/personal-demographics-pr-${{ github.event.number }}/1/overview)
