@@ -7,8 +7,8 @@ resources:
   repositories:
     - repository: common
       type: github
-      name: NHSDigital/api-management-utils/tree/AMB-495-improve-ux-for-yubikeys
-      # ref: refs/heads/edge
+      name: NHSDigital/api-management-utils
+      ref: refs/heads/AMB-495-improve-ux-for-yubikeys
       endpoint: NHSDigital
   pipelines:
   - pipeline: build_pipeline
