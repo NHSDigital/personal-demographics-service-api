@@ -123,7 +123,7 @@
         }
       ]
     }
-  ]
+  ],
   "contact": [
     {
       "id": "C123",
@@ -180,7 +180,7 @@
               }
             ]
           }
-        }
+        },
         {
           "url": "systemEffectiveDate",
           "valueDateTime": "2010-10-22T00:00:00+00:00"
