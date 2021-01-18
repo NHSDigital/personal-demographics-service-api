@@ -43,8 +43,8 @@ info:
     
     | Access mode                    | End user authentication                             | Functions          | Availability |
     | ------------------------------ | --------------------------------------------------- | ------------------ | ------------ |
-    | Healthcare worker access       | NHS Identity (NHS smartcard or modern alternative)  | Search for patients (multiple results), Get patient details, Update patient details | Available in production (beta) |
     | Application-restricted access  | None                                                | Search for patients (single result), Get patient details | Available for testing (alpha) 
+    | Healthcare worker access       | NHS Identity (NHS smartcard or modern alternative)  | Search for patients (multiple results), Get patient details, Update patient details | Available in production (beta) |
     | Citizen access                 | NHS login                                           | Get own details, Update own details (limited) | Not available yet, see [backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/107446/pds-fhir-api-citizen-access-using-nhs-login) for details   |
 
   
@@ -64,16 +64,16 @@ info:
     - [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) - use this to get full details for the organisations related to the patient, such as their registered GP or nominated pharmacy.
 
     ## API status and roadmap
-    ### Healthcare worker access
-    This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
-    - we might make breaking changes, but only if we can't avoid it, and we'll give advance notice
-    - we can't guarantee availability or performance
-    
     ### Application-restricted access
     This access mode is in [alpha](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
     - it is available for testing but not yet for production use
     - we might make breaking changes
      
+    ### Healthcare worker access
+    This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
+    - we might make breaking changes, but only if we can't avoid it, and we'll give advance notice
+    - we can't guarantee availability or performance
+    
     ### Citizen access
     This access mode is not available yet.
     
@@ -102,6 +102,17 @@ info:
     For more details see [Network access for APIs](https://digital.nhs.uk/developer/guides-and-documentation/network-access-for-apis).
     
     ## Security and authorisation
+    ### Application-restricted access
+    This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis),
+    meaning we authenticate the calling application but not the end user.
+    
+    You can use this access mode as follows:
+    * unattended (end user not present), for example as part of a back end process to check NHS numbers for data flowing from one system to another
+    * attended (end user present) - in which case, you must ensure the end user is authenticated and suitably authorised locally by the calling application
+    
+    To use this access mode, use the following security pattern:
+    * [Application-restricted RESTful API - signed JWT authentication](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-signed-jwt-authentication)
+    
     ### Healthcare worker access
     This access mode is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis),
     meaning an end user must be present, authenticated and authorised.
@@ -115,16 +126,6 @@ info:
     * [user-restricted RESTful API - using NHS Identity - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-combined-authentication-and-authorisation)
     * [user-restricted RESTful API - using NHS Identity - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-separate-authentication-and-authorisation)
 
-    ### Application-restricted access
-    This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis), meaning we authenticate the calling application but not the end user.
-    
-    You can use this access mode as follows:
-    * unattended (end user not present), for example as part of a back end process to check NHS numbers for data flowing from one system to another
-    * attended (end user present) - in which case, you must ensure the end user is authenticated and suitably authorised locally by the calling application
-    
-    To use this access mode, use the following security pattern:
-    * [Application-restricted RESTful API - signed JWT authentication](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-signed-jwt-authentication)
-    
     ### Citizen access
     This access mode is not available yet. 
         
@@ -224,37 +225,53 @@ paths:
 
         ## Search options
         How you search depends on your use case. The following sections explain your options, but you’ll need to decide which options are most appropriate for you.
+        If you need help, [contact us](https://digital.nhs.uk/developer/help-and-support).
         
-        ### Healthcare worker access mode
-        In this access mode - where the end user is a strongly authenticated healthcare worker - you can get up to 50 matching patient records.
-        This allows the end user to choose the best match.
-        
-        You should choose search parameters that:
-          * are relevant to your use case - for example date of death is not always appropriate
-          * give your users different ways to search, for example fuzzy and non-fuzzy search
-          
-        For more details, see the following sections.
-
         ### Application-restricted access mode
         In this access mode, you only get a single matching patient record, and only if it's a unique match.
 
-        You should choose search options that are likely to find a unique match. In our experience, the following works well:
+        Choose search options that are likely to find a unique match. In our experience, the following is a good starting point:
           * non-fuzzy search
           * non-exact match
           * include history
           * search on given name, family name, postcode, date of birth and gender
-          * for given name, use the first three characters and a wildcard, for example to search for `Smith`, use `Smi*`
-          * for postcode, use the first two characters and a wildcard, for example to search for `LS11 6AD`, use `LS*`
+          * for given name, use the first three characters and a wildcard, for example to search for `Annabel`, use `Ann*`
 
         For more details, see the following sections.
 
+        ### Healthcare worker access mode
+        In this access mode - where the end user is a strongly authenticated healthcare worker - you can get up to 50 matching patient records.
+        This allows the end user to choose the best match.
+
+        Choose search parameters that are relevant to your use case - for example date of death is not always appropriate.
+        
+        To protect patient privacy, design your search to minimise the number of matching patients.
+        For example, you could:
+          * encourage users to enter as many search parameters as they can
+          * encourage users to try a non-fuzzy search first and then only offer a fuzzy search if they can't find the patient
+        
+        For more details, see the following sections.
+
+        ### Non-fuzzy search
+        A non-fuzzy search:
+          * allows wildcards in names and postcodes
+          * doesn't match matches homophones or transposed names
+          * can optionally search history, such as previous names and addresses
+
+        It is less likely to return false positives than a fuzzy search, so is more suitable for finding a unique match.
+
+        The minimum search parameters are:
+          * family name - which can include wildcards
+          * gender
+          * date of birth - which can be a range
+          
         ### Fuzzy search
         A fuzzy search:
           * matches common homophones, such as `Smith` and `Smythe`, using the [Soundex](https://en.wikipedia.org/wiki/Soundex) algorithm
           * checks for transposed names, such as `Adam Thomas` and `Thomas Adam`
           * always searches history, such as previous names and addresses
 
-        It is more likely to include false positives, so is not ideal for finding a unique match.
+        It is more likely to include false positives than a non-fuzzy search, so is not ideal for finding a unique match.
 
         You must use one of the following search parameter combinations:
           * given name, family name and date of birth
@@ -262,17 +279,6 @@ paths:
           * given name, date of birth, gender and postcode
 
         If you include the date of death or registered GP practice query parameters, they are not used in the search. However they do affect the patient's matching score - a mismatch reduces the returned score.
-
-        ### Non-fuzzy search
-        A non-fuzzy search:
-          * won’t match homophones or transposed names
-          * but does allow wildcards
-          * can optionally search history, such as previous names and addresses
-
-        The minimum search parameters are:
-          * family name - which can include wildcards
-          * gender
-          * date of birth - which can be a range
 
         ### History
         PDS holds historic information, including previous names and addresses.
@@ -282,16 +288,20 @@ paths:
         Searching history can match patients where only a previous name or address is known, or if a patient provides a previous name or address on the assumption that their record hasn’t been updated.
 
         ### Exact match
-        You can request an exact match. Use this with care. It is unlikely to work well with wildcards or fuzzy search.
+        You can request an exact match.
+        This might be useful if you are verifying an NHS Number against details you already believe to be correct.
+        It is unlikely to work well with wildcards or fuzzy search.
 
         ### Names
         Matching names can be difficult due to:
-          * multiple given names, such as `Jane Anne Smith`
+          * multiple given names, such as in `Jane Anne Smith`
+          * multiple or double-barrelled surnames, such as in `Michael Smith-Jones`
           * homophones, such as `Smith` and `Smythe` or `Ann` and `Anne`
           * abbreviated names, such as `Bob` instead of `Robert`
           * transposed names, such as `Adam Thomas` instead of `Thomas Adam`
           * previous names, such as maiden names
           * spelling mistakes, either in the search criteria or in PDS
+          * special characters such as in `O'reilly`, `Jones-Smith` or `Kociński`
 
         To deal with some of these issues:
           * we always search all given names
