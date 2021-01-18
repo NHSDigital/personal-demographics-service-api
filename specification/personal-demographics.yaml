@@ -308,25 +308,20 @@ paths:
           * we search across all types of name - usual, nickname and temporary
           * a fuzzy search matches homophones, transposed names and previous names
           * for a non fuzzy search, you can optionally use wildcards and search previous names
-          * searching on family name, date of birth and postcode is one way to deal with abbreviated names whilst avoiding too many false positives
 
         ### Gender
         PDS has four options for gender - `male`, `female`, `other` and `unknown`.
         For some people, the gender held in PDS might not match the gender they identify with.
-        Also, some people accidentally have duplicate records in PDS with different genders.
 
-        For these reasons, searching by gender can result in:
-          * no match - if the gender in PDS doesn't match
-          * a single match when there should be two matches - a duplicate record
-        
+        In these cases, searching by gender might not match the patient.
         These are edge cases but are important to consider because gender can be a sensitive issue for the people in question.
           
         Currently, gender is a mandatory parameter for a non-fuzzy search. We are working to make it optional - for more details, see our [roadmap](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
 
         ### Date of birth and death
         Sometimes, the exact date of birth or death is not known when doing a search.
-        Sometimes, the exact date of birth or death is not recorded in PDS.
-        For example, if only the year of birth is known, the day and month of birth might be recorded as the first of January.
+        Sometimes, the date of birth or death is not accurate in PDS.
+        For example, if only the year of birth was known, the day and month of birth might have been recorded as the first of January.
 
         In such cases, searching for a range of dates can help. This can, of course, result in false positives, so won’t work well when searching for a unique match.
 
@@ -334,6 +329,8 @@ paths:
         People sometimes move locally but do not update their address, meaning the postcode in PDS is out of date, but does at least match on the first two characters.
 
         For this reason, for a non-fuzzy search, searching for the first two characters of the postcode and a wildcard can work well. For example, to search for `LS11 6AD`, use `LS*`.
+        
+        Beware that this can result in false positives, but it has been known to work well in some use cases, even for unique matches.
 
         ### General practitioner
         This is an ODS code. If you use it, it must match exactly.
@@ -384,8 +381,10 @@ paths:
         * an end user selects the wrong patient from the results presented, so there is a risk of clinical harm; for example due to retrieval of the wrong clinical data
         * the end user has access to patients’ personal data, so there is a risk to patient privacy
 
-        In particular, it is almost certainly a good idea to display search results in descending score order - best match first.
-
+        Note that:
+        * we record an access request in our audit trail for all patients matched in a PDS search
+        * it is almost certainly a good idea to display search results in descending score order - best match first
+        
         ## Sandbox testing
         You can test the following scenarios in our sandbox environment:
 
