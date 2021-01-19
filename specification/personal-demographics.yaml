@@ -216,8 +216,8 @@ paths:
           * family name
           * gender
           * postcode
-          * date of birth (range)
-          * date of death (range)
+          * date of birth - which can be a range
+          * date of death - which can be a range
           * registered GP practice
           
         There are various search options, such as fuzzy search, exact match, history and wildcards.
@@ -225,13 +225,13 @@ paths:
         If you are using application-restricted access mode, you are limited to a single unique match.
 
         ## Search options
-        How you search depends on your use case. The following sections explain your options, but you’ll need to decide which options are most appropriate for you.
+        How you search depends on your use case. The following sections explain your options, but you’ll need to decide what's right for you.
         If you need help, [contact us](https://digital.nhs.uk/developer/help-and-support).
         
         ### Application-restricted access mode
         In this access mode, you only get a single matching patient record, and only if it's a unique match.
 
-        Choose search options that are likely to find a unique match. In our experience, the following is a good starting point:
+        Use search options that are likely to find a unique match. In our experience, the following is a good starting point:
           * non-fuzzy search
           * non-exact match
           * include history
@@ -244,7 +244,7 @@ paths:
         In this access mode - where the end user is a strongly authenticated healthcare worker - you can get up to 50 matching patient records.
         This allows the end user to choose the best match.
 
-        Choose search parameters that are relevant to your use case - for example date of death is not always appropriate.
+        Use search parameters that are relevant to your use case - for example date of death is not always appropriate.
         
         To protect patient privacy, design your search to minimise the number of matching patients.
         For example, you could:
@@ -301,8 +301,8 @@ paths:
           * abbreviated names, such as `Bob` instead of `Robert`
           * transposed names, such as `Adam Thomas` instead of `Thomas Adam`
           * previous names, such as maiden names
-          * spelling mistakes, either in the search criteria or in PDS
           * special characters such as in `O'reilly`, `Jones-Smith` or `Kociński`
+          * spelling mistakes, either in the search criteria or in PDS
 
         To deal with some of these issues:
           * we always search all given names
@@ -314,7 +314,7 @@ paths:
         PDS has four options for gender - `male`, `female`, `other` and `unknown`.
         For some people, the gender held in PDS might not match the gender they identify with.
 
-        In these cases, searching by gender might not match the patient.
+        In these cases, searching by gender might not find the patient.
         These are edge cases but are important to consider because gender can be a sensitive issue for the people in question.
           
         Currently, gender is a mandatory parameter for a non-fuzzy search. We are working to make it optional - for more details, see our [roadmap](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
@@ -322,28 +322,20 @@ paths:
         ### Date of birth and death
         Sometimes, the exact date of birth or death is not known when doing a search.
         Sometimes, the date of birth or death is not accurate in PDS.
-        For example, if only the year of birth was known, the day and month of birth might have been recorded as the first of January.
+        For example, if only the year of birth is known, the day and month of birth might be recorded as the first of January.
 
-        In such cases, searching for a range of dates can help. This can, of course, result in false positives, so won’t work well when searching for a unique match.
+        In such cases, searching a range of dates can help. This can, of course, result in false positives, so might not work well when searching for a unique match.
 
         ### Postcode
-        People sometimes move locally but do not update their address, meaning the postcode in PDS is out of date, but does at least match on the first two characters.
+        People sometimes move locally, meaning the postcode in PDS is out of date, but does at least match on the first two characters.
 
-        For this reason, for a non-fuzzy search, searching for the first two characters of the postcode and a wildcard can work well. For example, to search for `LS11 6AD`, use `LS*`.
+        Searching for the first two characters of the postcode and a wildcard can work well. For example, to search for `LS11 6AD`, use `LS*`.
+        This is only possible for a non-fuzzy search.
         
-        Beware that this can result in false positives, but it has been known to work well in some use cases, even for unique matches.
+        Beware that this can result in false positives, but it has been known to work well in some cases, even for unique matches.
 
         ### General practitioner
         This is an ODS code. If you use it, it must match exactly.
-
-        ## Scoring
-        Every matched patient in the result list includes a score to indicate how closely the patient matched the search parameters.
-
-        A score of 1.0 indicates an exact match. A score of less than 1.0 indicates a partial match.
-
-        The result list is sorted in descending score order - best match first.
-
-        Use the `_exact-match` query parameter to return exact matches only - where the score is 1.0.
 
         ## Patient data returned
         The patient data returned on a search is not the full set of data that is returned on a retrieval by NHS Number. The following data is included:
@@ -364,21 +356,30 @@ paths:
         * communication details
         * contact preferences
 
-        ## Restricted patients
+        ### Restricted patients
         Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telecom`, `contact` and `generalPractitioner` will be removed.
 
         If `address-postcode` or `general-practitioner` are included in the search parameters, no restricted patients will be returned even if a match is identified.
 
         The restricted flag can be found in the data under `meta/security` on the patient resource.
         
-        ## Invalidated patients
+        ### Invalidated patients
         Some patients are marked as invalidated in PDS - also known as `redacted` in FHIR terminology. Invalidated patient records are not returned in search results.
         If an invalidated patient record has been superseded, the superseding record is returned.
+
+        ## Scoring
+        Every matched patient in the result list includes a score to indicate how closely the patient matched the search parameters.
+
+        A score of 1.0 indicates an exact match. A score of less than 1.0 indicates a partial match.
+
+        The result list is sorted in descending score order - best match first.
+
+        Use the `_exact-match` query parameter to return exact matches only - where the score is 1.0.
 
         ## Clinical safety and privacy
         This endpoint can return multiple matching patients for a given search, including partial matches.
 
-        You should ensure that you design, build and test your software to minimise the following risks:
+        Ensure that you design your software to minimise the following risks:
         * an end user selects the wrong patient from the results presented, so there is a risk of clinical harm; for example due to retrieval of the wrong clinical data
         * the end user has access to patients’ personal data, so there is a risk to patient privacy
 
