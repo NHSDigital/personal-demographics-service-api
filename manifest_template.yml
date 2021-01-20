@@ -61,7 +61,7 @@ apigee:
         displayName: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
         environments: [ {{ env.name }} ]
         proxies:
-          - personal-demographics{{ service_name_suffix }}-{{ env.name }}
+          - personal-demographics-{{ env.name }}
           - identity-service-{{ env.name }}
 {% if env.name == 'int' %}
           - identity-service-{{ env.name }}-no-smartcard
@@ -76,7 +76,7 @@ apigee:
         path: personal-demographics.json
       api_catalog:
 {% for mode in ACCESS_MODES %}
-      - edgeAPIProductName: personal-demographics{{ service_name_suffix }}-{{ env.name }}{{ mode.nameSuffix }}
+      - edgeAPIProductName: personal-demographics-{{ env.name }}{{ mode.nameSuffix }}
         anonAllowed: true
         description: Personal Demographics Service FHIR API - {{ mode.displayName }} access mode - {{ env.display_name_suffix }} environment
         requireCallbackUrl: {{ mode.requireCallbackUrl }}
