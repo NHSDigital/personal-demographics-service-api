@@ -58,7 +58,7 @@ apigee:
           - name: ratelimit
             value: {{ env.ratelimit | default('5ps') }}
         description: {{ mode.description }}
-        displayName: Personal Demographics Service{{ service_display_name_suffix }} - {{ mode.displayName }} ({{ env.display_name_suffix }})
+        displayName: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
         environments: [ {{ env.name }} ]
         proxies:
           - personal-demographics{{ service_name_suffix }}-{{ env.name }}
@@ -80,7 +80,7 @@ apigee:
         anonAllowed: true
         description: Personal Demographics Service FHIR API - {{ mode.displayName }} access mode - {{ env.display_name_suffix }} environment
         requireCallbackUrl: {{ mode.requireCallbackUrl }}
-        title: Personal Demographics Service{{ service_display_name_suffix }} - {{ mode.displayName }} ({{ env.display_name_suffix }})
+        title: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
         visibility: {{ portal_visibility }}
         specId: personal-demographics-{{ env.name }}
 {% endfor %}
