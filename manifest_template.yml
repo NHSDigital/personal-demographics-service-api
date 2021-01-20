@@ -2,8 +2,6 @@
 APIGEE_ENVIRONMENTS:
   - name: internal-dev
     display_name_suffix: Internal Development
-    # service_name_suffixes: ['', '-int', '-asid-required']
-    # service_display_name_suffixes: ['', ' (INT Testing) ', ' (ASID Required) ']
   - name: internal-dev-sandbox
     display_name_suffix: Internal Development Sandbox
   - name: internal-qa
@@ -50,11 +48,9 @@ apigee:
 {% set portal_visibility = env.portal_visibility | default('true') %}
     - name: {{ env.name }}
       products:
-{% for service_name_suffix in env.service_name_suffixes | default(['']) %}
-{% set service_display_name_suffix = env.service_display_name_suffixes[loop.index-1] | default('') %}
 {% set approval_type = env.approval_type | default('auto') %}
 {% for mode in ACCESS_MODES %}
-      - name: personal-demographics{{ service_name_suffix }}-{{ env.name }}{{ mode.nameSuffix }}
+      - name: personal-demographics-{{ env.name }}{{ mode.nameSuffix }}
         approvalType: {{ approval_type }}
         attributes:
           - name: access
@@ -75,13 +71,10 @@ apigee:
         quotaInterval: '1'
         quotaTimeUnit: minute
 {% endfor %}
-{% endfor %}
       specs:
       - name: personal-demographics-{{ env.name }}
         path: personal-demographics.json
       api_catalog:
-{% for service_name_suffix in env.service_name_suffixes | default(['']) %}
-{% set service_display_name_suffix = env.service_display_name_suffixes[loop.index-1] | default('') %}
 {% for mode in ACCESS_MODES %}
       - edgeAPIProductName: personal-demographics{{ service_name_suffix }}-{{ env.name }}{{ mode.nameSuffix }}
         anonAllowed: true
@@ -90,6 +83,5 @@ apigee:
         title: Personal Demographics Service{{ service_display_name_suffix }} - {{ mode.displayName }} ({{ env.display_name_suffix }})
         visibility: {{ portal_visibility }}
         specId: personal-demographics-{{ env.name }}
-{% endfor %}
 {% endfor %}
 {% endfor %}
