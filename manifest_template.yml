@@ -2,6 +2,9 @@
 APIGEE_ENVIRONMENTS:
   - name: internal-dev
     display_name_suffix: Internal Development
+  # TODO: Remove as we don't want this included in an actual release
+  - name: internal-dev-sandbox
+    display_name_suffix: Internal Development Sandbox
   - name: internal-qa
     display_name_suffix: Internal QA
   - name: internal-qa-sandbox
