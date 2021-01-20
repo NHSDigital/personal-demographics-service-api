@@ -2,8 +2,8 @@
 APIGEE_ENVIRONMENTS:
   - name: internal-dev
     display_name_suffix: Internal Development
-    service_name_suffixes: ['', '-int', '-asid-required']
-    service_display_name_suffixes: ['', ' (INT Testing) ', ' (ASID Required) ']
+    # service_name_suffixes: ['', '-int', '-asid-required']
+    # service_display_name_suffixes: ['', ' (INT Testing) ', ' (ASID Required) ']
   - name: internal-dev-sandbox
     display_name_suffix: Internal Development Sandbox
   - name: internal-qa
