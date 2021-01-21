@@ -267,10 +267,6 @@ paths:
           * doesn't match homophones or transposed names
           * can optionally search history, such as previous names and addresses
 
-        It is likley to return fewer matches than a fuzzy search, so:
-          * it is more suitable for finding unique matches
-          * it is 
-          
         It is less likely to return multiple matches than a fuzzy search, so is more suitable for finding a unique match.
 
         The minimum search parameters are:
