@@ -264,7 +264,7 @@ paths:
         ### Non-fuzzy search
         A non-fuzzy search:
           * allows wildcards in names and postcodes
-          * doesn't match matches homophones or transposed names
+          * doesn't match homophones or transposed names
           * can optionally search history, such as previous names and addresses
 
         It is likley to return fewer matches than a fuzzy search, so:
@@ -316,7 +316,7 @@ paths:
           * abbreviated names, such as `Bob` instead of `Robert`
           * transposed names, such as `Adam Thomas` instead of `Thomas Adam`
           * previous names, such as maiden names
-          * special characters such as in `O'reilly`, `Jones-Smith` or `Kociński`
+          * special characters such as in `O'Reilly`, `Jones-Smith` or `Kociński`
           * spelling mistakes, either in the search criteria or in PDS
 
         To deal with some of these issues:
@@ -773,8 +773,8 @@ paths:
         
         | Access mode                    | Behaviour restrictions              |
         | ------------------------------ | ----------------------------------- |
-        | Healthcare worker access       | Full behaviour available            |
-        | Application-restricted access  | Limited to a single unique result   |
+        | Application-restricted access  | Updates not allowed                 |
+        | Healthcare worker access       | Updates allowed                     |
         | Citizen access                 | Not yet available                   |
 
         ## Patient resource versioning
