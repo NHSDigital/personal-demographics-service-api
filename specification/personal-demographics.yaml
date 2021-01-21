@@ -221,22 +221,30 @@ paths:
           * registered GP practice
           
         There are various search options, such as fuzzy search, exact match, history and wildcards.
-
-        If you are using application-restricted access mode, you are limited to a single unique match.
+        
+        The behaviour of this endpoint depends on which access mode you are using:
+        
+        | Access mode                    | Behaviour                                  |
+        | ------------------------------ | ------------------------------------------ |
+        | Application-restricted access  | Only a single unique match returned        |
+        | Healthcare worker access       | Up to 50 matching patient records returned |
+        | Citizen access                 | Not yet available                          |
 
         ## Search options
-        How you search depends on your use case. The following sections explain your options, but you’ll need to decide what's right for you.
+        The following sections explain the various search options.
+        Which options you choose depends very much on your use case, and getting it right is really important.
         If you need help, [contact us](https://digital.nhs.uk/developer/help-and-support).
-        
+
         ### Application-restricted access mode
         In this access mode, you only get a single matching patient record, and only if it's a unique match.
 
         Use search options that are likely to find a unique match. In our experience, the following is a good starting point:
-          * non-fuzzy search
-          * non-exact match
-          * include history
-          * search on given name, family name, postcode, date of birth and gender
-          * for given name, use the first three characters and a wildcard, for example to search for `Annabel`, use `Ann*`
+          * search on given name, family name, postcode, date of birth and gender - this combination should uniquely identify a patient
+          * for given name, use the first three characters and a wildcard, for example to search for `Annabel`, use `Ann*` - this caters for different name spellings and abbreviations
+          * for postcode, use the first two characters and a wildcard, for example to search for `LS11 6AD`, use `LS*` - this caters for people who have moved locally but not updated PDS
+          * use a non-fuzzy search - this reduces the chance of multiple matches
+          * use a non-exact match - an exact match does not work with wildcards
+          * include history - this increases the chance of a match
 
         For more details, see the following sections.
 
@@ -249,7 +257,7 @@ paths:
         To protect patient privacy, design your search to minimise the number of matching patients.
         For example, you could:
           * encourage users to enter as many search parameters as they can
-          * encourage users to try a non-fuzzy search first and then only offer a fuzzy search if they can't find the patient
+          * force users to try a non-fuzzy search first and then only offer a fuzzy search if they can't find the patient
         
         For more details, see the following sections.
 
@@ -259,7 +267,11 @@ paths:
           * doesn't match matches homophones or transposed names
           * can optionally search history, such as previous names and addresses
 
-        It is less likely to return false positives than a fuzzy search, so is more suitable for finding a unique match.
+        It is likley to return fewer matches than a fuzzy search, so:
+          * it is more suitable for finding unique matches
+          * it is 
+          
+        It is less likely to return multiple matches than a fuzzy search, so is more suitable for finding a unique match.
 
         The minimum search parameters are:
           * family name - which can include wildcards
@@ -272,7 +284,10 @@ paths:
           * checks for transposed names, such as `Adam Thomas` and `Thomas Adam`
           * always searches history, such as previous names and addresses
 
-        It is more likely to include false positives than a non-fuzzy search, so is not ideal for finding a unique match.
+        It is more likely to include multiple matches than a non-fuzzy search, so is not ideal for finding a unique match.
+        
+        It is also more likely to include false positives - other patients that match the search criteria.
+        Therefore, for privacy reasons, it is better to use it only if a non-fuzzy match has failed.
 
         You must use one of the following search parameter combinations:
           * given name, family name and date of birth
@@ -322,9 +337,9 @@ paths:
         ### Date of birth and death
         Sometimes, the exact date of birth or death is not known when doing a search.
         Sometimes, the date of birth or death is not accurate in PDS.
-        For example, if only the year of birth is known, the day and month of birth might be recorded as the first of January.
+        For example, if only the year of birth is known, the day and month of birth might be recorded as the first of January - for example, `01/01/1932`.
 
-        In such cases, searching a range of dates can help. This can, of course, result in false positives, so might not work well when searching for a unique match.
+        In such cases, searching a range of dates can help. This can result in multiple matches, so might not work well when searching for a unique match.
 
         ### Postcode
         People sometimes move locally, meaning the postcode in PDS is out of date, but does at least match on the first two characters.
@@ -332,7 +347,7 @@ paths:
         Searching for the first two characters of the postcode and a wildcard can work well. For example, to search for `LS11 6AD`, use `LS*`.
         This is only possible for a non-fuzzy search.
         
-        Beware that this can result in false positives, but it has been known to work well in some cases, even for unique matches.
+        This can result in multiple matches, but it has been known to work well in some cases - even for unique matches.
 
         ### General practitioner
         This is an ODS code. If you use it, it must match exactly.
