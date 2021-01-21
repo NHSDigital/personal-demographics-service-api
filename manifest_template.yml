@@ -1,0 +1,90 @@
+# Templating vars
+APIGEE_ENVIRONMENTS:
+  - name: internal-dev
+    display_name_suffix: Internal Development
+  # TODO: Remove as we don't want this included in an actual release
+  - name: internal-dev-sandbox
+    display_name_suffix: Internal Development Sandbox
+  - name: internal-qa
+    display_name_suffix: Internal QA
+  - name: internal-qa-sandbox
+    display_name_suffix: Internal QA Sandbox
+  - name: ref
+    display_name_suffix: Reference
+    ratelimit: '15000pm'
+    quota: '7800'
+  - name: sandbox
+    display_name_suffix: Sandbox
+    portal_visibility: false
+  - name: int
+    display_name_suffix: Integration Testing
+  - name: prod
+    approval_type: manual
+    display_name_suffix: Production
+    ratelimit: '15000pm'
+    quota: '7800'
+
+ACCESS_MODES:
+  - name: user-restricted
+    nameSuffix: ''
+    displayName: User-Restricted
+    scopes: ['personal-demographics-service:USER-RESTRICTED']
+    requireCallbackUrl: true
+    description: User restricted
+  - name: application-restricted
+    nameSuffix: -application-restricted
+    displayName: Application-Restricted
+    scopes: []
+    requireCallbackUrl: false
+    description: Application Restricted
+---
+
+# Manifest definition
+meta:
+  schema_version: 1
+  api:
+    name: personal-demographics
+    id: eef32850-52ae-46da-9dbd-d9f3df818846
+apigee:
+  environments:
+{% for env in APIGEE_ENVIRONMENTS %}
+{% set portal_visibility = env.portal_visibility | default('true') %}
+    - name: {{ env.name }}
+      products:
+{% set approval_type = env.approval_type | default('auto') %}
+{% for mode in ACCESS_MODES %}
+      - name: personal-demographics-{{ env.name }}{{ mode.nameSuffix }}
+        approvalType: {{ approval_type }}
+        attributes:
+          - name: access
+            value: public
+          - name: ratelimit
+            value: {{ env.ratelimit | default('5ps') }}
+        description: {{ mode.description }}
+        displayName: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
+        environments: [ {{ env.name }} ]
+        proxies:
+          - personal-demographics-{{ env.name }}
+          - identity-service-{{ env.name }}
+{% if env.name == 'int' %}
+          - identity-service-{{ env.name }}-no-smartcard
+{% endif %}
+        scopes: {{ mode.scopes }}
+        quota: {{ env.quota | default('300') }}
+        quotaInterval: '1'
+        quotaTimeUnit: minute
+{% endfor %}
+      specs:
+      - name: personal-demographics-{{ env.name }}
+        path: personal-demographics.json
+      api_catalog:
+{% for mode in ACCESS_MODES %}
+      - edgeAPIProductName: personal-demographics-{{ env.name }}{{ mode.nameSuffix }}
+        anonAllowed: true
+        description: Personal Demographics Service FHIR API - {{ mode.displayName }} access mode - {{ env.display_name_suffix }} environment
+        requireCallbackUrl: {{ mode.requireCallbackUrl }}
+        title: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
+        visibility: {{ portal_visibility }}
+        specId: personal-demographics-{{ env.name }}
+{% endfor %}
+{% endfor %}
