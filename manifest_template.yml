@@ -27,7 +27,7 @@ APIGEE_ENVIRONMENTS:
 ACCESS_MODES:
   - name: user-restricted
     nameSuffix: ''
-    displayName: User-Restricted
+    displayName: Healthcare Worker
     scopes: ['personal-demographics-service:USER-RESTRICTED']
     requireCallbackUrl: true
     description: User restricted
