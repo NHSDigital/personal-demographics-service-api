@@ -9,4 +9,3 @@ if ENVIRONMENT.lower() == "local":
 else:
     PDS_BASE_PATH = ENV["pds_base_path"]
     SANDBOX_BASE_URL = f"https://{ENVIRONMENT}.api.service.nhs.uk/{PDS_BASE_PATH}"
-
