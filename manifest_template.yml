@@ -28,13 +28,13 @@ ACCESS_MODES:
   - name: user-restricted
     nameSuffix: ''
     displayName: User-Restricted
-    scopes: ['personal-demographics-service:USER-RESTRICTED']
+    scopes: ['urn:nhsd:apim:user:aal3']
     requireCallbackUrl: true
     description: User restricted
   - name: application-restricted
     nameSuffix: -application-restricted
     displayName: Application-Restricted
-    scopes: [personal-demographics-service:APPLICATION-RESTRICTED]
+    scopes: ['urn:nhsd:apim:app:jwks']
     requireCallbackUrl: false
     description: Application Restricted
 ---
