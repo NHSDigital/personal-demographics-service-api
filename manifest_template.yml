@@ -34,7 +34,7 @@ ACCESS_MODES:
   - name: application-restricted
     nameSuffix: -application-restricted
     displayName: Application-Restricted
-    scopes: []
+    scopes: [personal-demographics-service:APPLICATION-RESTRICTED]
     requireCallbackUrl: false
     description: Application Restricted
 ---
