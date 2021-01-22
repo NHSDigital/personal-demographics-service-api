@@ -62,6 +62,8 @@ extends:
       - environment: internal-qa-sandbox
         make_spec_visible: true
         proxy_path: sandbox
+        post_deploy:
+          - template: templates/sandbox-tests.yml
       - environment: int
         make_spec_visible: true
         depends_on:
@@ -74,6 +76,8 @@ extends:
           - internal_qa_sandbox
       - environment: sandbox
         proxy_path: sandbox
+        post_deploy:
+          - template: templates/sandbox-tests.yml
         depends_on:
           - internal_qa
           - internal_qa_sandbox
