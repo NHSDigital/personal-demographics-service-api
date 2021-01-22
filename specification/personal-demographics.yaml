@@ -43,8 +43,8 @@ info:
     
     | Access mode                    | End user authentication                             | Functions          | Availability |
     | ------------------------------ | --------------------------------------------------- | ------------------ | ------------ |
-    | Healthcare professional access | NHS Identity (NHS smartcard or modern alternative)  | Search for patients (multiple results), Get patient details, Update patient details | Available in production (beta) |
     | Application-restricted access  | None                                                | Search for patients (single result), Get patient details | Available for testing (alpha) 
+    | Healthcare worker access       | NHS Identity (NHS smartcard or modern alternative)  | Search for patients (multiple results), Get patient details, Update patient details | Available in production (beta) |
     | Citizen access                 | NHS login                                           | Get own details, Update own details (limited) | Not available yet, see [backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/107446/pds-fhir-api-citizen-access-using-nhs-login) for details   |
 
   
@@ -64,16 +64,16 @@ info:
     - [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) - use this to get full details for the organisations related to the patient, such as their registered GP or nominated pharmacy.
 
     ## API status and roadmap
-    ### Healthcare professional access
-    This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
-    - we might make breaking changes, but only if we can't avoid it, and we'll give advance notice
-    - we can't guarantee availability or performance
-    
     ### Application-restricted access
     This access mode is in [alpha](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
     - it is available for testing but not yet for production use
     - we might make breaking changes
      
+    ### Healthcare worker access
+    This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
+    - we might make breaking changes, but only if we can't avoid it, and we'll give advance notice
+    - we can't guarantee availability or performance
+    
     ### Citizen access
     This access mode is not available yet.
     
@@ -102,21 +102,9 @@ info:
     For more details see [Network access for APIs](https://digital.nhs.uk/developer/guides-and-documentation/network-access-for-apis).
     
     ## Security and authorisation
-    ### Healthcare professional access
-    This access mode is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis),
-    meaning an end user must be present, authenticated and authorised.
-
-    The end user must be:
-    - a healthcare professional
-    - strongly authenticated, using either an NHS smartcard or a modern alternative
-    - authorised, using [national role-based access control (RBAC)](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/national-rbac-for-developers)
-
-    To use this access mode, use one of the following security patterns:
-    * [user-restricted RESTful API - using NHS Identity - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-combined-authentication-and-authorisation)
-    * [user-restricted RESTful API - using NHS Identity - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-separate-authentication-and-authorisation)
-
     ### Application-restricted access
-    This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis), meaning we authenticate the calling application but not the end user.
+    This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis),
+    meaning we authenticate the calling application but not the end user.
     
     You can use this access mode as follows:
     * unattended (end user not present), for example as part of a back end process to check NHS numbers for data flowing from one system to another
@@ -125,6 +113,19 @@ info:
     To use this access mode, use the following security pattern:
     * [Application-restricted RESTful API - signed JWT authentication](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-signed-jwt-authentication)
     
+    ### Healthcare worker access
+    This access mode is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis),
+    meaning an end user must be present, authenticated and authorised.
+
+    The end user must be:
+    - a healthcare worker
+    - strongly authenticated, using either an NHS smartcard or a modern alternative
+    - authorised, using [national role-based access control (RBAC)](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/national-rbac-for-developers)
+
+    To use this access mode, use one of the following security patterns:
+    * [user-restricted RESTful API - using NHS Identity - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-combined-authentication-and-authorisation)
+    * [user-restricted RESTful API - using NHS Identity - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-separate-authentication-and-authorisation)
+
     ### Citizen access
     This access mode is not available yet. 
         
@@ -170,6 +171,7 @@ info:
 
     When following the SCAL process, note that:
     * In step 1: to confirm your use case for this API, you need to [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service), even if you already access PDS via another method.
+    * In step 2: when requesting the SCAL, tell us (a) which access mode you're using: (i) healthcare worker search and retrieve, (ii) healthcare worker update or (iii) application-restricted; (b) for healthcare worker access, which security pattern you're using: (i) combined authentication and authorisation or (ii) separate authentication and authorisation
     * In step 6: when implementing your clinical risk management process, you must review and integrate the PDS FHIR API hazard log into your own risk log. You’ll find it embedded within the PDS FHIR API tab in the SCAL.
     * In step 8: you need to review and complete the PDS FHIR API risk log to show that you have understood and mitigated the various risks. You might be asked to provide some evidence to prove that controls have been put in place. You’ll find the risk log embedded within the PDS FHIR API tab in the SCAL. This is separate from the clinical safety hazard log mentioned above.
     * In step 9: you must conduct penetration testing to [CHECK standards](https://www.ncsc.gov.uk/information/check-penetration-testing).
@@ -208,96 +210,146 @@ paths:
       description: |
         ## Overview
         Use this endpoint to search for a patient in PDS.
-
-        You can search using a combination of:
+        
+        You can search using various combinations of:
           * given name
           * family name
           * gender
           * postcode
-          * date of birth (range)
-          * date of death (range)
+          * date of birth - which can be a range
+          * date of death - which can be a range
           * registered GP practice
           
+        There are various search options, such as fuzzy search, exact match, history and wildcards.
+        
         The behaviour of this endpoint depends on which access mode you are using:
         
-        | Access mode                    | Behaviour restrictions            |
-        | ------------------------------ | --------------------------------- |
-        | Healthcare professional access | Full behaviour available          |
-        | Application-restricted access  | Limited to a single unique result |
-        | Citizen access                 | Not yet available                 |
+        | Access mode                    | Behaviour                                  |
+        | ------------------------------ | ------------------------------------------ |
+        | Application-restricted access  | Only a single unique match returned        |
+        | Healthcare worker access       | Up to 50 matching patient records returned |
+        | Citizen access                 | Not yet available                          |
 
-        ## Matching rules
-        Search parameters are not case sensitive.
+        ## Search options
+        The following sections explain the various search options.
+        Which options you choose depends very much on your use case, and getting it right is really important.
+        If you need help, [contact us](https://digital.nhs.uk/developer/help-and-support).
 
-        Spaces in postcodes do not need to match exactly, for example `LS116AD` will match `LS11 6AD`, however including spaces will also work.
-
-        For date of birth and date of death, you can search for an exact date or for a range of dates.
-
-        You can use wildcards in given name and family name. Wildcards must start with at least two characters; for example, `Br*` is valid, but `*cDougal` is not. Multiple wildcards are allowed; for example, `Br*w*` will match `Brown` and `Brower`.
-        Be sure that any wildcards are encoded before sending the request. An encoded wildcard is `%2A`; for example, `Br%2A` is valid.
-
-        You can request a fuzzy search using the `_fuzzy-match` query parameter. This will:
-          * match common homophones, such as `Smith` and `Smythe`, using the [Soundex](https://en.wikipedia.org/wiki/Soundex) algorithm
-          * check for transposed names, such as `Adam Thomas` and `Thomas Adam`
-
-        Wildcards cannot be used with a fuzzy search.
-
-        ## Search parameter options
-        For a non-fuzzy search (`_fuzzy-match`=`false`), the minimum set of search parameters is:
-        * family name - but it can include wildcards
-        * gender
-        * date of birth - but it can be a range
-
-        For a fuzzy search (`_fuzzy-match`=`true`), use one of the following search parameter combinations:
-        * given name, family name and date of birth
-        * family name, date of birth, gender and postcode
-        * given name, date of birth, gender and postcode
-
-        If you include the date of death or registered GP Practice query parameters for a fuzzy search, they will not be used as part of the search. However they will affect the patient's matching score, meaning a mismatch will reduce the returned score.
-
-        If you use an invalid combination of query parameters, you will get an `INVALID_COMBINATION` error.
-
-        ## Historic data search
-        By default the endpoint only searches current information.
-        You can search historic information, such as previous names or addresses using the `_history` query parameter.
-
-        You cannot perform a fuzzy search on historic information.
-
-        ## Scoring
-        Every matched patient in the result list includes a score to indicate how closely the patient matched the search parameters.
-
-        A score of 1.0 indicates an exact match. A score of less than 1.0 indicates a partial match.
-
-        The result list is sorted in descending score order - best match first.
-
-        Use the `_exact-match` query parameter to return exact matches only - where the score is 1.0.
-
-        ## Restricted patients
-        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telecom`, `contact` and `generalPractitioner` will be removed.
-
-        If `address-postcode` or `general-practitioner` are included in the search parameters, no restricted patients will be returned even if a match is identified.
-
-        The restricted flag can be found in the data under `meta/security` on the patient resource.
-        
-        ## Invalidated patients
-        Some patients are marked as invalidated in PDS - also known as redacted in FHIR terminology. Invalidated patient records are not returned in search results.
-        If an invalidated patient record has been superseded, the superseding record is returned.
-
-        ## Number of results returned
-        ### Healthcare professional access mode
-        
-        By default, the endpoint will return a maximum of 50 results.
-
-        If there are more than 50 matching patients, the endpoint will return no results and the error response `TOO_MANY_MATCHES`.
-        You can further limit the number of results using the `_max-results` query parameter.
-        You can request a single, exact match using `_exact-match=true` and `_max-results=1`.
-        
         ### Application-restricted access mode
+        In this access mode, you only get a single matching patient record, and only if it's a unique match.
+
+        Use search options that are likely to find a unique match. In our experience, the following is a good starting point:
+          * search on given name, family name, postcode, date of birth and gender - this combination should uniquely identify a patient
+          * for given name, use the first three characters and a wildcard, for example to search for `Annabel`, use `Ann*` - this caters for different name spellings and abbreviations
+          * for postcode, use the first two characters and a wildcard, for example to search for `LS11 6AD`, use `LS*` - this caters for people who have moved locally but not updated PDS
+          * use a non-fuzzy search - this reduces the chance of multiple matches
+          * use a non-exact match - an exact match does not work with wildcards
+          * include history - this increases the chance of a match
+
+        For more details, see the following sections.
+
+        ### Healthcare worker access mode
+        In this access mode - where the end user is a strongly authenticated healthcare worker - you can get up to 50 matching patient records.
+        This allows the end user to choose the best match.
+
+        Use search parameters that are relevant to your use case - for example date of death is not always appropriate.
         
-        The endpoint will only return one result. If there is more than one matching patient, the endpoint will return no results and the error response `TOO_MANY_MATCHES`.
+        To protect patient privacy, design your search to minimise the number of matching patients.
+        For example, you could:
+          * encourage users to enter as many search parameters as they can
+          * force users to try a non-fuzzy search first and then only offer a fuzzy search if they can't find the patient
+        
+        For more details, see the following sections.
+
+        ### Non-fuzzy search
+        A non-fuzzy search:
+          * allows wildcards in names and postcodes
+          * doesn't match homophones or transposed names
+          * can optionally search history, such as previous names and addresses
+
+        It is less likely to return multiple matches than a fuzzy search, so is more suitable for finding a unique match.
+
+        The minimum search parameters are:
+          * family name - which can include wildcards
+          * gender
+          * date of birth - which can be a range
+          
+        ### Fuzzy search
+        A fuzzy search:
+          * matches common homophones, such as `Smith` and `Smythe`, using the [Soundex](https://en.wikipedia.org/wiki/Soundex) algorithm
+          * checks for transposed names, such as `Adam Thomas` and `Thomas Adam`
+          * always searches history, such as previous names and addresses
+
+        It is more likely to include multiple matches than a non-fuzzy search, so is not ideal for finding a unique match.
+        
+        It is also more likely to include false positives - other patients that match the search criteria.
+        Therefore, for privacy reasons, it is better to use it only if a non-fuzzy match has failed.
+
+        You must use one of the following search parameter combinations:
+          * given name, family name and date of birth
+          * family name, date of birth, gender and postcode
+          * given name, date of birth, gender and postcode
+
+        If you include the date of death or registered GP practice query parameters, they are not used in the search. However they do affect the patient's matching score - a mismatch reduces the returned score.
+
+        ### History
+        PDS holds historic information, including previous names and addresses.
+
+        A fuzzy search always includes history. For a non-fuzzy search, you can request to include history.
+
+        Searching history can match patients where only a previous name or address is known, or if a patient provides a previous name or address on the assumption that their record hasn’t been updated.
+
+        ### Exact match
+        You can request an exact match.
+        This might be useful if you are verifying an NHS Number against details you already believe to be correct.
+        It is unlikely to work well with wildcards or fuzzy search.
+
+        ### Names
+        Matching names can be difficult due to:
+          * multiple given names, such as in `Jane Anne Smith`
+          * multiple or double-barrelled surnames, such as in `Michael Smith-Jones`
+          * homophones, such as `Smith` and `Smythe` or `Ann` and `Anne`
+          * abbreviated names, such as `Bob` instead of `Robert`
+          * transposed names, such as `Adam Thomas` instead of `Thomas Adam`
+          * previous names, such as maiden names
+          * special characters such as in `O'Reilly`, `Jones-Smith` or `Kociński`
+          * spelling mistakes, either in the search criteria or in PDS
+
+        To deal with some of these issues:
+          * we always search all given names
+          * we search across all types of name - usual, nickname and temporary
+          * a fuzzy search matches homophones, transposed names and previous names
+          * for a non fuzzy search, you can optionally use wildcards and search previous names
+
+        ### Gender
+        PDS has four options for gender - `male`, `female`, `other` and `unknown`.
+        For some people, the gender held in PDS might not match the gender they identify with.
+
+        In these cases, searching by gender might not find the patient.
+        These are edge cases but are important to consider because gender can be a sensitive issue for the people in question.
+          
+        Currently, gender is a mandatory parameter for a non-fuzzy search. We are working to make it optional - for more details, see our [roadmap](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
+
+        ### Date of birth and death
+        Sometimes, the exact date of birth or death is not known when doing a search.
+        Sometimes, the date of birth or death is not accurate in PDS.
+        For example, if only the year of birth is known, the day and month of birth might be recorded as the first of January - for example, `01/01/1932`.
+
+        In such cases, searching a range of dates can help. This can result in multiple matches, so might not work well when searching for a unique match.
+
+        ### Postcode
+        People sometimes move locally, meaning the postcode in PDS is out of date, but does at least match on the first two characters.
+
+        Searching for the first two characters of the postcode and a wildcard can work well. For example, to search for `LS11 6AD`, use `LS*`.
+        This is only possible for a non-fuzzy search.
+        
+        This can result in multiple matches, but it has been known to work well in some cases - even for unique matches.
+
+        ### General practitioner
+        This is an ODS code. If you use it, it must match exactly.
 
         ## Patient data returned
-        The patient data returned on a search is not the full set of data that is returned on a retrieval. The following data is included:
+        The patient data returned on a search is not the full set of data that is returned on a retrieval by NHS Number. The following data is included:
         * NHS Number
         * name
         * gender
@@ -315,15 +367,37 @@ paths:
         * communication details
         * contact preferences
 
+        ### Restricted patients
+        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telecom`, `contact` and `generalPractitioner` will be removed.
+
+        If `address-postcode` or `general-practitioner` are included in the search parameters, no restricted patients will be returned even if a match is identified.
+
+        The restricted flag can be found in the data under `meta/security` on the patient resource.
+        
+        ### Invalidated patients
+        Some patients are marked as invalidated in PDS - also known as `redacted` in FHIR terminology. Invalidated patient records are not returned in search results.
+        If an invalidated patient record has been superseded, the superseding record is returned.
+
+        ## Scoring
+        Every matched patient in the result list includes a score to indicate how closely the patient matched the search parameters.
+
+        A score of 1.0 indicates an exact match. A score of less than 1.0 indicates a partial match.
+
+        The result list is sorted in descending score order - best match first.
+
+        Use the `_exact-match` query parameter to return exact matches only - where the score is 1.0.
+
         ## Clinical safety and privacy
         This endpoint can return multiple matching patients for a given search, including partial matches.
 
-        You should ensure that you design, build and test your software to minimise these risks:
-        * an end user selects the wrong patient from the results presented, so there is a risk of clinical harm; for example due to retrieval of the wrong medical data
+        Ensure that you design your software to minimise the following risks:
+        * an end user selects the wrong patient from the results presented, so there is a risk of clinical harm; for example due to retrieval of the wrong clinical data
         * the end user has access to patients’ personal data, so there is a risk to patient privacy
 
-        In particular, it is almost certainly a good idea to display search results in descending score order - best match first.
-
+        Note that:
+        * we record an access request in our audit trail for all patients matched in a PDS search
+        * it is almost certainly a good idea to display search results in descending score order - best match first
+        
         ## Sandbox testing
         You can test the following scenarios in our sandbox environment:
 
@@ -349,8 +423,19 @@ paths:
       tags:
         - patients
       parameters:
+        - name: _fuzzy-match
+          description: |
+            A fuzzy search is performed, including checks for homophones, transposed names and historic information.
+            
+            You cannot use wildcards with a fuzzy search.
+          example: true
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
         - name: _exact-match
-          description: The search only returns results where the `score` field is 1.0.
+          description: The search only returns results where the `score` field is 1.0. Use this with care - it is unlikely to work with fuzzy search or wildcards.
           example: true
           in: query
           required: false
@@ -358,15 +443,10 @@ paths:
             type: boolean
             default: false
         - name: _history
-          description: The search looks for matches in historic information such as previous names and addresses.
-          example: true
-          in: query
-          required: false
-          schema:
-            type: boolean
-            default: false
-        - name: _fuzzy-match
-          description: A fuzzy search is performed, including checks for homophones and transposed names.
+          description: |
+            The search looks for matches in historic information such as previous names and addresses.
+            
+            This parameter has no effect for a fuzzy search, which always includes historic information.
           example: true
           in: query
           required: false
@@ -374,7 +454,10 @@ paths:
             type: boolean
             default: false
         - name: _max-results
-          description: The maximum number of matching patients to return. For user-restricted access, this must be between 1 and 50, and the default is 50. For application-restricted access, this must be 1, and the default is 1. If too many patients match the search criteria, the API returns a `TOO_MANY_MATCHES` error.
+          description: |
+            The maximum number of matching patients to return. For healthcare worker access, this must be between 1 and 50, and the default is 50.
+            For application-restricted access, this must be 1, and the default is 1.
+            If too many patients match the search criteria, we return a `TOO_MANY_MATCHES` error.
           example: 1
           in: query
           required: false
@@ -384,8 +467,10 @@ paths:
         - name: family
           description: |
             The patient's family name (surname).
-
-            Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding). For example a space must be represented by either `%20` or `+`.
+            
+            Not case sensitive.
+            Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
+            Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
           examples:
             simple:
               value: Smith
@@ -401,7 +486,9 @@ paths:
           description: |
             The patient's given name.
 
-            Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding). For example a space must be represented by either `%20` or `+`.
+            Not case sensitive.
+            Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
+            Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
           example: Jane
           in: query
           required: false
@@ -440,7 +527,10 @@ paths:
               type: string
         - name: death-date
           in: query
-          description: Date of death in the format `<eq|ge|le>yyyy-mm-dd`. To specify a range, use `death-date=geyyyy-mm-dd&death-date=leyyyy-mm-dd`.
+          description: |
+            Date of death in the format `<eq|ge|le>yyyy-mm-dd`. To specify a range, use `death-date=geyyyy-mm-dd&death-date=leyyyy-mm-dd`.
+            
+            For a fuzzy search, this is ignored for matching but included in the score calculation.
           examples:
             simple:
               value: eq2010-10-22
@@ -457,13 +547,16 @@ paths:
             format: date
         - name: address-postcode
           description: |
-            The postcode of any of the patient’s known addresses. White spaces in postcodes are not significant; that is, LS16AE and LS1 6AE will both match LS1 6AE.
+            The postcode of any of the patient’s known addresses.
 
-            Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding). For example a space must be represented by either `%20` or `+`.
+            Not case sensitive.
+            Spaces are ignored, for example `LS16AE` and `LS1 6AE` will both match `LS1 6AE`.
+            Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
+            Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
           examples:
             simple:
               value: LS1 6AE
-              summary: 'Spaces not important, would match LS16AE'
+              summary: 'Spaces ignored, would match LS16AE'
             wildcarded:
               value: "LS1*"
               summary: "Will match 'LS16AE', 'LS1 6AE' and 'LS1 6AB'"
@@ -472,7 +565,11 @@ paths:
           schema:
             type: string
         - name: general-practitioner
-          description: "The Organisation Data Service (ODS) code of the patient's registered GP practice."
+          description: |
+            The Organisation Data Service (ODS) code of the patient's registered GP practice.
+            
+            Not case sensitive.
+            For a fuzzy search, this is ignored for matching but included in the score calculation.
           example: Y00001
           in: query
           required: false
@@ -672,8 +769,8 @@ paths:
         
         | Access mode                    | Behaviour restrictions              |
         | ------------------------------ | ----------------------------------- |
-        | Healthcare professional access | Full behaviour available            |
-        | Application-restricted access  | Limited to a single unique result   |
+        | Application-restricted access  | Updates not allowed                 |
+        | Healthcare worker access       | Updates allowed                     |
         | Citizen access                 | Not yet available                   |
 
         ## Patient resource versioning

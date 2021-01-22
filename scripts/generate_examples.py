@@ -156,7 +156,7 @@ def main(arguments):
                 "w",
             ) as out_file:
                 out_file.write(
-                    json.dumps(new_resource_example, indent=2, sort_keys=True)
+                    json.dumps(new_resource_example, indent=2, sort_keys=False)
                 )
 
     # Pull out responses
