@@ -190,10 +190,6 @@ servers:
     description: Integration test environment.
   - url: 'https://api.service.nhs.uk/personal-demographics'
     description: 'Production environment.'
-tags:
-  - name: patients
-  - name: polling
-  - name: relatedperson
 paths:
   /Patient:
     parameters:
@@ -420,8 +416,6 @@ paths:
         
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
 
-      tags:
-        - patients
       parameters:
         - name: _fuzzy-match
           description: |
@@ -710,8 +704,6 @@ paths:
          
       summary: "Get patient details"
       operationId: get-patient
-      tags:
-        - patients
       responses:
         '200':
           description: Information successfully returned.
@@ -1508,8 +1500,6 @@ paths:
         
       summary: Update patient details
       operationId: update-patient-partial
-      tags:
-        - patients
       externalDocs:
         description: IETF RFC 6902, which defines json-patch.
         url: https://tools.ietf.org/html/rfc6902
@@ -1658,8 +1648,6 @@ paths:
        
       summary: "Get a patient's related people"
       operationId: get-related-people
-      tags:
-        - relatedperson
       responses:
         '200':
           description: Information successfully returned.
@@ -1779,8 +1767,6 @@ paths:
         
       summary: Poll for the result of an update 
       operationId: polling
-      tags:
-        - polling
       responses:
         '200':
           description: Patient updated.
