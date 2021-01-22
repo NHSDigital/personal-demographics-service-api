@@ -17,7 +17,7 @@ resources:
     - repository: common
       type: github
       name: NHSDigital/api-management-utils
-      ref: refs/heads/edge
+      ref: refs/heads/APM-1701-Setup-products-default-scopes 
       endpoint: NHSDigital
 
 variables:
