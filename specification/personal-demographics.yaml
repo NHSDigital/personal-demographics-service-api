@@ -576,7 +576,8 @@ paths:
             type: string
       responses:
         '200':
-          description: 'A completed search, containing zero, one, or many matching patients.'
+          description: |
+            A completed search. This might contain zero, one or many matching patients, or it might contain a 'TOO_MANY_MATCHES' error.
           content:
             application/fhir+json:
               schema:
@@ -640,10 +641,12 @@ paths:
             | ----------- | -------------------------- | --------------------------------------------- |
             | 200         | TOO_MANY_MATCHES           | Too many matches were found - user should be told to refine their search parameters.	|
             | 400         | INVALID_SEARCH_DATA	       | Invalid combination of search parameters. For details, see the `diagnostics` field. |
-            | 400         | MISSING_VALUE              | Missing header parameter. For details, see the `diagnostics` field. |
-            | 400         | INVALID_VALUE              | Invalid header parameter. For details, see the `diagnostics` field. |
-            | 401         | ACCESS_DENIED              | Calling application not configured for this operation in Spine. |
-            | 404         | RESOURCE_NOT_FOUND         | No matching patients. |
+            | 400         | UNSUPPORTED_SERVICE        | Invalid combination of search parameters. |
+            | 400         | MISSING_VALUE              | Missing header or query parameter. For details, see the `diagnostics` field. |
+            | 400         | INVALID_VALUE              | Invalid header or query parameter. For details, see the `diagnostics` field. |
+            | 400         | ADDITIONAL_PROPERTIES      | Unrecognised query parameter. For details, see the `diagnostics` field. |
+            | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation in Spine. |
+            | 403         | INVALID_VALUE              | Multiple results requested when using the API in application-restrocited mode. |
             | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
             | 412         | PRECONDITION_FAILED        | Problem with request. For details, see the `diagnostics` field. |
             | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
@@ -728,9 +731,10 @@ paths:
             | HTTP status | Error code                 | Description |
             | ----------- | -------------------------- | --------------------------------------------- |
             | 400         | INVALID_RESOURCE_ID        | Invalid NHS Number. |
+            | 400         | UNSUPPORTED_SERVICE        | Missing NHS Number. |
             | 400         | MISSING_VALUE              | Missing header parameter. For details, see the `diagnostics` field. |
             | 400         | INVALID_VALUE              | Invalid header parameter. For details, see the `diagnostics` field. |
-            | 401         | ACCESS_DENIED              | Calling application not configured for this operation in Spine. |
+            | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation in Spine. |
             | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS Number. |
             | 404         | INVALIDATED_RESOURCE       | Patient did exist for given NHS Number, but has been invalidated and not superseded by another NHS Number. |
             | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
@@ -1589,17 +1593,11 @@ paths:
             
             | HTTP status | Error code                 | Description |
             | ----------- | -------------------------- | --------------------------------------------- |
-            | 400         | INVALID_RESOURCE_ID        | Invalid NHS Number. |
+            | 400         | UNSUPPORTED_SERVICE        | Missing NHS Number. |
             | 400         | MISSING_VALUE              | Missing header parameter. For details, see the `diagnostics` field. |
             | 400         | INVALID_VALUE              | Invalid header parameter. For details, see the `diagnostics` field. |
-            | 400         | VALIDATION_ERROR           | This it the "default" error thrown when no others are applicable. |
-            | 400         | UNSUPPORTED_VALUE          | There was an unsupported value in the request. The value may be valid in the schema - however it could be a legacy value that we do not allow to be set anymore. For example - setting the death notification status to 'removed'. The invalid value and field will be presented in the display. |
-            | 400         | TOO_FEW_VALUES_SUBMITTED   | The field in question has a minimum number of items and the user sent too few. |
-            | 400         | TOO_MANY_VALUES_SUBMITTED  | The field in question has a maximum number of items and the user sent too many. |
-            | 400         | ADDITIONAL_PROPERTIES      | The user sent additional properties within the dictionary. For example sending a patient patch and attempting to add 'pets', which is not an allowed field within the patient resource. |
-            | 401         | ACCESS_DENIED              | Calling application not configured for this operation in Spine. |
-            | 404         | RESOURCE_NOT_FOUND         | No matching patient for given NHS Number. |
-            | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS Number has been invalidated and not superseded by another NHS Number. |
+            | 400         | INVALID_UPDATE             | Malformed patch request. |
+            | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation in Spine. |
             | 412         | PRECONDITION_FAILED        | Problem with request, for example missing `If-Match` header. For details, see the `diagnostics` field. |
             | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
 
@@ -1712,7 +1710,7 @@ paths:
             | 400         | INVALID_RESOURCE_ID        | Invalid NHS Number. |
             | 400         | MISSING_VALUE              | Missing header parameter. For details, see the `diagnostics` field. |
             | 400         | INVALID_VALUE              | Invalid header parameter. For details, see the `diagnostics` field. |
-            | 401         | ACCESS_DENIED              | Calling application not configured for this operation in Spine. |
+            | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation in Spine. |
             | 404         | RESOURCE_NOT_FOUND         | No related people exist for given NHS Number. |
             | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS Number has been invalidated and not superseded by another NHS Number. |
             | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
@@ -1790,10 +1788,17 @@ paths:
             
             | HTTP status | Error code                 | Description |
             | ----------- | -------------------------- | --------------------------------------------- |
+            | 400         | INVALID_RESOURCE_ID        | Invalid NHS Number. |
+            | 400         | MISSING_VALUE              | Missing header parameter or missing value in body of patch request. For details, see the `diagnostics` field. |
+            | 400         | INVALID_VALUE              | Invalid header parameter or missing value in body of patch request. For details, see the `diagnostics` field. |
             | 400         | INVALID_UPDATE             | Client error after the patch was accepted and patient was not updated. For example, a start date was after the corresponding end date. |
-            | 400         | MISSING_VALUE              | Missing header parameter. For details, see the `diagnostics` field. |
-            | 401         | ACCESS_DENIED              | Calling application not configured for this operation in Spine. |
-            | 404         | RESOURCE_NOT_FOUND         | No related people exist for given NHS Number. |
+            | 400         | UNSUPPORTED_CHARACTERS_IN_FIELD | Invalid value in body of patch request. For details, see the `diagnostics` field. |
+            | 400         | ADDITIONAL_PROPERTIES      | The user sent additional properties within the dictionary. For example sending a patient patch and attempting to add 'pets', which is not an allowed field within the patient resource. |
+            | 400         | UNSUPPORTED_VALUE          | There was an unsupported value in the request. The value may be valid in the schema - however it could be a legacy value that we do not allow to be set anymore. For example - setting the death notification status to 'removed'. The invalid value and field will be presented in the display. |
+            | 400         | TOO_FEW_VALUES_SUBMITTED   | The field in question has a minimum number of items and the user sent too few. |
+            | 400         | TOO_MANY_VALUES_SUBMITTED  | The field in question has a maximum number of items and the user sent too many. |
+            | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation in Spine. |
+            | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS Number. |
             | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS Number has been invalidated and not superseded by another NHS Number. |
             | 404         | POLLING_ID_NOT_FOUND       | The message ID not found or you did not have permission to poll for that message. |
             | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
