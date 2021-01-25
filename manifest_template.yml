@@ -81,9 +81,9 @@ apigee:
 {% for mode in ACCESS_MODES %}
       - edgeAPIProductName: personal-demographics-{{ env.name }}{{ mode.nameSuffix }}
         anonAllowed: true
-        description: Personal Demographics Service FHIR API - {{ mode.displayName }} access mode - {{ env.display_name_suffix }} environment
+        description: Personal Demographics Service FHIR API - {{ mode.displayName|lower  }} access mode - {{ env.display_name_suffix }} environment
         requireCallbackUrl: {{ mode.requireCallbackUrl }}
-        title: Personal Demographics Service - {{ mode.displayName|lower }} ({{ env.display_name_suffix }})
+        title: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
         visibility: {{ portal_visibility }}
         specId: personal-demographics-{{ env.name }}
 {% endfor %}
