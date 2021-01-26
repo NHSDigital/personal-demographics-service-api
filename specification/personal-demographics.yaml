@@ -641,7 +641,7 @@ paths:
             | ----------- | -------------------------- | --------------------------------------------- |
             | 200         | TOO_MANY_MATCHES           | Too many matches were found - user should be told to refine their search parameters.	|
             | 400         | INVALID_SEARCH_DATA	       | Invalid combination of search parameters. For details, see the `diagnostics` field. |
-            | 400         | UNSUPPORTED_SERVICE        | Invalid combination of search parameters. |
+            | 400         | UNSUPPORTED_SERVICE        | No search parameters provided. |
             | 400         | MISSING_VALUE              | Missing header or query parameter. For details, see the `diagnostics` field. |
             | 400         | INVALID_VALUE              | Invalid header or query parameter. For details, see the `diagnostics` field. |
             | 400         | ADDITIONAL_PROPERTIES      | Unrecognised query parameter. For details, see the `diagnostics` field. |
