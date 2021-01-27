@@ -43,7 +43,7 @@ info:
     
     | Access mode                    | End user authentication                             | Functions          | Availability |
     | ------------------------------ | --------------------------------------------------- | ------------------ | ------------ |
-    | Application-restricted access  | None                                                | Search for patients (single result), Get patient details | Available for testing (alpha) 
+    | Application-restricted access  | None                                                | Search for patients (single result), Get patient details | Available in production (beta) | 
     | Healthcare worker access       | NHS Identity (NHS smartcard or modern alternative)  | Search for patients (multiple results), Get patient details, Update patient details | Available in production (beta) |
     | Citizen access                 | NHS login                                           | Get own details, Update own details (limited) | Not available yet, see [backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/107446/pds-fhir-api-citizen-access-using-nhs-login) for details   |
 
@@ -65,9 +65,9 @@ info:
 
     ## API status and roadmap
     ### Application-restricted access
-    This access mode is in [alpha](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
-    - it is available for testing but not yet for production use
-    - we might make breaking changes
+    This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
+    - we might make breaking changes, but only if we can't avoid it, and we'll give advance notice
+    - we can't guarantee availability or performance
      
     ### Healthcare worker access
     This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
