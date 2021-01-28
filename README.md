@@ -10,7 +10,7 @@ This is a RESTful HL7® FHIR® API specification for the *Personal Demographics 
 * `apiproxy/` The Apigee API Proxy
 
 Consumers of the API will find developer documentation on the [NHS Digital Developer Hub](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir).
- 
+
 ## Contributing
 Contributions to this project are welcome from anyone, providing that they conform to the [guidelines for contribution](https://github.com/NHSDigital/personal-demographics-service-api/blob/master/CONTRIBUTING.md) and the [community code of conduct](https://github.com/NHSDigital/personal-demographics-service-api/blob/master/CODE_OF_CONDUCT.md).
 
@@ -53,22 +53,16 @@ There are `make` commands that alias some of this functionality:
  * `validate` -- validate generated examples against FHIR R4
 
 ### Running tests
-#### End-to-end tests
-To run tests, you need to supply an environment. A `local` environment and an environment template are included under `tests/e2e/environments`.
+#### Sandbox Tests
 
-Set the following environment variables for local testing:
- * `ENVIRONMENT`: `local`
- * `API_TEST_ENV_FILE_PATH`: `tests/e2e/environments/local.postman_environment.json`
- * `API_TEST_URL`: `localhost:9000`
-
-In order for local tests to work, you must have the sandbox server running locally.
+Start the sandbox locally:
 ```
 make sandbox
 ```
 
 To run local tests, use:
 ```
-make test
+make test-sandbox
 ```
 
 There is a template environment file available at `tests/e2e/environments/postman_environment.json.template` useful for configuring different testing environments (such as on the CI server).
