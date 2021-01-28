@@ -565,6 +565,20 @@ pytest = ">=4.3"
 six = ">=1.9.0"
 
 [[package]]
+category = "dev"
+description = "A pytest plugin that allows multiple failures per test."
+name = "pytest-check"
+optional = false
+python-versions = "*"
+version = "1.0.1"
+
+[package.dependencies]
+pytest = ">=6.0.0"
+
+[package.extras]
+test = ["tox"]
+
+[[package]]
 category = "main"
 description = "Extensions to the standard Python datetime module"
 name = "python-dateutil"
@@ -722,7 +736,7 @@ test = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 
 [metadata]
-content-hash = "b3e19bb3401eb36e948436226c0e9d09ca7c6cd1719e1cbcbed9a1ceed6e1041"
+content-hash = "c4c127eff009c14d0817c4ce58f1332734b2db5c61ac43ea143605dbad1b97cc"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -1099,6 +1113,10 @@ pytest = [
 pytest-bdd = [
     {file = "pytest-bdd-4.0.1.tar.gz", hash = "sha256:0b8467fe4c6effe0d5d11919eec1808da07752c68332d776bb9eb2a6cbdbd8f1"},
     {file = "pytest_bdd-4.0.1-py2.py3-none-any.whl", hash = "sha256:cbe1d932be237e6cbe1c855f18bb797911f40c4fa11d033c59f55bed99633481"},
+]
+pytest-check = [
+    {file = "pytest_check-1.0.1-py2.py3-none-any.whl", hash = "sha256:037d1a0777c7ebbe7b4e17d09ca7956793aa86d36bea851c0edeed361d0928bc"},
+    {file = "pytest_check-1.0.1.tar.gz", hash = "sha256:da5849adf5e51bd0c1f7204655b3594a68463353ec8da06c082c1ab0548901c4"},
 ]
 python-dateutil = [
     {file = "python-dateutil-2.8.1.tar.gz", hash = "sha256:73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c"},
