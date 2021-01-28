@@ -14,7 +14,7 @@
       </Step>
       <Step>
         <Name>AssignMessage.SetAccessModeUserRestricted</Name>
-        <Condition>(scope JavaRegex "(.+\ urn:nshd:apim:user:aal3\ .+|^urn:nshd:apim:user:aal3\ .+|.+\ urn:nshd:apim:user:aal3$|^urn:nshd:apim:user:aal3$)")</Condition>
+        <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:app:jwks:personal-demographics-service\ .+|^urn:nhsd:apim:app:jwks:personal-demographics-service\ .+|.+\ urn:nhsd:apim:app:jwks:personal-demographics-service$|^urn:nhsd:apim:app:jwks:personal-demographics-service$)")</Condition>
       </Step>
       <Step>
         <!-- Header NHSD-Session-URID must be present and not empty for 'authorization_code'-->
