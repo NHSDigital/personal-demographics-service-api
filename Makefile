@@ -16,9 +16,6 @@ install-fhir-validator:
 	mkdir -p bin
 	test -f bin/org.hl7.fhir.validator.jar || curl https://storage.googleapis.com/ig-build/org.hl7.fhir.validator.jar > bin/org.hl7.fhir.validator.jar
 
-test:
-	npm run test
-
 lint:
 	npm run lint
 	cd sandbox && npm run lint && cd ..
@@ -78,3 +75,8 @@ release: clean publish build-proxy
 	cp ecs-proxies-deploy.yml dist/ecs-deploy-internal-dev-sandbox.yml
 
 	cp pyproject.toml dist/pyproject.toml
+
+test-sandbox: export APIGEE_ENVIRONMENT = local
+test-sandbox: export PDS_BASE_PATH = local
+test-sandbox:
+	poetry run pytest -v tests/sandbox/test_sandbox.py

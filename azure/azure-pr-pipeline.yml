@@ -69,6 +69,8 @@ extends:
                 test_type: smoke
         - environment: internal-dev-sandbox
           proxy_path: sandbox
+          post_deploy:
+            - template: templates/sandbox-tests.yml
         - environment: internal-dev
           service_name: ${{ variables.service_name }}-int
           short_service_name: ${{ variables.short_service_name }}-int

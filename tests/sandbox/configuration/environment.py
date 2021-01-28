@@ -1,7 +1,6 @@
 import os
 
 
-# Configure Test Environment
 def get_env(variable_name: str) -> str:
     """Returns a environment variable"""
     try:
@@ -29,12 +28,6 @@ def get_env_file(variable_name: str) -> str:
 
 
 ENV = {
-
-    "signing_key": get_env_file("APPLICATION_RESTRICTED_SIGNING_KEY_PATH"),
-    "signing_key_with_asid": get_env_file("APPLICATION_RESTRICTED_WITH_ASID_SIGNING_KEY_PATH"),
-    "application_restricted_api_key": get_env("APPLICATION_RESTRICTED_API_KEY"),
-    "application_restricted_with_asid_api_key": get_env("APPLICATION_RESTRICTED_WITH_ASID_API_KEY"),
     "pds_base_path": get_env("PDS_BASE_PATH"),
     "environment": get_env("APIGEE_ENVIRONMENT"),
-    "key_id": get_env("KEY_ID")
 }
