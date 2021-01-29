@@ -60,7 +60,7 @@ class Authenticator:
 
         return sign_in_response
 
-    def get_code_from_provider(self, sign_in_response: 'response type') -> str:
+    def get_code_from_provider(self, sign_in_response) -> str:
         """Retrieve the code value from an authentication response"""
         # Extract url from location header and make the call back request
         callback_url = sign_in_response.headers.get('Location')
