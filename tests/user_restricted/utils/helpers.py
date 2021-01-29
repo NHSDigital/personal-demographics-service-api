@@ -3,21 +3,21 @@ import urllib.parse
 from typing import Union
 import requests
 from pytest_check import check
+import time
 from ..configuration import config
 
 
-def retrieve_patient(patient: str, headers={}) -> requests.Response:
+def retrieve_patient(patient: str, headers) -> requests.Response:
     """Send a PDS Retrieve request
 
     Args:
         patient (str): NHS Number of Patient
         headers (dict, optional): Headers to include in request. Defaults to {}.
-
     Returns:
         requests.Response: Response from server
     """
     response = requests.get(
-        f"{config.SANDBOX_BASE_URL}/Patient/{patient}", headers=headers
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{patient}", headers=headers
     )
     return response
 
@@ -27,7 +27,7 @@ def search_patient(query_params: Union[dict, str], headers={}) -> requests.Respo
     if type(query_params) != str:
         query_params = urllib.parse.urlencode(query_params)
     response = requests.get(
-        f"{config.SANDBOX_BASE_URL}/Patient?{query_params}", headers=headers
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient?{query_params}", headers=headers
     )
     return response
 
@@ -41,7 +41,7 @@ def update_patient(patient: str, patient_record: str, payload: dict, extra_heade
     }
     headers.update(extra_headers)
     response = requests.patch(
-        f"{config.SANDBOX_BASE_URL}/Patient/{patient}", headers=headers, json=payload
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{patient}", headers=headers, json=payload
     )
     return response
 
@@ -50,7 +50,7 @@ def update_patient(patient: str, patient_record: str, payload: dict, extra_heade
 # Argument accepted are Patient_ID, Patch Payload, and any additional Headers.
 def update_patient_invalid_headers(patient: str, payload: dict, headers=None) -> requests.Response:
     response = requests.patch(
-        f"{config.SANDBOX_BASE_URL}/Patient/{patient}", headers=headers, json=payload
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{patient}", headers=headers, json=payload
     )
     return response
 
@@ -58,13 +58,14 @@ def update_patient_invalid_headers(patient: str, payload: dict, headers=None) ->
 # A function to send a PDS Retrieve Related Person request. Arguments accepted are the Patient_ID & Header.
 def retrieve_related_person(patient: str, headers={}) -> requests.Response:
     response = requests.get(
-        f"{config.SANDBOX_BASE_URL}/Patient/{patient}/RelatedPerson", headers=headers
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{patient}/RelatedPerson", headers=headers
     )
     return response
 
 
-def poll_message(content_location: str) -> requests.Response:
-    response = requests.get(f"{config.SANDBOX_BASE_URL}{content_location}")
+def poll_message(content_location: str, headers={}) -> requests.Response:
+    time.sleep(2)
+    response = requests.get(f"{config.BASE_URL}/{config.PDS_BASE_PATH}{content_location}", headers=headers)
     return response
 
 
@@ -140,8 +141,8 @@ def check_response_headers(response: requests.Response, expected_headers={}) -> 
                 == expected_headers["X-Correlation-ID"]
             ), (
                 f"UNEXPECTED RESPONSE: "
-                f"actual X-Request-ID is: {response.headers['X-Correlation-ID']} "
-                f"expected X-Request-ID is: {expected_headers['X-Correlation-ID']}"
+                f"actual X-Correlation-ID is: {response.headers['X-Correlation-ID']} "
+                f"expected X-Correlation-ID is: {expected_headers['X-Correlation-ID']}"
             )
 
     else:

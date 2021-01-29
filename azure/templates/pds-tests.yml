@@ -53,7 +53,7 @@ steps:
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
 
   - task: PublishTestResults@2
-    displayName: 'Publish application restricted test results'
+    displayName: 'Publish application restricted configuration results'
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/functional-test-report.xml
+      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/functional-configuration-report.xml
       failTaskOnFailedTests: true
