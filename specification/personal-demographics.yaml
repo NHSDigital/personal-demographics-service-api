@@ -201,7 +201,7 @@ servers:
   - url: 'https://sandbox.api.service.nhs.uk/personal-demographics'
     description: Sandbox environment.
   - url: 'https://int.api.service.nhs.uk/personal-demographics'
-    description: Integration configuration environment.
+    description: Integration test environment.
   - url: 'https://api.service.nhs.uk/personal-demographics'
     description: 'Production environment.'
 paths:
@@ -1570,11 +1570,11 @@ paths:
                 value:
                   $ref: components/examples/requests/PatientPatch/delete-gender.json
               delete-name:
-                summary: Remove a list item (name) no longer in use, using configuration pointing to the name items id
+                summary: Remove a list item (name) no longer in use, using test pointing to the name items id
                 value:
                   $ref: components/examples/requests/PatientPatch/delete-name.json
               delete-name-alternative:
-                summary: Remove a list item (name) no longer in use, using configuration pointing to the name object
+                summary: Remove a list item (name) no longer in use, using test pointing to the name object
                 value:
                   $ref: components/examples/requests/PatientPatch/delete-name-alternative.json
               delete-extension:

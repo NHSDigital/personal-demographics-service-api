@@ -14,4 +14,4 @@ steps:
   - bash: |
       echo "##vso[task.setvariable variable=IDP_URL]https://nhsd-apim-testing-$(ENVIRONMENT).herokuapp.com"
       echo "##vso[task.setvariable variable=API_URL]https://$(ENVIRONMENT).api.service.nhs.uk/$(SERVICE_BASE_PATH)"
-    displayName: Set configuration urls
+    displayName: Set test urls

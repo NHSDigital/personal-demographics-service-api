@@ -12,7 +12,7 @@ steps:
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
 
   - task: PublishTestResults@2
-    displayName: 'Publish sandbox configuration results'
+    displayName: 'Publish sandbox test results'
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/sandbox-configuration-report.xml
+      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/sandbox-test-report.xml
       failTaskOnFailedTests: true
