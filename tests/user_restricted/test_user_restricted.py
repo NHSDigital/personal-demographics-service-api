@@ -3,6 +3,7 @@ from .utils import helpers
 import json
 from pytest_check import check
 
+
 class TestUserRestrictedRetrievePatient:
 
     def test_retrieve_patient(self, headers_with_token):

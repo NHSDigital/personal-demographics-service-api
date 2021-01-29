@@ -43,7 +43,7 @@ class Authenticator:
             'payload': {'state': state}
         }
 
-    def authenticate(self) -> 'response type':
+    def authenticate(self):
         """Send authentication request"""
         sign_in_response = self.session.post(
             self.data['url'],

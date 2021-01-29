@@ -15,6 +15,7 @@ def headers_with_token(get_token, request):
                }
     setattr(request.cls, 'headers', headers)
 
+
 @pytest.fixture()
 def headers():
     """Assign required headers without the Authorization header"""
@@ -24,6 +25,7 @@ def headers():
                }
     return headers
 
+
 @pytest.fixture()
 def get_token():
     """Get an access token"""
@@ -31,6 +33,7 @@ def get_token():
     token = oauth_endpoints.get_token_response()
     access_token = token['access_token']
     return access_token
+
 
 @pytest.fixture()
 def create_random_date(request):
