@@ -63,12 +63,12 @@ steps:
     displayName: Setup user restricted tests
 
   - bash: |
-	  export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
-	  export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
+      export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
+      export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
       export CLIENT_ID="$(CLIENT_ID)"
       export CLIENT_SECRET="$(CLIENT_SECRET)"
-	  export REDIRECT_URI="https://nhsd-apim-testing-$(ENVIRONMENT).herokuapp.com/callback"
-	  export AUTHENTICATE_URL="https://nhsd-apim-testing-$(ENVIRONMENT).herokuapp.com/"
+      export REDIRECT_URI="https://nhsd-apim-testing-$(ENVIRONMENT).herokuapp.com/callback"
+      export AUTHENTICATE_URL="https://nhsd-apim-testing-$(ENVIRONMENT).herokuapp.com/"
 
       poetry run pytest -v tests/user_restricted/test_user_restricted.py --junitxml=tests/user-restricted-test-report.xml
     displayName: Run user restricted tests
