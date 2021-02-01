@@ -28,7 +28,6 @@ extends:
     service_name: ${{ variables.service_name }}
     short_service_name: ${{ variables.short_service_name }}
     variables:
-      API_TEST_ENV_FILE_PATH: "tests/e2e/environments/local.postman_environment.json"
       PIP_CACHE_DIR: ".poetry"
     test_steps:
       - bash: "make sandbox &"
@@ -37,13 +36,3 @@ extends:
       - bash: "make validate"
         displayName: Validate FHIR
         workingDirectory: "${{ variables.service_name }}"
-      - bash: "sleep 30"
-        displayName: Wait for sandbox server to start
-      - bash: "make test"
-        displayName: Run sandbox tests
-        workingDirectory: "${{ variables.service_name }}"
-      - task: PublishTestResults@2
-        inputs:
-          testResultsFormat: 'JUnit'
-          testResultsFiles: './${{ variables.service_name }}/newman/test-report.xml'
-          failTaskOnFailedTests: true
