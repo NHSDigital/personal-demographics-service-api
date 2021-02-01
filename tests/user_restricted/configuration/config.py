@@ -4,13 +4,12 @@ from .environment import ENV
 # Api Details
 ENVIRONMENT = ENV["environment"]
 BASE_URL = f"https://{ENVIRONMENT}.api.service.nhs.uk"
-IDENTITY_PROXY = ENV['identity_proxy']
 
-AUTHORIZE_URL = f"{BASE_URL}/{IDENTITY_PROXY}/authorize"
-TOKEN_URL = f"{BASE_URL}/{IDENTITY_PROXY}/token"
-SIM_AUTH_URL = f"{BASE_URL}/{IDENTITY_PROXY}/simulated_auth"
+AUTHORIZE_URL = f"{BASE_URL}/oauth2/authorize"
+TOKEN_URL = f"{BASE_URL}/oauth2/token"
+SIM_AUTH_URL = f"{BASE_URL}/oauth2/simulated_auth"
 AUTHENTICATE_URL = ENV['authenticate_url']
-CALLBACK_URL = f"{BASE_URL}/{IDENTITY_PROXY}/callback"
+CALLBACK_URL = f"{BASE_URL}/oauth2/callback"
 
 # PDS
 PDS_BASE_PATH = ENV["pds_base_path"]
