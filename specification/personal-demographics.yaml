@@ -352,18 +352,19 @@ paths:
         ## Patient data returned
         The patient data returned on a search is not the full set of data that is returned on a retrieval by NHS Number. The following data is included:
         * NHS Number
-        * name - usual, nickname and temporary
+        * names - usual, nickname and temporary
         * gender
         * birth information, apart from place of birth
         * death information
-        * home address
+        * address - home address
         * contact details
         * registered GP
         * restricted patient flag
 
         The following data is excluded:
         * place of birth
-        * addresses apart from home address
+        * names, apart from usual, nickname and temporary 
+        * addresses, apart from home address
         * pharmacy details
         * communication details
         * contact preferences
