@@ -76,12 +76,10 @@ info:
     ### Application-restricted access
     This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
     - we might make breaking changes, but only if we can't avoid it, and we'll give advance notice
-    - we can't guarantee availability or performance
      
     ### Healthcare worker access
     This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
     - we might make breaking changes, but only if we can't avoid it, and we'll give advance notice
-    - we can't guarantee availability or performance
     
     ### Citizen access
     This access mode is not available yet.
