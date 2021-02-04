@@ -18,7 +18,7 @@ properties:
     description: | 
       List of names associated with the patient.
 
-      This will only be fully populated on a retrieval, only the `usual`, `nickname` and `temp` names will be returned on a search.
+      This is only fully populated on a retrieval or a successful update, only the `usual`, `nickname` and `temp` names will be returned on a search.
       
       When a patient tagged as `very restricted` is retrieved, all names will be removed from the response.
     minItems: 1
