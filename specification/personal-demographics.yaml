@@ -34,16 +34,25 @@ info:
     * medical appliance supplier pharmacy
     * related people, such as next of kin (read only - update coming soon)
     
-    PDS includes all patients who are registered for health and care services commissioned by the NHS in England, Wales and the Isle of Man.
-    They might actually live elsewhere, for example in Scotland, Ireland or the Channel Islands.
-    This API is only to be used for patients registered in England and the Isle of Man, not Wales.
-    
+    ### Patients included in PDS
+    Regardless of nationality, or where they live now, PDS includes all patients who have ever been registered with a GP practice, or treated by a health or care organisation (even as a visitor or migrant) in England, Wales, the Isle of Man, or in a UK Defence Medical Services unit anywhere in the world. 
+
+    All patients in PDS have an NHS Number which is unique. The 10-digit NHS Number is used in England, Wales, the Isle of Man, Scotland and Northern Ireland, but not the Channel Islands. Scotland and Northern Ireland have their own distinct number ranges.
+
+    ### Who can access PDS records
+    Health and care organisations in England and the Isle of Man can access PDS records. Legitimate direct care examples include NHS organisations delivering healthcare, local authorities delivering care, third sector and private sector health and care organisations, and developers delivering systems to health and care organisations. 
+
+    Health and care organisations in Wales access their own version of PDS called the Welsh Demographics Service (WDS) which is connected to PDS behind the scenes. 
+
+    Health and care organisations in Scotland, Northern Ireland and the Channel Islands access their own equivalents of PDS.
+
+    ### Access modes
     This API has three access modes:
     
     
     | Access mode                    | End user authentication                             | Functions          | Availability |
     | ------------------------------ | --------------------------------------------------- | ------------------ | ------------ |
-    | Application-restricted access  | None                                                | Search for patients (single result), Get patient details | Available for testing (alpha) 
+    | Application-restricted access  | None                                                | Search for patients (single result), Get patient details | Available in production (beta) | 
     | Healthcare worker access       | NHS Identity (NHS smartcard or modern alternative)  | Search for patients (multiple results), Get patient details, Update patient details | Available in production (beta) |
     | Citizen access                 | NHS login                                           | Get own details, Update own details (limited) | Not available yet, see [backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/107446/pds-fhir-api-citizen-access-using-nhs-login) for details   |
 
@@ -65,15 +74,14 @@ info:
 
     ## API status and roadmap
     ### Application-restricted access
-    This access mode is in [alpha](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
-    - it is available for testing but not yet for production use
-    - we might make breaking changes
+    This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
+    - we might make breaking changes, but only if we can't avoid it, and we'll give advance notice
      
     ### Healthcare worker access
     This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
+
     - we might make breaking changes, but only if we cannot avoid it, and we'll give advance notice
-    - we cannot guarantee availability or performance
-    
+        
     ### Citizen access
     This access mode is not available yet.
     

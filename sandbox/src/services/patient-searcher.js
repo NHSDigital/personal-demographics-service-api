@@ -158,8 +158,13 @@ module.exports.search = function(request) {
         gender: "female",
         birthdate: "eq2010-10-22",
     }
+    
+    const simpleSearchParamsGenderFree = {
+        family: "Smith",
+        birthdate: "eq2010-10-22",
+    }
     // If so, try it
-    if (containsSearchParameters(request, simpleSearchParams)) {
+    if (containsSearchParameters(request, simpleSearchParams) || containsSearchParameters(request, simpleSearchParamsGenderFree)) {
         return buildPatientResponse([patients.search.exampleSearchPatientSmith]);
     }
 
