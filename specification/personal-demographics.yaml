@@ -794,7 +794,7 @@ paths:
         To update a patient record, a [JSON Patch](https://tools.ietf.org/html/rfc6902) should be sent. A JSON Patch consists of one or more patch objects within a list.
 
         It is recommended that all desired updates are sent together in a single request as a list of patches.
-        This is the most efficient approach and reduces the danger of race conditions occurring when updating the patient recod multiple times in a short period of time.
+        This is the most efficient approach and reduces the danger of race conditions occurring when updating the patient record multiple times in a short period of time.
 
         When processing the list of patch objects, each patch must be valid and pass all the business rules against the data. If one patch object fails, none of the patch objects will be applied.
 
