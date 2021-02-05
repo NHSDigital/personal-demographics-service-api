@@ -37,7 +37,7 @@ properties:
     description: | 
       List of addresses associated with the patient.
       
-      This will only be fully populated on a retrieval, only the `home` address will be returned on a search.
+      This will only be fully populated on a retrieval or a successful update, only a the `home` address will be returned on a search.
 
       When a patient tagged as `restricted` or `very restricted` is retrieved, all addresses will be removed from the response.
     items:
