@@ -106,6 +106,7 @@
     <LoadBalancer>
       <Server name="{{ PDS_TARGET_SERVER }}" />
     </LoadBalancer>
+    <Path>{fixedpath}</Path>
   </HTTPTargetConnection>
   <FaultRules>
     <FaultRule name="access_token_expired">
