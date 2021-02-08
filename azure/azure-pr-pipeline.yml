@@ -45,6 +45,9 @@ extends:
     secret_file_ids:
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_WITH_ASID_PRIVATE_KEY
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_PRIVATE_KEY
+    config_ids:
+      - /ptl/azure-devops/env-internal-dev/test-app/internal-testing-internal-dev/CLIENT_ID
+      - /ptl/azure-devops/env-internal-dev/test-app/internal-testing-internal-dev/CLIENT_SECRET
     apigee_deployments:
         - environment: internal-dev
           make_spec_visible: true

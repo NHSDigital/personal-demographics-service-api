@@ -79,8 +79,9 @@ info:
      
     ### Healthcare worker access
     This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
-    - we might make breaking changes, but only if we can't avoid it, and we'll give advance notice
-    
+
+    - we might make breaking changes, but only if we cannot avoid it, and we'll give advance notice
+        
     ### Citizen access
     This access mode is not available yet.
     
@@ -104,7 +105,7 @@ info:
     ## Network access
     This API is available on the internet and, indirectly, on the [Health and Social Care Network (HSCN)](https://digital.nhs.uk/services/health-and-social-care-network).
 
-    To use this API with NHS smartcards (see below) you do need an HSCN connection, although internet-facing alternatives are available.
+    To use this API with NHS smartcards you do need an HSCN connection, although internet-facing alternatives are available.
     
     For more details see [Network access for APIs](https://digital.nhs.uk/developer/guides-and-documentation/network-access-for-apis).
     
@@ -183,9 +184,9 @@ info:
 
     When following the SCAL process, note that:
     * In step 1: to confirm your use case for this API, you need to [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service), even if you already access PDS via another method.
-    * In step 2: when requesting the SCAL, tell us (a) which access mode you're using: (i) healthcare worker search and retrieve, (ii) healthcare worker update or (iii) application-restricted; (b) for healthcare worker access, which security pattern you're using: (i) combined authentication and authorisation or (ii) separate authentication and authorisation
-    * In step 6: when implementing your clinical risk management process, you must review and integrate the PDS FHIR API hazard log into your own risk log. You’ll find it embedded within the PDS FHIR API tab in the SCAL.
-    * In step 8: you need to review and complete the PDS FHIR API risk log to show that you have understood and mitigated the various risks. You might be asked to provide some evidence to prove that controls have been put in place. You’ll find the risk log embedded within the PDS FHIR API tab in the SCAL. This is separate from the clinical safety hazard log mentioned above.
+    * In step 2: when requesting the SCAL, tell us (a) which access mode you're using: (i) healthcare worker search and retrieve, (ii) healthcare worker update or (iii) application-restricted; (b) for healthcare worker access, which security pattern you are using: (i) combined authentication and authorisation or (ii) separate authentication and authorisation
+    * In step 6: when implementing your clinical risk management process, you must review and integrate the PDS FHIR API hazard log into your own risk log. It's embedded within the PDS FHIR API tab in the SCAL.
+    * In step 8: you need to review and complete the PDS FHIR API risk log to show that you have understood and mitigated the various risks. You might be asked to provide some evidence to prove that controls have been put in place. You can find the risk log embedded within the PDS FHIR API tab in the SCAL. This is separate from the clinical safety hazard log mentioned above.
     * In step 9: you must conduct penetration testing to [CHECK standards](https://www.ncsc.gov.uk/information/check-penetration-testing).
     * In step 10: when you complete the Service Desk Registration Form, send it to [api.management@nhs.net](mailto:api.management@nhs.net).
     * In step 11: submit your completed SCAL to [api.management@nhs.net](mailto:api.management@nhs.net).
@@ -359,18 +360,19 @@ paths:
         ## Patient data returned
         The patient data returned on a search is not the full set of data that is returned on a retrieval by NHS Number. The following data is included:
         * NHS Number
-        * name
+        * names - usual, nickname and temporary
         * gender
-        * all birth information, apart from place of birth
+        * birth information, apart from place of birth
         * death information
-        * home address
+        * address - home address
         * contact details
         * registered GP
         * restricted patient flag
 
         The following data is excluded:
         * place of birth
-        * all addresses apart from home address
+        * names, apart from usual, nickname and temporary 
+        * addresses, apart from home address
         * pharmacy details
         * communication details
         * contact preferences
@@ -690,7 +692,7 @@ paths:
         ## Superseded patients
         Some patients are marked as superseded, this means that for some reason the original resource is no longer valid and has been replaced with a different resource.
 
-        On retrieval of a superseded resource the new resource will be automatically returned in place of the requested resource. You will be able to spot a superseded resource when the `id` is not the same as the one requested.
+        On retrieval of a superseded resource, the new resource will be automatically returned in place of the requested resource. You will be able to spot a superseded resource when the `id` is not the same as the one requested.
 
         When retrieving a superseding resource you must update your system with the new resource and remove the superseded resource, ensuring that the same `id` does not exist against another resource in your system.
 
@@ -790,17 +792,17 @@ paths:
 
         It is recommended you use the value from the `Etag` header as this is in the correct form the `If-Match` header is expected, for example `W/"2"` and can be mirrored back in the request.
 
-        The update will only succeed if the patient resource has not been updated in our database in the meantime.
+        The update only succeeds, if the patient resource has not been updated in our database between your first retrieval and the update request.
 
         If the update succeeds, on polling the outcome, you will receive a copy of the update resource in the response, including the new resource version number.
 
         If you make a subsequent update you must use the new version number.
 
         ## JSON Patch
-        To update a patient a [JSON Patch](https://tools.ietf.org/html/rfc6902) should be sent. A JSON Patch consists of one or more patch objects within a list.
+        To update a patient record, a [JSON Patch](https://tools.ietf.org/html/rfc6902) should be sent. A JSON Patch consists of one or more patch objects within a list.
 
         It is recommended that all desired updates are sent together in a single request as a list of patches.
-        This is the most efficient approach and will reduce the danger of race conditions occurring when updating the patient multiple times in a short period of time.
+        This is the most efficient approach and reduces the danger of race conditions occurring when updating the patient record multiple times in a short period of time.
 
         When processing the list of patch objects, each patch must be valid and pass all the business rules against the data. If one patch object fails, none of the patch objects will be applied.
 
@@ -1879,7 +1881,7 @@ components:
 
         For more details, see [determine the user’s role](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-combined-authentication-and-authorisation#step-6-determine-the-user-s-role).
       
-        Required for user-restricted access but optional for application-restricted access. Also optional in sandbox.
+        Required for user-restricted access but optional for application-restricted access and for sandbox environment.
        
       required: false
       schema:
