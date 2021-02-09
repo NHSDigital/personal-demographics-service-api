@@ -2,5 +2,5 @@
 <Javascript async="false" continueOnError="false" enabled="true" timeLimit="200" name="javascript.URLRewrite">
     <DisplayName>javascript.URLRewrite</DisplayName>
     <Properties/>
-    <ResourceURL>jsc://URLRewrite</ResourceURL>
+    <ResourceURL>jsc://URLRewrite.js</ResourceURL>
 </Javascript>
