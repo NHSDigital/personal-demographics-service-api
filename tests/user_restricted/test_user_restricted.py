@@ -170,6 +170,15 @@ class TestUserRestrictedSearchPatient:
         helpers.check_response_status_code(response, 412)
         helpers.check_response_headers(response, self.headers)
 
+    def test_search_patient_happy_path_genderfree(self, headers_with_token):
+        response = helpers.search_patient(
+            search[7]["query_params"],
+            self.headers
+        )
+        helpers.check_search_response_body(response, search[0]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, self.headers)
+
 
 class TestUserRestrictedPatientUpdate:
 
