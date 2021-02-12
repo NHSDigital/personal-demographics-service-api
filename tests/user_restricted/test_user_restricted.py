@@ -1,3 +1,8 @@
+import urllib
+
+import requests
+
+from .configuration import config
 from .data.pds_scenarios import retrieve, search, update
 from .utils import helpers
 import json
@@ -174,7 +179,6 @@ class TestUserRestrictedSearchPatient:
 class TestUserRestrictedPatientUpdate:
 
     def test_update_patient_dob(self, headers_with_token, create_random_date):
-
         #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
         response = helpers.retrieve_patient(
             update[0]["patient"],
@@ -291,3 +295,69 @@ class TestUserRestrictedPatientUpdate:
         helpers.check_retrieve_response_body(update_response, update[6]["response"])
         helpers.check_response_status_code(update_response, 412)
         helpers.check_response_headers(update_response, self.headers)
+
+        # Light weighted tests to ensure we cah hit the old end points
+
+
+class TestUserRestrictedOldURL:
+
+    def test_retrieve_patient_old(self, headers_with_token):
+        patient = retrieve[0]["patient"]
+        response = requests.get(
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{patient}", headers=self.headers
+        )
+        helpers.check_retrieve_response_body(response, retrieve[0]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, self.headers)
+
+    def test_search_patient_happy_path_old(self, headers_with_token):
+        query_params = search[0]["query_params"]
+        if type(query_params) != str:
+            query_params = urllib.parse.urlencode(query_params)
+        response = requests.get(
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient?{query_params}", headers=self.headers
+        )
+        helpers.check_search_response_body(response, search[0]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, self.headers)
+
+    def test_update_patient_dob_old(self, headers_with_token, create_random_date):
+        #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
+        patient = update[0]["patient"]
+        response = requests.get(
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{patient}", headers=self.headers
+        )
+
+        patient_record = response.headers["Etag"]
+        versionId = (json.loads(response.text))["meta"]["versionId"]
+
+        # add the new dob to the patch, send the update and check the response
+        update[0]["patch"]["patches"][0]["value"] = self.new_date
+        payload = update[0]["patch"]
+        headers = {
+            "Content-Type": "application/json-patch+json",
+            "If-Match": f'W/"{patient_record}"',
+        }
+        headers.update(self.headers)
+        update_response = requests.patch(
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{patient}", headers=headers, json=payload
+        )
+        print(update_response.text)
+        print(update_response.request.url)
+
+        with check:
+            assert update_response.text == ""
+        helpers.check_response_status_code(update_response, 202)
+        helpers.check_response_headers(update_response, self.headers)
+
+        # send message poll request and check the response contains the updated attributes
+        poll_message_response = helpers.poll_message(
+            update_response.headers["content-location"],
+            self.headers
+        )
+
+        with check:
+            assert (json.loads(poll_message_response.text))["birthDate"] == self.new_date
+        with check:
+            assert int((json.loads(poll_message_response.text))["meta"]["versionId"]) == int(versionId) + 1
+        helpers.check_response_status_code(poll_message_response, 200)
