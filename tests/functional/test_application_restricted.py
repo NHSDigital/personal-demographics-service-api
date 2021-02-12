@@ -13,7 +13,7 @@ def get_patient_request(headers: dict, extra_params: dict = None):
     if extra_params:
         params = {**params, **extra_params}
     return requests.get(
-        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient?",
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/FHIR/R4/Patient?",
         headers=headers,
         params=params,
     )
@@ -241,7 +241,7 @@ def patch_patient(auth, context):
     }
 
     response = requests.patch(
-        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9123123123",
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/FHIR/R4/Patient/9123123123",
         headers=headers,
     )
 
