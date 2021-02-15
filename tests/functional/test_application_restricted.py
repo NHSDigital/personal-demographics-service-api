@@ -40,7 +40,7 @@ def test_valid():
     "features/application_restricted.feature",
     "PDS FHIR API accepts request to old basepath",
 )
-def test_valid():
+def test_valid_old_basepath():
     pass
 
 
@@ -216,7 +216,7 @@ def get_patient(auth, context):
 
 
 @when("I GET a patient at the non-/FHIR/R4 base path")
-def get_patient(auth, context):
+def get_patient_old_basepath(auth, context):
     authentication = auth["access_token"]
 
     if authentication is not None:
