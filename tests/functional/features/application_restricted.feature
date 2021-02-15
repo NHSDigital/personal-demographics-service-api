@@ -14,6 +14,16 @@ Feature: Unattended Access
     Then I get a 200 HTTP response
     And I get a Bundle resource in the response
 
+  Scenario: PDS FHIR API accepts request to old basepath
+    Given I am authenticating using unattended access
+    And I have a valid access token
+    And I have a request context
+
+    When I GET a patient
+
+    Then I get a 200 HTTP response
+    And I get a Bundle resource in the response
+
   Scenario: PDS FHIR API rejects request with invalid access token
     Given I am authenticating using unattended access
     And I have an invalid access token

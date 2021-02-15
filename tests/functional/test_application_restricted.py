@@ -22,13 +22,23 @@ def get_patient_request(headers: dict, extra_params: dict = None):
 @given("I determine whether an asid is required")
 def check_which_test_app_to_use():
     if "asid-required" in config.PDS_BASE_PATH:
-        config.APPLICATION_RESTRICTED_API_KEY = ENV["application_restricted_with_asid_api_key"]
+        config.APPLICATION_RESTRICTED_API_KEY = ENV[
+            "application_restricted_with_asid_api_key"
+        ]
         config.SIGNING_KEY = ENV["signing_key_with_asid"]
 
 
 @scenario(
     "features/application_restricted.feature",
     "PDS FHIR API accepts request with valid access token",
+)
+def test_valid():
+    pass
+
+
+@scenario(
+    "features/application_restricted.feature",
+    "PDS FHIR API accepts request to old basepath",
 )
 def test_valid():
     pass
@@ -199,6 +209,28 @@ def get_patient(auth, context):
             "Authorization": f"{authentication}",
             "X-Request-ID": str(uuid.uuid4()),
         }
+    )
+
+    context["response"] = response.json()
+    context["status"] = response.status_code
+
+
+@when("I GET a patient at the non-/FHIR/R4 base path")
+def get_patient(auth, context):
+    authentication = auth["access_token"]
+
+    if authentication is not None:
+        token_type = auth["token_type"]
+        authentication = f"{token_type} {authentication}"
+
+    response = requests.get(
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/FHIR/R4/Patient?",
+        headers={
+            "NHSD-SESSION-URID": "123",
+            "Authorization": f"{authentication}",
+            "X-Request-ID": str(uuid.uuid4()),
+        },
+        params={"family": "Smith", "gender": "female", "birthdate": "eq2010-10-22"},
     )
 
     context["response"] = response.json()
