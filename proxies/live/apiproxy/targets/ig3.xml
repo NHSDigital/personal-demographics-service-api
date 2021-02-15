@@ -89,12 +89,12 @@
         <!-- If _max-results param is unset, set to allowed value for application-restricted mode -->
         <Step>
           <Name>AssignMessage.SetMaxResultsToOne</Name>
-          <Condition>(proxy.pathsuffix MatchesPath "/Patient" and request.verb Equals "GET" and request.queryparam._max-results Is null)</Condition>
+          <Condition>(fixedpath MatchesPath "/Patient" and request.verb Equals "GET" and request.queryparam._max-results Is null)</Condition>
         </Step>
         <!-- If _max-results is set to anything other than 1, prevent query -->
         <Step>
           <Name>RaiseFault.MaxResultsInvalidAppRestricted</Name>
-          <Condition>(proxy.pathsuffix MatchesPath "/Patient" and request.verb Equals "GET" and request.queryparam._max-results NotEquals "1")</Condition>
+          <Condition>(fixedpath MatchesPath "/Patient" and request.verb Equals "GET" and request.queryparam._max-results NotEquals "1")</Condition>
         </Step>
       </Request>
     </Flow>
