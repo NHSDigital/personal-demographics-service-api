@@ -378,9 +378,9 @@ paths:
         * contact preferences
 
         ### Restricted patients
-        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telecom`, `contact` and `generalPractitioner` will be removed.
+        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telecom`, `contact` and `generalPractitioner` are removed.
 
-        If `address-postcode` or `general-practitioner` are included in the search parameters, no restricted patients will be returned even if a match is identified.
+        If `address-postcode` or `general-practitioner` are included in the search parameters, no restricted patients are returned even if a match is identified.
 
         The restricted flag can be found in the data under `meta/security` on the patient resource.
         
@@ -482,10 +482,10 @@ paths:
           examples:
             simple:
               value: Smith
-              summary: Will also match Smythe if `_fuzzy-match` is specified.
+              summary: Matches Smythe if `_fuzzy-match` is specified.
             wildcarded:
               value: "Sm*t*"
-              summary: 'Wildcards must contain at least two characters, this will match Smith, Smythe'
+              summary: 'Wildcards must contain at least two characters, this matches Smith, Smythe'
           in: query
           required: false
           schema:
@@ -558,7 +558,7 @@ paths:
             The postcode of any of the patient’s known addresses.
 
             Not case sensitive.
-            Spaces are ignored, for example `LS16AE` and `LS1 6AE` will both match `LS1 6AE`.
+            Spaces are ignored, for example `LS16AE` and `LS1 6AE` both match `LS1 6AE`.
             Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
             Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
           examples:
@@ -567,7 +567,7 @@ paths:
               summary: 'Spaces ignored, would match LS16AE'
             wildcarded:
               value: "LS1*"
-              summary: "Will match 'LS16AE', 'LS1 6AE' and 'LS1 6AB'"
+              summary: "Matches 'LS16AE', 'LS1 6AE' and 'LS1 6AB'"
           in: query
           required: false
           schema:
@@ -612,7 +612,7 @@ paths:
                   entry:
                     type: array
                     description: |
-                      A list of matched patients. Empty if none found. The patients are ordered by match score, best first. A maximum of 50 patients will be returned.
+                      A list of matched patients. Empty if none found. The patients are ordered by match score, best first. A maximum of 50 patients are returned.
                     items:
                       type: object
                       properties:
@@ -692,12 +692,12 @@ paths:
         ## Superseded patients
         Some patients are marked as superseded, this means that for some reason the original resource is no longer valid and has been replaced with a different resource.
 
-        On retrieval of a superseded resource, the new resource will be automatically returned in place of the requested resource. You will be able to spot a superseded resource when the `id` is not the same as the one requested.
+        On retrieval of a superseded resource, the new resource is automatically returned in place of the requested resource. You can spot a superseded resource when the `id` is not the same as the one requested.
 
         When retrieving a superseding resource you must update your system with the new resource and remove the superseded resource, ensuring that the same `id` does not exist against another resource in your system.
 
         ## Restricted patients
-        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. Restricted patients can be retrieved; however, location sensitive fields such as `address`, `telecom` and `generalPractitioner` will be removed.
+        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. Restricted patients can be retrieved; however, location sensitive fields such as `address`, `telecom` and `generalPractitioner` are removed.
 
         The restricted flag can be found in the data under `meta/security` on the patient resource.
 
@@ -794,7 +794,7 @@ paths:
 
         The update only succeeds, if the patient resource has not been updated in our database between your first retrieval and the update request.
 
-        If the update succeeds, on polling the outcome, you will receive a copy of the update resource in the response, including the new resource version number.
+        If the update succeeds, on polling the outcome, you receive a copy of the update resource in the response, including the new resource version number.
 
         If you make a subsequent update you must use the new version number.
 
@@ -804,12 +804,12 @@ paths:
         It is recommended that all desired updates are sent together in a single request as a list of patches.
         This is the most efficient approach and reduces the danger of race conditions occurring when updating the patient record multiple times in a short period of time.
 
-        When processing the list of patch objects, each patch must be valid and pass all the business rules against the data. If one patch object fails, none of the patch objects will be applied.
+        When processing the list of patch objects, each patch must be valid and pass all the business rules against the data. If one patch object fails, none of the patch objects are applied.
 
         A patch object consists of:
         * an operation, `op` - this is required.
         * a path to the data that you want to change, `path` - this is required.
-        * the value that will be assigned, `value` - this is required for `add`, `replace` and `test`; but should not be included for a `remove`.
+        * the value that is assigned, `value` - this is required for `add`, `replace` and `test`; but should not be included for a `remove`.
 
         The following operations are supported:
         * `add` - to add a new value.
@@ -839,7 +839,7 @@ paths:
         }
         ```
 
-        Adding to a list such as a `name` should be done by including the whole object in the value field. Note, the list index is `-` this is because when adding to a list, the index will not be known:
+        Adding to a list such as a `name` should be done by including the whole object in the value field. Note, the list index is `-` this is because when adding to a list, the index is not known:
 
         ```json
         {
@@ -864,8 +864,8 @@ paths:
         }
         ```
 
-        When adding a base level list item such as a new name or address, ensure the index is always `-`, otherwise the request will be rejected. For example, `/name/-`.
-        The reason for this is because the backend system will make the decision on the ordering of the listed objects to ensure they are always returned in the same order.
+        When adding a base level list item such as a new name or address, ensure the index is always `-`, otherwise the request is rejected. For example, `/name/-`.
+        The reason for this is because the backend system makes the decision on the ordering of the listed objects to ensure they are always returned in the same order.
 
         If you are adding to a sub-element that is a list, such as an additional given name, it is valid to provide an exact index. So the following is valid:
 
@@ -882,7 +882,7 @@ paths:
         }
         ```
 
-        It is possible to `add` a sub-element to an existing object in a patch request. If the object already exists and you have the object `id`, you must supply it or the update will be rejected.
+        It is possible to `add` a sub-element to an existing object in a patch request. If the object already exists and you have the object `id`, you must supply it or the update is rejected.
         The following patch is allowed:
 
         ```json
@@ -952,7 +952,7 @@ paths:
         }
         ```
 
-        The second approach is to replace just a part, or parts, of the list object keys if all others will remain the same:
+        The second approach is to replace just a part, or parts, of the list object keys if all others remain the same:
 
         ```json
         {
@@ -964,7 +964,7 @@ paths:
         }
         ```
 
-        An added requirement to ensure no accidental data loss or replacement of the wrong list item, you must always include the list `id` or `url`. This will be in the object on retrieval so just needs to be mirrored back. You should not include an ID on an addition as this will be automatically generated by the system and is a unique object ID, so only our system can guarantee that.
+        An added requirement to ensure no accidental data loss or replacement of the wrong list item, you must always include the list `id` or `url`. This is in the object on retrieval so just needs to be mirrored back. You should not include an ID on an addition as this is automatically generated by the system and is a unique object ID, so only our system can guarantee that.
 
         ### Removal
 
@@ -980,7 +980,7 @@ paths:
         }
         ```
 
-        Note, that in this scenario, although the patch is perfectly valid, the update will still be rejected as a patients gender cannot be removed.
+        Note, that in this scenario, although the patch is perfectly valid, the update is still rejected as a patients gender cannot be removed.
 
         Removing a list item should only be done on the whole item object, not individual sub-items; instead use the replace operation.
 
@@ -1067,7 +1067,7 @@ paths:
         }
         ```
 
-        After the 1st removal the data will look like:
+        After the 1st removal the data looks like:
 
         ```json
         {
@@ -1081,7 +1081,7 @@ paths:
 
         meaning Irwin has been removed, Bruce has moved from index 2 -> 1 and Sharpe from 3 -> 2.
 
-        So after applying the 2nd removal the data will look like:
+        So after applying the 2nd removal the data looks like:
 
         ```json
         {
@@ -1107,7 +1107,7 @@ paths:
         }
         ```
 
-        After the 1st removal the data will look like:
+        After the 1st removal the data looks like:
 
         ```json
         {
@@ -1119,7 +1119,7 @@ paths:
         }
         ```
 
-        Applying the 2nd removal the data will look like:
+        Applying the 2nd removal the data looks like:
 
         ```json
         {
@@ -1145,7 +1145,7 @@ paths:
         }
         ```
 
-        After the 1st removal the data will look like:
+        After the 1st removal the data looks like:
 
         ```json
         {
@@ -1157,7 +1157,7 @@ paths:
         }
         ```
 
-        When applying the 2nd test, it will fail as the index 2 ID is `5`, but the test was looking for `4`. An error will be returned and none of the updates provided would be made to the database.
+        When applying the 2nd test, it fails as the index 2 ID is `5`, but the test was looking for `4`. An error is returned and none of the updates provided would be made to the database.
 
         This failure example is a good reason for forcing the use of the `test` operation. If there was no test, index 2 would have been blindly removed, meaning the final state of the data would look like:
 
@@ -1180,7 +1180,7 @@ paths:
         List item found under `address` field.
 
         In a JSON Patch request the path should be:
-        * `/address/0` if the address to be replaced or removed is the first item in the list. If it is the second item in the list the path will be `/address/1`, and so on.
+        * `/address/0` if the address to be replaced or removed is the first item in the list. If it is the second item in the list the path is `/address/1`, and so on.
         * `/address/-` when adding a new address.
 
         An address consists of 5 lines of unstructured text, postcode and PAF (Postcode Address File) key.
@@ -1200,7 +1200,7 @@ paths:
         When updating an address, you must populate lines 1 or 2, and line 4. You should not include line 5 in manually created addresses but you may include it in PAF-derived addresses.
 
         There are exceptions:
-        * if you submit a postcode and PAF key, in which case the lines will be automatically populated, however if there are no matches or too many matches the message will be rejected due to missing address lines
+        * if you submit a postcode and PAF key, in which case the lines are automatically populated, however if there are no matches or too many matches the message is rejected due to missing address lines
         * if you use a pseudo postcode, for example `ZZ99 3VZ` meaning `no fixed abode`
 
         When creating the FHIR payload message, to be fully FHIR compliant all empty lines should be removed, so for example:
@@ -1234,11 +1234,11 @@ paths:
                 }
         ```
 
-        however if you do not do this the message will not be rejected; the response will be in that form though.
+        however if you do not do this the message is not rejected; the response is in that form though.
 
         To ensure consistent data across all patient addresses, you should match addresses to the PAF and send them in PAF format including the PAF key.
-        If you do not include the PAF key it will be added to the address if a match can be found
-        Additionally the provided address lines and post code will be enriched and reformatted if necessary.
+        If you do not include the PAF key it is added to the address if a match is found
+        Additionally the provided address lines and post code are enriched and reformatted if necessary.
 
         The following address types are supported:
         * `home` - the home address is the patient's normal residence. Home address is also known as usual, main, registered, current or permanent address
@@ -1257,7 +1257,7 @@ paths:
         * if there is no valid, current `billing` and/or `temp` address, the `home` address must be used.
 
         Not all local systems support `temp` and `billing` addresses, so these are not uniformly maintained. Therefore, where the patient contact has clinical or business significance, the precedence of these addresses over the `home` address should be determined by a user wherever possible.
-        When the end date for a `temp` or `billing` address passes, local systems should use the patient’s `home` address. It will be extremely rare that no home address is present on a patient record.
+        When the end date for a `temp` or `billing` address passes, local systems should use the patient’s `home` address. It is extremely rare that no home address is present on a patient record.
 
         Be aware of the following business rules:
         * you cannot add more than one of each address use types; `home`, `temp` or `billing`
@@ -1265,7 +1265,7 @@ paths:
         * any `temp` address must have both a `period start` and a `period end` date. The provision of a period end date has particular importance in order to avoid temporary addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 3 months.
         * any `billing` address must have both a `period start` and a `period end` date. The provision of a period end date has particular importance in order to avoid correspondence addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 12 months.
         * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date
-        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update
+        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update
         * where a `temp` address is provided a description must be sent using the `text` field, the list of possible values are:
           * `Second Home` - a patient's second home
           * `Student Accommodation` - a patient's place of residence while at university
@@ -1283,7 +1283,7 @@ paths:
         * `/extension/-` when adding a communication extension.
 
         Where you are replacing/removing the full communication extension, the path should be:
-        * `/extension/0` if the communication extension is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
+        * `/extension/0` if the communication extension is the first item in the list. If it is the second item in the list the path is `/extension/1`, and so on.
 
         Where the communication extension already exists and you wish to replace a specific sub-extension, then the path should be:
         * `/extension/0/extension/1` if the communication extension is the first item in the list and the sub-extension is the second item in the list.
@@ -1292,13 +1292,13 @@ paths:
 
         There are a number of business rules that should be taken into account:
         * preferred language must not be supplied where it is English even though the [code list](https://simplifier.net/ukcore/codesystem-ukcore-humanlanguage) contains a value for English (en).
-        * any language codes outside the accepted list will be rejected; such as local system `qa` codes.
+        * any language codes outside the accepted list are rejected; such as local system `qa` codes.
 
         ### Contact preferences
         Single item found under `extension` with the extension URL `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference`.
 
         In a JSON Patch request, where the Contact Preference extension doesn't exist or you are replacing/removing the full list of Contact preferences, the path should be:
-        * `/extension/0` if the contact preference is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
+        * `/extension/0` if the contact preference is the first item in the list. If it is the second item in the list the path is `/extension/1`, and so on.
         * `/extension/-` when adding a contact preference.
 
         Where the Contact Preference extension already exists and you wish to add, replace or remove a specific contact preference(s) sub-extension, then the path should be:
@@ -1344,7 +1344,7 @@ paths:
         Single item found under `extension` with the extension URL `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus`.
 
         In a JSON Patch request the path should be:
-        * `/extension/0` if the death notification is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on.
+        * `/extension/0` if the death notification is the first item in the list. If it is the second item in the list the path is `/extension/1`, and so on.
         * `/extension/-` when adding a death notification.
         
         You can find examples of the above requests in our sandbox Postman collection
@@ -1360,17 +1360,17 @@ paths:
         List item found under `contact` field.
 
         In a JSON Patch request the path should be:
-        * `/contact/0` if the contact to be replaced or removed is the first item in the list. If it is the second item in the list the path will be `/contact/1`, and so on.
+        * `/contact/0` if the contact to be replaced or removed is the first item in the list. If it is the second item in the list the path is `/contact/1`, and so on.
         * `/contact/-` when adding a new contact.
 
         Only emergency contact details should be added to `contact`, regular telecommunication methods such as home phone should be added to the `telecom` field.
-        Any other contact relationship types will be rejected.
+        Any other contact relationship types are rejected.
 
         There are a number of business rules that should be taken into account:
         * in any telecom child object the `use` key should not be present.
         * in any telecom child object the system cannot be `fax`.
         * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
-        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
+        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
         * the date period, if present, should be on the parent `contact` object and not any `telecom` child objects.
         * if the system is email, the value must be a valid email format, for example john.smith@nhs.net; and must be more than 6 characters and less than 90 characters
         * the relationship can only be `C` meaning `Emergency Contact`
@@ -1399,7 +1399,7 @@ paths:
 
         There are a number of business rules that should be taken into account:
         * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes.
-        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
+        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
         * do not provide a period `end` date.
         * the general practice should only be updated by primary care systems, [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
         * removal of a general practice can only be done by [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
@@ -1421,7 +1421,7 @@ paths:
         List item found under `name` field.
 
         In a JSON Patch request the path should be:
-        * `/name/0` if the name to be replaced or removed is the first item in the list. If it is the second item in the list the path will be `/name/1`, and so on.
+        * `/name/0` if the name to be replaced or removed is the first item in the list. If it is the second item in the list the path is `/name/1`, and so on.
         * `/name/-` when adding a new name.
 
         There are a number of business rules that should be taken into account:
@@ -1432,7 +1432,7 @@ paths:
         * cannot replace the use type on an existing name. For example, once a name is a nickname, it cannot be changed directly to an alias. You must instead remove the nickname and add the alias.
         * the first character of each `suffix` item must be `A-Z`.
         * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
-        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
+        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
         * supplied name data must be UTF-8 encodable.
         * the `period` is optional, but if included the `end` date cannot be before the `start` date. They can however be in the past, present or future.
         * the full available range of generally recognised titles are permitted, however, if any of the following are used then the value input must conform to the following format:
@@ -1444,7 +1444,7 @@ paths:
             * Sir
             * Lady
             * Lord
-        * any trailing full stops at the end of a prefix will be automatically removed; for example `Mrs.` will be changed to `Mrs`.
+        * any trailing full stops at the end of a prefix are automatically removed; for example `Mrs.` changes to `Mrs`.
 
         ### Pharmacy
 
@@ -1454,7 +1454,7 @@ paths:
         * `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-PreferredDispenserOrganization`
 
         In a JSON Patch request the path should be:
-        * `/extension/0` if the pharmacy is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on
+        * `/extension/0` if the pharmacy is the first item in the list. If it is the second item in the list the path is `/extension/1`, and so on
         * `/extension/-` when adding a pharmacy
 
         There are a number of business rules that should be taken into account:
@@ -1467,7 +1467,7 @@ paths:
         Single item found under `extension` with the extension URL `http://hl7.org/fhir/StructureDefinition/patient-birthPlace`.
 
         In a JSON Patch request the path should be:
-        * `/extension/0` if the place of birth is the first item in the list. If it is the second item in the list the path will be `/extension/1`, and so on
+        * `/extension/0` if the place of birth is the first item in the list. If it is the second item in the list the path is `/extension/1`, and so on
         * `/extension/-` when adding a place of birth
 
         There are a number of business rules that should be taken into account:
@@ -1479,14 +1479,14 @@ paths:
         List item found under `telecom` field.
 
         In a JSON Patch request the path should be:
-        * `/telecom/0` if the telecom to be replaced or removed is the first item in the list. If it is the second item in the list the path will be `/telecom/1`, and so on
+        * `/telecom/0` if the telecom to be replaced or removed is the first item in the list. If it is the second item in the list the path is `/telecom/1`, and so on
         * `/telecom/-` when adding a new telecom
 
         Emergency contact details should not be added to the `telecom` field, instead they should be added to the `contact` field.
 
         There are a number of business rules that should be taken into account:
         * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date
-        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it will default to the date of update.
+        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
         * if the telecom system is email, the value must be a valid email format, for example john.smith@nhs.net; and must be more than 6 characters and less than 90 characters
 
         ## Sandbox test scenarios
@@ -1494,7 +1494,7 @@ paths:
         You can test the following scenarios in our sandbox environment.
 
         Things to note when using the sandbox for PATCH:
-        * Your changes will not be persisted.
+        * Your changes are not persisted.
         * JSON Patch operations themselves are validated, but the resulting resource is not validated for correctness; meaning any business rules are not applied.
         * You can use the patient with minimal data, `9000000033` to test adding all data types (as most of them are missing on this patient), that would normally be present (e.g. gender).
 
@@ -1586,7 +1586,7 @@ paths:
           description: |
             The patch was syntactically correct and was accepted.
             
-            A polling location will be returned in the `Content-Location` header and the polling interval in the `Retry-After` header.
+            A polling location is returned in the `Content-Location` header and the polling interval in the `Retry-After` header.
 
             Note, the patch may still fail after it is accepted, for example, further validation of the patch may still result in business rule failures. Therefore, it should not be assumed that the patient is successfully updated after receiving acceptance of the message.
             
@@ -1640,9 +1640,9 @@ paths:
         Use this endpoint to get a patient's related people details from PDS for a given NHS Number. This is a list of people who can be contacted, and how, regarding the patient. These details may be useful for a practitioner to get in contact with a next of kin or guardian.
         
         ## Restricted patients
-        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. Related people will not be returned for a restricted patient and an empty bundle will be returned.
+        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. Related people are not returned for a restricted patient and an empty bundle is returned.
 
-        If a related person only contains a patient reference reference, and when the patient is retrieved, it is restricted; location sensitive fields such as `address` and `telecom` will be removed.
+        If a related person only contains a patient reference reference, and when the patient is retrieved, it is restricted; location sensitive fields such as `address` and `telecom` are removed.
 
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
@@ -1756,12 +1756,12 @@ paths:
 
         When updating resources the request is dealt with in an asynchronous manner.
         
-        Once the initial request is accepted a `202` response will be returned with a `Content-Location` header, use this location to poll for the outcome. It will be in the form `/_poll/<message id>`.
+        Once the initial request is accepted a `202` response is returned with a `Content-Location` header, use this location to poll for the outcome. It is in the form `/_poll/<message id>`.
 
         Requests should be sent to the polling endpoint until a `202` response is no longer returned and the response is dealt with appropriately.
 
-        Polls should be done at a reasonable frequency to avoid excess traffic; the `Retry-After` header will provide the time to wait in milliseconds between polls, although polling with a larger gap is also allowed.
-        Retrieval of the outcome will not occur any faster by polling more frequently. The server will simply return a cached response.
+        Polls should be done at a reasonable frequency to avoid excess traffic; the `Retry-After` header provides the time to wait in milliseconds between polls, although polling with a larger gap is also allowed.
+        Retrieval of the outcome does not occur any faster by polling more frequently. The server simply returns a cached response.
 
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
