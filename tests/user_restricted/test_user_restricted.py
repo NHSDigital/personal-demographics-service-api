@@ -324,10 +324,7 @@ class TestUserRestrictedSearchPatient:
     def test_algorithmic_fuzzy_match_for_birthdate_range(self, headers_with_token):
         """See TestBase37104 Chain 0009"""
         response = helpers.search_patient(
-            {
-                "family": "ATUnknow", "given": "Nisha", "birthdate": "le1990-09-19",
-                "birthdate": "ge1970-09-19", "_fuzzy-match": "true"
-            },
+            "family=ATUnknow&given=Nisha&birthdate=le1990-09-19&birthdate=ge1970-09-19&_fuzzy-match=true",
             self.headers
         )
         response_body = response.json()
