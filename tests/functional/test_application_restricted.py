@@ -19,6 +19,17 @@ def get_patient_request(headers: dict, extra_params: dict = None):
     )
 
 
+def get_patient_request_old_url(headers: dict, extra_params: dict = None):
+    params = {"family": "Smith", "gender": "female", "birthdate": "eq2010-10-22"}
+    if extra_params:
+        params = {**params, **extra_params}
+    return requests.get(
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient?",
+        headers=headers,
+        params=params,
+    )
+
+
 @given("I determine whether an asid is required")
 def check_which_test_app_to_use():
     if "asid-required" in config.PDS_BASE_PATH:
@@ -224,7 +235,7 @@ def get_patient_old_basepath(auth, context):
         authentication = f"{token_type} {authentication}"
 
     response = requests.get(
-        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/FHIR/R4/Patient?",
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient?",
         headers={
             "NHSD-SESSION-URID": "123",
             "Authorization": f"{authentication}",
@@ -290,6 +301,27 @@ def get_patient_one_result(auth, context):
         authentication = f"{token_type} {authentication}"
 
     response = get_patient_request(
+        headers={
+            "NHSD-SESSION-URID": "123",
+            "Authorization": f"{authentication}",
+            "X-Request-ID": str(uuid.uuid4()),
+        },
+        extra_params={"_max-results": "1"},
+    )
+
+    context["response"] = response.json()
+    context["status"] = response.status_code
+
+
+@when("I GET a patient asking for one result using old path")
+def get_patient_one_result_old_url(auth, context):
+    authentication = auth["access_token"]
+
+    if authentication is not None:
+        token_type = auth["token_type"]
+        authentication = f"{token_type} {authentication}"
+
+    response = get_patient_request_old_url(
         headers={
             "NHSD-SESSION-URID": "123",
             "Authorization": f"{authentication}",

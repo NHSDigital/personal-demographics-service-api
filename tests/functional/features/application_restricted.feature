@@ -29,7 +29,7 @@ Feature: Unattended Access
     And I have an invalid access token
     And I have a request context
 
-    When I GET a patient
+    When I GET a patient at the non-/FHIR/R4 base path
 
     Then I get a 401 HTTP response
     And I get an error response
@@ -98,3 +98,13 @@ Feature: Unattended Access
     Then I get a 403 HTTP response
     And I get an error response
     And I get a diagnosis of insufficient permissions to use this method
+
+    Scenario: PDS FHIR API accepts request to old basepath for one result
+    Given I am authenticating using unattended access
+    And I have a valid access token
+    And I have a request context
+
+    When I GET a patient asking for one result using old path
+
+    Then I get a 200 HTTP response
+    And I get a Bundle resource in the response
