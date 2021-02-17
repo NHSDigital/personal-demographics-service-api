@@ -12,6 +12,6 @@
         <Response/>
     </PreFlow>
   <HTTPTargetConnection>
-    {{ HOSTED_TARGET_CONNECTION_WITH_PATH_REWRITE }}
+    {{ HOSTED_TARGET_CONNECTION }}
   </HTTPTargetConnection>
 </TargetEndpoint>
