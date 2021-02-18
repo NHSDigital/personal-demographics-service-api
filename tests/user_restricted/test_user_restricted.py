@@ -1,6 +1,6 @@
+import json
 from .data.pds_scenarios import retrieve, search, update
 from .utils import helpers
-import json
 from pytest_check import check
 
 
@@ -383,6 +383,86 @@ class TestUserRestrictedSearchPatient:
         assert response_body["resourceType"] == "OperationOutcome"
         assert response_body["issue"][0]["details"]["coding"][0]["code"] == "TOO_MANY_MATCHES"
         assert response_body["issue"][0]["details"]["coding"][0]["display"] == "Too Many Matches"
+
+    def test_simple_search_family_name_still_required(self, headers_with_token):
+        response = helpers.search_patient(
+            {"given": "PAULINE", "birthdate": "1979-07-27"},
+            self.headers
+        )
+        response_body = response.json()
+
+        assert response.status_code == 400
+        assert response_body["resourceType"] == "OperationOutcome"
+        assert response_body["issue"][0]["details"]["coding"][0]["code"] == "INVALID_SEARCH_DATA"
+
+    def test_simple_search_birthdate_still_required(self, headers_with_token):
+        response = helpers.search_patient(
+            {"family": "PATSON", "given": "PAULINE"},
+            self.headers
+        )
+        response_body = response.json()
+
+        assert response.status_code == 400
+        assert response_body["resourceType"] == "OperationOutcome"
+        assert response_body["issue"][0]["details"]["coding"][0]["code"] == "MISSING_VALUE"
+
+    def test_search_for_similar_patient_different_genders(self, headers_with_token):
+        """Performing a gender-free search where there exists four patients with the same
+        name and date of birth, but differing gender values, should return multiple distinct results."""
+
+        family = "Brown"
+        given = "Ann"
+        birth_date = "1981-01-01"
+
+        genders = ['male', 'female', 'other', 'unknown']
+        patient_ids = ['5900025055', '5900027759', '5900028976', '5900037347']
+
+        # Do the individual items exist and can be retrieved with a gendered search?
+        for i, gender in enumerate(genders):
+            patient_id = patient_ids[i]
+            response = helpers.search_patient(
+                {"family": family, "given": given, "birthdate": birth_date, "gender": gender},
+                self.headers
+            )
+            response_body = response.json()
+
+            assert response.status_code == 200
+            assert response_body["type"] == "searchset"
+            assert response_body["resourceType"] == "Bundle"
+            assert response_body["total"] == 1
+            assert response_body["entry"][0]["resource"]["id"] == patient_id
+            assert response_body["entry"][0]["resource"]["gender"] == gender
+            assert response_body["entry"][0]["resource"]["name"][0]["family"] == family
+            assert response_body["entry"][0]["resource"]["name"][0]["given"][0] == given
+
+        # Then retrieve and check for all of them with a genderless search
+        response_all = helpers.search_patient(
+            {"family": family, "given": given, "birthdate": birth_date},
+            self.headers
+        )
+        response_all_body = response_all.json()
+
+        assert response_all.status_code == 200
+        assert response_all_body["type"] == "searchset"
+        assert response_all_body["resourceType"] == "Bundle"
+        assert response_all_body["total"] == 4
+
+        # Order of search results is not guaranteed.
+        # We will enumerate each one and make sure
+        # it is unique and expected (ie from our genders,
+        # and patient_ids lists)
+        checked_results_count = 0
+        for result in response_all_body["entry"]:
+            i = genders.index(result["resource"]["gender"])
+            patient_id, gender = patient_ids.pop(i), genders.pop(i)
+
+            assert result["resource"]["id"] == patient_id
+            assert result["resource"]["gender"] == gender
+            assert result["resource"]["name"][0]["family"] == family
+            assert result["resource"]["name"][0]["given"][0] == given
+
+            checked_results_count += 1
+        assert checked_results_count == 4
 
 
 class TestUserRestrictedPatientUpdate:
