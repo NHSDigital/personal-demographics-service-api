@@ -75,7 +75,7 @@ info:
     ## API status and roadmap
     ### Application-restricted access
     This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
-    - we might make breaking changes, but only if we can't avoid it, and we'll give advance notice
+    - we might make breaking changes, but only if we cannot avoid it, and we'll give advance notice
      
     ### Healthcare worker access
     This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
@@ -266,14 +266,14 @@ paths:
         To protect patient privacy, design your search to minimise the number of matching patients.
         For example, you could:
           * encourage users to enter as many search parameters as they can
-          * force users to try a non-fuzzy search first and then only offer a fuzzy search if they can't find the patient
+          * force users to try a non-fuzzy search first and then only offer a fuzzy search if they cannot find the patient
         
         For more details, see the following sections.
 
         ### Non-fuzzy search
         A non-fuzzy search:
           * allows wildcards in names and postcodes
-          * doesn't match homophones or transposed names
+          * does not match homophones or transposed names
           * can optionally search history, such as previous names and addresses
 
         It is less likely to return multiple matches than a fuzzy search, so is more suitable for finding a unique match.
@@ -709,7 +709,7 @@ paths:
         | Patient exists                   | `id`=`9000000009`                                 | HTTP Status 200 with patient data in response                                                                                                 |
         | Sensitive patient exists         | `id`=`9000000025`                                 | HTTP Status 200 with patient data in response with the restricted data removed                                                                |
         | Patient exists with minimal data | `id`=`9000000033`                                 | HTTP Status 200 with patient data in response, there will be very little data so can be used as an example of a patient with bad data quality |
-        | Patient doesn't exist            | `id`=`9111231130` (or any other valid NHS Number) | HTTP Status 404 with problem description                                                                                                      |
+        | Patient does not exist            | `id`=`9111231130` (or any other valid NHS Number) | HTTP Status 404 with problem description                                                                                                      |
         | Invalid NHS Number               | `id`=`9000000000` (or any invalid NHS Number)     | HTTP Status 400 with problem description                                                                                                      |
 
         You can try out the sandbox using the 'Try this API' feature on this page.
@@ -1279,7 +1279,7 @@ paths:
 
         Single item found under `extension` with the extension URL `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication`.
 
-        In a JSON Patch request, where the communication extension doesn't exist the path should be:
+        In a JSON Patch request, where the communication extension does not exist the path should be:
         * `/extension/-` when adding a communication extension.
 
         Where you are replacing/removing the full communication extension, the path should be:
@@ -1297,7 +1297,7 @@ paths:
         ### Contact preferences
         Single item found under `extension` with the extension URL `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference`.
 
-        In a JSON Patch request, where the Contact Preference extension doesn't exist or you are replacing/removing the full list of Contact preferences, the path should be:
+        In a JSON Patch request, where the Contact Preference extension does not exist or you are replacing/removing the full list of Contact preferences, the path should be:
         * `/extension/0` if the contact preference is the first item in the list. If it is the second item in the list the path is `/extension/1`, and so on.
         * `/extension/-` when adding a contact preference.
 
@@ -1501,7 +1501,7 @@ paths:
         | Scenario                            | Request                                                                   | Response                                         |
         | ----------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------ |
         | Successful update                   | `id`=`9000000009`<br/><br/>Body: One of the provided examples or your own combination of patches<br/><br/>Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json-patch+json` | HTTP Status 202 with the message URL to poll in the `Content-Location` header |
-        | Patient doesn't exist               | `id`=`9111231130` (or any other valid NHS Number)                         | HTTP Status 404 with problem description         |
+        | Patient does not exist               | `id`=`9111231130` (or any other valid NHS Number)                         | HTTP Status 404 with problem description         |
         | Invalid NHS Number                  | `id`=`9000000000` (or any invalid NHS Number)                             | HTTP Status 400 with problem description         |
         | Missing resource version identifier | `If-Match` header missing or set to format other than `W/"<version>"`     | HTTP Status 412 with problem description         |
         | Incorrect resource version          | `If-Match`=`W/"1"`                                                        | HTTP Status 412 with problem description         |
