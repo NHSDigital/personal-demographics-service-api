@@ -75,12 +75,12 @@ info:
     ## API status and roadmap
     ### Application-restricted access
     This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
-    - we might make breaking changes, but only if we cannot avoid it, and we will give advance notice
+    - we might make breaking changes, but only if we cannot avoid it, and we'll give advance notice
      
     ### Healthcare worker access
     This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
 
-    - we might make breaking changes, but only if we cannot avoid it, and we will give advance notice
+    - we might make breaking changes, but only if we cannot avoid it, and we'll give advance notice
         
     ### Citizen access
     This access mode is not available yet.
@@ -184,8 +184,8 @@ info:
 
     When following the SCAL process, note that:
     * In step 1: to confirm your use case for this API, you need to [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service), even if you already access PDS via another method.
-    * In step 2: when requesting the SCAL, tell us (a) which access mode you are using: (i) healthcare worker search and retrieve, (ii) healthcare worker update or (iii) application-restricted; (b) for healthcare worker access, which security pattern you are using: (i) combined authentication and authorisation or (ii) separate authentication and authorisation
-    * In step 6: when implementing your clinical risk management process, you must review and integrate the PDS FHIR API hazard log into your own risk log. It is embedded within the PDS FHIR API tab in the SCAL.
+    * In step 2: when requesting the SCAL, tell us (a) which access mode you're using: (i) healthcare worker search and retrieve, (ii) healthcare worker update or (iii) application-restricted; (b) for healthcare worker access, which security pattern you are using: (i) combined authentication and authorisation or (ii) separate authentication and authorisation
+    * In step 6: when implementing your clinical risk management process, you must review and integrate the PDS FHIR API hazard log into your own risk log. It's embedded within the PDS FHIR API tab in the SCAL.
     * In step 8: you need to review and complete the PDS FHIR API risk log to show that you have understood and mitigated the various risks. You might be asked to provide some evidence to prove that controls have been put in place. You can find the risk log embedded within the PDS FHIR API tab in the SCAL. This is separate from the clinical safety hazard log mentioned above.
     * In step 9: you must conduct penetration testing to [CHECK standards](https://www.ncsc.gov.uk/information/check-penetration-testing).
     * In step 10: when you complete the Service Desk Registration Form, send it to [api.management@nhs.net](mailto:api.management@nhs.net).
@@ -245,7 +245,7 @@ paths:
         If you need help, [contact us](https://digital.nhs.uk/developer/help-and-support).
 
         ### Application-restricted access mode
-        In this access mode, you only get a single matching patient record, and only if it is a unique match.
+        In this access mode, you only get a single matching patient record, and only if it's a unique match.
 
         Use search options that are likely to find a unique match. In our experience, the following is a good starting point:
           * search on given name, family name, postcode, date of birth and gender - this combination should uniquely identify a patient
