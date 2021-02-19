@@ -35,10 +35,10 @@ extends:
     spec_file: ${{ variables.spec_file }}
     enable_monitoring: true
     enable_status_monitoring: true
+    hosted_target_connection_path_suffix: '/{fixedpath}'
     jinja_templates:
       REQUIRE_ASID: false
       PDS_TARGET_SERVER: spine-demographics
-      HOSTED_TARGET_CONNECTION_PATH_SUFFIX: '/{fixedpath}'
     secret_ids:
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_API_KEY
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_WITH_ASID_API_KEY
