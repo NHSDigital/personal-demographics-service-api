@@ -75,7 +75,7 @@ info:
     ## API status and roadmap
     ### Application-restricted access
     This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
-    - we might make breaking changes, but only if we can not avoid it, and we will give advance notice
+    - we might make breaking changes, but only if we cannot avoid it, and we will give advance notice
      
     ### Healthcare worker access
     This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
@@ -266,7 +266,7 @@ paths:
         To protect patient privacy, design your search to minimise the number of matching patients.
         For example, you could:
           * encourage users to enter as many search parameters as they can
-          * force users to try a non-fuzzy search first and then only offer a fuzzy search if they can not find the patient
+          * force users to try a non-fuzzy search first and then only offer a fuzzy search if they cannot find the patient
         
         For more details, see the following sections.
 
