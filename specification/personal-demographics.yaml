@@ -280,6 +280,7 @@ paths:
 
         The minimum search parameters are:
           * family name - which can include wildcards
+          * gender
           * date of birth - which can be a range
           
         ### Fuzzy search
@@ -334,7 +335,9 @@ paths:
         For some people, the gender held in PDS might not match the gender they identify with.
 
         In these cases, searching by gender might not find the patient. These are edge cases but are important to consider, because gender can be a sensitive issue for the people in question.
-                
+
+        Currently, gender is a mandatory parameter for a non-fuzzy search. We are working to make it optional - for more details, see our [roadmap](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).	
+
         ### Date of birth and death
         Sometimes, the exact date of birth or death is not known when doing a search.
         Sometimes, the date of birth or death is not accurate in PDS.
