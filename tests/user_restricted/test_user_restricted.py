@@ -588,7 +588,7 @@ class TestUserRestrictedPatientUpdate:
         helpers.check_response_status_code(update_response, 412)
         helpers.check_response_headers(update_response, self.headers)
 
-        # Light weighted tests to ensure we cah hit the old end points
+        """Light weighted tests to ensure we cah hit the old end points"""
 
 
 class TestUserRestrictedOldURL:
