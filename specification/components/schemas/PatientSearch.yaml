@@ -18,9 +18,9 @@ properties:
     description: | 
       List of names associated with the patient.
 
-      This is only fully populated on a retrieval or a successful update, only the `usual`, `nickname` and `temp` names will be returned on a search.
+      This is only fully populated on a retrieval or a successful update, only the `usual`, `nickname` and `temp` names are returned on a search.
       
-      When a patient tagged as `very restricted` is retrieved, all names will be removed from the response.
+      When a patient tagged as `very restricted` is retrieved, all names are removed from the response.
     minItems: 1
     items:
       $ref: "HumanName.yaml"
@@ -37,9 +37,9 @@ properties:
     description: | 
       List of addresses associated with the patient.
       
-      This is only fully populated on a retrieval or a successful update, only the `home` address will be returned on a search.
+      This is only fully populated on a retrieval or a successful update, only the `home` address is returned on a search.
 
-      When a patient tagged as `restricted` or `very restricted` is retrieved, all addresses will be removed from the response.
+      When a patient tagged as `restricted` or `very restricted` is retrieved, all addresses are removed from the response.
     items:
       $ref: "Address.yaml"
   telecom:
@@ -47,15 +47,15 @@ properties:
     description: |
       List of contact points for the patient; for example, phone numbers or email addresses.
 
-      When a patient tagged as `restricted` or `very restricted` is retrieved, all contact points will be removed from the response.
+      When a patient tagged as `restricted` or `very restricted` is retrieved, all contact points are removed from the response.
     items:
       $ref: "ContactPoint.yaml"
   contact:
     type: array
     description: |
-      A list of patient contacts. Only emergency contacts will be returned. Any other contacts will be returned on the patients `Related Person`.
+      A list of patient contacts. Only emergency contacts are returned. Any other contacts are returned on the patients `Related Person`.
 
-      When a patient tagged as `restricted` or `very restricted` is retrieved, all contacts will be removed from the response.
+      When a patient tagged as `restricted` or `very restricted` is retrieved, all contacts are removed from the response.
     items:
       $ref: "Contact.yaml"
   generalPractitioner:
@@ -64,7 +64,7 @@ properties:
     description: |
       General Practice (not practitioner) with which the patient is, or was, registered. Always contains zero or one general practitioner object.
 
-      When a patient tagged as `restricted` or `very restricted` is retrieved, the General Practice will be removed from the response.
+      When a patient tagged as `restricted` or `very restricted` is retrieved, the General Practice is removed from the response.
     items:
       $ref: "GeneralPractitionerReference.yaml"
   extension:

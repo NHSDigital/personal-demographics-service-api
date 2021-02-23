@@ -29,8 +29,8 @@ properties:
     type: array
     maxItems: 1
     description: |
-      Extension that will only be returned when the communication type is `textphone`. The only code that will be returned is `textphone`, which means `Minicom (Textphone)`.
+      Extension that is returned when the communication type is `textphone`. The only code returned is `textphone`, which means `Minicom (Textphone)`.
 
-      The `system` will only ever be `other` when the extension is included.
+      The `system` is `other` when the extension is included.
     items:
       $ref: 'extensions/OtherContactSystem.yaml'
