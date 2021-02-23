@@ -11,5 +11,4 @@
   }
   
   context.setVariable('fixedpath', fixedpath)
-  //queryParams = context.getVariable('request.querystring')
 }
