@@ -44,7 +44,7 @@ properties:
       * `Mobile Home` - the address of a patient's mobile home, parked for a specific period of time, e.g. the address of a caravan park
       * `Holiday Home` - the address for a patient during a holiday
       
-      A patient can also register temporarily at a GP practice using a temporary address. Temporary GP registration information will not appear on the PDS, but the address used for it may.
+      A patient can also register temporarily at a GP practice using a temporary address. Temporary GP registration information does not appear on the PDS, but the address used for it may.
     enum:
       - Second Home
       - Student Accommodation
@@ -66,7 +66,7 @@ properties:
       *	line 4 - post town, e.g. `Leeds`
       *	line 5 - county (if present), e.g. `West Yorkshire`
 
-      If any of the lines are blank, they will not be returned due to FHIR conformance constraints.
+      If any of the lines are blank, they are not returned due to FHIR conformance constraints.
     maxItems: 5
     items:
       type: string
