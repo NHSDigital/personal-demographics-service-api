@@ -588,11 +588,11 @@ class TestUserRestrictedPatientUpdate:
         helpers.check_response_status_code(update_response, 412)
         helpers.check_response_headers(update_response, self.headers)
 
-        """Light weighted tests to ensure we cah hit the old end points"""
+        
 
 
 class TestUserRestrictedOldURL:
-
+    """Light weighted tests to ensure we cah hit the old end points"""
     def test_retrieve_patient_old(self, headers_with_token):
         patient = retrieve[0]["patient"]
         response = requests.get(
