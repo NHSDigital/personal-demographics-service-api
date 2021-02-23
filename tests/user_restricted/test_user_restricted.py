@@ -586,7 +586,7 @@ class TestUserRestrictedPatientUpdate:
         )
         helpers.check_retrieve_response_body(update_response, update[6]["response"])
         helpers.check_response_status_code(update_response, 412)
-        helpers.check_response_headers(update_response, self.headers)        
+        helpers.check_response_headers(update_response, self.headers)
 
 
 class TestUserRestrictedOldURL:
