@@ -35,6 +35,7 @@ extends:
     spec_file: ${{ variables.spec_file }}
     enable_monitoring: true
     enable_status_monitoring: true
+    hosted_target_connection_path_suffix: '/{fixedpath}'
     jinja_templates:
       REQUIRE_ASID: false
       PDS_TARGET_SERVER: spine-demographics
