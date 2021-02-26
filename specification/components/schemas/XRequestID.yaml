@@ -1,10 +1,10 @@
 schema:
   type: string
-  pattern: "^W\/\"[0-9]+\"$" # Printable characters enclosed in quotes. See: https://tools.ietf.org/html/rfc7230#section-3.2.6
-  example: 11C46F5F-CDEF-4865-94B2-0EE0EDCC26DA
+  pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+  example: 60E0B220-8136-4CA5-AE46-1D97EF59D068
 description: |
   A globally unique identifier (GUID) for the request, which we use to de-duplicate repeated requests and to trace the request if you contact our helpdesk.
 
   Must be a universally unique identifier (UUID) (ideally version 4).
 
-  Mirrored back in a response header.
+  The X-Request-Id from the request header, if supplied, mirrored back.

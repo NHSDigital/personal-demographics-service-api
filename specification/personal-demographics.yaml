@@ -1666,9 +1666,9 @@ paths:
           headers:
             ETag:
               $ref: components/schemas/ETag.yaml
-            XCorrelationId:
+            X-Correlation-Id:
               $ref: components/schemas/XCorrelationId.yaml
-            XRequestId:
+            X-Request-Id:
               $ref: components/schemas/XRequestID.yaml
           content:
             application/fhir+json:
