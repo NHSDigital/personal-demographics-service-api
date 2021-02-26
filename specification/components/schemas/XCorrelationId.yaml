@@ -3,5 +3,4 @@ schema:
   pattern: "^W\/\"[0-9]+\"$" # Printable characters enclosed in quotes. See: https://tools.ietf.org/html/rfc7230#section-3.2.6
   example: 11C46F5F-CDEF-4865-94B2-0EE0EDCC26DA
 description: |
-  The X-Request-ID from the request header, if supplied, mirrored back.
- 
+  The X-Correlation-ID from the request header, if supplied, mirrored back.
