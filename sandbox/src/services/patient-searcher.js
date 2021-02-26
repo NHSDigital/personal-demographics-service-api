@@ -57,7 +57,7 @@ function buildPatientResponse(examplePatients = [], searchScore = 1.0) {
     if (examplePatients.length > 0) {
         examplePatients.forEach(patient => {
             response.entry.push({
-                fullUrl: "https://api.service.nhs.uk/personal-demographics/Patient/" + patient["id"],
+                fullUrl: "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/" + patient["id"],
                 search: {
                     score: searchScore
                 },

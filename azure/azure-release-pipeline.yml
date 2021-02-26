@@ -35,6 +35,7 @@ extends:
     spec_file: ${{ variables.spec_file }}
     enable_monitoring: true
     enable_status_monitoring: true
+    hosted_target_connection_path_suffix: '/{fixedpath}'
     jinja_templates:
       REQUIRE_ASID: false
       PDS_TARGET_SERVER: spine-demographics
@@ -64,6 +65,7 @@ extends:
               test_type: smoke
       - environment: internal-qa-sandbox
         make_spec_visible: true
+        enable_status_monitoring: false
         proxy_path: sandbox
         post_deploy:
           - template: templates/sandbox-tests.yml
@@ -79,6 +81,7 @@ extends:
           - internal_qa_sandbox
       - environment: sandbox
         proxy_path: sandbox
+        enable_status_monitoring: false
         post_deploy:
           - template: templates/sandbox-tests.yml
         depends_on:

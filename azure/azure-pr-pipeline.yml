@@ -36,6 +36,7 @@ extends:
     product_description: ${{ variables.product_description }}
     spec_file: ${{ variables.spec_file }}
     deploy_review_sandbox: true
+    hosted_target_connection_path_suffix: '/{fixedpath}'
     jinja_templates:
       PDS_TARGET_SERVER: spine-demographics
       REQUIRE_ASID: false

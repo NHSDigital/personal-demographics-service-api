@@ -68,7 +68,7 @@
   "id": "B3380E98",
   "patient": {
     "identifier": {
-      "system": "https://api.service.nhs.uk/personal-demographics/Patient",
+      "system": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient",
       "value": "90000000009"
     },
     "type": "Patient"

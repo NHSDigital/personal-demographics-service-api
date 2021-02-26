@@ -141,11 +141,11 @@ info:
 
     ## Environments and testing
 
-    | Environment       | Base URL                                                       |
-    | ----------------- | -------------------------------------------------------------- |
-    | Sandbox           | `https://sandbox.api.service.nhs.uk/personal-demographics/`    |
-    | Integration test  | `https://int.api.service.nhs.uk/personal-demographics/`        |
-    | Production        | `https://api.service.nhs.uk/personal-demographics/`                                              |
+    | Environment       | Base URL                                                               |
+    | ----------------- | ---------------------------------------------------------------------- |
+    | Sandbox           | `https://sandbox.api.service.nhs.uk/personal-demographics/FHIR/R4/`    |
+    | Integration test  | `https://int.api.service.nhs.uk/personal-demographics/FHIR/R4/`        |
+    | Production        | `https://api.service.nhs.uk/personal-demographics/FHIR/R4/`            |
 
     ### Sandbox testing
     Our [sandbox environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#sandbox-testing):
@@ -197,11 +197,11 @@ info:
     url: 'https://digital.nhs.uk/developer/help-and-support'
     email: api.management@nhs.net
 servers:
-  - url: 'https://sandbox.api.service.nhs.uk/personal-demographics'
+  - url: 'https://sandbox.api.service.nhs.uk/personal-demographics/FHIR/R4'
     description: Sandbox environment.
-  - url: 'https://int.api.service.nhs.uk/personal-demographics'
+  - url: 'https://int.api.service.nhs.uk/personal-demographics/FHIR/R4'
     description: Integration test environment.
-  - url: 'https://api.service.nhs.uk/personal-demographics'
+  - url: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4'
     description: 'Production environment.'
 paths:
   /Patient:
@@ -248,7 +248,7 @@ paths:
         In this access mode, you only get a single matching patient record, and only if it's a unique match.
 
         Use search options that are likely to find a unique match. In our experience, the following is a good starting point:
-          * search on given name, family name, postcode, date of birth and gender - this combination should uniquely identify a patient
+          * search on given name, family name, postcode and date of birth - this combination should uniquely identify a patient
           * for given name, use the first three characters and a wildcard, for example to search for `Annabel`, use `Ann*` - this caters for different name spellings and abbreviations
           * for postcode, use the first two characters and a wildcard, for example to search for `LS11 6AD`, use `LS*` - this caters for people who have moved locally but not updated PDS
           * use a non-fuzzy search - this reduces the chance of multiple matches
@@ -280,7 +280,6 @@ paths:
 
         The minimum search parameters are:
           * family name - which can include wildcards
-          * gender
           * date of birth - which can be a range
           
         ### Fuzzy search
@@ -336,9 +335,9 @@ paths:
 
         In these cases, searching by gender might not find the patient.
         These are edge cases but are important to consider because gender can be a sensitive issue for the people in question.
-          
-        Currently, gender is a mandatory parameter for a non-fuzzy search. We are working to make it optional - for more details, see our [roadmap](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
 
+        In general, we recommend not including gender as a search parameter.
+          
         ### Date of birth and death
         Sometimes, the exact date of birth or death is not known when doing a search.
         Sometimes, the date of birth or death is not accurate in PDS.
@@ -619,7 +618,7 @@ paths:
                         fullUrl:
                           type: string
                           description: Absolute URL of the resource described in this item.
-                          example: 'https://api.service.nhs.uk/personal-demographics/Patient/9000000009'
+                          example: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000009'
                         search:
                           type: object
                           properties:
@@ -637,7 +636,7 @@ paths:
                 timestamp: '2019-12-25T12:00:00+00:00'
                 total: 1
                 entry:
-                  - fullUrl: 'https://api.service.nhs.uk/personal-demographics/Patient/9000000009'
+                  - fullUrl: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000009'
                     search:
                       score: 1
                     resource:
@@ -1699,7 +1698,7 @@ paths:
                         fullUrl:
                           type: string
                           description: Absolute URL of the resource described in this item.
-                          example: 'https://api.service.nhs.uk/personal-demographics/Patient/9000000009/RelatedPerson/507B7621'
+                          example: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000009/RelatedPerson/507B7621'
                         resource:
                           $ref: components/schemas/RelatedPerson.yaml
               example:
@@ -1708,7 +1707,7 @@ paths:
                 timestamp: '2019-12-25T12:00:00+00:00'
                 total: 1
                 entry:
-                  - fullUrl: 'https://api.service.nhs.uk/personal-demographics/Patient/9000000009/RelatedPerson/507B7621'
+                  - fullUrl: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000009/RelatedPerson/507B7621'
                     resource:
                       $ref: components/examples/RelatedPerson.json
         '4XX':
