@@ -586,6 +586,11 @@ paths:
         '200':
           description: |
             A completed search. This might contain zero, one or many matching patients, or it might contain a 'TOO_MANY_MATCHES' error.
+          headers:
+            X-Correlation-Id:
+              $ref: components/schemas/XCorrelationId.yaml
+            X-Request-Id:
+              $ref: components/schemas/XRequestID.yaml
           content:
             application/fhir+json:
               schema:
@@ -726,6 +731,10 @@ paths:
           headers:
             ETag:
               $ref: components/schemas/ETag.yaml
+            X-Correlation-Id:
+              $ref: components/schemas/XCorrelationId.yaml
+            X-Request-Id:
+              $ref: components/schemas/XRequestID.yaml              
           content:
             application/fhir+json:
               schema:
@@ -1595,6 +1604,10 @@ paths:
               $ref: components/schemas/ContentLocation.yaml
             Retry-After:
               $ref: components/schemas/RetryAfter.yaml
+            X-Correlation-Id:
+              $ref: components/schemas/XCorrelationId.yaml
+            X-Request-Id:
+              $ref: components/schemas/XRequestID.yaml              
         '4XX':
           description: |
             An error occurred as follows:
@@ -1789,6 +1802,10 @@ paths:
           headers:
             ETag:
               $ref: components/schemas/ETag.yaml
+            X-Correlation-Id:
+              $ref: components/schemas/XCorrelationId.yaml
+            X-Request-Id:
+              $ref: components/schemas/XRequestID.yaml              
           content:
             application/fhir+json:
               schema:
