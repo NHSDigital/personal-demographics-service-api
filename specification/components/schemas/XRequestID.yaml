@@ -1,0 +1,6 @@
+schema:
+  type: string
+  pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+  example: 60E0B220-8136-4CA5-AE46-1D97EF59D068
+description: |
+  The X-Request-ID from the request header, if supplied, mirrored back.
