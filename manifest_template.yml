@@ -11,8 +11,8 @@ APIGEE_ENVIRONMENTS:
     display_name_suffix: Internal QA Sandbox
   - name: ref
     display_name_suffix: Reference
-    ratelimit: '15000pm'
-    quota: '7800'
+    ratelimit: '31500pm'    # 525 TPS
+    quota: '31500'
   - name: sandbox
     display_name_suffix: Sandbox
     portal_visibility: false
@@ -21,8 +21,8 @@ APIGEE_ENVIRONMENTS:
   - name: prod
     approval_type: manual
     display_name_suffix: Production
-    ratelimit: '15000pm'
-    quota: '7800'
+    ratelimit: '15000pm'    # Amount Spine indicated they can handle as burst load
+    quota: '7800'           # Certified in NFTs
 
 ACCESS_MODES:
   - name: user-restricted
