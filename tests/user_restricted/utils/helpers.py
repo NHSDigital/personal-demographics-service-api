@@ -22,6 +22,21 @@ def retrieve_patient(patient: str, headers) -> requests.Response:
     return response
 
 
+def retrieve_patient_related_person(patient: str, headers) -> requests.Response:
+    """Send a PDS Retrieve request
+
+    Args:
+        patient (str): NHS Number of Patient
+        headers (dict, optional): Headers to include in request. Defaults to {}.
+    Returns:
+        requests.Response: Response from server
+    """
+    response = requests.get(
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/FHIR/R4/Patient/{patient}/RelatedPerson", headers=headers
+    )
+    return response
+
+
 # A function to send a PDS Retrieve request. Arguments accepted are the Query Parameters & Header.
 def search_patient(query_params: Union[dict, str], headers={}) -> requests.Response:
     if type(query_params) != str:
@@ -73,6 +88,16 @@ def poll_message(content_location: str, headers={}) -> requests.Response:
 #  Arguments accepted are the actual Response & expected Response.
 def check_retrieve_response_body(response: requests.Response, expected_response: dict) -> None:
     response_body = json.loads(response.text)
+    with check:
+        assert response_body == expected_response, (
+            f"UNEXPECTED RESPONSE: "
+            f"actual response_body is: {response_body}"
+            f"expected response_body is: {expected_response}"
+        )
+
+
+def check_retrieve_related_person_response_body(response: requests.Response, expected_response: dict) -> None:
+    response_body = remove_time_stamp_on_search_response(json.loads(response.text))
     with check:
         assert response_body == expected_response, (
             f"UNEXPECTED RESPONSE: "
