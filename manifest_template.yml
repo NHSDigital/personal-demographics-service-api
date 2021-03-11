@@ -44,7 +44,9 @@ meta:
   schema_version: 1
   api:
     name: personal-demographics
-    id: eef32850-52ae-46da-9dbd-d9f3df818846
+    guid: eef32850-52ae-46da-9dbd-d9f3df818846
+    spec_guids:
+      - a343a204-f2d2-4287-a2e5-b5cb367e35bb
 apigee:
   environments:
 {% for env in APIGEE_ENVIRONMENTS %}
