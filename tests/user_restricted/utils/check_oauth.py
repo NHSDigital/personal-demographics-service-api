@@ -16,7 +16,7 @@ class CheckOauth:
         code = authenticator.get_code_from_provider(response)
         return code
 
-    def get_token_response(self, timeout: int = 5000, grant_type: str = 'authorization_code', refresh_token: str = ""):
+    def get_token_response(self, grant_type: str = 'authorization_code', refresh_token: str = ""):
         data = {
             'client_id': config.CLIENT_ID,
             'client_secret': config.CLIENT_SECRET,
@@ -24,11 +24,9 @@ class CheckOauth:
         }
         if refresh_token != "":
             data['refresh_token'] = refresh_token
-            data['_refresh_token_expiry_ms'] = timeout
         else:
             data['redirect_uri'] = config.REDIRECT_URI
             data['code'] = self.get_authenticated()
-            data['_access_token_expiry_ms'] = timeout
 
         response = self.session.post(config.ENDPOINTS['token'], data=data)
         if response.status_code != 200:

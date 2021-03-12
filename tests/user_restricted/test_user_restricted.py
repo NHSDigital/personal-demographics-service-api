@@ -5,6 +5,7 @@ import json
 from .data.pds_scenarios import retrieve, search, update
 from .utils import helpers
 from pytest_check import check
+import time
 
 
 class TestUserRestrictedRetrievePatient:
@@ -521,10 +522,17 @@ class TestUserRestrictedPatientUpdate:
         helpers.check_response_headers(update_response, self.headers)
 
         # send message poll request and check the response contains the updated attributes
-        poll_message_response = helpers.poll_message(
-            update_response.headers["content-location"],
-            self.headers
-        )
+        def poll_message():
+            return helpers.poll_message(
+                update_response.headers["content-location"],
+                self.headers)
+
+        poll_message_response = poll_message()
+        if poll_message_response.status_code == 202:
+            # if status is 202 retry poll attempt after specified amount of time, in ms
+            time.sleep(int(poll_message_response.headers["Retry-After"]) / 1000)
+            poll_message_response = poll_message()
+        print(poll_message_response.status_code)
 
         with check:
             assert (json.loads(poll_message_response.text))["birthDate"] == self.new_date
@@ -619,6 +627,7 @@ class TestUserRestrictedPatientUpdate:
 
 class TestUserRestrictedOldURL:
     """Light weighted tests to ensure we cah hit the old end points"""
+
     def test_retrieve_patient_old(self, headers_with_token):
         patient = retrieve[0]["patient"]
         response = requests.get(
@@ -654,7 +663,7 @@ class TestUserRestrictedOldURL:
         payload = update[0]["patch"]
         headers = {
             "Content-Type": "application/json-patch+json",
-            "If-Match": f'W/"{patient_record}"',
+            "If-Match": patient_record,
         }
         headers.update(self.headers)
         update_response = requests.patch(
@@ -669,10 +678,17 @@ class TestUserRestrictedOldURL:
         helpers.check_response_headers(update_response, self.headers)
 
         # send message poll request and check the response contains the updated attributes
-        poll_message_response = helpers.poll_message(
-            update_response.headers["content-location"],
-            self.headers
-        )
+        def poll_message():
+            return helpers.poll_message(
+                update_response.headers["content-location"],
+                self.headers)
+
+        poll_message_response = poll_message()
+        if poll_message_response.status_code == 202:
+            # if status is 202 retry poll attempt after specified amount of time, in ms
+            time.sleep(int(poll_message_response.headers["Retry-After"]) / 1000)
+            poll_message_response = poll_message()
+        print(poll_message_response.status_code)
 
         with check:
             assert (json.loads(poll_message_response.text))["birthDate"] == self.new_date
