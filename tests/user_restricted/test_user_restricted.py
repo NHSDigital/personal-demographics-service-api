@@ -496,8 +496,8 @@ class TestUserRestrictedPatientUpdate:
         # send message poll request and check the response contains the updated attributes
         def poll_message():
             return helpers.poll_message(
-            update_response.headers["content-location"],
-            self.headers)
+                update_response.headers["content-location"],
+                self.headers)
 
         poll_message_response = poll_message()
         if poll_message_response.status_code == 202:
@@ -652,8 +652,8 @@ class TestUserRestrictedOldURL:
         # send message poll request and check the response contains the updated attributes
         def poll_message():
             return helpers.poll_message(
-            update_response.headers["content-location"],
-            self.headers)
+                update_response.headers["content-location"],
+                self.headers)
 
         poll_message_response = poll_message()
         if poll_message_response.status_code == 202:
