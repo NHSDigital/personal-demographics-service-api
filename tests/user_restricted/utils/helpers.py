@@ -37,7 +37,7 @@ def search_patient(query_params: Union[dict, str], headers={}) -> requests.Respo
 def update_patient(patient: str, patient_record: str, payload: dict, extra_headers={}) -> requests.Response:
     headers = {
         "Content-Type": "application/json-patch+json",
-        "If-Match": f'W/"{patient_record}"',
+        "If-Match": patient_record,
     }
     headers.update(extra_headers)
     response = requests.patch(
