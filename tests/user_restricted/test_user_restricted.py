@@ -5,6 +5,7 @@ import json
 from .data.pds_scenarios import retrieve, search, update
 from .utils import helpers
 from pytest_check import check
+import time
 
 
 class TestUserRestrictedRetrievePatient:
@@ -122,6 +123,16 @@ class TestUserRestrictedSearchPatient:
         helpers.check_response_status_code(response, 401)
         helpers.check_response_headers(response, headers)
 
+    def test_search_patient_with_blank_auth_header_at(self, headers_with_token):
+        self.headers['Authorization'] = ''
+        response = helpers.search_patient(
+            search[1]["query_params"],
+            self.headers
+        )
+        helpers.check_search_response_body(response, search[1]["response"])
+        helpers.check_response_status_code(response, 401)
+        helpers.check_response_headers(response, self.headers)
+
     def test_search_patient_with_invalid_auth_header(self, headers):
         headers['authorization'] = 'Bearer abcdef123456789'
         response = helpers.search_patient(
@@ -171,6 +182,24 @@ class TestUserRestrictedSearchPatient:
         )
         helpers.check_search_response_body(response, search[6]["response"])
         helpers.check_response_status_code(response, 412)
+        helpers.check_response_headers(response, self.headers)
+
+    def test_search_patient_happy_path_sensitive(self, headers_with_token):
+        response = helpers.search_patient(
+            search[9]["query_params"],
+            self.headers
+        )
+        helpers.check_search_response_body(response, search[9]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, self.headers)
+
+    def test_search_patient_sensitive_info_not_returned(self, headers_with_token):
+        response = helpers.search_patient(
+            search[10]["query_params"],
+            self.headers
+        )
+        helpers.check_search_response_body(response, search[10]["response"])
+        helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, self.headers)
 
     def test_search_patient_happy_path_genderfree(self, headers_with_token):
@@ -493,10 +522,17 @@ class TestUserRestrictedPatientUpdate:
         helpers.check_response_headers(update_response, self.headers)
 
         # send message poll request and check the response contains the updated attributes
-        poll_message_response = helpers.poll_message(
-            update_response.headers["content-location"],
-            self.headers
-        )
+        def poll_message():
+            return helpers.poll_message(
+                update_response.headers["content-location"],
+                self.headers)
+
+        poll_message_response = poll_message()
+        if poll_message_response.status_code == 202:
+            # if status is 202 retry poll attempt after specified amount of time, in ms
+            time.sleep(int(poll_message_response.headers["Retry-After"]) / 1000)
+            poll_message_response = poll_message()
+        print(poll_message_response.status_code)
 
         with check:
             assert (json.loads(poll_message_response.text))["birthDate"] == self.new_date
@@ -591,6 +627,7 @@ class TestUserRestrictedPatientUpdate:
 
 class TestUserRestrictedOldURL:
     """Light weighted tests to ensure we cah hit the old end points"""
+
     def test_retrieve_patient_old(self, headers_with_token):
         patient = retrieve[0]["patient"]
         response = requests.get(
@@ -626,7 +663,7 @@ class TestUserRestrictedOldURL:
         payload = update[0]["patch"]
         headers = {
             "Content-Type": "application/json-patch+json",
-            "If-Match": f'W/"{patient_record}"',
+            "If-Match": patient_record,
         }
         headers.update(self.headers)
         update_response = requests.patch(
@@ -641,13 +678,32 @@ class TestUserRestrictedOldURL:
         helpers.check_response_headers(update_response, self.headers)
 
         # send message poll request and check the response contains the updated attributes
-        poll_message_response = helpers.poll_message(
-            update_response.headers["content-location"],
-            self.headers
-        )
+        def poll_message():
+            return helpers.poll_message(
+                update_response.headers["content-location"],
+                self.headers)
+
+        poll_message_response = poll_message()
+        if poll_message_response.status_code == 202:
+            # if status is 202 retry poll attempt after specified amount of time, in ms
+            time.sleep(int(poll_message_response.headers["Retry-After"]) / 1000)
+            poll_message_response = poll_message()
+        print(poll_message_response.status_code)
 
         with check:
             assert (json.loads(poll_message_response.text))["birthDate"] == self.new_date
         with check:
             assert int((json.loads(poll_message_response.text))["meta"]["versionId"]) == int(versionId) + 1
         helpers.check_response_status_code(poll_message_response, 200)
+
+
+class TestUserRestrictedRetrieveRelatedPerson:
+
+    def test_retrieve_related_person(self, headers_with_token):
+        response = helpers.retrieve_patient_related_person(
+            retrieve[7]["patient"],
+            self.headers
+        )
+        helpers.check_retrieve_related_person_response_body(response, retrieve[7]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, self.headers)
