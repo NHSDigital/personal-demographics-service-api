@@ -123,6 +123,16 @@ class TestUserRestrictedSearchPatient:
         helpers.check_response_status_code(response, 401)
         helpers.check_response_headers(response, headers)
 
+    def test_search_patient_with_blank_auth_header_at(self, headers_with_token):
+        self.headers['Authorization'] = ''
+        response = helpers.search_patient(
+            search[1]["query_params"],
+            self.headers
+        )
+        helpers.check_search_response_body(response, search[1]["response"])
+        helpers.check_response_status_code(response, 401)
+        helpers.check_response_headers(response, self.headers)
+
     def test_search_patient_with_invalid_auth_header(self, headers):
         headers['authorization'] = 'Bearer abcdef123456789'
         response = helpers.search_patient(
@@ -172,6 +182,24 @@ class TestUserRestrictedSearchPatient:
         )
         helpers.check_search_response_body(response, search[6]["response"])
         helpers.check_response_status_code(response, 412)
+        helpers.check_response_headers(response, self.headers)
+
+    def test_search_patient_happy_path_sensitive(self, headers_with_token):
+        response = helpers.search_patient(
+            search[9]["query_params"],
+            self.headers
+        )
+        helpers.check_search_response_body(response, search[9]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, self.headers)
+
+    def test_search_patient_sensitive_info_not_returned(self, headers_with_token):
+        response = helpers.search_patient(
+            search[10]["query_params"],
+            self.headers
+        )
+        helpers.check_search_response_body(response, search[10]["response"])
+        helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, self.headers)
 
     def test_search_patient_happy_path_genderfree(self, headers_with_token):
@@ -667,3 +695,15 @@ class TestUserRestrictedOldURL:
         with check:
             assert int((json.loads(poll_message_response.text))["meta"]["versionId"]) == int(versionId) + 1
         helpers.check_response_status_code(poll_message_response, 200)
+
+
+class TestUserRestrictedRetrieveRelatedPerson:
+
+    def test_retrieve_related_person(self, headers_with_token):
+        response = helpers.retrieve_patient_related_person(
+            retrieve[7]["patient"],
+            self.headers
+        )
+        helpers.check_retrieve_related_person_response_body(response, retrieve[7]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, self.headers)
