@@ -39,13 +39,6 @@ info:
 
     All patients in PDS have an NHS number which is unique. The 10-digit NHS number is used in England, Wales, the Isle of Man, Scotland and Northern Ireland, but not the Channel Islands. Scotland and Northern Ireland have their own distinct number ranges.
 
-    ### Who can access PDS records
-    Health and care organisations in England and the Isle of Man can access PDS records. Legitimate direct care examples include NHS organisations delivering healthcare, local authorities delivering care, third sector and private sector health and care organisations, and developers delivering systems to health and care organisations. 
-
-    Health and care organisations in Wales access their own version of PDS called the Welsh Demographics Service (WDS) which is connected to PDS behind the scenes. 
-
-    Health and care organisations in Scotland, Northern Ireland and the Channel Islands access their own equivalents of PDS.
-
     ### Access modes
     This API has three access modes:
     
@@ -57,10 +50,17 @@ info:
     | Citizen access                 | NHS login                                           | Get own details, Update own details (limited) | Not available yet, see [backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/107446/pds-fhir-api-citizen-access-using-nhs-login) for details   |
 
   
-    ## Legal use
+    ## Who can use this API?
     This API can only be used where there is a [legal basis](http://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) to do so. Make sure you have a valid use case before you go too far with your development.  To do this, make a [PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service). 
     
     You must do this before you can go live (see ‘Onboarding’ below).
+
+    ### Who can access PDS records
+    Health and care organisations in England and the Isle of Man can access PDS records. Legitimate direct care examples include NHS organisations delivering healthcare, local authorities delivering care, third sector and private sector health and care organisations, and developers delivering systems to health and care organisations. 
+
+    Health and care organisations in Wales access their own version of PDS called the Welsh Demographics Service (WDS) which is connected to PDS behind the scenes. 
+
+    Health and care organisations in Scotland, Northern Ireland and the Channel Islands access their own equivalents of PDS.
 
     ## Related APIs
     The following APIs also give access to the Personal Demographics Service:
