@@ -20,7 +20,7 @@ info:
     * receive birth notifications
     * create a record for a new patient
     * register a new patient at a GP Practice - instead, use [NHAIS GP Links API](https://digital.nhs.uk/developer/api-catalogue/nhais-gp-links)
- 
+
     You can read and update the following data:
     * NHS number (read only)
     * name
@@ -33,32 +33,32 @@ info:
     * dispensing doctor pharmacy
     * medical appliance supplier pharmacy
     * related people, such as next of kin (read only - update coming soon)
-    
+
     ### Patients included in PDS
-    Regardless of nationality, or where they live now, PDS includes all patients who have ever been registered with a GP practice, or treated by a health or care organisation (even as a visitor or migrant) in England, Wales, the Isle of Man, or in a UK Defence Medical Services unit anywhere in the world. 
+    Regardless of nationality, or where they live now, PDS includes all patients who have ever been registered with a GP practice, or treated by a health or care organisation (even as a visitor or migrant) in England, Wales, the Isle of Man, or in a UK Defence Medical Services unit anywhere in the world.
 
     All patients in PDS have an NHS number which is unique. The 10-digit NHS number is used in England, Wales, the Isle of Man, Scotland and Northern Ireland, but not the Channel Islands. Scotland and Northern Ireland have their own distinct number ranges.
 
     ### Access modes
     This API has three access modes:
-    
-    
+
+
     | Access mode                    | End user authentication                             | Functions          | Availability |
     | ------------------------------ | --------------------------------------------------- | ------------------ | ------------ |
-    | Application-restricted access  | None                                                | Search for patients (single result), Get patient details | Available in production (beta) | 
+    | Application-restricted access  | None                                                | Search for patients (single result), Get patient details | Available in production (beta) |
     | Healthcare worker access       | NHS Identity (NHS smartcard or modern alternative)  | Search for patients (multiple results), Get patient details, Update patient details | Available in production (beta) |
     | Citizen access                 | NHS login                                           | Get own details, Update own details (limited) | Not available yet, see [backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/107446/pds-fhir-api-citizen-access-using-nhs-login) for details   |
 
-  
+
     ## Who can use this API?
-    This API can only be used where there is a [legal basis](http://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) to do so. Make sure you have a valid use case before you go too far with your development.  To do this, make a [PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service). 
-    
+    This API can only be used where there is a [legal basis](http://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) to do so. Make sure you have a valid use case before you go too far with your development.  To do this, make a [PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service).
+
     You must do this before you can go live (see ‘Onboarding’ below).
 
     ### Who can access PDS records
-    Health and care organisations in England and the Isle of Man can access PDS records. Legitimate direct care examples include NHS organisations delivering healthcare, local authorities delivering care, third sector and private sector health and care organisations, and developers delivering systems to health and care organisations. 
+    Health and care organisations in England and the Isle of Man can access PDS records. Legitimate direct care examples include NHS organisations delivering healthcare, local authorities delivering care, third sector and private sector health and care organisations, and developers delivering systems to health and care organisations.
 
-    Health and care organisations in Wales access their own version of PDS called the Welsh Demographics Service (WDS) which is connected to PDS behind the scenes. 
+    Health and care organisations in Wales access their own version of PDS called the Welsh Demographics Service (WDS) which is connected to PDS behind the scenes.
 
     Health and care organisations in Scotland, Northern Ireland and the Channel Islands access their own equivalents of PDS.
 
@@ -76,18 +76,18 @@ info:
     ### Application-restricted access
     This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
     - we might make breaking changes, but only if we cannot avoid it, and we'll give advance notice
-     
+
     ### Healthcare worker access
     This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
 
     - we might make breaking changes, but only if we cannot avoid it, and we'll give advance notice
-        
+
     ### Citizen access
     This access mode is not available yet.
-    
+
     ### Roadmap
     To see our roadmap, or to suggest, comment or vote on features for this API, see our [interactive product backlog](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
-    
+
     If you have any other queries, please [contact us](https://digital.nhs.uk/developer/help-and-support).
 
     ## Technology
@@ -108,21 +108,21 @@ info:
     This API is available on the internet and, indirectly, on the [Health and Social Care Network (HSCN)](https://digital.nhs.uk/services/health-and-social-care-network).
 
     To use this API with NHS smartcards you do need an HSCN connection, although internet-facing alternatives are available.
-    
+
     For more details see [Network access for APIs](https://digital.nhs.uk/developer/guides-and-documentation/network-access-for-apis).
-    
+
     ## Security and authorisation
     ### Application-restricted access
     This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis),
     meaning we authenticate the calling application but not the end user.
-    
+
     You can use this access mode as follows:
     * unattended (end user not present), for example as part of a back end process to check NHS numbers for data flowing from one system to another
     * attended (end user present) - in which case, you must ensure the end user is authenticated and suitably authorised locally by the calling application
-    
+
     To use this access mode, use the following security pattern:
     * [Application-restricted RESTful API - signed JWT authentication](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-signed-jwt-authentication)
-    
+
     ### Healthcare worker access
     This access mode is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis),
     meaning an end user must be present, authenticated and authorised.
@@ -137,8 +137,8 @@ info:
     * [user-restricted RESTful API - using NHS Identity - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-separate-authentication-and-authorisation)
 
     ### Citizen access
-    This access mode is not available yet. 
-        
+    This access mode is not available yet.
+
     For more details, see our [interactive product backlog](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
 
     ## Environments and testing
@@ -159,7 +159,7 @@ info:
     For details of sandbox test scenarios, or to try out the sandbox using our 'Try this API' feature, see the documentation for each endpoint.
 
     Alternatively, you can try out the sandbox using our Postman collection:
-    
+
     [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
 
     ### Integration testing
@@ -167,21 +167,21 @@ info:
     * is for formal integration testing
     * is stateful, so persists updates
     * includes authorisation, with options for user-restricted access (with or without smartcard) and application-restricted access
-         
+
     For read-only testing, you can either use our [PDS FHIR API test data packs](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-api-test-data) or set up your own test data.
-    
+
     To test updating patient details, you must set up your own test data.
 
     For more details see [integration testing with our RESTful APIs](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing-with-our-restful-apis).
 
     ### Production smoke testing
     You must not use real patient data for smoke testing in the production environment.
-    
+
     Rather, use our [production test patient](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-api-test-data#production-smoke-testing).
 
     ## Onboarding
     You need to get your software approved by us before it can go live with this API. We call this onboarding. The onboarding process can sometimes be quite long, so it’s worth planning well ahead.
-    
+
     To onboard for this API, follow the [Supplier Conformance Assessment List (SCAL) process.](https://digital.nhs.uk/developer/guides-and-documentation/onboarding-process#onboard-using-the-supplier-conformance-assessment-list-scal-process)
 
     When following the SCAL process, note that:
@@ -221,7 +221,7 @@ paths:
       description: |
         ## Overview
         Use this endpoint to search for a patient in PDS.
-        
+
         You can search using various combinations of:
           * given name
           * family name
@@ -230,11 +230,11 @@ paths:
           * date of birth - which can be a range
           * date of death - which can be a range
           * registered GP practice
-          
+
         There are various search options, such as fuzzy search, exact match, history and wildcards.
-        
+
         The behaviour of this endpoint depends on which access mode you are using:
-        
+
         | Access mode                    | Behaviour                                  |
         | ------------------------------ | ------------------------------------------ |
         | Application-restricted access  | Only a single unique match returned        |
@@ -264,12 +264,12 @@ paths:
         This allows the end user to choose the best match.
 
         Use search parameters that are relevant to your use case - for example date of death is not always appropriate.
-        
+
         To protect patient privacy, design your search to minimise the number of matching patients.
         For example, you could:
           * encourage users to enter as many search parameters as they can
           * force users to try a non-fuzzy search first and then only offer a fuzzy search if they cannot find the patient
-        
+
         For more details, see the following sections.
 
         ### Non-fuzzy search
@@ -283,7 +283,7 @@ paths:
         The minimum search parameters are:
           * family name - which can include wildcards
           * date of birth - which can be a range
-          
+
         ### Fuzzy search
         A fuzzy search:
           * matches common homophones, such as `Smith` and `Smythe`, using the [Soundex](https://en.wikipedia.org/wiki/Soundex) algorithm
@@ -291,7 +291,7 @@ paths:
           * always searches history, such as previous names and addresses
 
         It is more likely to include multiple matches than a non-fuzzy search, so is not ideal for finding a unique match.
-        
+
         It is also more likely to include false positives - other patients that match the search criteria.
         Therefore, for privacy reasons, it is better to use it only if a non-fuzzy match has failed.
 
@@ -327,7 +327,7 @@ paths:
 
         To deal with some of these issues:
           * we always search all given names
-          * we search across all types of name - usual, nickname and temporary
+          * we search across all types of name - usual, nickname, temporary, and twitter handle
           * a fuzzy search matches homophones, transposed names and previous names
           * for a non fuzzy search, you can optionally use wildcards and search previous names
 
@@ -339,7 +339,7 @@ paths:
         These are edge cases but are important to consider because gender can be a sensitive issue for the people in question.
 
         In general, we recommend not including gender as a search parameter.
-          
+
         ### Date of birth and death
         Sometimes, the exact date of birth or death is not known when doing a search.
         Sometimes, the date of birth or death is not accurate in PDS.
@@ -352,7 +352,7 @@ paths:
 
         Searching for the first two characters of the postcode and a wildcard can work well. For example, to search for `LS11 6AD`, use `LS*`.
         This is only possible for a non-fuzzy search.
-        
+
         This can result in multiple matches, but it has been known to work well in some cases - even for unique matches.
 
         ### General practitioner
@@ -372,7 +372,7 @@ paths:
 
         The following data is excluded:
         * place of birth
-        * names, apart from usual, nickname and temporary 
+        * names, apart from usual, nickname and temporary
         * addresses, apart from home address
         * pharmacy details
         * communication details
@@ -384,7 +384,7 @@ paths:
         If `address-postcode` or `general-practitioner` are included in the search parameters, no restricted patients are returned even if a match is identified.
 
         The restricted flag can be found in the data under `meta/security` on the patient resource.
-        
+
         ### Invalidated patients
         Some patients are marked as invalidated in PDS - also known as `redacted` in FHIR terminology. Invalidated patient records are not returned in search results.
         If an invalidated patient record has been superseded, the superseding record is returned.
@@ -408,7 +408,7 @@ paths:
         Note that:
         * we record an access request in our audit trail for all patients matched in a PDS search
         * it is almost certainly a good idea to display search results in descending score order - best match first
-        
+
         ## Sandbox testing
         You can test the following scenarios in our sandbox environment:
 
@@ -427,15 +427,15 @@ paths:
         You can try out the sandbox using the 'Try this API' feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
-        
-        
+
+
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
 
       parameters:
         - name: _fuzzy-match
           description: |
             A fuzzy search is performed, including checks for homophones, transposed names and historic information.
-            
+
             You cannot use wildcards with a fuzzy search.
           example: true
           in: query
@@ -454,7 +454,7 @@ paths:
         - name: _history
           description: |
             The search looks for matches in historic information such as previous names and addresses.
-            
+
             This parameter has no effect for a fuzzy search, which always includes historic information.
           example: true
           in: query
@@ -476,7 +476,7 @@ paths:
         - name: family
           description: |
             The patient's family name (surname).
-            
+
             Not case sensitive.
             Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
             Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
@@ -538,7 +538,7 @@ paths:
           in: query
           description: |
             Date of death in the format `<eq|ge|le>yyyy-mm-dd`. To specify a range, use `death-date=geyyyy-mm-dd&death-date=leyyyy-mm-dd`.
-            
+
             For a fuzzy search, this is ignored for matching but included in the score calculation.
           examples:
             simple:
@@ -576,7 +576,7 @@ paths:
         - name: general-practitioner
           description: |
             The Organisation Data Service (ODS) code of the patient's registered GP practice.
-            
+
             Not case sensitive.
             For a fuzzy search, this is ignored for matching but included in the score calculation.
           example: Y00001
@@ -651,7 +651,7 @@ paths:
         '4XX':
           description: |
             An error occurred as follows:
-            
+
             | HTTP status | Error code                 | Description |
             | ----------- | -------------------------- | --------------------------------------------- |
             | 200         | TOO_MANY_MATCHES           | Too many matches were found - user should be told to refine their search parameters.	|
@@ -665,7 +665,7 @@ paths:
             | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
             | 412         | PRECONDITION_FAILED        | Problem with request. For details, see the `diagnostics` field. |
             | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
-  
+
           content:
             application/fhir+json:
               schema:
@@ -692,7 +692,7 @@ paths:
       description: |
         ## Overview
         Use this endpoint to get patient details from PDS for a given NHS number.
-        
+
         You cannot get a patient's related people details, use the RelatedPerson endpoint instead.
 
         ## Superseded patients
@@ -721,10 +721,10 @@ paths:
         You can try out the sandbox using the 'Try this API' feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
-        
+
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
-              
-         
+
+
       summary: "Get patient details"
       operationId: get-patient
       responses:
@@ -736,7 +736,7 @@ paths:
             X-Correlation-Id:
               $ref: components/schemas/XCorrelationId.yaml
             X-Request-Id:
-              $ref: components/schemas/XRequestID.yaml              
+              $ref: components/schemas/XRequestID.yaml
           content:
             application/fhir+json:
               schema:
@@ -746,7 +746,7 @@ paths:
         '4XX':
           description: |
             An error occurred as follows:
-            
+
             | HTTP status | Error code                 | Description |
             | ----------- | -------------------------- | --------------------------------------------- |
             | 400         | INVALID_RESOURCE_ID        | Invalid NHS number. |
@@ -759,7 +759,7 @@ paths:
             | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
             | 412         | PRECONDITION_FAILED        | Problem with request. For details, see the `diagnostics` field. |
             | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
-    
+
           content:
             application/fhir+json:
               schema:
@@ -784,9 +784,9 @@ paths:
 
         The update process is asynchronous - if the request is accepted, a 202 response is returned with a polling URL in the `Content-Location` header.
         Poll this URL for the outcome of the update. See the polling endpoint `/_poll/{message id}` for more details.
-        
+
         The behaviour of this endpoint depends on which access mode you are using:
-        
+
         | Access mode                    | Behaviour restrictions              |
         | ------------------------------ | ----------------------------------- |
         | Application-restricted access  | Updates not allowed                 |
@@ -909,7 +909,7 @@ paths:
         ```
 
         but the following is not allowed:
-        
+
         ```json
         {
           "patches": [
@@ -1027,7 +1027,7 @@ paths:
         ```json
         {
             "patches": [
-              { 
+              {
                     "op": "test",
                     "path": "/name/0",
                     "value": {
@@ -1194,19 +1194,19 @@ paths:
         * `/address/-` when adding a new address.
 
         An address consists of 5 lines of unstructured text, postcode and PAF (Postcode Address File) key.
-        
+
         Postcode is optional but strongly encouraged.
         If the address has no postcode, use a [pseudo postcode from the list defined by the Office for National Statistics](https://digital.nhs.uk/services/organisation-data-service/data-downloads/office-for-national-statistics-data) (see the ‘look_ups’ file).
-        
+
         In particular, for a patient at no fixed abode, use the pseudo postcode `ZZ99 3VZ`.
-        
+
         When adding or replacing address lines, use the following rules:
         *	line 1 - premises ID and/or house name, for example `Flat 1` or `The Old Schoolhouse`
         *	line 2 - house number, dependent thoroughfare name and descriptor (if present), thoroughfare name and descriptor, for example `23 Mill Lane`
         *	line 3 - dependent locality/village, locality (if present), for example `Boxgrove`
         *	line 4 - post town, for example `Leeds`
         *	line 5 - county (if present), for example `West Yorkshire`
-        
+
         When updating an address, you must populate lines 1 or 2, and line 4. You should not include line 5 in manually created addresses but you may include it in PAF-derived addresses.
 
         There are exceptions:
@@ -1214,7 +1214,7 @@ paths:
         * if you use a pseudo postcode, for example `ZZ99 3VZ` meaning `no fixed abode`
 
         When creating the FHIR payload message, to be fully FHIR compliant all empty lines should be removed, so for example:
-        
+
         ```json
         {
             "address": {
@@ -1297,7 +1297,7 @@ paths:
 
         Where the communication extension already exists and you wish to replace a specific sub-extension, then the path should be:
         * `/extension/0/extension/1` if the communication extension is the first item in the list and the sub-extension is the second item in the list.
-        
+
         You can find examples of the above requests in our sandbox Postman collection
 
         There are a number of business rules that should be taken into account:
@@ -1313,8 +1313,8 @@ paths:
 
         Where the Contact Preference extension already exists and you wish to add, replace or remove a specific contact preference(s) sub-extension, then the path should be:
         * `/extension/0/extension/1` if the contact preference extension is the first item in the list and the method is the second item in the sub-extension list.
-        
-        You can find examples of the above requests in our sandbox Postman collection 
+
+        You can find examples of the above requests in our sandbox Postman collection
 
         There are a number of business rules that should be taken into account:
         * a patient can have `0` or `1` contact preference.
@@ -1356,7 +1356,7 @@ paths:
         In a JSON Patch request the path should be:
         * `/extension/0` if the death notification is the first item in the list. If it is the second item in the list the path is `/extension/1`, and so on.
         * `/extension/-` when adding a death notification.
-        
+
         You can find examples of the above requests in our sandbox Postman collection
 
         There are a number of business rules that should be taken into account:
@@ -1522,10 +1522,10 @@ paths:
         You can try out the sandbox using the 'Try this API' feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
-        
+
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
 
-        
+
       summary: Update patient details
       operationId: update-patient-partial
       externalDocs:
@@ -1595,11 +1595,11 @@ paths:
         '202':
           description: |
             The patch was syntactically correct and was accepted.
-            
+
             A polling location is returned in the `Content-Location` header and the polling interval in the `Retry-After` header.
 
             Note, the patch may still fail after it is accepted, for example, further validation of the patch may still result in business rule failures. Therefore, it should not be assumed that the patient is successfully updated after receiving acceptance of the message.
-            
+
             See the polling endpoint for more details.
           headers:
             Content-Location:
@@ -1609,11 +1609,11 @@ paths:
             X-Correlation-Id:
               $ref: components/schemas/XCorrelationId.yaml
             X-Request-Id:
-              $ref: components/schemas/XRequestID.yaml              
+              $ref: components/schemas/XRequestID.yaml
         '4XX':
           description: |
             An error occurred as follows:
-            
+
             | HTTP status | Error code                 | Description |
             | ----------- | -------------------------- | --------------------------------------------- |
             | 400         | UNSUPPORTED_SERVICE        | Missing NHS number. |
@@ -1652,7 +1652,7 @@ paths:
       description: |
         ## Overview
         Use this endpoint to get a patient's related people details from PDS for a given NHS number. This is a list of people who can be contacted, and how, regarding the patient. These details may be useful for a practitioner to get in contact with a next of kin or guardian.
-        
+
         ## Restricted patients
         Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. Related people are not returned for a restricted patient and an empty bundle is returned.
 
@@ -1670,9 +1670,9 @@ paths:
         You can try out the sandbox using the 'Try this API' feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
-        
+
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
-       
+
       summary: "Get a patient's related people"
       operationId: get-related-people
       responses:
@@ -1710,7 +1710,7 @@ paths:
                   entry:
                     type: array
                     description: |
-                      A list of related people details attached to the patient. 
+                      A list of related people details attached to the patient.
                     items:
                       type: object
                       properties:
@@ -1732,7 +1732,7 @@ paths:
         '4XX':
           description: |
             An error occurred as follows:
-            
+
             | HTTP status | Error code                 | Description |
             | ----------- | -------------------------- | --------------------------------------------- |
             | 400         | INVALID_RESOURCE_ID        | Invalid NHS number. |
@@ -1773,7 +1773,7 @@ paths:
         Use this endpoint to poll for the outcome of an updated patient record.
 
         When updating resources the request is dealt with in an asynchronous manner.
-        
+
         Once the initial request is accepted a `202` response is returned with a `Content-Location` header, use this location to poll for the outcome. It is in the form `/_poll/<message id>`.
 
         Requests should be sent to the polling endpoint until a `202` response is no longer returned and the response is dealt with appropriately.
@@ -1795,8 +1795,8 @@ paths:
         Alternatively, you can try out the sandbox using our Postman collection:
 
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
-        
-      summary: Poll for the result of an update 
+
+      summary: Poll for the result of an update
       operationId: polling
       responses:
         '200':
@@ -1807,17 +1807,17 @@ paths:
             X-Correlation-Id:
               $ref: components/schemas/XCorrelationId.yaml
             X-Request-Id:
-              $ref: components/schemas/XRequestID.yaml              
+              $ref: components/schemas/XRequestID.yaml
           content:
             application/fhir+json:
               schema:
                 $ref: components/schemas/Patient.yaml
               example:
-                $ref: components/examples/Patient.json                
+                $ref: components/examples/Patient.json
         '4XX':
           description: |
             An error occurred as follows:
-            
+
             | HTTP status | Error code                 | Description |
             | ----------- | -------------------------- | --------------------------------------------- |
             | 400         | INVALID_RESOURCE_ID        | Invalid NHS number. |
@@ -1898,13 +1898,13 @@ components:
       in: header
       name: NHSD-Session-URID
       description: |
-      
+
         The user role ID (URID) for the current session. Also known as a user role profile ID (URPID).
 
         For more details, see [determine the user’s role](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-combined-authentication-and-authorisation#step-6-determine-the-user-s-role).
-      
+
         Required for user-restricted access but optional for application-restricted access and for sandbox environment.
-       
+
       required: false
       schema:
         type: string
@@ -1928,7 +1928,7 @@ components:
       required: false
       description: |
         A globally unique identifier (GUID) for the request, which we use to de-duplicate repeated requests and to trace the request if you contact our helpdesk.
-        
+
         Must be a universally unique identifier (UUID) (ideally version 4).
 
         Mirrored back in a response header.
@@ -1946,7 +1946,7 @@ components:
       required: false
       description: |
         An optional ID which you can use to track transactions across multiple systems. It can take any value, but we recommend avoiding `.` characters.
-        
+
         Mirrored back in a response header.
       schema:
         type: string
