@@ -200,6 +200,7 @@
         <Name>AssignMessage.Errors.CatchAllMessage</Name>
       </Step>
     </FaultRule>
+  </FaultRules>
   <DefaultFaultRule>
     <Step>
       <Name>AssignMessage.Errors.CatchAllMessage</Name>

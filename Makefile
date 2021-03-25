@@ -82,4 +82,4 @@ test-sandbox:
 	poetry run pytest -v tests/sandbox/test_sandbox.py
 
 validate-xml: 
-	scripts/xml_validate.sh
+	sh scripts/xml_validate.sh
