@@ -16,3 +16,5 @@ for file in glob2.glob('./proxies/**/*.xml'):
     except Exception as e:
         print("%s is NOT well-formed! %s" % (file, e))
         sys.exit(1)
+
+sys.exit(0)
