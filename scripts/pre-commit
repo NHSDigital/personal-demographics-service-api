@@ -1,4 +1,5 @@
 #!/bin/sh
 make lint
 make validate
+make validate-xml
 cd sandbox && npm run lint
