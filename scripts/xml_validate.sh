@@ -1,8 +1,7 @@
 #!/bin/bash
-set -euo pipefail
-
-
-if [poetry run python scripts/xml_validator.py -eq 0]; then
+# set -euo pipefail
+OUTPUT=$(poetry run python scripts/xml_validator.py)
+if ["$OUTPUT" -eq 0]; then
     echo "No XML validation errors!"
     exit 0
 else

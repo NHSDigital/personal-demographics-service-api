@@ -3,6 +3,7 @@ from xml.sax.handler import ContentHandler
 from xml.sax import make_parser
 import sys
 
+
 def parsefile(file):
     parser = make_parser()
     parser.setContentHandler(ContentHandler())
