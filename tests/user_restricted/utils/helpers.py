@@ -32,7 +32,7 @@ def retrieve_patient_related_person(patient: str, headers) -> requests.Response:
         requests.Response: Response from server
     """
     response = requests.get(
-        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/FHIR/R4/Patient/{patient}/RelatedPerson", headers=headers
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{patient}/RelatedPerson", headers=headers
     )
     return response
 
@@ -42,7 +42,7 @@ def search_patient(query_params: Union[dict, str], headers={}) -> requests.Respo
     if type(query_params) != str:
         query_params = urllib.parse.urlencode(query_params)
     response = requests.get(
-        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/FHIR/R4/Patient?{query_params}", headers=headers
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient?{query_params}", headers=headers
     )
     return response
 
@@ -56,7 +56,7 @@ def update_patient(patient: str, patient_record: str, payload: dict, extra_heade
     }
     headers.update(extra_headers)
     response = requests.patch(
-        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/FHIR/R4/Patient/{patient}", headers=headers, json=payload
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{patient}", headers=headers, json=payload
     )
     return response
 
@@ -65,7 +65,7 @@ def update_patient(patient: str, patient_record: str, payload: dict, extra_heade
 # Argument accepted are Patient_ID, Patch Payload, and any additional Headers.
 def update_patient_invalid_headers(patient: str, payload: dict, headers=None) -> requests.Response:
     response = requests.patch(
-        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/FHIR/R4/Patient/{patient}", headers=headers, json=payload
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{patient}", headers=headers, json=payload
     )
     return response
 
@@ -73,14 +73,14 @@ def update_patient_invalid_headers(patient: str, payload: dict, headers=None) ->
 # A function to send a PDS Retrieve Related Person request. Arguments accepted are the Patient_ID & Header.
 def retrieve_related_person(patient: str, headers={}) -> requests.Response:
     response = requests.get(
-        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/FHIR/R4/Patient/{patient}/RelatedPerson", headers=headers
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{patient}/RelatedPerson", headers=headers
     )
     return response
 
 
 def poll_message(content_location: str, headers={}) -> requests.Response:
     time.sleep(2)
-    response = requests.get(f"{config.BASE_URL}/{config.PDS_BASE_PATH}/FHIR/R4{content_location}", headers=headers)
+    response = requests.get(f"{config.BASE_URL}/{config.PDS_BASE_PATH}/{content_location}", headers=headers)
     return response
 
 
