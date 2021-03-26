@@ -1,6 +1,3 @@
-import urllib
-import requests
-from .configuration import config
 import json
 from .data.pds_scenarios import retrieve, search, update
 from .utils import helpers
