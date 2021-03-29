@@ -7,6 +7,15 @@ import time
 
 class TestUserRestrictedRetrievePatient:
 
+    def test_retrieve_deprecated_url(self, headers_with_token):
+        patient = retrieve[0]["patient"]
+        response = helpers.retrieve_patient_deprecated_url(
+           retrieve[0]["patient"],
+            self.headers
+        )
+        helpers.check_response_status_code(response, 404)
+        helpers.check_response_headers(response, self.headers)
+    
     def test_retrieve_patient(self, headers_with_token):
         response = helpers.retrieve_patient(
             retrieve[0]["patient"],
