@@ -9,7 +9,7 @@ class TestUserRestrictedRetrievePatient:
 
     def test_retrieve_deprecated_url(self, headers_with_token):
         response = helpers.retrieve_patient_deprecated_url(
-            response,
+            retrieve[0]["patient"]
             self.headers
         )
         helpers.check_response_status_code(response, 404)
