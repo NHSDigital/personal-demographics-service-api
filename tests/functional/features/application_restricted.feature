@@ -13,17 +13,6 @@ Feature: Unattended Access
 
     Then I get a 200 HTTP response
     And I get a Bundle resource in the response
-
- Scenario: PDS FHIR API rejects request to deprecated basepath
-    Given I am authenticating using unattended access
-    And I have a valid access token
-    And I have a request context
-
-    When I GET a patient
-
-    Then I get a 404 HTTP response
-    And I get an error response
-    And I get a display of Not Found
     
   Scenario: PDS FHIR API rejects request with invalid access token
     Given I am authenticating using unattended access
