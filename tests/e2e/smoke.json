@@ -85,7 +85,7 @@
 							"    var prNo = version.match(prRegex)[0] ",
 							"    var prPath = basePath + \"-\" + prNo;",
 							"    var path = pm.request.url.path[0];  ",
-							"    console.log(path, prPath, prNo, LOG)",
+							"    console.log(path, prPath, prNo)",
 							"    path == \"personal-demographics\" ? pm.expect(versionRegex.test(version)).to.be.true : pm.expect(prRegex.test(prPath)).to.be.true;   ",
 							"});",
 							"",
