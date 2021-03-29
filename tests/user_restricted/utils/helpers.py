@@ -17,7 +17,7 @@ def retrieve_patient(patient: str, headers) -> requests.Response:
         requests.Response: Response from server
     """
     response = requests.get(
-        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{patient}", headers=headers
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/FHIR/R4/Patient/{patient}", headers=headers
     )
     return response
 
