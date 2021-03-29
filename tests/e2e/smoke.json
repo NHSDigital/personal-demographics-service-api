@@ -81,6 +81,7 @@
 							"pm.test(\"Json body has version\", function () {",
 							"    var version = pm.response.json().version;",
 							"    var path = pm.request.url.path[0];  ",
+							"    console.log(path, version)",
 							"    path == \"personal-demographics\" ? pm.expect(versionRegex.test(version)).to.be.true : pm.expect(version).to.equal(path);    ",
 							"});",
 							"",
