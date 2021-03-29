@@ -8,7 +8,6 @@ import time
 class TestUserRestrictedRetrievePatient:
 
     def test_retrieve_deprecated_url(self, headers_with_token):
-        patient = retrieve[0]["patient"]
         response = helpers.retrieve_patient_deprecated_url(
             response
             self.headers
