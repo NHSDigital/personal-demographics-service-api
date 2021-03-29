@@ -6,6 +6,19 @@ from pytest_check import check
 import time
 from ..configuration import config
 
+def retrieve_patient_deprecated_url(patient: str, headers) -> requests.Response:
+    """Send a PDS Retrieve request to the deprecated URL
+
+    Args:
+        patient (str): NHS Number of Patient
+        headers (dict, optional): Headers to include in request. Defaults to {}.
+    Returns:
+        requests.Response: Response from server
+    """
+    response = requests.get(
+        f"{config.BASE_URL}/personal-demographics/Patient/{patient}", headers=headers
+    )
+    return response
 
 def retrieve_patient(patient: str, headers) -> requests.Response:
     """Send a PDS Retrieve request
