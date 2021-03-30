@@ -7,17 +7,18 @@ import time
 from ..configuration import config
 import re
 
-def retrieve_patient_deprecated_url(patient: str, headers) -> requests.Response:    
-    """Send a PDS Retrieve request to the deprecated URL  
-    
-    Args:        
-        patient (str): NHS Number of Patient        
-        headers (dict, optional): Headers to include in request. Defaults to {}.    
+
+def retrieve_patient_deprecated_url(patient: str, headers) -> requests.Response:
+    """Send a PDS Retrieve request to the deprecated URL
+
+    Args:
+        patient (str): NHS Number of Patient
+        headers (dict, optional): Headers to include in request. Defaults to {}.
     Returns:
-        requests.Response: Response from server    
+        requests.Response: Response from server
     """
     prNo = re.search("pr-[0-9]+", config.PDS_BASE_PATH)
-    prString = f"-{prNo.group()}" if prNo != None else ""
+    prString = f"-{prNo.group()}" if prNo is not None else ""
 
     response = requests.get(
         f"{config.BASE_URL}/personal-demographics{prString}/Patient/{patient}", headers=headers
