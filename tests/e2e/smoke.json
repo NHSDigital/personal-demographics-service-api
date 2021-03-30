@@ -82,7 +82,7 @@
 							"pm.test(\"Json body has version\", function () {",
 							"    var version = pm.response.json().version;",
 							"    var expectedPath = \"personal-demographics\/FHIR\/R4\";",
-							"    var path = pm.request.url.path.join(\"\/\");  ",
+							"    var path = pm.request.url.path.join(\"\/\"); console.log(path, expectedpath, version) ",
 							"    path == expectedPath ? pm.expect(versionRegex.test(version)).to.be.true : pm.expect(prRegex.test(path)).to.be.true;    ",
 							"});",
 							"",
