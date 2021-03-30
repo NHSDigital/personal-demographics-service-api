@@ -12,8 +12,8 @@ class TestUserRestrictedRetrievePatient:
             retrieve[0]["patient"],
             self.headers
         )
+
         helpers.check_response_status_code(response, 404)
-        helpers.check_response_headers(response, self.headers)
 
     def test_retrieve_patient(self, headers_with_token):
         response = helpers.retrieve_patient(
