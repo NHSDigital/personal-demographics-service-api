@@ -1,6 +1,3 @@
-import urllib
-import requests
-from .configuration import config
 import json
 from .data.pds_scenarios import retrieve, search, update
 from .utils import helpers
@@ -9,6 +6,14 @@ import time
 
 
 class TestUserRestrictedRetrievePatient:
+
+    def test_retrieve_deprecated_url(self, headers_with_token):
+        response = helpers.retrieve_patient_deprecated_url(
+            retrieve[0]["patient"],
+            self.headers
+        )
+
+        helpers.check_response_status_code(response, 404)
 
     def test_retrieve_patient(self, headers_with_token):
         response = helpers.retrieve_patient(
@@ -623,78 +628,6 @@ class TestUserRestrictedPatientUpdate:
         helpers.check_retrieve_response_body(update_response, update[6]["response"])
         helpers.check_response_status_code(update_response, 412)
         helpers.check_response_headers(update_response, self.headers)
-
-
-class TestUserRestrictedOldURL:
-    """Light weighted tests to ensure we cah hit the old end points"""
-
-    def test_retrieve_patient_old(self, headers_with_token):
-        patient = retrieve[0]["patient"]
-        response = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{patient}", headers=self.headers
-        )
-        helpers.check_retrieve_response_body(response, retrieve[0]["response"])
-        helpers.check_response_status_code(response, 200)
-        helpers.check_response_headers(response, self.headers)
-
-    def test_search_patient_happy_path_old(self, headers_with_token):
-        query_params = search[0]["query_params"]
-        if type(query_params) != str:
-            query_params = urllib.parse.urlencode(query_params)
-        response = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient?{query_params}", headers=self.headers
-        )
-        helpers.check_search_response_body(response, search[0]["response"])
-        helpers.check_response_status_code(response, 200)
-        helpers.check_response_headers(response, self.headers)
-
-    def test_update_patient_dob_old(self, headers_with_token, create_random_date):
-        #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
-        patient = update[0]["patient"]
-        response = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{patient}", headers=self.headers
-        )
-
-        patient_record = response.headers["Etag"]
-        versionId = (json.loads(response.text))["meta"]["versionId"]
-
-        # add the new dob to the patch, send the update and check the response
-        update[0]["patch"]["patches"][0]["value"] = self.new_date
-        payload = update[0]["patch"]
-        headers = {
-            "Content-Type": "application/json-patch+json",
-            "If-Match": patient_record,
-        }
-        headers.update(self.headers)
-        update_response = requests.patch(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{patient}", headers=headers, json=payload
-        )
-        print(update_response.text)
-        print(update_response.request.url)
-
-        with check:
-            assert update_response.text == ""
-        helpers.check_response_status_code(update_response, 202)
-        helpers.check_response_headers(update_response, self.headers)
-
-        # send message poll request and check the response contains the updated attributes
-        def poll_message():
-            return helpers.poll_message(
-                update_response.headers["content-location"],
-                self.headers)
-
-        poll_message_response = poll_message()
-        if poll_message_response.status_code == 202:
-            # if status is 202 retry poll attempt after specified amount of time, in ms
-            time.sleep(int(poll_message_response.headers["Retry-After"]) / 1000)
-            poll_message_response = poll_message()
-        print(poll_message_response.status_code)
-
-        with check:
-            assert (json.loads(poll_message_response.text))["birthDate"] == self.new_date
-        with check:
-            assert int((json.loads(poll_message_response.text))["meta"]["versionId"]) == int(versionId) + 1
-        helpers.check_response_status_code(poll_message_response, 200)
 
 
 class TestUserRestrictedRetrieveRelatedPerson:

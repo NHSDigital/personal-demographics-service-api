@@ -1,16 +1,6 @@
 <TargetEndpoint name="apim">
   <FaultRules/>
-    <PreFlow>
-        <Request>
-            <Step>
-                <Name>javascript.URLRewrite</Name>
-            </Step>
-            <Step>
-                <Name>AssignMessage.DisableSuffixCopy</Name>
-            </Step>
-        </Request>
-        <Response/>
-    </PreFlow>
+  <PreFlow/>
   <HTTPTargetConnection>
     {{ HOSTED_TARGET_CONNECTION }}
   </HTTPTargetConnection>
