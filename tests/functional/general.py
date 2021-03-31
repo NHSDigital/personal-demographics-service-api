@@ -59,7 +59,7 @@ def trip_rate_limit(context):
             fhir_ext=FHIR_EXT,
             token=context["token"],
         )
-        response = pds.get_patient_response(patient_id='5900023656')  # Changes per env?
+        response = pds.get_patient_response(patient_id='5900038181')  # Changes per env?
         # only check when the rate limit is tripped
         if response.status_code == 429:
             return response
@@ -130,7 +130,7 @@ def trip_quota(context):
             fhir_ext=FHIR_EXT,
             token=context["token"],
         )
-        response = pds.get_patient_response(patient_id='5900023656')
+        response = pds.get_patient_response(patient_id='5900038181')
         # only check when the rate limit is tripped
         if response.status_code == 429:
             return response
