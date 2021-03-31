@@ -1,6 +1,3 @@
-import urllib
-import requests
-from .configuration import config
 import json
 from .data.pds_scenarios import retrieve, search, update
 from .utils import helpers
@@ -9,6 +6,14 @@ import time
 
 
 class TestUserRestrictedRetrievePatient:
+
+    def test_retrieve_deprecated_url(self, headers_with_token):
+        response = helpers.retrieve_patient_deprecated_url(
+            retrieve[0]["patient"],
+            self.headers
+        )
+
+        helpers.check_response_status_code(response, 404)
 
     def test_retrieve_patient(self, headers_with_token):
         response = helpers.retrieve_patient(
@@ -529,8 +534,8 @@ class TestUserRestrictedPatientUpdate:
 
         poll_message_response = poll_message()
         # Only loop if we need to poll
-        if poll_message_response.status_code == 202: 
-            for i in range(0, 10): # set retries in env var?
+        if poll_message_response.status_code == 202:
+            for i in range(0, 10):  # set retries in env var?
                 # if status is 202 retry poll attempt after specified amount of time, in ms
                 time.sleep(int(poll_message_response.headers["Retry-After"]) / 1000)
                 poll_message_response = poll_message()
@@ -689,7 +694,7 @@ class TestUserRestrictedOldURL:
 
         poll_message_response = poll_message()
         # Only loop if we need to poll
-        if poll_message_response.status_code == 202: 
+        if poll_message_response.status_code == 202:
             for i in range(0, 10):
                 # if status is 202 retry poll attempt after specified amount of time, in ms
                 time.sleep(int(poll_message_response.headers["Retry-After"]) / 1000)
