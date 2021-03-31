@@ -54,9 +54,8 @@ def trip_rate_limit(context):
 
     def rate_limit():
         pds = GenericPdsRequestor(
-            pds_ext=PDS_BASE_PATH,
+            pds_base_path=PDS_BASE_PATH,
             base_url=BASE_URL,
-            fhir_ext=FHIR_EXT,
             token=context["token"],
         )
         response = pds.get_patient_response(patient_id='5900038181')  # Changes per env?
@@ -125,9 +124,8 @@ def trip_quota(context):
 
     def rate_limit():
         pds = GenericPdsRequestor(
-            pds_ext=PDS_BASE_PATH,
+            pds_base_path=PDS_BASE_PATH,
             base_url=BASE_URL,
-            fhir_ext=FHIR_EXT,
             token=context["token"],
         )
         response = pds.get_patient_response(patient_id='5900038181')

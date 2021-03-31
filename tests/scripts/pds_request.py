@@ -94,14 +94,13 @@ class GenericPdsRequestor(GenericRequest):
 
     def __init__(
         self,
-        pds_ext: str,
+        pds_base_path: str,  # contains fhir ext
         base_url: str,  # From config per test
-        fhir_ext: str,
         token: str = None,
         headers: dict = None
     ):
         super(GenericPdsRequestor, self).__init__()
-        self.base_url = f'{base_url}/{pds_ext}/{fhir_ext}'
+        self.base_url = f'{base_url}/{pds_base_path}'
 
         if headers:
             self._headers = headers
