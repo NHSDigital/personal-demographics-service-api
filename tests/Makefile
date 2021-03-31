@@ -14,9 +14,6 @@ up :
 	@echo "Starting up container..."
 	docker-compose $(BASE) up -d
 
-auth :
-	sh scripts/apigee_auth.sh
-
 test-function :
 	@echo "Executing BDD tests..."
 	docker-compose $(BASE) run -T test_env pytest -m 
