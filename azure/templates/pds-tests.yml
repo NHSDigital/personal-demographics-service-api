@@ -63,6 +63,8 @@ steps:
       export KEY_ID="test-1"
       export FHIR_EXT="/FHIR/R4"
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
+      export OAUTH_BASE_URI="https://$(APIGEE_ENVIRONMENT).api.service.nhs.uk"
+      export OAUTH_PROXY="$(SERVICE_BASE_PATH)"
 
       poetry run pytest -v tests/functional/general.py --junitxml=tests/functional-test-report.xml
     displayName: Run proxy behaviour tests
