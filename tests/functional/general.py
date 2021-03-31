@@ -15,8 +15,9 @@ def set_quota_and_rate_limit(
     quota_interval: str = "1",
     quota_time_unit: str = "minute"
 ):
-    """Sets the quota and rate limit on an apigee product. 
+    """Sets the quota and rate limit on an apigee product.
     """
+
     asyncio.run(product.update_ratelimits(quota=quota,
                                           quota_interval=quota_interval,
                                           quota_time_unit=quota_time_unit,
@@ -88,7 +89,9 @@ def rate_limit_message(context):
     EXPECTED_KEYS = {"resourceType", "issue"}
     assert response.keys() == EXPECTED_KEYS
     assert (
-        response["issue"][0]["diagnostics"] == "You have exceeded your application's rate limit. Please see: https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits for more details."
+        response["issue"][0]["diagnostics"] == "You have exceeded your application's rate limit. "
+        "Please see: https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits "
+        "for more details."
     )
 
 
@@ -157,5 +160,7 @@ def quota_message(context):
     EXPECTED_KEYS = {"resourceType", "issue"}
     assert response.keys() == EXPECTED_KEYS
     assert (
-        response["issue"][0]["diagnostics"] == "You have exceeded your application's rate limit. Please see: https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits for more details."
+        response["issue"][0]["diagnostics"] == "You have exceeded your application's rate limit. "
+        "Please see: https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits "
+        "for more details."
     )
