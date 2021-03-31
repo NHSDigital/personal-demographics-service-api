@@ -47,9 +47,24 @@ steps:
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
       export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
       export KEY_ID="test-1"
+      export FHIR_EXT="/FHIR/R4"
 
       poetry run pytest -v tests/functional/test_application_restricted.py --junitxml=tests/functional-test-report.xml
     displayName: Run application restricted tests
+    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+
+  - bash: |
+      export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
+      export APPLICATION_RESTRICTED_WITH_ASID_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_WITH_ASID_PRIVATE_KEY)"
+      export APPLICATION_RESTRICTED_API_KEY="$(JWT_TESTING_API_KEY)"
+      export APPLICATION_RESTRICTED_WITH_ASID_API_KEY="$(JWT_TESTING_WITH_ASID_API_KEY)"
+      export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
+      export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
+      export KEY_ID="test-1"
+      export FHIR_EXT="/FHIR/R4"
+
+      poetry run pytest -v tests/functional/general.py --junitxml=tests/functional-test-report.xml
+    displayName: Run proxy behaviour tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
 
   - task: PublishTestResults@2
