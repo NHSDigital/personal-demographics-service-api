@@ -62,7 +62,7 @@ steps:
       export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
       export KEY_ID="test-1"
       export FHIR_EXT="/FHIR/R4"
-      export APIGEE_TOKEN="$(secret.AccessToken)"
+      export APIGEE_API_TOKEN="$(secret.AccessToken)"
 
       poetry run pytest -v tests/functional/general.py --junitxml=tests/functional-test-report.xml
     displayName: Run proxy behaviour tests
