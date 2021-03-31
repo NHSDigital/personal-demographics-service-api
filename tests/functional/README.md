@@ -19,6 +19,9 @@ This test suite uses [pytest](https://docs.pytest.org/en/stable/)
   - ```PDS_BASE_PATH``` The url for the applications Apigee proxy.
   - ```APIGEE_ENVIRONMENT``` The Apigee Environment you are working in.
   - ```KEY_ID``` The identifier for the key in the key store.
+  - ```APIGEE_API_TOKEN``` An API token to be able to make calls to the Apigee API. It can be retrieved by running the `get_token()` [method](https://docs.apigee.com/api-platform/system-administration/using-gettoken).
+  - ```FHIR_EXT``` The FHIR extension for the PDS API.
+
 ​
 ## Run
 ​
