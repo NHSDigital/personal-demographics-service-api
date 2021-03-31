@@ -12,3 +12,4 @@ KEY_ID = ENV["key_id"]
 
 # PDS
 PDS_BASE_PATH = ENV["pds_base_path"]
+FHIR_EXT = ENV["fhir_ext"]
