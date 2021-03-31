@@ -33,7 +33,6 @@ gitpython = "^3.1.8"
 requests = "^2.24.0"
 locust = "^1.2"
 pytest-bdd = "^4.0.1"
-pyjwt = "^1.7.1"
 cryptography = "^3.2.1"
 python-dateutil = "^2.8.1"
 
@@ -46,6 +45,7 @@ jinja2 = "^2.11.2"
 pytest = "^6.1.2"
 pytest_check = "^1.0.1"
 api-test-utils = {url = "https://github.com/NHSDigital/apim-test-utils/releases/download/v1.0.86-alpha/api_test_utils-1.0.86a0-py3-none-any.whl"}
+pyjwt = "^2.0.1"
 
 [tool.poetry.scripts]
 
