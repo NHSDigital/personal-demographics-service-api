@@ -3,7 +3,7 @@ import asyncio
 from api_test_utils.apigee_api_products import ApigeeApiProducts
 from tests.scripts.pds_request import GenericPdsRequestor
 from pytest_bdd import scenario, given, when, then, parsers
-from .config_files.config import BASE_URL, PDS_BASE_PATH, FHIR_EXT
+from .config_files.config import BASE_URL, PDS_BASE_PATH
 
 """A test suite to test the general proxy behaviour."""
 
