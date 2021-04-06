@@ -4,7 +4,7 @@ from urllib import parse
 from re import sub
 from urllib.parse import urlparse, urlencode
 from typing import Optional
-from typing import Union, Generic, TypeVar
+from typing import Union
 
 
 class GenericRequest:
@@ -49,7 +49,7 @@ class GenericRequest:
     def check_response(
         resp: requests.Response,
         expected_status_code: int,
-        expected_response: Generic[TypeVar('T')],
+        expected_response,
         headers=None,
         redirects=None
     ) -> bool:
@@ -61,7 +61,7 @@ class GenericRequest:
             expected_response (Generic[T]): Expected API response.
 
         Returns:
-            bool: Returns the result of tests. 
+            bool: Returns the result of tests.
         """
         if isinstance(expected_response, list):
             resp['body'] = list(resp['body'].keys())

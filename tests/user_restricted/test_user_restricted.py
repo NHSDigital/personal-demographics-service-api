@@ -1,11 +1,8 @@
 import json
 from .data.pds_scenarios import retrieve, search, update
 from .utils import helpers
-from .configuration import config
 from pytest_check import check
 import time
-import requests
-import urllib
 
 
 class TestUserRestrictedRetrievePatient:
