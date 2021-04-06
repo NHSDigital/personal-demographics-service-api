@@ -4,19 +4,40 @@ from api_test_utils.oauth_helper import OauthHelper
 from api_test_utils.apigee_api_apps import ApigeeApiDeveloperApps
 from api_test_utils.apigee_api_products import ApigeeApiProducts
 
-"""
-Used in:
-https://github.com/NHSDigital/api-management-service-template/tree/master/tests
 
-Tested for app, product and oauth creation:
-https://github.com/NHSDigital/api-management-service-template/blob/master/tests/test_endpoints.py
+async def _set_default_rate_limit(product: ApigeeApiProducts):
+    """Updates an Apigee Product with a default rate limit and quota.
+
+    Args:
+        product (ApigeeApiProducts): Apigee product.
+    """
+    await product.update_ratelimits(quota=60000,
+                                    quota_interval="1",
+                                    quota_time_unit="minute",
+                                    rate_limit="1000ps")
 
 
-"""
+async def _product_with_full_access():
+    """Creates an apigee product with access to all proxy paths and scopes.
+
+    Returns:
+        product (ApigeeApiProducts): Apigee product.
+    """
+    product = ApigeeApiProducts()
+    await product.create_new_product()
+    await _set_default_rate_limit(product)
+    await product.update_scopes([
+        "personal-demographics-service:USER-RESTRICTED",
+        "urn:nhsd:apim:app:level3:",
+        "urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service"
+    ])
+    # Allows access to all proxy paths - so we don't have to specify the pr proxy explicitly
+    await product.update_paths(paths=["/", "/*"])
+    return product
 
 
 @pytest.fixture()
-def get_token(request):
+async def get_token(request):
     """Get an access or refresh token
     some examples:
         1. access_token via simulated oauth (default)
@@ -29,8 +50,14 @@ def get_token(request):
             get_token(grant_type='client_credentials', _jwt=jwt)
         5. access_token using a specific app
             get_token(app=<app>)
-    """
 
+    Args:
+        request(requests): HTTP requests object.
+
+    Returns:
+        _token(dict): Identity Service HTTP Response body
+        e.g. { "accessToken" : "eJkajgolJ...", "refreshToken" : "eJjagk.."}.
+    """
     async def _token(
         grant_type: str = "authorization_code",
         test_app: ApigeeApiDeveloperApps = None,
@@ -58,70 +85,19 @@ def get_token(request):
     return _token
 
 
-async def _set_default_rate_limit(product: ApigeeApiProducts):
-    await product.update_ratelimits(quota=60000,
-                                    quota_interval="1",
-                                    quota_time_unit="minute",
-                                    rate_limit="1000ps")
-
-
-@ pytest.fixture()
-async def test_product():
-    """Create a test product which can be modified by the test"""
-    product = ApigeeApiProducts()
-    await product.create_new_product()
-    _set_default_rate_limit(product)
-    yield product
-    await product.destroy_product()
-
-
-@ pytest.fixture()
-def app():
-    return ApigeeApiDeveloperApps()
-
-
-@ pytest.fixture()
-async def test_app(app):
-    """Create a test app which can be modified in the test"""
-    await app.create_new_app()
-
-    yield app
-    await app.destroy_app()
-
-
-async def _product_with_full_access():
-    product = ApigeeApiProducts()
-    await product.create_new_product()
-    await _set_default_rate_limit(product)
-    await product.update_scopes([
-        "personal-demographics-service:USER-RESTRICTED",
-        "urn:nhsd:apim:app:level3:",
-        "urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service"
-    ])
-    # Causes a break if we specify the proxy
-    # await product.update_proxies(["identity-service-internal-dev", "personal-demographics-int-pr-565"])  # form env
-    # Allows access to all proxy paths, could be risky?
-    await product.update_paths(paths=["/", "/*"])
-    return product
-
-
 @ pytest.fixture(scope="function")
 def setup_session(request, get_token):
-    """This fixture is automatically called once at the start of pytest execution.
+    """This fixture is called at a function level.
     The default app created here should be modified by your tests.
-    If your test requires specific app config then please create your own using
-    the fixture test_app.
-
-    Changes:
-    This fixture can be used to run automatically at the start of a pytest session
-    through scope="session" and autouse=True.
     """
     product = asyncio.run(_product_with_full_access())
     print("\nCreating Default App..")
     # Create a new app
     app = ApigeeApiDeveloperApps()
 
-    asyncio.run(app.create_new_app(callback_url="https://nhsd-apim-testing-internal-dev.herokuapp.com/callback"))
+    asyncio.run(app.create_new_app(
+        callback_url="https://example.org/callback"
+    ))
     # Assign the new product to the app
     asyncio.run(app.add_api_product([product.name]))
 
