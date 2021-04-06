@@ -57,6 +57,7 @@ def _trip_rate_limit(token: str) -> requests.Response:
 
 
 @pytest.mark.happy_path
+@pytest.mark.rate_limit
 @pytest.mark.apmspii_627
 @scenario('./features/proxy_behaviour.feature', 'API Proxy rate limit tripped')
 def test_spike_arrest_policy():
@@ -64,12 +65,15 @@ def test_spike_arrest_policy():
 
 
 @pytest.mark.happy_path
+@pytest.mark.quota
 @pytest.mark.apmspii_627
 @scenario('./features/proxy_behaviour.feature', 'API quota is tripped')
 def test_qouta_limit():
     pass
 
 
+@pytest.mark.quota
+@pytest.mark.rate_limit
 @pytest.mark.apmspii_627
 @given("I have a proxy", target_fixture="context")
 def setup_proxy(setup_session):
@@ -82,6 +86,7 @@ def setup_proxy(setup_session):
 
 
 @pytest.mark.apmspii_627
+@pytest.mark.rate_limit
 @given("the product has a low rate limit set")
 def set_rate_limit(context):
     set_quota_and_rate_limit(context["product"], rate_limit="1ps")
@@ -89,13 +94,33 @@ def set_rate_limit(context):
     return context
 
 
+@pytest.mark.quota
 @pytest.mark.apmspii_627
+@given("the product has a low quota set")
+def set_quota_limit(context):
+    set_quota_and_rate_limit(context["product"], quota=1)
+    assert context["product"].quota == 1
+    return context
+
+
+@pytest.mark.apmspii_627
+@pytest.mark.rate_limit
 @when("the rate limit is tripped")
 def trip_rate_limit(context):
     context["pds"] = _trip_rate_limit(context["token"])
     assert "pds" in context is not None
 
 
+@pytest.mark.quota
+@pytest.mark.apmspii_627
+@when("the quota is tripped")
+def trip_quota(context):
+    context["pds"] = _trip_rate_limit(context["token"])
+    assert "pds" in context is not None
+
+
+@pytest.mark.quota
+@pytest.mark.rate_limit
 @pytest.mark.apmspii_627
 @then(
     parsers.cfparse(
@@ -106,21 +131,8 @@ def rate_limit_status(status, context):
     assert context["pds"].status_code == status
 
 
-@pytest.mark.apmspii_627
-@given("the product has a low quota set")
-def set_quota_limit(context):
-    set_quota_and_rate_limit(context["product"], quota=1)
-    assert context["product"].quota == 1
-    return context
-
-
-@pytest.mark.apmspii_627
-@when("the quota is tripped")
-def trip_quota(context):
-    context["pds"] = _trip_rate_limit(context["token"])
-    assert "pds" in context is not None
-
-
+@pytest.mark.quota
+@pytest.mark.rate_limit
 @pytest.mark.apmspii_627
 @then("returns a rate limit error message")
 def quota_message(context):
