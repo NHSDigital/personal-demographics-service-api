@@ -5,6 +5,7 @@ from pytest_check import check
 import time
 import pytest
 
+
 class TestUserRestrictedRetrievePatient:
 
     def test_retrieve_deprecated_url(self, headers_with_token):
