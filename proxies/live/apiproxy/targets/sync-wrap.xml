@@ -6,7 +6,7 @@
         <Name>ExtractVariables.OAuthErrorFaultString</Name>
       </Step>
       <Step>
-        <Name>AssignMessage.OAuthPolicyErrorResponse</Name>
+        <Name>AssignMessage.Errors.OAuthPolicyResponse</Name>
       </Step>
       <Condition>oauthV2.OauthV2.VerifyAccessToken.failed</Condition>
     </FaultRule>
