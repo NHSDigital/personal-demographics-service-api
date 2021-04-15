@@ -27,7 +27,9 @@ async def _product_with_full_access():
     await product.create_new_product()
     await _set_default_rate_limit(product)
     await product.update_scopes([
-        "urn:nhsd:apim:app:level3:personal-demographics-service"
+        "personal-demographics-service:USER-RESTRICTED",
+        "urn:nhsd:apim:app:level3:",
+        "urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service"
     ])
     # Allows access to all proxy paths - so we don't have to specify the pr proxy explicitly
     await product.update_paths(paths=["/", "/*"])
