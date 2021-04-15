@@ -61,7 +61,7 @@ apigee:
           - name: access
             value: public
           - name: ratelimit
-            value: {{ env.ratelimit | default('5ps') }}
+            value: {{ env.ratelimit | default('300pm') }}
         description: {{ mode.description }}
         displayName: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
         environments: [ {{ env.name }} ]
