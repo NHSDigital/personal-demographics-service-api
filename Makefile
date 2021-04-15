@@ -80,3 +80,6 @@ test-sandbox: export APIGEE_ENVIRONMENT = local
 test-sandbox: export PDS_BASE_PATH = local
 test-sandbox:
 	poetry run pytest -v tests/sandbox/test_sandbox.py
+
+validate-xml: 
+	poetry run python scripts/xml_validator.py
