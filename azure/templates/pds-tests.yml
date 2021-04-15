@@ -63,7 +63,7 @@ steps:
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2"
-
+ 
       poetry run pytest -v tests/functional/test_proxy_behaviour.py --junitxml=tests/functional-test-report.xml
     displayName: Run proxy behaviour tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"

@@ -107,7 +107,7 @@ class GenericPdsRequestor(GenericRequest):
         else:
             self._headers = {
                 'Authorization': f'Bearer {token}',
-                'NHSD-Session-URID': 'ROLD-ID',
+                'NHSD-Session-URID': 'ROLE-ID',
                 'X-Request-ID': str(uuid4()),
             }
 
