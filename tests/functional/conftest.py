@@ -3,7 +3,7 @@ import asyncio
 from api_test_utils.oauth_helper import OauthHelper
 from api_test_utils.apigee_api_apps import ApigeeApiDeveloperApps
 from api_test_utils.apigee_api_products import ApigeeApiProducts
-
+from .config_files import config
 
 async def _set_default_rate_limit(product: ApigeeApiProducts):
     """Updates an Apigee Product with a default rate limit and quota.
@@ -86,7 +86,7 @@ async def get_token(request):
 
 
 @ pytest.fixture(scope="function")
-def setup_session(request, get_token):
+def setup_session(request):
     """This fixture is called at a function level.
     The default app created here should be modified by your tests.
     """
@@ -111,9 +111,13 @@ def setup_session(request, get_token):
             }
         )
     )
+
+    asyncio.run(product.update_environments([config.ENVIRONMENT]))
     oauth = OauthHelper(app.client_id, app.client_secret, app.callback_url)
-    token = asyncio.run(get_token(test_app=app))
-    yield oauth, product, app, token["access_token"]
+    resp = asyncio.run(oauth.get_token_response(grant_type="authorization_code"))
+    token = resp["body"]["access_token"]
+
+    yield product, app, token
 
     # Teardown
     print("\nDestroying Default App..")
