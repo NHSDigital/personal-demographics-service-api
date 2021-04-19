@@ -79,22 +79,10 @@ def test_qouta_limit():
     pass
 
 
-@pytest.mark.quota
-@pytest.mark.rate_limit
-@pytest.mark.apmspii_627
-@given("I have a proxy", target_fixture="context")
-def setup_proxy(setup_session):
-    return {
-        "product": setup_session[0],
-        "app": setup_session[1],
-        "token": setup_session[2],
-    }
-
-
 @pytest.mark.rate_limit
 @pytest.mark.apmspii_627
 @given("I have a proxy with a low rate limit set", target_fixture="context")
-def setup_proxy(setup_session):
+def setup_rate_limit_proxy(setup_session):
     context = {
         "product": setup_session[0],
         "app": setup_session[1],
@@ -108,7 +96,7 @@ def setup_proxy(setup_session):
 @pytest.mark.rate_limit
 @pytest.mark.apmspii_627
 @given("I have a proxy with a low quota set", target_fixture="context")
-def setup_proxy(setup_session):
+def setup_quota_proxy(setup_session):
     context = {
         "product": setup_session[0],
         "app": setup_session[1],

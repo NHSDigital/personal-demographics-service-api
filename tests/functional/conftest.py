@@ -5,6 +5,7 @@ from api_test_utils.apigee_api_apps import ApigeeApiDeveloperApps
 from api_test_utils.apigee_api_products import ApigeeApiProducts
 from .config_files import config
 
+
 async def _set_default_rate_limit(product: ApigeeApiProducts):
     """Updates an Apigee Product with a default rate limit and quota.
 
