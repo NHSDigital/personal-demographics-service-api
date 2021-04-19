@@ -663,7 +663,6 @@ paths:
             | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation. |
             | 403         | INVALID_VALUE              | Multiple results requested when using the API in application-restricted mode. |
             | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
-            | 412         | PRECONDITION_FAILED        | Problem with request. For details, see the `diagnostics` field. |
             | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
   
           content:
@@ -757,7 +756,6 @@ paths:
             | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS number. |
             | 404         | INVALIDATED_RESOURCE       | Patient did exist for given NHS number, but has been invalidated and not superseded by another NHS number. |
             | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
-            | 412         | PRECONDITION_FAILED        | Problem with request. For details, see the `diagnostics` field. |
             | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
     
           content:
@@ -1742,7 +1740,6 @@ paths:
             | 404         | RESOURCE_NOT_FOUND         | No related people exist for given NHS number. |
             | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS number has been invalidated and not superseded by another NHS number. |
             | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
-            | 412         | PRECONDITION_FAILED        | Problem with request. For details, see the `diagnostics` field. |
             | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
 
           content:

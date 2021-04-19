@@ -15,7 +15,6 @@ properties:
     type: object
     description: Reference to a pharmacy `Organization` resource.
     required:
-      - reference
       - identifier
     properties:
       identifier:
