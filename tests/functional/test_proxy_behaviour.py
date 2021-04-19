@@ -46,9 +46,16 @@ def _trip_rate_limit(token: str) -> requests.Response:
             token=token,
         )
         response = pds.get_patient_response(patient_id='5900038181')
+
+        if response.status_code == 401:
+            raise Exception("Requests are unauthorized")
         # only check when the rate limit is tripped
         if response.status_code == 429:
             return response
+        if response.status_code == 200:
+            print("Are you sure that the jwt is the for correct app?")
+        if response.status_code == 404:
+            print(f"Could not find url : {BASE_URL}/{PDS_BASE_PATH}/Patient/5900038181")
 
     for _ in range(0, 10):
         response = _pds_response()
@@ -72,32 +79,29 @@ def test_qouta_limit():
     pass
 
 
-@pytest.mark.quota
 @pytest.mark.rate_limit
 @pytest.mark.apmspii_627
-@given("I have a proxy", target_fixture="context")
-def setup_proxy(setup_session):
-    return {
-        "oauth": setup_session[0],
-        "product": setup_session[1],
-        "app": setup_session[2],
-        "token": setup_session[3],
+@given("I have a proxy with a low rate limit set", target_fixture="context")
+def setup_rate_limit_proxy(setup_session):
+    context = {
+        "product": setup_session[0],
+        "app": setup_session[1],
+        "token": setup_session[2],
     }
-
-
-@pytest.mark.apmspii_627
-@pytest.mark.rate_limit
-@given("the product has a low rate limit set")
-def set_rate_limit(context):
     set_quota_and_rate_limit(context["product"], rate_limit="1ps")
     assert context["product"].rate_limit == "1ps"
     return context
 
 
-@pytest.mark.quota
+@pytest.mark.rate_limit
 @pytest.mark.apmspii_627
-@given("the product has a low quota set")
-def set_quota_limit(context):
+@given("I have a proxy with a low quota set", target_fixture="context")
+def setup_quota_proxy(setup_session):
+    context = {
+        "product": setup_session[0],
+        "app": setup_session[1],
+        "token": setup_session[2],
+    }
     set_quota_and_rate_limit(context["product"], quota=1)
     assert context["product"].quota == 1
     return context
