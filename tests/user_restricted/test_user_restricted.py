@@ -535,10 +535,14 @@ class TestUserRestrictedPatientUpdate:
                 self.headers)
 
         poll_message_response = poll_message()
+        # Only loop if we need to poll
         if poll_message_response.status_code == 202:
-            # if status is 202 retry poll attempt after specified amount of time, in ms
-            time.sleep(int(poll_message_response.headers["Retry-After"]) / 1000)
-            poll_message_response = poll_message()
+            for i in range(0, 10):  # set retries in env var?
+                # if status is 202 retry poll attempt after specified amount of time, in ms
+                time.sleep(int(poll_message_response.headers["Retry-After"]) / 1000)
+                poll_message_response = poll_message()
+                if poll_message_response.status_code == 200:
+                    break
         print(poll_message_response.status_code)
 
         with check:
