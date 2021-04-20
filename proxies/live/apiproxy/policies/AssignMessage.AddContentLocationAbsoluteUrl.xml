@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.AddContentLocationAbsoluteUrl">
+    <DisplayName>AssignMessage.AddContentLocationAbsoluteUrl</DisplayName>
+    <Set>
+        <Headers>
+            <Header name="Content-Location">https://{host}/{proxy.basepath}{response.header.content-location.1}</Header>
+        </Headers>
+    </Set>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+    <AssignTo createNew="false" transport="http" type="request"/>
+</AssignMessage>

@@ -7,6 +7,12 @@
       <Step>
           <Name>AssignMessage.Copy.RequestHeaders</Name>
       </Step>
+      <Step>
+          <Name>AssignMessage.SetHost</Name>
+      </Step>
+      <Step>
+          <Name>AssignMessage.SetPrefer</Name>
+      </Step>
     </Request>
   </PreFlow>
   <PostFlow>

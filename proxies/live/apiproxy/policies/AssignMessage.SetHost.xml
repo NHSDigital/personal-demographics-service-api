@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.SetHost">
+    <DisplayName>AssignMessage.SetHost</DisplayName>
+    <Properties/>
+    <AssignVariable>
+        <Name>host</Name>
+        <Ref>request.header.Host</Ref>
+    </AssignVariable>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+    <AssignTo createNew="false" transport="http" type="request"/>
+</AssignMessage>

@@ -69,6 +69,16 @@
         <Name>AssignMessage.Mirror.RequestID</Name>
         <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
       </Step>
+      <!-- if prefer header has not been set i.e. synce-wrap then add absolute URL to content-location header  -->
+      <Step>
+          <Name>AssignMessage.AddContentLocationAbsoluteURL.xml</Name>
+          <Condition>prefer == null</Condition>
+      </Step>
+      <!-- Remove content-location from response header for sync-wrap 200 response -->
+      <Step>
+          <Name>AssignMessage.RemoveContentLocation</Name>
+          <Condition>request.header.x-sync-wrapped == "true" AND response.header.content-location.1 != null AND response.status.code == 200</Condition>
+      </Step>
     </Response>
   </PreFlow>
   <Flows>
