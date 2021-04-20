@@ -4,15 +4,13 @@ Feature: General Proxy Behaviour
     So that I get correct error messages when I send too many requests.
 
     Scenario: API Proxy rate limit tripped
-        Given I have a proxy 
-        Given the product has a low rate limit set
+        Given I have a proxy with a low rate limit set
         When the rate limit is tripped
         Then I get a 429 HTTP response
         And returns a rate limit error message
 
     Scenario: API quota is tripped
-        Given I have a proxy
-        Given the product has a low quota set
+        Given I have a proxy with a low quota set
         When the quota is tripped
         Then I get a 429 HTTP response
         And returns a rate limit error message

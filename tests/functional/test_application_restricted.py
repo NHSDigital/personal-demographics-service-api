@@ -124,7 +124,8 @@ def set_valid_access_token(auth):
 
     response_json = response.json()
 
-    assert {"access_token", "expires_in", "token_type", "issued_at"} == response_json.keys()
+    # Does our response object contain the expected keys (maybe others too):
+    assert {"access_token", "expires_in", "token_type", "issued_at"} <= set(response_json.keys())
     assert response_json["access_token"] is not None
     assert response_json["token_type"] == "Bearer"
     assert response_json["expires_in"] and int(response_json["expires_in"]) > 0
@@ -172,7 +173,9 @@ def set_expired_access_token(auth):
 
     response_json = response.json()
 
-    assert {"access_token", "expires_in", "token_type", "issued_at"} == response_json.keys()
+    # Does our response object contain the expected keys (maybe others too):
+    assert {"access_token", "expires_in", "token_type", "issued_at"} <= set(response_json.keys())
+
     assert response_json["access_token"] is not None
     assert response_json["token_type"] == "Bearer"
     assert response_json["expires_in"] and int(response_json["expires_in"]) == 0
