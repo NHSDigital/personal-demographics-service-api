@@ -71,7 +71,7 @@
       </Step>
       <!-- if prefer header has not been set i.e. synce-wrap then add absolute URL to content-location header  -->
       <Step>
-          <Name>AssignMessage.AddContentLocationAbsoluteURL</Name>
+          <Name>AssignMessage.AddContentLocationAbsoluteUrl</Name>
           <Condition>prefer == null</Condition>
       </Step>
       <!-- Remove content-location from response header for sync-wrap 200 response -->
