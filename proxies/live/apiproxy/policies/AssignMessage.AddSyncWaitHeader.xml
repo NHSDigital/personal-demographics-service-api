@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.AddSyncWaitHeader">
-  <Add>
+  <Set>
       <Headers>
-          <Header name="X-Sync-Wait">29</Header>
+          <Header name="X-Sync-Wait">10</Header>
       </Headers>
-  </Add>
+  </Set>
   <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
   <AssignTo createNew="false" transport="http" type="request"/>
 </AssignMessage>

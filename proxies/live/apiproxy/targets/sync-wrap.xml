@@ -24,6 +24,7 @@
       </Step>
       <Step>
         <Name>AssignMessage.AddSyncWaitHeader</Name>
+        <Condition>(request.header.X-Sync-Wait.1 LesserThan 0.25) OR (request.header.X-Sync-Wait.1 GreaterThan 29) OR (request.header.X-Sync-Wait.1 Is null)</Condition>
       </Step>
     </Request>
   </PreFlow>
