@@ -47,8 +47,8 @@ steps:
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
       export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
       export KEY_ID="test-1"
-      echo $(Pipeline.Workspace)/secrets/$(JWT_TESTING_API_KEY)
-      echo $(Pipeline.Workspace)/secrets/$(JWT_TESTING_WITH_ASID_API_KEY)
+      echo "JWT Key: ${{ (Pipeline.Workspace)/secrets/$(JWT_TESTING_API_KEY) }}"
+      echo "JWT Key with ASID: ${{ (Pipeline.Workspace)/secrets/$(JWT_TESTING_WITH_ASID_API_KEY) }}"
       
       poetry run pytest -v tests/functional/test_application_restricted.py --junitxml=tests/functional-test-report.xml
     displayName: Run application restricted tests
