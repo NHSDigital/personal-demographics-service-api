@@ -503,7 +503,7 @@ class TestUserRestrictedSearchPatient:
         assert checked_results_count == 4
 
 
-# @pytest.mark.skip(reason="temporarily skipping tests for update as we are using sync-wrap")
+@pytest.mark.skip(reason="temporarily skipping tests for update to redeploy proxy")
 class TestUserRestrictedPatientUpdateAsync:
 
     def test_update_patient_dob(self, headers_with_token, create_random_date):
@@ -643,6 +643,7 @@ class TestUserRestrictedPatientUpdateAsync:
         helpers.check_response_status_code(update_response, 412)
         helpers.check_response_headers(update_response, self.headers)
 
+@pytest.mark.skip(reason="temporarily skipping tests for update need to redeploy proxy")
 class TestUserRestrictedPatientUpdateSyncWrap:
     def test_update_patient_dob(self, headers_with_token, create_random_date):
         #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
