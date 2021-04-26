@@ -70,18 +70,26 @@
         <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
       </Step>
       <!-- if prefer header has not been set i.e. synce-wrap then add absolute URL to content-location header  -->
-      <Step>
+      <!-- <Step>
           <Name>AssignMessage.AddContentLocationAbsoluteUrl</Name>
           <Condition>prefer == null</Condition>
-      </Step>
+      </Step> -->
       <!-- Remove content-location from response header for sync-wrap 200 response -->
-      <Step>
+      <!-- <Step>
           <Name>AssignMessage.RemoveContentLocation</Name>
           <Condition>request.header.x-sync-wrapped == "true" AND response.header.content-location.1 != null AND response.status.code == 200</Condition>
-      </Step>
+      </Step> -->
     </Response>
   </PreFlow>
   <Flows>
+    <Flow name="add_content_location_absolute_url">
+      <Condition> response.header.content-location.1 IsNot null </Condition>
+      <Response>
+        <Step>
+          <Name>AssignMessage.AddContentLocationAbsoluteUrl</Name>
+        </Step>
+      </Response>
+    </Flow>
     <Flow name="application_restricted">
       <Condition>(access-mode Equals "application-restricted")</Condition>
       <Request>
