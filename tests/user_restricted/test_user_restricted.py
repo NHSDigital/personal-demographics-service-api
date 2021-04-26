@@ -507,7 +507,7 @@ class TestUserRestrictedSearchPatient:
 class TestUserRestrictedPatientUpdateAsync:
 
     def test_update_patient_dob(self, headers_with_token, create_random_date):
-        # set to async interaction pattern by setting Prefer header 
+        # set to async interaction pattern by setting Prefer header
         self.headers["Prefer"] = "respond-async"
 
         #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
@@ -579,7 +579,7 @@ class TestUserRestrictedPatientUpdateAsync:
         helpers.check_response_headers(update_response, headers)
 
     def test_update_patient_with_invalid_auth_header(self, headers):
-        self.headers["Prefer"] = "respond-async"        
+        self.headers["Prefer"] = "respond-async"
         headers['authorization'] = 'Bearer abcdef123456789'
         update_response = helpers.update_patient(
             update[2]["patient"],
@@ -643,6 +643,7 @@ class TestUserRestrictedPatientUpdateAsync:
         helpers.check_response_status_code(update_response, 412)
         helpers.check_response_headers(update_response, self.headers)
 
+
 @pytest.mark.skip(reason="temporarily skipping tests for update need to redeploy proxy")
 class TestUserRestrictedPatientUpdateSyncWrap:
     def test_update_patient_dob(self, headers_with_token, create_random_date):
@@ -653,7 +654,6 @@ class TestUserRestrictedPatientUpdateSyncWrap:
         )
         patient_record = response.headers["Etag"]
         versionId = (json.loads(response.text))["meta"]["versionId"]
-        
         # add the new dob to the patch, send the update and check the response
         update[0]["patch"]["patches"][0]["value"] = self.new_date
 
@@ -664,7 +664,6 @@ class TestUserRestrictedPatientUpdateSyncWrap:
             update[0]["patch"],
             self.headers
         )
-        
         with check:
             assert (json.loads(update_response.text))["birthDate"] == self.new_date
         with check:
@@ -679,7 +678,6 @@ class TestUserRestrictedPatientUpdateSyncWrap:
         )
         patient_record = response.headers["Etag"]
         versionId = (json.loads(response.text))["meta"]["versionId"]
-        
         # add the new dob to the patch, send the update and check the response
         update[0]["patch"]["patches"][0]["value"] = self.new_date
 
@@ -690,7 +688,6 @@ class TestUserRestrictedPatientUpdateSyncWrap:
             update[0]["patch"],
             self.headers
         )
-        
         with check:
             assert (json.loads(update_response.text))["birthDate"] == self.new_date
         with check:
@@ -704,8 +701,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
             self.headers
         )
         patient_record = response.headers["Etag"]
-        versionId = (json.loads(response.text))["meta"]["versionId"]
-        
+
         # add the new dob to the patch, send the update and check the response
         update[0]["patch"]["patches"][0]["value"] = self.new_date
 
@@ -720,29 +716,6 @@ class TestUserRestrictedPatientUpdateSyncWrap:
         helpers.check_response_status_code(update_response, 504)
 
     def test_update_patient_with_missing_auth_header(self, headers):
-        update_response = helpers.update_patient(
-            update[1]["patient"],
-            'W/"14"',
-            update[1]["patch"],
-            headers
-        )
-        helpers.check_retrieve_response_body(update_response, update[1]["response"])
-        helpers.check_response_status_code(update_response, 401)
-        helpers.check_response_headers(update_response, headers)
-
-    def test_update_patient_with_missing_auth_header(self, headers):
-        update_response = helpers.update_patient(
-            update[1]["patient"],
-            'W/"14"',
-            update[1]["patch"],
-            headers
-        )
-        helpers.check_retrieve_response_body(update_response, update[1]["response"])
-        helpers.check_response_status_code(update_response, 401)
-        helpers.check_response_headers(update_response, headers)
-
-    def test_update_patient_with_blank_auth_header(self, headers):
-        headers['authorization'] = ''
         update_response = helpers.update_patient(
             update[1]["patient"],
             'W/"14"',
@@ -825,7 +798,8 @@ class TestUserRestrictedPatientUpdateSyncWrap:
         helpers.check_retrieve_response_body(update_response, update[6]["response"])
         helpers.check_response_status_code(update_response, 412)
         helpers.check_response_headers(update_response, self.headers)
-    
+
+
 class TestUserRestrictedRetrieveRelatedPerson:
 
     def test_retrieve_related_person(self, headers_with_token):
