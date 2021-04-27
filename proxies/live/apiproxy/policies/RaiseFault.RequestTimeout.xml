@@ -1,5 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<AssignMessage name="AssignMessage.Errors.RequestTimeout">
+<RaiseFault async="false" continueOnError="false" enabled="true" name="RaiseFault.RequestTimeout">
+  <FaultResponse>
+    <Set>
+      <Headers />
+      <Payload contentType="text/plain" />
+      <StatusCode>504</StatusCode>
+      <ReasonPhrase>Request Timeout</ReasonPhrase>
+    </Set>
     <AssignVariable>
         <Name>pds.error.code</Name>
         <Value>value</Value>
@@ -16,5 +22,6 @@
         <Name>pds.error.diagnostics</Name>
         <Template>The request has not been processed within the timeout period, please retry the request with the same "X-Request-ID".</Template>
     </AssignVariable>
-    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
-</AssignMessage>
+  </FaultResponse>
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</RaiseFault>
