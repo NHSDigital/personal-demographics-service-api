@@ -20,7 +20,6 @@ class TestUserRestrictedRetrievePatient:
             retrieve[0]["patient"],
             self.headers
         )
-        
         helpers.check_response_headers(response, self.headers)
         response_body = json.loads(response.text)
         assert response.status_code == 200
@@ -46,7 +45,6 @@ class TestUserRestrictedRetrievePatient:
 
         assert len(response_body["extension"]) > 0
         assert isinstance(response_body["extension"], list)
-
 
     def test_retrieve_patient_with_missing_auth_header(self, headers):
         response = helpers.retrieve_patient(
