@@ -6,6 +6,6 @@
             <Header name="Content-Location">https://{host}/{proxy.basepath}{response.header.content-location.1}</Header>
         </Headers>
     </Set>
-    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
-    <AssignTo createNew="false" transport="http" type="request"/>
+    <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    <AssignTo createNew="false" transport="http" type="response"/>
 </AssignMessage>
