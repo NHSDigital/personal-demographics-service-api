@@ -16,6 +16,7 @@ class PdsRecord:
             self.headers = dict(response.headers.items())
             self.redirects = self._get_redirects(response)
             self.url = response.url
+            self.response_body = loads(response.text)
 
             try:
                 self.response = loads(response.text)
@@ -111,7 +112,15 @@ class GenericPdsRequestor(GenericRequest):
                 'X-Request-ID': str(uuid4()),
             }
 
+    def update_headers(self, headers: dict):
+        self._headers = headers
+        return
+
     def get_patient_response(self, patient_id: str, **kwargs) -> PdsRecord:
         """Return a PDS record as an object"""
         response = self.get(f'{self.base_url}/Patient/{patient_id}', headers=self._headers, ** kwargs)
+        return PdsRecord(response)
+
+    def update_patient_response(self, patient_id: str, **kwargs) -> PdsRecord:
+        response = self.patch(f'{self.base_url}/Patient/{patient_id}', headers=self._headers, **kwargs)
         return PdsRecord(response)
