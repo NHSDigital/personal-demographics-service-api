@@ -44,10 +44,10 @@
     <Flow name="request_timeout">
       <Request/>
       <Response>
-        <!-- This get's added for sync-wrap errors only -->
-        <Condition>response.status = 504 AND response.headers.X-Apigee.proxy.basepath == "sync-wrap"</Condition>
         <Step>
+          <!-- This get's added for sync-wrap errors only -->
           <Name>RaiseFault.RequestTimeout</Name>
+          <Condition>response.status.code == "504" AND response.headers.X-Apigee.proxy.basepath == "sync-wrap"</Condition>
         </Step>
       </Response>
     </Flow>
