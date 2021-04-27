@@ -57,6 +57,9 @@
         <Step>
           <Name>javascript.SetStatusResponse</Name>
         </Step>
+        <Step>
+          <Name>RaiseFault.400BadRequest</Name>
+        </Step>
       </Response>
       <Condition>(proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
     </Flow>
