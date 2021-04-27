@@ -23,6 +23,7 @@ class TestUserRestrictedRetrievePatient:
         helpers.check_response_headers(response, self.headers)
         response_body = json.loads(response.text)
         assert response.status_code == 200
+        # check id matches
         assert response_body["id"] == retrieve[0]["patient"]
         assert response_body["resourceType"] == "Patient"
         # check the shape of response
