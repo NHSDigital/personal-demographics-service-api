@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage name="AssignMessage.Errors.RequestTimeout">
+    <AssignVariable>
+        <Name>pds.error.code</Name>
+        <Value>value</Value>
+    </AssignVariable>
+    <AssignVariable>
+        <Name>pds.error.coding.code</Name>
+        <Value>REQUEST_TIMEOUT</Value>
+    </AssignVariable>
+    <AssignVariable>
+        <Name>pds.error.coding.display</Name>
+        <Value>The request has timed out</Value>
+    </AssignVariable>
+    <AssignVariable>
+        <Name>pds.error.diagnostics</Name>
+        <Template>The request has not been processed within the timeout period, please retry the request with the same "X-Request-ID".</Template>
+    </AssignVariable>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</AssignMessage>
