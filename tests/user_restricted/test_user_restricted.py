@@ -46,6 +46,8 @@ class TestUserRestrictedRetrievePatient:
         assert len(response_body["extension"]) > 0
         assert isinstance(response_body["extension"], list)
 
+        assert response_body["meta"] is not None
+
     def test_retrieve_patient_with_missing_auth_header(self, headers):
         response = helpers.retrieve_patient(
             retrieve[1]["patient"],
