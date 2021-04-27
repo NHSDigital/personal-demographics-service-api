@@ -21,9 +21,34 @@ class TestUserRestrictedRetrievePatient:
             retrieve[0]["patient"],
             self.headers
         )
-        helpers.check_retrieve_response_body(response, retrieve[0]["response"])
-        helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, self.headers)
+        response_body = json.loads(response.text)
+        assert response.status_code == 200
+        # check id matches
+        assert response_body["id"] == retrieve[0]["patient"]
+        assert response_body["resourceType"] == "Patient"
+        # check the shape of response
+        assert response_body["address"] is not None
+        assert isinstance(response_body["address"], list)
+
+        assert response_body["birthDate"] is not None
+        assert isinstance(response_body["birthDate"], str)
+        assert len(response_body["birthDate"]) > 1
+
+        assert response_body["gender"] is not None
+        assert isinstance(response_body["gender"], str)
+
+        assert response_body["name"] is not None
+        assert isinstance(response_body["name"], list)
+        assert len(response_body["name"]) > 0
+
+        assert len(response_body["identifier"]) > 0
+        assert isinstance(response_body["identifier"], list)
+
+        assert len(response_body["extension"]) > 0
+        assert isinstance(response_body["extension"], list)
+
+        assert response_body["meta"] is not None
 
     def test_retrieve_patient_with_missing_auth_header(self, headers):
         response = helpers.retrieve_patient(
