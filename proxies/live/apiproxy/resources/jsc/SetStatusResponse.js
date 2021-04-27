@@ -40,7 +40,7 @@ if(spine_status != "pass"){
 
 
 var response = {  
-"status" : apigee_status,
+"status" : "fail",
 "version" : "{{ DEPLOYED_VERSION }}" ,
 "revision" : apiproxy_revision, 
 "releaseId" : "{{ RELEASE_RELEASEID }}", 
