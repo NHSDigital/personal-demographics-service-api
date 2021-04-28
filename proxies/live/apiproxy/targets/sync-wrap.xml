@@ -23,18 +23,13 @@
     <Path>/sync-wrap/{{ SERVICE_BASE_PATH }}</Path>
   </LocalTargetConnection>
   <FaultRules>
-    <FaultRule name="pass_through">
-      <Condition>(response.status.code Equals 4*)</Condition>
-      <Step>
-        <!-- No-op fault rule. Prevent 4xx entering error state. -->
-        <Condition>(response.status.code Equals "504")</Condition>
-        <Name>Quota</Name>
-      </Step>
-    </FaultRule>
     <FaultRule name="request_timeout">
       <Condition>(response.status.code Equals "504")</Condition>
       <Step>
-        <Name>RaiseFault.RequestTimeout</Name>
+        <Name>AssignMessage.Errors.RequestTimeout</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Errors.CatchAllMessage</Name>
       </Step>
     </FaultRule>
     <FaultRule name="access_token_expired">
@@ -47,9 +42,4 @@
       <Condition>oauthV2.OauthV2.VerifyAccessToken.failed</Condition>
     </FaultRule>
   </FaultRules>
-  <DefaultFaultRule>
-    <Step>
-      <Name>AssignMessage.Errors.CatchAllMessage</Name>
-    </Step>
-  </DefaultFaultRule>
 </TargetEndpoint>
