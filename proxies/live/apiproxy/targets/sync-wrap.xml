@@ -1,28 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <TargetEndpoint name="sync-wrap">
-  <FaultRules>
-    <FaultRule name="access_token_expired">
-      <Step>
-        <Name>ExtractVariables.OAuthErrorFaultString</Name>
-      </Step>
-      <Step>
-        <Name>AssignMessage.Errors.OAuthPolicyResponse</Name>
-      </Step>
-      <Condition>oauthV2.OauthV2.VerifyAccessToken.failed</Condition>
-    </FaultRule>
-    <!-- Check for request time outs and add a friendly error message -->
-    <!-- <FaultRule name="request_time_out">
-      <Condition>response.status.code == 504 AND response.headers.X-Apigee.proxy.basepath == "sync-wrap"</Condition>
-      <Step>
-        <Name>AssignMessage.Errors.RequestTimeout</Name>
-      </Step>
-    </FaultRule> -->
-  </FaultRules>
-  <DefaultFaultRule>
-    <Step>
-      <Name>AssignMessage.Errors.CatchAllMessage</Name>
-    </Step>
-  </DefaultFaultRule>
   <PreFlow>
     <Request>
       <Step>
@@ -40,21 +17,39 @@
       </Step>
     </Request>
   </PreFlow>
-  <Flows>
-    <Flow name="request_timeout">
-      <Request/>
-      <Response>
-        <Step>
-          <!-- This get's added for sync-wrap errors only -->
-          <Name>RaiseFault.RequestTimeout</Name>
-          <Condition>response.status.code == "504" AND response.headers.X-Apigee.proxy.basepath == "sync-wrap"</Condition>
-        </Step>
-      </Response>
-    </Flow>
-  </Flows>
   <LocalTargetConnection>
     <APIProxy>sync-wrap-{{ APIGEE_ENVIRONMENT }}</APIProxy>
     <ProxyEndpoint>default</ProxyEndpoint>
     <Path>/sync-wrap/{{ SERVICE_BASE_PATH }}</Path>
   </LocalTargetConnection>
+  <FaultRules>
+    <FaultRule name="pass_through">
+      <Condition>(response.status.code Equals 4*)</Condition>
+      <Step>
+        <!-- No-op fault rule. Prevent 4xx entering error state. -->
+        <Condition>(response.status.code Equals "504")</Condition>
+        <Name>Quota</Name>
+      </Step>
+    </FaultRule>
+    <FaultRule name="request_timeout">
+      <Condition>(response.status.code Equals "504")</Condition>
+      <Step>
+        <Name>RaiseFault.RequestTimeout</Name>
+      </Step>
+    </FaultRule>
+    <FaultRule name="access_token_expired">
+      <Step>
+        <Name>ExtractVariables.OAuthErrorFaultString</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Errors.OAuthPolicyResponse</Name>
+      </Step>
+      <Condition>oauthV2.OauthV2.VerifyAccessToken.failed</Condition>
+    </FaultRule>
+  </FaultRules>
+  <DefaultFaultRule>
+    <Step>
+      <Name>AssignMessage.Errors.CatchAllMessage</Name>
+    </Step>
+  </DefaultFaultRule>
 </TargetEndpoint>
