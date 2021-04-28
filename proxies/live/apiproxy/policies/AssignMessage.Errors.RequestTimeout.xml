@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <AssignMessage name="AssignMessage.Errors.RequestTimeout">
+    <Set>
+        <StatusCode>408</StatusCode>
+    </Set>
     <AssignVariable>
         <Name>pds.error.code</Name>
-        <Value>value</Value>
+        <Value>timeoeut</Value>
     </AssignVariable>
     <AssignVariable>
         <Name>pds.error.coding.code</Name>
-        <Value>REQUEST_TIMEOUT</Value>
+        <Value>UNABLE_TO_CALL_SERVICE</Value>
     </AssignVariable>
     <AssignVariable>
         <Name>pds.error.coding.display</Name>
-        <Value>The request has timed out</Value>
+        <Value>Unable to call Service</Value>
     </AssignVariable>
     <AssignVariable>
         <Name>pds.error.diagnostics</Name>
-        <Template>The request has not been processed within the timeout period, please retry the request with the same "X-Request-ID".</Template>
+        <Template>For a SyncAsync wrapped request, the downstream domain processing has not completed within the configured timeout period.</Template>
     </AssignVariable>
     <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
 </AssignMessage>
