@@ -8,6 +8,10 @@ from .config_files.environment import ENV
 from pytest_bdd import scenario, given, when, then, parsers
 
 
+def teardown_function(function):
+    time.sleep(0.01)
+
+
 def get_patient_request(headers: dict, extra_params: dict = None):
     params = {"family": "Smith", "gender": "female", "birthdate": "eq2010-10-22"}
     if extra_params:
