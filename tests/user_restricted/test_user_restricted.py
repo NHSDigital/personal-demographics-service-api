@@ -735,7 +735,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
             self.headers
         )
 
-        helpers.check_response_status_code(update_response, 504)
+        helpers.check_response_status_code(update_response, 408)
 
     def test_update_patient_with_missing_auth_header(self, headers):
         update_response = helpers.update_patient(
