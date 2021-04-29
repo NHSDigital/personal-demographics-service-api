@@ -5,7 +5,7 @@
     </Set>
     <AssignVariable>
         <Name>pds.error.code</Name>
-        <Value>timeoeut</Value>
+        <Value>timeout</Value>
     </AssignVariable>
     <AssignVariable>
         <Name>pds.error.coding.code</Name>
