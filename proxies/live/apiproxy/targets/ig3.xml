@@ -73,10 +73,10 @@
   </PreFlow>
   <Flows>
     <Flow name="set_content_location_absolute_url">
-      <Condition>(prefer IsNot "respond-async") AND (response.header.content-location.1 MatchesPath "/_poll/*")</Condition>
+      <Condition>(request.header.prefer IsNot "respond-async") AND (response.header.content-location MatchesPath "/_poll/*")</Condition>
       <Response>
         <Step>
-          <Name>AssignMessage.AddContentLocationAbsoluteUrl</Name>
+          <Name>AssignMessage.SetContentLocationAbsoluteUrl</Name>
         </Step>
       </Response>
     </Flow>
