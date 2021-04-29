@@ -17,7 +17,7 @@
     </AssignVariable>
     <AssignVariable>
         <Name>pds.error.diagnostics</Name>
-        <Value>For a synchronous request, the downstream domain processing has not completed within the configured timeout period. Please retry using the same 'X-Request-ID'.</Value>
+        <Value>The downstream domain processing has not completed within the configured timeout period. Retry your request using the same 'X-Request-ID'.</Value>
     </AssignVariable>
     <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
 </AssignMessage>
