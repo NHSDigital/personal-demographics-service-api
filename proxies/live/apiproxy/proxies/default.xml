@@ -7,12 +7,6 @@
       <Step>
           <Name>AssignMessage.Copy.RequestHeaders</Name>
       </Step>
-      <Step>
-          <Name>AssignMessage.SetHost</Name>
-      </Step>
-      <Step>
-          <Name>AssignMessage.SetPrefer</Name>
-      </Step>
     </Request>
   </PreFlow>
   <PostFlow>
@@ -89,7 +83,7 @@
   </RouteRule>
   <RouteRule name="sync-wrap">
     <Condition>
-      request.verb = "PATCH" AND (proxy.pathsuffix MatchesPath "/Patient/{id}") AND request.header.prefer != "respond-async" AND request.header.x-sync-wrapped != "true"
+      request.verb = "PATCH" AND (proxy.pathsuffix MatchesPath "/Patient/{id}") AND request.header.prefer NotEquals "respond-async" AND request.header.x-sync-wrapped NotEquals "true"
     </Condition>
   <TargetEndpoint>sync-wrap</TargetEndpoint>
 </RouteRule>
