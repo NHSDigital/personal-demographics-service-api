@@ -3,7 +3,6 @@ import jwt
 import uuid
 import time
 import requests
-from requests.api import request
 from .config_files import config
 from .config_files.environment import ENV
 from pytest_bdd import scenario, given, when, then, parsers
@@ -29,7 +28,7 @@ def patch_patient_request(headers: dict):
         f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9123123123",
         headers=headers,
     )
-    
+
 
 @given("I determine whether an asid is required")
 def check_which_test_app_to_use():
@@ -252,7 +251,7 @@ def get_patient_two_results(auth, context):
 
 
 @when("I PATCH a patient with prefer header set to respond-async")
-def patch_patient(auth, context):
+def patch_async_patient(auth, context):
     authentication = auth["access_token"]
 
     if authentication is not None:
@@ -273,7 +272,7 @@ def patch_patient(auth, context):
 
 
 @when("I PATCH a patient and ommit the prefer header")
-def patch_patient(auth, context):
+def patch_sync_patient(auth, context):
     authentication = auth["access_token"]
 
     if authentication is not None:

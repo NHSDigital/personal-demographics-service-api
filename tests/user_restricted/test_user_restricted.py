@@ -552,10 +552,9 @@ class TestUserRestrictedPatientUpdateAsync:
         )
         with check:
             assert update_response.text == ""
-            assert re.search(r"/_poll/\w+", update_response.headers["Content-Location"]) != None
+            assert re.search(r"/_poll/\w+", update_response.headers["Content-Location"]) is not None
         helpers.check_response_status_code(update_response, 202)
         helpers.check_response_headers(update_response, self.headers)
-
 
         # send message poll request and check the response contains the updated attributes
         def poll_message():
