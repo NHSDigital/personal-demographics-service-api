@@ -24,9 +24,9 @@
   </LocalTargetConnection>
   <FaultRules>
     <FaultRule name="pass_through">
-      <Condition>(response.status.code NotEquals "504")</Condition>
+      <Condition>(response.status.code GreaterThanOrEquals 400) And (response.status.code LesserThan 500)</Condition>
       <Step>
-        <!-- No-op pass through -->
+        <!--No-op pass through -->
         <Condition>(response.status.code Equals "504")</Condition>
         <Name>Quota</Name>
       </Step>
