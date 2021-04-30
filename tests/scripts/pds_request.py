@@ -16,12 +16,12 @@ class PdsRecord:
             self.headers = dict(response.headers.items())
             self.redirects = self._get_redirects(response)
             self.url = response.url
-            self.response_body = loads(response.text)
-
             try:
                 self.response = loads(response.text)
-            except JSONDecodeError:
-                raise Exception(f'UNEXPECTED RESPONSE {response.text}:')
+            except JSONDecodeError as e:
+                print(f'UNEXPECTED RESPONSE: {response.text}. \n Error: {e}')
+                self.response = {}
+                # raise Exception(f'UNEXPECTED RESPONSE: {response.text}. \n Error: {e}')
 
         # if the response is a list of entries i.e. a response from a search
         if 'entry' in self.response:
@@ -35,7 +35,7 @@ class PdsRecord:
         else:
             self._construct(self.response)
 
-    @property
+    @ property
     def is_sensitive(self):
         """Stored boolean to identify if patient record is considered sensitive"""
         security = getattr(self, 'security', None)
@@ -50,7 +50,7 @@ class PdsRecord:
             else:
                 setattr(self, k, v)
 
-    @staticmethod
+    @ staticmethod
     def _get_redirects(response: Response) -> dict:
         redirects = {}
         if response.history:
@@ -58,7 +58,7 @@ class PdsRecord:
                 redirects[i] = {'status_code': resp.status_code, 'url': resp.url, 'headers': resp.headers}
         return redirects
 
-    @staticmethod
+    @ staticmethod
     def _parse_error(response: dict) -> dict:
         return {response['resourceType']: response['issue'][0]}
 
@@ -91,12 +91,12 @@ class PdsRecord:
 
 
 class GenericPdsRequestor(GenericRequest):
-    """This class is used to make PDS requests. """
+    """A utility class to make generic PDS requests. """
 
     def __init__(
         self,
-        pds_base_path: str,  # contains fhir ext
-        base_url: str,  # From config per test
+        pds_base_path: str,
+        base_url: str,
         token: str = None,
         headers: dict = None
     ):
@@ -112,15 +112,40 @@ class GenericPdsRequestor(GenericRequest):
                 'X-Request-ID': str(uuid4()),
             }
 
-    def update_headers(self, headers: dict):
-        self._headers = headers
-        return
+    @ property
+    def headers(self):
+        return self._headers
+
+    @ headers.setter
+    def headers(self, headers: dict):
+        self._headers.update(headers)
 
     def get_patient_response(self, patient_id: str, **kwargs) -> PdsRecord:
         """Return a PDS record as an object"""
         response = self.get(f'{self.base_url}/Patient/{patient_id}', headers=self._headers, ** kwargs)
         return PdsRecord(response)
 
-    def update_patient_response(self, patient_id: str, **kwargs) -> PdsRecord:
-        response = self.patch(f'{self.base_url}/Patient/{patient_id}', headers=self._headers, **kwargs)
+    def update_patient_response(self, patient_id: str, payload: dict, **kwargs) -> PdsRecord:
+        """Sends a patch request and returns a PDS record as an object.
+
+        Args:
+            patient_id (str): Patient to update.
+            payload: A JSON patch. E.g:
+                {
+                    "patches": [
+                        { "op": "add", "path": "/deceasedDate", "value": "2020-01-01" }
+                    ]
+                }
+            See for more details:
+        https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir#api-Default-updatePatientPartial.
+
+        Returns:
+            response (PdsRecord): PDS Record object."""
+        response = self.patch(
+            f'{self.base_url}/Patient/{patient_id}',
+            headers=self._headers,
+            json=payload,
+            **kwargs
+        )
+
         return PdsRecord(response)
