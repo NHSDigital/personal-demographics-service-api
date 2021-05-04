@@ -531,9 +531,6 @@ class TestUserRestrictedSearchPatient:
 class TestUserRestrictedPatientUpdateAsync:
 
     def test_update_patient_dob(self, headers_with_token, create_random_date):
-        # set to async interaction pattern by setting Prefer header
-        self.headers["Prefer"] = "respond-async"
-
         #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
         response = helpers.retrieve_patient(
             update[0]["patient"],
@@ -541,6 +538,9 @@ class TestUserRestrictedPatientUpdateAsync:
         )
         patient_record = response.headers["Etag"]
         versionId = (json.loads(response.text))["meta"]["versionId"]
+
+        # set to async interaction pattern by setting Prefer header
+        self.headers["Prefer"] = "respond-async"
 
         # add the new dob to the patch, send the update and check the response
         update[0]["patch"]["patches"][0]["value"] = self.new_date
@@ -555,6 +555,8 @@ class TestUserRestrictedPatientUpdateAsync:
             assert re.search(r"/_poll/\w+", update_response.headers["Content-Location"]) is not None
         helpers.check_response_status_code(update_response, 202)
         helpers.check_response_headers(update_response, self.headers)
+
+        del self.headers["Prefer"]
 
         # send message poll request and check the response contains the updated attributes
         def poll_message():
