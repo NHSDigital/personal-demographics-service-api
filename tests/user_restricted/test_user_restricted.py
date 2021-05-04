@@ -659,6 +659,7 @@ class TestUserRestrictedPatientUpdateAsync:
         helpers.check_response_headers(update_response, self.headers)
 
     def test_update_patient_with_missing_x_request_header(self, headers_with_token):
+        self.headers["Prefer"] = "respond-async"
         self.headers.pop("X-Request-ID")
         update_response = helpers.update_patient(
             update[6]["patient"],
