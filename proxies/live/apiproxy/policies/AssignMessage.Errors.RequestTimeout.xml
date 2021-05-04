@@ -2,6 +2,7 @@
 <AssignMessage name="AssignMessage.Errors.RequestTimeout">
     <Set>
         <StatusCode>408</StatusCode>
+        <ReasonPhrase>UNABLE_TO_CALL_SERVICE</ReasonPhrase>
     </Set>
     <AssignVariable>
         <Name>pds.error.code</Name>
