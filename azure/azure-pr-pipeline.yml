@@ -67,9 +67,6 @@ extends:
                   REQUIRE_ASID: true
               post_deploy:
                   - template: templates/pds-tests.yml
-                    # parameters:
-                    #   test_pack_path: ./e2e/smoke.json
-                    #   test_type: smoke
             - environment: internal-dev-sandbox
               proxy_path: sandbox
               post_deploy:
