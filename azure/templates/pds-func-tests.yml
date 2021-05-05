@@ -1,0 +1,93 @@
+parameters:
+    # - name: test_pack_path
+    # - name: test_type
+
+steps:
+    - bash: poetry install
+      workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
+      displayName: Setup tests
+
+    - bash: |
+          export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
+          export APPLICATION_RESTRICTED_WITH_ASID_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_WITH_ASID_PRIVATE_KEY)"
+          export APPLICATION_RESTRICTED_API_KEY="$(JWT_TESTING_API_KEY)"
+          export APPLICATION_RESTRICTED_WITH_ASID_API_KEY="$(JWT_TESTING_WITH_ASID_API_KEY)"
+          export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
+          export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
+          export KEY_ID="test-1"
+
+          poetry run pytest -v tests/functional/test_application_restricted.py --junitxml=tests/functional-test-report.xml
+      displayName: Run application restricted tests
+      workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+
+    - task: PublishTestResults@2
+      displayName: "Publish application restricted test results"
+      inputs:
+          testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/functional-test-report.xml
+          failTaskOnFailedTests: true
+
+    - bash: |
+          export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
+          export APPLICATION_RESTRICTED_WITH_ASID_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_WITH_ASID_PRIVATE_KEY)"
+          export APPLICATION_RESTRICTED_API_KEY=" "
+          export APPLICATION_RESTRICTED_WITH_ASID_API_KEY=" "
+          export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
+          export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
+          export KEY_ID="test-1"
+          export APIGEE_API_TOKEN="$(secret.AccessToken)"
+          export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
+          export OAUTH_PROXY="oauth2"
+          export CLIENT_ID="$(CLIENT_ID)"
+          export CLIENT_SECRET="$(CLIENT_SECRET)"
+
+          poetry run pytest -v tests/functional/test_proxy_behaviour.py --junitxml=tests/proxy-behaviour-test-report.xml
+      displayName: Run proxy behaviour tests
+      workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+
+    - task: PublishTestResults@2
+      displayName: "Publish proxy behaviour test results"
+      inputs:
+          testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/proxy-behaviour-test-report.xml
+          failTaskOnFailedTests: true
+
+    - bash: |
+          export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
+          export APPLICATION_RESTRICTED_WITH_ASID_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_WITH_ASID_PRIVATE_KEY)"
+          export APPLICATION_RESTRICTED_API_KEY=" "
+          export APPLICATION_RESTRICTED_WITH_ASID_API_KEY=" "
+          export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
+          export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
+          export KEY_ID="test-1"
+          export APIGEE_API_TOKEN="$(secret.AccessToken)"
+          export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
+          export OAUTH_PROXY="oauth2"
+          export CLIENT_ID="$(CLIENT_ID)"
+          export CLIENT_SECRET="$(CLIENT_SECRET)"
+
+          poetry run pytest -v tests/functional/test_sync_wrap.py --junitxml=tests/proxy-behaviour-test-report.xml
+      displayName: Run sync wrap tests
+      workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+
+    - task: PublishTestResults@2
+      displayName: "Publish sync wrap test results"
+      inputs:
+          testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/sync-wrap-test-report.xml
+          failTaskOnFailedTests: true
+
+    - bash: |
+          export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
+          export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
+          export CLIENT_ID="$(CLIENT_ID)"
+          export CLIENT_SECRET="$(CLIENT_SECRET)"
+          export REDIRECT_URI="https://nhsd-apim-testing-internal-dev.herokuapp.com/callback"
+          export AUTHENTICATE_URL="https://nhsd-apim-testing-internal-dev.herokuapp.com/"
+
+          poetry run pytest -v tests/user_restricted/test_user_restricted.py --junitxml=tests/user-restricted-test-report.xml
+      displayName: Run user restricted tests
+      workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+
+    - task: PublishTestResults@2
+      displayName: "Publish user restricted test results"
+      inputs:
+          testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/user-restricted-test-report.xml
+          failTaskOnFailedTests: true
