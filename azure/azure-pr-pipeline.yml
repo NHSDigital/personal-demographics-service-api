@@ -52,11 +52,10 @@ extends:
             - environment: internal-dev
               make_spec_visible: true
               post_deploy:
-                  - template: templates/pds-e2e-tests.yml
+                  - template: templates/pds-tests.yml
                     parameters:
                         test_pack_path: ./e2e/smoke.json
                         test_type: smoke
-                  - template: templates/pds-tests.yml
             - environment: internal-dev
               service_name: ${{ variables.service_name }}-asid-required
               short_service_name: ${{ variables.short_service_name }}-asid
@@ -68,6 +67,9 @@ extends:
                   REQUIRE_ASID: true
               post_deploy:
                   - template: templates/pds-tests.yml
+                    parameters:
+                        test_pack_path: ./e2e/smoke.json
+                        test_type: smoke
               depends_on:
                   - internal_dev
             - environment: internal-dev-sandbox
