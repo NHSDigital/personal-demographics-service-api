@@ -40,11 +40,10 @@ def test_sync_polling_rate_limit():
 @pytest.mark.sync_wrap
 @pytest.mark.apmspii_832
 @given("I have a low sync-wrap timeout", target_fixture="context")
-def _setup(sync_wrap_low_wait_update_gender: PdsRecord):
+def _setup(sync_wrap_low_wait_update: PdsRecord):
     context = {
-        "pds": sync_wrap_low_wait_update_gender
+        "pds": sync_wrap_low_wait_update
     }
-    print(sync_wrap_low_wait_update_gender.response)
     return context
 
 
@@ -97,14 +96,15 @@ def trip_rate_limit(context: dict):
 @pytest.mark.sync_wrap
 @pytest.mark.apmspii_874
 @when("the rate limit is tripped with an async request")
-def trip_rate_limit_async(context: dict):
+def trip_rate_limit_async(context: dict, create_random_date):
     context["pds"].headers = {
         "Prefer": "respond-async"
     }
+
     for i in range(10):
         response = context["pds"].update_patient_response(
             patient_id='5900038181',
-            payload={"patches": [{"op": "replace", "path": "/birthDate", "value": "2001-01-01"}]}
+            payload={"patches": [{"op": "replace", "path": "/birthDate", "value": create_random_date}]}
         )
         if response.status_code == 429:
             context["pds"] = response
@@ -114,13 +114,13 @@ def trip_rate_limit_async(context: dict):
 @pytest.mark.sync_wrap
 @pytest.mark.apmspii_874
 @when("the rate limit is tripped with sync-wrap polling")
-def trip_rate_limit_sync_polling(context: dict):
+def trip_rate_limit_sync_polling(context: dict, create_random_date):
     context["pds"].headers = {
         "X-Sync-Wait": "29"
     }
     response = context["pds"].update_patient_response(
         patient_id='5900038181',
-        payload={"patches": [{"op": "replace", "path": "/birthDate", "value": "2001-01-01"}]}
+        payload={"patches": [{"op": "replace", "path": "/birthDate", "value": create_random_date}]}
     )
     assert response.status_code == 429
     if response.status_code == 429:

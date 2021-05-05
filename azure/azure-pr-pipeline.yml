@@ -56,6 +56,7 @@ extends:
                     parameters:
                         test_pack_path: ./e2e/smoke.json
                         test_type: smoke
+                  - template: templates/pds-tests.yml
             - environment: internal-dev
               service_name: ${{ variables.service_name }}-asid-required
               short_service_name: ${{ variables.short_service_name }}-asid
@@ -67,6 +68,8 @@ extends:
                   REQUIRE_ASID: true
               post_deploy:
                   - template: templates/pds-tests.yml
+              depends_on:
+                  - internal_dev
             - environment: internal-dev-sandbox
               proxy_path: sandbox
               post_deploy:

@@ -5,6 +5,7 @@ from api_test_utils.oauth_helper import OauthHelper
 from api_test_utils.apigee_api_apps import ApigeeApiDeveloperApps
 from api_test_utils.apigee_api_products import ApigeeApiProducts
 from .config_files import config
+import random
 
 
 async def _set_default_rate_limit(product: ApigeeApiProducts):
@@ -161,14 +162,14 @@ def setup_patch(setup_session):
 
 
 @pytest.fixture()
-def sync_wrap_low_wait_update_gender(setup_patch: GenericPdsRequestor) -> PdsRecord:
+def sync_wrap_low_wait_update(setup_patch: GenericPdsRequestor, create_random_date) -> PdsRecord:
     pds = setup_patch["pds"]
     pds.headers = {
         "X-Sync-Wait": "0.25"
     }
     resp = pds.update_patient_response(
         patient_id='5900038181',
-        payload={"patches": [{"op": "replace", "path": "/birthDate", "value": "2001-01-01"}]}
+        payload={"patches": [{"op": "replace", "path": "/birthDate", "value": create_random_date}]}
     )
     return resp
 
@@ -193,3 +194,12 @@ def set_quota_and_rate_limit(
                                           quota_interval=quota_interval,
                                           quota_time_unit=quota_time_unit,
                                           rate_limit=rate_limit))
+
+
+@pytest.fixture()
+def create_random_date():
+    day = str(random.randrange(1, 28)).zfill(2)
+    month = str(random.randrange(1, 12)).zfill(2)
+    year = random.randrange(1940, 2020)
+    new_date = f"{year}-{month}-{day}"
+    return new_date
