@@ -52,7 +52,7 @@ extends:
             - environment: internal-dev
               make_spec_visible: true
               post_deploy:
-                  - template: templates/pds-tests.yml
+                  - template: templates/pds-e2e-tests.yml
                     parameters:
                         test_pack_path: ./e2e/smoke.json
                         test_type: smoke
