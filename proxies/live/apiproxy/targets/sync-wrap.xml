@@ -54,6 +54,9 @@
       <Step>
         <Name>AssignMessage.Errors.RateLimitExceeded</Name>
       </Step>
+      <Step>
+        <Name>AssignMessage.Errors.CatchAllMessage</Name>
+      </Step>
     </FaultRule>
   </FaultRules>
   <DefaultFaultRule>
