@@ -142,6 +142,7 @@ def set_valid_access_token(auth):
     )
 
     response_json = response.json()
+    print(response_json)
 
     # Does our response object contain the expected keys (maybe others too):
     assert {"access_token", "expires_in", "token_type", "issued_at"} <= set(response_json.keys())
