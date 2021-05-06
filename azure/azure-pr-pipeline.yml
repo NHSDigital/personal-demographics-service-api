@@ -70,8 +70,8 @@ extends:
               parameters:
                 test_pack_path: ./e2e/smoke.json
                 test_type: smoke
-              depends_on:
-                - internal_dev
+          depends_on:
+            - internal_dev
         - environment: internal-dev-sandbox
           proxy_path: sandbox
           post_deploy:
