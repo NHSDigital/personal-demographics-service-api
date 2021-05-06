@@ -24,6 +24,9 @@
   </LocalTargetConnection>
   <FaultRules>
     <FaultRule name="pass_through">
+      <!-- 4XX errors have come from Spine and can be sent to the user unmodified.
+      Other errors are either caught and reformatted on a case-by-case basis or
+      we will simply present an 'unknown error'. This is to prevent information leakage. -->
       <Condition>(response.status.code GreaterThanOrEquals 400) And (response.status.code LesserThan 500)</Condition>
       <Step>
         <!--No-op pass through -->
