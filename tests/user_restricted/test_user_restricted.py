@@ -3,6 +3,7 @@ from .data.pds_scenarios import retrieve, search, update
 from .utils import helpers
 from pytest_check import check
 import time
+import re
 
 
 class TestUserRestrictedRetrievePatient:
@@ -527,7 +528,7 @@ class TestUserRestrictedSearchPatient:
         assert checked_results_count == 4
 
 
-class TestUserRestrictedPatientUpdate:
+class TestUserRestrictedPatientUpdateAsync:
 
     def test_update_patient_dob(self, headers_with_token, create_random_date):
         #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
@@ -537,6 +538,9 @@ class TestUserRestrictedPatientUpdate:
         )
         patient_record = response.headers["Etag"]
         versionId = (json.loads(response.text))["meta"]["versionId"]
+
+        # set to async interaction pattern by setting Prefer header
+        self.headers["Prefer"] = "respond-async"
 
         # add the new dob to the patch, send the update and check the response
         update[0]["patch"]["patches"][0]["value"] = self.new_date
@@ -548,8 +552,11 @@ class TestUserRestrictedPatientUpdate:
         )
         with check:
             assert update_response.text == ""
+            assert re.search(r"/_poll/\w+", update_response.headers["Content-Location"]) is not None
         helpers.check_response_status_code(update_response, 202)
         helpers.check_response_headers(update_response, self.headers)
+
+        del self.headers["Prefer"]
 
         # send message poll request and check the response contains the updated attributes
         def poll_message():
@@ -566,13 +573,173 @@ class TestUserRestrictedPatientUpdate:
                 poll_message_response = poll_message()
                 if poll_message_response.status_code == 200:
                     break
-        print(poll_message_response.status_code)
 
         with check:
             assert (json.loads(poll_message_response.text))["birthDate"] == self.new_date
         with check:
             assert int((json.loads(poll_message_response.text))["meta"]["versionId"]) == int(versionId) + 1
         helpers.check_response_status_code(poll_message_response, 200)
+
+    def test_update_patient_with_missing_auth_header(self, headers):
+        self.headers["Prefer"] = "respond-async"
+        update_response = helpers.update_patient(
+            update[1]["patient"],
+            'W/"14"',
+            update[1]["patch"],
+            headers
+        )
+        helpers.check_retrieve_response_body(update_response, update[1]["response"])
+        helpers.check_response_status_code(update_response, 401)
+        helpers.check_response_headers(update_response, headers)
+
+    def test_update_patient_with_blank_auth_header(self, headers):
+        self.headers["Prefer"] = "respond-async"
+        headers['authorization'] = ''
+        update_response = helpers.update_patient(
+            update[1]["patient"],
+            'W/"14"',
+            update[1]["patch"],
+            headers
+        )
+        helpers.check_retrieve_response_body(update_response, update[1]["response"])
+        helpers.check_response_status_code(update_response, 401)
+        helpers.check_response_headers(update_response, headers)
+
+    def test_update_patient_with_invalid_auth_header(self, headers):
+        self.headers["Prefer"] = "respond-async"
+        headers['authorization'] = 'Bearer abcdef123456789'
+        update_response = helpers.update_patient(
+            update[2]["patient"],
+            'W/"14"',
+            update[2]["patch"],
+            headers
+        )
+        helpers.check_retrieve_response_body(update_response, update[2]["response"])
+        helpers.check_response_status_code(update_response, 401)
+        helpers.check_response_headers(update_response, headers)
+
+    def test_update_patient_with_missing_urid_header(self, headers_with_token):
+        self.headers["Prefer"] = "respond-async"
+        self.headers.pop("NHSD-Session-URID")
+        update_response = helpers.update_patient(
+            update[3]["patient"],
+            'W/"14"',
+            update[3]["patch"],
+            self.headers
+        )
+        helpers.check_retrieve_response_body(update_response, update[3]["response"])
+        helpers.check_response_status_code(update_response, 400)
+        helpers.check_response_headers(update_response, self.headers)
+
+    def test_update_patient_with_blank_x_request_header(self, headers_with_token):
+        self.headers["Prefer"] = "respond-async"
+        self.headers["X-Request-ID"] = ''
+        update_response = helpers.update_patient(
+            update[4]["patient"],
+            'W/"14"',
+            update[4]["patch"],
+            self.headers
+        )
+        helpers.check_retrieve_response_body(update_response, update[4]["response"])
+        helpers.check_response_status_code(update_response, 400)
+        self.headers.pop("X-Request-ID")
+        helpers.check_response_headers(update_response, self.headers)
+
+    def test_update_patient_with_invalid_x_request_header(self, headers_with_token):
+        self.headers["Prefer"] = "respond-async"
+        self.headers["X-Request-ID"] = '1234'
+        update_response = helpers.update_patient(
+            update[5]["patient"],
+            'W/"14"',
+            update[5]["patch"],
+            self.headers
+        )
+        helpers.check_retrieve_response_body(update_response, update[5]["response"])
+        helpers.check_response_status_code(update_response, 400)
+        helpers.check_response_headers(update_response, self.headers)
+
+    def test_update_patient_with_missing_x_request_header(self, headers_with_token):
+        self.headers["Prefer"] = "respond-async"
+        self.headers.pop("X-Request-ID")
+        update_response = helpers.update_patient(
+            update[6]["patient"],
+            'W/"14"',
+            update[6]["patch"],
+            self.headers
+        )
+        helpers.check_retrieve_response_body(update_response, update[6]["response"])
+        helpers.check_response_status_code(update_response, 412)
+        helpers.check_response_headers(update_response, self.headers)
+
+
+class TestUserRestrictedPatientUpdateSyncWrap:
+    def test_update_patient_dob(self, headers_with_token, create_random_date):
+        #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
+        response = helpers.retrieve_patient(
+            update[0]["patient"],
+            self.headers
+        )
+        patient_record = response.headers["Etag"]
+        versionId = (json.loads(response.text))["meta"]["versionId"]
+        # add the new dob to the patch, send the update and check the response
+        update[0]["patch"]["patches"][0]["value"] = self.new_date
+
+        update_response = helpers.update_patient(
+            update[0]["patient"],
+            patient_record,
+            update[0]["patch"],
+            self.headers
+        )
+        with check:
+            assert (json.loads(update_response.text))["birthDate"] == self.new_date
+        with check:
+            assert int((json.loads(update_response.text))["meta"]["versionId"]) == int(versionId) + 1
+        helpers.check_response_status_code(update_response, 200)
+
+    def test_update_patient_dob_with_invalid_x_sync_wait_header(self, headers_with_token, create_random_date):
+        #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
+        response = helpers.retrieve_patient(
+            update[0]["patient"],
+            self.headers
+        )
+        patient_record = response.headers["Etag"]
+        versionId = (json.loads(response.text))["meta"]["versionId"]
+        # add the new dob to the patch, send the update and check the response
+        update[0]["patch"]["patches"][0]["value"] = self.new_date
+
+        self.headers["X-Sync-Wait"] = "invalid"
+        update_response = helpers.update_patient(
+            update[0]["patient"],
+            patient_record,
+            update[0]["patch"],
+            self.headers
+        )
+        with check:
+            assert (json.loads(update_response.text))["birthDate"] == self.new_date
+        with check:
+            assert int((json.loads(update_response.text))["meta"]["versionId"]) == int(versionId) + 1
+        helpers.check_response_status_code(update_response, 200)
+
+    def test_update_patient_dob_with_low_sync_wait_timeout(self, headers_with_token, create_random_date):
+        #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
+        response = helpers.retrieve_patient(
+            update[0]["patient"],
+            self.headers
+        )
+        patient_record = response.headers["Etag"]
+
+        # add the new dob to the patch, send the update and check the response
+        update[0]["patch"]["patches"][0]["value"] = self.new_date
+
+        self.headers["X-Sync-Wait"] = "0.5"
+        update_response = helpers.update_patient(
+            update[0]["patient"],
+            patient_record,
+            update[0]["patch"],
+            self.headers
+        )
+
+        helpers.check_response_status_code(update_response, 503)
 
     def test_update_patient_with_missing_auth_header(self, headers):
         update_response = helpers.update_patient(

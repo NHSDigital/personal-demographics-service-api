@@ -36,4 +36,6 @@ ENV = {
     "pds_base_path": get_env("PDS_BASE_PATH"),
     "environment": get_env("APIGEE_ENVIRONMENT"),
     "key_id": get_env("KEY_ID"),
+    'client_id': get_env('CLIENT_ID'),
+    'client_secret': get_env('CLIENT_SECRET'),
 }

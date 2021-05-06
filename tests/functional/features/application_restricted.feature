@@ -78,12 +78,23 @@ Feature: Unattended Access
     Then I get a 200 HTTP response
     And I get a Bundle resource in the response
 
-  Scenario: PDS FHIR API rejects PATCH requests
+  Scenario: PDS FHIR API rejects asynchronous PATCH requests
     Given I am authenticating using unattended access
     And I have a valid access token
     And I have a request context
 
-    When I PATCH a patient
+    When I PATCH a patient with prefer header set to respond-async
+
+    Then I get a 403 HTTP response
+    And I get an error response
+    And I get a diagnosis of insufficient permissions to use this method
+
+  Scenario: PDS FHIR API rejects synchronous PATCH requests
+    Given I am authenticating using unattended access
+    And I have a valid access token
+    And I have a request context
+
+    When I PATCH a patient and ommit the prefer header
 
     Then I get a 403 HTTP response
     And I get an error response
