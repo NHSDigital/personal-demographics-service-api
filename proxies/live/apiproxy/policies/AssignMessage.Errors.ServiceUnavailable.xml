@@ -23,7 +23,7 @@
     <Name>pds.error.diagnostics</Name>
     <Value>
       The downstream domain processing has not completed within the configured timeout period.
-      Retry your request with the value in the 'Retry-After' header, using the same 'X-Request-ID'.
+      Retry your request after the time specified by the 'Retry-After' header, using the same 'X-Request-ID'.
     </Value>
   </AssignVariable>
   <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
