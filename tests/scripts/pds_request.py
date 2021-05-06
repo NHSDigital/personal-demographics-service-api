@@ -35,7 +35,7 @@ class PdsRecord:
         else:
             self._construct(self.response)
 
-    @ property
+    @property
     def is_sensitive(self):
         """Stored boolean to identify if patient record is considered sensitive"""
         security = getattr(self, 'security', None)
@@ -50,7 +50,7 @@ class PdsRecord:
             else:
                 setattr(self, k, v)
 
-    @ staticmethod
+    @staticmethod
     def _get_redirects(response: Response) -> dict:
         redirects = {}
         if response.history:
@@ -58,7 +58,7 @@ class PdsRecord:
                 redirects[i] = {'status_code': resp.status_code, 'url': resp.url, 'headers': resp.headers}
         return redirects
 
-    @ staticmethod
+    @staticmethod
     def _parse_error(response: dict) -> dict:
         return {response['resourceType']: response['issue'][0]}
 
@@ -112,11 +112,11 @@ class GenericPdsRequestor(GenericRequest):
                 'X-Request-ID': str(uuid4()),
             }
 
-    @ property
+    @property
     def headers(self):
         return self._headers
 
-    @ headers.setter
+    @headers.setter
     def headers(self, headers: dict):
         self._headers.update(headers)
 
