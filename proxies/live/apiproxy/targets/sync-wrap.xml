@@ -34,7 +34,7 @@
     <FaultRule name="request_timeout">
       <Condition>(response.status.code Equals "504")</Condition>
       <Step>
-        <Name>AssignMessage.Errors.RequestTimeout</Name>
+        <Name>AssignMessage.Errors.ServiceUnavailable</Name>
       </Step>
       <Step>
         <Name>AssignMessage.Errors.CatchAllMessage</Name>
