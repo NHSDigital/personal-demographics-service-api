@@ -1511,7 +1511,7 @@ paths:
 
         | Scenario                            | Request                                                                   | Response                                         |
         | ----------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------ |
-        | Successful update                   | `id`=`9000000009`<br/><br/>Body: One of the provided examples or your own combination of patches<br/><br/>Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json-patch+json` | HTTP Status 202 with the message URL to poll in the `Content-Location` header |
+        | Successful update                   | `id`=`9000000009`<br/><br/>Body: One of the provided examples or your own combination of patches<br/><br/>Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json-patch+json` | HTTP Status 200 with updated patient data |
         | Patient does not exist               | `id`=`9111231130` (or any other valid NHS number)                         | HTTP Status 404 with problem description         |
         | Invalid NHS number                  | `id`=`9000000000` (or any invalid NHS number)                             | HTTP Status 400 with problem description         |
         | Missing resource version identifier | `If-Match` header missing or set to format other than `W/"<version>"`     | HTTP Status 412 with problem description         |
