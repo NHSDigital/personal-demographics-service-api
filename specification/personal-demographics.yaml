@@ -778,7 +778,7 @@ paths:
         ## Overview
         Use this endpoint to update patient details in PDS.
 
-        This is a 'patch' operation - you can update specific parts of the patient record, such as name or gender, without having to update the entire record. 
+        This is a 'patch' operation - you can update specific parts of the patient record, such as name or gender, without having to update the entire record.
 
         When you make a PATCH request with your application, the endpoint will respond with a successful (200) response code, along with the updated patient resource, or, an unsuccessful (4xx/5xx) response. 
 
@@ -805,7 +805,7 @@ paths:
 
         The update only succeeds, if the patient resource has not been updated in our database between your first retrieval and the update request.
 
-        If the update succeeds, on polling the outcome, you receive a copy of the update resource in the response, including the new resource version number.
+        If the update succeeds, you will receive the updated patient resource, this will contain the new resource version number.
 
         If you make a subsequent update you must use the new version number.
 
@@ -1593,24 +1593,21 @@ paths:
                 value:
                   $ref: components/examples/requests/PatientPatch/delete-extension.json
       responses:
-        '202':
-          description: |
-            The patch was syntactically correct and was accepted.
-            
-            A polling location is returned in the `Content-Location` header and the polling interval in the `Retry-After` header.
-
-            Note, the patch may still fail after it is accepted, for example, further validation of the patch may still result in business rule failures. Therefore, it should not be assumed that the patient is successfully updated after receiving acceptance of the message.
-            
-            See the polling endpoint for more details.
+        '200':
+          description: Patient updated.
           headers:
-            Content-Location:
-              $ref: components/schemas/ContentLocation.yaml
-            Retry-After:
-              $ref: components/schemas/RetryAfter.yaml
+            ETag:
+              $ref: components/schemas/ETag.yaml
             X-Correlation-Id:
               $ref: components/schemas/XCorrelationId.yaml
             X-Request-Id:
               $ref: components/schemas/XRequestID.yaml              
+          content:
+            application/fhir+json:
+              schema:
+                $ref: components/schemas/Patient.yaml
+              example:
+                $ref: components/examples/Patient.json   
         '4XX':
           description: |
             An error occurred as follows:
@@ -1625,6 +1622,7 @@ paths:
             | 412         | PRECONDITION_FAILED        | Problem with request, for example missing `If-Match` header. For details, see the `diagnostics` field. |
             | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
             | 400         | VALIDATION_ERROR           | This is the "default" error thrown when no others are applicable. |
+            | 408         | TOO_MANY_REQUESTS          | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
 
           content:
             application/fhir+json:
@@ -1838,6 +1836,7 @@ paths:
             | 409         | RESOURCE_VERSION_MISMATCH  | The resource version in the `If-Match` header of the update request did not match the current version of the resource. See [Patient resource versioning](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir#patient-resource-versioning). |
             | 422         | POLLING_MESSAGE_FAILURE    | The polling message ID was found however the processing of the request failed in an unexpected way or was cancelled, so the update failed. Please raise these occurrences with our team (via https://digital.nhs.uk/developer/help-and-support) so we can investigate the issue. When raising, quote the message ID you were polling for. |
             | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
+            
 
           content:
             application/fhir+json:
