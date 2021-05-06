@@ -4,7 +4,7 @@
     <StatusCode>503</StatusCode>
     <ReasonPhrase>Service unavailable</ReasonPhrase>
     <Headers>
-      <Header name="Retry-After">100</Header>
+      <Header name="Retry-After">5</Header>
     </Headers>
   </Set>
   <AssignVariable>
