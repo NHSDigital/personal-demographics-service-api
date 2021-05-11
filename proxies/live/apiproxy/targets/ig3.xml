@@ -3,6 +3,9 @@
   <PreFlow>
     <Request>
       <Step>
+        <Name>FlowCallout.UserRoleService</Name>
+      </Step>
+      <Step>
         <Name>OauthV2.VerifyAccessToken</Name>
       </Step>
       <!-- Set flow variable 'access-mode' by inspecting the token's scopes.
