@@ -28,6 +28,7 @@
       </Step>
       <Step>
         <Name>FlowCallout.UserRoleService</Name>
+        <Condition>(access-mode Equals "user-restricted")</Condition>
       </Step>
       <Step>
         <Name>Quota</Name>
