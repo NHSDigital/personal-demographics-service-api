@@ -782,7 +782,7 @@ paths:
 
         When you make a PATCH request with your application, the endpoint will respond with a successful (200) response code, along with the updated patient resource, or, an unsuccessful (4xx/5xx) response. 
 
-        99.99% of all updates complete in under 10 seconds. If an update takes longer than 10 seconds, the endpoint responds with an HTTP status of 504 (Gateway Timeout). 
+        99.99% of all updates complete in under 10 seconds. If an update takes longer than 10 seconds, the endpoint responds with an HTTP status of 503 (Gateway Timeout). 
         
         You can alter the timeout period using the X-Sync-Wait header. If you re-submit the update, use the same X-Request-ID header.
         
@@ -1623,6 +1623,9 @@ paths:
             | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
             | 400         | VALIDATION_ERROR           | This is the "default" error thrown when no others are applicable. |
             | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period. |
+        '503':
+          description: |
+            Retry your request in X seconds using the same 'X-Request-ID'.
 
           content:
             application/fhir+json:
