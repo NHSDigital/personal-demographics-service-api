@@ -1629,7 +1629,6 @@ paths:
             | 403         | FORBIDDEN_UPDATE           | The user is not permitted to update certain resources or elements, for example most users are not allowed to update the date of death once it has been set. A detailed description will be added to the display. For example - updating a sensitive patient or adding a formal death notification is only permitted from certain systems. |
             | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS number. |
             | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS number has been invalidated and not superseded by another NHS number. |
-            | 404         | POLLING_ID_NOT_FOUND       | The message ID not found or you did not have permission to poll for that message. |
             | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period. |
             | 409         | RESOURCE_VERSION_MISMATCH  | The resource version in the `If-Match` header of the update request did not match the current version of the resource. See [Patient resource versioning](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir#patient-resource-versioning). |
             | 412         | PRECONDITION_FAILED        | Problem with request, for example missing `If-Match` header. For details, see the `diagnostics` field. |
