@@ -784,7 +784,7 @@ paths:
 
         99.99% of all updates complete in under 10 seconds. If an update takes longer than 10 seconds, the endpoint responds with an HTTP status of 503 (Gateway Timeout). 
         
-        You can alter the timeout period using the X-Sync-Wait header. If you re-submit the update, use the same X-Request-ID header.
+        You can alter the timeout period using the `X-Sync-Wait` header. If you re-submit the update, use the same `X-Request-ID` header.
         
         The behaviour of this endpoint depends on which access mode you are using:
         
@@ -1651,9 +1651,7 @@ paths:
                           display: Resource Id is invalid
         '503':
           description: |
-            Error code: `SERVICE_UNAVAILABLE`
-
-            The request timed out during processing. This does not imply the request has failed or been rejected.
+            The request timed out during processing. This does not imply the request has failed or been rejected. Error code: `SERVICE_UNAVAILABLE`.
 
             Re-send the request after the time specified in the `Retry-After` header using the same `X-Request-ID` value.
           content:
