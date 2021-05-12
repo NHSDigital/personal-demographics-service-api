@@ -1652,8 +1652,11 @@ paths:
                           display: Resource Id is invalid
         '503':
           description: |
-            Retry your request in X seconds using the same 'X-Request-ID'.
+            Error code: `SERVICE_UNAVAILABLE`
 
+            The request timed out during processing. This does not imply the request has failed or been rejected.
+
+            Re-send the request after the time specified in the `Retry-After` header using the same `X-Request-ID` value.
           content:
             application/fhir+json:
               schema:
@@ -1662,13 +1665,13 @@ paths:
                 resourceType: OperationOutcome
                 issue:
                   - severity: error
-                    code: value
+                    code: timeout
                     details:
                       coding:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
-                          code: INVALID_RESOURCE_ID
-                          display: Resource Id is invalid
+                          code: SERVICE_UNAVAILABLE
+                          display: Service unavailable
 
   '/Patient/{id}/RelatedPerson':
     parameters:
