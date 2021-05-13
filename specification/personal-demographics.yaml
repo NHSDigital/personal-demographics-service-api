@@ -1655,7 +1655,7 @@ paths:
 
             Re-send the request after the time specified in the `Retry-After` header using the same `X-Request-ID` value.
           headers:
-            ETag:
+            Retry-After:
               $ref: components/schemas/RetryAfter.yaml
           content:
             application/fhir+json:
