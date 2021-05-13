@@ -30,6 +30,7 @@ class CheckOauth:
 
         response = self.session.post(config.ENDPOINTS['token'], data=data)
         if response.status_code != 200:
-            raise Exception(f'/token endpoint failed: {response.status_code} : {response.text}')
+            raise Exception(f'/token endpoint {config.ENDPOINTS["token"]} failed: {response.status_code} \
+                : {response.text}')
 
         return json.loads(response.text)
