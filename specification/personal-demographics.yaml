@@ -662,7 +662,7 @@ paths:
             | 400         | ADDITIONAL_PROPERTIES      | Unrecognised query parameter. For details, see the `diagnostics` field. |
             | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation. |
             | 403         | INVALID_VALUE              | Multiple results requested when using the API in application-restricted mode. |
-            | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
+            | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period. |
             | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
   
           content:
@@ -755,7 +755,7 @@ paths:
             | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation. |
             | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS number. |
             | 404         | INVALIDATED_RESOURCE       | Patient did exist for given NHS number, but has been invalidated and not superseded by another NHS number. |
-            | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
+            | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period. |
             | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
     
           content:
@@ -780,8 +780,11 @@ paths:
 
         This is a 'patch' operation - you can update specific parts of the patient record, such as name or gender, without having to update the entire record.
 
-        The update process is asynchronous - if the request is accepted, a 202 response is returned with a polling URL in the `Content-Location` header.
-        Poll this URL for the outcome of the update. See the polling endpoint `/_poll/{message id}` for more details.
+        When you make a PATCH request with your application, the endpoint will respond with a successful (200) response code, along with the updated patient resource, or, an unsuccessful (4xx/5xx) response. 
+
+        99.99% of all updates complete in under 10 seconds. If an update takes longer than 10 seconds, the endpoint responds with an HTTP status of 503 (Gateway Timeout). 
+        
+        You can alter the timeout period using the `X-Sync-Wait` header. If you re-submit the update, use the same `X-Request-ID` header.
         
         The behaviour of this endpoint depends on which access mode you are using:
         
@@ -802,7 +805,7 @@ paths:
 
         The update only succeeds, if the patient resource has not been updated in our database between your first retrieval and the update request.
 
-        If the update succeeds, on polling the outcome, you receive a copy of the update resource in the response, including the new resource version number.
+        If the update succeeds, you will receive the updated patient resource, this will contain the new resource version number.
 
         If you make a subsequent update you must use the new version number.
 
@@ -1508,7 +1511,7 @@ paths:
 
         | Scenario                            | Request                                                                   | Response                                         |
         | ----------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------ |
-        | Successful update                   | `id`=`9000000009`<br/><br/>Body: One of the provided examples or your own combination of patches<br/><br/>Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json-patch+json` | HTTP Status 202 with the message URL to poll in the `Content-Location` header |
+        | Successful update                   | `id`=`9000000009`<br/><br/>Body: One of the provided examples or your own combination of patches<br/><br/>Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json-patch+json` | HTTP Status 200 with updated patient resource. |
         | Patient does not exist               | `id`=`9111231130` (or any other valid NHS number)                         | HTTP Status 404 with problem description         |
         | Invalid NHS number                  | `id`=`9000000000` (or any invalid NHS number)                             | HTTP Status 400 with problem description         |
         | Missing resource version identifier | `If-Match` header missing or set to format other than `W/"<version>"`     | HTTP Status 412 with problem description         |
@@ -1590,24 +1593,21 @@ paths:
                 value:
                   $ref: components/examples/requests/PatientPatch/delete-extension.json
       responses:
-        '202':
-          description: |
-            The patch was syntactically correct and was accepted.
-            
-            A polling location is returned in the `Content-Location` header and the polling interval in the `Retry-After` header.
-
-            Note, the patch may still fail after it is accepted, for example, further validation of the patch may still result in business rule failures. Therefore, it should not be assumed that the patient is successfully updated after receiving acceptance of the message.
-            
-            See the polling endpoint for more details.
+        '200':
+          description: Patient updated.
           headers:
-            Content-Location:
-              $ref: components/schemas/ContentLocation.yaml
-            Retry-After:
-              $ref: components/schemas/RetryAfter.yaml
+            ETag:
+              $ref: components/schemas/ETag.yaml
             X-Correlation-Id:
               $ref: components/schemas/XCorrelationId.yaml
             X-Request-Id:
               $ref: components/schemas/XRequestID.yaml              
+          content:
+            application/fhir+json:
+              schema:
+                $ref: components/schemas/Patient.yaml
+              example:
+                $ref: components/examples/Patient.json   
         '4XX':
           description: |
             An error occurred as follows:
@@ -1616,13 +1616,24 @@ paths:
             | ----------- | -------------------------- | --------------------------------------------- |
             | 400         | UNSUPPORTED_SERVICE        | Missing NHS number. |
             | 400         | MISSING_VALUE              | Missing header parameter. For details, see the `diagnostics` field. |
-            | 400         | INVALID_VALUE              | Invalid header parameter. For details, see the `diagnostics` field. |
-            | 400         | INVALID_UPDATE             | Malformed patch request. |
-            | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation. |
-            | 412         | PRECONDITION_FAILED        | Problem with request, for example missing `If-Match` header. For details, see the `diagnostics` field. |
-            | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
+            | 400         | INVALID_VALUE              | Invalid header parameter or invalid value in body of patch request. For details, see the `diagnostics` field. |
+            | 400         | INVALID_UPDATE             | Malformed patch request or client error after the patch was accepted and patient was not updated. For example, a start date was after the corresponding end date. |
+            | 400         | INVALID_RESOURCE_ID        | Invalid NHS number. |
             | 400         | VALIDATION_ERROR           | This is the "default" error thrown when no others are applicable. |
-
+            | 400         | UNSUPPORTED_CHARACTERS_IN_FIELD | Invalid value in body of patch request. For details, see the `diagnostics` field. |
+            | 400         | ADDITIONAL_PROPERTIES      | The user sent additional properties within the dictionary. For example sending a patient patch and attempting to add 'pets', which is not an allowed field within the patient resource. |
+            | 400         | UNSUPPORTED_VALUE          | There was an unsupported value in the request. The value may be valid in the schema - however it could be a legacy value that we do not allow to be set anymore. For example - setting the death notification status to 'removed'. The invalid value and field will be presented in the display. |
+            | 400         | TOO_FEW_VALUES_SUBMITTED   | The field in question has a minimum number of items and the user sent too few. |
+            | 400         | TOO_MANY_VALUES_SUBMITTED  | The field in question has a maximum number of items and the user sent too many. |
+            | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation. |
+            | 403         | FORBIDDEN_UPDATE           | The user is not permitted to update certain resources or elements, for example most users are not allowed to update the date of death once it has been set. A detailed description will be added to the display. For example - updating a sensitive patient or adding a formal death notification is only permitted from certain systems. |
+            | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS number. |
+            | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS number has been invalidated and not superseded by another NHS number. |
+            | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period. |
+            | 409         | RESOURCE_VERSION_MISMATCH  | The resource version in the `If-Match` header of the update request did not match the current version of the resource. See [Patient resource versioning](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir#patient-resource-versioning). |
+            | 412         | PRECONDITION_FAILED        | Problem with request, for example missing `If-Match` header. For details, see the `diagnostics` field. |
+            | 422         | POLLING_MESSAGE_FAILURE    | An internal polling message ID was found however the processing of the request failed in an unexpected way or was cancelled, so the update failed. Please raise these occurrences with our team (via https://digital.nhs.uk/developer/help-and-support) so we can investigate the issue. When raising, quote the message ID. |
+            | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
           content:
             application/fhir+json:
               schema:
@@ -1636,8 +1647,31 @@ paths:
                       coding:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
-                          code: INVALID_RESOURCE_ID
+                          code: UNSUPPORTED_SERVICE
                           display: Resource Id is invalid
+        '503':
+          description: |
+            The request timed out during processing. This does not imply the request has failed or been rejected. Error code: `SERVICE_UNAVAILABLE`.
+
+            Re-send the request after the time specified in the `Retry-After` header using the same `X-Request-ID` value.
+          headers:
+            Retry-After:
+              $ref: components/schemas/RetryAfter.yaml
+          content:
+            application/fhir+json:
+              schema:
+                $ref: '#/components/schemas/OperationOutcome'
+              example:
+                resourceType: OperationOutcome
+                issue:
+                  - severity: error
+                    code: timeout
+                    details:
+                      coding:
+                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                          version: '1'
+                          code: SERVICE_UNAVAILABLE
+                          display: Service unavailable
 
   '/Patient/{id}/RelatedPerson':
     parameters:
@@ -1739,101 +1773,7 @@ paths:
             | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation. |
             | 404         | RESOURCE_NOT_FOUND         | No related people exist for given NHS number. |
             | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS number has been invalidated and not superseded by another NHS number. |
-            | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
-            | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
-
-          content:
-            application/fhir+json:
-              schema:
-                $ref: '#/components/schemas/OperationOutcome'
-              example:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: value
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: INVALID_RESOURCE_ID
-                          display: Resource Id is invalid
-
-  '/_poll/{message_id}':
-    parameters:
-      - $ref: '#/components/parameters/MessageId'
-      - $ref: '#/components/parameters/BearerAuthorization'
-      - $ref: '#/components/parameters/RoleId'
-      - $ref: '#/components/parameters/CorrelationID'
-    get:
-      description: |
-        ## Overview
-        Use this endpoint to poll for the outcome of an updated patient record.
-
-        When updating resources the request is dealt with in an asynchronous manner.
-        
-        Once the initial request is accepted a `202` response is returned with a `Content-Location` header, use this location to poll for the outcome. It is in the form `/_poll/<message id>`.
-
-        Requests should be sent to the polling endpoint until a `202` response is no longer returned and the response is dealt with appropriately.
-
-        Polls should be done at a reasonable frequency to avoid excess traffic; the `Retry-After` header provides the time to wait in milliseconds between polls, although polling with a larger gap is also allowed.
-        Retrieval of the outcome does not occur any faster by polling more frequently. The server simply returns a cached response.
-
-        ## Sandbox test scenarios
-        You can test the following scenarios in our sandbox environment:
-
-        | Scenario                                                   | Request                                               | Response                                    |
-        | ---------------------------------------------------------- | ----------------------------------------------------- | --------------------------------------------|
-        | Perform a valid patch request and use the content-location | `message_id` whatever was in update accepted response | HTTP Status 200 with updated patient data   |
-        | Polling message ID when update is not yet complete         | `message_id`=`20200522091633363041_000001`            | HTTP Status 202 with no data                |
-        | Polling message ID not found                               | `message_id`=`20200522091633363041_000002`            | HTTP Status 404 with operation outcome body |
-
-        You can try out the sandbox using the 'Try this API' feature on this page.
-
-        Alternatively, you can try out the sandbox using our Postman collection:
-
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
-        
-      summary: Poll for the result of an update 
-      operationId: polling
-      responses:
-        '200':
-          description: Patient updated.
-          headers:
-            ETag:
-              $ref: components/schemas/ETag.yaml
-            X-Correlation-Id:
-              $ref: components/schemas/XCorrelationId.yaml
-            X-Request-Id:
-              $ref: components/schemas/XRequestID.yaml              
-          content:
-            application/fhir+json:
-              schema:
-                $ref: components/schemas/Patient.yaml
-              example:
-                $ref: components/examples/Patient.json                
-        '4XX':
-          description: |
-            An error occurred as follows:
-            
-            | HTTP status | Error code                 | Description |
-            | ----------- | -------------------------- | --------------------------------------------- |
-            | 400         | INVALID_RESOURCE_ID        | Invalid NHS number. |
-            | 400         | MISSING_VALUE              | Missing header parameter or missing value in body of patch request. For details, see the `diagnostics` field. |
-            | 400         | INVALID_VALUE              | Invalid header parameter or invalid value in body of patch request. For details, see the `diagnostics` field. |
-            | 400         | INVALID_UPDATE             | Client error after the patch was accepted and patient was not updated. For example, a start date was after the corresponding end date. |
-            | 400         | UNSUPPORTED_CHARACTERS_IN_FIELD | Invalid value in body of patch request. For details, see the `diagnostics` field. |
-            | 400         | ADDITIONAL_PROPERTIES      | The user sent additional properties within the dictionary. For example sending a patient patch and attempting to add 'pets', which is not an allowed field within the patient resource. |
-            | 400         | UNSUPPORTED_VALUE          | There was an unsupported value in the request. The value may be valid in the schema - however it could be a legacy value that we do not allow to be set anymore. For example - setting the death notification status to 'removed'. The invalid value and field will be presented in the display. |
-            | 400         | TOO_FEW_VALUES_SUBMITTED   | The field in question has a minimum number of items and the user sent too few. |
-            | 400         | TOO_MANY_VALUES_SUBMITTED  | The field in question has a maximum number of items and the user sent too many. |
-            | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation. |
-            | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS number. |
-            | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS number has been invalidated and not superseded by another NHS number. |
-            | 404         | POLLING_ID_NOT_FOUND       | The message ID not found or you did not have permission to poll for that message. |
-            | 408         | UNABLE_TO_CALL_SERVICE     | For a synchronous request, the downstream domain processing has not completed within the configured timeout period. |
-            | 403         | FORBIDDEN_UPDATE           | The user is not permitted to update certain resources or elements, for example most users are not allowed to update the date of death once it has been set. A detailed description will be added to the display. For example - updating a sensitive patient or adding a formal death notification is only permitted from certain systems. |
-            | 409         | RESOURCE_VERSION_MISMATCH  | The resource version in the `If-Match` header of the update request did not match the current version of the resource. See [Patient resource versioning](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir#patient-resource-versioning). |
-            | 422         | POLLING_MESSAGE_FAILURE    | The polling message ID was found however the processing of the request failed in an unexpected way or was cancelled, so the update failed. Please raise these occurrences with our team (via https://digital.nhs.uk/developer/help-and-support) so we can investigate the issue. When raising, quote the message ID you were polling for. |
+            | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period. |
             | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
 
           content:
