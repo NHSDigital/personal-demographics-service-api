@@ -46,7 +46,7 @@ info:
     | Access mode                    | End user authentication                             | Functions          | Availability |
     | ------------------------------ | --------------------------------------------------- | ------------------ | ------------ |
     | Application-restricted access  | None                                                | Search for patients (single result), Get patient details | Available in production (beta) | 
-    | Healthcare worker access       | NHS Identity (NHS smartcard or modern alternative)  | Search for patients (multiple results), Get patient details, Update patient details | Available in production (beta) |
+    | Healthcare worker access       | NHS Care Identity Service 2 (NHS CIS2) (NHS smartcard or modern alternative)  | Search for patients (multiple results), Get patient details, Update patient details | Available in production (beta) |
     | Citizen access                 | NHS login                                           | Get own details, Update own details (limited) | Not available yet, see [backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/107446/pds-fhir-api-citizen-access-using-nhs-login) for details   |
 
   
@@ -133,8 +133,8 @@ info:
     - authorised, using [national role-based access control (RBAC)](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/national-rbac-for-developers)
 
     To use this access mode, use one of the following security patterns:
-    * [user-restricted RESTful API - using NHS Identity - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-combined-authentication-and-authorisation)
-    * [user-restricted RESTful API - using NHS Identity - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-separate-authentication-and-authorisation)
+    * [user-restricted RESTful API - using NHS CIS2 - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-combined-authentication-and-authorisation)
+    * [user-restricted RESTful API - using NHS CIS2 - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-separate-authentication-and-authorisation)
 
     ### Citizen access
     This access mode is not available yet. 
