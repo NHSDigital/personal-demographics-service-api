@@ -29,7 +29,7 @@ class CheckOauth:
             data['code'] = self.get_authenticated()
 
         response = self.session.post(config.ENDPOINTS['token'], data=data)
-        isRefreshToken = "True" if data['refresh_token'] != "" else "False"
+        isRefreshToken = "True" if 'refresh_token' in data else "False"
         if response.status_code != 200:
             raise Exception(f'/token endpoint {config.ENDPOINTS["token"]} failed: {response.status_code} \
                 : {response.text}. \n Refresh Token?: {isRefreshToken}')
