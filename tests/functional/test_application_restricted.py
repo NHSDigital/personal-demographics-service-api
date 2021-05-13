@@ -23,13 +23,6 @@ def get_patient_request(headers: dict, extra_params: dict = None):
     )
 
 
-def patch_patient_request(headers: dict):
-    return requests.patch(
-        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9123123123",
-        headers=headers,
-    )
-
-
 @given("I determine whether an asid is required")
 def check_which_test_app_to_use():
     if "asid-required" in config.PDS_BASE_PATH:
@@ -97,17 +90,9 @@ def test_accepts_request_for_one_result():
 
 @scenario(
     "features/application_restricted.feature",
-    "PDS FHIR API rejects asynchronous PATCH requests",
+    "PDS FHIR API rejects PATCH requests",
 )
-def test_rejects_asynchronous_patch_request():
-    pass
-
-
-@scenario(
-    "features/application_restricted.feature",
-    "PDS FHIR API rejects synchronous PATCH requests",
-)
-def test_rejects_synchronous_patch_request():
+def test_rejects_patch_request():
     pass
 
 
@@ -142,7 +127,6 @@ def set_valid_access_token(auth):
     )
 
     response_json = response.json()
-    print(response_json)
 
     # Does our response object contain the expected keys (maybe others too):
     assert {"access_token", "expires_in", "token_type", "issued_at"} <= set(response_json.keys())
@@ -251,29 +235,8 @@ def get_patient_two_results(auth, context):
     context["status"] = response.status_code
 
 
-@when("I PATCH a patient with prefer header set to respond-async")
-def patch_async_patient(auth, context):
-    authentication = auth["access_token"]
-
-    if authentication is not None:
-        token_type = auth["token_type"]
-        authentication = f"{token_type} {authentication}"
-
-    headers = {
-        "NHSD-SESSION-URID": "123",
-        "Authorization": f"{authentication}",
-        "X-Request-ID": str(uuid.uuid4()),
-        "Prefer": "respond-async"
-    }
-
-    response = patch_patient_request(headers)
-
-    context["response"] = response.json()
-    context["status"] = response.status_code
-
-
-@when("I PATCH a patient and ommit the prefer header")
-def patch_sync_patient(auth, context):
+@when("I PATCH a patient")
+def patch_patient(auth, context):
     authentication = auth["access_token"]
 
     if authentication is not None:
@@ -286,7 +249,10 @@ def patch_sync_patient(auth, context):
         "X-Request-ID": str(uuid.uuid4()),
     }
 
-    response = patch_patient_request(headers)
+    response = requests.patch(
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9123123123",
+        headers=headers,
+    )
 
     context["response"] = response.json()
     context["status"] = response.status_code

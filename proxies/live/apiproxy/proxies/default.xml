@@ -81,12 +81,6 @@
   <RouteRule name="NoRouteStatus">
     <Condition>(proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
   </RouteRule>
-  <RouteRule name="sync-wrap">
-    <Condition>
-      request.verb = "PATCH" AND (proxy.pathsuffix MatchesPath "/Patient/{id}") AND request.header.prefer NotEquals "respond-async" AND request.header.x-sync-wrapped NotEquals "true"
-    </Condition>
-  <TargetEndpoint>sync-wrap</TargetEndpoint>
-</RouteRule>
   <RouteRule name="ig3">
     <TargetEndpoint>ig3</TargetEndpoint>
   </RouteRule>

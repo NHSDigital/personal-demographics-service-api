@@ -5,7 +5,7 @@ Feature: General Proxy Behaviour
 
     Scenario: API Proxy rate limit tripped
         Given I have a proxy with a low rate limit set
-        When I make a GET request and the rate limit is tripped
+        When the rate limit is tripped
         Then I get a 429 HTTP response
         And returns a rate limit error message
 
@@ -15,8 +15,8 @@ Feature: General Proxy Behaviour
         Then I get a 429 HTTP response
         And returns a rate limit error message
 
-    Scenario: The rate limit tripped for PATCH requests
-        Given I have a proxy with a low rate limit set
-        When I make a PATCH request and the rate limit is tripped
-        Then I get a 429 HTTP response
-        And returns a rate limit error message
+    Scenario: Rate limit is not tripped for normal 
+        Given I have a proxy
+        Given the product has a default quota and rate limit set
+        When I send numerous requests
+        Then I do not trip the rate limit
