@@ -1654,6 +1654,9 @@ paths:
             The request timed out during processing. This does not imply the request has failed or been rejected. Error code: `SERVICE_UNAVAILABLE`.
 
             Re-send the request after the time specified in the `Retry-After` header using the same `X-Request-ID` value.
+          headers:
+            ETag:
+              $ref: components/schemas/RetryAfter.yaml
           content:
             application/fhir+json:
               schema:

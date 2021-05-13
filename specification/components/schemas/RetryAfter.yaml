@@ -1,4 +1,4 @@
-description: Time to wait between polls in milliseconds
+description: Time to wait between polls in seconds
 schema:
   type: string
-  example: "100"
+  example: "5"
