@@ -544,6 +544,7 @@ class TestUserRestrictedPatientUpdateAsync:
 
         # add the new dob to the patch, send the update and check the response
         update[0]["patch"]["patches"][0]["value"] = self.new_date
+        print(self.new_date)
         update_response = helpers.update_patient(
             update[0]["patient"],
             patient_record,
@@ -691,7 +692,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
             self.headers
         )
         with check:
-            print(update_response.status_code, update_response.text)
+            print(update_response.status_code, update_response.text, self.new_date)
             assert (json.loads(update_response.text))["birthDate"] == self.new_date
         with check:
             assert int((json.loads(update_response.text))["meta"]["versionId"]) == int(versionId) + 1
