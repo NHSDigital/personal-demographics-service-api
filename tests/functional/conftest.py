@@ -1,9 +1,11 @@
+from tests.scripts.pds_request import GenericPdsRequestor, PdsRecord
 import pytest
 import asyncio
 from api_test_utils.oauth_helper import OauthHelper
 from api_test_utils.apigee_api_apps import ApigeeApiDeveloperApps
 from api_test_utils.apigee_api_products import ApigeeApiProducts
 from .config_files import config
+import random
 
 
 async def _set_default_rate_limit(product: ApigeeApiProducts):
@@ -69,8 +71,13 @@ async def get_token(request):
             oauth = OauthHelper(test_app.client_id, test_app.client_secret, test_app.callback_url)
             resp = await oauth.get_token_response(grant_type=grant_type, **kwargs)
         else:
-            # Use default test app
-            resp = await request.cls.oauth.get_token_response(grant_type=grant_type, **kwargs)
+            # Use env vars
+            oauth = OauthHelper(
+                client_id=config.CLIENT_ID,
+                client_secret=config.CLIENT_SECRET,
+                redirect_uri="https://nhsd-apim-testing-internal-dev.herokuapp.com/",
+            )
+            resp = await oauth.get_token_response(grant_type=grant_type, **kwargs)
 
         if resp['status_code'] != 200:
             message = 'unable to get token'
@@ -124,3 +131,75 @@ def setup_session(request):
     print("\nDestroying Default App..")
     asyncio.run(app.destroy_app())
     asyncio.run(product.destroy_product())
+
+
+@pytest.fixture()
+def setup_patch(setup_session):
+    """Fixture to make an async request using sync-wrap.
+    GET /Patient -> PATCH /Patient
+    """
+    [product, app, token] = setup_session
+
+    pds = GenericPdsRequestor(
+        pds_base_path=config.PDS_BASE_PATH,
+        base_url=config.BASE_URL,
+        token=token,
+    )
+
+    response = pds.get_patient_response(patient_id='5900038181')
+
+    pds.headers = {
+        "If-Match": response.headers["Etag"],
+        "Content-Type": "application/json-patch+json"
+    }
+
+    return {
+        "pds": pds,
+        "product": product,
+        "app": app,
+        "token": token,
+    }
+
+
+@pytest.fixture()
+def sync_wrap_low_wait_update(setup_patch: GenericPdsRequestor, create_random_date) -> PdsRecord:
+    pds = setup_patch["pds"]
+    pds.headers = {
+        "X-Sync-Wait": "0.25"
+    }
+    resp = pds.update_patient_response(
+        patient_id='5900038181',
+        payload={"patches": [{"op": "replace", "path": "/birthDate", "value": create_random_date}]}
+    )
+    return resp
+
+
+def set_quota_and_rate_limit(
+    product: ApigeeApiProducts,
+    rate_limit: str = "1000ps",
+    quota: int = 60000,
+    quota_interval: str = "1",
+    quota_time_unit: str = "minute"
+) -> None:
+    """Sets the quota and rate limit on an apigee product.
+
+    Args:
+        product (ApigeeApiProducts): Apigee product
+        rate_limit (str): The rate limit to be set.
+        quota (int): The amount of requests per quota interval.
+        quoata_interval (str): The length of a quota interval in quota units.
+        quota_time_unit (str): The quota unit length e.g. minute.
+    """
+    asyncio.run(product.update_ratelimits(quota=quota,
+                                          quota_interval=quota_interval,
+                                          quota_time_unit=quota_time_unit,
+                                          rate_limit=rate_limit))
+
+
+@pytest.fixture()
+def create_random_date():
+    day = str(random.randrange(1, 28)).zfill(2)
+    month = str(random.randrange(1, 12)).zfill(2)
+    year = random.randrange(1940, 2020)
+    new_date = f"{year}-{month}-{day}"
+    return new_date

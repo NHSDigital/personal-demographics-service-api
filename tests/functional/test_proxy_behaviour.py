@@ -1,36 +1,19 @@
+from enum import Enum
+from tests.functional.conftest import set_quota_and_rate_limit
 import pytest
-import asyncio
 import requests
 from http import HTTPStatus
-from api_test_utils.apigee_api_products import ApigeeApiProducts
 from tests.scripts.pds_request import GenericPdsRequestor
 from pytest_bdd import scenario, given, when, then, parsers
 from .config_files.config import BASE_URL, PDS_BASE_PATH
 
 
-def set_quota_and_rate_limit(
-    product: ApigeeApiProducts,
-    rate_limit: str = "1000ps",
-    quota: int = 60000,
-    quota_interval: str = "1",
-    quota_time_unit: str = "minute"
-) -> None:
-    """Sets the quota and rate limit on an apigee product.
-
-    Args:
-        product (ApigeeApiProducts): Apigee product
-        rate_limit (str): The rate limit to be set.
-        quota (int): The amount of requests per quota interval.
-        quoata_interval (str): The length of a quota interval in quota units.
-        quota_time_unit (str): The quota unit length e.g. minute.
-    """
-    asyncio.run(product.update_ratelimits(quota=quota,
-                                          quota_interval=quota_interval,
-                                          quota_time_unit=quota_time_unit,
-                                          rate_limit=rate_limit))
+class HTTPMethods(Enum):
+    GET = "GET"
+    PATCH = "PATCH"
 
 
-def _trip_rate_limit(token: str) -> requests.Response:
+def _trip_rate_limit(token: str, req_type: HTTPMethods) -> requests.Response:
     """Trips the spike arrest policy and returns the response.
 
     Args:
@@ -39,17 +22,30 @@ def _trip_rate_limit(token: str) -> requests.Response:
     Returns:
         response (requests.Response): HTTP Response.
     """
+    pds = GenericPdsRequestor(
+        pds_base_path=PDS_BASE_PATH,
+        base_url=BASE_URL,
+        token=token,
+    )
+    # Set Etag for all requests
+    if req_type == HTTPMethods.PATCH:
+        patient = pds.get_patient_response(patient_id='5900038181')
+        pds.headers = {
+            "If-Match": patient.headers["Etag"] if patient.headers["Etag"] else "W/22",
+        }
+
     def _pds_response():
-        pds = GenericPdsRequestor(
-            pds_base_path=PDS_BASE_PATH,
-            base_url=BASE_URL,
-            token=token,
-        )
-        response = pds.get_patient_response(patient_id='5900038181')
+
+        if req_type == HTTPMethods.GET:
+            response = pds.get_patient_response(patient_id='5900038181')
+        if req_type == HTTPMethods.PATCH:
+            response = pds.update_patient_response(
+                patient_id='5900038181',
+                payload={"patches": [{"op": "replace", "path": "/birthDate", "value": "2001-01-01"}]}
+            )
 
         if response.status_code == 401:
             raise Exception("Requests are unauthorized")
-        # only check when the rate limit is tripped
         if response.status_code == 429:
             return response
         if response.status_code == 200:
@@ -68,6 +64,14 @@ def _trip_rate_limit(token: str) -> requests.Response:
 @pytest.mark.apmspii_627
 @scenario('./features/proxy_behaviour.feature', 'API Proxy rate limit tripped')
 def test_spike_arrest_policy():
+    pass
+
+
+@pytest.mark.happy_path
+@pytest.mark.rate_limit
+@pytest.mark.apmspii_874
+@scenario('./features/proxy_behaviour.feature', 'The rate limit tripped for PATCH requests')
+def test_async_spike_arrest_policy():
     pass
 
 
@@ -109,9 +113,12 @@ def setup_quota_proxy(setup_session):
 
 @pytest.mark.apmspii_627
 @pytest.mark.rate_limit
-@when("the rate limit is tripped")
-def trip_rate_limit(context):
-    context["pds"] = _trip_rate_limit(context["token"])
+@when(parsers.cfparse(
+    "I make a {request:String} request and the rate limit is tripped",
+    extra_types=dict(String=str)
+))
+def trip_rate_limit(request, context):
+    context["pds"] = _trip_rate_limit(context["token"], req_type=HTTPMethods[request])
     assert "pds" in context is not None
 
 
@@ -119,7 +126,7 @@ def trip_rate_limit(context):
 @pytest.mark.apmspii_627
 @when("the quota is tripped")
 def trip_quota(context):
-    context["pds"] = _trip_rate_limit(context["token"])
+    context["pds"] = _trip_rate_limit(context["token"], req_type=HTTPMethods.GET)
     assert "pds" in context is not None
 
 
