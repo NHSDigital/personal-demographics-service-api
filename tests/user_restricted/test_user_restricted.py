@@ -691,6 +691,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
             self.headers
         )
         with check:
+            print(update_response.status_code, update_response.text)
             assert (json.loads(update_response.text))["birthDate"] == self.new_date
         with check:
             assert int((json.loads(update_response.text))["meta"]["versionId"]) == int(versionId) + 1
