@@ -12,6 +12,7 @@
     "dependencies": {
         "@hapi/hapi": "20.0.0",
         "@hapi/joi": "^17.1.0",
+        "axios": "^0.21.1",
         "date-fns": "^2.16.1",
         "fast-json-patch": "^3.0.0-1",
         "inert": "^5.1.3",
