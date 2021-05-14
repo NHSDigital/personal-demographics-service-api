@@ -64,5 +64,10 @@
   <RouteRule name="sandbox">
         <TargetEndpoint>apim</TargetEndpoint>
     </RouteRule>
+  <RouteRule name="sync-wrap-sandbox">
+  <Condition>
+    request.verb = "POST" AND (proxy.pathsuffix MatchesPath "/<your-async-endpoint>") AND request.header.prefer != "respond-async" AND request.header.x-sync-wrapped != "true"
+  </Condition>
+  <TargetEndpoint>sync-wrap-sandbox</TargetEndpoint>
+</RouteRule>
 </ProxyEndpoint>
-
