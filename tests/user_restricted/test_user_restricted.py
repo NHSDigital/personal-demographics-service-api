@@ -125,7 +125,7 @@ class TestUserRestrictedRetrievePatient:
         )
         helpers.check_retrieve_response_body(response, retrieve[8]["response"])
         helpers.check_response_status_code(response, 400)
-        helpers.check_response_headers(response, self.headers)    
+        helpers.check_response_headers(response, self.headers)
 
     def test_retrieve_patient_with_blank_x_request_header(self, headers_with_token):
         self.headers["X-Request-ID"] = ''
