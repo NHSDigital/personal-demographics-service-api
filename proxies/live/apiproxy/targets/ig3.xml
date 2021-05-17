@@ -124,7 +124,7 @@
   </HTTPTargetConnection>
   <FaultRules>
     <FaultRule name="user_role_shared_flow_error">
-      <Condition>(isSharedFlowError is "true")</Condition>
+      <Condition>(sharedFlow.userRoleError is "true")</Condition>
       <Step>
         <Name>AssignMessage.Errors.UserRoleSharedFlow</Name>
       </Step>
