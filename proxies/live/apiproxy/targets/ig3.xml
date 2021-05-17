@@ -16,11 +16,6 @@
         <Name>AssignMessage.SetAccessModeUserRestricted</Name>
         <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service$|^urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service$|.+\ personal-demographics-service:USER-RESTRICTED\ .+|^personal-demographics-service:USER-RESTRICTED\ .+|.+\ personal-demographics-service:USER-RESTRICTED$|^personal-demographics-service:USER-RESTRICTED$)")</Condition>
       </Step>
-      <!-- <Step> -->
-        <!-- Header NHSD-Session-URID must be present and not empty for 'authorization_code'-->
-        <!-- <Name>RaiseFault.400BadRequest</Name> -->
-        <!-- <Condition>(grant_type is "authorization_code") and ((request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+"))</Condition> -->
-      <!-- </Step> -->
       <Step>
         <!-- Header NHSD-Request-ID must be in the correct format (GUID) -->
         <Name>RaiseFault.400BadRequest</Name>
