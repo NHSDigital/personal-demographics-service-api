@@ -2,19 +2,19 @@
 <AssignMessage name="AssignMessage.Errors.UserRoleSharedFlow">
     <AssignVariable>
         <Name>pds.error.code</Name>
-        <Value>validation.statusCode</Value>
+        <Template>{validation.statusCode}</Template>
     </AssignVariable>
     <AssignVariable>
         <Name>pds.error.coding.code</Name>
-        <Value>validation.reasonPhrase</Value>
+        <Value>INVALID_VALUE</Value>
     </AssignVariable>
     <AssignVariable>
         <Name>pds.error.coding.display</Name>
-        <Value>validation.errorDescription</Value>
+        <Value>Provided value is invalid</Value>
     </AssignVariable>
     <AssignVariable>
         <Name>pds.error.diagnostics</Name>
-        <Value>validation.errorMessage</Value>
+        <Template>{validation.errorDescription}</Template>
     </AssignVariable>
     <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
 </AssignMessage>

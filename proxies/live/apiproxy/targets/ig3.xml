@@ -123,6 +123,15 @@
     </LoadBalancer>
   </HTTPTargetConnection>
   <FaultRules>
+    <FaultRule name="user_role_shared_flow_error">
+      <Condition>(isSharedFlowError is "true")</Condition>
+      <Step>
+        <Name>AssignMessage.Errors.UserRoleSharedFlow</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Errors.CatchAllMessage</Name>
+      </Step>
+    </FaultRule> 
     <FaultRule name="access_token_expired">
       <Condition>oauthV2.OauthV2.VerifyAccessToken.failed</Condition>
       <Step>
@@ -207,16 +216,7 @@
       <Step>
         <Name>AssignMessage.Errors.CatchAllMessage</Name>
       </Step>
-    </FaultRule>
-    <FaultRule name="shared_flow_error">
-      <Condition>(isSharedFlowError is "true")</Condition>
-      <Step>
-        <Name>AssignMessage.Errors.UserRoleSharedFlow</Name>
-      </Step>
-      <Step>
-        <Name>AssignMessage.Errors.CatchAllMessage</Name>
-      </Step>
-    </FaultRule>    
+    </FaultRule>   
   </FaultRules>
   <DefaultFaultRule>
     <Step>

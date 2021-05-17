@@ -117,6 +117,16 @@ class TestUserRestrictedRetrievePatient:
 
         assert response_body["meta"] is not None
 
+    def test_user_role_sharedflow_invalid_role(self, headers_with_token):
+        self.headers["NHSD-Session-URID"] = "invalid"
+        response = helpers.retrieve_patient(
+            retrieve[8]["patient"],
+            self.headers
+        )
+        helpers.check_retrieve_response_body(response, retrieve[8]["response"])
+        helpers.check_response_status_code(response, 400)
+        helpers.check_response_headers(response, self.headers)    
+
     def test_retrieve_patient_with_blank_x_request_header(self, headers_with_token):
         self.headers["X-Request-ID"] = ''
         response = helpers.retrieve_patient(
@@ -198,16 +208,6 @@ class TestUserRestrictedSearchPatient:
         helpers.check_search_response_body(response, search[2]["response"])
         helpers.check_response_status_code(response, 401)
         helpers.check_response_headers(response, headers)
-
-    def test_search_patient_with_missing_urid_header(self, headers_with_token):
-        self.headers.pop("NHSD-Session-URID")
-        response = helpers.search_patient(
-            search[3]["query_params"],
-            self.headers
-        )
-        helpers.check_search_response_body(response, search[3]["response"])
-        helpers.check_response_status_code(response, 400)
-        helpers.check_response_headers(response, self.headers)
 
     def test_search_patient_with_blank_x_request_header(self, headers_with_token):
         self.headers["X-Request-ID"] = ''
@@ -643,19 +643,6 @@ class TestUserRestrictedPatientUpdateAsync:
         helpers.check_response_status_code(update_response, 401)
         helpers.check_response_headers(update_response, headers)
 
-    def test_update_patient_with_missing_urid_header(self, headers_with_token):
-        self.headers["Prefer"] = "respond-async"
-        self.headers.pop("NHSD-Session-URID")
-        update_response = helpers.update_patient(
-            update[3]["patient"],
-            'W/"14"',
-            update[3]["patch"],
-            self.headers
-        )
-        helpers.check_retrieve_response_body(update_response, update[3]["response"])
-        helpers.check_response_status_code(update_response, 400)
-        helpers.check_response_headers(update_response, self.headers)
-
     def test_update_patient_with_blank_x_request_header(self, headers_with_token):
         self.headers["Prefer"] = "respond-async"
         self.headers["X-Request-ID"] = ''
@@ -800,18 +787,6 @@ class TestUserRestrictedPatientUpdateSyncWrap:
         helpers.check_retrieve_response_body(update_response, update[2]["response"])
         helpers.check_response_status_code(update_response, 401)
         helpers.check_response_headers(update_response, headers)
-
-    def test_update_patient_with_missing_urid_header(self, headers_with_token):
-        self.headers.pop("NHSD-Session-URID")
-        update_response = helpers.update_patient(
-            update[3]["patient"],
-            'W/"14"',
-            update[3]["patch"],
-            self.headers
-        )
-        helpers.check_retrieve_response_body(update_response, update[3]["response"])
-        helpers.check_response_status_code(update_response, 400)
-        helpers.check_response_headers(update_response, self.headers)
 
     def test_update_patient_with_blank_x_request_header(self, headers_with_token):
         self.headers["X-Request-ID"] = ''
