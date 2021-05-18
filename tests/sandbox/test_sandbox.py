@@ -174,7 +174,7 @@ class TestPDSSandboxUpdateSyncWrapSuite:
         update_response = helpers.update_patient(
             update[0]["patient"], update[0]["patient_record"], update[0]["patch"],
         )
-        
+
         helpers.check_response_headers(update_response)
         helpers.check_retrieve_response_body(
             update_response, update[0]["response"]
@@ -217,8 +217,8 @@ class TestSandboxUpdateFailureSuite:
     """Sandbox PDS Update Sad Path Scenarios. Checks performed: canned Response_Bodies, Status_Codes and Headers"""
 
     @pytest.mark.parametrize("additional_headers", [
-        dict(prefer=False), 
-        dict(prefer=True)], 
+        dict(prefer=False),
+        dict(prefer=True)],
         indirect=["additional_headers"]
     )
     def test_update_no_patch_sent(self, set_delay, additional_headers):
@@ -234,10 +234,10 @@ class TestSandboxUpdateFailureSuite:
         helpers.check_response_headers(update_response, additional_headers)
 
     @pytest.mark.parametrize("additional_headers", [
-        dict(prefer=False), 
-        dict(prefer=True)], 
+        dict(prefer=False),
+        dict(prefer=True)],
         indirect=["additional_headers"]
-    )   
+    )
     def test_update_incorrect_resource_version(self, set_delay, additional_headers):
         # send update request
         update_response = helpers.update_patient(
@@ -253,7 +253,7 @@ class TestSandboxUpdateFailureSuite:
     @pytest.mark.parametrize('parameterized_headers', [
         {"x-request-id": "12345"},
         {"x-request-id": "12345", "Prefer": "respond-async"}
-    ])   
+    ])
     def test_update_invalid_x_request_id(self, set_delay, parameterized_headers):
         # send update request
         update_response = helpers.update_patient(
@@ -269,7 +269,7 @@ class TestSandboxUpdateFailureSuite:
     @pytest.mark.parametrize('parameterized_headers', [
         {"Content-Type": "application/json-patch+json"},
         {"Content-Type": "application/json-patch+json", "Prefer": "respond-async"}
-    ])   
+    ])
     def test_update_missing_if_match_header(self, parameterized_headers):
         update_response = helpers.update_patient_invalid_headers(
             update[6]["patient"], update[6]["patch"], parameterized_headers
@@ -281,7 +281,7 @@ class TestSandboxUpdateFailureSuite:
     @pytest.mark.parametrize('parameterized_headers', [
         {"Content-Type": "text/xml", "If-Match": 'W/"2"'},
         {"Content-Type": "text/xml", "If-Match": 'W/"2"', "Prefer": "respond-async"}
-    ])   
+    ])
     def test_update_incorrect_content_type(self, parameterized_headers):
         update_response = helpers.update_patient_invalid_headers(
             update[7]["patient"], update[7]["patch"], parameterized_headers
@@ -291,10 +291,10 @@ class TestSandboxUpdateFailureSuite:
         helpers.check_response_headers(update_response)
 
     @pytest.mark.parametrize("additional_headers", [
-        dict(prefer=False), 
+        dict(prefer=False),
         dict(prefer=True)],
         indirect=["additional_headers"]
-    )   
+    )
     def test_update_invalid_patch(self, set_delay, additional_headers):
         # send update request
         update_response = helpers.update_patient(
@@ -308,10 +308,10 @@ class TestSandboxUpdateFailureSuite:
         helpers.check_response_headers(update_response, additional_headers)
 
     @pytest.mark.parametrize("additional_headers", [
-        dict(prefer=False), 
-        dict(prefer=True)], 
+        dict(prefer=False),
+        dict(prefer=True)],
         indirect=["additional_headers"]
-    )    
+    )
     def test_invalid_nhs_number(self, set_delay, additional_headers):
         # send update request
         update_response = helpers.update_patient(
@@ -325,10 +325,10 @@ class TestSandboxUpdateFailureSuite:
         helpers.check_response_headers(update_response, additional_headers)
 
     @pytest.mark.parametrize("additional_headers", [
-        dict(prefer=False), 
-        dict(prefer=True)], 
+        dict(prefer=False),
+        dict(prefer=True)],
         indirect=["additional_headers"]
-    )  
+    )
     def test_patient_does_not_exist(self, set_delay, additional_headers):
         # send update request
         update_response = helpers.update_patient(
