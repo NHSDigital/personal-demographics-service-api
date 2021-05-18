@@ -266,11 +266,29 @@ class TestSandboxUpdateFailureSuite:
         helpers.check_response_status_code(update_response, 400)
         helpers.check_response_headers(update_response, {"X-Request-ID": "12345"})
 
+    @pytest.mark.skip(reason="resolve issue with of sandbox app deployment first")
+    @pytest.mark.parametrize('parameterized_headers', [
+        {},
+        {"Prefer": "respond-async",}
+    ])
+    def test_update_missing_x_request_id(self, set_delay, parameterized_headers):
+        # send update request
+        update_response = helpers.update_patient(
+            update[5]["patient"],
+            update[5]["patient_record"],
+            update[5]["patch"],
+            parameterized_headers,
+        )
+        print(update_response.status_code)
+        print(parameterized_headers)
+        helpers.check_update_response_body(update_response, update[11]["response"])
+        helpers.check_response_status_code(update_response, 412)
+
     @pytest.mark.parametrize('parameterized_headers', [
         {"Content-Type": "application/json-patch+json"},
         {"Content-Type": "application/json-patch+json", "Prefer": "respond-async"}
     ])
-    def test_update_missing_if_match_header(self, parameterized_headers):
+    def test_update_missing_if_match_header(self, set_delay, parameterized_headers):
         update_response = helpers.update_patient_invalid_headers(
             update[6]["patient"], update[6]["patch"], parameterized_headers
         )
@@ -282,7 +300,7 @@ class TestSandboxUpdateFailureSuite:
         {"Content-Type": "text/xml", "If-Match": 'W/"2"'},
         {"Content-Type": "text/xml", "If-Match": 'W/"2"', "Prefer": "respond-async"}
     ])
-    def test_update_incorrect_content_type(self, parameterized_headers):
+    def test_update_incorrect_content_type(self, set_delay, parameterized_headers):
         update_response = helpers.update_patient_invalid_headers(
             update[7]["patient"], update[7]["patch"], parameterized_headers
         )
