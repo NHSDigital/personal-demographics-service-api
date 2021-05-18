@@ -5,7 +5,7 @@ const Hapi = require('@hapi/hapi')
 const Path = require('path')
 const Inert = require('inert')
 const routes = require('./routes/patient')
-const requestValidator = require('./validators/request-validator')
+// const requestValidator = require('./validators/request-validator') temp disable
 
 const CONTENT_TYPE = 'application/fhir+json'
 
