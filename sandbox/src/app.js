@@ -4,22 +4,27 @@ const Boom = require('boom')
 const Hapi = require('@hapi/hapi')
 const Path = require('path')
 const Inert = require('inert')
-const validator = require("validator")
 const routes = require('./routes/patient')
+const requestValidator = require('./validators/request-validator')
 
 const CONTENT_TYPE = 'application/fhir+json'
 
 const preHandler = function (request, h) {
+    // check X-Request-ID exists
+    if(!requestValidator.verifyRequestIdHeader(request)){
+        throw Boom.preconditionFailed(
+            "Invalid request with error - X-Request-ID header must be supplied to access this resource",
+            {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED", display: "Required condition was not fulfilled"})
+    }
 
-    // Missing X-Request-ID will be allowed in the sandbox, so not checking for it.     
-    // Invalid X-Request-ID
-    if (request.headers["x-request-id"] && !validator.isUUID(request.headers["x-request-id"])) {
+    // validate X-Request-ID
+    if(!requestValidator.validateRequestIdHeader(request)){
         throw Boom.badRequest(
             "Invalid value - '" + request.headers["x-request-id"] + "' in header 'X-Request-ID'",
             {operationOutcomeCode: "value", apiErrorCode: "INVALID_VALUE", display: "Provided value is invalid"}
         )
     }
- 
+
     return h.continue
 }
 
