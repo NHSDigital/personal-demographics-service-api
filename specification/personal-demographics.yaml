@@ -161,6 +161,7 @@ info:
     Alternatively, you can try out the sandbox using our Postman collection:
     
     [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
+    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/14719036-434bd0e5-ca2a-4051-a576-3e53b7823441?action=collection%2Ffork&collection-url=entityId%3D14719036-434bd0e5-ca2a-4051-a576-3e53b7823441%26entityType%3Dcollection)
 
     ### Integration testing
     Our [integration test environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing):
@@ -721,7 +722,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/14719036-d813c024-dc3e-4342-b722-814b1dccac10)
               
          
       summary: "Get patient details"
