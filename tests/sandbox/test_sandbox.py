@@ -1,22 +1,6 @@
-import uuid
 import pytest
-import time
 from .data.scenarios import relatedPerson, retrieve, search, update
 from .utils import helpers
-
-
-@pytest.fixture(params=[{"prefer": False}])
-def additional_headers(request):
-    headers = {"X-Request-ID": str(uuid.uuid1()), "X-Correlation-ID": str(uuid.uuid1())}
-    if request.param["prefer"] == True:
-        headers["Prefer"] = "respond-async"
-    return headers
-
-
-@pytest.fixture()
-def set_delay():
-    """time delay to prevent exceeding proxy rate limit"""
-    return time.sleep(1.5)
 
 
 @pytest.mark.retrieve_scenarios
