@@ -279,8 +279,7 @@ class TestSandboxUpdateFailureSuite:
             update[5]["patch"],
             parameterized_headers,
         )
-        print(update_response.status_code)
-        print(parameterized_headers)
+
         helpers.check_update_response_body(update_response, update[11]["response"])
         helpers.check_response_status_code(update_response, 412)
 
