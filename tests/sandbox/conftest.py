@@ -7,7 +7,7 @@ import time
 def additional_headers(request):
     """Set additional headers and optionally add prefer header"""
     headers = {"X-Request-ID": str(uuid.uuid1()), "X-Correlation-ID": str(uuid.uuid1())}
-    if request.param["prefer"] == True:
+    if request.param["prefer"] is True:
         headers["Prefer"] = "respond-async"
     return headers
 
