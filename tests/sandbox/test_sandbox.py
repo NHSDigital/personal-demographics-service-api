@@ -269,7 +269,7 @@ class TestSandboxUpdateFailureSuite:
     @pytest.mark.skip(reason="resolve issue with of sandbox app deployment first")
     @pytest.mark.parametrize('parameterized_headers', [
         {},
-        {"Prefer": "respond-async",}
+        {"Prefer": "respond-async"}
     ])
     def test_update_missing_x_request_id(self, set_delay, parameterized_headers):
         # send update request
