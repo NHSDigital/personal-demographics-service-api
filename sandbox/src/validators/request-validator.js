@@ -24,5 +24,5 @@ module.exports = {
 
     verifyRequestIdHeader: ({ headers }) => "x-request-id" in headers,
     
-    validateRequestIdHeader: ({ headers: { "x-request-id": requestId } }) => isUUID(requestId, 4)
+    validateRequestIdHeader: ({ headers: { "x-request-id": requestId } }) => !!requestId && isUUID(requestId, 4)
 }

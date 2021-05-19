@@ -11,7 +11,7 @@ const CONTENT_TYPE = 'application/fhir+json'
 
 const preHandler = function (request, h) {
     // check X-Request-ID exists
-    if(!requestValidator.verifyRequestIdHeader(request)){
+    if(!requestValidator.validateRequestIdHeader(request)){
         throw Boom.preconditionFailed(
             "Invalid request with error - X-Request-ID header must be supplied to access this resource",
             {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED", display: "Required condition was not fulfilled"})
