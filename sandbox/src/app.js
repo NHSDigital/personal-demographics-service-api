@@ -10,27 +10,20 @@ const routes = require('./routes/patient')
 const CONTENT_TYPE = 'application/fhir+json'
 
 const preHandler = function (request, h) {
-    // test change deployment of hosted target
-    if(request.headers["x-request-id"] === "test"){
+    // check X-Request-ID exists
+    if(!requestValidator.verifyRequestIdHeader(request)){
         throw Boom.preconditionFailed(
             "Invalid request with error - X-Request-ID header must be supplied to access this resource",
             {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED", display: "Required condition was not fulfilled"})
-        }
+    }
 
-    // check X-Request-ID exists
-    // if(!requestValidator.verifyRequestIdHeader(request)){
-    //     throw Boom.preconditionFailed(
-    //         "Invalid request with error - X-Request-ID header must be supplied to access this resource",
-    //         {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED", display: "Required condition was not fulfilled"})
-    // }
-
-    // // validate X-Request-ID
-    // if(!requestValidator.validateRequestIdHeader(request)){
-    //     throw Boom.badRequest(
-    //         "Invalid value - '" + request.headers["x-request-id"] + "' in header 'X-Request-ID'",
-    //         {operationOutcomeCode: "value", apiErrorCode: "INVALID_VALUE", display: "Provided value is invalid"}
-    //     )
-    // }
+    // validate X-Request-ID
+    if(!requestValidator.validateRequestIdHeader(request)){
+        throw Boom.badRequest(
+            "Invalid value - '" + request.headers["x-request-id"] + "' in header 'X-Request-ID'",
+            {operationOutcomeCode: "value", apiErrorCode: "INVALID_VALUE", display: "Provided value is invalid"}
+        )
+    }
 
     return h.continue
 }
