@@ -22,7 +22,5 @@ module.exports = {
         return request.payload && request.payload.patches && request.payload.patches.length !== 0
     },
 
-    verifyRequestIdHeader: ({ headers }) => "x-request-id" in headers,
-    
-    validateRequestIdHeader: ({ headers: { "x-request-id": requestId } }) => !!requestId && isUUID(requestId, 4)
+    validateRequestIdHeader: ({ headers: { "x-request-id": xRequestId }}) => !!xRequestId && isUUID(xRequestId, 4)
 }
