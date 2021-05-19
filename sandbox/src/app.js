@@ -12,7 +12,7 @@ const CONTENT_TYPE = 'application/fhir+json'
 
 const preHandler = function (request, h) {
 
-    if (request.headers["x-request-id"] && !validator.isUUID(request.headers["x-request-id"])) {
+    if (!request.headers["x-request-id"] && !validator.isUUID(request.headers["x-request-id"])) {
         throw Boom.badRequest(
             "Invalid value - '" + request.headers["x-request-id"] + "' in header 'X-Request-ID'",
             {operationOutcomeCode: "value", apiErrorCode: "INVALID_VALUE", display: "Provided value is invalid"}
