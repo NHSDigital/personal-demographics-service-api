@@ -250,6 +250,7 @@ class TestSandboxUpdateFailureSuite:
         helpers.check_response_status_code(update_response, 412)
         helpers.check_response_headers(update_response, additional_headers)
 
+    @pytest.mark.skip(reason="resolve issue with of sandbox app deployment first")
     @pytest.mark.parametrize('parameterized_headers', [
         {"x-request-id": "12345"},
         {"x-request-id": "12345", "Prefer": "respond-async"}
@@ -277,7 +278,7 @@ class TestSandboxUpdateFailureSuite:
             update[5]["patient"],
             update[5]["patient_record"],
             update[5]["patch"],
-            parameterized_headers,
+            parameterized_headers
         )
 
         helpers.check_update_response_body(update_response, update[11]["response"])
@@ -352,7 +353,7 @@ class TestSandboxUpdateFailureSuite:
             update[10]["patient"],
             update[10]["patient_record"],
             update[10]["patch"],
-            additional_headers,
+            headers=additional_headers,
         )
         helpers.check_update_response_body(update_response, update[10]["response"])
         helpers.check_response_status_code(update_response, 404)
