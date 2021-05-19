@@ -267,9 +267,9 @@ class TestSandboxUpdateFailureSuite:
         helpers.check_response_status_code(update_response, 400)
         helpers.check_response_headers(update_response, {"X-Request-ID": "12345"})
 
-    @pytest.mark.skip(reason="resolve issue with of sandbox app deployment first")
+    # @pytest.mark.skip(reason="resolve issue with of sandbox app deployment first")
     @pytest.mark.parametrize('parameterized_headers', [
-        {},
+        # {},
         {"Prefer": "respond-async"}
     ])
     def test_update_missing_x_request_id(self, set_delay, parameterized_headers):
@@ -353,7 +353,7 @@ class TestSandboxUpdateFailureSuite:
             update[10]["patient"],
             update[10]["patient_record"],
             update[10]["patch"],
-            headers=additional_headers,
+            additional_headers,
         )
         helpers.check_update_response_body(update_response, update[10]["response"])
         helpers.check_response_status_code(update_response, 404)
