@@ -14,7 +14,7 @@ const preHandler = function (request, h) {
 
     if (!request.headers["x-request-id"] && !validator.isUUID(request.headers["x-request-id"])) {
         throw Boom.badRequest(
-            "Invalid value - '" + request.headers["x-request-id"] + "' in header 'X-Request-ID'",
+            "TEST!!!",
             {operationOutcomeCode: "value", apiErrorCode: "INVALID_VALUE", display: "Provided value is invalid"}
         )
     }
