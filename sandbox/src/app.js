@@ -6,6 +6,7 @@ const Path = require('path')
 const Inert = require('inert')
 const routes = require('./routes/patient')
 // const requestValidator = require('./validators/request-validator')
+const validator = require('validator')
 
 const CONTENT_TYPE = 'application/fhir+json'
 
