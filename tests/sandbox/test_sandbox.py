@@ -218,6 +218,7 @@ class TestPDSSandboxUpdateSyncWrapSuite:
         helpers.check_response_status_code(update_response, 200)
         helpers.check_response_headers(update_response, additional_headers)
 
+
 @pytest.mark.update_scenarios
 class TestSandboxUpdateFailureSuite:
     """Sandbox PDS Update Sad Path Scenarios. Checks performed: canned Response_Bodies, Status_Codes and Headers"""
