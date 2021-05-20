@@ -7,7 +7,7 @@ steps:
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
       export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
 
-      poetry run pytest -v -s tests/sandbox/test_sandbox.py --junitxml=tests/sandbox-test-report.xml --reruns 3 --reruns-delay 1
+      poetry run pytest -v tests/sandbox/test_sandbox.py --junitxml=tests/sandbox-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run sandbox tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
 

@@ -1,24 +1,17 @@
 import pytest
 from .data.scenarios import relatedPerson, retrieve, search, update
 from .utils import helpers
-from api_test_utils.api_test_session_config import APITestSessionConfig
-
-
-@pytest.fixture(scope="session")
-def api_test_config() -> APITestSessionConfig:
-    return APITestSessionConfig()
 
 
 @pytest.mark.retrieve_scenarios
 class TestPDSSandboxRetrieveSuite:
     """Sandbox PDS Retrieve Scenarios. Checks performed: canned Response_Bodies, Status_Codes and Headers"""
 
-    def test_sandbox_retrieve_patient(self, api_test_config):
+    def test_sandbox_retrieve_patient(self):
         response = helpers.retrieve_patient(retrieve[0]["patient"])
         helpers.check_retrieve_response_body(response, retrieve[0]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response)
-        print(api_test_config.commit_id)
 
     def test_patient_does_not_exist(self, additional_headers):
         response = helpers.retrieve_patient(retrieve[1]["patient"], additional_headers)
@@ -112,15 +105,18 @@ class TestPDSSandboxSearchSuite:
 @pytest.mark.update_scenarios
 class TestPDSSandboxUpdateAsyncSuite:
     """Sandbox PDS Update Async Scenarios. Checks performed: canned Response_Bodies, Status_Codes and Headers"""
-    def test_update_add_name(self):
+    def test_update_add_name(self, additional_headers):
+        additional_headers["Prefer"] = "respond-async"
         # send update request
         update_response = helpers.update_patient(
-            update[0]["patient"], update[0]["patient_record"], update[0]["patch"],
-            {"Prefer": "respond-async"}
+            update[0]["patient"],
+            update[0]["patient_record"],
+            update[0]["patch"],
+            additional_headers
         )
         assert update_response.text == ""
         helpers.check_response_status_code(update_response, 202)
-        helpers.check_response_headers(update_response)
+        helpers.check_response_headers(update_response, additional_headers)
         # send message poll request
         poll_message_response = helpers.poll_message(
             update_response.headers["content-location"]
@@ -176,17 +172,20 @@ class TestPDSSandboxUpdateAsyncSuite:
 @pytest.mark.update_scenarios
 class TestPDSSandboxUpdateSyncWrapSuite:
     """Sandbox PDS Update Sync-Wrap Scenarios. Checks performed: canned Response_Bodies, Status_Codes and Headers"""
-    def test_update_add_name(self):
+    def test_update_add_name(self, additional_headers):
         # send update request
         update_response = helpers.update_patient(
-            update[0]["patient"], update[0]["patient_record"], update[0]["patch"],
+            update[0]["patient"],
+            update[0]["patient_record"],
+            update[0]["patch"],
+            additional_headers
         )
 
-        helpers.check_response_headers(update_response)
         helpers.check_retrieve_response_body(
             update_response, update[0]["response"]
         )
         helpers.check_response_status_code(update_response, 200)
+        helpers.check_response_headers(update_response, additional_headers)
 
     def test_update_replace_given_name(self, additional_headers):
         # send update request
@@ -202,6 +201,7 @@ class TestPDSSandboxUpdateSyncWrapSuite:
             update_response, update[1]["response"]
         )
         helpers.check_response_status_code(update_response, 200)
+        helpers.check_response_headers(update_response, additional_headers)
 
     def test_update_suffix_from_name(self, additional_headers):
         # send update request
@@ -212,12 +212,11 @@ class TestPDSSandboxUpdateSyncWrapSuite:
             additional_headers,
         )
 
-        helpers.check_response_headers(update_response, additional_headers)
         helpers.check_retrieve_response_body(
             update_response, update[2]["response"]
         )
         helpers.check_response_status_code(update_response, 200)
-
+        helpers.check_response_headers(update_response, additional_headers)
 
 @pytest.mark.update_scenarios
 class TestSandboxUpdateFailureSuite:
@@ -257,7 +256,6 @@ class TestSandboxUpdateFailureSuite:
         helpers.check_response_status_code(update_response, 412)
         helpers.check_response_headers(update_response, additional_headers)
 
-    @pytest.mark.skip(reason="resolve issue with of sandbox app deployment first")
     @pytest.mark.parametrize('parameterized_headers', [
         {"x-request-id": "12345"},
         {"x-request-id": "12345", "Prefer": "respond-async"}
@@ -274,7 +272,6 @@ class TestSandboxUpdateFailureSuite:
         helpers.check_response_status_code(update_response, 400)
         helpers.check_response_headers(update_response, {"X-Request-ID": "12345"})
 
-    @pytest.mark.skip(reason="resolve issue with of sandbox app deployment first")
     @pytest.mark.parametrize('parameterized_headers', [
         {},
         {"Prefer": "respond-async"}
