@@ -13,14 +13,14 @@ const preHandler = function (request, h) {
     // check X-Request-ID exists
     if(!("x-request-id" in request.headers)){
         throw Boom.preconditionFailed(
-            "Invalid request with error - X-Request-ID header must be supplied to access this resource TESTING",
+            "Invalid request with error - X-Request-ID header must be supplied to access this resource - TESTING",
             {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED", display: "Required condition was not fulfilled"})
     }
 
     // // validate X-Request-ID
     if(!requestValidator.validateRequestIdHeader(request)){
         throw Boom.badRequest(
-            "Invalid value - '" + request.headers["x-request-id"] + "' in header 'X-Request-ID'",
+            "Invalid value - '" + request.headers["x-request-id"] + "' in header 'X-Request-ID' - TESTING",
             {operationOutcomeCode: "value", apiErrorCode: "INVALID_VALUE", display: "Provided value is invalid"}
         )
     }
