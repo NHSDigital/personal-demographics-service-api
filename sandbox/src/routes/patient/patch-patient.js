@@ -58,14 +58,6 @@ module.exports = [
                     {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED", display: "Required condition was not fulfilled"})
             }
 
-            // // validate X-Request-ID
-            if(!requestValidator.validateRequestIdHeader(request)){
-                throw Boom.badRequest(
-                    "Invalid value - '" + request.headers["x-request-id"] + "' in header 'X-Request-ID'",
-                    {operationOutcomeCode: "value", apiErrorCode: "INVALID_VALUE", display: "Provided value is invalid"}
-                )
-            }
-
             // Deep Copy the patient
             let patchedPatient = JSON.parse(JSON.stringify(patientToUpdate));
 
