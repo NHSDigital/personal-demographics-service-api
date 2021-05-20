@@ -44,11 +44,11 @@ class TestPDSSandboxRetrieveSuite:
 class TestPDSSandboxSearchSuite:
     """Sandbox PDS Search Scenarios. Checks performed: canned Response_Bodies, Status_Codes and Headers"""
 
-    def test_sandbox_simple_search(self):
-        response = helpers.search_patient(search[0]["query_params"])
+    def test_sandbox_simple_search(self, additional_headers):
+        response = helpers.search_patient(search[0]["query_params"], additional_headers)
         helpers.check_search_response_body(response, search[0]["response"])
         helpers.check_response_status_code(response, 200)
-        helpers.check_response_headers(response)
+        helpers.check_response_headers(response, additional_headers)
 
     def test_wildcard_search(self, additional_headers):
         response = helpers.search_patient(search[1]["query_params"], additional_headers)
