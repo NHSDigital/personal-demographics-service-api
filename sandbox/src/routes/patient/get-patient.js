@@ -59,6 +59,13 @@ module.exports = [
         path: '/Patient',
         handler: (request) => {
 
+            // check X-Request-ID exists
+            if(!("x-request-id" in request.headers)){
+                throw Boom.preconditionFailed(
+                    "Invalid request with error - X-Request-ID header must be supplied to access this resource",
+                    {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED", display: "Required condition was not fulfilled"})
+            }
+
             function dateFormat(date) {
                 if (date.match(/^\d/)) {
                     // Allow 2020-03-27 and eq2020-03-27 - adding on the 'eq' if missing as the (imported) validator expects it.
