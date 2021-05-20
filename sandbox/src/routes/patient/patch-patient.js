@@ -51,6 +51,21 @@ module.exports = [
                     {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid"})
             }
 
+            // check X-Request-ID exists
+            if(!("x-request-id" in request.headers)){
+                throw Boom.preconditionFailed(
+                    "Invalid request with error - X-Request-ID header must be supplied to access this resource",
+                    {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED", display: "Required condition was not fulfilled"})
+            }
+
+            // // validate X-Request-ID
+            if(!requestValidator.validateRequestIdHeader(request)){
+                throw Boom.badRequest(
+                    "Invalid value - '" + request.headers["x-request-id"] + "' in header 'X-Request-ID'",
+                    {operationOutcomeCode: "value", apiErrorCode: "INVALID_VALUE", display: "Provided value is invalid"}
+                )
+            }
+
             // Deep Copy the patient
             let patchedPatient = JSON.parse(JSON.stringify(patientToUpdate));
 
