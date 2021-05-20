@@ -7,11 +7,11 @@ from .utils import helpers
 class TestPDSSandboxRetrieveSuite:
     """Sandbox PDS Retrieve Scenarios. Checks performed: canned Response_Bodies, Status_Codes and Headers"""
 
-    def test_sandbox_retrieve_patient(self):
-        response = helpers.retrieve_patient(retrieve[0]["patient"])
+    def test_sandbox_retrieve_patient(self, additional_headers):
+        response = helpers.retrieve_patient(retrieve[0]["patient"], additional_headers)
         helpers.check_retrieve_response_body(response, retrieve[0]["response"])
         helpers.check_response_status_code(response, 200)
-        helpers.check_response_headers(response)
+        helpers.check_response_headers(response, additional_headers)
 
     def test_patient_does_not_exist(self, additional_headers):
         response = helpers.retrieve_patient(retrieve[1]["patient"], additional_headers)
