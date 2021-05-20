@@ -13,7 +13,7 @@ const preHandler = function (request, h) {
     // check X-Request-ID exists
     if(!("x-request-id" in request.headers)){
         throw Boom.preconditionFailed(
-            "Invalid request with error - X-Request-ID header must be supplied to access this resource",
+            "Invalid request with error - X-Request-ID header must be supplied to access this resource TESTING",
             {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED", display: "Required condition was not fulfilled"})
     }
 
