@@ -1,17 +1,24 @@
 import pytest
 from .data.scenarios import relatedPerson, retrieve, search, update
 from .utils import helpers
+from api_test_utils.api_test_session_config import APITestSessionConfig
+
+
+@pytest.fixture(scope="session")
+def api_test_config() -> APITestSessionConfig:
+    return APITestSessionConfig()
 
 
 @pytest.mark.retrieve_scenarios
 class TestPDSSandboxRetrieveSuite:
     """Sandbox PDS Retrieve Scenarios. Checks performed: canned Response_Bodies, Status_Codes and Headers"""
 
-    def test_sandbox_retrieve_patient(self):
+    def test_sandbox_retrieve_patient(self, api_test_config):
         response = helpers.retrieve_patient(retrieve[0]["patient"])
         helpers.check_retrieve_response_body(response, retrieve[0]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response)
+        print(api_test_config.commit_id)
 
     def test_patient_does_not_exist(self, additional_headers):
         response = helpers.retrieve_patient(retrieve[1]["patient"], additional_headers)
