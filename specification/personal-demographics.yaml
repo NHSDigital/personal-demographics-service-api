@@ -199,7 +199,7 @@ info:
     url: 'https://digital.nhs.uk/developer/help-and-support'
     email: api.management@nhs.net
 servers:
-  - url: 'https://internal-dev-sandbox.api.service.nhs.uk/personal-demographics/FHIR/R4-pr-600'
+  - url: 'https://sandbox.api.service.nhs.uk/personal-demographics/FHIR/R4'
     description: Sandbox environment.
   - url: 'https://int.api.service.nhs.uk/personal-demographics/FHIR/R4'
     description: Integration test environment.
@@ -1875,8 +1875,6 @@ components:
         Mirrored back in a response header.
 
         If you re-send a failed request, use the same value in this header.
-
-        Required in all environments except sandbox.
       schema:
         type: string
         pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
