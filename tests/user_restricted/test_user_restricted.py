@@ -683,6 +683,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
         versionId = (json.loads(response.text))["meta"]["versionId"]
         # add the new dob to the patch, send the update and check the response
         update[0]["patch"]["patches"][0]["value"] = self.new_date
+        self.headers["X-Sync-Wait"] = "29"
 
         update_response = helpers.update_patient(
             update[0]["patient"],
