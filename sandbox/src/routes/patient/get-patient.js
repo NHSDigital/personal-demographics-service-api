@@ -53,6 +53,7 @@ module.exports = [
          * Provide ?birthdate=eq2010-10-22&family=Sm*&gender=female: 200 + receive search result of two example patients
          * Provide ?birthdate=eq2010-10-22&family=Sm*&gender=female&_max-results=2: 200 + receive search result of two example patients
          * Provide ?birthdate=le2010-10-23&birthdate=ge2010-10-21&family=Smith&gender=female: 200 + receive example patient as search result
+         * No x-request-id header: 412
     */
     {
         method: 'GET',

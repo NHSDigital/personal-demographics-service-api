@@ -11,7 +11,6 @@ const CONTENT_TYPE = 'application/fhir+json'
 
 const preHandler = function (request, h) {
 
-    // Missing X-Request-ID will be allowed in the sandbox, so not checking for it.
     // Invalid X-Request-ID
     if (request.headers["x-request-id"] && !validator.isUUID(request.headers["x-request-id"])) {
         throw Boom.badRequest(
