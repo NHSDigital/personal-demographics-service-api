@@ -8,7 +8,7 @@ resources:
     - repository: common
       type: github
       name: NHSDigital/api-management-utils
-      ref: refs/heads/edge
+      ref: refs/heads/mm-apm-2214-support-configuation-of-healthcheck-suffix
       endpoint: NHSDigital
   pipelines:
   - pipeline: build_pipeline
