@@ -4,6 +4,7 @@ from .utils import helpers
 from pytest_check import check
 import time
 import re
+import pytest
 
 
 class TestUserRestrictedRetrievePatient:
@@ -683,6 +684,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
         versionId = (json.loads(response.text))["meta"]["versionId"]
         # add the new dob to the patch, send the update and check the response
         update[0]["patch"]["patches"][0]["value"] = self.new_date
+        self.headers["X-Sync-Wait"] = "29"
 
         update_response = helpers.update_patient(
             update[0]["patient"],
@@ -696,6 +698,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
             assert int((json.loads(update_response.text))["meta"]["versionId"]) == int(versionId) + 1
         helpers.check_response_status_code(update_response, 200)
 
+    @pytest.mark.skip(reason="test environment regularly exceeding default x-sync-wait")
     def test_update_patient_dob_with_invalid_x_sync_wait_header(self, headers_with_token, create_random_date):
         #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
         response = helpers.retrieve_patient(
