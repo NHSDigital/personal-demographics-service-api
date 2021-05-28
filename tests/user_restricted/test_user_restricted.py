@@ -708,17 +708,33 @@ class TestUserRestrictedPatientUpdateSyncWrap:
         update[0]["patch"]["patches"][0]["value"] = self.new_date
 
         self.headers["X-Sync-Wait"] = "invalid"
-        update_response = helpers.update_patient(
-            update[0]["patient"],
-            patient_record,
-            update[0]["patch"],
-            self.headers
-        )
-        with check:
-            assert (json.loads(update_response.text))["birthDate"] == self.new_date
-        with check:
-            assert int((json.loads(update_response.text))["meta"]["versionId"]) == int(versionId) + 1
-        helpers.check_response_status_code(update_response, 200)
+
+        def send_update():
+            update_response = helpers.update_patient(
+                update[0]["patient"],
+                patient_record,
+                update[0]["patch"],
+                self.headers
+            )
+            return update_response
+
+        def assert_update_response(update_response):
+            with check:
+                assert (json.loads(update_response.text))["birthDate"] == self.new_date
+            with check:
+                assert int((json.loads(update_response.text))["meta"]["versionId"]) == int(versionId) + 1
+            helpers.check_response_status_code(update_response, 200)
+
+        update_response = send_update()
+        # text = json.loads((update_response.text).replace("\n",''))
+        # print((text["issue"][0]["diagnostics"]).replace("   ", ""))
+
+        if update_response.status_code == 503:
+            self.headers["X-Sync-Wait"] = "29"
+            update_response_retry = send_update()
+            assert_update_response(update_response_retry)
+        else:
+            assert_update_response(update_response)
 
     def test_update_patient_dob_with_low_sync_wait_timeout(self, headers_with_token, create_random_date):
         #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
