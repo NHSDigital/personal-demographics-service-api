@@ -698,7 +698,6 @@ class TestUserRestrictedPatientUpdateSyncWrap:
             assert int((json.loads(update_response.text))["meta"]["versionId"]) == int(versionId) + 1
         helpers.check_response_status_code(update_response, 200)
 
-    # @pytest.mark.skip(reason="test environment regularly exceeding default x-sync-wait")
     def test_update_patient_dob_with_invalid_x_sync_wait_header(self, headers_with_token, create_random_date):
         #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
         response = helpers.retrieve_patient(
@@ -721,6 +720,13 @@ class TestUserRestrictedPatientUpdateSyncWrap:
             )
             return update_response
 
+        def retrieve_patient():
+            response = helpers.retrieve_patient(
+                update[0]["patient"],
+                self.headers
+            )
+            return response
+
         def assert_update_response(update_response):
             with check:
                 assert (json.loads(update_response.text))["birthDate"] == self.new_date
@@ -732,11 +738,12 @@ class TestUserRestrictedPatientUpdateSyncWrap:
 
         if update_response.status_code == 503 and json.loads(update_response.text, strict=False)["issue"][0]["code"] == "timeout":
             """
-                Temporary fix due to slow VEIT07 environment retry with valid, X-sync-wait header to prevent it from defaulting to 10s.
+                Temporary fix due to slow VEIT07 environment causing update to exceed default X-Sync-Wait timeout of 10s.
+                If time out on update, retrieve the patient instead and check if the record has been updated.
+                If the record was updated then we know that the invalid X-Sync-Wait time was passed through and converted succesfully.
             """
-            self.headers["X-Sync-Wait"] = "29"
-            update_response_retry = send_update()
-            assert_update_response(update_response_retry)
+            retrieve_response = retrieve_patient()
+            assert_update_response(retrieve_response)
         else:
             assert_update_response(update_response)
 
