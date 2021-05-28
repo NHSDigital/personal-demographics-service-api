@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage name="AssignMessage.Errors.RateLimitExceeded">
+    <AssignVariable>
+        <Name>pds.error.code</Name>
+        <Value>value</Value>
+    </AssignVariable>
+    <AssignVariable>
+        <Name>pds.error.coding.code</Name>
+        <Value>TOO_MANY_REQUESTS</Value>
+    </AssignVariable>
+    <AssignVariable>
+        <Name>pds.error.coding.display</Name>
+        <Value>Too many requests</Value>
+    </AssignVariable>
+    <AssignVariable>
+        <Name>pds.error.diagnostics</Name>
+        <Template>You have exceeded your application's rate limit. Please see: https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits for more details.</Template>
+    </AssignVariable>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</AssignMessage>
