@@ -1,3 +1,4 @@
+const { isUUID } = require("validator");
 
 module.exports = {
     
@@ -19,5 +20,7 @@ module.exports = {
 
     verifyPatchObjectHasBeenSubmitted: function(request) {
         return request.payload && request.payload.patches && request.payload.patches.length !== 0
-    }
+    },
+
+    validateRequestIdHeader: ({ headers: { "x-request-id": xRequestId }}) => !!xRequestId && isUUID(xRequestId, 4)
 }

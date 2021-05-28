@@ -160,7 +160,7 @@ info:
 
     Alternatively, you can try out the sandbox using our Postman collection:
     
-    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
+    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/14719036-490c3777-d665-4a4a-afe9-8502ba58f442)
 
     ### Integration testing
     Our [integration test environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing):
@@ -423,13 +423,14 @@ paths:
         | Unsuccessful search         | Any other valid search query parameters                      | HTTP Status 200 with no search results     |
         | Invalid date format         | `birthdate` or `death-date` query parameters with values not in format `YYYY-MM-DD` | HTTP Status 400 with problem description   |
         | Too few search parameters   | Any invalid combination of query parameters                  | HTTP Status 400 with problem description   |
+        | Missing X-Request-ID        | `id`=`9000000009` (or any other valid NHS number)            | HTTP Status 412 with problem description   |
 
         You can try out the sandbox using the 'Try this API' feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
         
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/14719036-490c3777-d665-4a4a-afe9-8502ba58f442)
 
       parameters:
         - name: _fuzzy-match
@@ -716,12 +717,13 @@ paths:
         | Patient exists with minimal data | `id`=`9000000033`                                 | HTTP Status 200 with patient data in response, there will be very little data so can be used as an example of a patient with bad data quality |
         | Patient does not exist            | `id`=`9111231130` (or any other valid NHS number) | HTTP Status 404 with problem description                                                                                                      |
         | Invalid NHS number               | `id`=`9000000000` (or any invalid NHS number)     | HTTP Status 400 with problem description                                                                                                      |
+        | Missing X-Request-ID             | `id`=`9000000009` (or any other valid NHS number) | HTTP Status 412 with problem description                                                                                                      |
 
         You can try out the sandbox using the 'Try this API' feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/14719036-490c3777-d665-4a4a-afe9-8502ba58f442)
               
          
       summary: "Get patient details"
@@ -1519,12 +1521,13 @@ paths:
         | Wrong content type                  | `Content-Type` header missing or other than `application/json-patch+json` | HTTP Status 400 with problem description         |
         | No patches sent                     | Send body with no `patches` attribute                                     | HTTP Status 400 with problem description         |
         | Invalid patch operations            | Send body with invalid JSON patches in `patches` attribute                | HTTP Status 400 with problem description         |
+        | Missing X-Request-ID                | `id`=`9000000009` (or any other valid NHS number)                         | HTTP Status 412 with problem description         |
 
         You can try out the sandbox using the 'Try this API' feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/14719036-490c3777-d665-4a4a-afe9-8502ba58f442)
 
         
       summary: Update patient details
@@ -1698,12 +1701,13 @@ paths:
         | Multiple related people exists  | `id`=`9000000009`                             | HTTP Status 200 with related person data in a response Bundle |
         | Single related person exists    | `id`=`9000000017`                             | HTTP Status 200 with related person data in a response Bundle |
         | Related people do not exist     | `id`=`9000000025`                             | HTTP Status 404 with problem description                      |
+        | Missing X-Request-ID            | `id`=`9000000009` (or any other valid NHS number) | HTTP Status 412 with problem description                  |
 
         You can try out the sandbox using the 'Try this API' feature on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff835b26032c84bdd76f)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/14719036-490c3777-d665-4a4a-afe9-8502ba58f442)
        
       summary: "Get a patient's related people"
       operationId: get-related-people
@@ -1871,8 +1875,6 @@ components:
         Mirrored back in a response header.
 
         If you re-send a failed request, use the same value in this header.
-
-        Required in all environments except sandbox.
       schema:
         type: string
         pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'

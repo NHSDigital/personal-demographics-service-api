@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TargetEndpoint name="sync-wrap-sandbox">
+  <PreFlow>
+    <Request>
+      <Step>
+        <Name>Quota</Name>
+      </Step>
+      <Step>
+        <Name>SpikeArrest</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.AddSyncWaitHeader</Name>
+        <Condition>(request.header.X-Sync-Wait LesserThan 0.25) OR (request.header.X-Sync-Wait GreaterThan 29) OR (request.header.X-Sync-Wait Is null)</Condition>
+      </Step>
+    </Request>
+  </PreFlow>
+  <LocalTargetConnection>
+    <APIProxy>sync-wrap-{{ APIGEE_ENVIRONMENT }}</APIProxy>
+    <ProxyEndpoint>default</ProxyEndpoint>
+    <Path>/sync-wrap/{{ SERVICE_BASE_PATH }}</Path>
+  </LocalTargetConnection>
+  <FaultRules>
+    <FaultRule name="pass_through">
+      <!-- 4XX errors have come from Spine and can be sent to the user unmodified.
+      Other errors are either caught and reformatted on a case-by-case basis or
+      we will simply present an 'unknown error'. This is to prevent information leakage. -->
+      <Condition>(response.status.code GreaterThanOrEquals 400) And (response.status.code LesserThan 500)</Condition>
+      <Step>
+        <!--No-op pass through -->
+        <Condition>(response.status.code Equals "504")</Condition>
+        <Name>Quota</Name>
+      </Step>
+    </FaultRule>
+    <FaultRule name="request_timeout">
+      <Condition>(response.status.code Equals "504")</Condition>
+      <Step>
+        <Name>AssignMessage.Errors.ServiceUnavailable</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Errors.CatchAllMessage</Name>
+      </Step>
+    </FaultRule>
+    <FaultRule name="access_token_expired">
+      <Step>
+        <Name>ExtractVariables.OAuthErrorFaultString</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Errors.OAuthPolicyResponse</Name>
+      </Step>
+      <Condition>oauthV2.OauthV2.VerifyAccessToken.failed</Condition>
+    </FaultRule>
+    <FaultRule name="rate_limit_exceeded">
+      <Condition>(fault.name Equals "QuotaViolation") or (fault.name Equals "SpikeArrestViolation")</Condition>
+      <Step>
+        <Name>AssignMessage.Errors.RateLimitExceeded</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Errors.CatchAllMessage</Name>
+      </Step>
+    </FaultRule>
+  </FaultRules>
+  <DefaultFaultRule>
+    <Step>
+      <Name>AssignMessage.Errors.CatchAllMessage</Name>
+    </Step>
+  </DefaultFaultRule>
+</TargetEndpoint>
