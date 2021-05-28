@@ -700,10 +700,15 @@ class TestUserRestrictedPatientUpdateSyncWrap:
 
     def test_update_patient_dob_with_invalid_x_sync_wait_header(self, headers_with_token, create_random_date):
         #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
-        response = helpers.retrieve_patient(
-            update[0]["patient"],
-            self.headers
-        )
+        def retrieve_patient():
+            response = helpers.retrieve_patient(
+                update[0]["patient"],
+                self.headers
+            )
+            return response
+
+        response = retrieve_patient()
+
         patient_record = response.headers["Etag"]
         versionId = (json.loads(response.text))["meta"]["versionId"]
         # add the new dob to the patch, send the update and check the response
@@ -711,21 +716,12 @@ class TestUserRestrictedPatientUpdateSyncWrap:
 
         self.headers["X-Sync-Wait"] = "invalid"
 
-        def send_update():
-            update_response = helpers.update_patient(
-                update[0]["patient"],
-                patient_record,
-                update[0]["patch"],
-                self.headers
-            )
-            return update_response
-
-        def retrieve_patient():
-            response = helpers.retrieve_patient(
-                update[0]["patient"],
-                self.headers
-            )
-            return response
+        update_response = helpers.update_patient(
+            update[0]["patient"],
+            patient_record,
+            update[0]["patch"],
+            self.headers
+        )
 
         def assert_update_response(update_response):
             with check:
@@ -734,12 +730,10 @@ class TestUserRestrictedPatientUpdateSyncWrap:
                 assert int((json.loads(update_response.text))["meta"]["versionId"]) == int(versionId) + 1
             helpers.check_response_status_code(update_response, 200)
 
-        update_response = send_update()
-
         if update_response.status_code == 503 and json.loads(update_response.text, strict=False)["issue"][0]["code"] == "timeout":
             """
                 Temporary fix due to slow VEIT07 environment causing update to exceed default X-Sync-Wait timeout of 10s.
-                If time out on update, retrieve the patient instead and check if the record has been updated.
+                If the update times out on sync-wrap, retrieve the patient instead and check if the record has been updated.
                 If the record was updated then we know that the invalid X-Sync-Wait time was passed through and converted succesfully.
             """
             retrieve_response = retrieve_patient()
