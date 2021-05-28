@@ -4,7 +4,6 @@ from .utils import helpers
 from pytest_check import check
 import time
 import re
-import pytest
 
 
 class TestUserRestrictedRetrievePatient:
