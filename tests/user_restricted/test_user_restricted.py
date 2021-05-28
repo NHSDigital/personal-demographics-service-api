@@ -730,11 +730,11 @@ class TestUserRestrictedPatientUpdateSyncWrap:
                 assert int((json.loads(update_response.text))["meta"]["versionId"]) == int(versionId) + 1
             helpers.check_response_status_code(update_response, 200)
 
-        if update_response.status_code == 503 and json.loads(update_response.text, strict=False)["issue"][0]["code"] == "timeout":
+        if update_response.status_code == 503 and json.loads(
+                update_response.text, strict=False)["issue"][0]["code"] == "timeout":
             """
-                Temporary fix due to slow VEIT07 environment causing update to exceed default X-Sync-Wait timeout of 10s.
-                If the update times out on sync-wrap, retrieve the patient instead and check if the record has been updated.
-                If the record was updated then we know that the invalid X-Sync-Wait time was passed through and converted succesfully.
+                Temp fix due to slow VEIT07 env causing update to exceed default X-Sync-Wait timeout of 10s.
+                If the update times out retrieve the patient instead and check if the record has been updated.
             """
             retrieve_response = retrieve_patient()
             assert_update_response(retrieve_response)
