@@ -698,7 +698,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
             assert int((json.loads(update_response.text))["meta"]["versionId"]) == int(versionId) + 1
         helpers.check_response_status_code(update_response, 200)
 
-    @pytest.mark.skip(reason="test environment regularly exceeding default x-sync-wait")
+    # @pytest.mark.skip(reason="test environment regularly exceeding default x-sync-wait")
     def test_update_patient_dob_with_invalid_x_sync_wait_header(self, headers_with_token, create_random_date):
         #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
         response = helpers.retrieve_patient(
@@ -729,10 +729,11 @@ class TestUserRestrictedPatientUpdateSyncWrap:
             helpers.check_response_status_code(update_response, 200)
 
         update_response = send_update()
-        # text = json.loads((update_response.text).replace("\n",''))
-        # print((text["issue"][0]["diagnostics"]).replace("   ", ""))
 
-        if update_response.status_code == 503:
+        if update_response.status_code == 503 and json.loads(update_response.text, strict=False)["issue"][0]["code"] == "timeout":
+            """
+                Temporary fix due to slow VEIT07 environment retry with valid, X-sync-wait header to prevent it from defaulting to 10s.
+            """
             self.headers["X-Sync-Wait"] = "29"
             update_response_retry = send_update()
             assert_update_response(update_response_retry)
