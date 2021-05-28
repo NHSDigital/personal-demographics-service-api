@@ -24,14 +24,14 @@ def test_async_rate_limit():
     pass
 
 
-# @pytest.mark.happy_path
-# @pytest.mark.sync_wrap
-# @pytest.mark.apmspii_874
-# @scenario('./features/sync_wrap.feature',
-#           'The rate limit is tripped during sync-wrap polling'
-#           )
-# def test_sync_polling_rate_limit():
-#     pass
+@pytest.mark.happy_path
+@pytest.mark.sync_wrap
+@pytest.mark.apmspii_874
+@scenario('./features/sync_wrap.feature',
+          'The rate limit is tripped during sync-wrap polling'
+          )
+def test_sync_polling_rate_limit():
+    pass
 
 
 # -------------------------------- GIVEN ----------------------------
