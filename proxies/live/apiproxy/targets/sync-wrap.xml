@@ -55,7 +55,7 @@
     <FaultRule name="rate_limit_exceeded">
       <Condition>(fault.name Equals "QuotaViolation") or (fault.name Equals "SpikeArrestViolation")</Condition>
       <Step>
-        <Name>AssignMessage.Errors.ServiceUnavailable</Name>
+        <Name>AssignMessage.Errors.ServiceUnavailableTest</Name>
       </Step>
       <Step>
         <Name>AssignMessage.Errors.CatchAllMessage</Name>
