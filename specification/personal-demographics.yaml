@@ -70,6 +70,7 @@ info:
     Once our roadmap is complete, the above APIs will become redundant.
 
     The following APIs are also related to this API:
+    - [Personal Demographics Service Notifications - FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir) - use this to subscribe to be notified of a limited set of patient record changes, such as birth, death, change of address and change of GP. If you would like to see this list expanded, please tell us about your use case and vote [here](https://nhs-digital-api-management.featureupvote.com/suggestions/184902/pds-to-proactively-tell-a-gp-system-when-a-patient-record-is-updated)
     - [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) - use this to get full details for the organisations related to the patient, such as their registered GP or nominated pharmacy.
 
     ## API status and roadmap
