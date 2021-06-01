@@ -64,7 +64,7 @@ steps:
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2"
 
-      poetry run pytest -v tests/functional/test_proxy_behaviour.py --junitxml=tests/proxy-behaviour-test-report.xml
+      poetry run pytest -v tests/functional/test_proxy_behaviour.py --junitxml=tests/proxy-behaviour-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run proxy behaviour tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
 

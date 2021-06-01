@@ -1,6 +1,13 @@
 docker_service:
   - name: pds-sandbox
     expose: true
+    environment:
+      - name: NODE_ENV
+        value: production
+      - name: LOG_LEVEL
+        value: "{{ 'debug' if APIGEE_ENVIRONMENT == 'internal-dev' else 'info' }}"
+      - name: VERSION_INFO
+        value: "{{ version_info | to_json }}"
     health_check:
       matcher: "200"
       path: "/_health"
