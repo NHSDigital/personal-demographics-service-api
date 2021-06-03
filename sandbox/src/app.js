@@ -4,14 +4,13 @@ const Boom = require('boom')
 const Hapi = require('@hapi/hapi')
 const Path = require('path')
 const Inert = require('inert')
-const validator = require("validator")
 const routes = require('./routes/patient')
+const validator = require('validator')
 
 const CONTENT_TYPE = 'application/fhir+json'
 
 const preHandler = function (request, h) {
 
-    // Missing X-Request-ID will be allowed in the sandbox, so not checking for it.     
     // Invalid X-Request-ID
     if (request.headers["x-request-id"] && !validator.isUUID(request.headers["x-request-id"])) {
         throw Boom.badRequest(
@@ -19,7 +18,7 @@ const preHandler = function (request, h) {
             {operationOutcomeCode: "value", apiErrorCode: "INVALID_VALUE", display: "Provided value is invalid"}
         )
     }
- 
+
     return h.continue
 }
 

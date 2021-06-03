@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<TargetEndpoint name="sync-wrap">
+<TargetEndpoint name="sync-wrap-sandbox">
   <PreFlow>
     <Request>
-      <Step>
-        <Name>OauthV2.VerifyAccessToken</Name>
-      </Step>
       <Step>
         <Name>Quota</Name>
       </Step>
@@ -32,13 +29,6 @@
         <!--No-op pass through -->
         <Condition>(response.status.code Equals "504")</Condition>
         <Name>Quota</Name>
-      </Step>
-      <Condition>(response.status.code Equals "429")</Condition>
-      <Step>
-        <Name>AssignMessage.Errors.ServiceUnavailable</Name>
-      </Step>
-      <Step>
-        <Name>AssignMessage.Errors.CatchAllMessage</Name>
       </Step>
     </FaultRule>
     <FaultRule name="request_timeout">
