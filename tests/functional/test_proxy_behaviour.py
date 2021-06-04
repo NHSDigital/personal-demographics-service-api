@@ -31,7 +31,7 @@ def _trip_rate_limit(token: str, req_type: HTTPMethods) -> requests.Response:
     if req_type == HTTPMethods.PATCH:
         patient = pds.get_patient_response(patient_id='5900038181')
         pds.headers = {
-            "If-Match": patient.headers["Etag"] if patient.headers["Etag"] else "W/22",
+            "If-Match": patient.headers["Etag"] if patient.headers.get("Etag") else "W/22",
         }
 
     def _pds_response():
