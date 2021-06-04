@@ -86,7 +86,7 @@ def test_qouta_limit():
 @pytest.mark.rate_limit
 @pytest.mark.apmspii_627
 @given("I have a proxy with a low rate limit set", target_fixture="context")
-async def setup_rate_limit_proxy(setup_session):
+def setup_rate_limit_proxy(setup_session):
     product, app, token = setup_session
 
     context = {
@@ -94,7 +94,7 @@ async def setup_rate_limit_proxy(setup_session):
         "app": app,
         "token": token,
     }
-    await set_quota_and_rate_limit(context["product"], rate_limit="1ps")
+    set_quota_and_rate_limit(context["product"], rate_limit="1ps")
     assert context["product"].rate_limit == "1ps"
     return context
 
