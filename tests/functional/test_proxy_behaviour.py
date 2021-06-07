@@ -79,7 +79,7 @@ def test_async_spike_arrest_policy():
 @pytest.mark.quota
 @pytest.mark.apmspii_627
 @scenario('./features/proxy_behaviour.feature', 'API quota is tripped')
-def test_qouta_limit():
+def test_quota_limit():
     pass
 
 
@@ -94,8 +94,8 @@ def setup_rate_limit_proxy(setup_session):
         "app": app,
         "token": token,
     }
-    set_quota_and_rate_limit(context["product"], rate_limit="1ps")
-    assert context["product"].rate_limit == "1ps"
+    set_quota_and_rate_limit(context["product"], rate_limit="1pm")
+    assert context["product"].rate_limit == "1pm"
     return context
 
 
