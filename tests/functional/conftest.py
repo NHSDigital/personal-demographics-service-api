@@ -159,6 +159,7 @@ def setup_patch(setup_session):
         "token": token,
     }
 
+
 @pytest.fixture()
 async def setup_patch_short_lived_token(setup_session):
     """Fixture to make an async request using sync-wrap, with a short-lived -- 1 second -- access token.

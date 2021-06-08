@@ -1,11 +1,8 @@
 from tests.functional.conftest import set_quota_and_rate_limit
 from tests.scripts.pds_request import PdsRecord
-from tests.user_restricted.utils.authenticator import Authenticator
 import pytest
-import requests
 from pytest_bdd import scenario, given, when, then, parsers
-from .config_files.environment import ENV
-from .config_files import config
+
 
 @pytest.mark.apmspii_832
 @scenario('./features/sync_wrap.feature',
@@ -66,6 +63,7 @@ def setup_rate_limit_proxy(setup_patch):
 @given("I have a valid PATCH request", target_fixture="context")
 def setup_patch_request(context):
     return context
+
 
 @given("I have an access token expiring soon", target_fixture="context")
 def setup_expired_token(setup_patch_short_lived_token):
@@ -131,6 +129,7 @@ def trip_rate_limit_sync_polling(context: dict, create_random_date):
         if response.status_code == 429:
             context["pds"] = response
             return
+
 
 @when("I PATCH a patient")
 def access_token_expired_sync_polling(context: dict, create_random_date):
