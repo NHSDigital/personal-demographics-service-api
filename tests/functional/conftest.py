@@ -159,6 +159,21 @@ def setup_patch(setup_session):
         "token": token,
     }
 
+@pytest.fixture()
+async def setup_patch_short_lived_token(setup_patch):
+    """Fixture to make an async request using sync-wrap, with a short-lived -- 2 second -- access token.
+    GET /Patient -> PATCH /Patient
+    """
+    app = setup_patch["app"]
+
+    oauth = OauthHelper(app.client_id, app.client_secret, app.callback_url)
+    resp = await oauth.get_token_response(grant_type="authorization_code", timeout=1000)
+    token = resp["body"]["access_token"]
+
+    setup_patch["token"] = token
+
+    return setup_patch
+
 
 @pytest.fixture()
 def sync_wrap_low_wait_update(setup_patch: GenericPdsRequestor, create_random_date) -> PdsRecord:

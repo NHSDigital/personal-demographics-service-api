@@ -36,7 +36,7 @@ def test_async_rate_limit():
 def test_sync_polling_rate_limit():
     pass
 
-    
+
 @pytest.mark.happy_path
 @pytest.mark.sync_wrap
 @pytest.mark.apmspii_874
@@ -83,36 +83,14 @@ def setup_patch_request(context):
 
 @pytest.mark.sync_wrap
 @pytest.mark.apmspii_874
-@given("I have an access token which expires in polling", target_fixture="context")
-def setup_expired_token(setup_patch):
-    '''
-    data = {
-            "_access_token_expiry_ms": "1",
-            'client_id': config.CLIENT_ID,
-            'client_secret': config.CLIENT_SECRET,
-            'grant_type': "authorization_code",
-            'redirect_uri': config.REDIRECT_URI
-        }
-    authenticator = Authenticator(requests.Session)
-    response = authenticator.authenticate()
-    data['code'] = authenticator.get_code_from_provider(response)
-
-    response = requests.post(f"{config.BASE_URL}/oauth2/token", data=data)
-    response_json = response.json()
-    print(response_json)
-    assert response.status_code == 200
-    assert response_json["access_token"] is not None
-    '''
-
-
-    context = {
-        "pds": setup_patch["pds"],
-        "product": setup_patch["product"],
-        "app": setup_patch["app"],
-        "token": setup_patch["token"] #Either change this to access a token with short life span, or set_up patch needs modifiying to use expiry param.
+@given("I have an access token expiring soon", target_fixture="context")
+def setup_expired_token(setup_patch_short_lived_token):
+    return {
+        "pds": setup_patch_short_lived_token["pds"],
+        "product": setup_patch_short_lived_token["product"],
+        "app": setup_patch_short_lived_token["app"],
+        "token": setup_patch_short_lived_token["token"]
     }
-  
-    return context
 
 # -------------------------------- WHEN ----------------------------
 
@@ -183,29 +161,13 @@ def trip_rate_limit_sync_polling(context: dict, create_random_date):
 
 @pytest.mark.sync_wrap
 @pytest.mark.apmspii_874
-@when("the access token expires during sync-wrap polling")
+@when("I PATCH a patient")
 def access_token_expired_sync_polling(context: dict, create_random_date):
-    context["pds"].headers = {
-        "X-Sync-Wait": "29"
-    }   #Find a way to alter the OAuth tokens expiry, or assert equal to expiry time being near 0. Goes in here.
     response = context["pds"].update_patient_response(
         patient_id='5900038181',
         payload={"patches": [{"op": "replace", "path": "/birthDate", "value": create_random_date}]}
     )
-    print(response.status_code)
-    # assert response.status_code == 401
-    if response.status_code == 401:
-        context["pds"] = response
-        return
-    if response.status_code == 200:
-        response = context["pds"].update_patient_response(
-            patient_id='5900038181',
-            payload={"patches": [{"op": "replace", "path": "/birthDate", "value": create_random_date}]}
-        )
-        # assert response.status_code == 401
-        if response.status_code == 401:
-            context["pds"] = response
-            return
+    context["pds"] = response
 
 # -------------------------------- THEN ----------------------------
 

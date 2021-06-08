@@ -31,8 +31,7 @@ Feature: Sync-wrap failure modes
         And returns a rate limit error message
 
     Scenario: The access token expires during sync-wrap polling
-        Given I have an access token which expires in polling
-        Given I have a valid PATCH request
-        When the access token expires during sync-wrap polling
+        Given I have an access token expiring soon
+        When I PATCH a patient
         Then I get a 401 HTTP response
         And returns a helpful error message
