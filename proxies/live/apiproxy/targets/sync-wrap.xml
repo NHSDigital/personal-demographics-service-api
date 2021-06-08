@@ -40,6 +40,7 @@
       <Step>
         <Condition>(response.status.code Equals "401")</Condition>
          <Name>AssignMessage.Errors.ServiceUnavailable</Name>
+      </Step>
       <Step>
         <Condition>(response.status.code Equals "503")</Condition>
          <Name>AssignMessage.Errors.CatchAllMessage</Name>
