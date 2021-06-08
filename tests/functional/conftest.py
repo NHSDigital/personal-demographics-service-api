@@ -98,6 +98,7 @@ async def setup_session(request):
     """This fixture is called at a function level.
     The default app created here should be modified by your tests.
     """
+
     product = await _product_with_full_access()
     print("\nCreating Default App..")
     # Create a new app
@@ -136,6 +137,7 @@ def setup_patch(setup_session):
     """Fixture to make an async request using sync-wrap.
     GET /Patient -> PATCH /Patient
     """
+
     [product, app, token] = setup_session
 
     pds = GenericPdsRequestor(

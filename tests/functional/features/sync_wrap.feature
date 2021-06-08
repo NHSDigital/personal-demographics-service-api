@@ -29,3 +29,10 @@ Feature: Sync-wrap failure modes
         When the rate limit is tripped with sync-wrap polling
         Then I get a 429 HTTP response
         And returns a rate limit error message
+
+    Scenario: The access token expires during sync-wrap polling
+        Given I have an access token which expires in polling
+        Given I have a valid PATCH request
+        When the access token expires during sync-wrap polling
+        Then I get a 401 HTTP response
+        And returns a helpful error message
