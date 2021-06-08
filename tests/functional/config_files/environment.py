@@ -38,5 +38,4 @@ ENV = {
     "key_id": get_env("KEY_ID"),
     'client_id': get_env('CLIENT_ID'),
     'client_secret': get_env('CLIENT_SECRET'),
-    'redirect_uri': get_env('REDIRECT_URI')
 }

@@ -16,4 +16,3 @@ PDS_BASE_PATH = ENV["pds_base_path"]
 # App details
 CLIENT_ID = ENV['client_id']
 CLIENT_SECRET = ENV['client_secret']
-REDIRECT_URI = ENV['redirect_uri']
