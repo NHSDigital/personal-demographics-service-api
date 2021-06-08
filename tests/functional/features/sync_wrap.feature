@@ -33,5 +33,5 @@ Feature: Sync-wrap failure modes
     Scenario: The access token expires during sync-wrap polling
         Given I have an access token expiring soon
         When I PATCH a patient
-        Then I get a 401 HTTP response
+        Then I get a 503 HTTP response
         And returns a helpful error message

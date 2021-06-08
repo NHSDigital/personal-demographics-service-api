@@ -160,19 +160,31 @@ def setup_patch(setup_session):
     }
 
 @pytest.fixture()
-async def setup_patch_short_lived_token(setup_patch):
-    """Fixture to make an async request using sync-wrap, with a short-lived -- 2 second -- access token.
+async def setup_patch_short_lived_token(setup_session):
+    """Fixture to make an async request using sync-wrap, with a short-lived -- 1 second -- access token.
     GET /Patient -> PATCH /Patient
     """
-    app = setup_patch["app"]
+
+    product, app, _ = setup_session
 
     oauth = OauthHelper(app.client_id, app.client_secret, app.callback_url)
     resp = await oauth.get_token_response(grant_type="authorization_code", timeout=1000)
     token = resp["body"]["access_token"]
 
-    setup_patch["token"] = token
+    pds = GenericPdsRequestor(
+        pds_base_path=config.PDS_BASE_PATH,
+        base_url=config.BASE_URL,
+        token=token,
+    )
 
-    return setup_patch
+    response = pds.get_patient_response(patient_id='5900038181')
+
+    pds.headers = {
+        "If-Match": response.headers["Etag"],
+        "Content-Type": "application/json-patch+json"
+    }
+
+    return pds
 
 
 @pytest.fixture()
