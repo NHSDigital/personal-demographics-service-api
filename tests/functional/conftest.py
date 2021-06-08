@@ -106,7 +106,6 @@ async def setup_session(request):
     await app.create_new_app(
         callback_url="https://example.org/callback"
     )
-
     # Assign the new product to the app
     await app.add_api_product([product.name])
 
