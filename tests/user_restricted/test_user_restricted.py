@@ -4,7 +4,6 @@ from .utils import helpers
 from pytest_check import check
 import time
 import re
-import pytest
 
 
 class TestUserRestrictedRetrievePatient:
@@ -698,30 +697,48 @@ class TestUserRestrictedPatientUpdateSyncWrap:
             assert int((json.loads(update_response.text))["meta"]["versionId"]) == int(versionId) + 1
         helpers.check_response_status_code(update_response, 200)
 
-    @pytest.mark.skip(reason="test environment regularly exceeding default x-sync-wait")
     def test_update_patient_dob_with_invalid_x_sync_wait_header(self, headers_with_token, create_random_date):
         #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
-        response = helpers.retrieve_patient(
-            update[0]["patient"],
-            self.headers
-        )
+        def retrieve_patient():
+            response = helpers.retrieve_patient(
+                update[0]["patient"],
+                self.headers
+            )
+            return response
+
+        response = retrieve_patient()
+
         patient_record = response.headers["Etag"]
         versionId = (json.loads(response.text))["meta"]["versionId"]
         # add the new dob to the patch, send the update and check the response
         update[0]["patch"]["patches"][0]["value"] = self.new_date
 
         self.headers["X-Sync-Wait"] = "invalid"
+
         update_response = helpers.update_patient(
             update[0]["patient"],
             patient_record,
             update[0]["patch"],
             self.headers
         )
-        with check:
-            assert (json.loads(update_response.text))["birthDate"] == self.new_date
-        with check:
-            assert int((json.loads(update_response.text))["meta"]["versionId"]) == int(versionId) + 1
-        helpers.check_response_status_code(update_response, 200)
+
+        def assert_update_response(update_response):
+            with check:
+                assert (json.loads(update_response.text))["birthDate"] == self.new_date
+            with check:
+                assert int((json.loads(update_response.text))["meta"]["versionId"]) == int(versionId) + 1
+            helpers.check_response_status_code(update_response, 200)
+
+        if update_response.status_code == 503 and json.loads(
+                update_response.text, strict=False)["issue"][0]["code"] == "timeout":
+            """
+                Temp fix due to slow VEIT07 env causing update to exceed default X-Sync-Wait timeout of 10s.
+                If the update times out retrieve the patient instead and check if the record has been updated.
+            """
+            retrieve_response = retrieve_patient()
+            assert_update_response(retrieve_response)
+        else:
+            assert_update_response(update_response)
 
     def test_update_patient_dob_with_low_sync_wait_timeout(self, headers_with_token, create_random_date):
         #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
