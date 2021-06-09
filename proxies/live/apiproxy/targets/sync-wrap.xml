@@ -29,11 +29,6 @@
       we will simply present an 'unknown error'. This is to prevent information leakage. -->
       <Condition>(response.status.code GreaterThanOrEquals 400) And (response.status.code LesserThan 500)</Condition>
       <Step>
-        <!--No-op pass through -->
-        <Condition>(response.status.code Equals "504")</Condition>
-        <Name>Quota</Name>
-      </Step>
-      <Step>
         <Condition>(response.status.code Equals "429")</Condition>
          <Name>AssignMessage.Errors.ServiceUnavailable</Name>
       </Step>
