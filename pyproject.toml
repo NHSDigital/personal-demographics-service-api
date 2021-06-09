@@ -45,7 +45,7 @@ pip-licenses = "^2.3.0"
 jinja2 = "^2.11.2"
 pytest = "^6.1.2"
 pytest_check = "^1.0.1"
-api-test-utils = {url = "https://github.com/NHSDigital/apim-test-utils/releases/download/v1.0.86-alpha/api_test_utils-1.0.86a0-py3-none-any.whl"}
+api-test-utils = {url = "https://github.com/NHSDigital/apim-test-utils/releases/download/v1.1.11-alpha/api_test_utils-1.1.11a0-py3-none-any.whl"}
 pyjwt = "^2.0.1"
 
 [tool.poetry.scripts]
