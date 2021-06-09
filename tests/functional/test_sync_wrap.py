@@ -112,14 +112,11 @@ def trip_rate_limit_sync_polling(context: dict, create_random_date):
     context["pds"].headers = {
          "X-Sync-Wait": "29"
     }
-    for i in range(10):
-        response = context["pds"].update_patient_response(
-            patient_id='5900038181',
-            payload={"patches": [{"op": "replace", "path": "/birthDate", "value": create_random_date}]}
-        )
-        if response.status_code == 503:
-            context["pds"] = response
-            return
+    response = context["pds"].update_patient_response(
+        patient_id='5900038181',
+        payload={"patches": [{"op": "replace", "path": "/birthDate", "value": create_random_date}]}
+    )
+    context["pds"] = response
 
 
 @when("I PATCH a patient")
