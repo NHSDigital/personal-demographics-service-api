@@ -55,8 +55,8 @@ def setup_rate_limit_proxy(setup_patch):
         "app": setup_patch["app"],
         "token": setup_patch["token"],
     }
-    set_quota_and_rate_limit(context["product"], rate_limit="1ps")
-    assert context["product"].rate_limit == "1ps"
+    set_quota_and_rate_limit(context["product"], rate_limit="1pm")
+    assert context["product"].rate_limit == "1pm"
     return context
 
 
