@@ -110,25 +110,13 @@ def trip_rate_limit_async(context: dict, create_random_date):
 @when("the rate limit is tripped with sync-wrap polling")
 def trip_rate_limit_sync_polling(context: dict, create_random_date):
     context["pds"].headers = {
-        "X-Sync-Wait": "29"
+         "X-Sync-Wait": "29"
     }
     response = context["pds"].update_patient_response(
         patient_id='5900038181',
         payload={"patches": [{"op": "replace", "path": "/birthDate", "value": create_random_date}]}
     )
-    # assert response.status_code == 429
-    if response.status_code == 429:
-        context["pds"] = response
-        return
-    if response.status_code == 200:
-        response = context["pds"].update_patient_response(
-            patient_id='5900038181',
-            payload={"patches": [{"op": "replace", "path": "/birthDate", "value": create_random_date}]}
-        )
-        # assert response.status_code == 429
-        if response.status_code == 429:
-            context["pds"] = response
-            return
+    context["pds"] = response
 
 
 @when("I PATCH a patient")
@@ -157,5 +145,5 @@ def error_message(context):
 
 
 @then("returns a rate limit error message")
-def rate_limit_error_message(context):
+def rate_limit_error_message(status, context: dict):
     assert context["pds"].response is not None
