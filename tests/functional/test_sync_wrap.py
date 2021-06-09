@@ -120,7 +120,7 @@ def trip_rate_limit_sync_polling(context: dict, create_random_date):
         if response.status_code == 503:
             context["pds"] = response
             return
-    
+
 
 @when("I PATCH a patient")
 def access_token_expired_sync_polling(context: dict, create_random_date):
