@@ -6,7 +6,7 @@
       <!-- Transform the returned content location from a (broken/partial) relative URL, to an absolute URL
       ONLY for the calls from the sync-wrap service. We are preserving the original (and now undocumented) behaviour
       as a courtesy to an existing developer who is currently using it in their demos. See APMSPII-526 -->
-      <Condition>(request.header.prefer IsNot "respond-async") AND (response.header.content-location MatchesPath "/_poll/*")</Condition>
+      <Condition>response.header.content-location MatchesPath "/_poll/*"</Condition>
       <Response>
         <Step>
           <Name>AssignMessage.SetContentLocationAbsoluteUrl</Name>
