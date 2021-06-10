@@ -21,7 +21,7 @@
   </AssignVariable>
   <AssignVariable>
     <Name>pds.error.diagnostics</Name>
-    <Value>The downstream domain processing has not completed within the configured timeout period. Retry your request after the time specified by the 'Retry-After' header, using the same 'X-Request-ID'.</Value>
+    <Value>The downstream domain processing has not completed within the configured timeout period. Using the same 'X-Request-ID' header, retry your request after the time specified by the 'Retry-After' response header.</Value>
   </AssignVariable>
   <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
 </AssignMessage>
