@@ -34,4 +34,4 @@ Feature: Sync-wrap failure modes
         Given I have an access token expiring soon
         When I PATCH a patient
         Then I get a 503 HTTP response
-        And returns a helpful error message
+        And returns the error code SERVICE_UNAVAILABLE

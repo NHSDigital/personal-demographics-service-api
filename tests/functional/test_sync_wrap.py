@@ -139,6 +139,15 @@ def timeout_status(status, context: dict):
     assert context["pds"].status_code == status
 
 
+@then(
+    parsers.cfparse(
+        "returns the error code {error_msg:String}", extra_types=dict(String=str)
+    )
+)
+def response_error_code(error_msg, context: dict):
+    assert context["pds"].response["issue"][0]["details"]["coding"][0]["code"] == error_msg
+
+
 @then("returns a helpful error message")
 def error_message(context):
     assert context["pds"].response is not None
