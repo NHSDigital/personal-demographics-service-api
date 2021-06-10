@@ -29,7 +29,7 @@ function _getPatient(nhsNumber) {
     if (patient == null) {
         throw Boom.notFound(
             `Resource not found`,
-            {operationOutcomeCode: "not_found", apiErrorCode: "RESOURCE_NOT_FOUND"}
+            {operationOutcomeCode: "not-found", apiErrorCode: "RESOURCE_NOT_FOUND"}
         )
     }
 
