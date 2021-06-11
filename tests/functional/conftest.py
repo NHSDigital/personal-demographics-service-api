@@ -98,6 +98,7 @@ async def setup_session(request):
     """This fixture is called at a function level.
     The default app created here should be modified by your tests.
     """
+
     product = await _product_with_full_access()
     print("\nCreating Default App..")
     # Create a new app
@@ -135,6 +136,7 @@ def setup_patch(setup_session):
     """Fixture to make an async request using sync-wrap.
     GET /Patient -> PATCH /Patient
     """
+
     [product, app, token] = setup_session
 
     pds = GenericPdsRequestor(
@@ -156,6 +158,34 @@ def setup_patch(setup_session):
         "app": app,
         "token": token,
     }
+
+
+@pytest.fixture()
+async def setup_patch_short_lived_token(setup_session):
+    """Fixture to make an async request using sync-wrap, with a short-lived -- 1 second -- access token.
+    GET /Patient -> PATCH /Patient
+    """
+
+    product, app, _ = setup_session
+
+    oauth = OauthHelper(app.client_id, app.client_secret, app.callback_url)
+    resp = await oauth.get_token_response(grant_type="authorization_code", timeout=1000)
+    token = resp["body"]["access_token"]
+
+    pds = GenericPdsRequestor(
+        pds_base_path=config.PDS_BASE_PATH,
+        base_url=config.BASE_URL,
+        token=token,
+    )
+
+    response = pds.get_patient_response(patient_id='5900038181')
+
+    pds.headers = {
+        "If-Match": response.headers["Etag"],
+        "Content-Type": "application/json-patch+json"
+    }
+
+    return pds
 
 
 @pytest.fixture()
