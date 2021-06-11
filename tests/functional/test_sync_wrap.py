@@ -14,16 +14,6 @@ def test_sync_wrap_rate_limit():
     pass
 
 
-@pytest.mark.happy_path
-@pytest.mark.sync_wrap
-@pytest.mark.apmspii_832
-@scenario('./features/sync_wrap.feature',
-          'The rate limit is tripped through an async request'
-          )
-def test_async_rate_limit():
-    pass
-
-
 # @pytest.mark.happy_path
 # @pytest.mark.sync_wrap
 # @pytest.mark.apmspii_874
@@ -87,24 +77,6 @@ def trip_rate_limit(context: dict):
         response = context["pds"].update_patient_response(
             patient_id='5900038181',
             payload={"patches": [{"op": "replace", "path": "/birthDate", "value": "2001-01-01"}]}
-        )
-        if response.status_code == 429:
-            context["pds"] = response
-            return
-
-
-@pytest.mark.sync_wrap
-@pytest.mark.apmspii_874
-@when("the rate limit is tripped with an async request")
-def trip_rate_limit_async(context: dict, create_random_date):
-    context["pds"].headers = {
-        "Prefer": "respond-async",
-    }
-
-    for i in range(10):
-        response = context["pds"].update_patient_response(
-            patient_id='5900038181',
-            payload={"patches": [{"op": "replace", "path": "/birthDate", "value": create_random_date}]}
         )
         if response.status_code == 429:
             context["pds"] = response
