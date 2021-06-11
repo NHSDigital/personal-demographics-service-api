@@ -27,5 +27,11 @@ Feature: Sync-wrap failure modes
         Given I have a proxy with a low rate limit set
         Given I have a valid PATCH request
         When the rate limit is tripped with sync-wrap polling
-        Then I get a 429 HTTP response
-        And returns a rate limit error message
+        Then I get a 503 HTTP response
+        And returns a helpful error message
+
+    Scenario: The access token expires during sync-wrap polling
+        Given I have an access token expiring soon
+        When I PATCH a patient
+        Then I get a 503 HTTP response
+        And returns the error code SERVICE_UNAVAILABLE

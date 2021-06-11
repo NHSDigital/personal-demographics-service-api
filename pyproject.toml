@@ -56,4 +56,7 @@ markers = [
     "search_scenarios",
     "update_scenarios",
     "related_person_scenarios",
+    "apmspii_832",
+    "apmspii_874",
+    "apmspii_921",
 ]
