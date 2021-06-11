@@ -7,6 +7,10 @@
       <Step>
           <Name>AssignMessage.Copy.RequestHeaders</Name>
       </Step>
+      <Step>
+          <Name>AssignMessage.RemovePreferHeader</Name>
+          <Condition>request.header.prefer IsNot null</Condition>
+      </Step>
     </Request>
   </PreFlow>
   <PostFlow>
