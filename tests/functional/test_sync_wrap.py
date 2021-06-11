@@ -12,14 +12,6 @@ def test_sync_wrap_rate_limit():
     pass
 
 
-@pytest.mark.apmspii_832
-@scenario('./features/sync_wrap.feature',
-          'The rate limit is tripped through an async request'
-          )
-def test_async_rate_limit():
-    pass
-
-
 @pytest.mark.apmspii_874
 @scenario('./features/sync_wrap.feature',
           'The rate limit is tripped during sync-wrap polling'
