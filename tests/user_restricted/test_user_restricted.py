@@ -2,8 +2,6 @@ import json
 from .data.pds_scenarios import retrieve, search, update
 from .utils import helpers
 from pytest_check import check
-import time
-import re
 
 
 class TestUserRestrictedRetrievePatient:
