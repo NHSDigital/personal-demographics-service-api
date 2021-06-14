@@ -7,7 +7,7 @@ info:
   title: Personal Demographics Service (FHIR) API
   description: |
     ## Overview
-    Use this API to access the [Personal Demographics Service (PDS)](https://digital.nhs.uk/services/demographics) - the national electronic database of NHS patient details such as name, address, date of birth, related people and NHS number.
+    Use this API to access the [Personal Demographics Service (PDS)](https://digital.nhs.uk/services/demographics) - the national electronic database of NHS patient details such as name, address, date of birth, related people, registered GP and NHS number.
 
     You can:
     * search for patients
