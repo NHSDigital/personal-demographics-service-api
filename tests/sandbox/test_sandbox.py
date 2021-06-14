@@ -106,7 +106,7 @@ class TestPDSSandboxSearchSuite:
 class TestPDSSandboxUpdateSyncWrapSuite:
     """Sandbox PDS Update Sync-Wrap Scenarios. Checks performed: canned Response_Bodies, Status_Codes and Headers"""
     def test_update_add_name(self, additional_headers):
-        # Prefer header depreated, check that header is ignored
+        # Prefer header deprecated, check that header is ignored
         additional_headers["Prefer"] = "respond-async"
         # send update request
         update_response = helpers.update_patient(
@@ -139,7 +139,7 @@ class TestPDSSandboxUpdateSyncWrapSuite:
         helpers.check_response_headers(update_response, additional_headers)
 
     def test_update_suffix_from_name(self, additional_headers):
-        # Prefer header depreated, check that header is ignored
+        # Prefer header deprecated, check that header is ignored
         additional_headers["Prefer"] = "respond-async"
         # send update request
         update_response = helpers.update_patient(
