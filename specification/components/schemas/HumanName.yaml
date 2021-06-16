@@ -18,7 +18,7 @@ properties:
       * nickname - A name that the patient prefers to be addressed by, but is not part of their usual name.
       * old - This name is no longer in use (or was never correct, but retained for records).
       * maiden - Name changed for Marriage. A name used prior to changing name because of marriage. This term is not gender specific. The use of this term does not imply any particular history for a person's name.
-      
+
       The following use codes are included in the [name-use](https://www.hl7.org/fhir/valueset-name-use.html) value set, but should not be used and is not be returned as part of a retrieval.
       * official - The formal name as registered in an official (government) registry, but which name might not be commonly used. May be called "legal name".
       * anonymous - Anonymous assigned name, alias, or pseudonym (used to protect a person's identity for privacy reasons).
@@ -32,8 +32,10 @@ properties:
     description: |
       Given names, including any middle names.
 
-      Each name should be a separate item in the list and should not contain spaces; for example `Jane Adele` should be broken down into two list items `Jane` and `Adele`.
-    example: [Jane, Adele]
+      Each name(s) should be a separate item in the list. The first given name can include multiple names separated by spaces.
+      But subsequent names should be broken down into list items. For example, the input `[Jane Marie Anne, Jo Adele]` will return `[Jane Marie Anne, Jo, Adele]`.
+
+    example: [Jane Marie Anne, Jo, Adele]
     items:
       type: string
       maxLength: 35
