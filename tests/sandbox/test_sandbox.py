@@ -17,7 +17,7 @@ class TestPDSSandboxDeploymentSuite:
         async def apigee_deployed(response: ClientResponse):
             if response.status != 200:
                 return False
-            body = await response.json()
+            body = await response.json(content_type=None)
             return body.get("commitId") == api_test_config.commit_id
 
         await poll_until(
