@@ -36,6 +36,7 @@ pytest-bdd = "^4.0.1"
 cryptography = "^3.2.1"
 python-dateutil = "^2.8.1"
 pytest-rerunfailures = "^9.1.1"
+api-test-utils = {url = "https://github.com/NHSDigital/apim-test-utils/releases/download/v1.1.11-alpha/api_test_utils-1.1.11a0-py3-none-any.whl"}
 
 
 [tool.poetry.dev-dependencies]

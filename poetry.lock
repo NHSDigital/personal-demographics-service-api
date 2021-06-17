@@ -1,5 +1,5 @@
 [[package]]
-category = "dev"
+category = "main"
 description = "Async http client/server framework (asyncio)"
 name = "aiohttp"
 optional = false
@@ -18,7 +18,7 @@ yarl = ">=1.0,<2.0"
 speedups = ["aiodns", "brotlipy", "cchardet"]
 
 [[package]]
-category = "dev"
+category = "main"
 description = ""
 name = "api-test-utils"
 optional = false
@@ -45,7 +45,7 @@ python-versions = "*"
 version = "1.4.4"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Timeout context manager for asyncio programs"
 name = "async-timeout"
 optional = false
@@ -422,7 +422,7 @@ python-versions = "*"
 version = "1.0.2"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "multidict implementation"
 name = "multidict"
 optional = false
@@ -565,7 +565,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "2.3.1"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "JSON Web Token implementation in Python"
 name = "pyjwt"
 optional = false
@@ -608,7 +608,7 @@ toml = "*"
 testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "requests", "xmlschema"]
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Pytest support for asyncio."
 name = "pytest-asyncio"
 optional = false
@@ -771,7 +771,7 @@ python-versions = "*"
 version = "1.4.3"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Backported and Experimental Type Hints for Python 3.5+"
 name = "typing-extensions"
 optional = false
@@ -803,7 +803,7 @@ version = "2.0.1"
 watchdog = ["watchdog"]
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Yet another URL library"
 name = "yarl"
 optional = false
@@ -846,7 +846,7 @@ test = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 
 [metadata]
-content-hash = "87e6c27a43c8b74bcd42cce85a64f27ef6cc4d25fbd21ab929439a046fe5c829"
+content-hash = "c7aa78051817e64c3f034b0c5f8d550780da8857b94c70fca26373a84e37a141"
 python-versions = "^3.8"
 
 [metadata.files]

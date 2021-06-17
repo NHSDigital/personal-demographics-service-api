@@ -12,6 +12,7 @@ from api_test_utils.api_test_session_config import APITestSessionConfig
 class TestPDSSandboxDeploymentSuite:
     """Sandbox PDS Deployment Scenarios. Checks performed: status_codes and version deployed"""
 
+    @pytest.mark.asyncio
     async def test_wait_for_ping(self, api_client: APISessionClient, api_test_config: APITestSessionConfig):
         async def apigee_deployed(response: ClientResponse):
             if response.status != 200:
@@ -23,10 +24,12 @@ class TestPDSSandboxDeploymentSuite:
             make_request=lambda: api_client.get("_ping"), until=apigee_deployed, timeout=30
         )
 
+    @pytest.mark.asyncio
     async def test_check_status_is_secured(self, api_client: APISessionClient):
         async with api_client.get("_status", allow_retries=True) as response:
             helpers.check_response_status_code(response, 401)
 
+    @pytest.mark.asyncio
     async def test_wait_for_status(self, api_client: APISessionClient, api_test_config: APITestSessionConfig):
         async def is_deployed(response: ClientResponse):
             if response.status != 200:
