@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<TargetEndpoint name="sync-wrap">
+<TargetEndpoint name="sync-wrap-sandbox">
   <PreFlow>
     <Request>
-      <Step>
-        <Name>OauthV2.VerifyAccessToken</Name>
-      </Step>
       <Step>
         <Name>Quota</Name>
       </Step>
@@ -29,16 +26,9 @@
       we will simply present an 'unknown error'. This is to prevent information leakage. -->
       <Condition>(response.status.code GreaterThanOrEquals 400) And (response.status.code LesserThan 500)</Condition>
       <Step>
-        <Condition>(response.status.code Equals "429")</Condition>
-         <Name>AssignMessage.Errors.ServiceUnavailable</Name>
-      </Step>
-      <Step>
-        <Condition>(response.status.code Equals "401")</Condition>
-         <Name>AssignMessage.Errors.ServiceUnavailable</Name>
-      </Step>
-      <Step>
-        <Condition>(response.status.code Equals "503")</Condition>
-         <Name>AssignMessage.Errors.CatchAllMessage</Name>
+        <!--No-op pass through -->
+        <Condition>(response.status.code Equals "504")</Condition>
+        <Name>Quota</Name>
       </Step>
     </FaultRule>
     <FaultRule name="request_timeout">

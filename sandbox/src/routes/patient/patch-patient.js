@@ -15,6 +15,7 @@ module.exports = [
             * Non-existant patient: 404 
             * Invalid NHS Number: 400 
             * Unset/invalid Content-Type: 415 Unsupported Media Type
+            * No x-request-id header: 412
         */
         method: 'PATCH',
         path: '/Patient/{nhsNumber}',
@@ -49,6 +50,13 @@ module.exports = [
                 throw Boom.badRequest(
                     "Invalid update with error - No patches found",
                     {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid"})
+            }
+
+            // check X-Request-ID exists
+            if(!("x-request-id" in request.headers)){
+                throw Boom.preconditionFailed(
+                    "Invalid request with error - X-Request-ID header must be supplied to access this resource",
+                    {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED", display: "Required condition was not fulfilled"})
             }
 
             // Deep Copy the patient

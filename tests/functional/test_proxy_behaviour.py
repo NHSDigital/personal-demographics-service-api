@@ -31,7 +31,7 @@ def _trip_rate_limit(token: str, req_type: HTTPMethods) -> requests.Response:
     if req_type == HTTPMethods.PATCH:
         patient = pds.get_patient_response(patient_id='5900038181')
         pds.headers = {
-            "If-Match": patient.headers["Etag"] if patient.headers["Etag"] else "W/22",
+            "If-Match": patient.headers["Etag"] if patient.headers.get("Etag") else "W/22",
         }
 
     def _pds_response():
@@ -49,7 +49,7 @@ def _trip_rate_limit(token: str, req_type: HTTPMethods) -> requests.Response:
         if response.status_code == 429:
             return response
         if response.status_code == 200:
-            print("Are you sure that the jwt is the for correct app?")
+            print("Are you sure that the jwt is for the correct app?")
         if response.status_code == 404:
             print(f"Could not find url : {BASE_URL}/{PDS_BASE_PATH}/Patient/5900038181")
 
@@ -79,7 +79,7 @@ def test_async_spike_arrest_policy():
 @pytest.mark.quota
 @pytest.mark.apmspii_627
 @scenario('./features/proxy_behaviour.feature', 'API quota is tripped')
-def test_qouta_limit():
+def test_quota_limit():
     pass
 
 
@@ -87,13 +87,15 @@ def test_qouta_limit():
 @pytest.mark.apmspii_627
 @given("I have a proxy with a low rate limit set", target_fixture="context")
 def setup_rate_limit_proxy(setup_session):
+    product, app, token = setup_session
+
     context = {
-        "product": setup_session[0],
-        "app": setup_session[1],
-        "token": setup_session[2],
+        "product": product,
+        "app": app,
+        "token": token,
     }
-    set_quota_and_rate_limit(context["product"], rate_limit="1ps")
-    assert context["product"].rate_limit == "1ps"
+    set_quota_and_rate_limit(context["product"], rate_limit="1pm")
+    assert context["product"].rate_limit == "1pm"
     return context
 
 

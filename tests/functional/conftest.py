@@ -93,44 +93,42 @@ async def get_token(request):
     return _token
 
 
-@ pytest.fixture(scope="function")
-def setup_session(request):
+@pytest.fixture(scope="function")
+async def setup_session(request):
     """This fixture is called at a function level.
     The default app created here should be modified by your tests.
     """
-    product = asyncio.run(_product_with_full_access())
+
+    product = await _product_with_full_access()
     print("\nCreating Default App..")
     # Create a new app
     app = ApigeeApiDeveloperApps()
-
-    asyncio.run(app.create_new_app(
+    await app.create_new_app(
         callback_url="https://example.org/callback"
-    ))
+    )
     # Assign the new product to the app
-    asyncio.run(app.add_api_product([product.name]))
+    await app.add_api_product([product.name])
 
     # Set default JWT Testing resource url
-    asyncio.run(
-        app.set_custom_attributes(
+    await app.set_custom_attributes(
             {
                 'jwks-resource-url': 'https://raw.githubusercontent.com/NHSDigital/'
                                      'identity-service-jwks/main/jwks/internal-dev/'
                                      '9baed6f4-1361-4a8e-8531-1f8426e3aba8.json'
             }
-        )
     )
 
-    asyncio.run(product.update_environments([config.ENVIRONMENT]))
+    await product.update_environments([config.ENVIRONMENT])
     oauth = OauthHelper(app.client_id, app.client_secret, app.callback_url)
-    resp = asyncio.run(oauth.get_token_response(grant_type="authorization_code"))
+    resp = await oauth.get_token_response(grant_type="authorization_code")
     token = resp["body"]["access_token"]
 
     yield product, app, token
 
     # Teardown
     print("\nDestroying Default App..")
-    asyncio.run(app.destroy_app())
-    asyncio.run(product.destroy_product())
+    await app.destroy_app()
+    await product.destroy_product()
 
 
 @pytest.fixture()
@@ -138,6 +136,7 @@ def setup_patch(setup_session):
     """Fixture to make an async request using sync-wrap.
     GET /Patient -> PATCH /Patient
     """
+
     [product, app, token] = setup_session
 
     pds = GenericPdsRequestor(
@@ -159,6 +158,34 @@ def setup_patch(setup_session):
         "app": app,
         "token": token,
     }
+
+
+@pytest.fixture()
+async def setup_patch_short_lived_token(setup_session):
+    """Fixture to make an async request using sync-wrap, with a short-lived -- 1 second -- access token.
+    GET /Patient -> PATCH /Patient
+    """
+
+    product, app, _ = setup_session
+
+    oauth = OauthHelper(app.client_id, app.client_secret, app.callback_url)
+    resp = await oauth.get_token_response(grant_type="authorization_code", timeout=1000)
+    token = resp["body"]["access_token"]
+
+    pds = GenericPdsRequestor(
+        pds_base_path=config.PDS_BASE_PATH,
+        base_url=config.BASE_URL,
+        token=token,
+    )
+
+    response = pds.get_patient_response(patient_id='5900038181')
+
+    pds.headers = {
+        "If-Match": response.headers["Etag"],
+        "Content-Type": "application/json-patch+json"
+    }
+
+    return pds
 
 
 @pytest.fixture()

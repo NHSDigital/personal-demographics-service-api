@@ -82,7 +82,7 @@ steps:
       export REDIRECT_URI="https://nhsd-apim-testing-internal-dev.herokuapp.com/callback"
       export AUTHENTICATE_URL="https://nhsd-apim-testing-internal-dev.herokuapp.com/"
 
-      poetry run pytest -v tests/user_restricted/test_user_restricted.py --junitxml=tests/user-restricted-test-report.xml
+      poetry run pytest -v tests/user_restricted/test_user_restricted.py --junitxml=tests/user-restricted-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run user restricted tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
   - task: PublishTestResults@2
@@ -105,7 +105,7 @@ steps:
       export CLIENT_ID="$(CLIENT_ID)"
       export CLIENT_SECRET="$(CLIENT_SECRET)"
 
-      poetry run pytest -v tests/functional/test_sync_wrap.py --junitxml=tests/sync-wrap-test-report.xml
+      poetry run pytest -v tests/functional/test_sync_wrap.py --junitxml=tests/sync-wrap-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run sync wrap tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
 
