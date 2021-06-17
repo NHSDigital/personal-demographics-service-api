@@ -27,7 +27,7 @@ class TestPDSSandboxDeploymentSuite:
     @pytest.mark.asyncio
     async def test_check_status_is_secured(self, api_client: APISessionClient):
         async with api_client.get("_status", allow_retries=True) as response:
-            helpers.check_response_status_code(response, 401)
+            assert response.status == 401
 
     @pytest.mark.asyncio
     async def test_wait_for_status(self, api_client: APISessionClient, api_test_config: APITestSessionConfig):

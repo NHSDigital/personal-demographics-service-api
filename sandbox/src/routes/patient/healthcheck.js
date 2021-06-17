@@ -10,7 +10,7 @@ module.exports = [{
         {
           status: "pass",
           ping: "pong",
-          version: JSON.stringify(process.env.VERSION_INFO)
+          version: JSON.parse(process.env.VERSION_INFO)
         }
       )
       .code(200)
