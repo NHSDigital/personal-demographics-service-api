@@ -6,7 +6,14 @@ module.exports = [{
   path: '/_health',
   /*jslint unparam: true*/
   handler: (request, h) => {
-      return h.response().code(200)
+      return h.response(
+        {
+          status: "pass",
+          ping: "pong",
+          version: process.env.VERSION_INFO
+        }
+      )
+      .code(200)
     }
     /*jslint unparam: false*/
 }]
