@@ -39,7 +39,6 @@ class TestPDSSandboxDeploymentSuite:
             if body.get("commitId") != api_test_config.commit_id:
                 return False
 
-            # TODO: check version on imm hist deploy
             backend = helpers.dict_path(body, path=["checks", "healthcheck", "outcome", "version"])
             if not backend:
                 return True
