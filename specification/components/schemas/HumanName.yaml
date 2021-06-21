@@ -32,8 +32,8 @@ properties:
     description: |
       Given names, including any middle names.
 
-      Each name(s) should be a separate item in the list. The first given name can include multiple names separated by spaces.
-      But subsequent names should be broken down into list items. For example, the input `[Jane Marie Anne, Jo Adele]` will return `[Jane Marie Anne, Jo, Adele]`.
+      Each name(s) should be a separate item in the list. The first given name may include multiple names, separated by a space.
+      Subsequent names must be broken down into list items. For example, the input `[Jane Marie Anne, Jo Adele]` returns `[Jane Marie Anne, Jo, Adele]`.
 
     example: [Jane Marie Anne, Jo, Adele]
     items:
