@@ -1,0 +1,6 @@
+<AssignMessage continueOnError="false" enabled="true" name="AssignMessage.SetAccessModeCitizenAccess">
+  <AssignVariable>
+    <Name>access-mode</Name>
+    <Value>citizen-access</Value>
+  </AssignVariable>
+</AssignMessage>
