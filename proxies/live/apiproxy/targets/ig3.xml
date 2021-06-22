@@ -18,7 +18,7 @@
       </Step>
       <Step>
         <Name>AssignMessage.SetAccessModeCitizenAccess</Name>
-        <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-login:p9:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-login:p9:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-login:p9:personal-demographics-service$|^urn:nhsd:apim:user-nhs-login:p9:personal-demographics-service$)")</Condition>
+        <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service$|^urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service$)")</Condition>
       </Step>
       <Step>
         <!-- Header NHSD-Session-URID must be present and not empty for 'authorization_code'-->
@@ -107,15 +107,12 @@
         </Step>
       </Request>
     </Flow>
-    <Flow name="citizen access">
+    <Flow name="citizen_access">
       <Condition>(access-mode Equals "citizen-access")</Condition>
       <Request>
-        <!-- If _max-results param is unset, set to allowed value for application-restricted mode -->
         <Step>
-          <Name>AssignMessage.SetMaxResultsToOne</Name>
-          <Condition>(proxy.pathsuffix MatchesPath "/Patient" and request.verb Equals "GET" and request.queryparam._max-results Is null)</Condition>
+            <Name>DecodeJWT.DecodeIdToken</Name>
         </Step>
-        <!-- If _max-results is set to anything other than 1, prevent query -->
         <Step>
           <Name>RaiseFault.MaxResultsInvalidAppRestricted</Name>
           <Condition>(proxy.pathsuffix MatchesPath "/Patient" and request.verb Equals "GET" and request.queryparam._max-results NotEquals "1")</Condition>
