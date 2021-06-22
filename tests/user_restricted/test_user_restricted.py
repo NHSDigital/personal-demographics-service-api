@@ -856,3 +856,15 @@ class TestUserRestrictedRetrieveRelatedPerson:
         helpers.check_retrieve_related_person_response_body(response, retrieve[7]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, self.headers)
+
+
+class TestStatusEndpoints:
+
+    def test_ping_endpoint(self):
+        response = helpers.ping_request()
+        helpers.check_response_status_code(response, 200)
+
+    def test_health_check_endpoint(self, headers_with_token):
+        response = helpers.check_health_check_endpoint(self.headers)
+        helpers.check_response_status_code(response, 200)
+
