@@ -867,4 +867,3 @@ class TestStatusEndpoints:
     def test_health_check_endpoint(self, headers_with_token):
         response = helpers.check_health_check_endpoint(self.headers)
         helpers.check_response_status_code(response, 200)
-
