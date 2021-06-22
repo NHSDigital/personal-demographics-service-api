@@ -1,6 +1,7 @@
 import json
 from .data.pds_scenarios import retrieve, search, update
 from .utils import helpers
+import pytest
 from pytest_check import check
 import time
 import re
@@ -16,6 +17,7 @@ class TestUserRestrictedRetrievePatient:
 
         helpers.check_response_status_code(response, 404)
 
+    @pytest.mark.smoke_test
     def test_retrieve_patient(self, headers_with_token):
         response = helpers.retrieve_patient(
             retrieve[0]["patient"],
@@ -126,6 +128,7 @@ class TestUserRestrictedRetrievePatient:
 
 class TestUserRestrictedSearchPatient:
 
+    @pytest.mark.smoke_test
     def test_search_patient_happy_path(self, headers_with_token):
         response = helpers.search_patient(
             search[0]["query_params"],
@@ -530,6 +533,7 @@ class TestUserRestrictedSearchPatient:
 
 class TestUserRestrictedPatientUpdateAsync:
 
+    @pytest.mark.smoke_test
     def test_update_patient_dob(self, headers_with_token, create_random_date):
         #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
         response = helpers.retrieve_patient(
@@ -848,6 +852,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
 
 class TestUserRestrictedRetrieveRelatedPerson:
 
+    @pytest.mark.smoke_test
     def test_retrieve_related_person(self, headers_with_token):
         response = helpers.retrieve_patient_related_person(
             retrieve[7]["patient"],
@@ -858,6 +863,7 @@ class TestUserRestrictedRetrieveRelatedPerson:
         helpers.check_response_headers(response, self.headers)
 
 
+@pytest.mark.smoke_test
 class TestStatusEndpoints:
 
     def test_ping_endpoint(self):
