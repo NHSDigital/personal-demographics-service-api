@@ -114,8 +114,11 @@
             <Name>DecodeJWT.DecodeIdToken</Name>
         </Step>
         <Step>
-          <Name>RaiseFault.MaxResultsInvalidAppRestricted</Name>
-          <Condition>(proxy.pathsuffix MatchesPath "/Patient" and request.verb Equals "GET" and request.queryparam._max-results NotEquals "1")</Condition>
+            <Name>javascript.RestrictRequest</Name>
+        </Step>
+        <Step>
+          <Name>RaiseFault.MaxResultsInvalidUserNHSlogin</Name>
+          <Condition>apigee.method_is_restricted Equals true</Condition>
         </Step>
       </Request>
     </Flow>

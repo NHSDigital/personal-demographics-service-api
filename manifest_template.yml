@@ -37,6 +37,12 @@ ACCESS_MODES:
     scopes: ['urn:nhsd:apim:app:level3:personal-demographics-service']
     requireCallbackUrl: false
     description: Application Restricted
+  - name: user-restricted
+    nameSuffix: citizen-access
+    displayName: Citizen-Access
+    scopes: ['urn:nhsd:apim:user-nhs-login:p9:personal-demographics-service']
+    requireCallbackUrl: false
+    description: Citizen Access
 ---
 
 # Manifest definition
