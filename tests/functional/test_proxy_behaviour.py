@@ -14,11 +14,14 @@ class HTTPMethods(Enum):
     PATCH = "PATCH"
 
 
-def _trip_rate_limit(token: str, req_type: HTTPMethods, timeout: int = 30) -> requests.Response:
+def _trip_rate_limit(token: str, req_type: HTTPMethods, timeout: int = 30, step: int = 0.5) -> requests.Response:
     """Trips the spike arrest policy and returns the response.
 
     Args:
         token (str): OAuth access token.
+        req_type(HTTPMethods): HTTP Method to send
+        timeout(int): Timeout to trip rate_limit
+        step(int): time between requests
 
     Returns:
         response (requests.Response): HTTP Response.
@@ -51,7 +54,7 @@ def _trip_rate_limit(token: str, req_type: HTTPMethods, timeout: int = 30) -> re
         return response.status_code == 429
 
     try:
-        response = poll(lambda: _pds_response(), timeout=30, step=0.5, check_success=_check_correct_response)
+        response = poll(lambda: _pds_response(), timeout=timeout, step=step, check_success=_check_correct_response)
         return response
     except TimeoutException:
         print("Timeout Error: Rate limit wasn't tripped within set timeout")
