@@ -36,6 +36,7 @@ pytest-asyncio = ">=0.14.0,<0.15.0"
 reference = ""
 type = "url"
 url = "https://github.com/NHSDigital/apim-test-utils/releases/download/v1.1.8-alpha/api_test_utils-1.1.8a0-py3-none-any.whl"
+
 [[package]]
 category = "dev"
 description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
@@ -515,6 +516,14 @@ version = "3.11"
 
 [[package]]
 category = "main"
+description = "Updated polling utility with many configurable options"
+name = "polling2"
+optional = false
+python-versions = "*"
+version = "0.4.7"
+
+[[package]]
+category = "main"
 description = "Cross-platform lib for process and system monitoring in Python."
 name = "psutil"
 optional = false
@@ -846,7 +855,7 @@ test = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 
 [metadata]
-content-hash = "c5aca6307ad4c6f5255bd6f63289ad9c73568536ac6a05d5550f1c152e92ecf2"
+content-hash = "5fac2f84700c8b43a1a17e2875a0cf361045e3da89a3dea435916f76d9db24d0"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -1311,6 +1320,10 @@ pluggy = [
 ply = [
     {file = "ply-3.11-py2.py3-none-any.whl", hash = "sha256:096f9b8350b65ebd2fd1346b12452efe5b9607f7482813ffca50c22722a807ce"},
     {file = "ply-3.11.tar.gz", hash = "sha256:00c7c1aaa88358b9c765b6d3000c6eec0ba42abca5351b095321aef446081da3"},
+]
+polling2 = [
+    {file = "polling2-0.4.7-py2.py3-none-any.whl", hash = "sha256:b36d9ae09da0e916c6e7c63378fabf4c8259d59735981bb9264b5285bc6fc80f"},
+    {file = "polling2-0.4.7.tar.gz", hash = "sha256:d84ecf4f90da94dfe932bf676524ff4990cf8bddaeb80ec918b9419e1548f155"},
 ]
 psutil = [
     {file = "psutil-5.8.0-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:0066a82f7b1b37d334e68697faba68e5ad5e858279fd6351c8ca6024e8d6ba64"},
