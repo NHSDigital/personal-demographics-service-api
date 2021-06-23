@@ -87,7 +87,7 @@ def trip_rate_limit(context: dict):
     def _update_patient():
         response = context["pds"].update_patient_response(
             patient_id='5900038181',
-            payload={"patches": [{"op": "replace", "path": "/birthDate", "value": create_random_date}]}
+            payload={"patches": [{"op": "replace", "path": "/birthDate", "value": "2001-01-01"}]}
         )
         return response
 
