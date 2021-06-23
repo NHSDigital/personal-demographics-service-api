@@ -121,7 +121,8 @@ def setup_quota_proxy(setup_session):
 ))
 def trip_rate_limit(request, context):
     context["pds"] = _trip_rate_limit(context["token"], req_type=HTTPMethods[request])
-    assert "pds" in context is not None
+    assert ("pds" in context and context["pds"] is not None,
+            "Rate limit wasn't tripped")
 
 
 @pytest.mark.quota
@@ -129,7 +130,8 @@ def trip_rate_limit(request, context):
 @when("the quota is tripped")
 def trip_quota(context):
     context["pds"] = _trip_rate_limit(context["token"], req_type=HTTPMethods.GET)
-    assert "pds" in context is not None
+    assert ("pds" in context and context["pds"] is not None,
+            "Rate limit wasn't tripped")
 
 
 @pytest.mark.quota
@@ -141,8 +143,7 @@ def trip_quota(context):
     )
 )
 def rate_limit_status(status, context):
-    status_code = context["pds"].status_code
-    assert status_code == status
+    assert context["pds"].status_code == status
 
 
 @pytest.mark.quota
