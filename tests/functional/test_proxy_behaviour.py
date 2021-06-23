@@ -141,7 +141,8 @@ def trip_quota(context):
     )
 )
 def rate_limit_status(status, context):
-    assert context["pds"].status_code == status
+    status_code = context["pds"].status_code
+    assert status_code == status
 
 
 @pytest.mark.quota
