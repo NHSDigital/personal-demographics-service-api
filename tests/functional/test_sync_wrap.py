@@ -87,7 +87,7 @@ def trip_rate_limit(context: dict):
     def _update_patient():
         response = context["pds"].update_patient_response(
             patient_id='5900038181',
-            payload={"patches": [{"op": "replace", "path": "/birthDate", "value": "2001-01-01"}]}
+            payload={"patches": [{"op": "replace", "path": "/birthDate", "value": create_random_date}]}
         )
         return response
 
@@ -147,7 +147,7 @@ def trip_rate_limit_sync_polling(context: dict, create_random_date):
         context["pds"] = response
         return
     except TimeoutException:
-        assert False, "Timeout Error: Rate limit with async request wasn't tripped within set timeout"
+        assert False, "Timeout Error: Rate limit with sync wrap request wasn't tripped within set timeout"
 
 
 @when("I PATCH a patient")
