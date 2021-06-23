@@ -24,10 +24,7 @@ description = ""
 category = "dev"
 optional = false
 python-versions = ">=3.8,<4.0"
-<<<<<<< Updated upstream
-=======
 version = "1.1.8a0"
->>>>>>> Stashed changes
 
 [package.dependencies]
 aiohttp = ">=3.7.3,<4.0.0"
