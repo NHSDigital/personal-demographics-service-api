@@ -1,4 +1,4 @@
-<RaiseFault async="false" continueOnError="false" enabled="true" name="RaiseFault.RaiseFault.MaxResultsInvalidUserNHSlogin">
+<RaiseFault async="false" continueOnError="false" enabled="true" name="RaiseFault.InvalidUserNHSlogin">
   <FaultResponse>
     <Set>
       <Headers />

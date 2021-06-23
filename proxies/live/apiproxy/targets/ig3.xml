@@ -117,7 +117,7 @@
             <Name>javascript.RestrictRequest</Name>
         </Step>
         <Step>
-          <Name>RaiseFault.MaxResultsInvalidUserNHSlogin</Name>
+          <Name>RaiseFault.InvalidUserNHSlogin</Name>
           <Condition>apigee.method_is_restricted Equals true</Condition>
         </Step>
       </Request>
