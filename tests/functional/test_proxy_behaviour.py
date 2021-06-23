@@ -57,7 +57,7 @@ def _trip_rate_limit(token: str, req_type: HTTPMethods, timeout: int = 30, step:
         response = poll(lambda: _pds_response(), timeout=timeout, step=step, check_success=_check_correct_response)
         return response
     except TimeoutException:
-        print("Timeout Error: Rate limit wasn't tripped within set timeout")
+        assert False, "Timeout Error: Rate limit wasn't tripped within set timeout"
 
 
 @pytest.mark.happy_path
