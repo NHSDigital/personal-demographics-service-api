@@ -52,16 +52,10 @@ extends:
         make_spec_visible: true
         post_deploy:
           - template: templates/pds-tests.yml
-            parameters:
-              test_pack_path: ./e2e/smoke.json
-              test_type: smoke
       - environment: internal-qa
         make_spec_visible: true
         post_deploy:
           - template: templates/pds-tests.yml
-            parameters:
-              test_pack_path: ./e2e/smoke.json
-              test_type: smoke
         depends_on:
             - internal_dev
       - environment: internal-qa-sandbox
