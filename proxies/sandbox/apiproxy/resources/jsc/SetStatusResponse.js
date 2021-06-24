@@ -1,7 +1,7 @@
 var apiproxy_revision = context.getVariable('apiproxy.revision');
 
 var sandbox_response_code = context.getVariable('sandboxHealthcheckResponse.status.code');
-var sanbox_response = context.getVariable('sandboxHealthcheckResponse.content');
+var sanbox_response = json_tryparse(context.getVariable('sandboxHealthcheckResponse.content'));
 var sandbox_request_url = context.getVariable('sandboxHealthcheckRequest.url');
 
 var sandbox_request_has_failed = context.getVariable("servicecallout.ServiceCallout.CallSandboxHealthcheck.failed");
