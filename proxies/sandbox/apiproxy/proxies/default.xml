@@ -1,25 +1,32 @@
 <ProxyEndpoint name="default">
-    <Flows>
-      <Flow name="OptionsPreFlight">
-            <Request/>
-            <Response>
-                <Step>
-                    <Name>AssignMessage.AddCors</Name>
-                </Step>
-            </Response>
-        <Condition>request.verb == "OPTIONS" AND request.header.origin != null AND request.header.Access-Control-Request-Method != null</Condition>
-      </Flow>
-      <Flow name="AddPayloadToPing">
-        <Description/>
-        <Request/>
-        <Response>
-          <Step>
-            <Name>AssignMessage.AddPayloadToPing</Name>
-          </Step>
-        </Response>
-        <Condition>(proxy.pathsuffix MatchesPath "/_ping") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
-      </Flow>
-      <Flow name="StatusEndpoint">
+  <PreFlow>
+    <Response>
+      <Step>
+          <Name>AssignMessage.AddAccessControlExposeHeader</Name>
+      </Step>
+    </Response>
+  </PreFlow>
+  <Flows>
+    <Flow name="OptionsPreFlight">
+          <Request/>
+          <Response>
+              <Step>
+                  <Name>AssignMessage.AddCors</Name>
+              </Step>
+          </Response>
+      <Condition>request.verb == "OPTIONS" AND request.header.origin != null AND request.header.Access-Control-Request-Method != null</Condition>
+    </Flow>
+    <Flow name="AddPayloadToPing">
+      <Description/>
+      <Request/>
+      <Response>
+        <Step>
+          <Name>AssignMessage.AddPayloadToPing</Name>
+        </Step>
+      </Response>
+      <Condition>(proxy.pathsuffix MatchesPath "/_ping") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
+    </Flow>
+    <Flow name="StatusEndpoint">
         <Description/>
         <Request>
           <Step>
