@@ -3,7 +3,7 @@
   <Properties/>
   <Set>
       <Headers>
-          <Header name="Access-Control-Allow-Headers">origin, x-requested-with, accept, content-type, if-match, nhsd-session-urid, authorization, x-correlation-id, x-request-id</Header>
+          <Header name="Access-Control-Expose-Headers">origin, x-requested-with, accept, content-type, if-match, nhsd-session-urid, authorization, x-correlation-id, x-request-id</Header>
       </Headers>
   </Set>
   <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
