@@ -1,6 +1,9 @@
 <ProxyEndpoint name="default">
   <PreFlow>
     <Response>
+    <!-- APMSPII-1012 we want to expose the x-request-id and x-correlation-id headers
+      so they are displayed within the browser (Server response section within the "Try this API" feature).
+    -->
       <Step>
           <Name>AssignMessage.AddAccessControlExposeHeader</Name>
       </Step>
