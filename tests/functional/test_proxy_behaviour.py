@@ -2,6 +2,7 @@ from enum import Enum
 from tests.functional.conftest import set_quota_and_rate_limit
 import pytest
 import requests
+from polling2 import poll, TimeoutException
 from http import HTTPStatus
 from tests.scripts.pds_request import GenericPdsRequestor
 from pytest_bdd import scenario, given, when, then, parsers
@@ -13,11 +14,14 @@ class HTTPMethods(Enum):
     PATCH = "PATCH"
 
 
-def _trip_rate_limit(token: str, req_type: HTTPMethods) -> requests.Response:
+def _trip_rate_limit(token: str, req_type: HTTPMethods, timeout: int = 30, step: int = 0.5) -> requests.Response:
     """Trips the spike arrest policy and returns the response.
 
     Args:
         token (str): OAuth access token.
+        req_type(HTTPMethods): HTTP Method to send
+        timeout(int): Timeout to trip rate_limit
+        step(int): time between requests
 
     Returns:
         response (requests.Response): HTTP Response.
@@ -43,20 +47,17 @@ def _trip_rate_limit(token: str, req_type: HTTPMethods) -> requests.Response:
                 patient_id='5900038181',
                 payload={"patches": [{"op": "replace", "path": "/birthDate", "value": "2001-01-01"}]}
             )
+        return response
 
-        if response.status_code == 401:
-            raise Exception("Requests are unauthorized")
-        if response.status_code == 429:
-            return response
-        if response.status_code == 200:
-            print("Are you sure that the jwt is for the correct app?")
-        if response.status_code == 404:
-            print(f"Could not find url : {BASE_URL}/{PDS_BASE_PATH}/Patient/5900038181")
+    def _check_correct_response(response):
+        """ Check that the response has tripped rate_limit"""
+        return response.status_code == 429
 
-    for _ in range(0, 10):
-        response = _pds_response()
-        if response:
-            return response
+    try:
+        response = poll(lambda: _pds_response(), timeout=timeout, step=step, check_success=_check_correct_response)
+        return response
+    except TimeoutException:
+        assert False, "Timeout Error: Rate limit wasn't tripped within set timeout"
 
 
 @pytest.mark.happy_path
@@ -121,7 +122,7 @@ def setup_quota_proxy(setup_session):
 ))
 def trip_rate_limit(request, context):
     context["pds"] = _trip_rate_limit(context["token"], req_type=HTTPMethods[request])
-    assert "pds" in context is not None
+    assert "pds" in context and context["pds"] is not None, "Rate limit wasn't tripped"
 
 
 @pytest.mark.quota
@@ -129,7 +130,7 @@ def trip_rate_limit(request, context):
 @when("the quota is tripped")
 def trip_quota(context):
     context["pds"] = _trip_rate_limit(context["token"], req_type=HTTPMethods.GET)
-    assert "pds" in context is not None
+    assert "pds" in context and context["pds"] is not None, "Rate limit wasn't tripped"
 
 
 @pytest.mark.quota

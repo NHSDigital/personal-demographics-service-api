@@ -31,7 +31,7 @@ async def _product_with_full_access():
     await _set_default_rate_limit(product)
     await product.update_scopes([
         "personal-demographics-service:USER-RESTRICTED",
-        "urn:nhsd:apim:app:level3:",
+        "urn:nhsd:apim:app:level3:personal-demographics-service",
         "urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service"
     ])
     # Allows access to all proxy paths - so we don't have to specify the pr proxy explicitly
