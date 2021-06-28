@@ -13,9 +13,9 @@ info:
     * search for patients
     * get patient details
     * update patient details
+    * verify a NHS number for a patient
 
     You cannot currently use this API to:
-    * check that you have the right NHS number for a patient (but you can achieve this indirectly using search for patient or get patient details)
     * create a new record for a birth
     * receive birth notifications
     * create a record for a new patient
