@@ -13,7 +13,7 @@ info:
     * search for patients
     * get patient details
     * update patient details
-    * verify a NHS number for a patient
+    * verify an NHS number for a patient
 
     You cannot currently use this API to:
     * create a new record for a birth
