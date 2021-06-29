@@ -1871,7 +1871,7 @@ components:
       in: header
       name: Content-Type
       description: |
-        Used to indicate the media type of the resource (this should be set to `application/json-patch+json` for PATCH requests).
+        Used to indicate the media type of the resource.
       required: true
       schema:
         type: string
