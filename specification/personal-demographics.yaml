@@ -1861,7 +1861,7 @@ components:
       description: |
         An [OAuth 2.0 bearer token](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis).
 
-        Required in all platypus environments except sandbox.
+        Required in all environments except sandbox.
       required: false
       schema:
         type: string
