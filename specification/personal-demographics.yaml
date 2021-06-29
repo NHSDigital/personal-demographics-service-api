@@ -815,6 +815,8 @@ paths:
         ## JSON Patch
         To update a patient record, a [JSON Patch](https://tools.ietf.org/html/rfc6902) should be sent. A JSON Patch consists of one or more patch objects within a list.
 
+        The `Content-Type` header must be set to `application/json-patch+json`.
+
         It is recommended that all desired updates are sent together in a single request as a list of patches.
         This is the most efficient approach and reduces the danger of race conditions occurring when updating the patient record multiple times in a short period of time.
 
@@ -1543,7 +1545,7 @@ paths:
         content:
           # application/json-patch+json: FIXME - should be set to this but we have had to change it due to an Apigee SmartDocs bug.
           # See email chain w subject "Try this API feature for PATCH/POST APIs" between Alex H, Tony H, and David Macdonald from Apigee
-          application/json:
+          application/json-patch+json:
             schema:
               type: object
               required:
