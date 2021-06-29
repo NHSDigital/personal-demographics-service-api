@@ -200,7 +200,7 @@ info:
     url: 'https://digital.nhs.uk/developer/help-and-support'
     email: api.management@nhs.net
 servers:
-  - url: 'https://internal-dev-sandbox.api.service.nhs.uk/personal-demographics/FHIR/R4-pr-630'
+  - url: 'https://sandbox.api.service.nhs.uk/personal-demographics/FHIR/R4'
     description: Sandbox environment.
   - url: 'https://int.api.service.nhs.uk/personal-demographics/FHIR/R4'
     description: Integration test environment.
