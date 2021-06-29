@@ -1544,8 +1544,6 @@ paths:
       requestBody:
         required: true
         content:
-          # application/json-patch+json: FIXME - should be set to this but we have had to change it due to an Apigee SmartDocs bug.
-          # See email chain w subject "Try this API feature for PATCH/POST APIs" between Alex H, Tony H, and David Macdonald from Apigee
           application/json-patch+json:
             schema:
               type: object
