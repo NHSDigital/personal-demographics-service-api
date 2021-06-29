@@ -1866,6 +1866,15 @@ components:
         type: string
         format: '^Bearer\ [[:ascii:]]+$'
         example: 'Bearer g1112R_ccQ1Ebbb4gtHBP1aaaNM'
+    ContentType:
+      in: header
+      name: Content-Type
+      description: |
+        Used to indicate the media type of the resource (this should be set to `application/json-patch+json` for PATCH requests).
+      required: true
+      schema:
+        type: string
+        example: application/json-patch+json
     RequestID:
       in: header
       name: X-Request-ID
