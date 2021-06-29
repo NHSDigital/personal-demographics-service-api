@@ -1540,6 +1540,7 @@ paths:
         url: https://tools.ietf.org/html/rfc6902
       parameters:
         - $ref: '#/components/parameters/IfMatch'
+        - $ref: '#components/parameter/ContentType'
       requestBody:
         required: true
         content:
