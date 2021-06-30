@@ -815,8 +815,6 @@ paths:
         ## JSON Patch
         To update a patient record, a [JSON Patch](https://tools.ietf.org/html/rfc6902) should be sent. A JSON Patch consists of one or more patch objects within a list.
 
-        The `Content-Type` header must be set to `application/json-patch+json`.
-
         It is recommended that all desired updates are sent together in a single request as a list of patches.
         This is the most efficient approach and reduces the danger of race conditions occurring when updating the patient record multiple times in a short period of time.
 
@@ -1869,7 +1867,7 @@ components:
       in: header
       name: Content-Type
       description: |
-        Used to indicate the media type of the resource.
+        For a PATCH request, this must be set to `application/json-patch+json`.
       required: true
       schema:
         type: string
