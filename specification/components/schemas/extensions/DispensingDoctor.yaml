@@ -7,9 +7,9 @@ properties:
   url:
     type: string
     description: URL of specification of UKCore-DispensingDoctor FHIR extension.
-    default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-PreferredDispenserOrganization
+    default: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-PreferredDispenserOrganization
     enum:
-      - https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-PreferredDispenserOrganization
+      - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-PreferredDispenserOrganization
     readOnly: true
   valueReference:
     type: object

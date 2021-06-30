@@ -1020,7 +1020,7 @@ paths:
         ```json
         {
             "patches": [
-              { "op": "test", "path": "/extension/0/url", "value": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus" },
+              { "op": "test", "path": "/extension/0/url", "value": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus" },
               { "op": "remove", "path": "/extension/0" }
           ]
         }
@@ -1291,7 +1291,7 @@ paths:
 
         ### Communication
 
-        Single item found under `extension` with the extension URL `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication`.
+        Single item found under `extension` with the extension URL `https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication`.
 
         In a JSON Patch request, where the communication extension does not exist the path should be:
         * `/extension/-` when adding a communication extension.
@@ -1309,7 +1309,7 @@ paths:
         * any language codes outside the accepted list are rejected; such as local system `qa` codes.
 
         ### Contact preferences
-        Single item found under `extension` with the extension URL `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference`.
+        Single item found under `extension` with the extension URL `https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-ContactPreference`.
 
         In a JSON Patch request, where the Contact Preference extension does not exist or you are replacing/removing the full list of Contact preferences, the path should be:
         * `/extension/0` if the contact preference is the first item in the list. If it is the second item in the list the path is `/extension/1`, and so on.
@@ -1355,7 +1355,7 @@ paths:
 
         ### Death notification
 
-        Single item found under `extension` with the extension URL `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus`.
+        Single item found under `extension` with the extension URL `https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus`.
 
         In a JSON Patch request the path should be:
         * `/extension/0` if the death notification is the first item in the list. If it is the second item in the list the path is `/extension/1`, and so on.
@@ -1463,9 +1463,9 @@ paths:
         ### Pharmacy
 
         Single item found under `extension` with one of the extension urls:
-        * `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NominatedPharmacy`
-        * `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-MedicalApplianceSupplier`
-        * `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-PreferredDispenserOrganization`
+        * `https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NominatedPharmacy`
+        * `https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-MedicalApplianceSupplier`
+        * `https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-PreferredDispenserOrganization`
 
         In a JSON Patch request the path should be:
         * `/extension/0` if the pharmacy is the first item in the list. If it is the second item in the list the path is `/extension/1`, and so on
