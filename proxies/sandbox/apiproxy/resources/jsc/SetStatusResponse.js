@@ -1,7 +1,6 @@
 var apiproxy_revision = context.getVariable('apiproxy.revision');
 
 var sandbox_response_code = context.getVariable('sandboxHealthcheckResponse.status.code');
-var sanbox_response = context.getVariable('sandboxHealthcheckResponse.content');
 var sandbox_request_url = context.getVariable('sandboxHealthcheckRequest.url');
 
 var sandbox_request_has_failed = context.getVariable("servicecallout.ServiceCallout.CallSandboxHealthcheck.failed");
@@ -18,7 +17,16 @@ if (sandbox_response_code === null && sandbox_request_has_failed) {
   timeout = "true";
 }
 
+function json_tryparse(raw) {
+  try {
+      return JSON.parse(raw);
+  }
+  catch (e) {
+      return raw;
+  }
+}
 
+var sanbox_response = json_tryparse(context.getVariable('sandboxHealthcheckResponse.content'));
 
 var sandbox_service = {
   "sandbox:status": [{
