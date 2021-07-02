@@ -28,6 +28,6 @@ def get_env_file(variable_name: str) -> str:
 
 
 ENV = {
-    "pds_base_path": get_env("PDS_BASE_PATH"),
+    "service_base_path": get_env("SERVICE_BASE_PATH"),
     "environment": get_env("APIGEE_ENVIRONMENT"),
 }
