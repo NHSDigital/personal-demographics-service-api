@@ -113,6 +113,20 @@ info:
     For more details see [Network access for APIs](https://digital.nhs.uk/developer/guides-and-documentation/network-access-for-apis).
     
     ## Security and authorisation
+    
+    Table below provides a brief overview of various benifits that are offered by each with each security pattern used in this API.
+    
+    | Feature / Benifit                 | Application restricted API - signed JWT authentication | User restricted - NHS CIS2 combined authentication | User restricted - NHS CIS2 separate authentication | User restricted - NHS login separate authentication |
+    | --------------------------------- | ------------------------------------------------------ | -------------------------------------------------- | -------------------------------------------------- | --------------------------------------------------- |
+    | User is not present               | * |     |   |   |   |
+    | User is a Healthcare worker       |   | *   | * |   |   |
+    | User is a citizen                 |   |     |   | * | * |
+    | You need limited user information |   | *   |   |   |   |
+    | You need full user information    |   |     | * |   |   |
+    | Easy onboarding                   | ? | * ? |   |   |   |
+    | Simple integration                |   | *   |   | * |   |
+    
+            
     ### Application-restricted access
     This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis),
     meaning we authenticate the calling application but not the end user.
