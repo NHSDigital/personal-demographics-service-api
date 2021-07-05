@@ -1,6 +1,7 @@
 import json
 from .data.pds_scenarios import retrieve, search, update
 from .utils import helpers
+import pytest
 from pytest_check import check
 
 
@@ -14,6 +15,7 @@ class TestUserRestrictedRetrievePatient:
 
         helpers.check_response_status_code(response, 404)
 
+    @pytest.mark.smoke_test
     def test_retrieve_patient(self, headers_with_token):
         response = helpers.retrieve_patient(
             retrieve[0]["patient"],
@@ -124,6 +126,7 @@ class TestUserRestrictedRetrievePatient:
 
 class TestUserRestrictedSearchPatient:
 
+    @pytest.mark.smoke_test
     def test_search_patient_happy_path(self, headers_with_token):
         response = helpers.search_patient(
             search[0]["query_params"],
@@ -705,6 +708,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
 
 class TestUserRestrictedRetrieveRelatedPerson:
 
+    @pytest.mark.smoke_test
     def test_retrieve_related_person(self, headers_with_token):
         response = helpers.retrieve_patient_related_person(
             retrieve[7]["patient"],
@@ -713,3 +717,15 @@ class TestUserRestrictedRetrieveRelatedPerson:
         helpers.check_retrieve_related_person_response_body(response, retrieve[7]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, self.headers)
+
+
+@pytest.mark.smoke_test
+class TestStatusEndpoints:
+
+    def test_ping_endpoint(self):
+        response = helpers.ping_request()
+        helpers.check_response_status_code(response, 200)
+
+    def test_health_check_endpoint(self, headers_with_token):
+        response = helpers.check_health_check_endpoint(self.headers)
+        helpers.check_response_status_code(response, 200)

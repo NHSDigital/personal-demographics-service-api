@@ -1,33 +1,35 @@
 <ProxyEndpoint name="default">
   <PreFlow>
-    <Request>
+    <Response>
+    <!-- APMSPII-1012 we want to expose the x-request-id and x-correlation-id headers
+      so they are displayed within the browser (Server response section within the "Try this API" feature).
+    -->
       <Step>
-          <Name>AssignMessage.RemovePreferHeader</Name>
-          <Condition>request.header.prefer IsNot null</Condition>
+          <Name>AssignMessage.AddAccessControlExposeHeader</Name>
       </Step>
-    </Request>
+    </Response>
   </PreFlow>
-    <Flows>
-      <Flow name="OptionsPreFlight">
-            <Request/>
-            <Response>
-                <Step>
-                    <Name>AssignMessage.AddCors</Name>
-                </Step>
-            </Response>
-        <Condition>request.verb == "OPTIONS" AND request.header.origin != null AND request.header.Access-Control-Request-Method != null</Condition>
-      </Flow>
-      <Flow name="AddPayloadToPing">
-        <Description/>
-        <Request/>
-        <Response>
-          <Step>
-            <Name>AssignMessage.AddPayloadToPing</Name>
-          </Step>
-        </Response>
-        <Condition>(proxy.pathsuffix MatchesPath "/_ping") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
-      </Flow>
-      <Flow name="StatusEndpoint">
+  <Flows>
+    <Flow name="OptionsPreFlight">
+          <Request/>
+          <Response>
+              <Step>
+                  <Name>AssignMessage.AddCors</Name>
+              </Step>
+          </Response>
+      <Condition>request.verb == "OPTIONS" AND request.header.origin != null AND request.header.Access-Control-Request-Method != null</Condition>
+    </Flow>
+    <Flow name="AddPayloadToPing">
+      <Description/>
+      <Request/>
+      <Response>
+        <Step>
+          <Name>AssignMessage.AddPayloadToPing</Name>
+        </Step>
+      </Response>
+      <Condition>(proxy.pathsuffix MatchesPath "/_ping") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
+    </Flow>
+    <Flow name="StatusEndpoint">
         <Description/>
         <Request>
           <Step>
