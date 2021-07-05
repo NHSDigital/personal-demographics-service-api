@@ -1,5 +1,11 @@
 <ProxyEndpoint name="default">
   <PreFlow>
+      <Request>
+      <Step>
+          <Name>AssignMessage.RemovePreferHeader</Name>
+          <Condition>request.header.prefer IsNot null</Condition>
+      </Step>
+    </Request>
     <Response>
     <!-- APMSPII-1012 we want to expose the x-request-id and x-correlation-id headers
       so they are displayed within the browser (Server response section within the "Try this API" feature).
@@ -73,7 +79,7 @@
     </RouteRule>
     <RouteRule name="sync-wrap-sandbox">
       <Condition>
-        request.verb = "PATCH" AND (proxy.pathsuffix MatchesPath "/Patient/{id}") AND request.header.prefer NotEquals "respond-async" AND request.header.x-sync-wrapped NotEquals "true"
+        request.verb = "PATCH" AND (proxy.pathsuffix MatchesPath "/Patient/{id}") AND request.header.x-sync-wrapped NotEquals "true"
       </Condition>
     <TargetEndpoint>sync-wrap-sandbox</TargetEndpoint>
   </RouteRule>

@@ -97,14 +97,6 @@ def test_accepts_request_for_one_result():
 
 @scenario(
     "features/application_restricted.feature",
-    "PDS FHIR API rejects asynchronous PATCH requests",
-)
-def test_rejects_asynchronous_patch_request():
-    pass
-
-
-@scenario(
-    "features/application_restricted.feature",
     "PDS FHIR API rejects synchronous PATCH requests",
 )
 def test_rejects_synchronous_patch_request():
@@ -246,27 +238,6 @@ def get_patient_two_results(auth, context):
         },
         extra_params={"_max-results": "2"},
     )
-
-    context["response"] = response.json()
-    context["status"] = response.status_code
-
-
-@when("I PATCH a patient with prefer header set to respond-async")
-def patch_async_patient(auth, context):
-    authentication = auth["access_token"]
-
-    if authentication is not None:
-        token_type = auth["token_type"]
-        authentication = f"{token_type} {authentication}"
-
-    headers = {
-        "NHSD-SESSION-URID": "123",
-        "Authorization": f"{authentication}",
-        "X-Request-ID": str(uuid.uuid4()),
-        "Prefer": "respond-async"
-    }
-
-    response = patch_patient_request(headers)
 
     context["response"] = response.json()
     context["status"] = response.status_code
