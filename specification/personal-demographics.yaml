@@ -114,7 +114,7 @@ info:
     
     ## Security and authorisation
     
-    Table below, provides a brief overview of various benefits that are offered by each security pattern in this API.
+    Table below, provides a brief overview of various benefits that are offered by each security pattern used in this API.
     
     | Benefits | Application restricted API - signed JWT authentication | User restricted - NHS CIS2 combined authentication | User restricted - NHS CIS2 separate authentication | User restricted - NHS login combined authentication | User restricted - NHS login separate authentication |
     | -------- | ------------------------------------------------------ | -------------------------------------------------- | -------------------------------------------------- | --------------------------------------------------- | --------------------------------------------------- |
