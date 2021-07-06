@@ -36,6 +36,7 @@ pytest-bdd = "^4.0.1"
 cryptography = "^3.2.1"
 python-dateutil = "^2.8.1"
 pytest-rerunfailures = "^9.1.1"
+polling2 = "^0.4.7"
 
 
 [tool.poetry.dev-dependencies]
@@ -60,4 +61,5 @@ markers = [
     "apmspii_832",
     "apmspii_874",
     "apmspii_921",
+    "smoke_test"
 ]

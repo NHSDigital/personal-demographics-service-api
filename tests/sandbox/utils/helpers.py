@@ -156,3 +156,17 @@ def remove_time_stamp_on_search_response(response_body: dict) -> dict:
     if "timestamp" in response_body:
         response_body.pop("timestamp")
     return response_body
+
+
+def dict_path(raw, path: [str]):
+    if not raw:
+        return raw
+
+    if not path:
+        return raw
+
+    res = raw.get(path[0])
+    if not res or len(path) == 1 or type(res) != dict:
+        return res
+
+    return dict_path(res, path[1:])

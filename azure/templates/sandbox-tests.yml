@@ -4,8 +4,10 @@ steps:
     displayName: Setup sandbox tests
 
   - bash: |
-      export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
+      export SERVICE_BASE_PATH="$(SERVICE_BASE_PATH)"
       export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
+      export SOURCE_COMMIT_ID=$(Build.SourceVersion)
+      export STATUS_ENDPOINT_API_KEY="$(status-endpoint-api-key)"
 
       poetry run pytest -v tests/sandbox/test_sandbox.py --junitxml=tests/sandbox-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run sandbox tests

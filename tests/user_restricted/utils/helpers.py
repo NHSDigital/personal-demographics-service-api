@@ -201,3 +201,22 @@ def remove_time_stamp_on_search_response(response_body: dict) -> dict:
     if "timestamp" in response_body:
         response_body.pop("timestamp")
     return response_body
+
+
+def ping_request() -> requests.Response:
+    """Send a Ping request
+
+    Returns:
+        requests.Response: Response from server
+    """
+    response = requests.get(
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/_ping"
+    )
+    return response
+
+
+def check_health_check_endpoint(headers=dict) -> requests.Response:
+    response = requests.get(
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/healthcheck", headers=headers
+    )
+    return response

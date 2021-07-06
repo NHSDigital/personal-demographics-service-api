@@ -22,7 +22,7 @@ APIGEE_ENVIRONMENTS:
     approval_type: manual
     display_name_suffix: Production
     ratelimit: '15000pm'    # Amount Spine indicated they can handle as burst load
-    quota: '7800'           # Certified in NFTs
+    quota: '14400'           # 240 TPS
 
 ACCESS_MODES:
   - name: user-restricted
