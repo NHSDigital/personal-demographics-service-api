@@ -116,15 +116,15 @@ info:
     
     Table below, provides a brief overview of various benefits that are offered by each security pattern used in this API.
     
-    | Benefits | Application restricted API - signed JWT authentication | User restricted - NHS CIS2 combined authentication | User restricted - NHS CIS2 separate authentication | User restricted - NHS login combined authentication | User restricted - NHS login separate authentication |
-    | -------- | ------------------------------------------------------ | -------------------------------------------------- | -------------------------------------------------- | --------------------------------------------------- | --------------------------------------------------- |
-    | User is not present               | * |     |   |   |   |
-    | User is a Healthcare worker       |   | *   | * |   |   |
-    | User is a citizen                 |   |     |   | * | * |
-    | You need limited user information |   | *   |   |   |   |
-    | You need full user information    |   |     | * |   |   |
-    | Easy onboarding                   | ? | * ? |   |   |   |
-    | Simple integration                |   | *   |   | * |   |
+    | Benefits                          | Application restricted API - signed JWT authentication | User restricted - NHS CIS2 combined authentication | User restricted - NHS CIS2 separate authentication | User restricted - NHS login combined authentication | User restricted - NHS login separate authentication |
+    | --------------------------------- | ------------------------------------------------------ | -------------------------------------------------- | -------------------------------------------------- | --------------------------------------------------- | --------------------------------------------------- |
+    | User is not present               | *                                                      |                                                    |                                                    |                                                     |                                                     |
+    | User is a Healthcare worker       |                                                        | *                                                  | *                                                  |                                                     |                                                     |
+    | User is a citizen                 |                                                        |                                                    |                                                    | *                                                   | *                                                   |
+    | You need limited user information |                                                        | *                                                  |                                                    |                                                     |                                                     |
+    | You need full user information    |                                                        |                                                    | *                                                  |                                                     |                                                     |
+    | Easy onboarding                   | ?                                                      | * ?                                                |                                                    |                                                     |                                                     |
+    | Simple integration                |                                                        | *                                                  |                                                    | *                                                   |                                                     |
     
             
     ### Application-restricted access
