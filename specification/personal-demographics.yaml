@@ -116,8 +116,8 @@ info:
     
     Table below provides a brief overview of various benefits that are offered by each security pattern in this API.
     
-    | Benefits | Application restricted API - signed JWT authentication | User restricted - NHS CIS2 combined authentication | User restricted - NHS CIS2 separate authentication | User restricted - NHS login separate authentication |
-    | --------------------------------- | ------------------------------------------------------ | -------------------------------------------------- | -------------------------------------------------- | --------------------------------------------------- |
+    | Benefits | Application restricted API - signed JWT authentication | User restricted - NHS CIS2 combined authentication | User restricted - NHS CIS2 separate authentication | User restricted - NHS login combined authentication | User restricted - NHS login separate authentication |
+    | -------- | ------------------------------------------------------ | -------------------------------------------------- | -------------------------------------------------- | --------------------------------------------------- | --------------------------------------------------- |
     | User is not present               | * |     |   |   |   |
     | User is a Healthcare worker       |   | *   | * |   |   |
     | User is a citizen                 |   |     |   | * | * |
