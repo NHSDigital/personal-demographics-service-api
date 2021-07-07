@@ -579,7 +579,7 @@ class TestUserRestrictedPatientUpdateAsync:
         )
         with check:
             assert update_response.text == ""
-            assert helpers.search(r"/_poll/\w+", update_response.headers["Content-Location"]) is not None
+            assert re.search(r"/_poll/\w+", update_response.headers["Content-Location"]) is not None
         helpers.check_response_status_code(update_response, 202)
         helpers.check_response_headers(update_response, self.headers)
 
