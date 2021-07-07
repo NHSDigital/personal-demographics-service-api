@@ -1,5 +1,6 @@
 import json
 import time
+import re
 from .data.pds_scenarios import retrieve, search, update
 from .utils import helpers
 import pytest
