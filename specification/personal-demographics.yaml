@@ -126,6 +126,17 @@ info:
     | Easy onboarding                   | ?                                                      | * ?                                                |                                                    |                                                     |                                                     |
     | Simple integration                |                                                        | *                                                  |                                                    | *                                                   |                                                     |
     
+    
+    |           						|Open Access				|Application Restricted - API key authentication	|Application Restricted - Signed JWT authentication		|Application Restricted - TLS-MA authentication		|User Restricted - NHS CIS2 - Combined	|User Restricted - NHS CIS2 - Separate	|User Restricted - NHS login - Combined		|User Restricted - NHS login - Separate	|
+    | --------------------------------- | ------------------------- | ------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------- | ------------------------------------- | ------------------------------------- | ----------------------------------------- | ------------------------------------- |
+    | User can be						|Present or absent			|Present or absent									|Present or absent										|Present or absent									|Healthcare worker only					|Healthcare worker only					|Citizen or a healthcare worker				|Citizen or a healthcare worker			|
+    | User information					|Not available				|Not available										|Not available											|Not available										|Limited								|Full									|Limited									|Full									|
+    | Onboarding						|Simplest					|Simple												|Simple													|Not applicable										|Complex								|Most complex							|Complex									|Most complex							|
+    | Integration						|Simplest					|Simple												|Simple													|Simple												|Less complex							|Most complex							|Complex									|Most complex							|
+    | Type of user authentication		|Not needed					|Not needed											|Not needed												|Not needed											|Smartcards								|Smartcards								|Username and password						|Username and password					|
+    | Type of user authorisation		|Not needed					|Not needed											|Not needed												|Not needed											|NHS CIS2								|NHS CIS2								|NHS login									|NHS login								|
+    | Type of application authentication|Not needed					|API key											|Signed JWT												|TLS-MA certificate									|API key								|Signed JWT								|API key									|Signed JWT								|
+    | Type of application authorisation	|Not needed					|API key											|Oauth 2.0												|TLS-MA certificate									|Oauth 2.0								|Oauth 2.0								|Oauth 2.0									|Oauth 2.0								|
             
     ### Application-restricted access
     This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis),
