@@ -154,76 +154,11 @@ class TestPDSSandboxSearchSuite:
 
 
 @pytest.mark.update_scenarios
-class TestPDSSandboxUpdateAsyncSuite:
-    """Sandbox PDS Update Async Scenarios. Checks performed: canned Response_Bodies, Status_Codes and Headers"""
-    def test_update_add_name(self, additional_headers):
-        additional_headers["Prefer"] = "respond-async"
-        # send update request
-        update_response = helpers.update_patient(
-            update[0]["patient"],
-            update[0]["patient_record"],
-            update[0]["patch"],
-            additional_headers
-        )
-        assert update_response.text == ""
-        helpers.check_response_status_code(update_response, 202)
-        helpers.check_response_headers(update_response, additional_headers)
-        # send message poll request
-        poll_message_response = helpers.poll_message(
-            update_response.headers["content-location"]
-        )
-        helpers.check_retrieve_response_body(
-            poll_message_response, update[0]["response"]
-        )
-        helpers.check_response_status_code(poll_message_response, 200)
-
-    def test_update_replace_given_name(self, additional_headers):
-        additional_headers["Prefer"] = "respond-async"
-        # send update request
-        update_response = helpers.update_patient(
-            update[1]["patient"],
-            update[1]["patient_record"],
-            update[1]["patch"],
-            additional_headers,
-        )
-        assert update_response.text == ""
-        helpers.check_response_status_code(update_response, 202)
-        helpers.check_response_headers(update_response, additional_headers)
-        # send message poll request
-        poll_message_response = helpers.poll_message(
-            update_response.headers["content-location"]
-        )
-        helpers.check_retrieve_response_body(
-            poll_message_response, update[1]["response"]
-        )
-        helpers.check_response_status_code(poll_message_response, 200)
-
-    def test_update_suffix_from_name(self, additional_headers):
-        additional_headers["Prefer"] = "respond-async"
-        # send update request
-        update_response = helpers.update_patient(
-            update[2]["patient"],
-            update[2]["patient_record"],
-            update[2]["patch"],
-            additional_headers,
-        )
-        assert update_response.text == ""
-        helpers.check_response_status_code(update_response, 202)
-        helpers.check_response_headers(update_response, additional_headers)
-        # send message poll request
-        poll_message_response = helpers.poll_message(
-            update_response.headers["content-location"]
-        )
-        helpers.check_retrieve_response_body(
-            poll_message_response, update[2]["response"]
-        )
-        helpers.check_response_status_code(poll_message_response, 200)
-
-
-@pytest.mark.update_scenarios
 class TestPDSSandboxUpdateSyncWrapSuite:
     """Sandbox PDS Update Sync-Wrap Scenarios. Checks performed: canned Response_Bodies, Status_Codes and Headers"""
     def test_update_add_name(self, additional_headers):
+        # Prefer header deprecated, check that header is ignored
+        additional_headers["Prefer"] = "respond-async"
         # send update request
         update_response = helpers.update_patient(
             update[0]["patient"],
@@ -255,6 +190,8 @@ class TestPDSSandboxUpdateSyncWrapSuite:
         helpers.check_response_headers(update_response, additional_headers)
 
     def test_update_suffix_from_name(self, additional_headers):
+        # Prefer header deprecated, check that header is ignored
+        additional_headers["Prefer"] = "respond-async"
         # send update request
         update_response = helpers.update_patient(
             update[2]["patient"],

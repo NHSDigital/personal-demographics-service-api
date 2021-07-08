@@ -7,6 +7,15 @@
       <Step>
           <Name>AssignMessage.Copy.RequestHeaders</Name>
       </Step>
+      <!--
+        APMSPII-930 need to explicity check for, and remove, the prefer header
+        if it is passed in by the client as the sync-wrap component will also
+        performs checks on the value of the prefer header.
+      -->
+      <Step>
+          <Name>AssignMessage.RemovePreferHeader</Name>
+          <Condition>request.header.prefer IsNot null</Condition>
+      </Step>
     </Request>
   </PreFlow>
   <PostFlow>
@@ -83,7 +92,7 @@
   </RouteRule>
   <RouteRule name="sync-wrap">
     <Condition>
-      request.verb = "PATCH" AND (proxy.pathsuffix MatchesPath "/Patient/{id}") AND request.header.prefer NotEquals "respond-async" AND request.header.x-sync-wrapped NotEquals "true"
+      request.verb = "PATCH" AND (proxy.pathsuffix MatchesPath "/Patient/{id}") AND request.header.x-sync-wrapped NotEquals "true"
     </Condition>
   <TargetEndpoint>sync-wrap</TargetEndpoint>
 </RouteRule>
