@@ -1,6 +1,57 @@
 import pytest
+from aiohttp import ClientResponse
 from .data.scenarios import relatedPerson, retrieve, search, update
 from .utils import helpers
+from api_test_utils import env
+from api_test_utils import poll_until
+from api_test_utils.api_session_client import APISessionClient
+from api_test_utils.api_test_session_config import APITestSessionConfig
+
+
+@pytest.mark.deployment_scenarios
+class TestPDSSandboxDeploymentSuite:
+    """Sandbox PDS Deployment Scenarios. Checks performed: status_codes and version deployed"""
+
+    @pytest.mark.asyncio
+    async def test_wait_for_ping(self, api_client: APISessionClient, api_test_config: APITestSessionConfig):
+        async def apigee_deployed(response: ClientResponse):
+            if response.status != 200:
+                return False
+            body = await response.json(content_type=None)
+            return body.get("commitId") == api_test_config.commit_id
+
+        await poll_until(
+            make_request=lambda: api_client.get("_ping"), until=apigee_deployed, timeout=30
+        )
+
+    @pytest.mark.asyncio
+    async def test_check_status_is_secured(self, api_client: APISessionClient):
+        async with api_client.get("_status", allow_retries=True) as response:
+            assert response.status == 401
+
+    @pytest.mark.asyncio
+    async def test_wait_for_status(self, api_client: APISessionClient, api_test_config: APITestSessionConfig):
+        async def is_deployed(response: ClientResponse):
+            if response.status != 200:
+                return False
+            body = await response.json()
+
+            if body.get("commitId") != api_test_config.commit_id:
+                return False
+
+            backend = helpers.dict_path(body, path=["checks", "healthcheck", "outcome", "version"])
+            if not backend:
+                return True
+
+            return backend.get("commitId") == api_test_config.commit_id
+
+        await poll_until(
+            make_request=lambda: api_client.get(
+                "_status", headers={"apikey": env.status_endpoint_api_key()}
+            ),
+            until=is_deployed,
+            timeout=120,
+        )
 
 
 @pytest.mark.retrieve_scenarios
@@ -103,76 +154,11 @@ class TestPDSSandboxSearchSuite:
 
 
 @pytest.mark.update_scenarios
-class TestPDSSandboxUpdateAsyncSuite:
-    """Sandbox PDS Update Async Scenarios. Checks performed: canned Response_Bodies, Status_Codes and Headers"""
-    def test_update_add_name(self, additional_headers):
-        additional_headers["Prefer"] = "respond-async"
-        # send update request
-        update_response = helpers.update_patient(
-            update[0]["patient"],
-            update[0]["patient_record"],
-            update[0]["patch"],
-            additional_headers
-        )
-        assert update_response.text == ""
-        helpers.check_response_status_code(update_response, 202)
-        helpers.check_response_headers(update_response, additional_headers)
-        # send message poll request
-        poll_message_response = helpers.poll_message(
-            update_response.headers["content-location"]
-        )
-        helpers.check_retrieve_response_body(
-            poll_message_response, update[0]["response"]
-        )
-        helpers.check_response_status_code(poll_message_response, 200)
-
-    def test_update_replace_given_name(self, additional_headers):
-        additional_headers["Prefer"] = "respond-async"
-        # send update request
-        update_response = helpers.update_patient(
-            update[1]["patient"],
-            update[1]["patient_record"],
-            update[1]["patch"],
-            additional_headers,
-        )
-        assert update_response.text == ""
-        helpers.check_response_status_code(update_response, 202)
-        helpers.check_response_headers(update_response, additional_headers)
-        # send message poll request
-        poll_message_response = helpers.poll_message(
-            update_response.headers["content-location"]
-        )
-        helpers.check_retrieve_response_body(
-            poll_message_response, update[1]["response"]
-        )
-        helpers.check_response_status_code(poll_message_response, 200)
-
-    def test_update_suffix_from_name(self, additional_headers):
-        additional_headers["Prefer"] = "respond-async"
-        # send update request
-        update_response = helpers.update_patient(
-            update[2]["patient"],
-            update[2]["patient_record"],
-            update[2]["patch"],
-            additional_headers,
-        )
-        assert update_response.text == ""
-        helpers.check_response_status_code(update_response, 202)
-        helpers.check_response_headers(update_response, additional_headers)
-        # send message poll request
-        poll_message_response = helpers.poll_message(
-            update_response.headers["content-location"]
-        )
-        helpers.check_retrieve_response_body(
-            poll_message_response, update[2]["response"]
-        )
-        helpers.check_response_status_code(poll_message_response, 200)
-
-
-@pytest.mark.update_scenarios
 class TestPDSSandboxUpdateSyncWrapSuite:
     """Sandbox PDS Update Sync-Wrap Scenarios. Checks performed: canned Response_Bodies, Status_Codes and Headers"""
     def test_update_add_name(self, additional_headers):
+        # Prefer header deprecated, check that header is ignored
+        additional_headers["Prefer"] = "respond-async"
         # send update request
         update_response = helpers.update_patient(
             update[0]["patient"],
@@ -204,6 +190,8 @@ class TestPDSSandboxUpdateSyncWrapSuite:
         helpers.check_response_headers(update_response, additional_headers)
 
     def test_update_suffix_from_name(self, additional_headers):
+        # Prefer header deprecated, check that header is ignored
+        additional_headers["Prefer"] = "respond-async"
         # send update request
         update_response = helpers.update_patient(
             update[2]["patient"],

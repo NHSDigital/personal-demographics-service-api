@@ -13,14 +13,6 @@ def test_sync_wrap_rate_limit():
     pass
 
 
-@pytest.mark.apmspii_832
-@scenario('./features/sync_wrap.feature',
-          'The rate limit is tripped through an async request'
-          )
-def test_async_rate_limit():
-    pass
-
-
 @pytest.mark.apmspii_874
 @scenario('./features/sync_wrap.feature',
           'The rate limit is tripped during sync-wrap polling'
@@ -102,30 +94,8 @@ def trip_rate_limit(context: dict):
         assert False, "Timeout Error: Rate limit wasn't tripped within set timeout"
 
 
-@when("the rate limit is tripped with an async request")
-def trip_rate_limit_async(context: dict, create_random_date):
-    context["pds"].headers = {
-        "Prefer": "respond-async",
-    }
-
-    def _update_patient():
-        response = context["pds"].update_patient_response(
-            patient_id='5900038181',
-            payload={"patches": [{"op": "replace", "path": "/birthDate", "value": create_random_date}]}
-        )
-        return response
-
-    def _is_rate_limited(response):
-        return response.status_code == 429
-
-    try:
-        response = poll(lambda: _update_patient(), timeout=30, step=0.5, check_success=_is_rate_limited)
-        context["pds"] = response
-        return
-    except TimeoutException:
-        assert False, "Timeout Error: Rate limit with async request wasn't tripped within set timeout"
-
-
+@pytest.mark.sync_wrap
+@pytest.mark.apmspii_874
 @when("the rate limit is tripped with sync-wrap polling")
 def trip_rate_limit_sync_polling(context: dict, create_random_date):
     context["pds"].headers = {
