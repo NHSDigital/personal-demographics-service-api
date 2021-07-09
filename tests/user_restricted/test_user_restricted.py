@@ -24,33 +24,9 @@ class TestUserRestrictedRetrievePatient:
             self.headers
         )
         helpers.check_response_headers(response, self.headers)
-        response_body = json.loads(response.text)
-        assert response.status_code == 200
-        # check id matches
-        assert response_body["id"] == retrieve[0]["patient"]
-        assert response_body["resourceType"] == "Patient"
-        # check the shape of response
-        assert response_body["address"] is not None
-        assert isinstance(response_body["address"], list)
+        helpers.check_response_status_code(response, 200)
+        helpers.check_retrieve_response_body_shape(response)
 
-        assert response_body["birthDate"] is not None
-        assert isinstance(response_body["birthDate"], str)
-        assert len(response_body["birthDate"]) > 1
-
-        assert response_body["gender"] is not None
-        assert isinstance(response_body["gender"], str)
-
-        assert response_body["name"] is not None
-        assert isinstance(response_body["name"], list)
-        assert len(response_body["name"]) > 0
-
-        assert len(response_body["identifier"]) > 0
-        assert isinstance(response_body["identifier"], list)
-
-        assert len(response_body["extension"]) > 0
-        assert isinstance(response_body["extension"], list)
-
-        assert response_body["meta"] is not None
 
     def test_retrieve_patient_with_missing_auth_header(self, headers):
         response = helpers.retrieve_patient(
@@ -90,34 +66,10 @@ class TestUserRestrictedRetrievePatient:
             retrieve[0]["patient"],
             self.headers
         )
+        helpers.check_response_status_code(response, 200)
+        helpers.check_retrieve_response_body_shape(response)
         helpers.check_response_headers(response, self.headers)
-        response_body = json.loads(response.text)
-        assert response.status_code == 200
-        # check id matches
-        assert response_body["id"] == retrieve[0]["patient"]
-        assert response_body["resourceType"] == "Patient"
-        # check the shape of response
-        assert response_body["address"] is not None
-        assert isinstance(response_body["address"], list)
 
-        assert response_body["birthDate"] is not None
-        assert isinstance(response_body["birthDate"], str)
-        assert len(response_body["birthDate"]) > 1
-
-        assert response_body["gender"] is not None
-        assert isinstance(response_body["gender"], str)
-
-        assert response_body["name"] is not None
-        assert isinstance(response_body["name"], list)
-        assert len(response_body["name"]) > 0
-
-        assert len(response_body["identifier"]) > 0
-        assert isinstance(response_body["identifier"], list)
-
-        assert len(response_body["extension"]) > 0
-        assert isinstance(response_body["extension"], list)
-
-        assert response_body["meta"] is not None
 
     def test_user_role_sharedflow_invalid_role(self, headers_with_token):
         self.headers["NHSD-Session-URID"] = "invalid"
@@ -554,137 +506,6 @@ class TestUserRestrictedSearchPatient:
 
             checked_results_count += 1
         assert checked_results_count == 4
-
-
-class TestUserRestrictedPatientUpdateAsync:
-
-    def test_update_patient_dob(self, headers_with_token, create_random_date):
-        #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
-        response = helpers.retrieve_patient(
-            update[0]["patient"],
-            self.headers
-        )
-        patient_record = response.headers["Etag"]
-        versionId = (json.loads(response.text))["meta"]["versionId"]
-
-        # set to async interaction pattern by setting Prefer header
-        self.headers["Prefer"] = "respond-async"
-
-        # add the new dob to the patch, send the update and check the response
-        update[0]["patch"]["patches"][0]["value"] = self.new_date
-        update_response = helpers.update_patient(
-            update[0]["patient"],
-            patient_record,
-            update[0]["patch"],
-            self.headers
-        )
-        with check:
-            assert update_response.text == ""
-            assert re.search(r"/_poll/\w+", update_response.headers["Content-Location"]) is not None
-        helpers.check_response_status_code(update_response, 202)
-        helpers.check_response_headers(update_response, self.headers)
-
-        del self.headers["Prefer"]
-
-        # send message poll request and check the response contains the updated attributes
-        def poll_message():
-            return helpers.poll_message(
-                update_response.headers["content-location"],
-                self.headers)
-
-        poll_message_response = poll_message()
-        # Only loop if we need to poll
-        if poll_message_response.status_code == 202:
-            for i in range(0, 10):  # set retries in env var?
-                # if status is 202 retry poll attempt after specified amount of time, in ms
-                time.sleep(int(poll_message_response.headers["Retry-After"]) / 1000)
-                poll_message_response = poll_message()
-                if poll_message_response.status_code == 200:
-                    break
-
-        with check:
-            assert (json.loads(poll_message_response.text))["birthDate"] == self.new_date
-        with check:
-            assert int((json.loads(poll_message_response.text))["meta"]["versionId"]) == int(versionId) + 1
-        helpers.check_response_status_code(poll_message_response, 200)
-
-    def test_update_patient_with_missing_auth_header(self, headers):
-        self.headers["Prefer"] = "respond-async"
-        update_response = helpers.update_patient(
-            update[1]["patient"],
-            'W/"14"',
-            update[1]["patch"],
-            headers
-        )
-        helpers.check_retrieve_response_body(update_response, update[1]["response"])
-        helpers.check_response_status_code(update_response, 401)
-        helpers.check_response_headers(update_response, headers)
-
-    def test_update_patient_with_blank_auth_header(self, headers):
-        self.headers["Prefer"] = "respond-async"
-        headers['authorization'] = ''
-        update_response = helpers.update_patient(
-            update[1]["patient"],
-            'W/"14"',
-            update[1]["patch"],
-            headers
-        )
-        helpers.check_retrieve_response_body(update_response, update[1]["response"])
-        helpers.check_response_status_code(update_response, 401)
-        helpers.check_response_headers(update_response, headers)
-
-    def test_update_patient_with_invalid_auth_header(self, headers):
-        self.headers["Prefer"] = "respond-async"
-        headers['authorization'] = 'Bearer abcdef123456789'
-        update_response = helpers.update_patient(
-            update[2]["patient"],
-            'W/"14"',
-            update[2]["patch"],
-            headers
-        )
-        helpers.check_retrieve_response_body(update_response, update[2]["response"])
-        helpers.check_response_status_code(update_response, 401)
-        helpers.check_response_headers(update_response, headers)
-
-    def test_update_patient_with_blank_x_request_header(self, headers_with_token):
-        self.headers["Prefer"] = "respond-async"
-        self.headers["X-Request-ID"] = ''
-        update_response = helpers.update_patient(
-            update[4]["patient"],
-            'W/"14"',
-            update[4]["patch"],
-            self.headers
-        )
-        helpers.check_retrieve_response_body(update_response, update[4]["response"])
-        helpers.check_response_status_code(update_response, 400)
-        self.headers.pop("X-Request-ID")
-        helpers.check_response_headers(update_response, self.headers)
-
-    def test_update_patient_with_invalid_x_request_header(self, headers_with_token):
-        self.headers["Prefer"] = "respond-async"
-        self.headers["X-Request-ID"] = '1234'
-        update_response = helpers.update_patient(
-            update[5]["patient"],
-            'W/"14"',
-            update[5]["patch"],
-            self.headers
-        )
-        helpers.check_retrieve_response_body(update_response, update[5]["response"])
-        helpers.check_response_status_code(update_response, 400)
-        helpers.check_response_headers(update_response, self.headers)
-
-    def test_update_patient_with_missing_x_request_header(self, headers_with_token):
-        self.headers["Prefer"] = "respond-async"
-        self.headers.pop("X-Request-ID")
-        update_response = helpers.update_patient(
-            update[6]["patient"],
-            'W/"14"',
-            update[6]["patch"],
-            self.headers
-        )
-        helpers.check_retrieve_response_body(update_response, update[6]["response"])
-        helpers.check_response_status_code(update_response, 412)
-        helpers.check_response_headers(update_response, self.headers)
 
 
 class TestUserRestrictedPatientUpdateSyncWrap:
