@@ -14,7 +14,7 @@
     </AssignVariable>
     <AssignVariable>
         <Name>pds.error.diagnostics</Name>
-        <Template>Invalid value - '{original-request-details.header.NHSD-Session-URID}' in header 'NHSD-Session-URID'}</Template>
+        <Template>Invalid value - '{request.header.NHSD-Session-URID}' in header 'NHSD-Session-URID'</Template>
     </AssignVariable>
     <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
 </AssignMessage>
