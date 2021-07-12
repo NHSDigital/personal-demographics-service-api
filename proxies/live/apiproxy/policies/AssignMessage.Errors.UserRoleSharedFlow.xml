@@ -2,7 +2,7 @@
 <AssignMessage name="AssignMessage.Errors.UserRoleSharedFlow">
     <AssignVariable>
         <Name>pds.error.code</Name>
-        <Template>{validation.statusCode}</Template>
+        <Value>value</Value>
     </AssignVariable>
     <AssignVariable>
         <Name>pds.error.coding.code</Name>
