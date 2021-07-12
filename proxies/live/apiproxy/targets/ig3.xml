@@ -126,7 +126,7 @@
       <Step>
         <Name>AssignMessage.Errors.CatchAllMessage</Name>
       </Step>
-    </FaultRule> 
+    </FaultRule>
     <FaultRule name="access_token_expired">
       <Condition>oauthV2.OauthV2.VerifyAccessToken.failed</Condition>
       <Step>
@@ -211,7 +211,7 @@
       <Step>
         <Name>AssignMessage.Errors.CatchAllMessage</Name>
       </Step>
-    </FaultRule>   
+    </FaultRule>
   </FaultRules>
   <DefaultFaultRule>
     <Step>
