@@ -2,6 +2,7 @@ from tests.scripts.generic_request import GenericRequest
 from json import loads, JSONDecodeError
 from uuid import uuid4
 from requests import Response
+from . import config
 
 
 class PdsRecord:
@@ -108,7 +109,7 @@ class GenericPdsRequestor(GenericRequest):
         else:
             self._headers = {
                 'Authorization': f'Bearer {token}',
-                'NHSD-Session-URID': 'ROLE-ID',
+                'NHSD-Session-URID': config.ROLE_ID,
                 'X-Request-ID': str(uuid4()),
             }
 

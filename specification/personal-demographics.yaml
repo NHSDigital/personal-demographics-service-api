@@ -1842,9 +1842,9 @@ components:
       
         The user role ID (URID) for the current session. Also known as a user role profile ID (URPID).
 
-        For more details, see [determine the user’s role](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-identity-combined-authentication-and-authorisation#step-6-determine-the-user-s-role).
+        If you are using User-restricted RESTful APIs - NHS login separate authentication and authorisation, see [determine the user's role](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-separate-authentication-and-authorisation#step-9-determine-the-user-s-role) for guidance.
       
-        Required for user-restricted access but optional for application-restricted access and for sandbox environment.
+        This field is optional.
        
       required: false
       schema:
