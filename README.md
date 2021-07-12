@@ -65,7 +65,6 @@ To run local tests, use:
 make test-sandbox
 ```
 
-There is a template environment file available at `tests/e2e/environments/postman_environment.json.template` useful for configuring different testing environments (such as on the CI server).
 
 ### VS Code Plugins
 
