@@ -134,7 +134,7 @@ info:
     | Ease of onboarding:					|Simplest											|Simple								    |Complex				    			|Simple	    								|Complex	    						|
     | Ease of integration:					|Simplest											|Simple								    |Complex			    				|Simple 									|Complex    							|
     | User authentication and authorisation:|Not needed											|NHS CIS2 - Smartcards				    |NHS CIS2 - Smartcards				    |NHS login - Username and password	    	|NHS login - Username and password	    |
-    | Application authentication and authorisation: |API key	and secret							|Oauth 2.0 - API key            	    |Oauth 2.0 - Signed JWT                 |Oauth 2.0 - API key        		    |Oauth 2.0 - Signed JWT|
+    | Application authentication and authorisation: |API key and secret							|Oauth 2.0 - API key            	    |Oauth 2.0 - Signed JWT                 |Oauth 2.0 - API key        		    |Oauth 2.0 - Signed JWT|
     | Data access: 						    |Read only							                |Create, read, update and delete patient information	|Create, read, update and delete patient information    |Create, read, update and delete self information		|Create, read, update and delete self information|            
     
     ### Application-restricted access
