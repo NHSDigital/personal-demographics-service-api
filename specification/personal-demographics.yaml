@@ -130,12 +130,12 @@ info:
     | Features     							|Application Restricted - API key authentication	|User Restricted - NHS CIS2 - Combined	|User Restricted - NHS CIS2 - Separate	|User Restricted - NHS login - Combined		|User Restricted - NHS login - Separate	|
     | ------------------------------------- | ------------------------------------------------- | ------------------------------------- | ------------------------------------- | ----------------------------------------- | ------------------------------------- |
     | User can be:							|Present or absent									|Healthcare worker only					|Healthcare worker only					|Citizen or a healthcare worker				|Citizen or a healthcare worker			|
-    | User information:						|Is not available									|Full user information available		|Full user information available		|Limited user information available			|Full									|
-    | Onboarding?							|Simple												|Complex								|Most complex							|Complex									|Most complex							|
-    | Integration?							|Simple												|Complex								|Most complex							|Complex									|Most complex							|
-    | User authentication and authorisation?	|Not needed											|NHS CIS2 using smartcards				|NHS CIS2 using Smartcards				|NHS login using username and password		|NHS login using username and password	|
-    | Application authentication and authorisation? |API key	and secret							|Oauth 2.0 authenticatiin and API key	|Oauth 2.0 authenticatiin and signed JWT|Oauth 2.0 authenticatiin and API key		|Oauth 2.0 authenticatiin and signed JWT|
-    | CRUD operations? 						|Read data							|Create, read, update and delete patient information				|Create, read, update and delete patient information|Create, read, update and delete own information		|Create, read, update and delete own information|            
+    | User information availability:		|Not available									    |Full                           	    |Full		                            |Limited            			            |Full									|
+    | Ease of onboarding:					|Simplest											|Simple								    |Complex				    			|Simple	    								|Complex	    						|
+    | Ease of integration:					|Simplest											|Simple								    |Complex			    				|Simple 									|Complex    							|
+    | User authentication and authorisation:|Not needed											|NHS CIS2 - Smartcards				    |NHS CIS2 - Smartcards				    |NHS login - Username and password	    	|NHS login - Username and password	    |
+    | Application authentication and authorisation: |API key	and secret							|Oauth 2.0 - API key            	    |Oauth 2.0 - Signed JWT                 |Oauth 2.0 - API key        		    |Oauth 2.0 - Signed JWT|
+    | Data access: 						    |Read only							                |Create, read, update and delete patient information	|Create, read, update and delete patient information    |Create, read, update and delete self information		|Create, read, update and delete self information|            
     
     ### Application-restricted access
     This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis),
