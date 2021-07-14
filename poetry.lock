@@ -23,7 +23,7 @@ description = ""
 name = "api-test-utils"
 optional = false
 python-versions = ">=3.8,<4.0"
-version = "1.1.8a0"
+version = "1.1.11a0"
 
 [package.dependencies]
 aiohttp = ">=3.7.3,<4.0.0"
@@ -855,7 +855,7 @@ test = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 
 [metadata]
-content-hash = "5fac2f84700c8b43a1a17e2875a0cf361045e3da89a3dea435916f76d9db24d0"
+content-hash = "c7aa78051817e64c3f034b0c5f8d550780da8857b94c70fca26373a84e37a141"
 python-versions = "^3.8"
 
 [metadata.files]
