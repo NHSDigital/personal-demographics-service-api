@@ -2,7 +2,6 @@ import pytest
 from .utils.check_oauth import CheckOauth
 import uuid
 import random
-from ..scripts import config
 
 
 @pytest.fixture()
@@ -11,7 +10,7 @@ def headers_with_token(get_token, request):
     token = get_token
     headers = {"X-Request-ID": str(uuid.uuid1()),
                "X-Correlation-ID": str(uuid.uuid1()),
-               "NHSD-Session-URID": config.ROLE_ID,
+               "NHSD-Session-URID": "123456789",
                "Authorization": f'Bearer {token}'
                }
     setattr(request.cls, 'headers', headers)
@@ -22,7 +21,7 @@ def headers():
     """Assign required headers without the Authorization header"""
     headers = {"X-Request-ID": str(uuid.uuid1()),
                "X-Correlation-ID": str(uuid.uuid1()),
-               "NHSD-Session-URID": config.ROLE_ID
+               "NHSD-Session-URID": "123456789"
                }
     return headers
 
