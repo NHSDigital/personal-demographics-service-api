@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage name="AssignMessage.Errors.UserRoleSharedFlow">
+    <AssignVariable>
+        <Name>pds.error.code</Name>
+        <Value>value</Value>
+    </AssignVariable>
+    <AssignVariable>
+        <Name>pds.error.coding.code</Name>
+        <Value>INVALID_VALUE</Value>
+    </AssignVariable>
+    <AssignVariable>
+        <Name>pds.error.coding.display</Name>
+        <Value>Provided value is invalid</Value>
+    </AssignVariable>
+    <AssignVariable>
+        <Name>pds.error.diagnostics</Name>
+        <Template>Invalid value - '{request.header.NHSD-Session-URID}' in header 'NHSD-Session-URID'</Template>
+    </AssignVariable>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</AssignMessage>
