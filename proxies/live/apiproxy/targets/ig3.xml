@@ -195,8 +195,9 @@
         <Name>AssignMessage.Errors.CatchAllMessage</Name>
       </Step>
     </FaultRule>
+    {% if REQUIRE_ASID == 'True' %}
     <FaultRule name="no_asid_provided">
-      <Condition>(request.header.NHSD-ASID is null) or (not request.header.NHSD-ASID ~~ ".+")</Condition>
+      <Condition>(app.asid is null)</Condition>
       <Step>
         <Name>AssignMessage.Errors.MissingASID</Name>
       </Step>
@@ -212,6 +213,7 @@
         <Name>AssignMessage.Errors.CatchAllMessage</Name>
       </Step>
     </FaultRule>
+    {% endif %}
   </FaultRules>
   <DefaultFaultRule>
     <Step>
