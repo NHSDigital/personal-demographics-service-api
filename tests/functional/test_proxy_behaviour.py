@@ -33,7 +33,7 @@ def _trip_rate_limit(token: str, req_type: HTTPMethods, timeout: int = 30, step:
     )
     # Set Etag for all requests
     if req_type == HTTPMethods.PATCH:
-        patient = pds.get_patient_response(patient_id='5900038181')
+        patient = pds.get_patient_response(patient_id='9693632176')
         pds.headers = {
             "If-Match": patient.headers["Etag"] if patient.headers.get("Etag") else "W/22",
         }
@@ -41,10 +41,10 @@ def _trip_rate_limit(token: str, req_type: HTTPMethods, timeout: int = 30, step:
     def _pds_response():
 
         if req_type == HTTPMethods.GET:
-            response = pds.get_patient_response(patient_id='5900038181')
+            response = pds.get_patient_response(patient_id='9693632176')
         if req_type == HTTPMethods.PATCH:
             response = pds.update_patient_response(
-                patient_id='5900038181',
+                patient_id='9693632176',
                 payload={"patches": [{"op": "replace", "path": "/birthDate", "value": "2001-01-01"}]}
             )
         return response
