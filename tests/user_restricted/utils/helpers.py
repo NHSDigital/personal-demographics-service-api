@@ -6,6 +6,7 @@ from pytest_check import check
 import time
 from ..configuration import config
 import re
+from ..data.pds_scenarios import retrieve
 
 
 def retrieve_patient_deprecated_url(patient: str, headers) -> requests.Response:
@@ -220,3 +221,43 @@ def check_health_check_endpoint(headers=dict) -> requests.Response:
         f"{config.BASE_URL}/{config.PDS_BASE_PATH}/healthcheck", headers=headers
     )
     return response
+
+
+def check_retrieve_response_body_shape(response: requests.Response) -> None:
+    """
+    Check the shape of the response body of a patient retrieval.
+    scenario "retrieve_patient" in pds_scenarios.py.
+
+    Args:
+        response (request.Response): Response
+    Returns:
+        None
+    """
+    response_body = json.loads(response.text)
+    with check:
+        # check id matches
+        assert response_body["id"] == retrieve[0]["patient"]
+        assert response_body["resourceType"] == "Patient"
+
+        # check the shape of response
+        assert response_body["address"] is not None
+        assert isinstance(response_body["address"], list)
+
+        assert response_body["birthDate"] is not None
+        assert isinstance(response_body["birthDate"], str)
+        assert len(response_body["birthDate"]) > 1
+
+        assert response_body["gender"] is not None
+        assert isinstance(response_body["gender"], str)
+
+        assert response_body["name"] is not None
+        assert isinstance(response_body["name"], list)
+        assert len(response_body["name"]) > 0
+
+        assert len(response_body["identifier"]) > 0
+        assert isinstance(response_body["identifier"], list)
+
+        assert len(response_body["extension"]) > 0
+        assert isinstance(response_body["extension"], list)
+
+        assert response_body["meta"] is not None
