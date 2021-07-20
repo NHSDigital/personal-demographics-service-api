@@ -116,27 +116,17 @@ info:
     
     Table below, provides a brief overview of various benefits that are offered by each security pattern used in this API.
     
-    | Benefits                          | Application restricted API - signed JWT authentication | User restricted - NHS CIS2 combined authentication | User restricted - NHS CIS2 separate authentication | User restricted - NHS login combined authentication | User restricted - NHS login separate authentication |
-    | --------------------------------- | ------------------------------------------------------ | -------------------------------------------------- | -------------------------------------------------- | --------------------------------------------------- | --------------------------------------------------- |
-    | User is not present               | *                                                      |                                                    |                                                    |                                                     |                                                     |
-    | User is a Healthcare worker       |                                                        | *                                                  | *                                                  |                                                     |                                                     |
-    | User is a citizen                 |                                                        |                                                    |                                                    | *                                                   | *                                                   |
-    | You need limited user information |                                                        | *                                                  |                                                    |                                                     |                                                     |
-    | You need full user information    |                                                        |                                                    | *                                                  |                                                     |                                                     |
-    | Easy onboarding                   | ?                                                      | * ?                                                |                                                    |                                                     |                                                     |
-    | Simple integration                |                                                        | *                                                  |                                                    | *                                                   |                                                     |
-    
-    
-    | Features     							|Application Restricted - API key authentication	|User Restricted - NHS CIS2 - Combined	|User Restricted - NHS CIS2 - Separate	|User Restricted - NHS login - Combined		|User Restricted - NHS login - Separate	|
+    | Features     							|Application Restricted - Signed JWT authentication	|User Restricted - NHS CIS2 - Combined	|User Restricted - NHS CIS2 - Separate	|User Restricted - NHS login - Combined		|User Restricted - NHS login - Separate	|
     | ------------------------------------- | ------------------------------------------------- | ------------------------------------- | ------------------------------------- | ----------------------------------------- | ------------------------------------- |
-    | User can be:							|Present or absent									|Healthcare worker only					|Healthcare worker only					|Citizen or a healthcare worker				|Citizen or a healthcare worker			|
-    | User information availability:		|Not available									    |Full                           	    |Full		                            |Limited            			            |Full									|
-    | Ease of onboarding:					|Simplest											|Simple								    |Complex				    			|Simple	    								|Complex	    						|
-    | Ease of integration:					|Simplest											|Simple								    |Complex			    				|Simple 									|Complex    							|
-    | User authentication and authorisation:|Not needed											|NHS CIS2 - Smartcards				    |NHS CIS2 - Smartcards				    |NHS login - Username and password	    	|NHS login - Username and password	    |
-    | Application authentication and authorisation: |API key and secret							|Oauth 2.0 - API key            	    |Oauth 2.0 - Signed JWT                 |Oauth 2.0 - API key        		    |Oauth 2.0 - Signed JWT|
-    | Data access: 						    |Read only							                |Create, read, update and delete patient information	|Create, read, update and delete patient information    |Create, read, update and delete self information		|Create, read, update and delete self information|            
-    
+    | User type:							|Any or not present									|Healthcare worker only					|Healthcare worker only					|Patient									|Patient			|
+    | User authentication:                  |Not needed											|NHS CIS2 - Smartcards or [modern alternatives](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)				    |NHS CIS2 - Smartcards  or [modern alternatives](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)    |NHS login - Username and password|	NHS login - Username and password |
+    | Functions: 						    |Search for patients (single result), Get patient details    |Search for patients (multiple results), Get patient details, Update patient details	|Search for patients (multiple results), Get patient details, Update patient details    |Get own details, Update own details (limited)		|Get own details, Update own details (limited)|            
+    | User information availability:		|Not available									    |Limited                           	    |Full		                            |Limited            			            |Full									|
+    | Ease of integration:					|The easiest										|Easier								    |Easy			    					|Easier 									|Easy    								|
+    | Ease of onboarding:					|The easiest										|Easier								    |Easy				    				|Easier	    								|Easy	    							|
+    | Oauth flow:							|Signed JWT     									|Oauth 2.0 - API key            	    |Oauth 2.0 - Signed JWT                 |Oauth 2.0 - API key        		   	 	|Oauth 2.0 - Signed JWT					|
+    | Application authentication			|Signed JWT     									|Oauth 2.0 - API key            	    |Oauth 2.0 - Signed JWT                 |Oauth 2.0 - API key        		    	|Oauth 2.0 - Signed JWT					|
+
     ### Application-restricted access
     This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis),
     meaning we authenticate the calling application but not the end user.
