@@ -46,7 +46,7 @@ info:
     | Access mode                    | End user authentication                             | Functions          | Availability |
     | ------------------------------ | --------------------------------------------------- | ------------------ | ------------ |
     | Application-restricted access  | None                                                | Search for patients (single result), Get patient details | Available in production (beta) | 
-    | Healthcare worker access       | NHS Care Identity Service 2 (NHS CIS2) using NHS smartcard or [modern alternative](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)  | Search for patients (multiple results), Get patient details, Update patient details | Available in production (beta) |
+    | Healthcare worker access       | NHS Care Identity Service 2 (NHS CIS2) using NHS [smartcard](https://digital.nhs.uk/services/registration-authorities-and-smartcards) or [modern alternative](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)  | Search for patients (multiple results), Get patient details, Update patient details | Available in production (beta) |
     | Citizen access                 | NHS login                                           | Get own details, Update own details (limited) | Not available yet, see [backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/107446/pds-fhir-api-citizen-access-using-nhs-login) for details   |
 
   
@@ -64,7 +64,7 @@ info:
 
     ## Related APIs
     The following APIs also give access to the Personal Demographics Service:
-    - [Personal Demographics Service (SMSP) API](https://digital.nhs.uk/services/spine/spine-mini-service-provider-for-personal-demographics-service) - use this if you want to get PDS data without an authenticated end user (no smartcard required). It is, however, read-only and searches are limited to a single result.
+    - [Personal Demographics Service (SMSP) API](https://digital.nhs.uk/services/spine/spine-mini-service-provider-for-personal-demographics-service) - use this if you want to get PDS data without an authenticated end user (no [smartcard](https://digital.nhs.uk/services/registration-authorities-and-smartcards) required). It is, however, read-only and searches are limited to a single result.
     - [Personal Demographics Service (HL7 V3) API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3) - use this if you want to use functions that are not yet available on the FHIR API.
 
     Once our roadmap is complete, the above APIs will become redundant.
@@ -108,7 +108,7 @@ info:
     ## Network access
     This API is available on the internet and, indirectly, on the [Health and Social Care Network (HSCN)](https://digital.nhs.uk/services/health-and-social-care-network).
 
-    To use this API with NHS smartcards you do need an HSCN connection, although internet-facing alternatives are available.
+    To use this API with NHS [smartcards](https://digital.nhs.uk/services/registration-authorities-and-smartcards) you do need an HSCN connection, although internet-facing alternatives are available.
     
     For more details see [Network access for APIs](https://digital.nhs.uk/developer/guides-and-documentation/network-access-for-apis).
     
@@ -144,7 +144,7 @@ info:
 
     The end user must be:
     - a healthcare worker
-    - strongly authenticated, using either an NHS smartcard or a [modern alternative](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)
+    - strongly authenticated, using either an NHS [smartcard](https://digital.nhs.uk/services/registration-authorities-and-smartcards) or a [modern alternative](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)
     - authorised, using [national role-based access control (RBAC)](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/national-rbac-for-developers)
 
     To use this access mode, use one of the following security patterns:
@@ -181,7 +181,7 @@ info:
     Our [integration test environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing):
     * is for formal integration testing
     * is stateful, so persists updates
-    * includes authorisation, with options for user-restricted access (with or without smartcard) and application-restricted access
+    * includes authorisation, with options for user-restricted access (with or without [smartcards](https://digital.nhs.uk/services/registration-authorities-and-smartcards) and application-restricted access
          
     For read-only testing, you can either use our [PDS FHIR API test data packs](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-api-test-data) or set up your own test data.
     
