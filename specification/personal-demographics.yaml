@@ -118,14 +118,13 @@ info:
     
     | Features     							|Application Restricted - Signed JWT authentication	|User Restricted - NHS CIS2 - Combined	|User Restricted - NHS CIS2 - Separate	|User Restricted - NHS login - Combined		|User Restricted - NHS login - Separate	|
     | ------------------------------------- | ------------------------------------------------- | ------------------------------------- | ------------------------------------- | ----------------------------------------- | ------------------------------------- |
-    | User type:							|Any or not present									|Healthcare worker only					|Healthcare worker only					|Patient									|Patient			|
-    | User authentication:                  |Not needed											|NHS CIS2 - Smartcards or [modern alternatives](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)				    |NHS CIS2 - Smartcards  or [modern alternatives](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)    |NHS login - Username and password|	NHS login - Username and password |
-    | Functions: 						    |Search for patients (single result), Get patient details    |Search for patients (multiple results), Get patient details, Update patient details	|Search for patients (multiple results), Get patient details, Update patient details    |Get own details, Update own details (limited)		|Get own details, Update own details (limited)|            
-    | User information availability:		|Not available									    |Limited                           	    |Full		                            |Limited            			            |Full									|
-    | Ease of integration:					|The easiest										|Easier								    |Easy			    					|Easier 									|Easy    								|
-    | Ease of onboarding:					|The easiest										|Easier								    |Easy				    				|Easier	    								|Easy	    							|
-    | Oauth flow:							|Signed JWT     									|Oauth 2.0 - API key            	    |Oauth 2.0 - Signed JWT                 |Oauth 2.0 - API key        		   	 	|Oauth 2.0 - Signed JWT					|
-    | Application authentication			|Signed JWT     									|Oauth 2.0 - API key            	    |Oauth 2.0 - Signed JWT                 |Oauth 2.0 - API key        		    	|Oauth 2.0 - Signed JWT					|
+    | User type:							  |Any or not present									|Healthcare worker only			|Healthcare worker only					        |Patient									              |Patient			                              |
+    | User authentication:      |Not needed											    |NHS CIS2 - Smartcards or [modern alternatives](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)				  |NHS CIS2 - Smartcards  or [modern alternatives](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)    |NHS login - Username and password|	NHS login - Username and password |
+    | Functions: 						    |Search for patients (single result), Get patient details       |Search for patients (multiple results), Get patient details, Update patient details	|Search for patients (multiple results), Get patient details, Update patient details    |Get own details, Update own details (limited)		|Get own details, Update own details (limited)|            
+    | User information availability:		|Not available							|Limited                    |Full		                                |Not available            			        |Full									                      |
+    | Ease of integration:			|The easiest    										|Easier								      |Easy			    					                |Easier 									              |Easy    								                    |
+    | Ease of onboarding:				|The easiest		    								|Easier								      |Easy				    				                |Easier	    								            |Easy	    							                    |
+    | OAuth 2.0 flow:						|Client credentials									|Authorisation code         |Token exchange                         |Authorisation code                	    |Token exchange                             |
 
     ### Application-restricted access
     This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis),
