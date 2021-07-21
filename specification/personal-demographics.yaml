@@ -1850,7 +1850,7 @@ components:
       schema:
         type: string
         pattern: '^[0-9]+$'
-        example: '555021935107'
+        example: '555254240100'
     BearerAuthorization:
       in: header
       name: Authorization
