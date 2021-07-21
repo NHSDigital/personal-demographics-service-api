@@ -22,33 +22,8 @@ class TestUserRestrictedRetrievePatient:
             self.headers
         )
         helpers.check_response_headers(response, self.headers)
-        response_body = json.loads(response.text)
-        assert response.status_code == 200
-        # check id matches
-        assert response_body["id"] == retrieve[0]["patient"]
-        assert response_body["resourceType"] == "Patient"
-        # check the shape of response
-        assert response_body["address"] is not None
-        assert isinstance(response_body["address"], list)
-
-        assert response_body["birthDate"] is not None
-        assert isinstance(response_body["birthDate"], str)
-        assert len(response_body["birthDate"]) > 1
-
-        assert response_body["gender"] is not None
-        assert isinstance(response_body["gender"], str)
-
-        assert response_body["name"] is not None
-        assert isinstance(response_body["name"], list)
-        assert len(response_body["name"]) > 0
-
-        assert len(response_body["identifier"]) > 0
-        assert isinstance(response_body["identifier"], list)
-
-        assert len(response_body["extension"]) > 0
-        assert isinstance(response_body["extension"], list)
-
-        assert response_body["meta"] is not None
+        helpers.check_response_status_code(response, 200)
+        helpers.check_retrieve_response_body_shape(response)
 
     def test_retrieve_patient_with_missing_auth_header(self, headers):
         response = helpers.retrieve_patient(
@@ -82,13 +57,23 @@ class TestUserRestrictedRetrievePatient:
         helpers.check_response_status_code(response, 401)
         helpers.check_response_headers(response, headers)
 
-    def test_retrieve_patient_with_missing_urid_header(self, headers_with_token):
+    def test_user_role_sharedflow_retrieve_patient_with_missing_urid_header(self, headers_with_token):
         self.headers.pop("NHSD-Session-URID")
         response = helpers.retrieve_patient(
-            retrieve[3]["patient"],
+            retrieve[0]["patient"],
             self.headers
         )
-        helpers.check_retrieve_response_body(response, retrieve[3]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_retrieve_response_body_shape(response)
+        helpers.check_response_headers(response, self.headers)
+
+    def test_user_role_sharedflow_invalid_role(self, headers_with_token):
+        self.headers["NHSD-Session-URID"] = "invalid"
+        response = helpers.retrieve_patient(
+            retrieve[8]["patient"],
+            self.headers
+        )
+        helpers.check_retrieve_response_body(response, retrieve[8]["response"])
         helpers.check_response_status_code(response, 400)
         helpers.check_response_headers(response, self.headers)
 
@@ -174,16 +159,6 @@ class TestUserRestrictedSearchPatient:
         helpers.check_search_response_body(response, search[2]["response"])
         helpers.check_response_status_code(response, 401)
         helpers.check_response_headers(response, headers)
-
-    def test_search_patient_with_missing_urid_header(self, headers_with_token):
-        self.headers.pop("NHSD-Session-URID")
-        response = helpers.search_patient(
-            search[3]["query_params"],
-            self.headers
-        )
-        helpers.check_search_response_body(response, search[3]["response"])
-        helpers.check_response_status_code(response, 400)
-        helpers.check_response_headers(response, self.headers)
 
     def test_search_patient_with_blank_x_request_header(self, headers_with_token):
         self.headers["X-Request-ID"] = ''
@@ -655,18 +630,6 @@ class TestUserRestrictedPatientUpdateSyncWrap:
         helpers.check_retrieve_response_body(update_response, update[2]["response"])
         helpers.check_response_status_code(update_response, 401)
         helpers.check_response_headers(update_response, headers)
-
-    def test_update_patient_with_missing_urid_header(self, headers_with_token):
-        self.headers.pop("NHSD-Session-URID")
-        update_response = helpers.update_patient(
-            update[3]["patient"],
-            'W/"14"',
-            update[3]["patch"],
-            self.headers
-        )
-        helpers.check_retrieve_response_body(update_response, update[3]["response"])
-        helpers.check_response_status_code(update_response, 400)
-        helpers.check_response_headers(update_response, self.headers)
 
     def test_update_patient_with_blank_x_request_header(self, headers_with_token):
         self.headers["X-Request-ID"] = ''
