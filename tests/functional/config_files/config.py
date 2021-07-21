@@ -16,3 +16,7 @@ PDS_BASE_PATH = ENV["pds_base_path"]
 # App details
 CLIENT_ID = ENV['client_id']
 CLIENT_SECRET = ENV['client_secret']
+
+#JWT keys
+ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH = ENV['nhs_login_private_key']
+JWT_PRIVATE_KEY_ABSOLUTE_PATH = ENV['jwt_private_key']
