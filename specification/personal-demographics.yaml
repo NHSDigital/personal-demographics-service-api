@@ -1846,7 +1846,7 @@ components:
         
         In Application-restricted access mode this header is ignored.
 
-        In Healthcare worker access mode the header must be valid for the logged-in user. See [determine the user's role](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-separate-authentication-and-authorisation#step-9-determine-the-user-s-role) for guidance.
+        In Healthcare worker access mode if you send this header it must be valid for the logged-in user. See [determine the user's role](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-separate-authentication-and-authorisation#step-9-determine-the-user-s-role) for guidance.
         
       required: false
       schema:
