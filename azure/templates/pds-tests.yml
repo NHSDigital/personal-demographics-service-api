@@ -84,3 +84,17 @@ steps:
     inputs:
       testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/sync-wrap-test-report.xml
       failTaskOnFailedTests: true
+
+  - bash: |
+      export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
+      export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
+      export KEY_ID="test-1"
+      export APIGEE_API_TOKEN="$(secret.AccessToken)"
+      export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
+      export OAUTH_PROXY="oauth2"
+      export ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH="$(Pipeline.Workspace)/secrets/$(ID_TOKEN_NHS_LOGIN_PRIVATE_KEY)"
+      export JWT_PRIVATE_KEY_ABSOLUTE_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
+
+      poetry run pytest -v tests/functional/test_citizen_access.py --junitxml=tests/citizen-access-test-report.xml --reruns 3 --reruns-delay 1
+    displayName: Run citizen access tests
+    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
