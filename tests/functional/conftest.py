@@ -259,6 +259,7 @@ def product():
     """
     return ApigeeApiProducts()
 
+
 @pytest.fixture()
 async def test_app_and_product(app, product):
     """Create a test app and product which can be modified in the test"""
@@ -286,7 +287,6 @@ async def test_app_and_product(app, product):
 
     await app.destroy_app()
     await product.destroy_product()
-
 
 
 @pytest.fixture()
