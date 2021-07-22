@@ -92,12 +92,18 @@ steps:
       failTaskOnFailedTests: true
 
   - bash: |
+      export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
+      export APPLICATION_RESTRICTED_WITH_ASID_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_WITH_ASID_PRIVATE_KEY)"
+      export APPLICATION_RESTRICTED_API_KEY=" "
+      export APPLICATION_RESTRICTED_WITH_ASID_API_KEY=" "
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
       export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
       export KEY_ID="test-1"
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2"
+      export CLIENT_ID="$(CLIENT_ID)"
+      export CLIENT_SECRET="$(CLIENT_SECRET)"
       export ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH="$(Pipeline.Workspace)/secrets/$(ID_TOKEN_NHS_LOGIN_PRIVATE_KEY)"
       export JWT_PRIVATE_KEY_ABSOLUTE_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
 
