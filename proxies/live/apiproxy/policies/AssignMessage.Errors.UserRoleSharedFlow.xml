@@ -14,7 +14,7 @@
     </AssignVariable>
     <AssignVariable>
         <Name>pds.error.diagnostics</Name>
-        <Template>Invalid value - '{request.header.NHSD-Session-URID}' in header 'NHSD-Session-URID'</Template>
+        <Template>Invalid value - '{request.header.NHSD-Session-URID}' in header 'NHSD-Session-URID'. Refer to the guidance for this header in our API Specification https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir</Template>
     </AssignVariable>
     <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
 </AssignMessage>
