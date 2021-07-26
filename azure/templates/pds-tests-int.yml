@@ -20,11 +20,11 @@ steps:
       export CLIENT_ID="$(CLIENT_ID)"
       export CLIENT_SECRET="$(CLIENT_SECRET)"
 
-      poetry run pytest -m smoke_test --junitxml=tests/functional-test-report.xml
+      poetry run pytest -v tests/ -m smoke_test --junitxml=tests/test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run smoke tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
   - task: PublishTestResults@2
     displayName: 'Publish smoke test results'
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/functional-test-report.xml --reruns 3 --reruns-delay 1
+      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/test-report.xml --reruns 3 --reruns-delay 1
       failTaskOnFailedTests: true
