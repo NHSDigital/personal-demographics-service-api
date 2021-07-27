@@ -194,26 +194,35 @@ info:
     
     To onboard for this API, follow the [Supplier Conformance Assessment List (SCAL) process.](https://digital.nhs.uk/developer/guides-and-documentation/onboarding-process#onboard-using-the-supplier-conformance-assessment-list-scal-process)
 
-    When following the SCAL process, note that:
-    * In step 1: to confirm your use case for this API, you need to [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service), even if you already access PDS via another method.
-    * In step 2: when requesting the SCAL, tell us:
-      - (a) which access mode you're using: 
-        - (i) healthcare worker search and retrieve
-        - (ii) healthcare worker update
-        - (iii) application-restricted
-        - (iv) patient retrieve and update
-      - (b) for healthcare worker access, which security pattern you are using: 
-        - (i) NHS CIS2 - combined authentication and authorisation 
-        - (ii) NHS CIS2 - separate authentication and authorisation
-      - (c) for patient access, which security pattern you are using: 
-        - (i) NHS login - combined authentication and authorisation 
-        - (ii) NHS login - separate authentication and authorisation
-    * In step 6: when implementing your clinical risk management process, you must review and integrate the PDS FHIR API hazard log into your own risk log. It's embedded within the PDS FHIR API tab in the SCAL.
-    * In step 8: you need to review and complete the PDS FHIR API risk log to show that you have understood and mitigated the various risks. You might be asked to provide some evidence to prove that controls have been put in place. You can find the risk log embedded within the PDS FHIR API tab in the SCAL. This is separate from the clinical safety hazard log mentioned above.
-    * In step 9: you must conduct penetration testing to [CHECK standards](https://www.ncsc.gov.uk/information/check-penetration-testing).
-    * In step 10: when you complete the Service Desk Registration Form, send it to [api.management@nhs.net](mailto:api.management@nhs.net).
-    * In step 11: submit your completed SCAL to [api.management@nhs.net](mailto:api.management@nhs.net).
-    * In step 14: to request production access, contact us at [api.management@nhs.net](mailto:api.management@nhs.net).
+    When following the general SCAL process steps, for this API you must do the following:
+    
+    In step 1, to confirm your use case, you need to [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service), even if you already access PDS via another method.
+    
+    In step 2, when requesting the SCAL, tell us which access mode you're using:
+    - healthcare worker search and retrieve
+    - healthcare worker update
+    - application-restricted
+    - patient retrieve and update
+    
+    In step 2, if using healthcare worker access mode, tell us which security pattern you are using:
+    - NHS CIS2 - combined authentication and authorisation 
+    - NHS CIS2 - separate authentication and authorisation
+    
+    In step 2, if using patient access mode, tell us which security pattern you are using:
+    - NHS login - combined authentication and authorisation 
+    - NHS login - separate authentication and authorisation
+    
+    In step 6, when implementing your clinical risk management process, you must review and integrate the PDS FHIR API hazard log into your own risk log. It's embedded within the PDS FHIR API tab in the SCAL.
+    
+    In step 8, you need to review and complete the PDS FHIR API risk log to show that you have understood and mitigated the various risks. You might be asked to provide some evidence to prove that controls have been put in place. You can find the risk log embedded within the PDS FHIR API tab in the SCAL. This is separate from the clinical safety hazard log mentioned above.
+    
+    In step 9, you must conduct penetration testing to [CHECK standards](https://www.ncsc.gov.uk/information/check-penetration-testing).
+    
+    In step 10, when you complete the Service Desk Registration Form, send it to [api.management@nhs.net](mailto:api.management@nhs.net).
+    
+    In step 11, submit your completed SCAL to [api.management@nhs.net](mailto:api.management@nhs.net).
+    
+    In step 14, to request production access, contact us at [api.management@nhs.net](mailto:api.management@nhs.net).
 
   contact:
     name: Personal Demographics Service FHIR API Support
