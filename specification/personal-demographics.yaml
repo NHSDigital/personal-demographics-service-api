@@ -1801,7 +1801,7 @@ components:
     Id:
       name: id
       in: path
-      description: The patient's NHS number. The primary identifier of a patient, unique within NHS England and Wales. Always 10 digits and must be a [valid NHS number](https://www.datadictionary.nhs.uk/data_dictionary/attributes/n/nhs/nhs_number_de.asp).
+      description: The patient's NHS number. The primary identifier of a patient, unique within NHS England and Wales. Always 10 digits and must be a [valid NHS number](https://www.datadictionary.nhs.uk/attributes/nhs_number.html).
       required: true
       schema:
         type: string
@@ -1842,10 +1842,12 @@ components:
       
         The user role ID (URID) for the current session. Also known as a user role profile ID (URPID).
 
-        If you are using User-restricted RESTful APIs - NHS login separate authentication and authorisation, see [determine the user's role](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-separate-authentication-and-authorisation#step-9-determine-the-user-s-role) for guidance.
-      
-        This field is optional.
-       
+        This header is optional.
+        
+        In Application-restricted access mode this header is ignored.
+
+        In Healthcare worker access mode if you send this header it must be valid for the logged-in user. See [determine the user's role](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-separate-authentication-and-authorisation#step-9-determine-the-user-s-role) for guidance.
+        
       required: false
       schema:
         type: string
