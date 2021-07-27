@@ -47,7 +47,7 @@ info:
     | ------------------------------ | --------------------------------------------------- | ------------------ | ------------ |
     | Application-restricted access  | None                                                | Search for patients (single result), Get patient details | Available in production (beta) | 
     | Healthcare worker access       | NHS Care Identity Service 2 (NHS CIS2) using NHS [smartcard](https://digital.nhs.uk/services/registration-authorities-and-smartcards) or [modern alternative](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)  | Search for patients (multiple results), Get patient details, Update patient details | Available in production (beta) |
-    | Patient access                 | NHS login                                           | Get own details, Update own details (limited) | Not available yet, see [backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/107446/pds-fhir-api-citizen-access-using-nhs-login) for details   |
+    | Patient access                 | [NHS login](https://digital.nhs.uk/services/nhs-login)  | Get own details, Update own details (limited) | Not available yet, see [backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/107446/pds-fhir-api-citizen-access-using-nhs-login) for details   |
 
   
     ## Who can use this API
@@ -61,6 +61,8 @@ info:
     Health and care organisations in Wales access their own version of PDS called the Welsh Demographics Service (WDS) which is connected to PDS behind the scenes. 
 
     Health and care organisations in Scotland, Northern Ireland and the Channel Islands access their own equivalents of PDS.
+    
+    Patients who receive health and social care or make use of NHS services in England, Wales, the Isle of Man, Scotland, Northern Ireland and the Channel Islands.
 
     ## Related APIs
     The following APIs also give access to the Personal Demographics Service:
@@ -76,15 +78,16 @@ info:
     ## API status and roadmap
     ### Application-restricted access
     This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
-    - we might make breaking changes, but only if we cannot avoid it, and we'll give advance notice
+    - we might make breaking changes, but only if we cannot avoid it, and we will give advance notice
      
     ### Healthcare worker access
     This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
 
-    - we might make breaking changes, but only if we cannot avoid it, and we'll give advance notice
+    - we might make breaking changes, but only if we cannot avoid it, and we will give advance notice
         
     ### Patient access
-    This access mode is not available yet.
+    This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
+    - we might make breaking changes, but only if we cannot avoid it, and we will give advance notice
     
     ### Roadmap
     To see our roadmap, or to suggest, comment or vote on features for this API, see our [interactive product backlog](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
@@ -97,7 +100,7 @@ info:
     It also conforms to the [FHIR](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#fhir) global standard for health care data exchange.
     Specifically, it is aligned with [FHIR UK Core](https://digital.nhs.uk/services/fhir-uk-core), which is built on FHIR Release 4.
 
-    You don’t need to know much about FHIR to use this API - FHIR APIs are just RESTful APIs that follow specific rules.
+    You do not need to know much about FHIR to use this API - FHIR APIs are just RESTful APIs that follow specific rules.
     In particular:
     - resource names are capitalised and singular, for example `/Patient` not `/patients`
     - array names are singular, for example `line` not `lines` for address lines
@@ -129,19 +132,25 @@ info:
     meaning an end user must be present, authenticated and authorised.
 
     The end user must be:
-    - a healthcare worker
-    - strongly authenticated, using either an NHS [smartcard](https://digital.nhs.uk/services/registration-authorities-and-smartcards) or a [modern alternative](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)
-    - authorised, using [national role-based access control (RBAC)](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/national-rbac-for-developers)
+    * a healthcare worker
+    * strongly authenticated, using either an NHS [smartcard](https://digital.nhs.uk/services/registration-authorities-and-smartcards) or a [modern alternative](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)
+    * authorised, using [national role-based access control (RBAC)](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/national-rbac-for-developers)
 
     To use this access mode, use one of the following security patterns:
     * [user-restricted RESTful API - using NHS CIS2 - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-combined-authentication-and-authorisation)
     * [user-restricted RESTful API - using NHS CIS2 - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-separate-authentication-and-authorisation)
 
     ### Patient access
-    This access mode is not available yet. 
-        
-    For more details, see our [interactive product backlog](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
-
+    This access mode is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis)), meaning an end user must be present, authenticated and authorised.
+    
+    The end user must be:
+    * a patient who receives health and social care or makes use of NHS services
+    * strongly authenticated, using [NHS login](https://digital.nhs.uk/services/nhs-login).
+    
+    To use this access mode, use one of the following security patterns:
+    [User-restricted RESTful APIs - NHS login combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-login-combined-authentication-and-authorisation).
+    [User-restricted RESTful APIs - NHS login separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-login-separate-authentication-and-authorisation).
+    
     ## Environments and testing
 
     | Environment       | Base URL                                                               |
@@ -187,7 +196,10 @@ info:
 
     When following the SCAL process, note that:
     * In step 1: to confirm your use case for this API, you need to [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service), even if you already access PDS via another method.
-    * In step 2: when requesting the SCAL, tell us (a) which access mode you're using: (i) healthcare worker search and retrieve, (ii) healthcare worker update or (iii) application-restricted; (b) for healthcare worker access, which security pattern you are using: (i) combined authentication and authorisation or (ii) separate authentication and authorisation
+    * In step 2: when requesting the SCAL, tell us:
+      (a) which access mode you're using: (i) healthcare worker search and retrieve, (ii) healthcare worker update, (iii) application-restricted, (iv) patient search and retrieve (v) patient update; 
+      (b) for healthcare worker access, which security pattern you are using: (i) NHS CIS2 - combined authentication and authorisation or (ii) NHS CIS2 - separate authentication and authorisation
+      (c) for patient access, which security pattern you are using: (i) NHS login - combined authentication and authorisation or (ii) NHS login - separate authentication and authorisation
     * In step 6: when implementing your clinical risk management process, you must review and integrate the PDS FHIR API hazard log into your own risk log. It's embedded within the PDS FHIR API tab in the SCAL.
     * In step 8: you need to review and complete the PDS FHIR API risk log to show that you have understood and mitigated the various risks. You might be asked to provide some evidence to prove that controls have been put in place. You can find the risk log embedded within the PDS FHIR API tab in the SCAL. This is separate from the clinical safety hazard log mentioned above.
     * In step 9: you must conduct penetration testing to [CHECK standards](https://www.ncsc.gov.uk/information/check-penetration-testing).
