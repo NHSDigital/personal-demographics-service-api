@@ -27,3 +27,5 @@ ENDPOINTS = {
     'callback': CALLBACK_URL,
     'sim_auth': SIM_AUTH_URL
 }
+
+TEST_PATIENT_ID = ENV['test_patient_id']
