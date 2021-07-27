@@ -201,8 +201,7 @@ info:
         - (i) healthcare worker search and retrieve
         - (ii) healthcare worker update
         - (iii) application-restricted
-        - (iv) patient search and retrieve
-        - (v) patient update; 
+        - (iv) patient retrieve and update
       - (b) for healthcare worker access, which security pattern you are using: 
         - (i) NHS CIS2 - combined authentication and authorisation 
         - (ii) NHS CIS2 - separate authentication and authorisation
