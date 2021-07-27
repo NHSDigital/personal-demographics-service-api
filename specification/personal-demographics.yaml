@@ -86,7 +86,7 @@ info:
     - we might make breaking changes, but only if we cannot avoid it, and we will give advance notice
         
     ### Patient access
-    This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
+    This access mode is in [alpha](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
     - we might make breaking changes, but only if we cannot avoid it, and we will give advance notice
     
     ### Roadmap
@@ -145,11 +145,11 @@ info:
     
     The end user must be:
     * a patient who receives health and social care or makes use of NHS services
-    * strongly authenticated, using [NHS login](https://digital.nhs.uk/services/nhs-login).
+    * strongly authenticated, using [NHS login](https://digital.nhs.uk/services/nhs-login)
     
     To use this access mode, use one of the following security patterns:
-    - [User-restricted RESTful APIs - NHS login combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-login-combined-authentication-and-authorisation).
-    - [User-restricted RESTful APIs - NHS login separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-login-separate-authentication-and-authorisation).
+    - [user-restricted RESTful APIs - using NHS login - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-login-combined-authentication-and-authorisation)
+    - [user-restricted RESTful APIs - using NHS login - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-login-separate-authentication-and-authorisation)
     
     ## Environments and testing
 
@@ -202,15 +202,15 @@ info:
     - healthcare worker search and retrieve
     - healthcare worker update
     - application-restricted
-    - patient retrieve and update
+#   - patient access
     
     In step 2, if using healthcare worker access mode, tell us which security pattern you are using:
     - NHS CIS2 - combined authentication and authorisation 
     - NHS CIS2 - separate authentication and authorisation
     
-    In step 2, if using patient access mode, tell us which security pattern you are using:
-    - NHS login - combined authentication and authorisation 
-    - NHS login - separate authentication and authorisation
+#    In step 2, if using patient access mode, tell us which security pattern you are using:
+#    - NHS login - combined authentication and authorisation 
+#    - NHS login - separate authentication and authorisation
     
     In step 6, when implementing your clinical risk management process, you must review and integrate the PDS FHIR API hazard log into your own risk log. It's embedded within the PDS FHIR API tab in the SCAL.
     
