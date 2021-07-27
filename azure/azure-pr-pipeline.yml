@@ -52,7 +52,7 @@ extends:
         - environment: internal-dev
           make_spec_visible: true
           post_deploy:
-            - template: templates/pds-tests-int.yml
+            - template: templates/pds-tests.yml
         - environment: internal-dev
           service_name: ${{ variables.service_name }}-asid-required
           short_service_name: ${{ variables.short_service_name }}-asid

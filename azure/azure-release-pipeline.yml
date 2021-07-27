@@ -66,6 +66,8 @@ extends:
           - template: templates/sandbox-tests.yml
       - environment: int
         make_spec_visible: true
+        post_deploy:
+           - template: templates/pds-tests-int.yml
         depends_on:
           - internal_qa
           - internal_qa_sandbox

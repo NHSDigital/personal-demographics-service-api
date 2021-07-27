@@ -505,7 +505,7 @@ class TestUserRestrictedSearchPatient:
 
 
 class TestUserRestrictedPatientUpdateSyncWrap:
-    def test_update_patient_dob(self, headers_with_token, create_random_date):
+    def test_update_patient_gender(self, headers_with_token):
         #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
         response = helpers.retrieve_patient(
             update[0]["patient"],
@@ -513,8 +513,12 @@ class TestUserRestrictedPatientUpdateSyncWrap:
         )
         patient_record = response.headers["Etag"]
         versionId = (json.loads(response.text))["meta"]["versionId"]
-        # add the new dob to the patch, send the update and check the response
-        update[0]["patch"]["patches"][0]["value"] = self.new_date
+
+        current_gender = (json.loads(response.text))["gender"]
+        new_gender = 'male' if current_gender == 'female' else 'female'
+
+        # add the new gender to the patch, send the update and check the response
+        update[0]["patch"]["patches"][0]["value"] = new_gender
         self.headers["X-Sync-Wait"] = "29"
 
         # Prefer header deprecated check that it still returns 200 response
@@ -527,7 +531,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
             self.headers
         )
         with check:
-            assert (json.loads(update_response.text))["birthDate"] == self.new_date
+            assert (json.loads(update_response.text))["gender"] == new_gender
         with check:
             assert int((json.loads(update_response.text))["meta"]["versionId"]) == int(versionId) + 1
         helpers.check_response_status_code(update_response, 200)
