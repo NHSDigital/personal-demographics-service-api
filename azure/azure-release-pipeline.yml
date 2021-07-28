@@ -50,12 +50,12 @@ extends:
     apigee_deployments:
       - environment: internal-dev
         make_spec_visible: true
-        # post_deploy:
-        #   - template: templates/pds-tests.yml
+        post_deploy:
+          - template: templates/pds-tests.yml
       - environment: internal-qa
         make_spec_visible: true
-        # post_deploy:
-        #   - template: templates/pds-tests.yml
+        post_deploy:
+          - template: templates/pds-tests.yml
         depends_on:
             - internal_dev
       - environment: internal-qa-sandbox
