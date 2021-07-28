@@ -17,14 +17,13 @@
         <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service$|^urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service$|.+\ personal-demographics-service:USER-RESTRICTED\ .+|^personal-demographics-service:USER-RESTRICTED\ .+|.+\ personal-demographics-service:USER-RESTRICTED$|^personal-demographics-service:USER-RESTRICTED$)")</Condition>
       </Step>
       <Step>
-        <!-- Header NHSD-Session-URID must be present and not empty for 'authorization_code'-->
-        <Name>RaiseFault.400BadRequest</Name>
-        <Condition>(grant_type is "authorization_code") and ((request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+"))</Condition>
-      </Step>
-      <Step>
         <!-- Header NHSD-Request-ID must be in the correct format (GUID) -->
         <Name>RaiseFault.400BadRequest</Name>
         <Condition>(original-request-details.header.X-Request-ID != null) and (not original-request-details.header.X-Request-ID ~~ "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")</Condition>
+      </Step>
+      <Step>
+        <Name>FlowCallout.UserRoleService</Name>
+        <Condition>(access-mode Equals "user-restricted")</Condition>
       </Step>
       <Step>
         <Name>Quota</Name>
@@ -119,6 +118,15 @@
     </LoadBalancer>
   </HTTPTargetConnection>
   <FaultRules>
+    <FaultRule name="user_role_shared_flow_error">
+      <Condition>(sharedFlow.userRoleError is "true")</Condition>
+      <Step>
+        <Name>AssignMessage.Errors.UserRoleSharedFlow</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Errors.CatchAllMessage</Name>
+      </Step>
+    </FaultRule>
     <FaultRule name="access_token_expired">
       <Condition>oauthV2.OauthV2.VerifyAccessToken.failed</Condition>
       <Step>
@@ -187,8 +195,9 @@
         <Name>AssignMessage.Errors.CatchAllMessage</Name>
       </Step>
     </FaultRule>
+    {% if REQUIRE_ASID == 'True' %}
     <FaultRule name="no_asid_provided">
-      <Condition>(request.header.NHSD-ASID is null) or (not request.header.NHSD-ASID ~~ ".+")</Condition>
+      <Condition>(app.asid is null)</Condition>
       <Step>
         <Name>AssignMessage.Errors.MissingASID</Name>
       </Step>
@@ -204,6 +213,7 @@
         <Name>AssignMessage.Errors.CatchAllMessage</Name>
       </Step>
     </FaultRule>
+    {% endif %}
   </FaultRules>
   <DefaultFaultRule>
     <Step>
