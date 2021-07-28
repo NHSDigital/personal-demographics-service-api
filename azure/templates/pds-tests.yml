@@ -107,6 +107,6 @@ steps:
       export ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH="$(Pipeline.Workspace)/secrets/$(ID_TOKEN_NHS_LOGIN_PRIVATE_KEY)"
       export JWT_PRIVATE_KEY_ABSOLUTE_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
 
-      poetry run pytest -v tests/functional/test_citizen_access.py --junitxml=tests/citizen-access-test-report.xml --reruns 3 --reruns-delay 1
-    displayName: Run citizen access tests
+      poetry run pytest -v tests/functional/test_patient_access.py --junitxml=tests/patient-access-test-report.xml --reruns 3 --reruns-delay 1
+    displayName: Run patient access tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"

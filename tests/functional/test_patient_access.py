@@ -3,8 +3,8 @@ import requests
 import uuid
 
 
-class TestUserRestrictedCitizenAccess:
-    def test_citizen_access_retrieve_happy_path(
+class TestUserRestrictedPatientAccess:
+    def test_patient_access_retrieve_happy_path(
         self, get_token_nhs_login_token_exchange
     ):
         token = get_token_nhs_login_token_exchange["access_token"]
@@ -21,7 +21,7 @@ class TestUserRestrictedCitizenAccess:
 
         assert r.status_code == 200
 
-    def test_citizen_access_retrieve_non_matching_nhs_number(
+    def test_patient_access_retrieve_non_matching_nhs_number(
         self, get_token_nhs_login_token_exchange
     ):
 
@@ -45,7 +45,7 @@ class TestUserRestrictedCitizenAccess:
             == "Cannot retrieve this result with NHS-login Restricted access token"
         )
 
-    def test_citizen_access_retrieve_incorrect_path(
+    def test_patient_access_retrieve_incorrect_path(
         self, get_token_nhs_login_token_exchange
     ):
 
@@ -69,7 +69,7 @@ class TestUserRestrictedCitizenAccess:
             == "Cannot retrieve this result with NHS-login Restricted access token"
         )
 
-    def test_citizen_access_update_happy_path(
+    def test_patient_access_update_happy_path(
         self, get_token_nhs_login_token_exchange, create_random_date
     ):
         token = get_token_nhs_login_token_exchange["access_token"]
@@ -109,7 +109,7 @@ class TestUserRestrictedCitizenAccess:
         assert r.status_code == 200
         assert int(r.json()["meta"]["versionId"]) == int(versionId) + 1
 
-    def test_citizen_access_update_non_matching_nhs_number(
+    def test_patient_access_update_non_matching_nhs_number(
         self, get_token_nhs_login_token_exchange, create_random_date
     ):
         token = get_token_nhs_login_token_exchange["access_token"]
@@ -153,7 +153,7 @@ class TestUserRestrictedCitizenAccess:
             == "Cannot retrieve this result with NHS-login Restricted access token"
         )
 
-    def test_citizen_access_update_incorrect_path(
+    def test_patient_access_update_incorrect_path(
         self, get_token_nhs_login_token_exchange, create_random_date
     ):
         token = get_token_nhs_login_token_exchange["access_token"]

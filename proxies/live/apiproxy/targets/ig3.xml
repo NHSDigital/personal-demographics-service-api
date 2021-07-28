@@ -17,7 +17,7 @@
         <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service$|^urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service$|.+\ personal-demographics-service:USER-RESTRICTED\ .+|^personal-demographics-service:USER-RESTRICTED\ .+|.+\ personal-demographics-service:USER-RESTRICTED$|^personal-demographics-service:USER-RESTRICTED$)")</Condition>
       </Step>
       <Step>
-        <Name>AssignMessage.SetAccessModeCitizenAccess</Name>
+        <Name>AssignMessage.SetAccessModePatientAccess</Name>
         <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service$|^urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service$)") and apim.feature_toggles.enable-citizen-access = true</Condition>
       </Step>
       <Step>
@@ -106,8 +106,8 @@
         </Step>
       </Request>
     </Flow>
-    <Flow name="citizen_access">
-      <Condition>(access-mode Equals "citizen-access")</Condition>
+    <Flow name="patient_access">
+      <Condition>(access-mode Equals "patient-access")</Condition>
       <Request>
         <Step>
             <Name>DecodeJWT.DecodeIdToken</Name>
