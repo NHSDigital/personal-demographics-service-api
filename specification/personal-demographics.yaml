@@ -76,7 +76,7 @@ info:
     ## API status and roadmap
     ### Application-restricted access
     This access mode is [stable](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status):
-    * it should be strongly considered as the primary choice for PDS integration
+    * you should strongly consider it as the primary choice for PDS integration
     * we do not make routine breaking changes, if it cannot be avoided, for example, for security reasons, we will give advance notice
      
     ### Healthcare worker access
