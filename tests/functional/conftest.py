@@ -145,7 +145,7 @@ def setup_patch(setup_session):
         token=token,
     )
 
-    response = pds.get_patient_response(patient_id='5900038181')
+    response = pds.get_patient_response(patient_id=config.TEST_PATIENT_ID)
 
     pds.headers = {
         "If-Match": response.headers["Etag"],
@@ -178,7 +178,7 @@ async def setup_patch_short_lived_token(setup_session):
         token=token,
     )
 
-    response = pds.get_patient_response(patient_id='5900038181')
+    response = pds.get_patient_response(patient_id=config.TEST_PATIENT_ID)
 
     pds.headers = {
         "If-Match": response.headers["Etag"],
@@ -195,7 +195,7 @@ def sync_wrap_low_wait_update(setup_patch: GenericPdsRequestor, create_random_da
         "X-Sync-Wait": "0.25"
     }
     resp = pds.update_patient_response(
-        patient_id='5900038181',
+        patient_id=config.TEST_PATIENT_ID,
         payload={"patches": [{"op": "replace", "path": "/birthDate", "value": create_random_date}]}
     )
     return resp

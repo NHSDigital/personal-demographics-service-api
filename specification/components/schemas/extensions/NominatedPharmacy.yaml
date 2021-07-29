@@ -7,9 +7,9 @@ properties:
   url:
     type: string
     description: URL of specification of UKCore-NominatedPharmacy FHIR extension.
-    default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NominatedPharmacy
+    default: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NominatedPharmacy
     enum:
-      - https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NominatedPharmacy
+      - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NominatedPharmacy
     readOnly: true
   valueReference:
     type: object

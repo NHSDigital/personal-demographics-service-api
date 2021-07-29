@@ -9,7 +9,7 @@
               "url": "type",
               "valueCoding": {
                 "code": "PAF",
-                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-AddressKeyType"
+                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType"
               }
             },
             {
@@ -17,7 +17,7 @@
               "valueString": "12345678"
             }
           ],
-          "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-AddressKey"
+          "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey"
         }
       ],
       "line": [
@@ -53,7 +53,7 @@
               {
                 "code": "12",
                 "display": "Braille",
-                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-PreferredWrittenCommunicationFormat"
+                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-PreferredWrittenCommunicationFormat"
               }
             ]
           }
@@ -65,7 +65,7 @@
               {
                 "code": "1",
                 "display": "Letter",
-                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-PreferredContactMethod"
+                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-PreferredContactMethod"
               }
             ]
           }
@@ -75,7 +75,7 @@
           "valueString": "Not after 7pm"
         }
       ],
-      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference"
+      "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-ContactPreference"
     },
     {
       "extension": [
@@ -86,7 +86,7 @@
               {
                 "code": "fr",
                 "display": "French",
-                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage",
+                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-HumanLanguage",
                 "version": "1.0.0"
               }
             ]
@@ -97,7 +97,7 @@
           "valueBoolean": true
         }
       ],
-      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication"
+      "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication"
     }
   ],
   "id": "F4CF8B96",
