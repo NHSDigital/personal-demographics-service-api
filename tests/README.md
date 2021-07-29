@@ -3,11 +3,11 @@
 Test suites to verify the PDS api.
 
 * `scripts/` Cross-testing utilities
-* `performance/` 
+* `performance/`
 * `function/` BDD
-* `user_restricted/` 
-* `e2e/` 
-* `sandbox/` Test sandbox api 
+* `user_restricted/`
+* `e2e/`
+* `sandbox/` Test sandbox api
 
 ## Installation
 
@@ -20,9 +20,9 @@ export SSO_LOGIN_URL=https://login.apigee.com
 export APIGEE_API_TOKEN="$(get_token -u $APIGEE_LOGIN)"
 ```
 
-### Install using Docker 
+### Install using Docker
 
-1. Install docker locally, please see here for more [details](https://docs.docker.com/get-docker/). 
+1. Install docker locally, please see here for more [details](https://docs.docker.com/get-docker/).
 2. In this folder run:
 
 ```bash
@@ -43,6 +43,7 @@ make dev
   - ```PDS_BASE_PATH``` The url for the applications Apigee proxy.
   - ```APIGEE_ENVIRONMENT``` The Apigee Environment you are working in.
   - ```KEY_ID``` The identifier for the key in the key store.
+  - ```TEST_PATIENT_ID``` The NHS number of the test patient used for updates.
 
 
 ## Pytest basics
@@ -59,7 +60,7 @@ make dev
 
 ## Contributing
 
-Pytest will run any file which starts with `test_*.py` - test files should follow this convention. . 
+Pytest will run any file which starts with `test_*.py` - test files should follow this convention. .
 
 ### Marks
 
@@ -71,4 +72,4 @@ pytest -m name_of_mark -v tests/
 
 ### Fixtures
 
-Fixtures are the setup and teardown for our tests allowing us to arrange our tests. Pytest fixtures are defined in `conftest.py` files. Learn more [here](https://docs.pytest.org/en/stable/fixture.html) 
+Fixtures are the setup and teardown for our tests allowing us to arrange our tests. Pytest fixtures are defined in `conftest.py` files. Learn more [here](https://docs.pytest.org/en/stable/fixture.html)

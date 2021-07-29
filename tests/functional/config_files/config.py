@@ -16,3 +16,4 @@ PDS_BASE_PATH = ENV["pds_base_path"]
 # App details
 CLIENT_ID = ENV['client_id']
 CLIENT_SECRET = ENV['client_secret']
+TEST_PATIENT_ID = ENV['test_patient_id']

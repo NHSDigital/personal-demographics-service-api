@@ -13,7 +13,7 @@ def teardown_function(function):
 
 
 def get_patient_request(headers: dict, extra_params: dict = None):
-    params = {"family": "Smith", "gender": "female", "birthdate": "eq2010-10-22"}
+    params = {"family": "Part", "gender": "male", "birthdate": "eq1931-10-04"}
     if extra_params:
         params = {**params, **extra_params}
     return requests.get(
@@ -25,7 +25,7 @@ def get_patient_request(headers: dict, extra_params: dict = None):
 
 def patch_patient_request(headers: dict):
     return requests.patch(
-        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9123123123",
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}",
         headers=headers,
     )
 
@@ -311,7 +311,7 @@ def check_status(status, context):
 @then("I get a Bundle resource in the response")
 def check_bundle_resource(context):
     response = context["response"]
-    EXPECTED_KEYS = {"resourceType", "timestamp", "total", "type"}
+    EXPECTED_KEYS = {"entry", "resourceType", "timestamp", "total", "type"}
     assert response.keys() == EXPECTED_KEYS
     assert response["resourceType"] == "Bundle"
     assert response["type"] == "searchset"
