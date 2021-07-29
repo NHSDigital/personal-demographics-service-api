@@ -38,4 +38,5 @@ ENV = {
     "key_id": get_env("KEY_ID"),
     'client_id': get_env('CLIENT_ID'),
     'client_secret': get_env('CLIENT_SECRET'),
+    'test_patient_id': get_env('TEST_PATIENT_ID'),
 }
