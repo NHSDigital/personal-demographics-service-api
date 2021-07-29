@@ -4,9 +4,9 @@ properties:
   url:
     type: string
     description: URL of specification of the AddressKey extension.
-    default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-AddressKey
+    default: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey
     enum:
-      - https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-AddressKey
+      - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey
     readOnly: true
   extension:
     type: array
@@ -36,7 +36,7 @@ properties:
                 system:
                   type: string
                   description: URL of Code System that describes available Address Key formats.
-                  default: https://fhir.nhs.uk/R4/CodeSystem/UKCore-AddressKeyType
+                  default: https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType
                   readOnly: true
                 code:
                   type: string

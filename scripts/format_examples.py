@@ -120,7 +120,7 @@ def _slim_extension(resource, key):
     """ The only extension to return is Death Notification """
     return [
         addr for addr in resource[key]
-        if addr["url"] == "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus"
+        if addr["url"] == "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus"
     ]
 
 

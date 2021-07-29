@@ -4,14 +4,14 @@
       "op": "replace",
       "path": "/extension/3",
       "value": {
-        "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus",
+        "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus",
         "extension": [
           {
             "url": "deathNotificationStatus",
             "valueCodeableConcept": {
               "coding": [
                 {
-                  "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-DeathNotificationStatus",
+                  "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-DeathNotificationStatus",
                   "version": "1.0.0",
                   "code": "1",
                   "display": "Informal - death notice received via an update from a local NHS Organisation such as GP or Trust"

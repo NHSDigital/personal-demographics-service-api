@@ -3,7 +3,7 @@
     {
       "op": "test",
       "path": "/extension/1/url",
-      "value": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-PreferredDispenserOrganization"
+      "value": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-PreferredDispenserOrganization"
     },
     {
       "op": "remove",

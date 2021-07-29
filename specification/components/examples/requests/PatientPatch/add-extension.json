@@ -4,7 +4,7 @@
       "op": "add",
       "path": "/extension/-",
       "value": {
-        "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NominatedPharmacy",
+        "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NominatedPharmacy",
         "valueReference": {
           "identifier": {
             "system": "https://fhir.nhs.uk/Id/ods-organization-code",

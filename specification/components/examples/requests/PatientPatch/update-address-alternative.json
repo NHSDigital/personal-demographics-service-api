@@ -18,12 +18,12 @@
         "postalCode": "LS1 4BU",
         "extension": [
           {
-            "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-AddressKey",
+            "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey",
             "extension": [
               {
                 "url": "type",
                 "valueCoding": {
-                  "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-AddressKeyType",
+                  "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType",
                   "code": "PAF"
                 }
               },
