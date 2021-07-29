@@ -11,6 +11,7 @@ steps:
       export APPLICATION_RESTRICTED_WITH_ASID_API_KEY="$(JWT_TESTING_WITH_ASID_API_KEY)"
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
       export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
+      export TEST_PATIENT_ID="$(TEST_PATIENT_ID)"
       export KEY_ID="test-1"
 
       poetry run pytest -v tests/functional/test_application_restricted.py --junitxml=tests/functional-test-report.xml
@@ -33,6 +34,7 @@ steps:
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2"
+      export TEST_PATIENT_ID="$(TEST_PATIENT_ID)"
 
       poetry run pytest -v tests/functional/test_proxy_behaviour.py --junitxml=tests/proxy-behaviour-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run proxy behaviour tests
@@ -75,6 +77,7 @@ steps:
       export OAUTH_PROXY="oauth2"
       export CLIENT_ID="$(CLIENT_ID)"
       export CLIENT_SECRET="$(CLIENT_SECRET)"
+      export TEST_PATIENT_ID="$(TEST_PATIENT_ID)"
 
       poetry run pytest -v tests/functional/test_sync_wrap.py --junitxml=tests/sync-wrap-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run sync wrap tests
