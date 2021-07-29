@@ -4,13 +4,13 @@
     {
       "extension": [
         {
-          "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+          "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
           "valueCodeableConcept": {
             "coding": [
               {
                 "code": "01",
                 "display": "Number present and verified",
-                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
                 "version": "1.0.0"
               }
             ]

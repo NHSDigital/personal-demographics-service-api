@@ -4,9 +4,9 @@ properties:
   url:
     type: string
     description: Definition of other contact system extension.
-    default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-OtherContactSystem
+    default: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-OtherContactSystem
     enum:
-      - https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-OtherContactSystem
+      - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-OtherContactSystem
     readOnly: true
   valueCoding:
     type: object
@@ -15,7 +15,7 @@ properties:
       system:
         type: string
         description: URL of Code System that describes available contact relationships.
-        default: https://fhir.nhs.uk/R4/CodeSystem/UKCore-OtherContactSystem
+        default: https://fhir.hl7.org.uk/CodeSystem/UKCore-OtherContactSystem
         readOnly: true
       code:
         type: string
