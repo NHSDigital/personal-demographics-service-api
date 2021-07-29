@@ -7,9 +7,9 @@ properties:
   url:
     type: string
     description: Definition of communication extension.
-    default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication
+    default: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication
     enum:
-      - https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication
+      - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication
     readOnly: true
   extension:
     type: array

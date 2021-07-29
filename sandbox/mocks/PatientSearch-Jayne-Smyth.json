@@ -8,7 +8,7 @@
               "url": "type",
               "valueCoding": {
                 "code": "PAF",
-                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-AddressKeyType"
+                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType"
               }
             },
             {
@@ -16,7 +16,7 @@
               "valueString": "12345678"
             }
           ],
-          "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-AddressKey"
+          "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey"
         }
       ],
       "id": "456",
@@ -73,7 +73,7 @@
               {
                 "code": "2",
                 "display": "Formal - death notice received from Registrar of Deaths",
-                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-DeathNotificationStatus",
+                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-DeathNotificationStatus",
                 "version": "1.0.0"
               }
             ]
@@ -84,7 +84,7 @@
           "valueDateTime": "2010-10-22T00:00:00+00:00"
         }
       ],
-      "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus"
+      "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus"
     }
   ],
   "gender": "female",
@@ -107,13 +107,13 @@
     {
       "extension": [
         {
-          "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+          "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
           "valueCodeableConcept": {
             "coding": [
               {
                 "code": "01",
                 "display": "Number present and verified",
-                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
                 "version": "1.0.0"
               }
             ]
@@ -170,11 +170,11 @@
     {
       "extension": [
         {
-          "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-OtherContactSystem",
+          "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-OtherContactSystem",
           "valueCoding": {
             "code": "textphone",
             "display": "Minicom (Textphone)",
-            "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-OtherContactSystem"
+            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-OtherContactSystem"
           }
         }
       ],

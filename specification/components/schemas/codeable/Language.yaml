@@ -16,7 +16,7 @@ properties:
         system:
           type: string
           description: URL of the Language Code System. Always uses the 'UKCore-HumanLanguage' Code System.
-          example: https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage
+          example: https://fhir.hl7.org.uk/CodeSystem/UKCore-HumanLanguage
           readOnly: true
         version:
           type: string
@@ -31,7 +31,7 @@ properties:
             * `q3` - Australian Sign Language
             * `q4` - British Sign Language
             * `q5` - Makaton
-            All valid codes combined can be found at https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage.
+            All valid codes combined can be found at https://fhir.hl7.org.uk/CodeSystem/UKCore-HumanLanguage.
           example: fr
         display:
           type: string

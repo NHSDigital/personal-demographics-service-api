@@ -7,9 +7,9 @@ properties:
   url:
     type: string
     description: Definition of death notification extension.
-    default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus
+    default: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus
     enum:
-      - https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus
+      - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus
     readOnly: true
   extension:
     type: array

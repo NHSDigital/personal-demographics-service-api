@@ -7,9 +7,9 @@ properties:
   url:
     type: string
     description: Definition of the contact preference extension.
-    default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference
+    default: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-ContactPreference
     enum:
-      - https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference
+      - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-ContactPreference
     readOnly: true
   extension:
     description: Wrapper array containing zero or one preferred contact method, zero or one preferred written communication format; and zero or one preferred contact time.
@@ -47,9 +47,9 @@ properties:
                         type: string
                         format: url
                         description: Definition of the preferred written communication extension.
-                        default: https://fhir.nhs.uk/R4/CodeSystem/UKCore-PreferredWrittenCommunicationFormat
+                        default: https://fhir.hl7.org.uk/CodeSystem/UKCore-PreferredWrittenCommunicationFormat
                         enum:
-                          - https://fhir.nhs.uk/R4/CodeSystem/UKCore-PreferredWrittenCommunicationFormat
+                          - https://fhir.hl7.org.uk/CodeSystem/UKCore-PreferredWrittenCommunicationFormat
                         readOnly: true
                       code:
                         type: string
@@ -95,9 +95,9 @@ properties:
                         type: string
                         format: url
                         description: Definition of the preferred contact method extension.
-                        default: https://fhir.nhs.uk/R4/CodeSystem/UKCore-PreferredContactMethod
+                        default: https://fhir.hl7.org.uk/CodeSystem/UKCore-PreferredContactMethod
                         enum:
-                          - https://fhir.nhs.uk/R4/CodeSystem/UKCore-PreferredContactMethod
+                          - https://fhir.hl7.org.uk/CodeSystem/UKCore-PreferredContactMethod
                         readOnly: true
                       code:
                         type: string
