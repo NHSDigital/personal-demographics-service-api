@@ -3,6 +3,7 @@ from tests.scripts.pds_request import PdsRecord
 import pytest
 from polling2 import poll, TimeoutException
 from pytest_bdd import scenario, given, when, then, parsers
+from .config_files.config import TEST_PATIENT_ID
 
 
 @pytest.mark.apmspii_832
@@ -78,7 +79,7 @@ def trip_rate_limit(context: dict):
 
     def _update_patient():
         response = context["pds"].update_patient_response(
-            patient_id='9693632168',
+            patient_id=TEST_PATIENT_ID,
             payload={"patches": [{"op": "replace", "path": "/birthDate", "value": "2001-01-01"}]}
         )
         return response
@@ -104,7 +105,7 @@ def trip_rate_limit_sync_polling(context: dict, create_random_date):
 
     def _update_patient():
         response = context["pds"].update_patient_response(
-            patient_id='9693632168',
+            patient_id=TEST_PATIENT_ID,
             payload={"patches": [{"op": "replace", "path": "/birthDate", "value": create_random_date}]}
         )
         return response
@@ -123,7 +124,7 @@ def trip_rate_limit_sync_polling(context: dict, create_random_date):
 @when("I PATCH a patient")
 def access_token_expired_sync_polling(context: dict, create_random_date):
     response = context["pds"].update_patient_response(
-        patient_id='9693632168',
+        patient_id=TEST_PATIENT_ID,
         payload={"patches": [{"op": "replace", "path": "/birthDate", "value": create_random_date}]}
     )
     context["pds"] = response

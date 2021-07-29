@@ -37,4 +37,5 @@ ENV = {
     'client_secret': get_env('CLIENT_SECRET'),
     'redirect_uri': get_env('REDIRECT_URI'),
     'authenticate_url': get_env('AUTHENTICATE_URL'),
+    'test_patient_id': get_env('TEST_PATIENT_ID'),
 }

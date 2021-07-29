@@ -6,7 +6,7 @@ from polling2 import poll, TimeoutException
 from http import HTTPStatus
 from tests.scripts.pds_request import GenericPdsRequestor
 from pytest_bdd import scenario, given, when, then, parsers
-from .config_files.config import BASE_URL, PDS_BASE_PATH
+from .config_files.config import BASE_URL, PDS_BASE_PATH, TEST_PATIENT_ID
 
 
 class HTTPMethods(Enum):
@@ -33,7 +33,7 @@ def _trip_rate_limit(token: str, req_type: HTTPMethods, timeout: int = 30, step:
     )
     # Set Etag for all requests
     if req_type == HTTPMethods.PATCH:
-        patient = pds.get_patient_response(patient_id='9693632176')
+        patient = pds.get_patient_response(patient_id=TEST_PATIENT_ID)
         pds.headers = {
             "If-Match": patient.headers["Etag"] if patient.headers.get("Etag") else "W/22",
         }
@@ -41,10 +41,10 @@ def _trip_rate_limit(token: str, req_type: HTTPMethods, timeout: int = 30, step:
     def _pds_response():
 
         if req_type == HTTPMethods.GET:
-            response = pds.get_patient_response(patient_id='9693632176')
+            response = pds.get_patient_response(patient_id=TEST_PATIENT_ID)
         if req_type == HTTPMethods.PATCH:
             response = pds.update_patient_response(
-                patient_id='9693632176',
+                patient_id=TEST_PATIENT_ID,
                 payload={"patches": [{"op": "replace", "path": "/birthDate", "value": "2001-01-01"}]}
             )
         return response
