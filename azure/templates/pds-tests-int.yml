@@ -19,6 +19,7 @@ steps:
       export AUTHENTICATE_URL="https://nhsd-apim-testing-internal-dev.herokuapp.com/"
       export CLIENT_ID="$(CLIENT_ID)"
       export CLIENT_SECRET="$(CLIENT_SECRET)"
+      export TEST_PATIENT_ID="$(TEST_PATIENT_ID)"
 
       poetry run pytest -v tests/ -m smoke_test --junitxml=tests/test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run smoke tests
