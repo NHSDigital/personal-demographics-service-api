@@ -47,6 +47,7 @@ extends:
     config_ids:
       - /ptl/azure-devops/env-internal-dev/test-app/internal-testing-internal-dev/CLIENT_ID
       - /ptl/azure-devops/env-internal-dev/test-app/internal-testing-internal-dev/CLIENT_SECRET
+      - /ptl/azure-devops/personal-demographics/TEST_PATIENT_ID
     apigee_deployments:
       - environment: internal-dev
         make_spec_visible: true
