@@ -77,8 +77,9 @@ info:
 
     ## API status and roadmap
     ### Application-restricted access
-    This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
-    - we might make breaking changes, but only if we cannot avoid it, and we will give advance notice
+    This access mode is [stable](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status):
+    * you should strongly consider it as the primary choice for PDS integration
+    * we do not make routine breaking changes, if it cannot be avoided, for example, for security reasons, we will give advance notice
      
     ### Healthcare worker access
     This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:

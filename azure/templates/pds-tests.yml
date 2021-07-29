@@ -51,6 +51,7 @@ steps:
       export CLIENT_SECRET="$(CLIENT_SECRET)"
       export REDIRECT_URI="https://nhsd-apim-testing-internal-dev.herokuapp.com/callback"
       export AUTHENTICATE_URL="https://nhsd-apim-testing-internal-dev.herokuapp.com/"
+      export TEST_PATIENT_ID="$(TEST_PATIENT_ID)"
 
       poetry run pytest -v tests/user_restricted/test_user_restricted.py --junitxml=tests/user-restricted-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run user restricted tests
