@@ -536,7 +536,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
             assert int((json.loads(update_response.text))["meta"]["versionId"]) == int(versionId) + 1
         helpers.check_response_status_code(update_response, 200)
 
-    def test_update_patient_dob_with_invalid_x_sync_wait_header(self, headers_with_token, create_random_date):
+    def test_update_patient_gender_with_invalid_x_sync_wait_header(self, headers_with_token, create_random_date):
         #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
         def retrieve_patient():
             response = helpers.retrieve_patient(
@@ -549,8 +549,11 @@ class TestUserRestrictedPatientUpdateSyncWrap:
 
         patient_record = response.headers["Etag"]
         versionId = (json.loads(response.text))["meta"]["versionId"]
-        # add the new dob to the patch, send the update and check the response
-        update[0]["patch"]["patches"][0]["value"] = self.new_date
+
+        current_gender = (json.loads(response.text))["gender"]
+        new_gender = 'male' if current_gender == 'female' else 'female'
+
+        update[0]["patch"]["patches"][0]["value"] = new_gender
 
         self.headers["X-Sync-Wait"] = "invalid"
 
@@ -563,7 +566,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
 
         def assert_update_response(update_response):
             with check:
-                assert (json.loads(update_response.text))["birthDate"] == self.new_date
+                assert (json.loads(update_response.text))["gender"] == new_gender
             with check:
                 assert int((json.loads(update_response.text))["meta"]["versionId"]) == int(versionId) + 1
             helpers.check_response_status_code(update_response, 200)
@@ -579,7 +582,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
         else:
             assert_update_response(update_response)
 
-    def test_update_patient_dob_with_low_sync_wait_timeout(self, headers_with_token, create_random_date):
+    def test_update_patient_gender_with_low_sync_wait_timeout(self, headers_with_token, create_random_date):
         #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
         response = helpers.retrieve_patient(
             update[0]["patient"],
@@ -587,8 +590,10 @@ class TestUserRestrictedPatientUpdateSyncWrap:
         )
         patient_record = response.headers["Etag"]
 
-        # add the new dob to the patch, send the update and check the response
-        update[0]["patch"]["patches"][0]["value"] = self.new_date
+        current_gender = (json.loads(response.text))["gender"]
+        new_gender = 'male' if current_gender == 'female' else 'female'
+
+        update[0]["patch"]["patches"][0]["value"] = new_gender
 
         self.headers["X-Sync-Wait"] = "0.25"
         update_response = helpers.update_patient(
