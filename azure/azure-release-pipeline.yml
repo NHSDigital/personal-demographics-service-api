@@ -45,8 +45,8 @@ extends:
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_WITH_ASID_PRIVATE_KEY
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_PRIVATE_KEY
     config_ids:
-      - /ptl/azure-devops/env-int/test-app/internal-testing-int/CLIENT_ID
-      - /ptl/azure-devops/env-int/test-app/internal-testing-int/CLIENT_SECRET
+      - /ptl/azure-devops/env-$(ENVIRONMENT)/test-app/internal-testing-$(ENVIRONMENT)/CLIENT_ID
+      - /ptl/azure-devops/env-$(ENVIRONMENT)/test-app/internal-testing-$(ENVIRONMENT)/CLIENT_SECRET
       - /ptl/azure-devops/personal-demographics/TEST_PATIENT_ID
     apigee_deployments:
       - environment: internal-dev
