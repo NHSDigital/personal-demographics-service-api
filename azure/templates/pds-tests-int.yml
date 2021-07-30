@@ -17,8 +17,8 @@ steps:
       export OAUTH_PROXY="oauth2"
       export REDIRECT_URI="https://nhsd-apim-testing-internal-dev.herokuapp.com/callback"
       export AUTHENTICATE_URL="https://nhsd-apim-testing-internal-dev.herokuapp.com/"
-      export CLIENT_ID="$(CLIENT_ID)"
-      export CLIENT_SECRET="$(CLIENT_SECRET)"
+      export CLIENT_ID="$(CLIENT_ID_INT)"
+      export CLIENT_SECRET="$(CLIENT_SECRET_INT)"
       export TEST_PATIENT_ID="$(TEST_PATIENT_ID)"
 
       poetry run pytest -v tests/ -m smoke_test --junitxml=tests/test-report.xml --reruns 3 --reruns-delay 1
