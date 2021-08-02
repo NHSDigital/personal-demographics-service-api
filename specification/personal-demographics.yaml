@@ -47,7 +47,7 @@ info:
     | ------------------------------ | --------------------------------------------------- | ------------------ | ------------ |
     | Application-restricted access  | None                                                | Search for patients (single result), Get patient details | Available in production (beta) | 
     | Healthcare worker access       | NHS Care Identity Service 2 (NHS CIS2) using NHS [smartcard](https://digital.nhs.uk/services/registration-authorities-and-smartcards) or [modern alternative](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)  | Search for patients (multiple results), Get patient details, Update patient details | Available in production (beta) |
-    | Patient access                 | NHS login                                           | Get own details, Update own details (limited) | Not available yet, see [backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/107446/pds-fhir-api-citizen-access-using-nhs-login) for details   |
+    | Patient access                 | [NHS login](https://digital.nhs.uk/services/nhs-login)  | Get own details, Update own details (limited) | Available in integration environment (alpha)   |
 
   
     ## Who can use this API
@@ -61,6 +61,8 @@ info:
     Health and care organisations in Wales access their own version of PDS called the Welsh Demographics Service (WDS) which is connected to PDS behind the scenes. 
 
     Health and care organisations in Scotland, Northern Ireland and the Channel Islands access their own equivalents of PDS.
+    
+    Patients who receive health and social care or make use of NHS services in England, Wales, the Isle of Man, Scotland, Northern Ireland and the Channel Islands.
 
     ## Related APIs
     The following APIs also give access to the Personal Demographics Service:
@@ -75,16 +77,18 @@ info:
 
     ## API status and roadmap
     ### Application-restricted access
-    This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
-    - we might make breaking changes, but only if we cannot avoid it, and we'll give advance notice
+    This access mode is [stable](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status):
+    * you should strongly consider it as the primary choice for PDS integration
+    * we do not make routine breaking changes, if it cannot be avoided, for example, for security reasons, we will give advance notice
      
     ### Healthcare worker access
     This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
 
-    - we might make breaking changes, but only if we cannot avoid it, and we'll give advance notice
+    - we might make breaking changes, but only if we cannot avoid it, and we will give advance notice
         
     ### Patient access
-    This access mode is not available yet.
+    This access mode is in [alpha](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
+    - we might make breaking changes, but only if we cannot avoid it, and we will give advance notice
     
     ### Roadmap
     To see our roadmap, or to suggest, comment or vote on features for this API, see our [interactive product backlog](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
@@ -97,7 +101,7 @@ info:
     It also conforms to the [FHIR](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#fhir) global standard for health care data exchange.
     Specifically, it is aligned with [FHIR UK Core](https://digital.nhs.uk/services/fhir-uk-core), which is built on FHIR Release 4.
 
-    You don’t need to know much about FHIR to use this API - FHIR APIs are just RESTful APIs that follow specific rules.
+    You do not need to know much about FHIR to use this API - FHIR APIs are just RESTful APIs that follow specific rules.
     In particular:
     - resource names are capitalised and singular, for example `/Patient` not `/patients`
     - array names are singular, for example `line` not `lines` for address lines
@@ -129,19 +133,25 @@ info:
     meaning an end user must be present, authenticated and authorised.
 
     The end user must be:
-    - a healthcare worker
-    - strongly authenticated, using either an NHS [smartcard](https://digital.nhs.uk/services/registration-authorities-and-smartcards) or a [modern alternative](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)
-    - authorised, using [national role-based access control (RBAC)](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/national-rbac-for-developers)
+    * a healthcare worker
+    * strongly authenticated, using either an NHS [smartcard](https://digital.nhs.uk/services/registration-authorities-and-smartcards) or a [modern alternative](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)
+    * authorised, using [national role-based access control (RBAC)](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/national-rbac-for-developers)
 
     To use this access mode, use one of the following security patterns:
     * [user-restricted RESTful API - using NHS CIS2 - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-combined-authentication-and-authorisation)
     * [user-restricted RESTful API - using NHS CIS2 - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-separate-authentication-and-authorisation)
 
     ### Patient access
-    This access mode is not available yet. 
-        
-    For more details, see our [interactive product backlog](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
-
+    This access mode is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis)), meaning an end user must be present, authenticated and authorised.
+    
+    The end user must be:
+    * a patient who receives health and social care or makes use of NHS services
+    * strongly authenticated, using [NHS login](https://digital.nhs.uk/services/nhs-login)
+    
+    To use this access mode, use one of the following security patterns:
+    * [user-restricted RESTful APIs - using NHS login - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-login-combined-authentication-and-authorisation)
+    * [user-restricted RESTful APIs - using NHS login - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-login-separate-authentication-and-authorisation)
+    
     ## Environments and testing
 
     | Environment       | Base URL                                                               |
@@ -185,15 +195,30 @@ info:
     
     To onboard for this API, follow the [Supplier Conformance Assessment List (SCAL) process.](https://digital.nhs.uk/developer/guides-and-documentation/onboarding-process#onboard-using-the-supplier-conformance-assessment-list-scal-process)
 
-    When following the SCAL process, note that:
-    * In step 1: to confirm your use case for this API, you need to [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service), even if you already access PDS via another method.
-    * In step 2: when requesting the SCAL, tell us (a) which access mode you're using: (i) healthcare worker search and retrieve, (ii) healthcare worker update or (iii) application-restricted; (b) for healthcare worker access, which security pattern you are using: (i) combined authentication and authorisation or (ii) separate authentication and authorisation
-    * In step 6: when implementing your clinical risk management process, you must review and integrate the PDS FHIR API hazard log into your own risk log. It's embedded within the PDS FHIR API tab in the SCAL.
-    * In step 8: you need to review and complete the PDS FHIR API risk log to show that you have understood and mitigated the various risks. You might be asked to provide some evidence to prove that controls have been put in place. You can find the risk log embedded within the PDS FHIR API tab in the SCAL. This is separate from the clinical safety hazard log mentioned above.
-    * In step 9: you must conduct penetration testing to [CHECK standards](https://www.ncsc.gov.uk/information/check-penetration-testing).
-    * In step 10: when you complete the Service Desk Registration Form, send it to [api.management@nhs.net](mailto:api.management@nhs.net).
-    * In step 11: submit your completed SCAL to [api.management@nhs.net](mailto:api.management@nhs.net).
-    * In step 14: to request production access, contact us at [api.management@nhs.net](mailto:api.management@nhs.net).
+    When following the general SCAL process steps, for this API you must do the following:
+    
+    In step 1, to confirm your use case, you need to [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service), even if you already access PDS via another method.
+    
+    In step 2, when requesting the SCAL, tell us which access mode you're using:
+    - healthcare worker search and retrieve
+    - healthcare worker update
+    - application-restricted
+    
+    In step 2, if using healthcare worker access mode, tell us which security pattern you are using:
+    - NHS CIS2 - combined authentication and authorisation 
+    - NHS CIS2 - separate authentication and authorisation
+    
+    In step 6, when implementing your clinical risk management process, you must review and integrate the PDS FHIR API hazard log into your own risk log. It's embedded within the PDS FHIR API tab in the SCAL.
+    
+    In step 8, you need to review and complete the PDS FHIR API risk log to show that you have understood and mitigated the various risks. You might be asked to provide some evidence to prove that controls have been put in place. You can find the risk log embedded within the PDS FHIR API tab in the SCAL. This is separate from the clinical safety hazard log mentioned above.
+    
+    In step 9, you must conduct penetration testing to [CHECK standards](https://www.ncsc.gov.uk/information/check-penetration-testing).
+    
+    In step 10, when you complete the Service Desk Registration Form, send it to [api.management@nhs.net](mailto:api.management@nhs.net).
+    
+    In step 11, submit your completed SCAL to [api.management@nhs.net](mailto:api.management@nhs.net).
+    
+    In step 14, to request production access, contact us at [api.management@nhs.net](mailto:api.management@nhs.net).
 
   contact:
     name: Personal Demographics Service FHIR API Support
@@ -756,6 +781,7 @@ paths:
             | 400         | MISSING_VALUE              | Missing header parameter. For details, see the `diagnostics` field. |
             | 400         | INVALID_VALUE              | Invalid header parameter. For details, see the `diagnostics` field. |
             | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation. |
+            | 403         | INVALID_VALUE              | Cannot retrieve this result with NHS-login restricted access token. |
             | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS number. |
             | 404         | INVALIDATED_RESOURCE       | Patient did exist for given NHS number, but has been invalidated and not superseded by another NHS number. |
             | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period. |
@@ -795,7 +821,7 @@ paths:
         | ------------------------------ | ----------------------------------- |
         | Application-restricted access  | Updates not allowed                 |
         | Healthcare worker access       | Updates allowed                     |
-        | Patient access                 | Not yet available                   |
+        | Patient access                 | Updates allowed (Available in integration environment only)|
 
         ## Patient resource versioning
         To update a patient's resource you must have retrieved it first, to ensure you are working against an up-to-date patient resource.
@@ -1020,7 +1046,7 @@ paths:
         ```json
         {
             "patches": [
-              { "op": "test", "path": "/extension/0/url", "value": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus" },
+              { "op": "test", "path": "/extension/0/url", "value": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus" },
               { "op": "remove", "path": "/extension/0" }
           ]
         }
@@ -1291,7 +1317,7 @@ paths:
 
         ### Communication
 
-        Single item found under `extension` with the extension URL `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication`.
+        Single item found under `extension` with the extension URL `https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication`.
 
         In a JSON Patch request, where the communication extension does not exist the path should be:
         * `/extension/-` when adding a communication extension.
@@ -1309,7 +1335,7 @@ paths:
         * any language codes outside the accepted list are rejected; such as local system `qa` codes.
 
         ### Contact preferences
-        Single item found under `extension` with the extension URL `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference`.
+        Single item found under `extension` with the extension URL `https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-ContactPreference`.
 
         In a JSON Patch request, where the Contact Preference extension does not exist or you are replacing/removing the full list of Contact preferences, the path should be:
         * `/extension/0` if the contact preference is the first item in the list. If it is the second item in the list the path is `/extension/1`, and so on.
@@ -1355,7 +1381,7 @@ paths:
 
         ### Death notification
 
-        Single item found under `extension` with the extension URL `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus`.
+        Single item found under `extension` with the extension URL `https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus`.
 
         In a JSON Patch request the path should be:
         * `/extension/0` if the death notification is the first item in the list. If it is the second item in the list the path is `/extension/1`, and so on.
@@ -1463,9 +1489,9 @@ paths:
         ### Pharmacy
 
         Single item found under `extension` with one of the extension urls:
-        * `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NominatedPharmacy`
-        * `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-MedicalApplianceSupplier`
-        * `https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-PreferredDispenserOrganization`
+        * `https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NominatedPharmacy`
+        * `https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-MedicalApplianceSupplier`
+        * `https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-PreferredDispenserOrganization`
 
         In a JSON Patch request the path should be:
         * `/extension/0` if the pharmacy is the first item in the list. If it is the second item in the list the path is `/extension/1`, and so on
@@ -1630,6 +1656,7 @@ paths:
             | 400         | TOO_MANY_VALUES_SUBMITTED  | The field in question has a maximum number of items and the user sent too many. |
             | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation. |
             | 403         | FORBIDDEN_UPDATE           | The user is not permitted to update certain resources or elements, for example most users are not allowed to update the date of death once it has been set. A detailed description will be added to the display. For example - updating a sensitive patient or adding a formal death notification is only permitted from certain systems. |
+            | 403         | INVALID_VALUE              | Cannot retrieve this result with NHS-login restricted access token. |
             | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS number. |
             | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS number has been invalidated and not superseded by another NHS number. |
             | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period. |
