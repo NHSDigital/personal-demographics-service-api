@@ -17,7 +17,7 @@ CALLBACK_URL = f"{BASE_URL}/{IDENTITY_SERVICE}/callback"
 PDS_BASE_PATH = ENV["pds_base_path"]
 
 SPINE_HOSTNAME = (
-    "https://veit07.api.service.nhs.uk" if ENVIRONMENT != "int" else BASE_URL
+    BASE_URL if ENVIRONMENT != "internal-dev" else "https://veit07.api.service.nhs.uk"
 )
 
 # App details
