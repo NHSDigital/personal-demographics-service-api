@@ -15,8 +15,8 @@ steps:
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2"
-      export REDIRECT_URI="https://nhsd-apim-testing-internal-dev.herokuapp.com/callback"
-      export AUTHENTICATE_URL="https://nhsd-apim-testing-internal-dev.herokuapp.com/"
+      export REDIRECT_URI="https://nhsd-apim-testing-$(ENVIRONMENT).herokuapp.com/callback"
+      export AUTHENTICATE_URL="https://nhsd-apim-testing-$(ENVIRONMENT).herokuapp.com/"
       export CLIENT_ID="$(CLIENT_ID_INT)"
       export CLIENT_SECRET="$(CLIENT_SECRET_INT)"
       export TEST_PATIENT_ID="$(TEST_PATIENT_ID)"
@@ -27,5 +27,5 @@ steps:
   - task: PublishTestResults@2
     displayName: 'Publish smoke test results'
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/test-report.xml --reruns 3 --reruns-delay 1
+      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/test-report.xml
       failTaskOnFailedTests: true
