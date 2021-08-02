@@ -27,5 +27,5 @@ steps:
   - task: PublishTestResults@2
     displayName: 'Publish smoke test results'
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/test-report.xml --reruns 3 --reruns-delay 1
+      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/test-report.xml
       failTaskOnFailedTests: true
