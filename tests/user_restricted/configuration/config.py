@@ -3,7 +3,7 @@ from .environment import ENV
 
 # Api Details
 ENVIRONMENT = ENV["environment"]
-BASE_URL = f"https://{ENVIRONMENT}.api.service.nhs.uk"
+BASE_URL = f"https://{ENVIRONMENT}.api.service.nhs.uk"  # Apigee proxy url
 
 IDENTITY_SERVICE = "oauth2-no-smartcard" if ENVIRONMENT == "int" else "oauth2"
 
@@ -17,7 +17,9 @@ CALLBACK_URL = f"{BASE_URL}/{IDENTITY_SERVICE}/callback"
 PDS_BASE_PATH = ENV["pds_base_path"]
 
 SPINE_HOSTNAME = (
-    BASE_URL if ENVIRONMENT != "internal-dev" else "https://veit07.api.service.nhs.uk"
+    # This value is the url returned in the patients response payload which reflects a spine environment.
+    # internal-qa environment points to spine int environment.
+    "https://veit07.api.service.nhs.uk" if ENVIRONMENT == "internal-dev" else "https://int.api.service.nhs.uk"
 )
 
 # App details
