@@ -9,7 +9,6 @@ properties:
     default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-CopyCorrespondenceIndicator
     enum:
       - https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-CopyCorrespondenceIndicator
-    readOnly: true
   valueBoolean:
     type: boolean
     description: Flag indicating if this person should be copied in on correspondence. This will only be returned if the value is `true` otherwise it will not be returned and can be assumed `false`

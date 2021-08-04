@@ -10,7 +10,6 @@ properties:
     default: http://hl7.org/fhir/StructureDefinition/patient-birthPlace
     enum:
       - http://hl7.org/fhir/StructureDefinition/patient-birthPlace
-    readOnly: true
   valueAddress:
     type: object
     additionalProperties: false

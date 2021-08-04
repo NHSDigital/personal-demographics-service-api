@@ -6,12 +6,10 @@ properties:
   id:
     description: Object identifier (OID) specific to the returned details - this should be return exactly the same in any update.
     type: string
-    readOnly: true
     example: 254406A3
   type: 
     description: Type of Reference being returned.
     type: string
-    readOnly: true
     example: 'Organization'
   identifier:
     description: Identifier and system of identification used for this Organisation.
@@ -22,7 +20,6 @@ properties:
       system:
         description: URL for the Organisation Data Service - who are responsible for publishing codes that identify organisations and individuals across health and social care.
         type: string
-        readOnly: true
         example: 'https://fhir.nhs.uk/Id/ods-organization-code'
       value:
         description: Organisation code for the registered general practice, as held in the [Organisation Data Service](https://developer.nhs.uk/apis/ods/).

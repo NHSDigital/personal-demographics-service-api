@@ -7,7 +7,6 @@ properties:
     type: string
     description: FHIR Resource Type.
     default: OperationOutcome
-    readOnly: true
   issue:
     type: array
     description: List of issues that have occurred.

@@ -7,19 +7,16 @@ properties:
   id:
     type: string
     description: Unique object identifier for this name.
-    readOnly: true
     example: "507B7621"
   resourceType:
     type: string
     description: FHIR resource type.
     default: RelatedPerson
-    readOnly: true
   patient:
      "$ref": PatientReference.yaml
   active:
     type: boolean
     default: true
-    readOnly: true
   period:
     "$ref": Period.yaml
   name:

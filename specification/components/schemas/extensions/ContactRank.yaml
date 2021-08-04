@@ -8,7 +8,6 @@ properties:
     default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactRank
     enum:
       - https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactRank
-    readOnly: true
   valuePositiveInt:
     type: integer
     minimum: 1

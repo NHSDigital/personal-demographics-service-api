@@ -7,7 +7,6 @@ properties:
     default: Patient
     enum:
       - Patient
-    readOnly: true
   identifier:
     type: object
     description: |
@@ -20,7 +19,6 @@ properties:
         description: URL for the Patient retrieval API.
         format: url
         example: https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient
-        readOnly: true
       value:
         type: string
         description: NHS number for the related person
@@ -31,4 +29,3 @@ properties:
     description: URL for the FHIR Patient resource.
     format: url
     example: https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/90000000009
-    readOnly: true

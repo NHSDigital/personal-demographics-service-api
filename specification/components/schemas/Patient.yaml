@@ -7,10 +7,8 @@ properties:
     type: string
     description: FHIR resource type.
     default: "Patient"
-    readOnly: true
   id:
     $ref: "NhsNumber.yaml"
-    readOnly: true
   identifier:
     $ref: "Identifier.yaml"
   meta:

@@ -10,7 +10,6 @@ properties:
     default: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-ContactPreference
     enum:
       - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-ContactPreference
-    readOnly: true
   extension:
     description: Wrapper array containing zero or one preferred contact method, zero or one preferred written communication format; and zero or one preferred contact time.
     type: array
@@ -27,7 +26,6 @@ properties:
               type: string
               description: Key of this object. Always `PreferredWrittenCommunicationFormat`.
               default: PreferredWrittenCommunicationFormat
-              readOnly: true
             valueCodeableConcept:
               type: object
               description: Preferred Written Communication Format.
@@ -50,7 +48,6 @@ properties:
                         default: https://fhir.hl7.org.uk/CodeSystem/UKCore-PreferredWrittenCommunicationFormat
                         enum:
                           - https://fhir.hl7.org.uk/CodeSystem/UKCore-PreferredWrittenCommunicationFormat
-                        readOnly: true
                       code:
                         type: string
                         description: |
@@ -75,7 +72,6 @@ properties:
               default: PreferredContactMethod
               enum:
                 - PreferredContactMethod
-              readOnly: true
             valueCodeableConcept:
               type: object
               description: Preferred Contact Method.
@@ -98,7 +94,6 @@ properties:
                         default: https://fhir.hl7.org.uk/CodeSystem/UKCore-PreferredContactMethod
                         enum:
                           - https://fhir.hl7.org.uk/CodeSystem/UKCore-PreferredContactMethod
-                        readOnly: true
                       code:
                         type: string
                         description: |
@@ -128,7 +123,6 @@ properties:
               default: PreferredContactTimes
               enum:
                 - PreferredContactTimes
-              readOnly: true
             valueString:
               type: string
               maximum: 40
