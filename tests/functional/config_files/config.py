@@ -21,3 +21,10 @@ TEST_PATIENT_ID = ENV['test_patient_id']
 # JWT keys
 ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH = ENV['nhs_login_private_key']
 JWT_PRIVATE_KEY_ABSOLUTE_PATH = ENV['jwt_private_key']
+
+AUTH_TOKEN_EXPIRY_MS = ENV['auth_token_expiry_ms']
+
+
+AUTH_TOKEN_EXPIRY_MS = (
+    ENV['auth_token_expiry_ms'] if ENVIRONMENT == "internal-dev" else ENV['auth_token_expiry_ms_int']
+)

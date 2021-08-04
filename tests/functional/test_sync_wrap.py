@@ -123,9 +123,14 @@ def trip_rate_limit_sync_polling(context: dict, create_random_date):
 
 @when("I PATCH a patient")
 def access_token_expired_sync_polling(context: dict, create_random_date):
+
+    # get current gender
+    current_gender = context['pds'].last_response.gender
+    new_gender = 'female' if current_gender == 'male' else 'male'
+
     response = context["pds"].update_patient_response(
         patient_id=TEST_PATIENT_ID,
-        payload={"patches": [{"op": "replace", "path": "/birthDate", "value": create_random_date}]}
+        payload={"patches": [{"op": "replace", "path": "/gender", "value": new_gender}]}
     )
     context["pds"] = response
 

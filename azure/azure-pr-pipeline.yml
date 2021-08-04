@@ -39,9 +39,6 @@ extends:
     jinja_templates:
       PDS_TARGET_SERVER: spine-demographics
       REQUIRE_ASID: false
-    # secret_ids:
-    # secret_file_ids:
-    # config_ids:
     apigee_deployments:
         - environment: internal-dev
           make_spec_visible: true
