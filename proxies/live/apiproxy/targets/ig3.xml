@@ -178,23 +178,6 @@
         <Name>AssignMessage.Errors.CatchAllMessage</Name>
       </Step>
     </FaultRule>
-    <FaultRule name="invalid_user_role_id">
-      <Condition>(grant_type is "authorization_code") and ((request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+"))</Condition>
-      <Step>
-        <Name>AssignMessage.Errors.MissingUserRoleID</Name>
-      </Step>
-      <Step>
-        <Name>AssignMessage.Mirror.CorrelationID</Name>
-        <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>
-      </Step>
-      <Step>
-        <Name>AssignMessage.Mirror.RequestID</Name>
-        <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
-      </Step>
-      <Step>
-        <Name>AssignMessage.Errors.CatchAllMessage</Name>
-      </Step>
-    </FaultRule>
     {% if REQUIRE_ASID == 'True' %}
     <FaultRule name="no_asid_provided">
       <Condition>(app.asid is null)</Condition>
