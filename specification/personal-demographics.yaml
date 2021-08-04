@@ -405,7 +405,7 @@ paths:
         * contact preferences
 
         ### Restricted patients
-        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telecom`, `contact` and `generalPractitioner` are removed.
+        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record) and are sometimes known as sensitive patients. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telecom`, `contact` and `generalPractitioner` are removed.
 
         If `address-postcode` or `general-practitioner` are included in the search parameters, no restricted patients are returned even if a match is identified.
 
@@ -729,7 +729,7 @@ paths:
         When retrieving a superseding resource you must update your system with the new resource and remove the superseded resource, ensuring that the same `id` does not exist against another resource in your system.
 
         ## Restricted patients
-        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. Restricted patients can be retrieved; however, location sensitive fields such as `address`, `telecom` and `generalPractitioner` are removed.
+        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record) and are sometimes known as sensitive patients. Restricted patients can be retrieved; however, location sensitive fields such as `address`, `telecom` and `generalPractitioner` are removed.
 
         The restricted flag can be found in the data under `meta/security` on the patient resource.
 
@@ -1716,7 +1716,7 @@ paths:
         Use this endpoint to get a patient's related people details from PDS for a given NHS number. This is a list of people who can be contacted, and how, regarding the patient. These details may be useful for a practitioner to get in contact with a next of kin or guardian.
         
         ## Restricted patients
-        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record), or sensitive. Related people are not returned for a restricted patient and an empty bundle is returned.
+        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record) and are sometimes known as sensitive patients. Related people are not returned for a restricted patient and an empty bundle is returned.
 
         If a related person only contains a patient reference reference, and when the patient is retrieved, it is restricted; location sensitive fields such as `address` and `telecom` are removed.
 
