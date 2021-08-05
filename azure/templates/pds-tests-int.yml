@@ -20,6 +20,8 @@ steps:
       export CLIENT_ID="$(CLIENT_ID_INT)"
       export CLIENT_SECRET="$(CLIENT_SECRET_INT)"
       export TEST_PATIENT_ID="$(TEST_PATIENT_ID)"
+      export ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH="$(Pipeline.Workspace)/secrets/$(ID_TOKEN_NHS_LOGIN_PRIVATE_KEY)"
+      export JWT_PRIVATE_KEY_ABSOLUTE_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
 
       poetry run pytest -v tests/ -m smoke_test --junitxml=tests/test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run smoke tests
@@ -27,5 +29,5 @@ steps:
   - task: PublishTestResults@2
     displayName: 'Publish smoke test results'
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/test-report.xml
+      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/test-report.xml --reruns 3 --reruns-delay 1
       failTaskOnFailedTests: true
