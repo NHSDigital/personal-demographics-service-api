@@ -39,10 +39,10 @@ class TestUserRestrictedPatientAccess:
         body = r.json()
 
         assert r.status_code == 403
-        assert body["issue"][0]["details"]["coding"][0]["code"] == "INVALID_VALUE"
+        assert body["issue"][0]["details"]["coding"][0]["code"] == "ACCESS_DENIED"
         assert (
             body["issue"][0]["details"]["coding"][0]["display"]
-            == "Cannot retrieve this result with NHS-login Restricted access token"
+            == "Patient cannot perform this action"
         )
 
     def test_patient_access_retrieve_incorrect_path(
@@ -63,10 +63,10 @@ class TestUserRestrictedPatientAccess:
         body = r.json()
 
         assert r.status_code == 403
-        assert body["issue"][0]["details"]["coding"][0]["code"] == "INVALID_VALUE"
+        assert body["issue"][0]["details"]["coding"][0]["code"] == "ACCESS_DENIED"
         assert (
             body["issue"][0]["details"]["coding"][0]["display"]
-            == "Cannot retrieve this result with NHS-login Restricted access token"
+            == "Patient cannot perform this action"
         )
 
     def test_patient_access_update_happy_path(
@@ -147,10 +147,10 @@ class TestUserRestrictedPatientAccess:
         body = r.json()
 
         assert r.status_code == 403
-        assert body["issue"][0]["details"]["coding"][0]["code"] == "INVALID_VALUE"
+        assert body["issue"][0]["details"]["coding"][0]["code"] == "ACCESS_DENIED"
         assert (
             body["issue"][0]["details"]["coding"][0]["display"]
-            == "Cannot retrieve this result with NHS-login Restricted access token"
+            == "Patient cannot perform this action"
         )
 
     def test_patient_access_update_incorrect_path(
@@ -191,8 +191,8 @@ class TestUserRestrictedPatientAccess:
         body = r.json()
 
         assert r.status_code == 403
-        assert body["issue"][0]["details"]["coding"][0]["code"] == "INVALID_VALUE"
+        assert body["issue"][0]["details"]["coding"][0]["code"] == "ACCESS_DENIED"
         assert (
             body["issue"][0]["details"]["coding"][0]["display"]
-            == "Cannot retrieve this result with NHS-login Restricted access token"
+            == "Patient cannot perform this action"
         )
