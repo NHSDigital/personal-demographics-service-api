@@ -1,0 +1,6 @@
+<AssignMessage continueOnError="false" enabled="true" name="AssignMessage.SetAccessModePatientAccess">
+  <AssignVariable>
+    <Name>access-mode</Name>
+    <Value>patient-access</Value>
+  </AssignVariable>
+</AssignMessage>

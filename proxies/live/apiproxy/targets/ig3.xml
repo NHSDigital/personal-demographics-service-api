@@ -17,6 +17,10 @@
         <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service$|^urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service$|.+\ personal-demographics-service:USER-RESTRICTED\ .+|^personal-demographics-service:USER-RESTRICTED\ .+|.+\ personal-demographics-service:USER-RESTRICTED$|^personal-demographics-service:USER-RESTRICTED$)")</Condition>
       </Step>
       <Step>
+        <Name>AssignMessage.SetAccessModePatientAccess</Name>
+        <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service$|^urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service$)")</Condition>
+      </Step>
+      <Step>
         <!-- Header NHSD-Request-ID must be in the correct format (GUID) -->
         <Name>RaiseFault.400BadRequest</Name>
         <Condition>(original-request-details.header.X-Request-ID != null) and (not original-request-details.header.X-Request-ID ~~ "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")</Condition>
@@ -99,6 +103,21 @@
         <Step>
           <Name>RaiseFault.MaxResultsInvalidAppRestricted</Name>
           <Condition>(proxy.pathsuffix MatchesPath "/Patient" and request.verb Equals "GET" and request.queryparam._max-results NotEquals "1")</Condition>
+        </Step>
+      </Request>
+    </Flow>
+    <Flow name="patient_access">
+      <Condition>(access-mode Equals "patient-access")</Condition>
+      <Request>
+        <Step>
+            <Name>DecodeJWT.DecodeIdToken</Name>
+        </Step>
+        <Step>
+            <Name>javascript.RestrictRequest</Name>
+        </Step>
+        <Step>
+          <Name>RaiseFault.InvalidUserNHSlogin</Name>
+          <Condition>apigee.method_is_restricted Equals true</Condition>
         </Step>
       </Request>
     </Flow>
