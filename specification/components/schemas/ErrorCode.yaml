@@ -5,7 +5,6 @@ properties:
     type: array
     items:
       type: object
-      readOnly: true
       properties:
         system:
           type: string

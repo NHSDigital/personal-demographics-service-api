@@ -16,7 +16,6 @@ properties:
           type: string
           description: URI of the coding system specification.
           default: https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus
-          readOnly: true
         version:
           type: string
           description: Version of the coding system in use.

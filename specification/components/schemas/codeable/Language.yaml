@@ -17,7 +17,6 @@ properties:
           type: string
           description: URL of the Language Code System. Always uses the 'UKCore-HumanLanguage' Code System.
           example: https://fhir.hl7.org.uk/CodeSystem/UKCore-HumanLanguage
-          readOnly: true
         version:
           type: string
           description: Version of the language code system.

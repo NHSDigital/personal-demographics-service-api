@@ -62,7 +62,6 @@ properties:
           type: string
           description: URI of the coding system specification.
           format: url
-          readOnly: true
           default: https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole
           enum:
             - http://hl7.org/fhir/ValueSet/relatedperson-relationshiptype

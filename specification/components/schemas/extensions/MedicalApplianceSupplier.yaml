@@ -10,7 +10,6 @@ properties:
     default: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-MedicalApplianceSupplier
     enum:
       - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-MedicalApplianceSupplier
-    readOnly: true
   valueReference:
     type: object
     description: Reference to medical appliance supplier pharmacy `Organization` resource.
@@ -27,7 +26,6 @@ properties:
             type: string
             description: URL for the FHIR code system for the ODS organisation code.
             default: https://fhir.nhs.uk/Id/ods-organization-code
-            readOnly: true
           value:
             type: string
             description: Organisation code for the medical appliance supplier, as held in the [Organisation Data Service](https://developer.nhs.uk/apis/ods/).
