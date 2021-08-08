@@ -782,6 +782,7 @@ paths:
             | 400         | MISSING_VALUE              | Missing header parameter. For details, see the `diagnostics` field. |
             | 400         | INVALID_VALUE              | Invalid header parameter. For details, see the `diagnostics` field. |
             | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation. |
+            | 403         | ACCESS_DENIED              | Patient cannot perform this action. |
             | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS number. |
             | 404         | INVALIDATED_RESOURCE       | Patient did exist for given NHS number, but has been invalidated and not superseded by another NHS number. |
             | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period. |
@@ -1656,6 +1657,7 @@ paths:
             | 400         | TOO_MANY_VALUES_SUBMITTED  | The field in question has a maximum number of items and the user sent too many. |
             | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation. |
             | 403         | FORBIDDEN_UPDATE           | The user is not permitted to update certain resources or elements, for example most users are not allowed to update the date of death once it has been set. A detailed description will be added to the display. For example - updating a sensitive patient or adding a formal death notification is only permitted from certain systems. |
+            | 403         | ACCESS_DENIED              | Patient cannot perform this action. |
             | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS number. |
             | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS number has been invalidated and not superseded by another NHS number. |
             | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period. |
