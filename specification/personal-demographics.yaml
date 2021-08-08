@@ -128,6 +128,17 @@ info:
     | OAuth 2.0 flow:						|Client credentials									|Authorisation code                	    |Token exchange                         |Authorisation code                	        |Token exchange                         |
     | OAuth 2.0 client authentication:		|Signed JWT     									|API Key and secret                	    |Signed JWT                             |API Key and secret                	        |Signed JWT                             |
 
+    |	User			|	Functions	                                                                    |	User authentication	 | Ease of integration and onboarding	|	OAuth 2.0 flow and client authentication	|	Recommended security pattern                        |
+    |-------------------| --------------------------------------------------------------------------------  | ---------------------- |------------------------------------- | --------------------------------------------- |	--------------------------------------------------- |
+    |Any or not present	|"Search for patients (single result), Get patient details                          |Not needed	             | Easiest	                            | Client credentials with Signed JWT	        | Application Restricted                                |
+    |Healthcare worker  |"Search for patients (multiple results), Get patient details                       | Not needed	         | Easiest	                            |	Client credentials with Signed JWT	        | Application Restricted	                            |
+    | 	                |Search for patients (multiple results), Get patient details, Update patient details| NHS CIS2 - Smartcards or [modern alternatives](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)|Easier|Authorisation code with API Key and Secret  | NHS CIS2 - combined authentication and authorisation|
+    |	                |Search for patients (multiple results), Get patient details, Update patient details| NHS CIS2 - Smartcards or [modern alternatives](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)|Easy|Token exchange with signed JWT                | NHS CIS2 - separate authentication and authorisation|
+    |Patient	        |Get own details, Update own details (limited)                                      | Not needed             | Easiest                              |	Client credentials with Signed JWT	        | Application Restricted                                |
+    |	                |Get own details, Update own details (limited)                                      | NHS login              | Easier                               |	Authorisation code with API Key and Secret	| NHS login -  combined authentication and authorisation|
+    |	                |Get own details, Update own details (limited)                                      | NHS login              | Easy                                 |	Token exchange with signed JWT				| NHS login -  separate authentication and authorisation|
+
+
     ### Application-restricted access
     This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis),
     meaning we authenticate the calling application but not the end user.
