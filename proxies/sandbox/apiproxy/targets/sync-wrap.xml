@@ -33,6 +33,7 @@
       <Step>
         <Condition>(response.status.code Equals "422")</Condition>
         <Name>AssignMessage.Errors.CatchAllMessage</Name>
+        <Name>AssignMessage.Set500UnknownErrorStatusResponse</Name>
       </Step>
     </FaultRule>
     <FaultRule name="request_timeout">
