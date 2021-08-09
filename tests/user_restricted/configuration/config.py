@@ -3,27 +3,37 @@ from .environment import ENV
 
 # Api Details
 ENVIRONMENT = ENV["environment"]
-BASE_URL = f"https://{ENVIRONMENT}.api.service.nhs.uk"
+BASE_URL = f"https://{ENVIRONMENT}.api.service.nhs.uk"  # Apigee proxy url
 
-AUTHORIZE_URL = f"{BASE_URL}/oauth2/authorize"
-TOKEN_URL = f"{BASE_URL}/oauth2/token"
-SIM_AUTH_URL = f"{BASE_URL}/oauth2/simulated_auth"
-AUTHENTICATE_URL = ENV['authenticate_url']
-CALLBACK_URL = f"{BASE_URL}/oauth2/callback"
+IDENTITY_SERVICE = "oauth2-no-smartcard" if ENVIRONMENT == "int" else "oauth2"
+
+AUTHORIZE_URL = f"{BASE_URL}/{IDENTITY_SERVICE}/authorize"
+TOKEN_URL = f"{BASE_URL}/{IDENTITY_SERVICE}/token"
+SIM_AUTH_URL = f"{BASE_URL}/{IDENTITY_SERVICE}/simulated_auth"
+AUTHENTICATE_URL = ENV["authenticate_url"]
+CALLBACK_URL = f"{BASE_URL}/{IDENTITY_SERVICE}/callback"
 
 # PDS
 PDS_BASE_PATH = ENV["pds_base_path"]
 
+SPINE_HOSTNAME = (
+    # This value is the url returned in the patients response payload which reflects a spine environment.
+    # internal-qa environment points to spine int environment.
+    "https://veit07.api.service.nhs.uk" if ENVIRONMENT == "internal-dev" else "https://int.api.service.nhs.uk"
+)
+
 # App details
-CLIENT_ID = ENV['client_id']
-CLIENT_SECRET = ENV['client_secret']
-REDIRECT_URI = ENV['redirect_uri']
+CLIENT_ID = ENV["client_id"]
+CLIENT_SECRET = ENV["client_secret"]
+REDIRECT_URI = ENV["redirect_uri"]
 
 # Endpoints
 ENDPOINTS = {
-    'authorize': AUTHORIZE_URL,
-    'token': TOKEN_URL,
-    'authenticate': AUTHENTICATE_URL,
-    'callback': CALLBACK_URL,
-    'sim_auth': SIM_AUTH_URL
+    "authorize": AUTHORIZE_URL,
+    "token": TOKEN_URL,
+    "authenticate": AUTHENTICATE_URL,
+    "callback": CALLBACK_URL,
+    "sim_auth": SIM_AUTH_URL,
 }
+
+TEST_PATIENT_ID = ENV["test_patient_id"]

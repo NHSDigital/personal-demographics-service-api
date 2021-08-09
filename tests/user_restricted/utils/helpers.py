@@ -257,7 +257,4 @@ def check_retrieve_response_body_shape(response: requests.Response) -> None:
         assert len(response_body["identifier"]) > 0
         assert isinstance(response_body["identifier"], list)
 
-        assert len(response_body["extension"]) > 0
-        assert isinstance(response_body["extension"], list)
-
         assert response_body["meta"] is not None

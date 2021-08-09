@@ -17,6 +17,10 @@
         <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service$|^urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service$|.+\ personal-demographics-service:USER-RESTRICTED\ .+|^personal-demographics-service:USER-RESTRICTED\ .+|.+\ personal-demographics-service:USER-RESTRICTED$|^personal-demographics-service:USER-RESTRICTED$)")</Condition>
       </Step>
       <Step>
+        <Name>AssignMessage.SetAccessModePatientAccess</Name>
+        <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service$|^urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service$)")</Condition>
+      </Step>
+      <Step>
         <!-- Header NHSD-Request-ID must be in the correct format (GUID) -->
         <Name>RaiseFault.400BadRequest</Name>
         <Condition>(original-request-details.header.X-Request-ID != null) and (not original-request-details.header.X-Request-ID ~~ "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")</Condition>
@@ -102,6 +106,21 @@
         </Step>
       </Request>
     </Flow>
+    <Flow name="patient_access">
+      <Condition>(access-mode Equals "patient-access")</Condition>
+      <Request>
+        <Step>
+            <Name>DecodeJWT.DecodeIdToken</Name>
+        </Step>
+        <Step>
+            <Name>javascript.RestrictRequest</Name>
+        </Step>
+        <Step>
+          <Name>RaiseFault.InvalidUserNHSlogin</Name>
+          <Condition>apigee.method_is_restricted Equals true</Condition>
+        </Step>
+      </Request>
+    </Flow>
   </Flows>
   <HTTPTargetConnection>
     <Properties>
@@ -165,23 +184,6 @@
       <Condition>(original-request-details.header.X-Request-ID != null) and (not original-request-details.header.X-Request-ID ~~ "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")</Condition>
       <Step>
         <Name>AssignMessage.Errors.InvalidRequestID</Name>
-      </Step>
-      <Step>
-        <Name>AssignMessage.Mirror.CorrelationID</Name>
-        <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>
-      </Step>
-      <Step>
-        <Name>AssignMessage.Mirror.RequestID</Name>
-        <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
-      </Step>
-      <Step>
-        <Name>AssignMessage.Errors.CatchAllMessage</Name>
-      </Step>
-    </FaultRule>
-    <FaultRule name="invalid_user_role_id">
-      <Condition>(grant_type is "authorization_code") and ((request.header.NHSD-Session-URID is null) or (not request.header.NHSD-Session-URID ~~ ".+"))</Condition>
-      <Step>
-        <Name>AssignMessage.Errors.MissingUserRoleID</Name>
       </Step>
       <Step>
         <Name>AssignMessage.Mirror.CorrelationID</Name>

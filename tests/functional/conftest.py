@@ -6,6 +6,7 @@ from api_test_utils.apigee_api_apps import ApigeeApiDeveloperApps
 from api_test_utils.apigee_api_products import ApigeeApiProducts
 from .config_files import config
 import random
+from time import time
 
 
 async def _set_default_rate_limit(product: ApigeeApiProducts):
@@ -145,7 +146,7 @@ def setup_patch(setup_session):
         token=token,
     )
 
-    response = pds.get_patient_response(patient_id='5900038181')
+    response = pds.get_patient_response(patient_id=config.TEST_PATIENT_ID)
 
     pds.headers = {
         "If-Match": response.headers["Etag"],
@@ -178,7 +179,7 @@ async def setup_patch_short_lived_token(setup_session):
         token=token,
     )
 
-    response = pds.get_patient_response(patient_id='5900038181')
+    response = pds.get_patient_response(patient_id=config.TEST_PATIENT_ID)
 
     pds.headers = {
         "If-Match": response.headers["Etag"],
@@ -195,7 +196,7 @@ def sync_wrap_low_wait_update(setup_patch: GenericPdsRequestor, create_random_da
         "X-Sync-Wait": "0.25"
     }
     resp = pds.update_patient_response(
-        patient_id='5900038181',
+        patient_id=config.TEST_PATIENT_ID,
         payload={"patches": [{"op": "replace", "path": "/birthDate", "value": create_random_date}]}
     )
     return resp
@@ -230,3 +231,120 @@ def create_random_date():
     year = random.randrange(1940, 2020)
     new_date = f"{year}-{month}-{day}"
     return new_date
+
+
+@pytest.fixture()
+def app():
+    """
+    Import the test utils module to be able to:
+        - Create apigee test application
+            - Update custom attributes
+            - Update custom ratelimits
+            - Update products to the test application
+    """
+    return ApigeeApiDeveloperApps()
+
+
+@pytest.fixture()
+def product():
+    """
+    Import the test utils module to be able to:
+        - Create apigee test product
+            - Update custom scopes
+            - Update environments
+            - Update product paths
+            - Update custom attributes
+            - Update proxies to the product
+            - Update custom ratelimits
+    """
+    return ApigeeApiProducts()
+
+
+@pytest.fixture()
+async def test_app_and_product(app, product):
+    """Create a test app and product which can be modified in the test"""
+    await product.create_new_product()
+
+    await app.create_new_app()
+
+    await product.update_scopes(
+        [
+            "urn:nhsd:apim:app:level3:personal-demographics-service",
+            "urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service",
+            "urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service",
+        ]
+    )
+    await app.add_api_product([product.name])
+    await app.set_custom_attributes(
+        {
+            "jwks-resource-url": "https://raw.githubusercontent.com/NHSDigital/"
+                                 "identity-service-jwks/main/jwks/internal-dev/"
+                                 "9baed6f4-1361-4a8e-8531-1f8426e3aba8.json"
+        }
+    )
+
+    yield product, app
+
+    await app.destroy_app()
+    await product.destroy_product()
+
+
+@pytest.fixture()
+async def get_token_nhs_login_token_exchange(test_app_and_product):
+    """Call identity server to get an access token"""
+    test_product, test_app = test_app_and_product
+    oauth = OauthHelper(
+        client_id=test_app.client_id,
+        client_secret=test_app.client_secret,
+        redirect_uri=test_app.callback_url,
+    )
+
+    id_token_claims = {
+        "aud": "tf_-APIM-1",
+        "id_status": "verified",
+        "nhs_number": "9912003071",
+        "token_use": "id",
+        "auth_time": 1616600683,
+        "iss": "https://internal-dev.api.service.nhs.uk",
+        "vot": "P9.Cp.Cd",
+        "exp": int(time()) + 600,
+        "iat": int(time()) - 10,
+        "vtm": "https://auth.sandpit.signin.nhs.uk/trustmark/auth.sandpit.signin.nhs.uk",
+        "jti": "b68ddb28-e440-443d-8725-dfe0da330118",
+        "identity_proofing_level": "P9",
+    }
+    id_token_headers = {
+        "sub": "49f470a1-cc52-49b7-beba-0f9cec937c46",
+        "aud": "APIM-1",
+        "kid": "nhs-login",
+        "iss": "https://internal-dev.api.service.nhs.uk",
+        "typ": "JWT",
+        "exp": 1616604574,
+        "iat": 1616600974,
+        "alg": "RS512",
+        "jti": "b68ddb28-e440-443d-8725-dfe0da330118",
+    }
+    with open(config.ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH, "r") as f:
+        contents = f.read()
+
+    client_assertion_jwt = oauth.create_jwt(kid="test-1")
+    id_token_jwt = oauth.create_id_token_jwt(
+        algorithm="RS512",
+        claims=id_token_claims,
+        headers=id_token_headers,
+        signing_key=contents,
+    )
+
+    # When
+    token_resp = await oauth.get_token_response(
+        grant_type="token_exchange",
+        data={
+            "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
+            "subject_token_type": "urn:ietf:params:oauth:token-type:id_token",
+            "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+            "subject_token": id_token_jwt,
+            "client_assertion": client_assertion_jwt,
+        },
+    )
+    assert token_resp["status_code"] == 200
+    return token_resp["body"]

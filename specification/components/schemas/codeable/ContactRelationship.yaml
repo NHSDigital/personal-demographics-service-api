@@ -17,7 +17,6 @@ properties:
           description: URL of Code System that describes available contact relationships.
           format: url
           default: http://terminology.hl7.org/CodeSystem/v2-0131
-          readOnly: true
         code:
           type: string
           description: Coded value for contact relationship.

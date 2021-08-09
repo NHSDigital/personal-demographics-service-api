@@ -1,0 +1,27 @@
+<RaiseFault async="false" continueOnError="false" enabled="true" name="RaiseFault.InvalidUserNHSlogin">
+  <FaultResponse>
+    <Set>
+      <Headers />
+      <Payload contentType="text/plain" />
+      <StatusCode>403</StatusCode>
+      <ReasonPhrase>Forbidden</ReasonPhrase>
+    </Set>
+    <AssignVariable>
+      <Name>pds.error.code</Name>
+      <Value>forbidden</Value>
+    </AssignVariable>
+    <AssignVariable>
+      <Name>pds.error.coding.code</Name>
+      <Value>ACCESS_DENIED</Value>
+    </AssignVariable>
+    <AssignVariable>
+      <Name>pds.error.coding.display</Name>
+      <Value>Patient cannot perform this action</Value>
+    </AssignVariable>
+    <AssignVariable>
+      <Name>pds.error.diagnostics</Name>
+      <Template>Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir</Template>
+    </AssignVariable>
+  </FaultResponse>
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</RaiseFault>

@@ -6,7 +6,6 @@ properties:
   id:
     type: string
     description: Unique system identifier for this address.
-    readOnly: true
     example: '456'
   period:
     $ref: "Period.yaml"

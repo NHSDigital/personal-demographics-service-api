@@ -7,10 +7,9 @@ properties:
   url:
     type: string
     description: Definition of death notification extension.
-    default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus
+    default: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus
     enum:
-      - https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-DeathNotificationStatus
-    readOnly: true
+      - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus
   extension:
     type: array
     description: Array containing exactly one death notification status code object and exactly one effective date object.
@@ -30,7 +29,6 @@ properties:
               default: deathNotificationStatus
               enum:
                 - deathNotificationStatus
-              readOnly: true
             valueCodeableConcept:
               $ref: "../codeable/DeathNotificationStatus.yaml"
         - type: object
@@ -38,7 +36,6 @@ properties:
           required:
             - url
             - valueDateTime
-          readOnly: true
           properties:
             url:
               type: string
@@ -46,10 +43,8 @@ properties:
               default: systemEffectiveDate
               enum:
                 - systemEffectiveDate
-              readOnly: true
             valueDateTime:
               type: string
               description: Date and time at which death notification status took effect.
               format: date-time
               example: '2010-10-22T00:00:00+00:00'
-              readOnly: true

@@ -38,4 +38,7 @@ ENV = {
     "key_id": get_env("KEY_ID"),
     'client_id': get_env('CLIENT_ID'),
     'client_secret': get_env('CLIENT_SECRET'),
+    'nhs_login_private_key': get_env('ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH'),
+    'jwt_private_key': get_env('JWT_PRIVATE_KEY_ABSOLUTE_PATH'),
+    'test_patient_id': get_env('TEST_PATIENT_ID'),
 }

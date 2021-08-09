@@ -4,10 +4,9 @@ properties:
   url:
     type: string
     description: URL of specification of the AddressKey extension.
-    default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-AddressKey
+    default: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey
     enum:
-      - https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-AddressKey
-    readOnly: true
+      - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey
   extension:
     type: array
     description: "Specification of address key system and address key value. Contains exactly two items: one describing the code system the Address Key uses, and the other specifying the value of the Address Key."
@@ -25,7 +24,6 @@ properties:
               type: string
               description: Always 'type'.
               default: type
-              readOnly: true
             valueCoding:
               type: object
               description: URL of specification of address key format.
@@ -36,14 +34,12 @@ properties:
                 system:
                   type: string
                   description: URL of Code System that describes available Address Key formats.
-                  default: https://fhir.nhs.uk/R4/CodeSystem/UKCore-AddressKeyType
-                  readOnly: true
+                  default: https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType
                 code:
                   type: string
                   description: Address Key system. Always 'PAF'.
                   default: "PAF"
                   example: "PAF"
-                  readOnly: true
         - type: object
           description: Value of the address key.
           required:
@@ -55,7 +51,6 @@ properties:
               description: Always 'value'.
               default: value
               example: value
-              readOnly: true
             valueString:
               type: string
               description: Address key in PAF format. An 8 digit number including leading zeroes, formatted as a string.
