@@ -30,6 +30,10 @@
         <Condition>(response.status.code Equals "504")</Condition>
         <Name>Quota</Name>
       </Step>
+      </Step>
+        <Condition>(response.status.code Equals "422")</Condition>
+        <Name>AssignMessage.Errors.CatchAllMessage</Name>
+      <Step>
     </FaultRule>
     <FaultRule name="request_timeout">
       <Condition>(response.status.code Equals "504")</Condition>
