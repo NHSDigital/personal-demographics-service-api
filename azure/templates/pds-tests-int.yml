@@ -18,6 +18,8 @@ steps:
        - /ptl/azure-devops/env-int/test-app/internal-testing-int/CLIENT_ID_INT
        - /ptl/azure-devops/env-int/test-app/internal-testing-int/CLIENT_SECRET_INT
        - /ptl/azure-devops/personal-demographics/TEST_PATIENT_ID
+       - /ptl/azure-devops/personal-demographics/AUTH_TOKEN_EXPIRY_MS
+       - /ptl/azure-devops/personal-demographics/AUTH_TOKEN_EXPIRY_MS_INT
      secret_ids:
        - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_API_KEY
        - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_WITH_ASID_API_KEY
@@ -38,6 +40,8 @@ steps:
       export CLIENT_ID="$(CLIENT_ID_INT)"
       export CLIENT_SECRET="$(CLIENT_SECRET_INT)"
       export TEST_PATIENT_ID="$(TEST_PATIENT_ID)"
+      export AUTH_TOKEN_EXPIRY_MS="$(AUTH_TOKEN_EXPIRY_MS)"
+      export AUTH_TOKEN_EXPIRY_MS_INT="$(AUTH_TOKEN_EXPIRY_MS_INT)"
 
       poetry run pytest -v tests/ -m smoke_test --junitxml=tests/test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run smoke tests
