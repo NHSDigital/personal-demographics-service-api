@@ -1,41 +1,41 @@
 import os
 
 
-def get_env(variable_name: str) -> str:
-    """Returns a environment variable"""
-    try:
-        var = os.environ[variable_name]
-        if not var:
-            raise RuntimeError(f"Variable is null, Check {variable_name}.")
-        return var
-    except KeyError:
-        raise RuntimeError(f"Variable is not set, Check {variable_name}.")
+class EnvVarWrapper(object):
+    """Dictionary-like interface for accessing environment variables.
+
+    Values are lazy-loaded so need not exist when EnvVarWrapper is created.
+    If the value points to a file on disk the contents are returned."""
+
+    def __init__(self, **kwargs):
+        """Supply keyword arguments specifying environment variables to wrap.
+        """
+        self._env = kwargs
+
+    def __getitem__(self, key):
+        environment_variable = self._env[key]
+        value = os.environ[environment_variable]
+        if os.path.isfile(value):
+            with open(value) as f:
+                file_content = f.read()
+            if not file_content:
+                raise RuntimeError("File appears to be empty")
+            return file_content
+        else:
+            return value
 
 
-def get_env_file(variable_name: str) -> str:
-    """Returns a environment variable as path"""
-    try:
-        path = os.path.abspath(os.environ[variable_name])
-        if not path:
-            raise RuntimeError(f"Variable is null, Check {variable_name}.")
-        with open(path, "r") as f:
-            contents = f.read()
-        if not contents:
-            raise RuntimeError(f"Contents of file empty. Check {variable_name}.")
-        return contents
-    except KeyError:
-        raise RuntimeError(f"Variable is not set, Check {variable_name}.")
-
-
-ENV = {
-    # Apigee
-    "environment": get_env("APIGEE_ENVIRONMENT"),
-    # PDS
-    "pds_base_path": get_env("PDS_BASE_PATH"),
-    # OAUTH
-    'client_id': get_env('CLIENT_ID'),
-    'client_secret': get_env('CLIENT_SECRET'),
-    'redirect_uri': get_env('REDIRECT_URI'),
-    'authenticate_url': get_env('AUTHENTICATE_URL'),
-    'test_patient_id': get_env('TEST_PATIENT_ID'),
-}
+ENV = EnvVarWrapper(
+    **{
+        # Apigee
+        "environment": "APIGEE_ENVIRONMENT",
+        # PDS
+        "pds_base_path": "PDS_BASE_PATH",
+        # OAUTH
+        "client_id": "CLIENT_ID",
+        "client_secret": "CLIENT_SECRET",
+        "redirect_uri": "REDIRECT_URI",
+        "authenticate_url": "AUTHENTICATE_URL",
+        "test_patient_id": "TEST_PATIENT_ID",
+    }
+)
