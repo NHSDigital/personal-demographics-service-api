@@ -45,7 +45,7 @@ extends:
           - template: templates/pds-tests.yml
       - environment: internal-qa
         make_spec_visible: true
-         post_deploy:
+        post_deploy:
           - template: templates/pds-tests.yml
         depends_on:
             - internal_dev
