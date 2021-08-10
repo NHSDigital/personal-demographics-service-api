@@ -1,6 +1,5 @@
 type: object
 description: Status indicating if NHS number is present and verified.
-readOnly: true
 properties:
   url:
     type: string
@@ -8,6 +7,5 @@ properties:
     default: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus
     enum:
       - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus
-    readOnly: true
   valueCodeableConcept:
     $ref: "../codeable/NHSNumberVerificationStatus.yaml"

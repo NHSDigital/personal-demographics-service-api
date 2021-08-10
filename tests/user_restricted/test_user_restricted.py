@@ -200,21 +200,12 @@ class TestUserRestrictedSearchPatient:
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, self.headers)
 
-    def test_search_patient_sensitive_info_not_returned(self, headers_with_token):
-        response = helpers.search_patient(
-            search[10]["query_params"],
-            self.headers
-        )
-        helpers.check_search_response_body(response, search[10]["response"])
-        helpers.check_response_status_code(response, 200)
-        helpers.check_response_headers(response, self.headers)
-
     def test_search_patient_happy_path_genderfree(self, headers_with_token):
         response = helpers.search_patient(
             search[7]["query_params"],
             self.headers
         )
-        helpers.check_search_response_body(response, search[0]["response"])
+        helpers.check_search_response_body(response, search[7]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, self.headers)
 
@@ -223,7 +214,7 @@ class TestUserRestrictedSearchPatient:
             search[8]["query_params"],
             self.headers
         )
-        helpers.check_search_response_body(response, search[0]["response"])
+        helpers.check_search_response_body(response, search[8]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, self.headers)
 
@@ -231,7 +222,7 @@ class TestUserRestrictedSearchPatient:
         """See TestBase37101 Chain 7001"""
         print(self.headers)
         response = helpers.search_patient(
-            {"family": "JAMESONGLE", "birthdate": "1982-03-14"},
+            {"family": "Garton", "birthdate": "1946-06-23"},
             self.headers
         )
         response_body = response.json()
@@ -240,13 +231,13 @@ class TestUserRestrictedSearchPatient:
         assert response_body["resourceType"] == "Bundle"
         assert response_body["type"] == "searchset"
         assert response_body["total"] == 1
-        assert response_body["entry"][0]["resource"]["id"] == "9912003071"
+        assert response_body["entry"][0]["resource"]["id"] == "9693632109"
 
     def test_simple_trace_no_gender_no_result(self, headers_with_token):
         """See TestBase37101 Chain 7002"""
         print(self.headers)
         response = helpers.search_patient(
-            {"family": "Clarke", "birthdate": "1975-01-01"},
+            {"family": "Garton", "birthdate": "1947-06-23"},
             self.headers
         )
         response_body = response.json()
@@ -259,20 +250,20 @@ class TestUserRestrictedSearchPatient:
     def test_no_gender_postcode_format_doesnt_affect_score(self, headers_with_token):
         """See TestBase37101 Chain 7003"""
         response_1 = helpers.search_patient(
-            {"family": "JAMESONGLE", "birthdate": "1982-03-14", "address-postcode": "LS27 8RR"},
+            {"family": "Garton", "birthdate": "1946-06-23", "address-postcode": "DN18 5DW"},
             self.headers
         )
         response_1_body = response_1.json()
 
         response_2 = helpers.search_patient(
-            {"family": "JAMESONGLE", "birthdate": "1982-03-14", "address-postcode": "ls278rr"},
+            {"family": "Garton", "birthdate": "1946-06-23", "address-postcode": "dn185dw"},
             self.headers
         )
         response_2_body = response_2.json()
 
         assert response_1.status_code == 200
         assert response_2.status_code == response_1.status_code
-        assert response_1_body["entry"][0]["resource"]["id"] == "9912003071"
+        assert response_1_body["entry"][0]["resource"]["id"] == "9693632109"
         assert response_1_body["entry"][0]["resource"]["id"] == response_2_body["entry"][0]["resource"]["id"]
         assert response_1_body["entry"][0]["search"]["score"] == 1
         assert response_1_body["entry"][0]["search"]["score"] == response_2_body["entry"][0]["search"]["score"]
@@ -280,7 +271,7 @@ class TestUserRestrictedSearchPatient:
     def test_algorithmic_search_without_gender(self, headers_with_token):
         """See TestBase37102 Chain 7001"""
         response = helpers.search_patient(
-            {"family": "STSimilar01", "birthdate": "1975-01-01"},
+            {"family": "YOUDS", "birthdate": "1970-01-24"},
             self.headers
         )
         response_body = response.json()
@@ -288,24 +279,28 @@ class TestUserRestrictedSearchPatient:
         assert response.status_code == 200
         assert response_body["type"] == "searchset"
         assert response_body["resourceType"] == "Bundle"
-        assert response_body["total"] == 3
+        assert response_body["total"] == 4
         assert response_body["entry"][0]["search"]["score"] == 1
-        assert response_body["entry"][0]["resource"]["id"] == "9990000050"
+        assert response_body["entry"][0]["resource"]["id"] == "9693633679"
         assert response_body["entry"][0]["resource"]["gender"] == "male"
-        assert response_body["entry"][0]["resource"]["birthDate"] == "1975-01-01"
+        assert response_body["entry"][0]["resource"]["birthDate"] == "1970-01-24"
         assert response_body["entry"][1]["search"]["score"] == 1
-        assert response_body["entry"][1]["resource"]["id"] == "9990000069"
-        assert response_body["entry"][1]["resource"]["gender"] == "male"
-        assert response_body["entry"][1]["resource"]["birthDate"] == "1975-01-01"
+        assert response_body["entry"][1]["resource"]["id"] == "9693633687"
+        assert response_body["entry"][1]["resource"]["gender"] == "female"
+        assert response_body["entry"][1]["resource"]["birthDate"] == "1970-01-24"
         assert response_body["entry"][2]["search"]["score"] == 1
-        assert response_body["entry"][2]["resource"]["id"] == "9990000077"
-        assert response_body["entry"][2]["resource"]["gender"] == "male"
-        assert response_body["entry"][2]["resource"]["birthDate"] == "1975-01-01"
+        assert response_body["entry"][2]["resource"]["id"] == "9693633695"
+        assert response_body["entry"][2]["resource"]["gender"] == "unknown"
+        assert response_body["entry"][2]["resource"]["birthDate"] == "1970-01-24"
+        assert response_body["entry"][3]["search"]["score"] == 1
+        assert response_body["entry"][3]["resource"]["id"] == "9693633709"
+        assert response_body["entry"][3]["resource"]["gender"] == "other"
+        assert response_body["entry"][3]["resource"]["birthDate"] == "1970-01-24"
 
     def test_algorithmic_fuzzy_match_unknown_gender(self, headers_with_token):
         """See TestBase37104 Chain 0001"""
         response = helpers.search_patient(
-            {"family": "ATUnknow", "given": "Nisha", "birthdate": "1980-09-19", "_fuzzy-match": "true"},
+            {"family": "Garton", "given": "Bill", "birthdate": "1946-06-23", "_fuzzy-match": "true"},
             self.headers
         )
         response_body = response.json()
@@ -313,13 +308,13 @@ class TestUserRestrictedSearchPatient:
         assert response.status_code == 200
         assert response_body["type"] == "searchset"
         assert response_body["resourceType"] == "Bundle"
-        assert response_body["entry"][0]["search"]["score"] == 0.9896
-        assert response_body["entry"][0]["resource"]["id"] == "9990001502"
+        assert response_body["entry"][0]["search"]["score"] == 1
+        assert response_body["entry"][0]["resource"]["id"] == "9693632109"
 
     def test_algorithmic_fuzzy_match_unicode(self, headers_with_token):
         """See TestBase37104 Chain 0007"""
         response = helpers.search_patient(
-            {"family": "PÀTSÖN", "given": "PÀULINÉ", "birthdate": "1979-07-27", "_fuzzy-match": "true"},
+            {"family": "ATTSÖN", "given": "PÀULINÉ", "birthdate": "1960-07-14", "_fuzzy-match": "true"},
             self.headers
         )
         response_body = response.json()
@@ -327,21 +322,21 @@ class TestUserRestrictedSearchPatient:
         assert response.status_code == 200
         assert response_body["type"] == "searchset"
         assert response_body["resourceType"] == "Bundle"
-        assert response_body["entry"][0]["search"]["score"] == 0.9806
-        assert response_body["entry"][0]["resource"]["id"] == "9930000011"
+        assert response_body["entry"][0]["search"]["score"] == 0.9317
+        assert response_body["entry"][0]["resource"]["id"] == "9693633148"
         assert response_body["entry"][0]["resource"]["gender"] == "female"
-        assert response_body["entry"][0]["resource"]["birthDate"] == "1979-07-27"
-        assert response_body["entry"][0]["resource"]["name"][0]["family"] == "PÀTTISÖN"
-        assert response_body["entry"][0]["resource"]["name"][0]["given"][0] == "PÀULINÉ"
-        assert response_body["entry"][1]["search"]["score"] == 0.8595
-        assert response_body["entry"][1]["resource"]["id"] == "9930000054"
+        assert response_body["entry"][0]["resource"]["birthDate"] == "1960-07-14"
+        assert response_body["entry"][0]["resource"]["name"][0]["family"] == "attisón"
+        assert response_body["entry"][0]["resource"]["name"][0]["given"][0] == "Pauline"
+        assert response_body["entry"][1]["search"]["score"] == 0.9077
+        assert response_body["entry"][1]["resource"]["id"] == "9693633121"
         assert response_body["entry"][1]["resource"]["gender"] == "female"
-        assert response_body["entry"][1]["resource"]["birthDate"] == "1979-07-27"
+        assert response_body["entry"][1]["resource"]["birthDate"] == "1960-07-14"
 
     def test_algorithmic_fuzzy_match_regular_returns_unicode(self, headers_with_token):
         """See TestBase37104 Chain 0008"""
         response = helpers.search_patient(
-            {"family": "PATSON", "given": "PAULINE", "birthdate": "1979-07-27", "_fuzzy-match": "true"},
+            {"family": "ATTSON", "given": "PAULINE", "birthdate": "1960-07-14", "_fuzzy-match": "true"},
             self.headers
         )
         response_body = response.json()
@@ -349,21 +344,21 @@ class TestUserRestrictedSearchPatient:
         assert response.status_code == 200
         assert response_body["type"] == "searchset"
         assert response_body["resourceType"] == "Bundle"
-        assert response_body["entry"][0]["search"]["score"] == 0.9806
-        assert response_body["entry"][0]["resource"]["id"] == "9930000054"
+        assert response_body["entry"][0]["search"]["score"] == 0.9889
+        assert response_body["entry"][0]["resource"]["id"] == "9693633121"
         assert response_body["entry"][0]["resource"]["gender"] == "female"
-        assert response_body["entry"][0]["resource"]["birthDate"] == "1979-07-27"
-        assert response_body["entry"][0]["resource"]["name"][0]["family"] == "PATTISON"
-        assert response_body["entry"][0]["resource"]["name"][0]["given"][0] == "PAULINE"
-        assert response_body["entry"][1]["search"]["score"] == 0.8595
-        assert response_body["entry"][1]["resource"]["id"] == "9930000011"
+        assert response_body["entry"][0]["resource"]["birthDate"] == "1960-07-14"
+        assert response_body["entry"][0]["resource"]["name"][0]["family"] == "attison"
+        assert response_body["entry"][0]["resource"]["name"][0]["given"][0] == "Pauline"
+        assert response_body["entry"][1]["search"]["score"] == 0.9648
+        assert response_body["entry"][1]["resource"]["id"] == "9693633148"
         assert response_body["entry"][1]["resource"]["gender"] == "female"
-        assert response_body["entry"][1]["resource"]["birthDate"] == "1979-07-27"
+        assert response_body["entry"][1]["resource"]["birthDate"] == "1960-07-14"
 
     def test_algorithmic_fuzzy_match_for_birthdate_range(self, headers_with_token):
         """See TestBase37104 Chain 0009"""
         response = helpers.search_patient(
-            "family=ATUnknow&given=Nisha&birthdate=le1990-09-19&birthdate=ge1970-09-19&_fuzzy-match=true",
+            "family=Garton&given=Bill&birthdate=le1990-01-01&birthdate=ge1946-01-19&_fuzzy-match=true",
             self.headers
         )
         response_body = response.json()
@@ -371,8 +366,8 @@ class TestUserRestrictedSearchPatient:
         assert response.status_code == 200
         assert response_body["type"] == "searchset"
         assert response_body["resourceType"] == "Bundle"
-        assert response_body["entry"][0]["search"]["score"] == 0.9896
-        assert response_body["entry"][0]["resource"]["id"] == "9990001502"
+        assert response_body["entry"][0]["search"]["score"] == 1
+        assert response_body["entry"][0]["resource"]["id"] == "9693632109"
 
     def test_algorithmic_exact_match_requested_but_not_found(self, headers_with_token):
         """See TestBase37105 Chain 0003"""
@@ -394,7 +389,7 @@ class TestUserRestrictedSearchPatient:
         """See TestBase37107 Chain 0004"""
         response = helpers.search_patient(
             {
-                "family": "PATSON", "given": "PAULINE", "birthdate": "1979-07-27",
+                "family": "ATTSON", "given": "PAULINE", "birthdate": "1960-07-14",
                 "_fuzzy-match": "true", "_max-results": "50"
             },
             self.headers
@@ -404,16 +399,15 @@ class TestUserRestrictedSearchPatient:
         assert response.status_code == 200
         assert response_body["type"] == "searchset"
         assert response_body["resourceType"] == "Bundle"
-        assert response_body["entry"][0]["search"]["score"] == 0.9806
-        assert response_body["entry"][0]["resource"]["id"] == "9930000054"
-        assert response_body["entry"][1]["search"]["score"] == 0.8595
+        assert response_body["entry"][0]["search"]["score"] == 0.9889
+        assert response_body["entry"][0]["resource"]["id"] == "9693633121"
+        assert response_body["entry"][1]["search"]["score"] == 0.9648
 
     def test_algorithmic_requesting_1_result_too_many_matches(self, headers_with_token):
         """See TestBase37107 Chain 0008"""
         response = helpers.search_patient(
             {
-                "family": "PATSON", "given": "PAULINE", "birthdate": "1979-07-27",
-                "_fuzzy-match": "true", "_max-results": "1"
+                "family": "Beever", "gender": "female", "birthdate": "ge1977-07-27", "_max-results": "1"
             },
             self.headers
         )
@@ -449,12 +443,12 @@ class TestUserRestrictedSearchPatient:
         """Performing a gender-free search where there exists four patients with the same
         name and date of birth, but differing gender values, should return multiple distinct results."""
 
-        family = "Brown"
-        given = "Ann"
-        birth_date = "1981-01-01"
+        family = "YOUDS"
+        given = "Luke"
+        birth_date = "1970-01-24"
 
-        genders = ['male', 'female', 'other', 'unknown']
-        patient_ids = ['5900025055', '5900027759', '5900028976', '5900037347']
+        genders = ['male', 'female', 'unknown', 'other']
+        patient_ids = ['9693633679', '9693633687', '9693633695', '9693633709']
 
         # Do the individual items exist and can be retrieved with a gendered search?
         for i, gender in enumerate(genders):

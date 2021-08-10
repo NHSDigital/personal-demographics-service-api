@@ -4,7 +4,6 @@ properties:
   versionId:
     type: string
     description: The NHS Digital assigned version of the patient resource.
-    readOnly: true
     example: "2"
   security:
     type: array
@@ -14,7 +13,6 @@ properties:
       * R - restricted. Any sensitive data around the patient's location, so `address`, `generalPractitioner` and `telecom`, are removed from the response.
       * V - very restricted. All patient data is removed from the response apart from `id`, `identifier` and `meta` fields. The `gender` field returns `unknown` regardless of actual gender.
       * REDACTED - redacted. The patient record has been marked as invalid, so the data should not be used. This code is never returned; you receive a 404, and appropriate error response, if an invalidated patient retrieval is attempted.
-    readOnly: true
     maxItems: 1
     items:
       type: object

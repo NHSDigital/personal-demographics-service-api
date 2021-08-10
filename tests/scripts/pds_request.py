@@ -99,7 +99,8 @@ class GenericPdsRequestor(GenericRequest):
         pds_base_path: str,
         base_url: str,
         token: str = None,
-        headers: dict = None
+        headers: dict = None,
+        last_response: PdsRecord = None
     ):
         super(GenericPdsRequestor, self).__init__()
         self.base_url = f'{base_url}/{pds_base_path}'
@@ -117,6 +118,10 @@ class GenericPdsRequestor(GenericRequest):
     def headers(self):
         return self._headers
 
+    @property
+    def last_response(self):
+        return self._last_response
+
     @headers.setter
     def headers(self, headers: dict):
         self._headers.update(headers)
@@ -124,6 +129,7 @@ class GenericPdsRequestor(GenericRequest):
     def get_patient_response(self, patient_id: str, **kwargs) -> PdsRecord:
         """Return a PDS record as an object"""
         response = self.get(f'{self.base_url}/Patient/{patient_id}', headers=self._headers, ** kwargs)
+        self._last_response = PdsRecord(response)
         return PdsRecord(response)
 
     def update_patient_response(self, patient_id: str, payload: dict, **kwargs) -> PdsRecord:
