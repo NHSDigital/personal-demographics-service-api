@@ -15,7 +15,7 @@ class TestUserRestrictedPatientAccess:
             "X-Request-ID": str(uuid.uuid4()),
         }
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9912003071",
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9693633172",
             headers=headers,
         )
 
@@ -74,12 +74,6 @@ class TestUserRestrictedPatientAccess:
     ):
         token = get_token_nhs_login_token_exchange["access_token"]
 
-        date = create_random_date
-
-        patch_body = {
-            "patches": [{"op": "replace", "path": "/birthDate", "value": date}]
-        }
-
         headers = {
             "NHSD-SESSION-URID": "123",
             "Authorization": "Bearer " + token,
@@ -87,11 +81,17 @@ class TestUserRestrictedPatientAccess:
         }
 
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9912003071",
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9693633172",
             headers=headers,
         )
+
         Etag = r.headers["Etag"]
-        versionId = r.json()["meta"]["versionId"]
+        version_id = r.json()["meta"]["versionId"]
+        new_gender = "female" if r.json()["gender"] == "male" else "male"
+
+        patch_body = {
+            "patches": [{"op": "replace", "path": "/gender", "value": new_gender}]
+        }
 
         headers = {
             "NHSD-SESSION-URID": "123",
@@ -101,13 +101,13 @@ class TestUserRestrictedPatientAccess:
             "Content-Type": "application/json-patch+json",
         }
         r = requests.patch(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9912003071",
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9693633172",
             headers=headers,
             json=patch_body,
         )
 
         assert r.status_code == 200
-        assert int(r.json()["meta"]["versionId"]) == int(versionId) + 1
+        assert int(r.json()["meta"]["versionId"]) == int(version_id) + 1
 
     def test_patient_access_update_non_matching_nhs_number(
         self, get_token_nhs_login_token_exchange, create_random_date
@@ -127,7 +127,7 @@ class TestUserRestrictedPatientAccess:
         }
 
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9912003071",
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9693633172",
             headers=headers,
         )
         Etag = r.headers["Etag"]
@@ -171,7 +171,7 @@ class TestUserRestrictedPatientAccess:
         }
 
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9912003071",
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9693633172",
             headers=headers,
         )
         Etag = r.headers["Etag"]
@@ -184,7 +184,7 @@ class TestUserRestrictedPatientAccess:
             "Content-Type": "application/json-patch+json",
         }
         r = requests.patch(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22",
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient?family=Cox&gender=female&birthdate=eq1956-09-28",
             headers=headers,
             json=patch_body,
         )

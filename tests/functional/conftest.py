@@ -8,6 +8,8 @@ from .config_files import config
 import random
 from time import time
 
+from .config_files.config import BASE_URL
+
 
 async def _set_default_rate_limit(product: ApigeeApiProducts):
     """Updates an Apigee Product with a default rate limit and quota.
@@ -302,10 +304,10 @@ async def get_token_nhs_login_token_exchange(test_app_and_product):
     id_token_claims = {
         "aud": "tf_-APIM-1",
         "id_status": "verified",
-        "nhs_number": "9912003071",
+        "nhs_number": "9693633172",
         "token_use": "id",
         "auth_time": 1616600683,
-        "iss": "https://internal-dev.api.service.nhs.uk",
+        "iss": BASE_URL,
         "vot": "P9.Cp.Cd",
         "exp": int(time()) + 600,
         "iat": int(time()) - 10,
@@ -317,7 +319,7 @@ async def get_token_nhs_login_token_exchange(test_app_and_product):
         "sub": "49f470a1-cc52-49b7-beba-0f9cec937c46",
         "aud": "APIM-1",
         "kid": "nhs-login",
-        "iss": "https://internal-dev.api.service.nhs.uk",
+        "iss": BASE_URL,
         "typ": "JWT",
         "exp": 1616604574,
         "iat": 1616600974,
