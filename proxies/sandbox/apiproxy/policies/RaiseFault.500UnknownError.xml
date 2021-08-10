@@ -1,9 +1,30 @@
-<RaiseFault async="false" continueOnError="false" enabled="true" name="RaiseFault.400BadRequest">
+<RaiseFault async="false" continueOnError="false" enabled="true" name="RaiseFault.500UnknownError">
     <FaultResponse>
         <Set>
-            <Payload contentType="text/plain"/>
-            <StatusCode>400</StatusCode>
-            <ReasonPhrase>Bad Request</ReasonPhrase>
+            <StatusCode>500</StatusCode>
+            <ReasonPhrase>Unknown Error</ReasonPhrase>
+            <Payload contentType="application/json">
+                {
+                    "resourceType": "OperationOutcome",
+                    "issue": [
+                        {
+                            "severity": "error",
+                            "code": "unknown",
+                            "details": {
+                            "coding": [
+                                {
+                                "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+                                "version": "1",
+                                "code": "UNKNOWN_ERROR",
+                                "display": "Unknown Error"
+                                }
+                            ]
+                        },
+                            "diagnostics": "{pds.error.diagnostics}"
+                        }
+                    ]
+                }
+            </Payload>
         </Set>
     </FaultResponse>
     <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
