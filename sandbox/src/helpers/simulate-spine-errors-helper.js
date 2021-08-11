@@ -21,6 +21,14 @@ const mockSpinePollingErrors = {
  * @param {string} errorCode
  * @returns undefined
  */
-const simulateSpinePollingError = (errorCode) => errorCode in mockSpinePollingErrors && mockSpinePollingErrors[errorCode]();
+const simulateSpinePollingError = (errorCode) => {
+    // process.env.VERSION_INFO.version.apigee_base_uri
+    if("VERSION_INFO" in process.env){
+        const apigeeUri = process.env.VERSION_INFO.version.apigee_base_uri;
+        if(/internal-dev/.test(apigeeUri)){
+            errorCode in mockSpinePollingErrors && mockSpinePollingErrors[errorCode]()
+        }
+    }
+};
 
 exports.simulateSpinePollingError = simulateSpinePollingError;
