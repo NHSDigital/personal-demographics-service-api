@@ -21,14 +21,14 @@ const mockSpinePollingErrors = {
  */
 const isInternalDevOrLocal = () => {
     if("VERSION_INFO" in process.env){
-        const apigeeBaseUrl = process.env.VERSION_INFO;
+        const apigeeBaseUrl = process.env.VERSION_INFO["apigee_base_uri"];
         // throw Boom.badData(process.env.VERSION_INFO)
         throw Boom.badData(
             "THIS IS A TEST",
             {
-                operationOutcomeCode: "TEST",
-                apiErrorCode: `TEST ${apigeeBaseUrl}`,
-                display: `the base url is ....${JSON.stringify(apigeeBaseUrl)}`
+                operationOutcomeCode: `BASE URI ${apigeeBaseUrl}`,
+                apiErrorCode: `commit id ${process.env.VERSION_INFO["commitId"]}`,
+                display: `version ${process.env.VERSION_INFO["version"]} `
             })
 
 
