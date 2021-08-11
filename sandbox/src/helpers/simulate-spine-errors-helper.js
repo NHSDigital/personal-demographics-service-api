@@ -21,7 +21,7 @@ const mockSpinePollingErrors = {
  */
 const isInternalDevOrLocal = () => {
     if("VERSION_INFO" in process.env){
-        const apigeeBaseUrl = process.env.VERSION_INFO.version.apigee_base_uri;
+        const apigeeBaseUrl = process.env.VERSION_INFO.apigee_base_uri;
         return /internal-dev/.test(apigeeBaseUrl) ? true : false;
     } else {
         return true;
