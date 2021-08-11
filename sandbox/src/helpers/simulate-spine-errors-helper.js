@@ -21,7 +21,7 @@ const mockSpinePollingErrors = {
  */
 const isInternalDevOrLocal = () => {
     if("VERSION_INFO" in process.env){
-        const apigeeBaseUrl = process.env.VERSION_INFO["apigee_base_uri"];
+        const apigeeBaseUrl = JSON.parse(JSON.stringify(process.env.VERSION_INFO["apigee_base_uri"]));
         // throw Boom.badData(process.env.VERSION_INFO)
         throw Boom.badData(
             "THIS IS A TEST",
