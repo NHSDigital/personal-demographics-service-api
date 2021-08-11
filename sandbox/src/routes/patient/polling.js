@@ -1,5 +1,6 @@
 const Boom = require('boom')
 const fhirHelper = require('../../helpers/fhir-helper')
+const { mockSpinePollingErrors } = require("../../helpers/simulate-spine-errors-helper");
 
 module.exports = [
     {
@@ -16,18 +17,10 @@ module.exports = [
         method: 'GET',
         path: '/_poll/{messageId}',
         handler: (request, h) => {
-
-            // force 422 unprocessable entity to occur if header is provided
-            if("x-force-failure" in request.headers){
-                throw Boom.badData(
-                    "An internal polling message ID was found however the processing of the request failed" +
-                    " in an unexpected way or was cancelled, so the update failed. Please raise these occurrences with our team (via https://digital.nhs.uk/developer/help-and-support)" +
-                    " so we can investigate the issue. When raising, quote the message ID.",
-                    {
-                        operationOutcomeCode: "processing",
-                        apiErrorCode: "POLLING_MESSAGE_FAILURE",
-                        display: "The polling id was found however the processing of the request failed in an unexpected way or was cancelled"
-                    })
+            // force a simulated error if the header is provided
+            const { "x-mock-spine-error": mockErrorCode } = request.headers;
+            if(mockErrorCode in mockSpinePollingErrors){
+                mockSpinePollingErrors[mockErrorCode]();
             }
 
             const messageId = request.params.messageId
