@@ -170,7 +170,7 @@ async def setup_patch_short_lived_token(setup_session):
     product, app, _ = setup_session
 
     oauth = OauthHelper(app.client_id, app.client_secret, app.callback_url)
-    resp = await oauth.get_token_response(grant_type="authorization_code", timeout=1000)
+    resp = await oauth.get_token_response(grant_type="authorization_code", timeout=config.AUTH_TOKEN_EXPIRY_MS)
     token = resp["body"]["access_token"]
 
     pds = GenericPdsRequestor(
