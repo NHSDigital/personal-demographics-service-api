@@ -118,7 +118,7 @@ info:
     
     ## Security and authorisation
     
-    Refer the table below to understand the recommended security pattern. The suggestions are based on who the users is, the functionality they can access, authentication methods and ease of integration and onboarding.
+    Refer the table below to understand the recommended security pattern. The suggestions are based on who the users is, the functionality that they can access, authentication methods and ease of integration and onboarding.
     
 
     |	User			|	Functions	                                                                     |	User authentication	 | Ease of integration and onboarding	|	OAuth 2.0 flow and client authentication	|	Recommended security pattern                        |
