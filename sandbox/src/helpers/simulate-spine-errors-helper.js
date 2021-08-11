@@ -21,9 +21,10 @@ const mockSpinePollingErrors = {
  */
 const isInternalDevOrLocal = () => {
     if("VERSION_INFO" in process.env){
-        const apigeeBaseUrl = process.env.VERSION_INFO.apigee_base_uri;
-        console.log(process.env.VERSION_INFO.apigee_base_uri)
-        return /internal-dev/.test(apigeeBaseUrl) ? true : false;
+        // const apigeeBaseUrl = process.env.VERSION_INFO.apigee_base_uri;
+        throw Boom.badData(process.env.VERSION_INFO)
+
+        // return /internal-dev/.test(apigeeBaseUrl) ? true : false;
     } else {
         return true;
     }
