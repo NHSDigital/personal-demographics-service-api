@@ -16,18 +16,26 @@ const mockSpinePollingErrors = {
 };
 
 /**
+ *  Checks if the environment is local or internal-dev
+ * @returns {Boolean}
+ */
+const isInternalDevOrLocal = () => {
+    if("VERSION_INFO" in process.env){
+        const apigeeBaseUrl = process.env.VERSION_INFO.version.apigee_base_uri;
+        return /internal-dev/.test(apigeeBaseUrl) ? true : false
+    } else {
+        return true
+    }
+}
+
+/**
  * Simulate a spine polling error based on the error code passed in
- * Works on internal-dev only
- * @param {string} errorCode
- * @returns undefined
+ * Works on local and internal-dev only
+ * @param {String} errorCode
  */
 const simulateSpinePollingError = (errorCode) => {
-    // process.env.VERSION_INFO.version.apigee_base_uri
-    if("VERSION_INFO" in process.env){
-        const apigeeUri = process.env.VERSION_INFO.version.apigee_base_uri;
-        if(/internal-dev/.test(apigeeUri)){
-            errorCode in mockSpinePollingErrors && mockSpinePollingErrors[errorCode]()
-        }
+    if (isInternalDevOrLocal()) {
+        errorCode in mockSpinePollingErrors && mockSpinePollingErrors[errorCode]();
     }
 };
 
