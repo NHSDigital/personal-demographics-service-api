@@ -15,4 +15,12 @@ const mockSpinePollingErrors = {
     }
 };
 
-exports.mockSpinePollingErrors = mockSpinePollingErrors;
+/**
+ * Simulate a spine polling error based on the error code passed in
+ * Works on internal-dev only
+ * @param {string} errorCode
+ * @returns undefined
+ */
+const simulateSpinePollingError = (errorCode) => errorCode in mockSpinePollingErrors && mockSpinePollingErrors[errorCode]();
+
+exports.simulateSpinePollingError = simulateSpinePollingError;
