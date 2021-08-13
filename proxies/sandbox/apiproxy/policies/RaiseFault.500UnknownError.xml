@@ -2,7 +2,7 @@
     <FaultResponse>
         <Set>
             <StatusCode>500</StatusCode>
-            <ReasonPhrase>Unknown Error</ReasonPhrase>
+            <ReasonPhrase>Internal Server Error</ReasonPhrase>
             <Payload contentType="application/json">
                 {
                     "resourceType": "OperationOutcome",
