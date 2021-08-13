@@ -1662,7 +1662,6 @@ paths:
             | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period. |
             | 409         | RESOURCE_VERSION_MISMATCH  | The resource version in the `If-Match` header of the update request did not match the current version of the resource. See [Patient resource versioning](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir#patient-resource-versioning). |
             | 412         | PRECONDITION_FAILED        | Problem with request, for example missing `If-Match` header. For details, see the `diagnostics` field. |
-            | 422         | POLLING_MESSAGE_FAILURE    | An internal polling message ID was found however the processing of the request failed in an unexpected way or was cancelled, so the update failed. Please raise these occurrences with our team (via https://digital.nhs.uk/developer/help-and-support) so we can investigate the issue. When raising, quote the message ID. |
             | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
           content:
             application/fhir+json:
