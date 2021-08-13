@@ -30,6 +30,14 @@
         <Condition>(response.status.code Equals "504")</Condition>
         <Name>Quota</Name>
       </Step>
+      <!-- APMSPII-938 explicitly convert 422 error from spine to 500 unkown error as
+        as 422 errors will have no meaning for the end user as the implementation details
+        of sync-wrap are hidden.
+      -->
+      <Step>
+        <Condition>(response.status.code Equals "422")</Condition>
+        <Name>RaiseFault.500UnknownError</Name>
+      </Step>
     </FaultRule>
     <FaultRule name="request_timeout">
       <Condition>(response.status.code Equals "504")</Condition>
