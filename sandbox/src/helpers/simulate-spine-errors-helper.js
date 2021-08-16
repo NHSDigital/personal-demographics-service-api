@@ -26,6 +26,7 @@ const isInternalDevOrLocal = () => {
         if ("apigee_base_url" in versionInfo){
             return /internal-dev/.test(JSON.stringify(versionInfo.apigee_base_uri)) ? true : false;
         }
+        return false;
     } else {
         return true;
     }
