@@ -22,7 +22,11 @@ const mockSpinePollingErrors = {
 const isInternalDevOrLocal = () => {
     if("VERSION_INFO" in process.env){
         const versionInfo = JSON.parse(process.env.VERSION_INFO);
-        return /internal-dev/.test(JSON.stringify(versionInfo?.apigee_base_uri)) ? true : false;
+
+        if ("apigee_base_uri" in versionInfo){
+            return /internal-dev/.test(JSON.stringify(versionInfo.apigee_base_uri)) ? true : false;
+        }
+        return false;
     } else {
         return true;
     }
