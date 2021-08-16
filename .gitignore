@@ -11,6 +11,7 @@ tests/functional/test_env/
 venv
 .direnv
 .#*
+.env
 
 __pycache__/
 .envrc

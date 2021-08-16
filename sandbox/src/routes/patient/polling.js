@@ -1,5 +1,6 @@
 const Boom = require('boom')
 const fhirHelper = require('../../helpers/fhir-helper')
+const { simulateSpinePollingError } = require("../../helpers/simulate-spine-errors-helper");
 
 module.exports = [
     {
@@ -16,8 +17,15 @@ module.exports = [
         method: 'GET',
         path: '/_poll/{messageId}',
         handler: (request, h) => {
+            // force a simulated error if the header is provided - internal dev only
+            const { "x-mock-spine-error": mockErrorCode } = request.headers;
+            if(mockErrorCode){
+                simulateSpinePollingError(mockErrorCode);
+            }
+
             const messageId = request.params.messageId
             const patchedPatient = h.context.messages[messageId];
+
 
             if (messageId === "20200522091633363041_000001") {
                 return fhirHelper.createAcceptedResponse(h, messageId)
