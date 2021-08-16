@@ -23,7 +23,7 @@ const isInternalDevOrLocal = () => {
     if("VERSION_INFO" in process.env){
         const versionInfo = JSON.parse(process.env.VERSION_INFO);
 
-        if ("apigee_base_url" in versionInfo){
+        if ("apigee_base_uri" in versionInfo){
             return /internal-dev/.test(JSON.stringify(versionInfo.apigee_base_uri)) ? true : false;
         }
         return false;
