@@ -11,7 +11,6 @@
       Follow pattern used in AssignMessage.SetAccessModeUserRestricted condition. See Apigee docs for JavaRegex gotchas (uses '.match()' behaviour matching whole string only). -->
       <Step>
         <Name>AssignMessage.SetAccessModeApplicationRestricted</Name>
-        <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:app:level3:personal-demographics-service\ .+|^urn:nhsd:apim:app:level3:personal-demographics-service\ .+|.+\ urn:nhsd:apim:app:level3:personal-demographics-service$|^urn:nhsd:apim:app:level3:personal-demographics-service$)")</Condition>
       </Step>
       <Step>
         <Name>AssignMessage.SetAccessModeUserRestricted</Name>
@@ -23,7 +22,7 @@
       </Step>
       <Step>
         <Name>RaiseFault.400BadRequest</Name>
-        <Condition>(access-mode Equals null)</Condition>
+        <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service$|^urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service$|.+\ urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service$|^urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service$))")</Condition>
       </Step>
       <Step>
         <!-- Header NHSD-Request-ID must be in the correct format (GUID) -->
