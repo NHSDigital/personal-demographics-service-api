@@ -45,9 +45,9 @@ info:
     
     | Access mode                    | End user authentication                             | Functions          | Availability |
     | ------------------------------ | --------------------------------------------------- | ------------------ | ------------ |
-    | Application-restricted access  | None                                                | Search for patients (single result), Get patient details | Available in production (beta) | 
-    | Healthcare worker access       | NHS Care Identity Service 2 (NHS CIS2) using NHS [smartcard](https://digital.nhs.uk/services/registration-authorities-and-smartcards) or [modern alternative](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)  | Search for patients (multiple results), Get patient details, Update patient details | Available in production (beta) |
-    | Patient access                 | [NHS login](https://digital.nhs.uk/services/nhs-login)  | Get own details, Update own details (limited) | Available in integration environment (alpha)   |
+    | Application-restricted access  | None                                                | Search for a patient (single result). Get patient details. | Available in production (beta) | 
+    | Healthcare worker access       | NHS Care Identity Service 2 (NHS CIS2) using NHS [smartcard](https://digital.nhs.uk/services/registration-authorities-and-smartcards) or [modern alternative](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)  | Search for patients (multiple results). Get patient details. Update patient details. | Available in production (beta) |
+    | Patient access                 | [NHS login](https://digital.nhs.uk/services/nhs-login)  | Get own details. Update own details (limited). | Available in integration environment (alpha)   |
 
   
     ## Who can use this API
@@ -117,6 +117,19 @@ info:
     For more details see [Network access for APIs](https://digital.nhs.uk/developer/guides-and-documentation/network-access-for-apis).
     
     ## Security and authorisation
+    
+    Refer the table below to understand the recommended security pattern. The suggestions are based on who the users is, the functionality that they can access, authentication methods and ease of integration and onboarding.
+    
+
+    |	User			|	Functions	                                                                     |	User authentication	 | Ease of integration and onboarding	|	OAuth 2.0 flow and client authentication	|	Recommended security pattern                        |
+    |-------------------| ---------------------------------------------------------------------------------- | ---------------------- |------------------------------------- | --------------------------------------------- |	--------------------------------------------------- |
+    |Any or not present	|Search for a patient (single result). Get patient details.                          | Not needed	          | Easiest	                            | Client credentials with signed JWT	        | [Application restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-signed-jwt-authentication)                                |
+    |Healthcare worker  |Search for patients (multiple results). Get patient details. Update patient details.| NHS CIS2 - smartcards or [modern alternatives](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)|Easier|Authorisation code with API key and secret  | [NHS CIS2 - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-combined-authentication-and-authorisation)|
+    |Healthcare worker  |Search for patients (multiple results). Get patient details. Update patient details.| NHS CIS2 - smartcards or [modern alternatives](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)|Easy|Token exchange with signed JWT                | [NHS CIS2 - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-separate-authentication-and-authorisation)|
+    |Patient	        |Get own details. Update own details (limited).                                      | NHS login              | Easier                               |	Authorisation code with API key and secret	| [NHS login -  combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-login-combined-authentication-and-authorisation)|
+    |Patient            |Get own details. Update own details (limited).                                      | NHS login              | Easy                                 |	Token exchange with signed JWT				| [NHS login -  separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-login-separate-authentication-and-authorisation)|
+
+
     ### Application-restricted access
     This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis),
     meaning we authenticate the calling application but not the end user.
@@ -781,7 +794,7 @@ paths:
             | 400         | MISSING_VALUE              | Missing header parameter. For details, see the `diagnostics` field. |
             | 400         | INVALID_VALUE              | Invalid header parameter. For details, see the `diagnostics` field. |
             | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation. |
-            | 403         | INVALID_VALUE              | Cannot retrieve this result with NHS-login restricted access token. |
+            | 403         | ACCESS_DENIED              | Patient cannot perform this action. |
             | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS number. |
             | 404         | INVALIDATED_RESOURCE       | Patient did exist for given NHS number, but has been invalidated and not superseded by another NHS number. |
             | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period. |
@@ -1656,13 +1669,12 @@ paths:
             | 400         | TOO_MANY_VALUES_SUBMITTED  | The field in question has a maximum number of items and the user sent too many. |
             | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation. |
             | 403         | FORBIDDEN_UPDATE           | The user is not permitted to update certain resources or elements, for example most users are not allowed to update the date of death once it has been set. A detailed description will be added to the display. For example - updating a sensitive patient or adding a formal death notification is only permitted from certain systems. |
-            | 403         | INVALID_VALUE              | Cannot retrieve this result with NHS-login restricted access token. |
+            | 403         | ACCESS_DENIED              | Patient cannot perform this action. |
             | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS number. |
             | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS number has been invalidated and not superseded by another NHS number. |
             | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period. |
             | 409         | RESOURCE_VERSION_MISMATCH  | The resource version in the `If-Match` header of the update request did not match the current version of the resource. See [Patient resource versioning](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir#patient-resource-versioning). |
             | 412         | PRECONDITION_FAILED        | Problem with request, for example missing `If-Match` header. For details, see the `diagnostics` field. |
-            | 422         | POLLING_MESSAGE_FAILURE    | An internal polling message ID was found however the processing of the request failed in an unexpected way or was cancelled, so the update failed. Please raise these occurrences with our team (via https://digital.nhs.uk/developer/help-and-support) so we can investigate the issue. When raising, quote the message ID. |
             | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
           content:
             application/fhir+json:

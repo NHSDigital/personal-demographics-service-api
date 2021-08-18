@@ -46,7 +46,7 @@ extends:
       - environment: internal-qa
         make_spec_visible: true
         post_deploy:
-          - template: templates/pds-tests.yml
+          - template: templates/pds-tests-internal-qa.yml
         depends_on:
             - internal_dev
       - environment: internal-qa-sandbox

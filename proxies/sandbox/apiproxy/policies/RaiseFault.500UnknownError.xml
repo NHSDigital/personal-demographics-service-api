@@ -1,0 +1,31 @@
+<RaiseFault async="false" continueOnError="false" enabled="true" name="RaiseFault.500UnknownError">
+    <FaultResponse>
+        <Set>
+            <StatusCode>500</StatusCode>
+            <ReasonPhrase>Internal Server Error</ReasonPhrase>
+            <Payload contentType="application/json">
+                {
+                    "resourceType": "OperationOutcome",
+                    "issue": [
+                        {
+                            "severity": "error",
+                            "code": "unknown",
+                            "details": {
+                            "coding": [
+                                {
+                                "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+                                "version": "1",
+                                "code": "UNKNOWN_ERROR",
+                                "display": "Unknown Error"
+                                }
+                            ]
+                        },
+                            "diagnostics": "{pds.error.diagnostics}"
+                        }
+                    ]
+                }
+            </Payload>
+        </Set>
+    </FaultResponse>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</RaiseFault>
