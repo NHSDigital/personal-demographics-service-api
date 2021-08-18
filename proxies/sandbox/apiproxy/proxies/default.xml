@@ -2,6 +2,9 @@
   <PreFlow>
       <Request>
       <Step>
+          <Name>AssignMessage.Errors.Default</Name>
+      </Step>
+      <Step>
           <Name>AssignMessage.RemovePreferHeader</Name>
           <Condition>request.header.prefer IsNot null</Condition>
       </Step>
