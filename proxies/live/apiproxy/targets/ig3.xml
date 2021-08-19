@@ -22,7 +22,7 @@
       </Step>
       <Step>
         <Name>RaiseFault.400BadRequest</Name>
-        <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service$|^urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service$|.+\ urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service$|^urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service$))")</Condition>
+        <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service$|^urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service$|.+\ urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service$|^urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service$)")</Condition>
       </Step>
       <Step>
         <!-- Header NHSD-Request-ID must be in the correct format (GUID) -->
