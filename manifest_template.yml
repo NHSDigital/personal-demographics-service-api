@@ -11,10 +11,10 @@ APIGEE_ENVIRONMENTS:
     display_name_suffix: Internal QA Sandbox
   - name: ref
     display_name_suffix: Reference
-    # ratelimit: '31500pm'    # 525 TPS
-    # quota: '31500'
-    ratelimit: '900pm'    # 15 TPS
-    quota: '900'
+    ratelimit: '31500pm'    # 525 TPS
+    quota: '31500'
+    # ratelimit: '900pm'    # 15 TPS
+    # quota: '900'
   - name: sandbox
     display_name_suffix: Sandbox
     portal_visibility: false
