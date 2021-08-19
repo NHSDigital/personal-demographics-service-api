@@ -1,0 +1,10 @@
+<RaiseFault async="false" continueOnError="false" enabled="true" name="RaiseFault.403Forbidden">
+    <FaultResponse>
+        <Set>
+            <Payload contentType="text/plain"/>
+            <StatusCode>403</StatusCode>
+            <ReasonPhrase>Forbidden</ReasonPhrase>
+        </Set>
+    </FaultResponse>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</RaiseFault>

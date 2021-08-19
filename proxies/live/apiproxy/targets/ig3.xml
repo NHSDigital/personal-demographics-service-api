@@ -21,7 +21,7 @@
         <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service$|^urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service$)")</Condition>
       </Step>
       <Step>
-        <Name>RaiseFault.400BadRequest</Name>
+        <Name>RaiseFault.403Forbidden</Name>
         <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service$|^urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service$|.+\ urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service$|^urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service$)")</Condition>
       </Step>
       <Step>
