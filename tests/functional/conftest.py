@@ -274,6 +274,8 @@ async def test_app_and_product(app, product):
             "urn:nhsd:apim:app:level3:personal-demographics-service",
             "urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service",
             "urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service",
+            "urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service",
+            "urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service",
         ]
     )
     await app.add_api_product([product.name])
@@ -292,61 +294,65 @@ async def test_app_and_product(app, product):
 
 
 @pytest.fixture()
-async def get_token_nhs_login_token_exchange(test_app_and_product):
-    """Call identity server to get an access token"""
+def nhs_login_token_exchange(test_app_and_product):
     test_product, test_app = test_app_and_product
-    oauth = OauthHelper(
-        client_id=test_app.client_id,
-        client_secret=test_app.client_secret,
-        redirect_uri=test_app.callback_url,
-    )
 
-    id_token_claims = {
-        "aud": "tf_-APIM-1",
-        "id_status": "verified",
-        "nhs_number": "9693633172",
-        "token_use": "id",
-        "auth_time": 1616600683,
-        "iss": BASE_URL,
-        "vot": "P9.Cp.Cd",
-        "exp": int(time()) + 600,
-        "iat": int(time()) - 10,
-        "vtm": "https://auth.sandpit.signin.nhs.uk/trustmark/auth.sandpit.signin.nhs.uk",
-        "jti": "b68ddb28-e440-443d-8725-dfe0da330118",
-        "identity_proofing_level": "P9",
-    }
-    id_token_headers = {
-        "sub": "49f470a1-cc52-49b7-beba-0f9cec937c46",
-        "aud": "APIM-1",
-        "kid": "nhs-login",
-        "iss": BASE_URL,
-        "typ": "JWT",
-        "exp": 1616604574,
-        "iat": 1616600974,
-        "alg": "RS512",
-        "jti": "b68ddb28-e440-443d-8725-dfe0da330118",
-    }
-    with open(config.ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH, "r") as f:
-        contents = f.read()
+    async def get_token_nhs_login_token_exchange(scope: str = "P9"):
+        """Call identity server to get an access token"""
+        test_product, test_app = test_app_and_product
+        oauth = OauthHelper(
+            client_id=test_app.client_id,
+            client_secret=test_app.client_secret,
+            redirect_uri=test_app.callback_url,
+        )
 
-    client_assertion_jwt = oauth.create_jwt(kid="test-1")
-    id_token_jwt = oauth.create_id_token_jwt(
-        algorithm="RS512",
-        claims=id_token_claims,
-        headers=id_token_headers,
-        signing_key=contents,
-    )
+        id_token_claims = {
+            "aud": "tf_-APIM-1",
+            "id_status": "verified",
+            "nhs_number": "9693633172",
+            "token_use": "id",
+            "auth_time": 1616600683,
+            "iss": BASE_URL,
+            "vot": "P9.Cp.Cd",
+            "exp": int(time()) + 600,
+            "iat": int(time()) - 10,
+            "vtm": "https://auth.sandpit.signin.nhs.uk/trustmark/auth.sandpit.signin.nhs.uk",
+            "jti": "b68ddb28-e440-443d-8725-dfe0da330118",
+            "identity_proofing_level": scope,
+        }
+        id_token_headers = {
+            "sub": "49f470a1-cc52-49b7-beba-0f9cec937c46",
+            "aud": "APIM-1",
+            "kid": "nhs-login",
+            "iss": BASE_URL,
+            "typ": "JWT",
+            "exp": 1616604574,
+            "iat": 1616600974,
+            "alg": "RS512",
+            "jti": "b68ddb28-e440-443d-8725-dfe0da330118",
+        }
+        with open(config.ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH, "r") as f:
+            contents = f.read()
 
-    # When
-    token_resp = await oauth.get_token_response(
-        grant_type="token_exchange",
-        data={
-            "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
-            "subject_token_type": "urn:ietf:params:oauth:token-type:id_token",
-            "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
-            "subject_token": id_token_jwt,
-            "client_assertion": client_assertion_jwt,
-        },
-    )
-    assert token_resp["status_code"] == 200
-    return token_resp["body"]
+        client_assertion_jwt = oauth.create_jwt(kid="test-1")
+        id_token_jwt = oauth.create_id_token_jwt(
+            algorithm="RS512",
+            claims=id_token_claims,
+            headers=id_token_headers,
+            signing_key=contents,
+        )
+
+        # When
+        token_resp = await oauth.get_token_response(
+            grant_type="token_exchange",
+            data={
+                "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
+                "subject_token_type": "urn:ietf:params:oauth:token-type:id_token",
+                "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+                "subject_token": id_token_jwt,
+                "client_assertion": client_assertion_jwt,
+            },
+        )
+        assert token_resp["status_code"] == 200
+        return token_resp["body"]['access_token']
+    return get_token_nhs_login_token_exchange
