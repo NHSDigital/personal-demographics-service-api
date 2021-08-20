@@ -5,6 +5,10 @@
       <Step>
         <Name>OauthV2.VerifyAccessToken</Name>
       </Step>
+      <!-- APMSPII-1139 apply rate limiting sharedflow, must be after authorization policy -->
+      <Step>
+        <Name>FlowCallout.ApplyRateLimiting</Name>
+      </Step>
       <!-- Set flow variable 'access-mode' by inspecting the token's scopes.
       First set to least-privilege (application restricted) then look for scopes indicating higher privilege, overwriting as appropriate.
       'scope' is a space-separated string of scopes, determined by the Application's API Product assignments.
@@ -32,9 +36,6 @@
       <Step>
         <Name>FlowCallout.UserRoleService</Name>
         <Condition>(access-mode Equals "user-restricted")</Condition>
-      </Step>
-      <Step>
-        <Name>Quota</Name>
       </Step>
       <Step>
         <Name>SpikeArrest</Name>

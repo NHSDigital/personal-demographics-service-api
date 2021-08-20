@@ -5,8 +5,9 @@
       <Step>
         <Name>OauthV2.VerifyAccessToken</Name>
       </Step>
+      <!-- APMSPII-1139 App specific rate limiting, must be after authorization policy -->
       <Step>
-        <Name>Quota</Name>
+        <Name>FlowCallout.ApplyRateLimiting</Name>
       </Step>
       <Step>
         <Name>SpikeArrest</Name>
