@@ -6,26 +6,32 @@ APIGEE_ENVIRONMENTS:
   # TODO: Remove as we don't want this included in an actual release
   - name: internal-dev-sandbox
     display_name_suffix: Internal Development Sandbox
+    default_rate_limit: '{"default":{"ratelimit":"300pm", "enabled": true}}'
   - name: internal-qa
     display_name_suffix: Internal QA
   - name: internal-qa-sandbox
     display_name_suffix: Internal QA Sandbox
+    default_rate_limit: '{"default":{"ratelimit":"300pm", "enabled": true}}'
   - name: ref
     display_name_suffix: Reference
     ratelimit: '31500pm'    # 525 TPS
     quota: '31500'
     # ratelimit: '900pm'    # 15 TPS
     # quota: '900'
+    default_rate_limit: '{"default":{"ratelimit":"300pm", "enabled": true}}'
   - name: sandbox
     display_name_suffix: Sandbox
     portal_visibility: false
+    default_rate_limit: '{"default":{"ratelimit":"300pm", "enabled": true}}'
   - name: int
     display_name_suffix: Integration Testing
+    default_rate_limit: '{"default":{"ratelimit":"300pm", "enabled": true}}'
   - name: prod
     approval_type: manual
     display_name_suffix: Production
     ratelimit: '16200pm'    # Amount Spine indicated they can handle as burst load
     quota: '16200'           # 270 TPS
+    default_rate_limit: '{"default":{"ratelimit":"300pm", "enabled": true}}'
 
 ACCESS_MODES:
   - name: user-restricted
@@ -75,7 +81,7 @@ apigee:
             value: private
 {% endif %}
           - name: ratelimit
-            value: {{ env.default_rate_limit | default('300pm') }}
+            value: {{ env.default_rate_limit | to_json }}
         description: {{ mode.description }}
         displayName: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
         environments: [ {{ env.name }} ]
