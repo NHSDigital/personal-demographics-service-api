@@ -89,7 +89,7 @@ apigee:
         quota: {{ env.quota | default('300') }}
         quotaInterval: '1'
         quotaTimeUnit: minute
-        proxyQuotas: '{"default":{"interval":1, "limit":500, "timeout":"minute", "enabled": true}}'
+        proxyQuotas: {{ env.ratelimit | to_json }}
 {% endfor %}
       specs:
       - name: personal-demographics-{{ env.name }}
