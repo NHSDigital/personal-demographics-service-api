@@ -100,6 +100,25 @@ module.exports.requestContainsParameters = function(request) {
 // Determine which 'search' to perform based on parameters passed
 module.exports.search = function(request) {
 
+    // Check for default 'Try this API' params
+    const tryThisApiParams = {
+        "_fuzzy-match": false,
+        "_exact-match": false,
+        history: true,
+        "_max-results": 1,
+        family: "Smith",
+        given: "Jane",
+        gender: "female",
+        birthdate: "eq2010-10-22",
+        "death-date": "eq2010-10-22",
+        "address-postcode": "LS1 6AE",
+        "general-practitioner": "Y12345"
+    }
+    if (containsSearchParameters(request, tryThisApiParams)) {
+        return buildPatientResponse([patients.search.exampleSearchPatientSmith])
+    }
+
+    
     // Perform daterange search
     const dateRangeSearchParams = {
         family: "Smith",
