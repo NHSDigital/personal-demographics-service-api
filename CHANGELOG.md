@@ -1,5 +1,9 @@
 # Changelog
 
+## 2021-08-20
+* Updating spec to correctly list birthdate examples in 'Try this API'
+* Updating spec and sandbox server to set up patient response for default 'Try this API' parameters
+
 ## 2020-08-19
 * Adding `X-Request-ID` and `X-Correlation-ID` handling in apigee proxy and target
 
