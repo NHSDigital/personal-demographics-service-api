@@ -74,6 +74,8 @@ apigee:
 {% endif %}
           - name: ratelimit
             value: {{ env.ratelimit | default('300pm') }}
+          - name: proxyQuotas
+            value: '{"default", { "interval":1, "limit":"300pm","timeunit":"minute", "enabled":true }}'
         description: {{ mode.description }}
         displayName: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
         environments: [ {{ env.name }} ]
@@ -87,7 +89,6 @@ apigee:
         quota: {{ env.quota | default('300') }}
         quotaInterval: '1'
         quotaTimeUnit: minute
-        proxyQuotas: '{"default", { "interval":1, "limit":"300pm","timeunit":"minute", "enabled":true }}'
 {% endfor %}
       specs:
       - name: personal-demographics-{{ env.name }}
