@@ -47,7 +47,6 @@ ACCESS_MODES:
     description: Patient Access
 
 ---
-# {"default":{"ratelimit":300, "enabled": true}}
 
 # Manifest definition
 meta:
@@ -74,7 +73,7 @@ apigee:
             value: private
 {% endif %}
           - name: ratelimit
-            value: '{"default":{"ratelimit":300, "enabled": true}}'
+            value: {{ env.ratelimit | default('{"default":{"ratelimit":300, "enabled": true}}') }}
         description: {{ mode.description }}
         displayName: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
         environments: [ {{ env.name }} ]
