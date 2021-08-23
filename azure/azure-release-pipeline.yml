@@ -64,6 +64,7 @@ extends:
           - internal_qa_sandbox
       - environment: ref
         make_spec_visible: true
+        enable_status_monitoring: false # revert when /_status implemented or endpoint updated
         depends_on:
           - internal_qa
           - internal_qa_sandbox
