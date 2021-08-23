@@ -2,6 +2,7 @@
 APIGEE_ENVIRONMENTS:
   - name: internal-dev
     display_name_suffix: Internal Development
+    ratelimit: '{"default":{"ratelimit":300, "enabled": true}}'
   # TODO: Remove as we don't want this included in an actual release
   - name: internal-dev-sandbox
     display_name_suffix: Internal Development Sandbox
@@ -47,6 +48,7 @@ ACCESS_MODES:
     description: Patient Access
 
 ---
+# {"default":{"ratelimit":300, "enabled": true}}
 
 # Manifest definition
 meta:
@@ -73,7 +75,7 @@ apigee:
             value: private
 {% endif %}
           - name: ratelimit
-            value: {{ env.ratelimit | default('{"default":{"ratelimit":300, "enabled": true}}') }}
+            value: {{ env.ratelimit | default('300pm') }}
         description: {{ mode.description }}
         displayName: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
         environments: [ {{ env.name }} ]
@@ -87,6 +89,7 @@ apigee:
         quota: {{ env.quota | default('300') }}
         quotaInterval: '1'
         quotaTimeUnit: minute
+        proxyQuotas: '{"default":{"interval":1, "limit":500, "timeout":"minute", "enabled": true}}'
 {% endfor %}
       specs:
       - name: personal-demographics-{{ env.name }}
