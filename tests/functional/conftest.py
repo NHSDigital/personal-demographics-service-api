@@ -8,7 +8,7 @@ from .config_files import config
 import random
 from time import time
 
-from .config_files.config import BASE_URL
+from .config_files.config import BASE_URL, CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
 
 
 async def _set_default_rate_limit(product: ApigeeApiProducts):
@@ -301,9 +301,9 @@ def nhs_login_token_exchange(test_app_and_product):
         """Call identity server to get an access token"""
         test_product, test_app = test_app_and_product
         oauth = OauthHelper(
-            client_id=test_app.client_id,
-            client_secret=test_app.client_secret,
-            redirect_uri=test_app.callback_url,
+            client_id=CLIENT_ID,
+            client_secret=CLIENT_SECRET,
+            redirect_uri=REDIRECT_URI,
         )
 
         id_token_claims = {

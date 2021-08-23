@@ -139,6 +139,7 @@ steps:
       export JWT_PRIVATE_KEY_ABSOLUTE_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
       export AUTH_TOKEN_EXPIRY_MS="$(AUTH_TOKEN_EXPIRY_MS)"
       export AUTH_TOKEN_EXPIRY_MS_INT="$(AUTH_TOKEN_EXPIRY_MS_INT)"
+      export REDIRECT_URI="https://nhsd-apim-testing-$(ENVIRONMENT).herokuapp.com/callback"
 
       poetry run pytest -v tests/functional/test_patient_access.py --junitxml=tests/patient-access-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run patient access tests
