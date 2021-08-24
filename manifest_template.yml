@@ -75,7 +75,7 @@ apigee:
           - name: ratelimit
             value: {{ env.ratelimit | default('300pm') }}
           - name: proxyQuotas
-            value: '{"default", { "interval":1, "limit":"300pm","timeunit":"minute", "enabled":true }}'
+            value: '{"default": { "interval":1, "limit":300,"timeunit":"minute", "enabled":true }}'
         description: {{ mode.description }}
         displayName: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
         environments: [ {{ env.name }} ]
