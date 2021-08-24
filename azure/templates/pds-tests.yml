@@ -147,3 +147,9 @@ steps:
       poetry run pytest -v tests/functional/test_patient_access.py --junitxml=tests/patient-access-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run patient access tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+
+  - task: PublishTestResults@2
+    displayName: "Publish patient access test results"
+    inputs:
+      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/patient-access-test-report.xml
+      failTaskOnFailedTests: true
