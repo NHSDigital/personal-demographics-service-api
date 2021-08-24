@@ -315,9 +315,9 @@ def nhs_login_token_exchange(cfg, test_app_and_product):
         """Call identity server to get an access token"""
         _, test_app = test_app_and_product
         oauth = OauthHelper(
-            client_id=test_app.client_id,
-            client_secret=test_app.client_secret,
-            redirect_uri=test_app.callback_url,
+            client_id=cfg["CLIENT_ID"],
+            client_secret=cfg["CLIENT_SECRET"],
+            redirect_uri=cfg["REDIRECT_URI"],
         )
 
         id_token_claims = {

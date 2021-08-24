@@ -22,4 +22,3 @@ CONFIG = {
     "JWT_PRIVATE_KEY_ABSOLUTE_PATH": ENV["jwt_private_key_absolute_path"],
     "PDS_BASE_PATH": ENV["pds_base_path"],
 }
-

@@ -22,4 +22,3 @@ CONFIG = {
     "PDS_BASE_PATH": ENV["pds_base_path"],
     "TEST_PATIENT_ID": ENV['test_patient_id'],
 }
-

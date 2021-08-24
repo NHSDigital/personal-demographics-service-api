@@ -19,4 +19,3 @@ CONFIG = {
     "OAUTH_BASE_URI": ENV["oauth_base_uri"],
     "TEST_PATIENT_ID": ENV['test_patient_id'],
 }
-
