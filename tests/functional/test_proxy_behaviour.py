@@ -6,7 +6,6 @@ from polling2 import poll, TimeoutException
 from http import HTTPStatus
 from tests.scripts.pds_request import GenericPdsRequestor
 from pytest_bdd import scenario, given, when, then, parsers
-from .config_files.config import BASE_URL, PDS_BASE_PATH, TEST_PATIENT_ID
 
 
 class HTTPMethods(Enum):
@@ -14,7 +13,7 @@ class HTTPMethods(Enum):
     PATCH = "PATCH"
 
 
-def _trip_rate_limit(token: str, req_type: HTTPMethods, timeout: int = 30, step: int = 0.5) -> requests.Response:
+def _trip_rate_limit(context, req_type: HTTPMethods, timeout: int = 30, step: int = 0.5) -> requests.Response:
     """Trips the spike arrest policy and returns the response.
 
     Args:
@@ -27,13 +26,13 @@ def _trip_rate_limit(token: str, req_type: HTTPMethods, timeout: int = 30, step:
         response (requests.Response): HTTP Response.
     """
     pds = GenericPdsRequestor(
-        pds_base_path=PDS_BASE_PATH,
-        base_url=BASE_URL,
-        token=token,
+        pds_base_path=context["PDS_BASE_PATH"],
+        base_url=context["BASE_URL"],
+        token=context["token"],
     )
     # Set Etag for all requests
     if req_type == HTTPMethods.PATCH:
-        patient = pds.get_patient_response(patient_id=TEST_PATIENT_ID)
+        patient = pds.get_patient_response(patient_id=context["TEST_PATIENT_ID"])
         pds.headers = {
             "If-Match": patient.headers["Etag"] if patient.headers.get("Etag") else "W/22",
         }
@@ -41,10 +40,10 @@ def _trip_rate_limit(token: str, req_type: HTTPMethods, timeout: int = 30, step:
     def _pds_response():
 
         if req_type == HTTPMethods.GET:
-            response = pds.get_patient_response(patient_id=TEST_PATIENT_ID)
+            response = pds.get_patient_response(patient_id=context["TEST_PATIENT_ID"])
         if req_type == HTTPMethods.PATCH:
             response = pds.update_patient_response(
-                patient_id=TEST_PATIENT_ID,
+                patient_id=context["TEST_PATIENT_ID"],
                 payload={"patches": [{"op": "replace", "path": "/birthDate", "value": "2001-01-01"}]}
             )
         return response
@@ -64,7 +63,7 @@ def _trip_rate_limit(token: str, req_type: HTTPMethods, timeout: int = 30, step:
 @pytest.mark.rate_limit
 @pytest.mark.apmspii_627
 @scenario('./features/proxy_behaviour.feature', 'API Proxy rate limit tripped')
-def test_spike_arrest_policy():
+def test_proxy_behavior_spike_arrest_policy():
     pass
 
 
@@ -72,7 +71,7 @@ def test_spike_arrest_policy():
 @pytest.mark.rate_limit
 @pytest.mark.apmspii_874
 @scenario('./features/proxy_behaviour.feature', 'The rate limit tripped for PATCH requests')
-def test_async_spike_arrest_policy():
+def test_proxy_behavior_async_spike_arrest_policy():
     pass
 
 
@@ -80,20 +79,24 @@ def test_async_spike_arrest_policy():
 @pytest.mark.quota
 @pytest.mark.apmspii_627
 @scenario('./features/proxy_behaviour.feature', 'API quota is tripped')
-def test_quota_limit():
+def test_proxy_behavior_quota_limit():
     pass
+
+
+# -------------------------------- SCENARIO ----------------------------
 
 
 @pytest.mark.rate_limit
 @pytest.mark.apmspii_627
 @given("I have a proxy with a low rate limit set", target_fixture="context")
-def setup_rate_limit_proxy(setup_session):
+def setup_rate_limit_proxy(cfg, setup_session):
     product, app, token = setup_session
 
     context = {
         "product": product,
         "app": app,
         "token": token,
+        **cfg
     }
     set_quota_and_rate_limit(context["product"], rate_limit="1pm")
     assert context["product"].rate_limit == "1pm"
@@ -103,15 +106,21 @@ def setup_rate_limit_proxy(setup_session):
 @pytest.mark.rate_limit
 @pytest.mark.apmspii_627
 @given("I have a proxy with a low quota set", target_fixture="context")
-def setup_quota_proxy(setup_session):
+def setup_quota_proxy(cfg, setup_session):
+    product, app, token = setup_session
+
     context = {
-        "product": setup_session[0],
-        "app": setup_session[1],
-        "token": setup_session[2],
+        "product": product,
+        "app": app,
+        "token": token,
+        **cfg
     }
     set_quota_and_rate_limit(context["product"], quota=1)
     assert context["product"].quota == 1
     return context
+
+
+# -------------------------------- GIVEN ----------------------------
 
 
 @pytest.mark.apmspii_627
@@ -121,7 +130,7 @@ def setup_quota_proxy(setup_session):
     extra_types=dict(String=str)
 ))
 def trip_rate_limit(request, context):
-    context["pds"] = _trip_rate_limit(context["token"], req_type=HTTPMethods[request])
+    context["pds"] = _trip_rate_limit(context, req_type=HTTPMethods[request])
     assert "pds" in context and context["pds"] is not None, "Rate limit wasn't tripped"
 
 
@@ -129,8 +138,11 @@ def trip_rate_limit(request, context):
 @pytest.mark.apmspii_627
 @when("the quota is tripped")
 def trip_quota(context):
-    context["pds"] = _trip_rate_limit(context["token"], req_type=HTTPMethods.GET)
+    context["pds"] = _trip_rate_limit(context, req_type=HTTPMethods.GET)
     assert "pds" in context and context["pds"] is not None, "Rate limit wasn't tripped"
+
+
+# -------------------------------- WHEN ----------------------------
 
 
 @pytest.mark.quota
@@ -156,3 +168,6 @@ def quota_message(context):
     assert (
         response["issue"][0]["details"]["coding"][0]["code"] == HTTPStatus.TOO_MANY_REQUESTS.name
     )
+
+
+# -------------------------------- THEN ----------------------------

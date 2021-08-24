@@ -3,8 +3,6 @@ import jwt
 import uuid
 import time
 import requests
-from .config_files import config
-from .config_files.environment import ENV
 from pytest_bdd import scenario, given, when, then, parsers
 
 
@@ -12,38 +10,29 @@ def teardown_function(function):
     time.sleep(0.01)
 
 
-def get_patient_request(headers: dict, extra_params: dict = None):
+def get_patient_request(context: dict, headers: dict, extra_params: dict = None):
     params = {"family": "Part", "gender": "male", "birthdate": "eq1931-10-04"}
     if extra_params:
         params = {**params, **extra_params}
     return requests.get(
-        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient?",
+        f"{context['BASE_URL']}/{context['PDS_BASE_PATH']}/Patient?",
         headers=headers,
         params=params,
     )
 
 
-def patch_patient_request(headers: dict):
+def patch_patient_request(context: dict, headers: dict):
     return requests.patch(
-        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}",
+        f"{context['BASE_URL']}/{context['PDS_BASE_PATH']}/Patient/{context['TEST_PATIENT_ID']}",
         headers=headers,
     )
-
-
-@given("I determine whether an asid is required")
-def check_which_test_app_to_use():
-    if "asid-required" in config.PDS_BASE_PATH:
-        config.APPLICATION_RESTRICTED_API_KEY = ENV[
-            "application_restricted_with_asid_api_key"
-        ]
-        config.SIGNING_KEY = ENV["signing_key_with_asid"]
 
 
 @scenario(
     "features/application_restricted.feature",
     "PDS FHIR API accepts request with valid access token",
 )
-def test_valid():
+def test_app_restricted_valid():
     pass
 
 
@@ -51,7 +40,7 @@ def test_valid():
     "features/application_restricted.feature",
     "PDS FHIR API rejects request with invalid access token",
 )
-def test_invalid():
+def test_app_restricted_invalid():
     pass
 
 
@@ -59,7 +48,7 @@ def test_invalid():
     "features/application_restricted.feature",
     "PDS FHIR API rejects request with missing access token",
 )
-def test_missing():
+def test_app_restricted_missing():
     pass
 
 
@@ -67,7 +56,7 @@ def test_missing():
     "features/application_restricted.feature",
     "PDS FHIR API rejects request with expired access token",
 )
-def test_expired():
+def test_app_restricted_expired():
     pass
 
 
@@ -75,7 +64,7 @@ def test_expired():
     "features/application_restricted.feature",
     "PDS FHIR API accepts request without user role ID",
 )
-def test_valid_when_without_user_id():
+def test_app_restricted_valid_when_without_user_id():
     pass
 
 
@@ -83,7 +72,7 @@ def test_valid_when_without_user_id():
     "features/application_restricted.feature",
     "PDS FHIR API rejects request for more than one result",
 )
-def test_rejects_request_for_two_results():
+def test_app_restricted_rejects_request_for_two_results():
     pass
 
 
@@ -91,7 +80,7 @@ def test_rejects_request_for_two_results():
     "features/application_restricted.feature",
     "PDS FHIR API accepts request for one result",
 )
-def test_accepts_request_for_one_result():
+def test_app_restricted_accepts_request_for_one_result():
     pass
 
 
@@ -99,33 +88,39 @@ def test_accepts_request_for_one_result():
     "features/application_restricted.feature",
     "PDS FHIR API rejects synchronous PATCH requests",
 )
-def test_rejects_synchronous_patch_request():
+def test_app_restricted_rejects_synchronous_patch_request():
     pass
 
 
-@given("I am authenticating using unattended access", target_fixture="auth")
-def auth():
-    return {}
+# -------------------------------- SCENARIO ----------------------------
+
+
+@given("I am authenticating using unattended access", target_fixture="context")
+def setup_app_restricted(cfg):
+    context = {
+        **cfg
+    }
+    return context
 
 
 @given("I have a valid access token")
-def set_valid_access_token(auth):
+def set_valid_access_token(context):
     claims = {
-        "sub": config.APPLICATION_RESTRICTED_API_KEY,
-        "iss": config.APPLICATION_RESTRICTED_API_KEY,
+        "sub": context["APPLICATION_RESTRICTED_API_KEY"],
+        "iss": context["APPLICATION_RESTRICTED_API_KEY"],
         "jti": str(uuid.uuid4()),
-        "aud": f"{config.BASE_URL}/oauth2/token",
+        "aud": f"{context['BASE_URL']}/oauth2/token",
         "exp": int(time.time()) + 300,
     }
 
-    headers = {"kid": config.KEY_ID}
+    headers = {"kid": context["KEY_ID"]}
 
     encoded_jwt = jwt.encode(
-        claims, config.SIGNING_KEY, algorithm="RS512", headers=headers
+        claims, context["SIGNING_KEY"], algorithm="RS512", headers=headers
     )
 
     response = requests.post(
-        f"{config.BASE_URL}/oauth2/token",
+        f"{context['BASE_URL']}/oauth2/token",
         data={
             "grant_type": "client_credentials",
             "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
@@ -142,39 +137,47 @@ def set_valid_access_token(auth):
     assert response_json["token_type"] == "Bearer"
     assert response_json["expires_in"] and int(response_json["expires_in"]) > 0
 
-    auth["response"] = response_json
-    auth["access_token"] = response_json["access_token"]
-    auth["token_type"] = response_json["token_type"]
+    context["response"] = response_json
+    context["access_token"] = response_json["access_token"]
+    context["token_type"] = response_json["token_type"]
 
 
-@given("I have an invalid access token")
-def set_invalid_access_token(auth):
-    auth["access_token"] = "INVALID_ACCESS_TOKEN"
-    auth["token_type"] = "Bearer"
+@given("I have an invalid access token", target_fixture="context")
+def set_invalid_access_token(cfg):
+    context = {
+        **cfg,
+        "access_token": "INVALID_ACCESS_TOKEN",
+        "token_type": "Bearer",
+    }
+    return context
 
 
-@given("I have no access token")
-def set_no_access_token(auth):
-    auth["access_token"] = None
-    auth["token_type"] = "Bearer"
+@given("I have no access token", target_fixture="context")
+def set_no_access_token(cfg):
+    context = {
+        **cfg,
+        "access_token": None,
+        "token_type": "Bearer",
+    }
+    return context
 
 
 @given("I have an expired access token")
-def set_expired_access_token(auth):
+def set_expired_access_token(context):
     claims = {
-        "sub": config.APPLICATION_RESTRICTED_API_KEY,
-        "iss": config.APPLICATION_RESTRICTED_API_KEY,
+        "sub": context["APPLICATION_RESTRICTED_API_KEY"],
+        "iss": context["APPLICATION_RESTRICTED_API_KEY"],
         "jti": str(uuid.uuid4()),
-        "aud": f"{config.BASE_URL}/oauth2/token",
+        "aud": f"{context['BASE_URL']}/oauth2/token",
         "exp": int(time.time()) + 300,
     }
 
     encoded_jwt = jwt.encode(
-        claims, config.SIGNING_KEY, algorithm="RS512", headers={"kid": config.KEY_ID}
+        claims, context["SIGNING_KEY"], algorithm="RS512", headers={"kid": context["KEY_ID"]}
     )
 
     response = requests.post(
-        f"{config.BASE_URL}/oauth2/token",
+        f"{context['BASE_URL']}/oauth2/token",
         data={
             "_access_token_expiry_ms": "1",
             "grant_type": "client_credentials",
@@ -192,25 +195,38 @@ def set_expired_access_token(auth):
     assert response_json["token_type"] == "Bearer"
     assert response_json["expires_in"] and int(response_json["expires_in"]) == 0
 
-    auth["response"] = response_json
-    auth["access_token"] = response_json["access_token"]
-    auth["token_type"] = response_json["token_type"]
+    context["response"] = response_json
+    context["access_token"] = response_json["access_token"]
+    context["token_type"] = response_json["token_type"]
 
 
-@given("I have a request context", target_fixture="context")
-def context():
-    return {}
+@given("I have a request context")
+def request_context(context):
+    return context
+
+
+@given("I determine whether an asid is required", target_fixture="context")
+def check_which_test_app_to_use(cfg: dict):
+    context = {
+        **cfg
+    }
+    if "asid-required" in context["PDS_BASE_PATH"]:
+        context["APPLICATION_RESTRICTED_API_KEY"] = context[
+            "application_restricted_with_asid_api_key"
+        ]
+        context["SIGNING_KEY"] = context["signing_key_with_asid"]
 
 
 @when("I GET a patient")
-def get_patient(auth, context):
-    authentication = auth["access_token"]
+def get_patient(context):
+    authentication = context["access_token"]
 
     if authentication is not None:
-        token_type = auth["token_type"]
+        token_type = context["token_type"]
         authentication = f"{token_type} {authentication}"
 
     response = get_patient_request(
+        context,
         headers={
             "NHSD-SESSION-URID": "123",
             "Authorization": f"{authentication}",
@@ -223,14 +239,15 @@ def get_patient(auth, context):
 
 
 @when("I GET a patient asking for two results")
-def get_patient_two_results(auth, context):
-    authentication = auth["access_token"]
+def get_patient_two_results(context):
+    authentication = context["access_token"]
 
     if authentication is not None:
-        token_type = auth["token_type"]
+        token_type = context["token_type"]
         authentication = f"{token_type} {authentication}"
 
     response = get_patient_request(
+        context,
         headers={
             "NHSD-SESSION-URID": "123",
             "Authorization": f"{authentication}",
@@ -244,11 +261,11 @@ def get_patient_two_results(auth, context):
 
 
 @when("I PATCH a patient and ommit the prefer header")
-def patch_sync_patient(auth, context):
-    authentication = auth["access_token"]
+def patch_sync_patient(context):
+    authentication = context["access_token"]
 
     if authentication is not None:
-        token_type = auth["token_type"]
+        token_type = context["token_type"]
         authentication = f"{token_type} {authentication}"
 
     headers = {
@@ -257,21 +274,22 @@ def patch_sync_patient(auth, context):
         "X-Request-ID": str(uuid.uuid4()),
     }
 
-    response = patch_patient_request(headers)
+    response = patch_patient_request(context, headers)
 
     context["response"] = response.json()
     context["status"] = response.status_code
 
 
 @when("I GET a patient asking for one result")
-def get_patient_one_result(auth, context):
-    authentication = auth["access_token"]
+def get_patient_one_result(context):
+    authentication = context["access_token"]
 
     if authentication is not None:
-        token_type = auth["token_type"]
+        token_type = context["token_type"]
         authentication = f"{token_type} {authentication}"
 
     response = get_patient_request(
+        context,
         headers={
             "NHSD-SESSION-URID": "123",
             "Authorization": f"{authentication}",
@@ -285,15 +303,15 @@ def get_patient_one_result(auth, context):
 
 
 @when("I GET a patient without a user role ID")
-def get_patient_without_user_role_id(auth, context):
-    access_token = auth["response"]["access_token"]
+def get_patient_without_user_role_id(context):
+    access_token = context["response"]["access_token"]
 
     headers = {
         "Authorization": f"Bearer {access_token}",
         "X-Request-ID": str(uuid.uuid4()),
     }
 
-    response = get_patient_request(headers)
+    response = get_patient_request(context, headers)
 
     context["response"] = response.json()
     context["status"] = response.status_code

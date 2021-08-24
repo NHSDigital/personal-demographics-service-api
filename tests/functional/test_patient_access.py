@@ -1,4 +1,3 @@
-from tests.functional.config_files import config
 import requests
 import uuid
 import pytest
@@ -7,7 +6,7 @@ import pytest
 @pytest.mark.asyncio
 class TestUserRestrictedPatientAccess:
     async def test_patient_access_retrieve_happy_path(
-        self, nhs_login_token_exchange
+        self, nhs_login_token_exchange, cfg
     ):
         token = await nhs_login_token_exchange()
 
@@ -17,14 +16,13 @@ class TestUserRestrictedPatientAccess:
             "X-Request-ID": str(uuid.uuid4()),
         }
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9693633172",
+            f"{cfg['BASE_URL']}/{cfg['PDS_BASE_PATH']}/Patient/9693633172",
             headers=headers,
         )
-
         assert r.status_code == 200
 
     async def test_patient_access_retrieve_non_matching_nhs_number(
-        self, nhs_login_token_exchange
+        self, nhs_login_token_exchange, cfg
     ):
 
         token = await nhs_login_token_exchange()
@@ -35,7 +33,7 @@ class TestUserRestrictedPatientAccess:
             "X-Request-ID": str(uuid.uuid4()),
         }
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/123456789",
+            f"{cfg['BASE_URL']}/{cfg['PDS_BASE_PATH']}/Patient/123456789",
             headers=headers,
         )
         body = r.json()
@@ -48,7 +46,7 @@ class TestUserRestrictedPatientAccess:
         )
 
     async def test_patient_access_retrieve_incorrect_path(
-        self, nhs_login_token_exchange
+        self, nhs_login_token_exchange, cfg
     ):
 
         token = await nhs_login_token_exchange()
@@ -59,7 +57,7 @@ class TestUserRestrictedPatientAccess:
             "X-Request-ID": str(uuid.uuid4()),
         }
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22",
+            f"{cfg['BASE_URL']}/{cfg['PDS_BASE_PATH']}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22",
             headers=headers,
         )
         body = r.json()
@@ -72,7 +70,7 @@ class TestUserRestrictedPatientAccess:
         )
 
     async def test_patient_access_update_happy_path(
-        self, nhs_login_token_exchange, create_random_date
+        self, nhs_login_token_exchange, cfg
     ):
         token = await nhs_login_token_exchange()
 
@@ -83,7 +81,7 @@ class TestUserRestrictedPatientAccess:
         }
 
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9693633172",
+            f"{cfg['BASE_URL']}/{cfg['PDS_BASE_PATH']}/Patient/{cfg['TEST_PATIENT_ID']}",
             headers=headers,
         )
 
@@ -103,7 +101,7 @@ class TestUserRestrictedPatientAccess:
             "Content-Type": "application/json-patch+json",
         }
         r = requests.patch(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9693633172",
+            f"{cfg['BASE_URL']}/{cfg['PDS_BASE_PATH']}/Patient/{cfg['TEST_PATIENT_ID']}",
             headers=headers,
             json=patch_body,
         )
@@ -112,7 +110,7 @@ class TestUserRestrictedPatientAccess:
         assert int(r.json()["meta"]["versionId"]) == int(version_id) + 1
 
     async def test_patient_access_update_non_matching_nhs_number(
-        self, nhs_login_token_exchange, create_random_date
+        self, nhs_login_token_exchange, create_random_date, cfg
     ):
         token = await nhs_login_token_exchange()
 
@@ -129,7 +127,7 @@ class TestUserRestrictedPatientAccess:
         }
 
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9693633172",
+            f"{cfg['BASE_URL']}/{cfg['PDS_BASE_PATH']}/Patient/{cfg['TEST_PATIENT_ID']}",
             headers=headers,
         )
         Etag = r.headers["Etag"]
@@ -142,7 +140,7 @@ class TestUserRestrictedPatientAccess:
             "Content-Type": "application/json-patch+json",
         }
         r = requests.patch(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/123456789",
+            f"{cfg['BASE_URL']}/{cfg['PDS_BASE_PATH']}/Patient/123456789",
             headers=headers,
             json=patch_body,
         )
@@ -156,7 +154,7 @@ class TestUserRestrictedPatientAccess:
         )
 
     async def test_patient_access_update_incorrect_path(
-        self, nhs_login_token_exchange, create_random_date
+        self, nhs_login_token_exchange, create_random_date, cfg
     ):
         token = await nhs_login_token_exchange()
 
@@ -173,7 +171,7 @@ class TestUserRestrictedPatientAccess:
         }
 
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9693633172",
+            f"{cfg['BASE_URL']}/{cfg['PDS_BASE_PATH']}/Patient/{cfg['TEST_PATIENT_ID']}",
             headers=headers,
         )
         Etag = r.headers["Etag"]
@@ -186,7 +184,7 @@ class TestUserRestrictedPatientAccess:
             "Content-Type": "application/json-patch+json",
         }
         r = requests.patch(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient?family=Cox&gender=female&birthdate=eq1956-09-28",
+            f"{cfg['BASE_URL']}/{cfg['PDS_BASE_PATH']}/Patient?family=Cox&gender=female&birthdate=eq1956-09-28",
             headers=headers,
             json=patch_body,
         )
@@ -200,7 +198,7 @@ class TestUserRestrictedPatientAccess:
         )
 
     async def test_patient_access_retrieve_P5_scope(
-        self, nhs_login_token_exchange
+        self, nhs_login_token_exchange, cfg
     ):
         token = await nhs_login_token_exchange(scope="P5")
 
@@ -210,7 +208,7 @@ class TestUserRestrictedPatientAccess:
             "X-Request-ID": str(uuid.uuid4()),
         }
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9912003071",
+            f"{cfg['BASE_URL']}/{cfg['PDS_BASE_PATH']}/Patient/9912003071",
             headers=headers,
         )
 
@@ -224,7 +222,7 @@ class TestUserRestrictedPatientAccess:
         )
 
     async def test_patient_access_retrieve_P0_scope(
-        self, nhs_login_token_exchange
+        self, nhs_login_token_exchange, cfg
     ):
         token = await nhs_login_token_exchange(scope="P0")
 
@@ -234,7 +232,7 @@ class TestUserRestrictedPatientAccess:
             "X-Request-ID": str(uuid.uuid4()),
         }
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9912003071",
+            f"{cfg['BASE_URL']}/{cfg['PDS_BASE_PATH']}/Patient/9912003071",
             headers=headers,
         )
 
