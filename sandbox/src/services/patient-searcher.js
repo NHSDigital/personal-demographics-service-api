@@ -102,9 +102,9 @@ module.exports.search = function(request) {
 
     // Check for default 'Try this API' params
     const tryThisApiParams = {
-        "_fuzzy-match": false,
-        "_exact-match": false,
-        history: true,
+        "_fuzzy-match": "false",
+        "_exact-match": "false",
+        "_history": "true",
         "_max-results": 1,
         family: "Smith",
         given: "Jane",
