@@ -4,11 +4,27 @@ import asyncio
 from api_test_utils.oauth_helper import OauthHelper
 from api_test_utils.apigee_api_apps import ApigeeApiDeveloperApps
 from api_test_utils.apigee_api_products import ApigeeApiProducts
-from .config_files import config
 import random
 from time import time
+import os
 
-from .config_files.config import BASE_URL
+
+@pytest.fixture(scope="module", autouse=True)
+def cfg():
+    test_name = os.environ.get('PYTEST_CURRENT_TEST').split(':')[-1].split(' ')[0]
+    if "sync_wrap" in test_name:
+        from .config_files.syncWrapCfg import CONFIG
+    elif "proxy_behavior" in test_name:
+        from .config_files.proxyBehaviorCfg import CONFIG
+    elif "app_restricted" in test_name:
+        print("Using app restricted config...")
+        from .config_files.appRestrictedCfg import CONFIG
+    elif "patient_access" in test_name:
+        from .config_files.patientAccessCfg import CONFIG
+    else:
+        raise Exception("No configurations match the test's you're trying to run.")
+
+    yield CONFIG
 
 
 async def _set_default_rate_limit(product: ApigeeApiProducts):
@@ -43,7 +59,7 @@ async def _product_with_full_access():
 
 
 @pytest.fixture()
-async def get_token(request):
+async def get_token(cfg):
     """Get an access or refresh token
     some examples:
         1. access_token via simulated oauth (default)
@@ -58,7 +74,7 @@ async def get_token(request):
             get_token(app=<app>)
 
     Args:
-        request(requests): HTTP requests object.
+        cfg(object): Config object.
 
     Returns:
         _token(dict): Identity Service HTTP Response body
@@ -76,8 +92,8 @@ async def get_token(request):
         else:
             # Use env vars
             oauth = OauthHelper(
-                client_id=config.CLIENT_ID,
-                client_secret=config.CLIENT_SECRET,
+                client_id=cfg["CLIENT_ID"],
+                client_secret=cfg["CLIENT_SECRET"],
                 redirect_uri="https://nhsd-apim-testing-internal-dev.herokuapp.com/",
             )
             resp = await oauth.get_token_response(grant_type=grant_type, **kwargs)
@@ -97,7 +113,7 @@ async def get_token(request):
 
 
 @pytest.fixture(scope="function")
-async def setup_session(request):
+async def setup_session(cfg):
     """This fixture is called at a function level.
     The default app created here should be modified by your tests.
     """
@@ -120,12 +136,10 @@ async def setup_session(request):
                                      '9baed6f4-1361-4a8e-8531-1f8426e3aba8.json'
             }
     )
-
-    await product.update_environments([config.ENVIRONMENT])
+    await product.update_environments([cfg["ENVIRONMENT"]])
     oauth = OauthHelper(app.client_id, app.client_secret, app.callback_url)
     resp = await oauth.get_token_response(grant_type="authorization_code")
     token = resp["body"]["access_token"]
-
     yield product, app, token
 
     # Teardown
@@ -135,7 +149,7 @@ async def setup_session(request):
 
 
 @pytest.fixture()
-def setup_patch(setup_session):
+def setup_patch(cfg, setup_session):
     """Fixture to make an async request using sync-wrap.
     GET /Patient -> PATCH /Patient
     """
@@ -143,12 +157,12 @@ def setup_patch(setup_session):
     [product, app, token] = setup_session
 
     pds = GenericPdsRequestor(
-        pds_base_path=config.PDS_BASE_PATH,
-        base_url=config.BASE_URL,
+        pds_base_path=cfg["PDS_BASE_PATH"],
+        base_url=cfg["BASE_URL"],
         token=token,
     )
 
-    response = pds.get_patient_response(patient_id=config.TEST_PATIENT_ID)
+    response = pds.get_patient_response(patient_id=cfg["TEST_PATIENT_ID"])
 
     pds.headers = {
         "If-Match": response.headers["Etag"],
@@ -164,24 +178,24 @@ def setup_patch(setup_session):
 
 
 @pytest.fixture()
-async def setup_patch_short_lived_token(setup_session):
+async def setup_patch_short_lived_token(cfg, setup_session):
     """Fixture to make an async request using sync-wrap, with a short-lived -- 1 second -- access token.
     GET /Patient -> PATCH /Patient
     """
 
-    product, app, _ = setup_session
+    _, app, _ = setup_session
 
     oauth = OauthHelper(app.client_id, app.client_secret, app.callback_url)
-    resp = await oauth.get_token_response(grant_type="authorization_code", timeout=config.AUTH_TOKEN_EXPIRY_MS)
+    resp = await oauth.get_token_response(grant_type="authorization_code", timeout=cfg["AUTH_TOKEN_EXPIRY_MS"])
     token = resp["body"]["access_token"]
 
     pds = GenericPdsRequestor(
-        pds_base_path=config.PDS_BASE_PATH,
-        base_url=config.BASE_URL,
+        pds_base_path=cfg["PDS_BASE_PATH"],
+        base_url=cfg["BASE_URL"],
         token=token,
     )
 
-    response = pds.get_patient_response(patient_id=config.TEST_PATIENT_ID)
+    response = pds.get_patient_response(patient_id=cfg["TEST_PATIENT_ID"])
 
     pds.headers = {
         "If-Match": response.headers["Etag"],
@@ -198,7 +212,7 @@ def sync_wrap_low_wait_update(setup_patch: GenericPdsRequestor, create_random_da
         "X-Sync-Wait": "0.25"
     }
     resp = pds.update_patient_response(
-        patient_id=config.TEST_PATIENT_ID,
+        patient_id=cfg["TEST_PATIENT_ID"],
         payload={"patches": [{"op": "replace", "path": "/birthDate", "value": create_random_date}]}
     )
     return resp
@@ -294,12 +308,12 @@ async def test_app_and_product(app, product):
 
 
 @pytest.fixture()
-def nhs_login_token_exchange(test_app_and_product):
-    test_product, test_app = test_app_and_product
+def nhs_login_token_exchange(cfg, test_app_and_product):
+    _, _ = test_app_and_product
 
     async def get_token_nhs_login_token_exchange(scope: str = "P9"):
         """Call identity server to get an access token"""
-        test_product, test_app = test_app_and_product
+        _, test_app = test_app_and_product
         oauth = OauthHelper(
             client_id=test_app.client_id,
             client_secret=test_app.client_secret,
@@ -309,10 +323,10 @@ def nhs_login_token_exchange(test_app_and_product):
         id_token_claims = {
             "aud": "tf_-APIM-1",
             "id_status": "verified",
-            "nhs_number": "9693633172",
+            "nhs_number": cfg["TEST_PATIENT_ID"],
             "token_use": "id",
             "auth_time": 1616600683,
-            "iss": BASE_URL,
+            "iss": cfg["BASE_URL"],
             "vot": "P9.Cp.Cd",
             "exp": int(time()) + 600,
             "iat": int(time()) - 10,
@@ -324,22 +338,20 @@ def nhs_login_token_exchange(test_app_and_product):
             "sub": "49f470a1-cc52-49b7-beba-0f9cec937c46",
             "aud": "APIM-1",
             "kid": "nhs-login",
-            "iss": BASE_URL,
+            "iss": cfg["BASE_URL"],
             "typ": "JWT",
             "exp": 1616604574,
             "iat": 1616600974,
             "alg": "RS512",
             "jti": "b68ddb28-e440-443d-8725-dfe0da330118",
         }
-        with open(config.ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH, "r") as f:
-            contents = f.read()
 
         client_assertion_jwt = oauth.create_jwt(kid="test-1")
         id_token_jwt = oauth.create_id_token_jwt(
             algorithm="RS512",
             claims=id_token_claims,
             headers=id_token_headers,
-            signing_key=contents,
+            signing_key=cfg["ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH"],
         )
 
         # When
