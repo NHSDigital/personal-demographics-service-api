@@ -42,5 +42,6 @@ ENV = {
     'jwt_private_key': get_env('JWT_PRIVATE_KEY_ABSOLUTE_PATH'),
     'test_patient_id': get_env('TEST_PATIENT_ID'),
     'auth_token_expiry_ms': get_env('AUTH_TOKEN_EXPIRY_MS'),
-    'auth_token_expiry_ms_int': get_env('AUTH_TOKEN_EXPIRY_MS_INT')
+    'auth_token_expiry_ms_int': get_env('AUTH_TOKEN_EXPIRY_MS_INT'),
+    'redirect_uri': get_env('REDIRECT_URI')
 }
