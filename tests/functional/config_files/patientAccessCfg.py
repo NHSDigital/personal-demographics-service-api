@@ -10,6 +10,9 @@ ENV = EnvVarWrapper(
         "environment": "APIGEE_ENVIRONMENT",
         "jwt_private_key_absolute_path": "JWT_PRIVATE_KEY_ABSOLUTE_PATH",
         "pds_base_path": "PDS_BASE_PATH",
+        "client_id": "CLIENT_ID",
+        "client_secret": "CLIENT_SECRET",
+        "redirect_uri": "REDIRECT_URI"
     }
 )
 
@@ -21,4 +24,7 @@ CONFIG = {
     "BASE_URL": f"https://{ENV['environment']}.api.service.nhs.uk",
     "JWT_PRIVATE_KEY_ABSOLUTE_PATH": ENV["jwt_private_key_absolute_path"],
     "PDS_BASE_PATH": ENV["pds_base_path"],
+    "CLIENT_ID": ENV['client_id'],
+    "CLIENT_SECRET": ENV['client_secret'],
+    "REDIRECT_URI": ENV['redirect_uri']
 }
