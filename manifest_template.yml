@@ -48,7 +48,7 @@ ACCESS_MODES:
     description: Patient Access
 
 RATE_LIMITING:
-  default: '{}'
+  default: test
 
 ---
 
