@@ -225,6 +225,7 @@ info:
     In step 2, if using patient access mode, tell us which security pattern you are using:
     - NHS login - combined authentication and authorisation
     - NHS login - separate authentication and authorisation
+    - Demo text
     
     In step 6, when implementing your clinical risk management process, you must review and integrate the PDS FHIR API hazard log into your own risk log. It's embedded within the PDS FHIR API tab in the SCAL.
     
