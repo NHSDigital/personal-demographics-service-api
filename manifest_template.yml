@@ -2,7 +2,6 @@
 APIGEE_ENVIRONMENTS:
   - name: internal-dev
     display_name_suffix: Internal Development
-    ratelimiting: {"quota":{"limit":300,"interval":1,"timeunit":"minute","enabled":true}, "spikeArrest": {"ratelimit": "5ps","enabled":true}}
   # TODO: Remove as we don't want this included in an actual release
   - name: internal-dev-sandbox
     display_name_suffix: Internal Development Sandbox
