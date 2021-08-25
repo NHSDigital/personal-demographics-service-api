@@ -16,7 +16,7 @@ class TestUserRestrictedPatientAccess:
             "X-Request-ID": str(uuid.uuid4()),
         }
         r = requests.get(
-            f"{cfg['BASE_URL']}/{cfg['PDS_BASE_PATH']}/Patient/9693633172",
+            f"{cfg['BASE_URL']}/{cfg['PDS_BASE_PATH']}/Patient/{cfg['TEST_PATIENT_ID']}",
             headers=headers,
         )
         assert r.status_code == 200
