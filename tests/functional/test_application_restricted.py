@@ -212,7 +212,7 @@ def check_which_test_app_to_use(cfg: dict):
     }
     if "asid-required" in context["PDS_BASE_PATH"]:
         context["APPLICATION_RESTRICTED_API_KEY"] = context[
-            "application_restricted_with_asid_api_key"
+            "APPLICATION_RESTRICTED_WITH_ASID_API_KEY"
         ]
         context["SIGNING_KEY"] = context["signing_key_with_asid"]
 
