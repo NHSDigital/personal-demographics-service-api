@@ -11,20 +11,31 @@ import os
 
 @pytest.fixture(scope="module", autouse=True)
 def cfg():
+
+    # Append generic vars (used across every test)
+    from .config_files.baseCfg import CONFIG
+    CONFIGRESULT = CONFIG
+
     test_name = os.environ.get('PYTEST_CURRENT_TEST').split(':')[-1].split(' ')[0]
+
+    # Append oAuth vars (used across sync_wrap, patient_access, proxy_behaviour)
+    if "sync_wrap" or "patient_access" or "proxy_behaviour" in test_name:
+        from .config_files.oauthCfg import CONFIG
+        CONFIGRESULT.update(CONFIG)
+
+    # Append vars that are unique to each test
     if "sync_wrap" in test_name:
         from .config_files.syncWrapCfg import CONFIG
-    elif "proxy_behavior" in test_name:
-        from .config_files.proxyBehaviorCfg import CONFIG
+        CONFIGRESULT.update(CONFIG)
     elif "app_restricted" in test_name:
         print("Using app restricted config...")
         from .config_files.appRestrictedCfg import CONFIG
+        CONFIGRESULT.update(CONFIG)
     elif "patient_access" in test_name:
         from .config_files.patientAccessCfg import CONFIG
-    else:
-        raise Exception("No configurations match the test's you're trying to run.")
+        CONFIGRESULT.update(CONFIG)
 
-    yield CONFIG
+    yield CONFIGRESULT
 
 
 async def _set_default_rate_limit(product: ApigeeApiProducts):

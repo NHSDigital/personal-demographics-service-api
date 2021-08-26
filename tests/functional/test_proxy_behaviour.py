@@ -63,7 +63,7 @@ def _trip_rate_limit(context, req_type: HTTPMethods, timeout: int = 30, step: in
 @pytest.mark.rate_limit
 @pytest.mark.apmspii_627
 @scenario('./features/proxy_behaviour.feature', 'API Proxy rate limit tripped')
-def test_proxy_behavior_spike_arrest_policy():
+def test_proxy_behaviour_spike_arrest_policy():
     pass
 
 
@@ -71,7 +71,7 @@ def test_proxy_behavior_spike_arrest_policy():
 @pytest.mark.rate_limit
 @pytest.mark.apmspii_874
 @scenario('./features/proxy_behaviour.feature', 'The rate limit tripped for PATCH requests')
-def test_proxy_behavior_async_spike_arrest_policy():
+def test_proxy_behaviour_async_spike_arrest_policy():
     pass
 
 
@@ -79,7 +79,7 @@ def test_proxy_behavior_async_spike_arrest_policy():
 @pytest.mark.quota
 @pytest.mark.apmspii_627
 @scenario('./features/proxy_behaviour.feature', 'API quota is tripped')
-def test_proxy_behavior_quota_limit():
+def test_proxy_behaviour_quota_limit():
     pass
 
 
