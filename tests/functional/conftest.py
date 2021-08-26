@@ -19,7 +19,8 @@ def cfg():
     test_name = os.environ.get('PYTEST_CURRENT_TEST').split(':')[-1].split(' ')[0]
 
     # Append oAuth vars (used across sync_wrap, patient_access, proxy_behaviour)
-    if "sync_wrap" or "patient_access" or "proxy_behaviour" in test_name:
+    if "sync_wrap" in test_name or "patient_access" in test_name or "proxy_behaviour" in test_name:
+        
         from .config_files.oauthCfg import CONFIG
         CONFIGRESULT.update(CONFIG)
 
