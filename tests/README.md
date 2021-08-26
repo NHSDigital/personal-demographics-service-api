@@ -12,7 +12,7 @@ Test suites to verify the PDS api.
 ## Installation
 
 * To be able to run tests that involve interacting with the apigee api (to CRUD apigee resources) you need an apigee api token.
-* You will need to have the apigee commands to generate the token. You can install those commands use the `scripts/install_apigee_cmds.sh` file.
+* You will need to have the apigee commands to generate the token. You can install those commands use the `scripts/install_apigee_cmds.sh` file. **NB**: You will need unzip installed `sudo apt install unzip`.
 * Once installed, run the below to add the apigee token to your environment variables:
 
 ```bash
