@@ -20,7 +20,6 @@ def cfg():
 
     # Append oAuth vars (used across sync_wrap, patient_access, proxy_behaviour)
     if "sync_wrap" in test_name or "patient_access" in test_name or "proxy_behaviour" in test_name:
-        
         from .config_files.oauthCfg import CONFIG
         CONFIGRESULT.update(CONFIG)
 
