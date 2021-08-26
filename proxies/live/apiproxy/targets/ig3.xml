@@ -94,10 +94,10 @@
       <Condition>(access-mode Equals "application-restricted")</Condition>
       <Request>
         <!-- Prevent use of PATCH method in application restricted mode -->
-        <Step>
+        <!-- <Step>
           <Name>RaiseFault.PatchMethodNotAllowedAppRestricted</Name>
           <Condition>(request.verb Equals "PATCH")</Condition>
-        </Step>
+        </Step> -->
         <!-- If _max-results param is unset, set to allowed value for application-restricted mode -->
         <Step>
           <Name>AssignMessage.SetMaxResultsToOne</Name>
