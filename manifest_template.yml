@@ -46,7 +46,6 @@ ACCESS_MODES:
     requireCallbackUrl: false
     description: Patient Access
 
----
 
 # Manifest definition
 meta:
