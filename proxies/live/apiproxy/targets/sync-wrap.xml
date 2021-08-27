@@ -9,6 +9,10 @@
       <Step>
         <Name>FlowCallout.ApplyRateLimiting</Name>
       </Step>
+      <!-- TODO remove Quota and Spike arrest polocies as they will be handled by ApplyRateLimitng Shared flow -->
+      <Step>
+        <Name>Quota</Name>
+      </Step>
       <Step>
         <Name>SpikeArrest</Name>
       </Step>
@@ -68,7 +72,8 @@
       <Condition>oauthV2.OauthV2.VerifyAccessToken.failed</Condition>
     </FaultRule>
     <FaultRule name="rate_limit_exceeded">
-      <Condition>(fault.name Equals "QuotaViolation") or (fault.name Equals "SpikeArrestViolation")</Condition>
+    <!-- APMSPII-1139 capture 429 error from ApplyRateLimiting shared flow for app rate limiting -->
+      <Condition>(error.status.code Equals "429") or (fault.name Equals "QuotaViolation") or (fault.name Equals "SpikeArrestViolation")</Condition>
       <Step>
         <Name>AssignMessage.Errors.RateLimitExceeded</Name>
       </Step>
