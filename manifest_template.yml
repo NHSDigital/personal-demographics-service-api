@@ -81,7 +81,7 @@ apigee:
             value: {{ env.ratelimit | default('300pm') }}
           - name: ratelimiting
           # value: personal-demogrpahics-{{ env.name }}:{{ '{quota:{limit:{{ env.quota }},interval:1,timeunit:minute,enabled:true},spikeArrest:{ratelimit:5ps,enabled:true}}' }}
-            value: personal-demogrpahics-{{ env.name }}:{{ '{quota:{' }}:limit{{ env.quota }},interval:1,timeunit:minute,enabled:true:{{'}}'}}
+            value: personal-demogrpahics-{{ env.name }}:{{ '{quota:{' }}limit:{{ env.quota }},interval:1,timeunit:minute,enabled:true:{{'}}'}}
         description: {{ mode.description }}
         displayName: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
         environments: [ {{ env.name }} ]
