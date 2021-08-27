@@ -25,6 +25,7 @@ APIGEE_ENVIRONMENTS:
     quota: '300'
   - name: int
     display_name_suffix: Integration Testing
+    quota: '300'
   - name: prod
     approval_type: manual
     display_name_suffix: Production
@@ -82,7 +83,7 @@ apigee:
           - name: ratelimiting
           # value: personal-demogrpahics-{{ env.name }}:{{ '{quota:{limit:{{ env.quota }},interval:1,timeunit:minute,enabled:true},spikeArrest:{ratelimit:5ps,enabled:true}}' }}
           # value: personal-demogrpahics-{{ env.name }}:{{ '{"quota":{' }}"limit":{{ env.quota }},"interval":1,"timeunit":"minute","enabled":true{{'}}'}}
-            value: personal-demogrpahics-{{ env.name }}:{{ "{" }}test:{{ "{" }}limit:{{ env.name }},interval:1,timeunit:minute,enabled:true{{ "}}" }}
+            value: personal-demogrpahics-{{ env.name }}:{{ '{' }}quota:{{ '{' }}limit:{{ env.quota }},interval:1,timeunit:minute,enabled:true{{ '}}' }}
         description: {{ mode.description }}
         displayName: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
         environments: [ {{ env.name }} ]
