@@ -75,8 +75,7 @@ apigee:
           - name: ratelimit
             value: {{ env.ratelimit | default('300pm') }}
           - name: ratelimiting
-            value:
-              nested: 123
+            value: personal-demogrpahics-{{ env.name }}:{{ '{quota:{interval:1}}' }}
         description: {{ mode.description }}
         displayName: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
         environments: [ {{ env.name }} ]
