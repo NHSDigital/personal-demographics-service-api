@@ -54,15 +54,15 @@ ACCESS_MODES:
     requireCallbackUrl: false
     description: Patient Access
 
-RATE_LIMITING:
-  quota:
-    limit: 300
-    interval: 1
-    timeunit: "minute"
-    enabled: true
-  spikeArrest:
-    ratelimit: "5ps"
-    enabled: true
+# RATE_LIMITING:
+#   quota:
+#     limit: 300
+#     interval: 1
+#     timeunit: "minute"
+#     enabled: true
+#   spikeArrest:
+#     ratelimit: "5ps"
+#     enabled: true
 
 ---
 
