@@ -93,7 +93,7 @@ apigee:
           - name: ratelimit
             value: {{ env.ratelimit | default('300pm') }}
           - name: ratelimiting
-            value: {{ env.ratelimiting | to_json}}
+            value: "{{ env.ratelimiting | to_json}}"
         description: {{ mode.description }}
         displayName: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
         environments: [ {{ env.name }} ]
