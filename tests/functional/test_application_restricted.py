@@ -214,7 +214,7 @@ def check_which_test_app_to_use(cfg: dict):
         context["APPLICATION_RESTRICTED_API_KEY"] = context[
             "APPLICATION_RESTRICTED_WITH_ASID_API_KEY"
         ]
-        context["SIGNING_KEY"] = context["signing_key_with_asid"]
+        context["SIGNING_KEY"] = context["SIGNING_KEY_WITH_ASID"]
 
 
 @when("I GET a patient")
