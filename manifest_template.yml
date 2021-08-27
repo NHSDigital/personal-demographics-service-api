@@ -2,13 +2,17 @@
 APIGEE_ENVIRONMENTS:
   - name: internal-dev
     display_name_suffix: Internal Development
+    quota: '300'
   # TODO: Remove as we don't want this included in an actual release
   - name: internal-dev-sandbox
     display_name_suffix: Internal Development Sandbox
+    quota: '300'
   - name: internal-qa
     display_name_suffix: Internal QA
+    quota: '300'
   - name: internal-qa-sandbox
     display_name_suffix: Internal QA Sandbox
+    quota: '300'
   - name: ref
     display_name_suffix: Reference
     ratelimit: '31500pm'    # 525 TPS
@@ -18,6 +22,7 @@ APIGEE_ENVIRONMENTS:
   - name: sandbox
     display_name_suffix: Sandbox
     portal_visibility: false
+    quota: '300'
   - name: int
     display_name_suffix: Integration Testing
   - name: prod
@@ -75,7 +80,7 @@ apigee:
           - name: ratelimit
             value: {{ env.ratelimit | default('300pm') }}
           - name: ratelimiting
-            value: personal-demogrpahics-{{ env.name }}:{{ '{quota:{interval:1}}' }}
+            value: personal-demogrpahics-{{ env.name }}:{{ {quota:{ limit:{{ env.quota }}},interval:1,timeunit:minute, enabled:true} }}
         description: {{ mode.description }}
         displayName: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
         environments: [ {{ env.name }} ]
