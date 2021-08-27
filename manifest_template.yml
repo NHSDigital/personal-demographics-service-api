@@ -6,33 +6,33 @@ APIGEE_ENVIRONMENTS:
   # TODO: Remove as we don't want this included in an actual release
   - name: internal-dev-sandbox
     display_name_suffix: Internal Development Sandbox
-    ratelimiting: {'quota': {'enabled': 'true'},'spikeArrest': {'enabled': 'true'}}
+    ratelimiting: '{"quota": {"enabled": "true"}, "spikeArrest": {"enabled": "true"}}'
   - name: internal-qa
     display_name_suffix: Internal QA
-    ratelimiting: {'quota': {'enabled': 'true'},'spikeArrest': {'enabled': 'true'}}
+    ratelimiting: '{"quota": {"enabled": "true"}, "spikeArrest": {"enabled": "true"}}'
   - name: internal-qa-sandbox
     display_name_suffix: Internal QA Sandbox
-    ratelimiting: {'quota': {'enabled': 'true'},'spikeArrest': {'enabled': 'true'}}
+    ratelimiting: '{"quota": {"enabled": "true"}, "spikeArrest": {"enabled": "true"}}'
   - name: ref
     display_name_suffix: Reference
     ratelimit: '31500pm'    # 525 TPS
     quota: '31500'
     # ratelimit: '900pm'    # 15 TPS
     # quota: '900'
-    ratelimiting: {'quota': {'enabled': 'true'},'spikeArrest': {'enabled': 'true'}}
+    ratelimiting: '{"quota": {"enabled": "true"}, "spikeArrest": {"enabled": "true"}}'
   - name: sandbox
     display_name_suffix: Sandbox
     portal_visibility: false
-    ratelimiting: {'quota': {'enabled': 'true'},'spikeArrest': {'enabled': 'true'}}
+    ratelimiting: '{"quota": {"enabled": "true"}, "spikeArrest": {"enabled": "true"}}'
   - name: int
     display_name_suffix: Integration Testing
-    ratelimiting: {'quota': {'enabled': 'true'},'spikeArrest': {'enabled': 'true'}}
+    ratelimiting: '{"quota": {"enabled": "true"}, "spikeArrest": {"enabled": "true"}}'
   - name: prod
     approval_type: manual
     display_name_suffix: Production
     ratelimit: '16200pm'    # Amount Spine indicated they can handle as burst load
     quota: '16200'           # 270 TPS
-    ratelimiting: {'quota': {'enabled': 'true'},'spikeArrest': {'enabled': 'true'}}
+    ratelimiting: '{"quota": {"enabled": "true"}, "spikeArrest": {"enabled": "true"}}'
 
 ACCESS_MODES:
   - name: user-restricted
@@ -56,12 +56,12 @@ ACCESS_MODES:
 
 # RATE_LIMITING:
 #   quota:
-#     limit: 300
+#     limit: '300'
 #     interval: 1
-#     timeunit: "minute"
-#     enabled: true
+#     timeunit: 'minute'
+#     enabled: 'true'
 #   spikeArrest:
-#     ratelimit: "5ps"
+#     ratelimit: '5ps'
 #     enabled: true
 
 ---
@@ -93,7 +93,7 @@ apigee:
           - name: ratelimit
             value: {{ env.ratelimit | default('300pm') }}
           - name: ratelimiting
-            value: "{{ env.ratelimiting | to_json}}"
+            value: {{ env.ratelimiting }}
         description: {{ mode.description }}
         displayName: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
         environments: [ {{ env.name }} ]
