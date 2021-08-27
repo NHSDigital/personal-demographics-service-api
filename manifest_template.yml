@@ -64,8 +64,6 @@ ACCESS_MODES:
 #     ratelimit: '5ps'
 #     enabled: true
 
----
-
 # Manifest definition
 meta:
   schema_version: 1
