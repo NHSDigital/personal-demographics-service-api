@@ -8,6 +8,8 @@ from .config_files import config
 import random
 from time import time
 
+from .config_files.config import BASE_URL, CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
+
 
 async def _set_default_rate_limit(product: ApigeeApiProducts):
     """Updates an Apigee Product with a default rate limit and quota.
@@ -299,18 +301,18 @@ def nhs_login_token_exchange(test_app_and_product):
         """Call identity server to get an access token"""
         test_product, test_app = test_app_and_product
         oauth = OauthHelper(
-            client_id=test_app.client_id,
-            client_secret=test_app.client_secret,
-            redirect_uri=test_app.callback_url,
+            client_id=CLIENT_ID,
+            client_secret=CLIENT_SECRET,
+            redirect_uri=REDIRECT_URI,
         )
 
         id_token_claims = {
             "aud": "tf_-APIM-1",
             "id_status": "verified",
-            "nhs_number": "9912003071",
+            "nhs_number": "9693633172",
             "token_use": "id",
             "auth_time": 1616600683,
-            "iss": "https://internal-dev.api.service.nhs.uk",
+            "iss": BASE_URL,
             "vot": "P9.Cp.Cd",
             "exp": int(time()) + 600,
             "iat": int(time()) - 10,
@@ -322,7 +324,7 @@ def nhs_login_token_exchange(test_app_and_product):
             "sub": "49f470a1-cc52-49b7-beba-0f9cec937c46",
             "aud": "APIM-1",
             "kid": "nhs-login",
-            "iss": "https://internal-dev.api.service.nhs.uk",
+            "iss": BASE_URL,
             "typ": "JWT",
             "exp": 1616604574,
             "iat": 1616600974,

@@ -17,6 +17,7 @@ PDS_BASE_PATH = ENV["pds_base_path"]
 CLIENT_ID = ENV['client_id']
 CLIENT_SECRET = ENV['client_secret']
 TEST_PATIENT_ID = ENV['test_patient_id']
+REDIRECT_URI = ENV['redirect_uri']
 
 # JWT keys
 ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH = ENV['nhs_login_private_key']

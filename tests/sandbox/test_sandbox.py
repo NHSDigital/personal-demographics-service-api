@@ -152,6 +152,12 @@ class TestPDSSandboxSearchSuite:
         helpers.check_response_status_code(response, 400)
         helpers.check_response_headers(response, additional_headers)
 
+    def test_default_parameters_search(self, additional_headers):
+        response = helpers.search_patient(search[9]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[9]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, additional_headers)
+
 
 @pytest.mark.update_scenarios
 class TestPDSSandboxUpdateSyncWrapSuite:
