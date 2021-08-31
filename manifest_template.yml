@@ -72,6 +72,8 @@ apigee:
 {% if mode.nameSuffix == '-patient-access' and env.name == 'prod' %}
             value: private
 {% endif %}
+          - name: ratelimit
+            value: {{ env.ratelimit | default('300pm') }}
           - name: ratelimiting
             value: '{"personal-demographics-pr-702":{"quota":{"limit":{{ env.quota | default("300")}},"interval":1,"timeunit":"minute","enabled":true},"spikeArrest":{"ratelimit":"{{env.ratelimit | default("300pm")}}","enabled":true}}}'
         description: {{ mode.description }}
