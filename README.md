@@ -23,7 +23,8 @@ The contents of this repository are protected by Crown Copyright (C).
 
 ### Requirements
 * make
-* nodejs + npm/yarn
+* nodejs v12 or v14
+* npm/yarn
 * [poetry](https://github.com/python-poetry/poetry)
 
 ### Install

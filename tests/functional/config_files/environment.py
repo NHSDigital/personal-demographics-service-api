@@ -39,7 +39,7 @@ ENV = {
     'client_id': get_env('CLIENT_ID'),
     'client_secret': get_env('CLIENT_SECRET'),
     'nhs_login_private_key': get_env('ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH'),
-    'jwt_private_key': get_env('JWT_PRIVATE_KEY_ABSOLUTE_PATH'),
+    'jwt_private_key': get_env('APPLICATION_RESTRICTED_SIGNING_KEY_PATH'),
     'test_patient_id': get_env('TEST_PATIENT_ID'),
     'auth_token_expiry_ms': get_env('AUTH_TOKEN_EXPIRY_MS'),
     'auth_token_expiry_ms_int': get_env('AUTH_TOKEN_EXPIRY_MS_INT'),
