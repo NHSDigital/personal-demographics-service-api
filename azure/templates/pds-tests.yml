@@ -25,11 +25,6 @@ steps:
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_API_KEY
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_WITH_ASID_API_KEY
 
-  - bash: |
-      export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
-      export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
-    displayName: Export common environment variables
-    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
 
   - bash: |
       export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
@@ -37,7 +32,6 @@ steps:
       export APPLICATION_RESTRICTED_API_KEY="$(JWT_TESTING_API_KEY)"
       export APPLICATION_RESTRICTED_WITH_ASID_API_KEY="$(JWT_TESTING_WITH_ASID_API_KEY)"
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
-      export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
       export KEY_ID="test-1"
       export ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH="$(Pipeline.Workspace)/secrets/$(ID_TOKEN_NHS_LOGIN_PRIVATE_KEY)"
       export JWT_PRIVATE_KEY_ABSOLUTE_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
@@ -61,7 +55,6 @@ steps:
       export APPLICATION_RESTRICTED_API_KEY=" "
       export APPLICATION_RESTRICTED_WITH_ASID_API_KEY=" "
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
-      export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
       export KEY_ID="test-1"
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
@@ -85,7 +78,6 @@ steps:
 
   - bash: |
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
-      export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
       export CLIENT_ID="$(CLIENT_ID)"
       export CLIENT_SECRET="$(CLIENT_SECRET)"
       export REDIRECT_URI="https://nhsd-apim-testing-internal-dev.herokuapp.com/callback"
@@ -107,7 +99,6 @@ steps:
       export APPLICATION_RESTRICTED_API_KEY=" "
       export APPLICATION_RESTRICTED_WITH_ASID_API_KEY=" "
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
-      export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
       export KEY_ID="test-1"
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
@@ -137,7 +128,6 @@ steps:
       export APPLICATION_RESTRICTED_API_KEY=" "
       export APPLICATION_RESTRICTED_WITH_ASID_API_KEY=" "
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
-      export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
       export KEY_ID="test-1"
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
