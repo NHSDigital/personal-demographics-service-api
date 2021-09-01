@@ -126,7 +126,7 @@ async def setup_session(request):
     await product.update_environments([config.ENVIRONMENT])
     oauth = OauthHelper(app.client_id, app.client_secret, app.callback_url)
     # APMSPII-1139 increase token expiry time to provide sufficient time to conduct the tests
-    resp = await oauth.get_token_response(grant_type="authorization_code", timeout=10000)
+    resp = await oauth.get_token_response(grant_type="authorization_code", timeout=20000)
     token = resp["body"]["access_token"]
 
     yield product, app, token
