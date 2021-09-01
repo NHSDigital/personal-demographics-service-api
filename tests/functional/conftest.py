@@ -208,7 +208,7 @@ def sync_wrap_low_wait_update(setup_patch: GenericPdsRequestor, create_random_da
 
 
 def set_quota_and_rate_limit(
-    apigeeObj: Union[ApigeeApiProducts,ApigeeApiDeveloperApps],
+    apigeeObj: Union[ApigeeApiProducts, ApigeeApiDeveloperApps],
     rate_limit: str = "1000ps",
     quota: int = 60000,
     quota_interval: str = "1",
