@@ -44,5 +44,5 @@ ENV = {
     'auth_token_expiry_ms': get_env('AUTH_TOKEN_EXPIRY_MS'),
     'auth_token_expiry_ms_int': get_env('AUTH_TOKEN_EXPIRY_MS_INT'),
     'redirect_uri': get_env('REDIRECT_URI'),
-    'pds_proxy': get_env('PDS_PROXY')
+    'pds_proxy': get_env('PDS_BASE_PATH').replace("/FHIR/R4", "")
 }
