@@ -11,6 +11,7 @@ import asyncio
 import json
 from .utils.helper import find_item_in_dict
 
+
 class HTTPMethods(Enum):
     GET = "GET"
     PATCH = "PATCH"
@@ -115,8 +116,15 @@ def setup_rate_limit_proxy(setup_session):
     }
     set_quota_and_rate_limit(context["product"], rate_limit="1pm", proxy=PDS_PROXY)
 
-    product_attributes = asyncio.run(context["product"].get_product_details())["attributes"]
-    rate_limiting = json.loads(list(filter(lambda item: item["name"] == "ratelimiting", product_attributes))[0]["value"])
+    product_attributes = asyncio.run(
+        context["product"].get_product_details()
+    )["attributes"]
+
+    rate_limiting = json.loads(
+        list(
+            filter(lambda item: item["name"] == "ratelimiting", product_attributes)
+        )[0]["value"]
+    )
 
     assert find_item_in_dict(rate_limiting, 'ratelimit') == "1pm"
     return context
@@ -133,8 +141,15 @@ def setup_quota_proxy(setup_session):
     }
     set_quota_and_rate_limit(context["product"], quota=1, proxy=PDS_PROXY)
 
-    product_attributes = asyncio.run(context["product"].get_product_details())["attributes"]
-    rate_limiting = json.loads(list(filter(lambda item: item["name"] == "ratelimiting", product_attributes))[0]["value"])
+    product_attributes = asyncio.run(
+        context["product"].get_product_details()
+    )["attributes"]
+
+    rate_limiting = json.loads(
+        list(
+            filter(lambda item: item["name"] == "ratelimiting", product_attributes)
+        )[0]["value"]
+    )
 
     assert int(find_item_in_dict(rate_limiting, 'limit')) == 1
     return context
@@ -143,7 +158,7 @@ def setup_quota_proxy(setup_session):
 @pytest.mark.quota
 @pytest.mark.apmspii_1139
 @given("I have an app with a low quota set", target_fixture="context")
-def setup_rate_limit_app(setup_session):
+def setup_quota_app(setup_session):
     context = {
         "product": setup_session[0],
         "app": setup_session[1],
@@ -151,8 +166,15 @@ def setup_rate_limit_app(setup_session):
     }
     set_quota_and_rate_limit(context["app"], quota=1, proxy=PDS_PROXY)
 
-    app_attributes = asyncio.run(context["app"].get_custom_attributes())["attribute"]
-    rate_limiting = json.loads(list(filter(lambda item: item["name"] == "ratelimiting", app_attributes))[0]["value"])
+    app_attributes = asyncio.run(
+        context["app"].get_custom_attributes()
+    )["attribute"]
+
+    rate_limiting = json.loads(
+        list(
+            filter(lambda item: item["name"] == "ratelimiting", app_attributes)
+        )[0]["value"]
+    )
 
     assert int(find_item_in_dict(rate_limiting, 'limit')) == 1
     return context
@@ -169,8 +191,15 @@ def setup_rate_limit_app(setup_session):
     }
     set_quota_and_rate_limit(context["app"], rate_limit="1pm", proxy=PDS_PROXY)
 
-    app_attributes = asyncio.run(context["app"].get_custom_attributes())["attribute"]
-    rate_limiting = json.loads(list(filter(lambda item: item["name"] == "ratelimiting", app_attributes))[0]["value"])
+    app_attributes = asyncio.run(
+        context["app"].get_custom_attributes()
+    )["attribute"]
+
+    rate_limiting = json.loads(
+        list(
+            filter(lambda item: item["name"] == "ratelimiting", app_attributes)
+        )[0]["value"]
+    )
 
     assert find_item_in_dict(rate_limiting, 'ratelimit') == "1pm"
     return context

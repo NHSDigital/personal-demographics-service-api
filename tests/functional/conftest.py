@@ -244,7 +244,7 @@ def set_quota_and_rate_limit(
         }
     })
 
-    rate_limiting = { 'ratelimiting': value }
+    rate_limiting = {'ratelimiting': value}
 
     if (isinstance(apigeeObj, ApigeeApiProducts)):
         asyncio.run(apigeeObj.update_attributes(rate_limiting))
