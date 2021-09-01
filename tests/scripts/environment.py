@@ -23,19 +23,3 @@ class EnvVarWrapper(object):
             return file_content
         else:
             return value
-
-
-ENV = EnvVarWrapper(
-    **{
-        # Apigee
-        "environment": "APIGEE_ENVIRONMENT",
-        # PDS
-        "pds_base_path": "PDS_BASE_PATH",
-        # OAUTH
-        "client_id": "CLIENT_ID",
-        "client_secret": "CLIENT_SECRET",
-        "redirect_uri": "REDIRECT_URI",
-        "authenticate_url": "AUTHENTICATE_URL",
-        "test_patient_id": "TEST_PATIENT_ID",
-    }
-)
