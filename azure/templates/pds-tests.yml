@@ -66,6 +66,7 @@ steps:
       export AUTH_TOKEN_EXPIRY_MS="$(AUTH_TOKEN_EXPIRY_MS)"
       export AUTH_TOKEN_EXPIRY_MS_INT="$(AUTH_TOKEN_EXPIRY_MS_INT)"
       export REDIRECT_URI="https://nhsd-apim-testing-$(ENVIRONMENT).herokuapp.com/callback"
+      export PDS_PROXY="$(SERVICE_NAME)"
 
       poetry run pytest -v tests/functional/test_proxy_behaviour.py --junitxml=tests/proxy-behaviour-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run proxy behaviour tests
