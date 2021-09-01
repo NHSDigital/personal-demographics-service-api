@@ -309,7 +309,7 @@ def nhs_login_token_exchange(test_app_and_product):
         id_token_claims = {
             "aud": "tf_-APIM-1",
             "id_status": "verified",
-            "nhs_number": "9693633172",
+            "nhs_number": config.TEST_PATIENT_ID,
             "token_use": "id",
             "auth_time": 1616600683,
             "iss": BASE_URL,
@@ -331,15 +331,13 @@ def nhs_login_token_exchange(test_app_and_product):
             "alg": "RS512",
             "jti": "b68ddb28-e440-443d-8725-dfe0da330118",
         }
-        with open(config.ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH, "r") as f:
-            contents = f.read()
 
         client_assertion_jwt = oauth.create_jwt(kid="test-1")
         id_token_jwt = oauth.create_id_token_jwt(
             algorithm="RS512",
             claims=id_token_claims,
             headers=id_token_headers,
-            signing_key=contents,
+            signing_key=config.ID_TOKEN_NHS_LOGIN_PRIVATE_KEY,
         )
 
         # When
