@@ -1,3 +1,6 @@
+variables:
+    APIGEE_ENVIORNMENT: "$(ENVIRONMENT)"
+
 steps:
 
   - bash: poetry install
