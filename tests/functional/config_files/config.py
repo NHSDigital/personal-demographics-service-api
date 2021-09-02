@@ -12,6 +12,7 @@ KEY_ID = ENV["key_id"]
 
 # PDS
 PDS_BASE_PATH = ENV["pds_base_path"]
+PDS_PROXY = ENV['pds_proxy']
 
 # App details
 CLIENT_ID = ENV['client_id']

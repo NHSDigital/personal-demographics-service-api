@@ -3,7 +3,10 @@ from tests.scripts.pds_request import PdsRecord
 import pytest
 from polling2 import poll, TimeoutException
 from pytest_bdd import scenario, given, when, then, parsers
-from .config_files.config import TEST_PATIENT_ID
+from .config_files.config import TEST_PATIENT_ID, PDS_PROXY
+from .utils.helper import find_item_in_dict
+import asyncio
+import json
 
 
 @pytest.mark.apmspii_832
@@ -49,8 +52,19 @@ def setup_rate_limit_proxy(setup_patch):
         "app": setup_patch["app"],
         "token": setup_patch["token"],
     }
-    set_quota_and_rate_limit(context["product"], rate_limit="1pm")
-    assert context["product"].rate_limit == "1pm"
+    set_quota_and_rate_limit(context["product"], rate_limit="1pm", proxy=PDS_PROXY)
+
+    product_attributes = asyncio.run(
+        context["product"].get_product_details()
+    )["attributes"]
+
+    rate_limiting = json.loads(
+        list(
+            filter(lambda item: item["name"] == "ratelimiting", product_attributes)
+        )[0]["value"]
+    )
+
+    assert find_item_in_dict(rate_limiting, 'ratelimit') == "1pm"
     return context
 
 
