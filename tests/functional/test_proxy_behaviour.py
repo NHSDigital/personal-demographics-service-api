@@ -6,7 +6,7 @@ from polling2 import poll, TimeoutException
 from http import HTTPStatus
 from tests.scripts.pds_request import GenericPdsRequestor
 from pytest_bdd import scenario, given, when, then, parsers
-from .config_files.config import BASE_URL, PDS_BASE_PATH, TEST_PATIENT_ID, PDS_PROXY
+from .config_files.config import BASE_URL, PDS_BASE_PATH, TEST_PATIENT_ID, SERVICE_NAME
 import asyncio
 import json
 from .utils.helper import find_item_in_dict
@@ -189,7 +189,7 @@ def setup_rate_limit_app(setup_session):
         "app": setup_session[1],
         "token": setup_session[2],
     }
-    set_quota_and_rate_limit(context["app"], rate_limit="1pm", proxy=PDS_PROXY)
+    set_quota_and_rate_limit(context["app"], rate_limit="1pm", proxy=SERVICE_NAME)
 
     app_attributes = asyncio.run(
         context["app"].get_custom_attributes()
