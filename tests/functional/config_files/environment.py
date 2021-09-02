@@ -28,11 +28,11 @@ def get_env_file(variable_name: str) -> str:
         raise RuntimeError(f"Variable is not set, Check {variable_name}.")
 
 
-def get_proxy_name (base_path, environment):
+def get_proxy_name(base_path, environment):
     if "-pr-" in base_path:
-        return base_path.replace("/FHIR/R4","")
+        return base_path.replace("/FHIR/R4", "")
 
-    return f'{base_path.replace("/FHIR/R4","")}-{environment}'
+    return f'{base_path.replace("/FHIR/R4", "")}-{environment}'
 
 
 ENV = {
