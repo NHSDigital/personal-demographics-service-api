@@ -6,7 +6,7 @@ from polling2 import poll, TimeoutException
 from http import HTTPStatus
 from tests.scripts.pds_request import GenericPdsRequestor
 from pytest_bdd import scenario, given, when, then, parsers
-from .config_files.config import BASE_URL, PDS_BASE_PATH, TEST_PATIENT_ID, PDS_PROXY
+from .config_files.config import BASE_URL, PDS_BASE_PATH, TEST_PATIENT_ID, PROXY_NAME
 import asyncio
 import json
 from .utils.helper import find_item_in_dict
@@ -114,7 +114,7 @@ def setup_rate_limit_proxy(setup_session):
         "app": app,
         "token": token,
     }
-    set_quota_and_rate_limit(context["product"], rate_limit="1pm", proxy=PDS_PROXY)
+    set_quota_and_rate_limit(context["product"], rate_limit="1pm", proxy=PROXY_NAME)
 
     product_attributes = asyncio.run(
         context["product"].get_product_details()
@@ -139,7 +139,7 @@ def setup_quota_proxy(setup_session):
         "app": setup_session[1],
         "token": setup_session[2],
     }
-    set_quota_and_rate_limit(context["product"], quota=1, proxy=PDS_PROXY)
+    set_quota_and_rate_limit(context["product"], quota=1, proxy=PROXY_NAME)
 
     product_attributes = asyncio.run(
         context["product"].get_product_details()
@@ -164,7 +164,7 @@ def setup_quota_app(setup_session):
         "app": setup_session[1],
         "token": setup_session[2],
     }
-    set_quota_and_rate_limit(context["app"], quota=1, proxy=PDS_PROXY)
+    set_quota_and_rate_limit(context["app"], quota=1, proxy=PROXY_NAME)
 
     app_attributes = asyncio.run(
         context["app"].get_custom_attributes()
@@ -189,7 +189,7 @@ def setup_rate_limit_app(setup_session):
         "app": setup_session[1],
         "token": setup_session[2],
     }
-    set_quota_and_rate_limit(context["app"], rate_limit="1pm", proxy=PDS_PROXY)
+    set_quota_and_rate_limit(context["app"], rate_limit="1pm", proxy=PROXY_NAME)
 
     app_attributes = asyncio.run(
         context["app"].get_custom_attributes()

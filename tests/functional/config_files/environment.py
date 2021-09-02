@@ -28,6 +28,13 @@ def get_env_file(variable_name: str) -> str:
         raise RuntimeError(f"Variable is not set, Check {variable_name}.")
 
 
+def get_proxy_name(base_path, environment):
+    if "-pr-" in base_path:
+        return base_path.replace("/FHIR/R4", "")
+
+    return f'{base_path.replace("/FHIR/R4", "")}-{environment}'
+
+
 ENV = {
     "signing_key": get_env_file("APPLICATION_RESTRICTED_SIGNING_KEY_PATH"),
     "signing_key_with_asid": get_env_file("APPLICATION_RESTRICTED_WITH_ASID_SIGNING_KEY_PATH"),
@@ -44,5 +51,5 @@ ENV = {
     'auth_token_expiry_ms': get_env('AUTH_TOKEN_EXPIRY_MS'),
     'auth_token_expiry_ms_int': get_env('AUTH_TOKEN_EXPIRY_MS_INT'),
     'redirect_uri': get_env('REDIRECT_URI'),
-    'pds_proxy': get_env('PDS_BASE_PATH').replace("/FHIR/R4", "")
+    'proxy_name': get_proxy_name(get_env("PDS_BASE_PATH"), get_env("APIGEE_ENVIRONMENT"))
 }
