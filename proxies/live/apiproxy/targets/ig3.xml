@@ -5,6 +5,10 @@
       <Step>
         <Name>OauthV2.VerifyAccessToken</Name>
       </Step>
+      <!-- APMSPII-1139 rate litmiting to be handle by shared flow must be after authorization policy -->
+      <Step>
+        <Name>FlowCallout.ApplyRateLimiting</Name>
+      </Step>
       <!-- Set flow variable 'access-mode' by inspecting the token's scopes.
       First set to least-privilege (application restricted) then look for scopes indicating higher privilege, overwriting as appropriate.
       'scope' is a space-separated string of scopes, determined by the Application's API Product assignments.
@@ -32,12 +36,6 @@
       <Step>
         <Name>FlowCallout.UserRoleService</Name>
         <Condition>(access-mode Equals "user-restricted")</Condition>
-      </Step>
-      <Step>
-        <Name>Quota</Name>
-      </Step>
-      <Step>
-        <Name>SpikeArrest</Name>
       </Step>
       <Step>
         <Name>AssignMessage.AddUserIdHeader</Name>
@@ -167,8 +165,9 @@
         <Name>AssignMessage.Errors.OAuthPolicyResponse</Name>
       </Step>
     </FaultRule>
+    <!-- APMSPII-1139 capture 429 error from ApplyRateLimiting shared flow -->
     <FaultRule name="rate_limit_exceeded">
-      <Condition>(fault.name Equals "QuotaViolation") or (fault.name Equals "SpikeArrestViolation")</Condition>
+      <Condition>(error.status.code Equals "429")</Condition>
       <Step>
         <Name>AssignMessage.Errors.RateLimitExceeded</Name>
       </Step>

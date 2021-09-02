@@ -33,6 +33,7 @@ KEY_ID = ENV["key_id"]
 
 # PDS
 PDS_BASE_PATH = ENV["pds_base_path"]
+PDS_PROXY = ENV['redirect_uri'].replace("/FHIR/R4", "")
 
 # App details
 CLIENT_ID = ENV['client_id']
