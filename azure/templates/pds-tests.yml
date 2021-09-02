@@ -30,6 +30,10 @@ steps:
     displayName: Expose common variables
 
   - bash: |
+      echo "my environment variable is $PDS_BASE_PATH"
+    displayName: Check common variables
+
+  - bash: |
       echo ${{ variables.PDS_BASE_PATH }}
       export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
       export APPLICATION_RESTRICTED_WITH_ASID_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_WITH_ASID_PRIVATE_KEY)"
