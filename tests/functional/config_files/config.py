@@ -1,3 +1,4 @@
+from ..utils.helper import get_proxy_name
 from ...scripts.environment import EnvVarWrapper
 
 ENV = EnvVarWrapper(
@@ -33,14 +34,13 @@ KEY_ID = ENV["key_id"]
 
 # PDS
 PDS_BASE_PATH = ENV["pds_base_path"]
+PROXY_NAME = get_proxy_name(PDS_BASE_PATH, ENVIRONMENT)
 
 # App details
 CLIENT_ID = ENV['client_id']
 CLIENT_SECRET = ENV['client_secret']
 TEST_PATIENT_ID = ENV['test_patient_id']
 REDIRECT_URI = ENV['redirect_uri']
-PDS_PROXY = PDS_BASE_PATH.replace("/FHIR/R4", "") if "pr" in PDS_BASE_PATH \
-    else f"{PDS_BASE_PATH.replace('/FHIR/R4', '')}-{ENVIRONMENT}"
 
 # JWT keys
 ID_TOKEN_NHS_LOGIN_PRIVATE_KEY = ENV['nhs_login_private_key']
