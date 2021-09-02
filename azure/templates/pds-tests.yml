@@ -1,7 +1,3 @@
-variables:
-    - name: PDS_BASE_PATH
-      value: SERVICE_BASE_PATH
-
 steps:
 
   - bash: poetry install
@@ -29,6 +25,9 @@ steps:
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_API_KEY
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_WITH_ASID_API_KEY
 
+  - bash: |
+      echo '##vso[task.setvariable variable=PDS_BASE_PATH]$(SERVICE_BASE_PATH)'
+    displayName: Expose common variables
 
   - bash: |
       export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
