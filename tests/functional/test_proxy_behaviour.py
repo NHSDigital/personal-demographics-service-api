@@ -115,6 +115,7 @@ def setup_rate_limit_proxy(setup_session):
         "token": token,
     }
     set_quota_and_rate_limit(context["product"], rate_limit="1pm", proxy=SERVICE_NAME)
+    print(SERVICE_NAME)
 
     product_attributes = asyncio.run(
         context["product"].get_product_details()

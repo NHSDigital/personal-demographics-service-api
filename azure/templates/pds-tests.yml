@@ -68,7 +68,7 @@ steps:
       export REDIRECT_URI="https://nhsd-apim-testing-$(ENVIRONMENT).herokuapp.com/callback"
       export SERVICE_NAME="$(SERVICE_NAME)"
 
-      poetry run pytest -v tests/functional/test_proxy_behaviour.py --junitxml=tests/proxy-behaviour-test-report.xml --reruns 3 --reruns-delay 1
+      poetry run pytest -v -s tests/functional/test_proxy_behaviour.py --junitxml=tests/proxy-behaviour-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run proxy behaviour tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
 
