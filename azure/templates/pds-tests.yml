@@ -41,9 +41,6 @@ steps:
       echo '##vso[task.setvariable variable=AUTH_TOKEN_EXPIRY_MS]$(AUTH_TOKEN_EXPIRY_MS)'
       echo '##vso[task.setvariable variable=AUTH_TOKEN_EXPIRY_MS_INT]$(AUTH_TOKEN_EXPIRY_MS_INT)'
       echo '##vso[task.setvariable variable=REDIRECT_URI]https://nhsd-apim-testing-$(ENVIRONMENT).herokuapp.com/callback'
-      echo '##vso[task.setvariable variable=APIGEE_API_TOKEN]$(secret.AccessToken)'
-      echo '##vso[task.setvariable variable=OAUTH_BASE_URI]https://$(ENVIRONMENT).api.service.nhs.uk'
-      echo '##vso[task.setvariable variable=OAUTH_PROXY]oauth2'
     displayName: Expose common variables
 
   - bash: |
@@ -58,6 +55,9 @@ steps:
       failTaskOnFailedTests: true
 
   - bash: |
+      export APIGEE_API_TOKEN="$(secret.AccessToken)"
+      export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
+      export OAUTH_PROXY="oauth2"
 
       poetry run pytest -v tests/functional/test_proxy_behaviour.py --junitxml=tests/proxy-behaviour-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run proxy behaviour tests
@@ -82,6 +82,9 @@ steps:
       failTaskOnFailedTests: true
 
   - bash: |
+      export APIGEE_API_TOKEN="$(secret.AccessToken)"
+      export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
+      export OAUTH_PROXY="oauth2"
 
       poetry run pytest -v tests/functional/test_sync_wrap.py --junitxml=tests/sync-wrap-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run sync wrap tests
@@ -94,6 +97,9 @@ steps:
       failTaskOnFailedTests: true
 
   - bash: |
+      export APIGEE_API_TOKEN="$(secret.AccessToken)"
+      export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
+      export OAUTH_PROXY="oauth2"
 
       poetry run pytest -v tests/functional/test_patient_access.py --junitxml=tests/patient-access-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run patient access tests
