@@ -17,7 +17,7 @@ class TestUserRestrictedPatientAccess:
             "X-Request-ID": str(uuid.uuid4()),
         }
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9693633172",
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}",
             headers=headers,
         )
 
@@ -83,7 +83,7 @@ class TestUserRestrictedPatientAccess:
         }
 
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9693633172",
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}",
             headers=headers,
         )
 
@@ -103,7 +103,7 @@ class TestUserRestrictedPatientAccess:
             "Content-Type": "application/json-patch+json",
         }
         r = requests.patch(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9693633172",
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}",
             headers=headers,
             json=patch_body,
         )
@@ -129,7 +129,7 @@ class TestUserRestrictedPatientAccess:
         }
 
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9693633172",
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}",
             headers=headers,
         )
         Etag = r.headers["Etag"]
@@ -173,7 +173,7 @@ class TestUserRestrictedPatientAccess:
         }
 
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9693633172",
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}",
             headers=headers,
         )
         Etag = r.headers["Etag"]
@@ -210,7 +210,7 @@ class TestUserRestrictedPatientAccess:
             "X-Request-ID": str(uuid.uuid4()),
         }
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9912003071",
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}",
             headers=headers,
         )
 
@@ -234,7 +234,7 @@ class TestUserRestrictedPatientAccess:
             "X-Request-ID": str(uuid.uuid4()),
         }
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9912003071",
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}",
             headers=headers,
         )
 
