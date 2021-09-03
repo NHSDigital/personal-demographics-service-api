@@ -1,5 +1,18 @@
-from .environment import ENV
 
+from ...scripts.environment import EnvVarWrapper
+
+
+ENV = EnvVarWrapper(
+    **{
+        "environment": "APIGEE_ENVIRONMENT",
+        "pds_base_path": "PDS_BASE_PATH",
+        'client_id': 'CLIENT_ID',
+        'client_secret': 'CLIENT_SECRET',
+        'redirect_uri': 'REDIRECT_URI',
+        'authenticate_url': 'AUTHENTICATE_URL',
+        'test_patient_id': 'TEST_PATIENT_ID',
+    }
+)
 
 # Api Details
 ENVIRONMENT = ENV["environment"]

@@ -7,6 +7,8 @@ from api_test_utils.apigee_api_products import ApigeeApiProducts
 from .config_files import config
 import random
 from time import time
+import json
+from typing import Union
 
 from .config_files.config import BASE_URL, CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
 
@@ -123,7 +125,8 @@ async def setup_session(request):
 
     await product.update_environments([config.ENVIRONMENT])
     oauth = OauthHelper(app.client_id, app.client_secret, app.callback_url)
-    resp = await oauth.get_token_response(grant_type="authorization_code")
+    # APMSPII-1139 increase token expiry time to provide sufficient time to conduct the tests
+    resp = await oauth.get_token_response(grant_type="authorization_code", timeout=20000)
     token = resp["body"]["access_token"]
 
     yield product, app, token
@@ -205,25 +208,50 @@ def sync_wrap_low_wait_update(setup_patch: GenericPdsRequestor, create_random_da
 
 
 def set_quota_and_rate_limit(
-    product: ApigeeApiProducts,
+    apigeeObj: Union[ApigeeApiProducts, ApigeeApiDeveloperApps],
     rate_limit: str = "1000ps",
     quota: int = 60000,
     quota_interval: str = "1",
-    quota_time_unit: str = "minute"
+    quota_time_unit: str = "minute",
+    quota_enabled: bool = True,
+    rate_enabled: bool = True,
+    proxy: str = ""
 ) -> None:
-    """Sets the quota and rate limit on an apigee product.
+    """Sets the quota and rate limit on an apigee product or app.
 
     Args:
-        product (ApigeeApiProducts): Apigee product
+        obj (Union[ApigeeApiProducts,ApigeeApiDeveloperApps]): Apigee product or Apigee app
         rate_limit (str): The rate limit to be set.
         quota (int): The amount of requests per quota interval.
         quoata_interval (str): The length of a quota interval in quota units.
         quota_time_unit (str): The quota unit length e.g. minute.
+        quota_enabled (bool): Enable or disable proxy level quota.
+        rate_enabled (bool): Enable or disable proxy level spike arrest.
+        proxy (str): The proxy to apply rate limiting to.
     """
-    asyncio.run(product.update_ratelimits(quota=quota,
-                                          quota_interval=quota_interval,
-                                          quota_time_unit=quota_time_unit,
-                                          rate_limit=rate_limit))
+    value = json.dumps({
+        proxy: {
+            "quota": {
+                "limit": quota,
+                "interval": quota_interval,
+                "timeunit": quota_time_unit,
+                "enabled": quota_enabled
+            },
+            "spikeArrest": {
+                "ratelimit": rate_limit,
+                "enabled": rate_enabled
+            }
+        }
+    })
+
+    rate_limiting = {'ratelimiting': value}
+
+    if (isinstance(apigeeObj, ApigeeApiProducts)):
+        asyncio.run(apigeeObj.update_attributes(rate_limiting))
+    elif isinstance(apigeeObj, ApigeeApiDeveloperApps):
+        asyncio.run(apigeeObj.set_custom_attributes(rate_limiting))
+    else:
+        raise TypeError("Please provide an Apigee product or Apigee app")
 
 
 @pytest.fixture()
@@ -309,7 +337,7 @@ def nhs_login_token_exchange(test_app_and_product):
         id_token_claims = {
             "aud": "tf_-APIM-1",
             "id_status": "verified",
-            "nhs_number": "9693633172",
+            "nhs_number": config.TEST_PATIENT_ID,
             "token_use": "id",
             "auth_time": 1616600683,
             "iss": BASE_URL,
@@ -331,15 +359,13 @@ def nhs_login_token_exchange(test_app_and_product):
             "alg": "RS512",
             "jti": "b68ddb28-e440-443d-8725-dfe0da330118",
         }
-        with open(config.ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH, "r") as f:
-            contents = f.read()
 
         client_assertion_jwt = oauth.create_jwt(kid="test-1")
         id_token_jwt = oauth.create_id_token_jwt(
             algorithm="RS512",
             claims=id_token_claims,
             headers=id_token_headers,
-            signing_key=contents,
+            signing_key=config.ID_TOKEN_NHS_LOGIN_PRIVATE_KEY,
         )
 
         # When
