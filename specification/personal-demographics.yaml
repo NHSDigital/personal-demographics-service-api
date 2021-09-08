@@ -83,11 +83,12 @@ info:
      
     ### Healthcare worker access
     This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
-
+    - it is available in production
     - we might make breaking changes, but only if we cannot avoid it, and we will give advance notice
         
     ### Patient access
     This access mode is in [alpha](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
+    - it is available for testing in the integration environment, but not for production use
     - we might make breaking changes, but only if we cannot avoid it, and we will give advance notice
     
     ### Roadmap
