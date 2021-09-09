@@ -69,6 +69,8 @@ properties:
     maxItems: 5
     items:
       type: string
+      # TODO: maxLength
+      # TODO: minLength
     example:
       - 1 Trevelyan Square
       - Boar Lane

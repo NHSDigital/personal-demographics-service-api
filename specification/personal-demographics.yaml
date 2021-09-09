@@ -661,6 +661,7 @@ paths:
                     example: 1
                   entry:
                     type: array
+                    maxItems: 50
                     description: |
                       A list of matched patients. Empty if none found. The patients are ordered by match score, best first. A maximum of 50 patients are returned.
                     items:
@@ -1788,6 +1789,7 @@ paths:
                     example: 1
                   entry:
                     type: array
+                    # TODO: maxItems
                     description: |
                       A list of related people details attached to the patient. 
                     items:

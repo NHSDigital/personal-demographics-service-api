@@ -19,6 +19,7 @@ properties:
         type: string
         description: Coded value for the other contact system in place.
         example: textphone
+        # TODO: enum?
       display:
         description: Display-friendly representation of the other contact system code.
         type: string

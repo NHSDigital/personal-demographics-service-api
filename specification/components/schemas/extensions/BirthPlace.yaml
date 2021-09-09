@@ -13,15 +13,20 @@ properties:
   valueAddress:
     type: object
     additionalProperties: false
+    # TODO: required properties?
     properties:
       city:
         type: string
         description: Town or city of birth.
         example: Manchester
+        # TODO: minLength?
+        # TODO: maxLength?
       district:
         type: string
         description: County or metropolitan district of birth.
         example: Greater Manchester 
+        # TODO: minLength?
+        # TODO: maxLength?
       country:
         type: string
         description: |

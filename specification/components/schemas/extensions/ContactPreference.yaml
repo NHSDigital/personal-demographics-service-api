@@ -56,6 +56,7 @@ properties:
                           * 12 - Braille
                           * 13 - Audio tape
                         example: "12"
+                        # TODO: enum?
                       display:
                         type: string
                         description: Display-friendly representation of the preferred written communication format code.
@@ -107,6 +108,7 @@ properties:
                           * 7	- Sign language
                           * 8	- No Telephone contact
                         example: "1"
+                        # TODO: enum?
                       display:
                         type: string
                         description: Display-friendly representation of the preferred contact method code.

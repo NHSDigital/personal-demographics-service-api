@@ -70,6 +70,7 @@ properties:
           type: string
           description: Symbol in syntax defined by the system.
           example:  "Guardian"
+          # TODO: enum?
         display:
           type: string
           description: Human-friendly display representation defined by the system.

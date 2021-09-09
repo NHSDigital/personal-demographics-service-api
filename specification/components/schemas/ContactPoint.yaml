@@ -18,6 +18,8 @@ properties:
   value:
     description: Phone number, email address, or other identifier for use with contact system.
     type: string
+    # TODO: minLength
+    # TODO: maxLength
     example: '01632960587'
   use:
     type: string

@@ -38,23 +38,31 @@ properties:
     items:
       type: string
       maxLength: 35
+      # TODO: minlength?
       example: Jane
   family:
     type: string
     maxLength: 35
+    # TODO: minlength?
     description: Family name (often called Surname).
     example: Smith
   prefix:
     type: array
+    # TODO: maxItems?
     description: Name prefixes, titles, and prenominals.
     example: [Mrs]
     items:
       type: string
       example: Mrs
+      # TODO: minLength?
+      # TODO: maxLength?
   suffix:
     type: array
+    # TODO: maxItems?
     description: Name suffices and postnominals.
     example: [MBE, PhD]
     items:
       type: string
+      # TODO: maxLength?
+      # TODO: minLength?
       example: MBE
