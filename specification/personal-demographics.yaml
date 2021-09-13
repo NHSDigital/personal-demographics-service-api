@@ -1339,8 +1339,8 @@ paths:
           * `Mobile Home` - the address of a patient's mobile home, parked for a specific period of time, e.g. the address of a caravan park
           * `Holiday Home` - the address for a patient during a holiday
         * if a search request uses an address which is not the patients `home` address, a match may be found if the patient record contains the address used in the search request. It is important to remember that the returned patient record will still display the patients `home` address, and not the address used in the original search request. This may mean this is not suitable for some services, for example, if the home address is either:
-          *Not known by the requester.
-          *Not to be disclosed to the requester.
+          * Not known by the requester.
+          * Not to be disclosed to the requester.
 
         ### Communication
 
