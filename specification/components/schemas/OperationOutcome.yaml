@@ -62,7 +62,7 @@ properties:
           $ref: 'ErrorCode.yaml'
         diagnostics:
           type: string
-          description: Additional diagnostic information about the issue.
+          description: Additional diagnostic information about the issue. This information is subject to change.
           example: Invalid value - 2019-01 in field 'birthDate'
         expression:
           type: string
