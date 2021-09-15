@@ -448,6 +448,8 @@ paths:
         Note that:
         * we record an access request in our audit trail for all patients matched in a PDS search
         * it is almost certainly a good idea to display search results in descending score order - best match first
+
+        Please consider the information your application returns to users. For example a patient's temporary address can be used to perform a successful search. The home address will be included in the response. Do not share this information unless you need to.
         
         ## Sandbox testing
         You can test the following scenarios in our sandbox environment:
@@ -1331,9 +1333,6 @@ paths:
           * `Convalescence Home` - the address for a patient during a period of recovery
           * `Mobile Home` - the address of a patient's mobile home, parked for a specific period of time, e.g. the address of a caravan park
           * `Holiday Home` - the address for a patient during a holiday
-        * if a search request uses an address which is not the patients `home` address, a match may be found if the patient record contains the address used in the search request. It is important to remember that the returned patient record will still display the patients `home` address, and not the address used in the original search request. This may mean this is not suitable for some services, for example, if the home address is either:
-          * Not known by the requester.
-          * Not to be disclosed to the requester.
 
         ### Communication
 
