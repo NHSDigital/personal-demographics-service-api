@@ -8,7 +8,7 @@ Intended for "sandbox" functionality, and is the target endpoint for the hosted 
 
 ```
 npm install
-npm run serve
+npm start
 ```
 
  * Use the examples from the OAS (`components/examples/`) sym-linking them into the app.
