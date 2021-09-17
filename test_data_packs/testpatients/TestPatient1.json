@@ -1,0 +1,119 @@
+{
+    "address": [
+        {
+            "extension": [
+                {
+                    "extension": [
+                        {
+                            "url": "type",
+                            "valueCoding": {
+                                "code": "PAF",
+                                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType"
+                            }
+                        },
+                        {
+                            "url": "value",
+                            "valueString": "07339806"
+                        }
+                    ],
+                    "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey"
+                }
+            ],
+            "id": "go79",
+            "line": [
+                "1 RAVENSFIELD GARDENS",
+                "EPSOM",
+                "SURREY"
+            ],
+            "period": {
+                "start": "2011-06-23"
+            },
+            "postalCode": "KT19 0ST",
+            "use": "home"
+        }
+    ],
+    "birthDate": "2008-09-20",
+    "gender": "female",
+    "generalPractitioner": [
+        {
+            "id": "dp4q",
+            "identifier": {
+                "period": {
+                    "start": "2011-07-04"
+                },
+                "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+                "value": "H81109"
+            },
+            "type": "Organization"
+        }
+    ],
+    "id": "9449305552",
+    "identifier": [
+        {
+            "extension": [
+                {
+                    "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                    "valueCodeableConcept": {
+                        "coding": [
+                            {
+                                "code": "01",
+                                "display": "Number present and verified",
+                                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                "version": "1.0.0"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "system": "https://fhir.nhs.uk/Id/nhs-number",
+            "value": "9449305552"
+        }
+    ],
+    "meta": {
+        "security": [
+            {
+                "code": "U",
+                "display": "unrestricted",
+                "system": "https://www.hl7.org/fhir/valueset-security-labels.html"
+            }
+        ],
+        "versionId": "9"
+    },
+    "name": [
+        {
+            "family": "CHISLETT",
+            "given": [
+                "OCTAVIA"
+            ],
+            "id": "frkl",
+            "period": {
+                "start": "2011-05-28"
+            },
+            "prefix": [
+                "MS"
+            ],
+            "use": "usual"
+        }
+    ],
+    "resourceType": "Patient",
+    "telecom": [
+        {
+            "id": "63FDB79C",
+            "period": {
+                "start": "2019-03-21"
+            },
+            "system": "email",
+            "use": "home",
+            "value": "a@b.com"
+        },
+        {
+            "id": "706DA27A",
+            "period": {
+                "start": "2020-07-01"
+            },
+            "system": "phone",
+            "use": "home",
+            "value": "0113554466"
+        }
+    ]
+}
