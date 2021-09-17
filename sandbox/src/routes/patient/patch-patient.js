@@ -98,6 +98,7 @@ module.exports = [
 
             const messageId = fhirHelper.createMessageId();
             h.context.messages[messageId] = patchedPatient;
+            console.log(JSON.stringify(h.context.messages))
             return fhirHelper.createAcceptedResponse(h, messageId);
         }
     }
