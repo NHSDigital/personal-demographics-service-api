@@ -1,0 +1,120 @@
+{
+    "address": [
+        {
+            "extension": [
+                {
+                    "extension": [
+                        {
+                            "url": "type",
+                            "valueCoding": {
+                                "code": "PAF",
+                                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType"
+                            }
+                        },
+                        {
+                            "url": "value",
+                            "valueString": "07345281"
+                        }
+                    ],
+                    "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey"
+                }
+            ],
+            "id": "gnwn",
+            "line": [
+                "1 Danetree Close",
+                "Epsom",
+                "Surrey"
+            ],
+            "period": {
+                "start": "2011-06-23"
+            },
+            "postalCode": "KT19 9SU",
+            "use": "home"
+        }
+    ],
+    "birthDate": "2007-04-28",
+    "gender": "male",
+    "generalPractitioner": [
+        {
+            "id": "dp78",
+            "identifier": {
+                "period": {
+                    "start": "2011-02-18"
+                },
+                "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+                "value": "H81109"
+            },
+            "type": "Organization"
+        }
+    ],
+    "id": "9449306052",
+    "identifier": [
+        {
+            "extension": [
+                {
+                    "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                    "valueCodeableConcept": {
+                        "coding": [
+                            {
+                                "code": "01",
+                                "display": "Number present and verified",
+                                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                "version": "1.0.0"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "system": "https://fhir.nhs.uk/Id/nhs-number",
+            "value": "9449306052"
+        }
+    ],
+    "meta": {
+        "security": [
+            {
+                "code": "U",
+                "display": "unrestricted",
+                "system": "https://www.hl7.org/fhir/valueset-security-labels.html"
+            }
+        ],
+        "versionId": "12"
+    },
+    "name": [
+        {
+            "family": "Jump",
+            "given": [
+                "Cuthbert",
+                "Sebastian"
+            ],
+            "id": "frfe",
+            "period": {
+                "start": "2018-05-04"
+            },
+            "prefix": [
+                "Mr"
+            ],
+            "use": "usual"
+        }
+    ],
+    "resourceType": "Patient",
+    "telecom": [
+        {
+            "id": "24BAB94D",
+            "period": {
+                "start": "2020-07-01"
+            },
+            "system": "email",
+            "use": "home",
+            "value": "a@b.com"
+        },
+        {
+            "id": "17A5210E",
+            "period": {
+                "start": "2020-07-01"
+            },
+            "system": "phone",
+            "use": "home",
+            "value": "0113554466"
+        }
+    ]
+}
