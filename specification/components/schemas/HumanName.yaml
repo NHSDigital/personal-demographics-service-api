@@ -46,15 +46,19 @@ properties:
     example: Smith
   prefix:
     type: array
+    # TODO: maxItems. 10 according to Data Dictionary
     description: Name prefixes, titles, and prenominals.
     example: [Mrs]
     items:
       type: string
       example: Mrs
+      # TODO maxLength: 35 according to Data Dictionary but needs to be verified. Attempted to black box it but not successful.
   suffix:
     type: array
+    # TODO: maxItems?
     description: Name suffices and postnominals.
     example: [MBE, PhD]
     items:
       type: string
+      # TODO maxLength: 35 according to Data Dictionary but needs to be verified. Attempted to black box it but not successful.
       example: MBE

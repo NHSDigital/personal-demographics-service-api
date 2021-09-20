@@ -18,10 +18,12 @@ properties:
         type: string
         description: Town or city of birth.
         example: Manchester
+        maxLength: 35
       district:
         type: string
         description: County or metropolitan district of birth.
         example: Greater Manchester 
+        maxLength: 35
       country:
         type: string
         description: |

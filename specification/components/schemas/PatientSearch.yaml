@@ -20,6 +20,7 @@ properties:
       
       When a patient tagged as `very restricted` is retrieved, all names are removed from the response.
     minItems: 1
+    # TODO: maxItems
     items:
       $ref: "HumanName.yaml"
   gender:
@@ -32,6 +33,8 @@ properties:
     $ref: "DeceasedDateTime.yaml"
   address:
     type: array
+    # TODO: minItems
+    # TODO: maxItems
     description: | 
       List of addresses associated with the patient.
       
@@ -42,6 +45,8 @@ properties:
       $ref: "Address.yaml"
   telecom:
     type: array
+    # TODO: minItems
+    # TODO: maxItems
     description: |
       List of contact points for the patient; for example, phone numbers or email addresses.
 
@@ -50,6 +55,8 @@ properties:
       $ref: "ContactPoint.yaml"
   contact:
     type: array
+    # TODO: minItems
+    # TODO: maxItems
     description: |
       A list of patient contacts. Only emergency contacts are returned. Any other contacts are returned on the patients `Related Person`.
 
@@ -67,6 +74,7 @@ properties:
       $ref: "GeneralPractitionerReference.yaml"
   extension:
     type: array
+    maxItems: 1
     description: |
       Wrapper array for the patient's death notification status; this is a FHIR extension. Always contains zero or one death notification status object.
     items:
