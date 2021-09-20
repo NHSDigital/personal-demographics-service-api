@@ -1,12 +1,18 @@
 # PDS Test Data 
 
-This folder contains test data patients in JSON format.
+Currently, test data is created by the test data team on Spine, which is then shared via Excel packs. These packs are not in the expected FHIR format. We have created this folder which displays the test data in the expected FHIR format to assist developers when testing.
 
-* `test patient 1`
-* `test patient 2`
-* `test patient 3`
+This folder currently contains test data from the `int` environment, and is displayed in JSON format, which is the expected format to be returned when making a PDS FHIR request.
 
-You can view these JSONs [here](http://jsonviewer.stack.hu/) or by clicking on the patient you wish to view.
+## Example patient links to JSON format
+
+* [`test patient 1`](testpatients/TestPatient1.json) - Example Reason 1
+* [`test patient 2`](testpatients/TestPatient2.json) - Example Reason 2 
+* [`test patient 3`](testpatients/TestPatient3.json) - Example Reason 3
+
+You can view these JSONs using the links above or by opening the `testpatients` folder found in this repo.
+
+## Example patient JSON layout
 
 ```
 {
