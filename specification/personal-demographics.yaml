@@ -1545,7 +1545,8 @@ paths:
         There are a number of business rules that should be taken into account:
         * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date
         * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
-        * if the telecom system is email, the value must be a valid email format, for example john.smith@nhs.net; and must be more than 6 characters and less than 90 characters
+        * if the telecom system is email, the value must be a valid email format, for example john.smith@nhs.net; and must be between 6 and 90 characters long (inclusive).
+        * for other systems the maximum length is 32 characters
 
         ## Sandbox test scenarios
 
@@ -1789,7 +1790,6 @@ paths:
                     example: 1
                   entry:
                     type: array
-                    # TODO: maxItems
                     description: |
                       A list of related people details attached to the patient. 
                     items:

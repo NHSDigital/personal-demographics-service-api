@@ -16,10 +16,11 @@ properties:
     enum: [phone, fax, email, other]
     example: phone
   value:
-    description: Phone number, email address, or other identifier for use with contact system.
+    description: |
+      Phone number, email address, or other identifier for use with contact system.
+
+      Email addresses are between 6 and 90 characters long. Other systems have a maximum length of 32 characters. See [Update patient details](#api-Default-updatePatientPartial) for this field's business rules.
     type: string
-    # TODO: minLength
-    # TODO: maxLength
     example: '01632960587'
   use:
     type: string
