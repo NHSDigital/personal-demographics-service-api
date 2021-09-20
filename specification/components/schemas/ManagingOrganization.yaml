@@ -1,4 +1,4 @@
-description: Record location... TODO
+description: Managing Organization... TODO
 type: object
 required:
   - identifier
