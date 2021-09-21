@@ -24,6 +24,8 @@ module.exports = [
             }
 
             const messageId = request.params.messageId
+            const requestId = request.headers["X-Request-ID"]
+            console.log("patch_MID:", messageId, "For:", requestId)
             const patchedPatient = h.context.messages[messageId];
 
 
