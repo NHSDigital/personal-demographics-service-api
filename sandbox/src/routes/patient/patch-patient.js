@@ -97,7 +97,8 @@ module.exports = [
             patchedPatient.meta.versionId++;
 
             const messageId = fhirHelper.createMessageId();
-            const requestId = request.headers["X-Request-ID"]
+            console.log("716_generate_headers", request.headers)
+            const requestId = request.headers["x-request-id"]
             console.log("generate_MID", messageId, "For:", requestId)
             h.context.messages[messageId] = patchedPatient;
             console.log("hcm_ID:", JSON.stringify(h.context.messages))
