@@ -98,7 +98,7 @@ module.exports = [
 
             const messageId = fhirHelper.createMessageId();
             const requestId = request.headers["x-request-id"]
-            console.log("generate_MID:", messageId, "request_id:", requestId, "the_patient:", patchedPatient)
+            console.log("generate_MID:", messageId, "request_id:", requestId, "patch_patient:", JSON.stringify(patchedPatient))
             h.context.messages[messageId] = patchedPatient;
             console.log("hcm_patch:", JSON.stringify(h.context.messages))
             return fhirHelper.createAcceptedResponse(h, messageId);
