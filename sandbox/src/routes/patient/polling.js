@@ -26,8 +26,9 @@ module.exports = [
             const messageId = request.params.messageId
             console.log("716_path_headers", request.headers)
             const requestId = request.headers["x-request-id"]
-            console.log("patch_MID:", messageId, "For:", requestId)
+            console.log("patch_MID:", messageId, "request_id:", requestId)
             const patchedPatient = h.context.messages[messageId];
+            console.log("hcm_polling:", JSON.stringify(h.context.messages))
 
 
             if (messageId === "20200522091633363041_000001") {

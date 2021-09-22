@@ -97,11 +97,10 @@ module.exports = [
             patchedPatient.meta.versionId++;
 
             const messageId = fhirHelper.createMessageId();
-            console.log("716_generate_headers", request.headers)
             const requestId = request.headers["x-request-id"]
-            console.log("generate_MID", messageId, "For:", requestId)
+            console.log("generate_MID:", messageId, "request_id:", requestId, "the_patient:", patchedPatient)
             h.context.messages[messageId] = patchedPatient;
-            console.log("hcm_ID:", JSON.stringify(h.context.messages))
+            console.log("hcm_patch:", JSON.stringify(h.context.messages))
             return fhirHelper.createAcceptedResponse(h, messageId);
         }
     }
