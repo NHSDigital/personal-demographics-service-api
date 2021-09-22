@@ -29,6 +29,9 @@ module.exports = [
             console.log("patch_MID:", messageId, "request_id:", requestId)
             const patchedPatient = h.context.messages[messageId];
             console.log("hcm_polling:", JSON.stringify(h.context.messages))
+            console.log("polling_patient", JSON.stringify(patchedPatient))
+            console.log("type_patient", typeof patchedPatient)
+            console.log("boolean_patient", !patchedPatient)
 
 
             if (messageId === "20200522091633363041_000001") {
