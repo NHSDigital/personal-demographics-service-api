@@ -9,7 +9,7 @@ steps:
       export SOURCE_COMMIT_ID=$(Build.SourceVersion)
       export STATUS_ENDPOINT_API_KEY="$(status-endpoint-api-key)"
 
-      poetry run pytest -v tests/sandbox/test_sandbox.py --junitxml=tests/sandbox-test-report.xml
+      poetry run pytest -v tests/sandbox/test_sandbox.py::TestPDSSandboxUpdateSyncWrapSuite --junitxml=tests/sandbox-test-report.xml
     displayName: Run sandbox tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
 
