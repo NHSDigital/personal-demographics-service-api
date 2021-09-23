@@ -18,6 +18,8 @@ APIGEE_ENVIRONMENTS:
     portal_visibility: false
   - name: int
     display_name_suffix: Integration Testing
+    ratelimit: '1200pm'    # 20 TPS as agreed with Azhar Sept 2021 - APMSPII-1196
+    quota: '1200'
   - name: prod
     approval_type: manual
     display_name_suffix: Production
