@@ -68,6 +68,13 @@ properties:
       When a patient tagged as `restricted` or `very restricted` is retrieved, the General Practice is removed from the response.
     items:
       $ref: "GeneralPractitionerReference.yaml"
+  managingOrganization:
+    type: array
+    maxItems: 1
+    description: |
+      TODO...
+    items:
+      $ref: "ManagingOrganization.yaml"
   extension:
     type: array
     description: |
