@@ -6,9 +6,9 @@ This folder currently contains test data from the `int` environment, and is disp
 
 ## Example patient links to JSON format
 
-* [`test patient 1`](testpatients/TestPatient1.json) - Example Reason 1
-* [`test patient 2`](testpatients/TestPatient2.json) - Example Reason 2 
-* [`test patient 3`](testpatients/TestPatient3.json) - Example Reason 3
+* [`test patient 1`](testpatients/TestPatient1.json)
+* [`test patient 2`](testpatients/TestPatient2.json) 
+* [`test patient 3`](testpatients/TestPatient3.json)
 
 You can view these JSONs using the links above or by opening the `testpatients` folder found in this repo.
 
