@@ -448,6 +448,8 @@ paths:
         Note that:
         * we record an access request in our audit trail for all patients matched in a PDS search
         * it is almost certainly a good idea to display search results in descending score order - best match first
+
+        Please consider the information your application returns to users. For example a patient's temporary address can be used to perform a successful search. The home address will be included in the response. Do not share this information unless you need to.
         
         ## Sandbox testing
         You can test the following scenarios in our sandbox environment:
@@ -722,8 +724,9 @@ paths:
                       coding:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
-                          code: INVALID_RESOURCE_ID
-                          display: Resource Id is invalid
+                          code: INVALID_VALUE
+                          display: Provided value is invalid
+                    diagnostics: "Invalid value - 'mal' in field 'gender'"   
   '/Patient/{id}':
     parameters:
       - $ref: '#/components/parameters/Id'
@@ -812,13 +815,14 @@ paths:
                 resourceType: OperationOutcome
                 issue:
                   - severity: error
-                    code: value
+                    code: structure
                     details:
                       coding:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
-                          code: INVALID_RESOURCE_ID
-                          display: Resource Id is invalid
+                          code: MISSING_VALUE
+                          display: Required value is missing
+                    diagnostics: "Missing value - 'birth_date/birth_date_range_start/birth_date_range_end'"      
     patch:
       description: |
         ## Overview
@@ -1688,13 +1692,15 @@ paths:
                 resourceType: OperationOutcome
                 issue:
                   - severity: error
-                    code: value
+                    code: structure
                     details:
                       coding:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
-                          code: UNSUPPORTED_SERVICE
-                          display: Resource Id is invalid
+                          code: INVALID_UPDATE
+                          display: Update is invalid
+                    diagnostics: "Invalid update with error - Update unsupported for resource - 'pets'"      
+
         '503':
           description: |
             The request timed out during processing. This does not imply the request has failed or been rejected. Error code: `SERVICE_UNAVAILABLE`.
@@ -1718,6 +1724,7 @@ paths:
                           version: '1'
                           code: SERVICE_UNAVAILABLE
                           display: Service unavailable
+                    diagnostics: "The downstream domain processing has not completed within the configured timeout period. Using the same 'X-Request-ID' header, retry your request after the time specified by the 'Retry-After' response header."      
 
   '/Patient/{id}/RelatedPerson':
     parameters:
@@ -1831,13 +1838,14 @@ paths:
                 resourceType: OperationOutcome
                 issue:
                   - severity: error
-                    code: value
+                    code: structure
                     details:
                       coding:
                         - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                           version: '1'
-                          code: INVALID_RESOURCE_ID
-                          display: Resource Id is invalid
+                          code: PRECONDITION_FAILED
+                          display: Required condition was not fulfilled
+                    diagnostics: "Invalid request with error - X-Request-ID header must be supplied to access this resource"      
 
 components:
   parameters:
