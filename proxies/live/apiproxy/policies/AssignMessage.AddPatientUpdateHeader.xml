@@ -1,7 +1,7 @@
 <AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.AddPatientUpdateHeader">
   <Add>
       <Headers>
-          <Header name="X-NHSD-Patient">{accesstoken}</Header>
+          <Header name="X-NHSD-Patient">{jwt.DecodeJWT.DecodeIdToken.claim.nhs_number}</Header>
       </Headers>
   </Add>
   <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
