@@ -166,16 +166,10 @@ apigee:
 {% if mode.nameSuffix == '-patient-access' and env.name == 'prod' %}
             value: private
 {% endif %}
-          - name: ratelimit
-            value: {{ env.ratelimit | default('300pm') }}
+        #   - name: ratelimit
+        #     value: {{ env.ratelimit | default('300pm') }}
           - name: ratelimiting
-            value:
-              personal-demographics-{{ env.name }}:
-                quota:
-                  enabled: false
-                spikeArrest:
-                  ratelimit: "{{env.ratelimit | default('300pm')}}"
-                  enabled: true
+            value: {{ env.ratelimiting }}
         description: {{ mode.description }}
         displayName: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
         environments: [ {{ env.name }} ]
@@ -186,9 +180,9 @@ apigee:
           - identity-service-{{ env.name }}-no-smartcard
 {% endif %}
         scopes: {{ mode.scopes }}
-        quota: {{ env.quota | default('300') }}
-        quotaInterval: '1'
-        quotaTimeUnit: minute
+        # quota: {{ env.quota | default('300') }}
+        # quotaInterval: '1'
+        # quotaTimeUnit: minute
 {% endfor %}
       specs:
       - name: personal-demographics-{{ env.name }}
