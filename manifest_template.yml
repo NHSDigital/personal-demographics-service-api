@@ -19,7 +19,7 @@ APIGEE_ENVIRONMENTS:
   - name: internal-dev-sandbox
     display_name_suffix: Internal Development Sandbox
     ratelimiting:
-      personal-demographics-internal-dev:
+      personal-demographics-internal-dev-sandbox:
         quota:
           enabled: false
         spikeArrest:
@@ -33,7 +33,7 @@ APIGEE_ENVIRONMENTS:
   - name: internal-qa
     display_name_suffix: Internal QA
     ratelimiting:
-      personal-demographics-internal-dev:
+      personal-demographics-internal-qa:
         quota:
           enabled: false
         spikeArrest:
@@ -47,7 +47,7 @@ APIGEE_ENVIRONMENTS:
   - name: internal-qa-sandbox
     display_name_suffix: Internal QA Sandbox
     ratelimiting:
-      personal-demographics-internal-dev:
+      personal-demographics-internal-qa-sandbox:
         quota:
           enabled: false
         spikeArrest:
@@ -63,7 +63,7 @@ APIGEE_ENVIRONMENTS:
     ratelimit: '31500pm'    # 525 TPS
     quota: '31500'
     ratelimiting:
-      personal-demographics-internal-dev:
+      personal-demographics-ref:
         quota:
           enabled: false
         spikeArrest:
@@ -78,7 +78,7 @@ APIGEE_ENVIRONMENTS:
     display_name_suffix: Sandbox
     portal_visibility: false
     ratelimiting:
-      personal-demographics-internal-dev:
+      personal-demographics-sandbox:
         quota:
           enabled: false
         spikeArrest:
@@ -92,7 +92,7 @@ APIGEE_ENVIRONMENTS:
   - name: int
     display_name_suffix: Integration Testing
     ratelimiting:
-      personal-demographics-internal-dev:
+      personal-demographics-int:
         quota:
           enabled: false
         spikeArrest:
@@ -107,7 +107,7 @@ APIGEE_ENVIRONMENTS:
     approval_type: manual
     display_name_suffix: Production
     ratelimiting:
-      personal-demographics-internal-dev:
+      personal-demographics-prod:
         quota:
           enabled: false
         spikeArrest:
