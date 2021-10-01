@@ -2,29 +2,123 @@
 APIGEE_ENVIRONMENTS:
   - name: internal-dev
     display_name_suffix: Internal Development
+    ratelimiting:
+      personal-demographics-internal-dev:
+        quota:
+          enabled: false
+        spikeArrest:
+          ratelimit: 300pm
+          enabled: true
+      app:
+        quota:
+          enabled: false
+        spikeArrest:
+          # ratelimit: 600pm # must end in pm/ps
+          enabled: false
   # TODO: Remove as we don't want this included in an actual release
   - name: internal-dev-sandbox
     display_name_suffix: Internal Development Sandbox
+    ratelimiting:
+      personal-demographics-internal-dev:
+        quota:
+          enabled: false
+        spikeArrest:
+          ratelimit: 300pm
+          enabled: true
+      app:
+        quota:
+          enabled: false
+        spikeArrest:
+          enabled: false
   - name: internal-qa
     display_name_suffix: Internal QA
+    ratelimiting:
+      personal-demographics-internal-dev:
+        quota:
+          enabled: false
+        spikeArrest:
+          ratelimit: 300pm
+          enabled: true
+      app:
+        quota:
+          enabled: false
+        spikeArrest:
+          enabled: false
   - name: internal-qa-sandbox
     display_name_suffix: Internal QA Sandbox
+    ratelimiting:
+      personal-demographics-internal-dev:
+        quota:
+          enabled: false
+        spikeArrest:
+          ratelimit: 300pm
+          enabled: true
+      app:
+        quota:
+          enabled: false
+        spikeArrest:
+          enabled: false
   - name: ref
     display_name_suffix: Reference
     ratelimit: '31500pm'    # 525 TPS
     quota: '31500'
+    ratelimiting:
+      personal-demographics-internal-dev:
+        quota:
+          enabled: false
+        spikeArrest:
+          ratelimit: 31500pm # 525 TPS
+          enabled: true
+      app:
+        quota:
+          enabled: false
+        spikeArrest:
+          enabled: false
   - name: sandbox
     display_name_suffix: Sandbox
     portal_visibility: false
+    ratelimiting:
+      personal-demographics-internal-dev:
+        quota:
+          enabled: false
+        spikeArrest:
+          ratelimit: 300pm
+          enabled: true
+      app:
+        quota:
+          enabled: false
+        spikeArrest:
+          enabled: false
   - name: int
     display_name_suffix: Integration Testing
-    ratelimit: '1200pm'    # 20 TPS as agreed with Azhar Sept 2021 - APMSPII-1196
-    quota: '1200'
+    ratelimiting:
+      personal-demographics-internal-dev:
+        quota:
+          enabled: false
+        spikeArrest:
+          ratelimit: 1200pm # 20 TPS as agreed with Azhar Sept 2021 - APMSPII-1196
+          enabled: true
+      app:
+        quota:
+          enabled: false
+        spikeArrest:
+          enabled: false
   - name: prod
     approval_type: manual
     display_name_suffix: Production
-    ratelimit: '16200pm'    # Amount Spine indicated they can handle as burst load
-    quota: '16200'           # 270 TPS
+    ratelimiting:
+      personal-demographics-internal-dev:
+        quota:
+          enabled: false
+        spikeArrest:
+          ratelimit: '16200pm'    # 270 TPS Amount Spine indicated they can handle as burst load
+          enabled: true
+      app:
+        quota:
+          enabled: false
+        spikeArrest:
+          ratelimit: '300pm'    # 5/second
+          enabled: true
 
 ACCESS_MODES:
   - name: user-restricted
@@ -75,7 +169,13 @@ apigee:
           - name: ratelimit
             value: {{ env.ratelimit | default('300pm') }}
           - name: ratelimiting
-            value: '{"personal-demographics-{{ env.name }}":{"quota":{"limit":{{ env.quota | default("300")}},"interval":1,"timeunit":"minute","enabled":true},"spikeArrest":{"ratelimit":"{{env.ratelimit | default("300pm")}}","enabled":true}}}'
+            value:
+              personal-demographics-{{ env.name }}:
+                quota:
+                  enabled: false
+                spikeArrest:
+                  ratelimit: "{{env.ratelimit | default('300pm')}}"
+                  enabled: true
         description: {{ mode.description }}
         displayName: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
         environments: [ {{ env.name }} ]
