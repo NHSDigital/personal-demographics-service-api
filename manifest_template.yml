@@ -180,9 +180,10 @@ apigee:
           - identity-service-{{ env.name }}-no-smartcard
 {% endif %}
         scopes: {{ mode.scopes }}
-        # quota: {{ env.quota | default('300') }}
-        # quotaInterval: '1'
-        # quotaTimeUnit: minute
+        # Note we do not use the Quota policy but this value is required for an API Product
+        quota: '300'
+        quotaInterval: '1'
+        quotaTimeUnit: minute
 {% endfor %}
       specs:
       - name: personal-demographics-{{ env.name }}
