@@ -18,6 +18,7 @@ APIGEE_ENVIRONMENTS:
   # TODO: Remove as we don't want this included in an actual release
   - name: internal-dev-sandbox
     display_name_suffix: Internal Development Sandbox
+    # Ratelimiting is currently disabled for sandbox environments
     ratelimiting:
       personal-demographics-internal-dev-sandbox:
         quota:
@@ -46,6 +47,7 @@ APIGEE_ENVIRONMENTS:
           enabled: false
   - name: internal-qa-sandbox
     display_name_suffix: Internal QA Sandbox
+    # Ratelimiting is currently disabled for sandbox environments
     ratelimiting:
       personal-demographics-internal-qa-sandbox:
         quota:
@@ -77,6 +79,7 @@ APIGEE_ENVIRONMENTS:
   - name: sandbox
     display_name_suffix: Sandbox
     portal_visibility: false
+    # Ratelimiting is currently disabled for sandbox environments
     ratelimiting:
       personal-demographics-sandbox:
         quota:
@@ -117,7 +120,7 @@ APIGEE_ENVIRONMENTS:
         quota:
           enabled: false
         spikeArrest:
-          ratelimit: '300pm'    # 5/second
+          ratelimit: '330pm'    # 5/second + 10%
           enabled: true
 
 ACCESS_MODES:
