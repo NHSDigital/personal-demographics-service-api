@@ -157,7 +157,7 @@ class TestPDSSandboxSearchSuite:
         helpers.check_search_response_body(response, search[9]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
-    
+
     def test_sandbox_multi_given_name_search(self, additional_headers):
         response = helpers.search_patient(search[10]["query_params"], additional_headers)
         helpers.check_search_response_body(response, search[10]["response"])
