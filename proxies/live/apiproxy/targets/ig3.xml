@@ -123,6 +123,7 @@
         </Step>
         <Step>
           <Name>AssignMessage.AddPatientUpdateHeader</Name>
+          <Condition>(request.verb Equals "PATCH")</Condition>
         </Step>
       </Request>
     </Flow>
