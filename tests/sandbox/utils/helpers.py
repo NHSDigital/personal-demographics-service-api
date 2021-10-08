@@ -25,7 +25,7 @@ def retrieve_patient(patient: str, headers={}) -> requests.Response:
 # A function to send a PDS Retrieve request. Arguments accepted are the Query Parameters & Header.
 def search_patient(query_params: Union[dict, str], headers={}) -> requests.Response:
     if type(query_params) != str:
-        query_params = urllib.parse.urlencode(query_params)
+        query_params = urllib.parse.urlencode(query_params, doseq=True)  # converts list to mutliple query params
     response = requests.get(
         f"{config.SANDBOX_BASE_URL}/Patient?{query_params}", headers=headers
     )
