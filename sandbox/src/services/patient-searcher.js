@@ -199,6 +199,18 @@ module.exports.search = function(request) {
         return buildPatientResponse([patients.search.exampleSearchPatientSmythe]);
     }
 
+    // Multi name search
+    const multiNameSearchParams = {
+      family: "Smith",
+      given: ["Jane Aire", "Wild"],
+      gender: "female",
+      birthdate: "eq2010-10-22",
+    }
+
+    if (containsSearchParameters(request, multiNameSearchParams)) {
+        return buildPatientResponse([patients.search.exampleSearchPatientSmythMultiName])
+    }
+
     return buildPatientResponse();
     
 }
