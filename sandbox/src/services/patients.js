@@ -11,6 +11,7 @@ module.exports = {
         exampleSearchPatientSmith: JSON.parse(fs.readFileSync('mocks/PatientSearch.json')),
         exampleSearchPatientSmyth: JSON.parse(fs.readFileSync('mocks/PatientSearch-Jayne-Smyth.json')),
         exampleSearchPatientSmythe: JSON.parse(fs.readFileSync('mocks/Sensitive_PatientSearch.json')),
-        exampleSearchPatientMinimal: JSON.parse(fs.readFileSync('mocks/Minimal_PatientSearch.json'))
+        exampleSearchPatientMinimal: JSON.parse(fs.readFileSync('mocks/Minimal_PatientSearch.json')),
+        exampleSearchPatientCompoundName: JSON.parse(fs.readFileSync('mocks/PatientCompoundName.json')),
     }
 }
