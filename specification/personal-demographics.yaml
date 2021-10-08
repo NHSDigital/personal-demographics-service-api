@@ -367,6 +367,8 @@ paths:
 
         To deal with some of these issues:
           * we always search all given names
+            * given names can contain multiple names
+            * for a first given name such as "Jane Anne" we allow for searches based 
           * we search across all types of name - usual, nickname and temporary
           * a fuzzy search matches homophones, transposed names and previous names
           * for a non fuzzy search, you can optionally use wildcards and search previous names
@@ -541,11 +543,16 @@ paths:
             Not case sensitive.
             Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
             Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
+
+            To specify multiple given names, use `given=Jane&given=Smith`. For cases where the first given name is made up of multiple names, use `given=Jane Smith&given=Anne`.
+            The same applies to wild carded names that are composed multiple names, for instance `given=Jane Smi*` is a valid search.
           example: Jane
           in: query
           required: false
           schema:
-            type: string
+            type: array
+            items:
+              type: string
         - name: gender
           description: Gender with which the patient most strongly identifies.
           example: female
