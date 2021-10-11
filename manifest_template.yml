@@ -5,27 +5,28 @@ APIGEE_ENVIRONMENTS:
     ratelimiting:
       personal-demographics-internal-dev:
         quota:
-          enabled: false
-        spikeArrest:
-          ratelimit: 300pm
           enabled: true
+          limit: 300
+          interval: 1
+          timeunit: minute
+        spikeArrest:
+          enabled: true
+          ratelimit: 10ps
       app:
         quota:
           enabled: false
         spikeArrest:
-          # ratelimit: 600pm # must end in pm/ps
           enabled: false
   # TODO: Remove as we don't want this included in an actual release
   - name: internal-dev-sandbox
     display_name_suffix: Internal Development Sandbox
-    # Ratelimiting is currently disabled for sandbox environments
+    # Ratelimiting is currently disabled for all sandbox environments
     ratelimiting:
       personal-demographics-internal-dev-sandbox:
         quota:
           enabled: false
         spikeArrest:
-          ratelimit: 300pm
-          enabled: true
+          enabled: false
       app:
         quota:
           enabled: false
@@ -36,10 +37,13 @@ APIGEE_ENVIRONMENTS:
     ratelimiting:
       personal-demographics-internal-qa:
         quota:
-          enabled: false
-        spikeArrest:
-          ratelimit: 300pm
           enabled: true
+          limit: 300
+          interval: 1
+          timeunit: minute
+        spikeArrest:
+          enabled: true
+          ratelimit: 10ps
       app:
         quota:
           enabled: false
@@ -53,8 +57,7 @@ APIGEE_ENVIRONMENTS:
         quota:
           enabled: false
         spikeArrest:
-          ratelimit: 300pm
-          enabled: true
+          enabled: false
       app:
         quota:
           enabled: false
@@ -62,15 +65,16 @@ APIGEE_ENVIRONMENTS:
           enabled: false
   - name: ref
     display_name_suffix: Reference
-    ratelimit: '31500pm'    # 525 TPS
-    quota: '31500'
     ratelimiting:
       personal-demographics-ref:
         quota:
-          enabled: false
-        spikeArrest:
-          ratelimit: 31500pm # 525 TPS
           enabled: true
+          limit: 31500
+          interval: 1
+          timeunit: minute
+        spikeArrest:
+          enabled: true
+          ratelimit: 1050ps
       app:
         quota:
           enabled: false
@@ -85,8 +89,7 @@ APIGEE_ENVIRONMENTS:
         quota:
           enabled: false
         spikeArrest:
-          ratelimit: 300pm
-          enabled: true
+          enabled: false
       app:
         quota:
           enabled: false
@@ -97,10 +100,13 @@ APIGEE_ENVIRONMENTS:
     ratelimiting:
       personal-demographics-int:
         quota:
-          enabled: false
-        spikeArrest:
-          ratelimit: 1200pm # 20 TPS as agreed with Azhar Sept 2021 - APMSPII-1196
           enabled: true
+          limit: 1200   # 20 TPS as agreed with Azhar Sept 2021 - APMSPII-1196
+          interval: 1
+          timeunit: minute
+        spikeArrest:
+          enabled: true
+          ratelimit: 40ps
       app:
         quota:
           enabled: false
@@ -112,16 +118,22 @@ APIGEE_ENVIRONMENTS:
     ratelimiting:
       personal-demographics-prod:
         quota:
-          enabled: false
-        spikeArrest:
-          ratelimit: '16200pm'    # 270 TPS Amount Spine indicated they can handle as burst load
           enabled: true
+          limit: 16200  # 270 TPS Amount Spine indicated they can handle as burst load
+          interval: 1
+          timeunit: minute
+        spikeArrest:
+          enabled: true
+          ratelimit: 540ps
       app:
         quota:
-          enabled: false
-        spikeArrest:
-          ratelimit: '330pm'    # 5/second + 10%
           enabled: true
+          limit: 300    # 5TPS
+          interval: 1
+          timeunit: minute
+        spikeArrest:
+          enabled: true
+          ratelimit: 10ps
 
 ACCESS_MODES:
   - name: user-restricted
@@ -184,7 +196,8 @@ apigee:
           - identity-service-{{ env.name }}-no-smartcard
 {% endif %}
         scopes: {{ mode.scopes }}
-        # Note we do not use the Quota policy but this value is required for an API Product
+        # An API Product requires a quota value but it is not used
+        # (We use the value defined in the ratelimiting attribute)
         quota: '300'
         quotaInterval: '1'
         quotaTimeUnit: minute
