@@ -6,7 +6,10 @@ from polling2 import poll, TimeoutException
 from http import HTTPStatus
 from tests.scripts.pds_request import GenericPdsRequestor
 from pytest_bdd import scenario, given, when, then, parsers
-from .config_files.config import BASE_URL, PDS_BASE_PATH, TEST_PATIENT_ID
+from .config_files.config import BASE_URL, PDS_BASE_PATH, TEST_PATIENT_ID, PROXY_NAME
+import asyncio
+import json
+from .utils.helper import find_item_in_dict
 
 
 class HTTPMethods(Enum):
@@ -84,6 +87,22 @@ def test_quota_limit():
     pass
 
 
+@pytest.mark.happy_path
+@pytest.mark.quota
+@pytest.mark.apmspii_1139
+@scenario('./features/proxy_behaviour.feature', 'App based quota is tripped')
+def test_app_quota():
+    pass
+
+
+@pytest.mark.happy_path
+@pytest.mark.rate_limit
+@pytest.mark.apmspii_1139
+@scenario('./features/proxy_behaviour.feature', 'App based rate limit is tripped')
+def test_app_spike_arrest():
+    pass
+
+
 @pytest.mark.rate_limit
 @pytest.mark.apmspii_627
 @given("I have a proxy with a low rate limit set", target_fixture="context")
@@ -95,8 +114,19 @@ def setup_rate_limit_proxy(setup_session):
         "app": app,
         "token": token,
     }
-    set_quota_and_rate_limit(context["product"], rate_limit="1pm")
-    assert context["product"].rate_limit == "1pm"
+    set_quota_and_rate_limit(context["product"], rate_limit="1pm", proxy=PROXY_NAME)
+
+    product_attributes = asyncio.run(
+        context["product"].get_product_details()
+    )["attributes"]
+
+    rate_limiting = json.loads(
+        list(
+            filter(lambda item: item["name"] == "ratelimiting", product_attributes)
+        )[0]["value"]
+    )
+
+    assert find_item_in_dict(rate_limiting, 'ratelimit') == "1pm"
     return context
 
 
@@ -109,8 +139,69 @@ def setup_quota_proxy(setup_session):
         "app": setup_session[1],
         "token": setup_session[2],
     }
-    set_quota_and_rate_limit(context["product"], quota=1)
-    assert context["product"].quota == 1
+    set_quota_and_rate_limit(context["product"], quota=1, proxy=PROXY_NAME)
+
+    product_attributes = asyncio.run(
+        context["product"].get_product_details()
+    )["attributes"]
+
+    rate_limiting = json.loads(
+        list(
+            filter(lambda item: item["name"] == "ratelimiting", product_attributes)
+        )[0]["value"]
+    )
+
+    assert int(find_item_in_dict(rate_limiting, 'limit')) == 1
+    return context
+
+
+@pytest.mark.quota
+@pytest.mark.apmspii_1139
+@given("I have an app with a low quota set", target_fixture="context")
+def setup_quota_app(setup_session):
+    context = {
+        "product": setup_session[0],
+        "app": setup_session[1],
+        "token": setup_session[2],
+    }
+    set_quota_and_rate_limit(context["app"], quota=1, proxy=PROXY_NAME)
+
+    app_attributes = asyncio.run(
+        context["app"].get_custom_attributes()
+    )["attribute"]
+
+    rate_limiting = json.loads(
+        list(
+            filter(lambda item: item["name"] == "ratelimiting", app_attributes)
+        )[0]["value"]
+    )
+
+    assert int(find_item_in_dict(rate_limiting, 'limit')) == 1
+    return context
+
+
+@pytest.mark.rate_limit
+@pytest.mark.apmspii_1139
+@given("I have an app with a low rate limit set", target_fixture="context")
+def setup_rate_limit_app(setup_session):
+    context = {
+        "product": setup_session[0],
+        "app": setup_session[1],
+        "token": setup_session[2],
+    }
+    set_quota_and_rate_limit(context["app"], rate_limit="1pm", proxy=PROXY_NAME)
+
+    app_attributes = asyncio.run(
+        context["app"].get_custom_attributes()
+    )["attribute"]
+
+    rate_limiting = json.loads(
+        list(
+            filter(lambda item: item["name"] == "ratelimiting", app_attributes)
+        )[0]["value"]
+    )
+
+    assert find_item_in_dict(rate_limiting, 'ratelimit') == "1pm"
     return context
 
 

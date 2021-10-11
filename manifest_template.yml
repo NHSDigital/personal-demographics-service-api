@@ -11,20 +11,20 @@ APIGEE_ENVIRONMENTS:
     display_name_suffix: Internal QA Sandbox
   - name: ref
     display_name_suffix: Reference
-    # ratelimit: '31500pm'    # 525 TPS
-    # quota: '31500'
-    ratelimit: '900pm'    # 15 TPS
-    quota: '900'
+    ratelimit: '31500pm'    # 525 TPS
+    quota: '31500'
   - name: sandbox
     display_name_suffix: Sandbox
     portal_visibility: false
   - name: int
     display_name_suffix: Integration Testing
+    ratelimit: '1200pm'    # 20 TPS as agreed with Azhar Sept 2021 - APMSPII-1196
+    quota: '1200'
   - name: prod
     approval_type: manual
     display_name_suffix: Production
-    ratelimit: '15000pm'    # Amount Spine indicated they can handle as burst load
-    quota: '14400'           # 240 TPS
+    ratelimit: '16200pm'    # Amount Spine indicated they can handle as burst load
+    quota: '16200'           # 270 TPS
 
 ACCESS_MODES:
   - name: user-restricted
@@ -74,6 +74,8 @@ apigee:
 {% endif %}
           - name: ratelimit
             value: {{ env.ratelimit | default('300pm') }}
+          - name: ratelimiting
+            value: '{"personal-demographics-{{ env.name }}":{"quota":{"limit":{{ env.quota | default("300")}},"interval":1,"timeunit":"minute","enabled":true},"spikeArrest":{"ratelimit":"{{env.ratelimit | default("300pm")}}","enabled":true}}}'
         description: {{ mode.description }}
         displayName: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
         environments: [ {{ env.name }} ]

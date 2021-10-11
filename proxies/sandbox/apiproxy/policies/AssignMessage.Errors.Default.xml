@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage name="AssignMessage.Errors.Default">
+    <AssignVariable>
+        <Name>pds.error.code</Name>
+        <Value>unknown</Value>
+    </AssignVariable>
+    <AssignVariable>
+        <Name>pds.error.coding.code</Name>
+        <Value>UNKNOWN_ERROR</Value>
+    </AssignVariable>
+    <AssignVariable>
+        <Name>pds.error.coding.display</Name>
+        <Value>Unknown Error</Value>
+    </AssignVariable>
+    <AssignVariable>
+        <Name>pds.error.diagnostics</Name>
+        <Template>An unknown error occurred processing this request. Contact us for assistance diagnosing this issue: https://digital.nhs.uk/developer/help-and-support. (Message ID: {messageid})</Template>
+    </AssignVariable>
+</AssignMessage>

@@ -17,7 +17,7 @@ def additional_headers(request):
 @pytest.fixture()
 def set_delay():
     """time delay to prevent exceeding proxy rate limit"""
-    return time.sleep(1.5)
+    return time.sleep(2.5)
 
 
 @pytest.fixture(scope="session")
