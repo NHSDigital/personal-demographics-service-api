@@ -219,7 +219,7 @@ info:
     - patient access
     
     In step 2, if using healthcare worker access mode, tell us which security pattern you are using:
-    - NHS CIS2 - combined authentication and authorisation 
+    - NHS CIS2 - combined authentication and authorisation - available only upon request
     - NHS CIS2 - separate authentication and authorisation
     
     In step 2, if using patient access mode, tell us which security pattern you are using:
