@@ -15,8 +15,7 @@ class ApigeeDebugApi:
         if APIGEE_API_TOKEN != '':
             self.headers = {'Authorization': f'Bearer {APIGEE_API_TOKEN}'}
         else:
-            raise Exception("None of apigee authentication methods is provided. If you're running this remotely you \
-                must provide APIGEE_AUTHENTICATION otherwise provide APIGEE_USERNAME and APIGEE_PASSWORD")
+            raise Exception("You must provide an apigee access token using the APIGEE_API_TOKEN runtime variable")
 
         self.revision = self._get_latest_revision()
 
@@ -33,8 +32,11 @@ class ApigeeDebugApi:
         return revisions[-1]
 
     def create_debug_session(self, request_id: str):
+        """ Creates a debug session adding the given request_id as a filter, therefore only HTTP calls with that
+            request-id will be captured
+         """
         url = f"{APIGEE_API_URL}/environments/{ENVIRONMENT}/apis/{self.proxy}/revisions/{self.revision}/" \
-              f"debugsessions?session={self.session_name}&header_X-Request-ID={request_id}"
+              f"debugsessions?session={self.session_name}&header_x-request-id={request_id}"
 
         response = self.session.post(url, headers=self.headers)
 
@@ -97,7 +99,3 @@ class ApigeeDebugApi:
             for item in result['headers']:
                 if item['name'] == name:
                     return item['value']
-
-    def dump_data(self):
-        data = self._get_transaction_data()
-        print(json.dumps(data))

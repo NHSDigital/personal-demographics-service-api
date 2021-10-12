@@ -74,8 +74,8 @@ class TestUserRestrictedPatientAccess:
             == "Patient cannot perform this action"
         )
 
-    async def test_patient_access_update_new_header(
-        self, nhs_login_token_exchange, create_random_date
+    async def test_patient_access_update_nhsd_patient_header_sent_downstream(
+        self, nhs_login_token_exchange
     ):
         token = await nhs_login_token_exchange()
 
