@@ -27,6 +27,7 @@ APIGEE_ENVIRONMENTS:
           enabled: false
         spikeArrest:
           enabled: false
+          ratelimit: 10ps  # Required as fed into required (but unused) ratelimit attribute of the API product
       app:
         quota:
           enabled: false
@@ -58,6 +59,7 @@ APIGEE_ENVIRONMENTS:
           enabled: false
         spikeArrest:
           enabled: false
+          ratelimit: 10ps  # Required as fed into required (but unused) ratelimit attribute of the API product
       app:
         quota:
           enabled: false
@@ -90,6 +92,7 @@ APIGEE_ENVIRONMENTS:
           enabled: false
         spikeArrest:
           enabled: false
+          ratelimit: 10ps  # Required as fed into required (but unused) ratelimit attribute of the API product
       app:
         quota:
           enabled: false
