@@ -1,9 +1,8 @@
 import json
 import uuid
-import base64
 import requests
 
-from tests.functional.config_files.config import APIGEE_TOKEN, APIGEE_API_URL, ENVIRONMENT
+from tests.functional.config_files.config import APIGEE_API_TOKEN, APIGEE_API_URL, ENVIRONMENT
 
 
 class ApigeeDebugApi:
@@ -13,15 +12,11 @@ class ApigeeDebugApi:
         self.proxy = proxy
         self.session = requests.Session()
 
-        # if APIGEE_USERNAME != '' and APIGEE_PASSWORD != '':
-        #     token = base64.b64encode(f'{APIGEE_USERNAME}:{APIGEE_PASSWORD}'.encode('ascii'))
-        #     self.headers = {'Authorization': f'Basic {token.decode("ascii")}'}
-        # elif APIGEE_AUTHENTICATION != '':
-        self.headers = {'Authorization': f'Bearer {APIGEE_TOKEN}'}
-
-        # else:
-        #     raise Exception("None of apigee authentication methods is provided. If you're running this remotely you \
-        #         must provide APIGEE_AUTHENTICATION otherwise provide APIGEE_USERNAME and APIGEE_PASSWORD")
+        if APIGEE_API_TOKEN != '':
+            self.headers = {'Authorization': f'Bearer {APIGEE_API_TOKEN}'}
+        else:
+            raise Exception("None of apigee authentication methods is provided. If you're running this remotely you \
+                must provide APIGEE_AUTHENTICATION otherwise provide APIGEE_USERNAME and APIGEE_PASSWORD")
 
         self.revision = self._get_latest_revision()
 
@@ -106,4 +101,3 @@ class ApigeeDebugApi:
     def dump_data(self):
         data = self._get_transaction_data()
         print(json.dumps(data))
-

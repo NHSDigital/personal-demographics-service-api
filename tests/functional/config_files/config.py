@@ -18,13 +18,13 @@ ENV = EnvVarWrapper(
         'auth_token_expiry_ms': 'AUTH_TOKEN_EXPIRY_MS',
         'auth_token_expiry_ms_int': 'AUTH_TOKEN_EXPIRY_MS_INT',
         'redirect_uri': 'REDIRECT_URI',
-        'apigee_token': 'APIGEE_API_TOKEN'
+        'apigee_api_token': 'APIGEE_API_TOKEN'
     }
 )
 
 # Apigee Details
 ENVIRONMENT = ENV["environment"]
-APIGEE_TOKEN = ENV["apigee_token"]
+APIGEE_API_TOKEN = ENV["apigee_api_token"]
 APIGEE_API_URL = 'https://api.enterprise.apigee.com/v1/o/nhsd-nonprod'
 BASE_URL = f"https://{ENVIRONMENT}.api.service.nhs.uk"
 

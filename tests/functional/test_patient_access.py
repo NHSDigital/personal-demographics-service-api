@@ -97,7 +97,7 @@ class TestUserRestrictedPatientAccess:
             "patches": [{"op": "replace", "path": "/gender", "value": new_gender}]
         }
 
-        request_id = str(uuid.uuid4());
+        request_id = str(uuid.uuid4())
 
         headers = {
             "NHSD-SESSION-URID": "123",
