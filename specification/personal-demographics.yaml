@@ -220,11 +220,11 @@ info:
     - patient access
     
     In step 2, if using healthcare worker access mode, tell us which security pattern you are using:
-    - NHS CIS2 - combined authentication and authorisation - available only upon request
+    - NHS CIS2 - combined authentication and authorisation
     - NHS CIS2 - separate authentication and authorisation
     
     In step 2, if using patient access mode, tell us which security pattern you are using:
-    - NHS login - combined authentication and authorisation
+    - NHS login - combined authentication and authorisation - available only upon request
     - NHS login - separate authentication and authorisation
     
     In step 6, when implementing your clinical risk management process, you must review and integrate the PDS FHIR API hazard log into your own risk log. It's embedded within the PDS FHIR API tab in the SCAL.
