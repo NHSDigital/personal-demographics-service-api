@@ -357,6 +357,7 @@ paths:
         ### Names
         Matching names can be difficult due to:
           * multiple given names, such as in `Jane Anne Smith`
+          * [compound given names](https://en.wikipedia.org/wiki/Given_name#Compound), such as in `John Paul Smith`
           * multiple or double-barrelled surnames, such as in `Michael Smith-Jones`
           * homophones, such as `Smith` and `Smythe` or `Ann` and `Anne`
           * abbreviated names, such as `Bob` instead of `Robert`
@@ -367,8 +368,6 @@ paths:
 
         To deal with some of these issues:
           * we always search all given names
-            * given names can contain multiple names
-            * for a first given name such as "Jane Anne" we allow for searches based 
           * we search across all types of name - usual, nickname and temporary
           * a fuzzy search matches homophones, transposed names and previous names
           * for a non fuzzy search, you can optionally use wildcards and search previous names
@@ -453,6 +452,7 @@ paths:
 
         Please consider the information your application returns to users. For example a patient's temporary address can be used to perform a successful search. The home address will be included in the response. Do not share this information unless you need to.
         
+        TODO: Add compound name sandbox scenario details
         ## Sandbox testing
         You can test the following scenarios in our sandbox environment:
 
@@ -538,14 +538,20 @@ paths:
             type: string
         - name: given
           description: |
-            The patient's given name.
+            The patient's given names.
 
             Not case sensitive.
             Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
             Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
 
-            To specify multiple given names, use `given=Jane&given=Smith`. For cases where the first given name is made up of multiple names, use `given=Jane Smith&given=Anne`.
-            The same applies to wild carded names that are composed multiple names, for instance `given=Jane Smi*` is a valid search.
+            A patient may have more than one given name. Subsequent given names are commonly referred to as 'middle names'.
+            Specify multiple given names by repeating this parameter.
+            To search for  `Jane Anne Smith` use `given=Jane&given=Anne&family=Smith`.
+            
+            The first given name may be a [compound name](https://en.wikipedia.org/wiki/Given_name#Compound), for example `John Paul`.
+            To search for `John Paul James Smith` (where `John Paul` is the first given name, `James` is the second given name, and `Smith` the family name) use `given=John%20Paul&given=James&family=Smith`.
+            
+            Note that it is not necessary to specify subsequent given (middle) names, and that doing so may impact your search results in the case they are not recorded in the demographics system.
           example: Jane
           in: query
           required: false
