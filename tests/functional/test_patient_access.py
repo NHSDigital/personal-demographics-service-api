@@ -116,8 +116,8 @@ class TestUserRestrictedPatientAccess:
             json=patch_body,
         )
 
-        nhsd_patient_header = debug_session.get_apigee_header("NHSD-Patient")
         assert r.status_code == 200
+        nhsd_patient_header = debug_session.get_apigee_header("NHSD-Patient")
         assert nhsd_patient_header == f"P9:{config.TEST_PATIENT_ID}"
 
     async def test_patient_access_update_happy_path(

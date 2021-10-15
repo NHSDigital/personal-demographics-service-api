@@ -7,7 +7,6 @@ from tests.functional.config_files.config import APIGEE_API_TOKEN, APIGEE_API_UR
 
 class ApigeeDebugApi:
     def __init__(self, proxy: str):
-        super(ApigeeDebugApi, self).__init__()
         self.session_name = self._generate_uuid()
         self.proxy = proxy
         self.session = requests.Session()
