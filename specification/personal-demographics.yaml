@@ -452,7 +452,6 @@ paths:
 
         Please consider the information your application returns to users. For example a patient's temporary address can be used to perform a successful search. The home address will be included in the response. Do not share this information unless you need to.
         
-        TODO: Add compound name sandbox scenario details
         ## Sandbox testing
         You can test the following scenarios in our sandbox environment:
 
@@ -464,6 +463,7 @@ paths:
         | Search with date range      | `family`=`Smith`, `gender`=`female`, `birthdate`=`ge2010-10-21`, `birthdate`=`le2010-10-23` | HTTP Status 200 with single search result. |
         | Fuzzy search                | `family`=`Smith`, `given`=`Jane` `gender`=`female`, `birthdate`=`eq2010-10-22`, `_fuzzy-match`=`true` | HTTP Status 200 with single search result. |
         | Restricted patient search   | `family`=`Smythe`, `given`=`Janet` `gender`=`female`, `birthdate`=`eq2005-06-16` | HTTP Status 200 with single search result with restricted data omitted. |
+        | Compound name search        | `family`=`Smith`, `given`=`John Paul` `gender`=`female`, `birthdate`=`eq2005-06-16` | HTTP Status 200 with single search result. |
         | Unsuccessful search         | Any other valid search query parameters                      | HTTP Status 200 with no search results     |
         | Invalid date format         | `birthdate` or `death-date` query parameters with values not in format `YYYY-MM-DD` | HTTP Status 400 with problem description   |
         | Too few search parameters   | Any invalid combination of query parameters                  | HTTP Status 400 with problem description   |
