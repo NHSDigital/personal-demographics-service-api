@@ -66,7 +66,7 @@ info:
 
     ## Related APIs
     The following APIs also give access to the Personal Demographics Service:
-    - [Personal Demographics Service (SMSP) API](https://digital.nhs.uk/services/spine/spine-mini-service-provider-for-personal-demographics-service) - use this if you want to get PDS data without an authenticated end user (no [smartcard](https://digital.nhs.uk/services/registration-authorities-and-smartcards) required). It is, however, read-only and searches are limited to a single result.
+    - [Personal Demographics Service (SMSP) API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-smsp) - this API is now deprecated.
     - [Personal Demographics Service (HL7 V3) API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3) - use this if you want to use functions that are not yet available on the FHIR API.
 
     Once our roadmap is complete, the above APIs will become redundant.
@@ -217,10 +217,15 @@ info:
     - healthcare worker search and retrieve
     - healthcare worker update
     - application-restricted
+    - patient access
     
     In step 2, if using healthcare worker access mode, tell us which security pattern you are using:
-    - NHS CIS2 - combined authentication and authorisation 
+    - NHS CIS2 - combined authentication and authorisation
     - NHS CIS2 - separate authentication and authorisation
+    
+    In step 2, if using patient access mode, tell us which security pattern you are using:
+    - NHS login - combined authentication and authorisation - available only upon request
+    - NHS login - separate authentication and authorisation
     
     In step 6, when implementing your clinical risk management process, you must review and integrate the PDS FHIR API hazard log into your own risk log. It's embedded within the PDS FHIR API tab in the SCAL.
     
