@@ -362,6 +362,7 @@ paths:
         ### Names
         Matching names can be difficult due to:
           * multiple given names, such as in `Jane Anne Smith`
+          * [compound given names](https://en.wikipedia.org/wiki/Given_name#Compound), such as in `John Paul Smith`
           * multiple or double-barrelled surnames, such as in `Michael Smith-Jones`
           * homophones, such as `Smith` and `Smythe` or `Ann` and `Anne`
           * abbreviated names, such as `Bob` instead of `Robert`
@@ -467,6 +468,7 @@ paths:
         | Search with date range      | `family`=`Smith`, `gender`=`female`, `birthdate`=`ge2010-10-21`, `birthdate`=`le2010-10-23` | HTTP Status 200 with single search result. |
         | Fuzzy search                | `family`=`Smith`, `given`=`Jane` `gender`=`female`, `birthdate`=`eq2010-10-22`, `_fuzzy-match`=`true` | HTTP Status 200 with single search result. |
         | Restricted patient search   | `family`=`Smythe`, `given`=`Janet` `gender`=`female`, `birthdate`=`eq2005-06-16` | HTTP Status 200 with single search result with restricted data omitted. |
+        | Compound name search        | `family`=`Smith`, `given`=`John Paul` `gender`=`female`, `birthdate`=`eq2005-06-16` | HTTP Status 200 with single search result. |
         | Unsuccessful search         | Any other valid search query parameters                      | HTTP Status 200 with no search results     |
         | Invalid date format         | `birthdate` or `death-date` query parameters with values not in format `YYYY-MM-DD` | HTTP Status 400 with problem description   |
         | Too few search parameters   | Any invalid combination of query parameters                  | HTTP Status 400 with problem description   |
@@ -541,16 +543,27 @@ paths:
             type: string
         - name: given
           description: |
-            The patient's given name.
+            The patient's given names.
 
             Not case sensitive.
             Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
             Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
+
+            A patient may have more than one given name. Subsequent given names are commonly referred to as 'middle names'.
+            Specify multiple given names by repeating this parameter.
+            To search for  `Jane Anne Smith` use `given=Jane&given=Anne&family=Smith`.
+            
+            The first given name may be a [compound name](https://en.wikipedia.org/wiki/Given_name#Compound), for example `John Paul`.
+            To search for `John Paul James Smith` (where `John Paul` is the first given name, `James` is the second given name, and `Smith` the family name) use `given=John%20Paul&given=James&family=Smith`.
+            
+            Note that it is not necessary to specify subsequent given (middle) names, and that doing so may impact your search results in the case they are not recorded in the demographics system.
           example: Jane
           in: query
           required: false
           schema:
-            type: string
+            type: array
+            items:
+              type: string
         - name: gender
           description: Gender with which the patient most strongly identifies.
           example: female
