@@ -20,7 +20,7 @@ function containsSearchParameters(request, searchParameters) {
     // Remove date 'eq' prefix, as it is optional.
     function dateFormat(parameters) {
         return lodash.mapValues(parameters, function(val, key){
-            if ((key == "birthdate" || key == "death-date") && 
+            if ((key == "birthdate" || key == "death-date") &&
                     (lodash.isString(val) && val.startsWith("eq"))) {
                 return lodash.isString(val) ? val.replace("eq", "") : val;
             }
@@ -66,7 +66,7 @@ function buildPatientResponse(examplePatients = [], searchScore = 1.0) {
         });
     } else {
         delete response.entry
-    }   
+    }
 
     return response;
 }
@@ -118,7 +118,7 @@ module.exports.search = function(request) {
         return buildPatientResponse([patients.search.exampleSearchPatientSmith])
     }
 
-    
+
     // Perform daterange search
     const dateRangeSearchParams = {
         family: "Smith",
@@ -128,8 +128,8 @@ module.exports.search = function(request) {
     if (containsSearchParameters(request, dateRangeSearchParams)) {
         return buildPatientResponse([patients.search.exampleSearchPatientSmith])
     }
-    
-    // Perform a fuzzy search 
+
+    // Perform a fuzzy search
     const fuzzySearchParams = {
         family: "Smith",
         gender: "female",
@@ -139,7 +139,7 @@ module.exports.search = function(request) {
     }
     if (containsSearchParameters(request, fuzzySearchParams)) {
         return buildPatientResponse([patients.search.exampleSearchPatientSmyth], 0.8976)
-    } 
+    }
 
     // Check for wildcard search
     const wildcardSearchParams = {
@@ -158,14 +158,14 @@ module.exports.search = function(request) {
         } else if (request.query["_max-results"] < 2) {
             // max-result smaller than number of results
             throw Boom.badRequest("Too Many Matches", {
-                operationOutcomeCode: "not-found", 
+                operationOutcomeCode: "not-found",
                 operationOutcomeSeverity: "information",
                 apiErrorCode: "TOO_MANY_MATCHES"
             })
         } else {
             // Return Max Result response
             return buildPatientResponse([patients.search.exampleSearchPatientSmith, patients.search.exampleSearchPatientSmyth], 0.8343);
-        } 
+        }
     // Perform a advanced search as wildcard provided and max-result parameter not set
     } else if (wildcardMatch) {
         return buildPatientResponse([patients.search.exampleSearchPatientSmith, patients.search.exampleSearchPatientSmyth], 0.8343);
@@ -177,7 +177,7 @@ module.exports.search = function(request) {
         gender: "female",
         birthdate: "eq2010-10-22",
     }
-    
+
     const simpleSearchParamsGenderFree = {
         family: "Smith",
         birthdate: "eq2010-10-22",
@@ -202,8 +202,8 @@ module.exports.search = function(request) {
     // Multi name search
     const multiNameSearchParams = {
       family: "Smith",
-      given: ["Mary Ann", "Wild"],
-      gender: "female",
+      given: ["John Paul", "James"],
+      gender: "male",
       birthdate: "eq2010-10-22",
     }
 
@@ -212,6 +212,6 @@ module.exports.search = function(request) {
     }
 
     return buildPatientResponse();
-    
+
 }
-    
+
