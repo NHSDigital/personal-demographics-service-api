@@ -3,8 +3,8 @@ import requests
 import uuid
 import pytest
 
-from tests.functional.config_files.config import PROXY_NAME
 from tests.functional.utils.apigee_api import ApigeeDebugApi
+from tests.functional.utils.helper import generate_random_email_address, get_add_telecom_email_patch_body
 
 
 @pytest.mark.asyncio
@@ -90,24 +90,42 @@ class TestUserRestrictedPatientAccess:
             headers=headers,
         )
 
-        Etag = r.headers["Etag"]
-        new_gender = "female" if r.json()["gender"] == "male" else "male"
+        body = r.json()
 
-        patch_body = {
-            "patches": [{"op": "replace", "path": "/gender", "value": new_gender}]
-        }
+        ''' check if patient already has a telecom object, if so then amend the email address else
+        add a new telecom object
+        '''
+        if "telecom" in body:
+            telecom_id = body["telecom"][0]["id"]
+            patch_body = {
+                "patches": [
+                    {
+                        "op": "replace",
+                        "path": "/telecom/0",
+                        "value": {
+                            "id": telecom_id,
+                            "system": "email",
+                            "use": "work",
+                            "value": generate_random_email_address()
+                        }
+                    }
+                ]
+            }
+        else:
+            patch_body = get_add_telecom_email_patch_body()
 
+        e_tag = r.headers["Etag"]
         request_id = str(uuid.uuid4())
 
         headers = {
             "NHSD-SESSION-URID": "123",
             "Authorization": "Bearer " + token,
             "X-Request-ID": request_id,
-            "If-Match": Etag,
+            "If-Match": e_tag,
             "Content-Type": "application/json-patch+json",
         }
 
-        debug_session = ApigeeDebugApi(PROXY_NAME)
+        debug_session = ApigeeDebugApi(config.PROXY_NAME)
         debug_session.create_debug_session(request_id)
 
         r = requests.patch(
@@ -121,7 +139,7 @@ class TestUserRestrictedPatientAccess:
         assert nhsd_patient_header == f"P9:{config.TEST_PATIENT_ID}"
 
     async def test_patient_access_update_happy_path(
-        self, nhs_login_token_exchange, create_random_date
+        self, nhs_login_token_exchange
     ):
         token = await nhs_login_token_exchange()
 
@@ -136,19 +154,38 @@ class TestUserRestrictedPatientAccess:
             headers=headers,
         )
 
-        Etag = r.headers["Etag"]
-        version_id = r.json()["meta"]["versionId"]
-        new_gender = "female" if r.json()["gender"] == "male" else "male"
+        body = r.json()
 
-        patch_body = {
-            "patches": [{"op": "replace", "path": "/gender", "value": new_gender}]
-        }
+        ''' check if patient already has a telecom object, if so then amend the email address else
+            add a new telecom object
+        '''
+        if "telecom" in body:
+            telecom_id = body["telecom"][0]["id"]
+            patch_body = {
+                "patches": [
+                    {
+                        "op": "replace",
+                        "path": "/telecom/0",
+                        "value": {
+                            "id": telecom_id,
+                            "system": "email",
+                            "use": "work",
+                            "value": generate_random_email_address()
+                        }
+                    }
+                ]
+            }
+        else:
+            patch_body = get_add_telecom_email_patch_body()
+
+        eTag = r.headers["Etag"]
+        version_id = r.json()["meta"]["versionId"]
 
         headers = {
             "NHSD-SESSION-URID": "123",
             "Authorization": "Bearer " + token,
             "X-Request-ID": str(uuid.uuid4()),
-            "If-Match": Etag,
+            "If-Match": eTag,
             "Content-Type": "application/json-patch+json",
         }
         r = requests.patch(
