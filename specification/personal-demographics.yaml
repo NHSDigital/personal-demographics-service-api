@@ -479,7 +479,7 @@ paths:
         Alternatively, you can try out the sandbox using our Postman collection:
         
         
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/14719036-953f067f-30b9-4552-8252-7cc10b21dad3)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/a1ce1b055839caa384a8?action=collection%2Fimport)
 
       parameters:
         - name: _fuzzy-match
