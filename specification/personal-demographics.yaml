@@ -45,7 +45,7 @@ info:
     
     | Access mode                    | End user authentication                             | Functions          | Availability |
     | ------------------------------ | --------------------------------------------------- | ------------------ | ------------ |
-    | Application-restricted access  | None                                                | Search for a patient (single result). Get patient details. | Available in production (beta) | 
+    | Application-restricted access  | None                                                | Search for a patient (single result). Get patient details. | Available in production (stable) | 
     | Healthcare worker access       | NHS Care Identity Service 2 (NHS CIS2) using NHS [smartcard](https://digital.nhs.uk/services/registration-authorities-and-smartcards) or [modern alternative](https://digital.nhs.uk/services/nhs-care-identity-service-2/ways-to-authenticate-with-nhs-cis2)  | Search for patients (multiple results). Get patient details. Update patient details. | Available in production (beta) |
     | Patient access                 | [NHS login](https://digital.nhs.uk/services/nhs-login)  | Get own details. Update own details (limited). | Available in integration environment (alpha)   |
 
