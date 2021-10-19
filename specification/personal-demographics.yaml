@@ -1,6 +1,6 @@
 # This is an OpenAPI Specification (https://swagger.io/specification/)
 # for the Personal Demographics Service (PDS) API
-# owned by NHS Digital (https://digital.nhs.uk/)
+# owned by NHS Digital (https://digital.nhs.uk/) 
 openapi: "3.0.0"
 info:
   version: "{VERSION}"
