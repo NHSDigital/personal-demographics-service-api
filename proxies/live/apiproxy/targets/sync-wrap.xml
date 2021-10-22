@@ -64,7 +64,7 @@
       </Step>
       <Condition>oauthV2.OauthV2.VerifyAccessToken.failed</Condition>
     </FaultRule>
-    <!-- APMSPII-1139 capture 429 error from ApplyRateLimiting shared flow -->
+    <!-- APMSPII-1206 using ApplyRateLimiting Shared Flow -->
     <FaultRule name="app_quota_exceeded">
       <Condition>(ratelimit.QuotaPerApp.failed Equals true)</Condition>
       <Step>
