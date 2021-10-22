@@ -1,0 +1,9 @@
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.AddPatientUpdateHeader">
+  <Add>
+      <Headers>
+          <Header name="NHSD-Patient">{jwt.DecodeJWT.FromJWTHeader.claim.identity_proofing_level}:{jwt.DecodeJWT.FromJWTHeader.claim.nhs_number}</Header>
+      </Headers>
+  </Add>
+  <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+  <AssignTo createNew="false" transport="http" type="request"/>
+</AssignMessage>
