@@ -201,7 +201,8 @@ apigee:
         scopes: {{ mode.scopes }}
         # An API Product requires a quota value but it is not used
         # (We use the value defined in the ratelimiting attribute)
-        quota: '300'
+        # Hence this is set to a nonsense value to avoid confusion
+        quota: '99999'
         quotaInterval: '1'
         quotaTimeUnit: minute
 {% endfor %}
