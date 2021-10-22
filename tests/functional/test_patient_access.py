@@ -3,6 +3,9 @@ import requests
 import uuid
 import pytest
 
+from tests.functional.utils.apigee_api import ApigeeDebugApi
+from tests.functional.utils.helper import generate_random_email_address, get_add_telecom_email_patch_body
+
 
 @pytest.mark.asyncio
 class TestUserRestrictedPatientAccess:
@@ -71,8 +74,8 @@ class TestUserRestrictedPatientAccess:
             == "Patient cannot perform this action"
         )
 
-    async def test_patient_access_update_happy_path(
-        self, nhs_login_token_exchange, create_random_date
+    async def test_patient_access_update_nhsd_patient_header_sent_downstream(
+        self, nhs_login_token_exchange
     ):
         token = await nhs_login_token_exchange()
 
@@ -87,19 +90,102 @@ class TestUserRestrictedPatientAccess:
             headers=headers,
         )
 
-        Etag = r.headers["Etag"]
-        version_id = r.json()["meta"]["versionId"]
-        new_gender = "female" if r.json()["gender"] == "male" else "male"
+        body = r.json()
 
-        patch_body = {
-            "patches": [{"op": "replace", "path": "/gender", "value": new_gender}]
+        ''' check if patient already has a telecom object, if so then amend the email address else
+        add a new telecom object
+        '''
+        if "telecom" in body:
+            telecom_id = body["telecom"][0]["id"]
+            patch_body = {
+                "patches": [
+                    {
+                        "op": "replace",
+                        "path": "/telecom/0",
+                        "value": {
+                            "id": telecom_id,
+                            "system": "email",
+                            "use": "work",
+                            "value": generate_random_email_address()
+                        }
+                    }
+                ]
+            }
+        else:
+            patch_body = get_add_telecom_email_patch_body()
+
+        e_tag = r.headers["Etag"]
+        request_id = str(uuid.uuid4())
+
+        headers = {
+            "NHSD-SESSION-URID": "123",
+            "Authorization": "Bearer " + token,
+            "X-Request-ID": request_id,
+            "If-Match": e_tag,
+            "Content-Type": "application/json-patch+json",
         }
+
+        debug_session = ApigeeDebugApi(config.PROXY_NAME)
+        debug_session.create_debug_session(request_id)
+
+        r = requests.patch(
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}",
+            headers=headers,
+            json=patch_body,
+        )
+
+        assert r.status_code == 200
+        nhsd_patient_header = debug_session.get_apigee_header("NHSD-Patient")
+        assert nhsd_patient_header == f"P9:{config.TEST_PATIENT_ID}"
+
+    async def test_patient_access_update_happy_path(
+        self, nhs_login_token_exchange
+    ):
+        token = await nhs_login_token_exchange()
 
         headers = {
             "NHSD-SESSION-URID": "123",
             "Authorization": "Bearer " + token,
             "X-Request-ID": str(uuid.uuid4()),
-            "If-Match": Etag,
+        }
+
+        r = requests.get(
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}",
+            headers=headers,
+        )
+
+        body = r.json()
+
+        ''' check if patient already has a telecom object, if so then amend the email address else
+            add a new telecom object
+        '''
+        if "telecom" in body:
+            telecom_id = body["telecom"][0]["id"]
+            patch_body = {
+                "patches": [
+                    {
+                        "op": "replace",
+                        "path": "/telecom/0",
+                        "value": {
+                            "id": telecom_id,
+                            "system": "email",
+                            "use": "work",
+                            "value": generate_random_email_address()
+                        }
+                    }
+                ]
+            }
+        else:
+            patch_body = get_add_telecom_email_patch_body()
+
+        eTag = r.headers["Etag"]
+        version_id = r.json()["meta"]["versionId"]
+
+        headers = {
+            "NHSD-SESSION-URID": "123",
+            "Authorization": "Bearer " + token,
+            "X-Request-ID": str(uuid.uuid4()),
+            "If-Match": eTag,
             "Content-Type": "application/json-patch+json",
         }
         r = requests.patch(
