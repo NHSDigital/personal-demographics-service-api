@@ -205,8 +205,11 @@ module.exports.search = function(request) {
       given: ["John Paul", "James"],
       gender: "male",
       birthdate: "eq2010-10-22",
+      "_fuzzy-match": "false",
+      "_exact-match": "false",
+      "_history": "true",
     }
-
+    
     if (containsSearchParameters(request, multiNameSearchParams)) {
         return buildPatientResponse([patients.search.exampleSearchPatientCompoundName])
     }
