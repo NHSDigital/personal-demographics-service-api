@@ -98,3 +98,4 @@ class ApigeeDebugApi:
             for item in result['headers']:
                 if item['name'] == name:
                     return item['value']
+
