@@ -2,6 +2,7 @@ from tests.functional.config_files import config
 import requests
 import uuid
 import pytest
+import time
 
 from tests.functional.utils.apigee_api import ApigeeDebugApi
 from tests.functional.utils.helper import generate_random_email_address, get_add_telecom_email_patch_body
