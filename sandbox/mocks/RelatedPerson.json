@@ -1,38 +1,47 @@
 {
+  "id": "507B7621",
+  "resourceType": "RelatedPerson",
+  "patient": {
+    "type": "Patient",
+    "identifier": {
+      "system": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient",
+      "value": "90000000009"
+    },
+    "reference": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/90000000009"
+  },
   "active": true,
-  "address": [
+  "period": {
+    "start": "2020-01-01",
+    "end": "2021-12-31"
+  },
+  "name": [
     {
-      "extension": [
-        {
-          "extension": [
-            {
-              "url": "type",
-              "valueCoding": {
-                "code": "PAF",
-                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType"
-              }
-            },
-            {
-              "url": "value",
-              "valueString": "12345678"
-            }
-          ],
-          "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey"
-        }
-      ],
-      "line": [
-        "1 Trevelyan Square",
-        "Boar Lane",
-        "City Centre",
-        "Leeds",
-        "West Yorkshire"
-      ],
+      "use": "usual",
       "period": {
-        "end": "2021-12-31",
-        "start": "2020-01-01"
+        "start": "2020-01-01",
+        "end": "2021-12-31"
       },
-      "postalCode": "LS1 6AE",
-      "use": "home"
+      "given": [
+        "Jane"
+      ],
+      "family": "Smith",
+      "prefix": [
+        "Mrs"
+      ],
+      "suffix": [
+        "MBE"
+      ]
+    }
+  ],
+  "relationship": [
+    {
+      "coding": [
+        {
+          "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole",
+          "code": "Guardian",
+          "display": "Guardian of patient"
+        }
+      ]
     }
   ],
   "extension": [
@@ -45,15 +54,16 @@
       "valuePositiveInt": 1
     },
     {
+      "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-ContactPreference",
       "extension": [
         {
           "url": "PreferredWrittenCommunicationFormat",
           "valueCodeableConcept": {
             "coding": [
               {
+                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-PreferredWrittenCommunicationFormat",
                 "code": "12",
-                "display": "Braille",
-                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-PreferredWrittenCommunicationFormat"
+                "display": "Braille"
               }
             ]
           }
@@ -63,9 +73,9 @@
           "valueCodeableConcept": {
             "coding": [
               {
+                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-PreferredContactMethod",
                 "code": "1",
-                "display": "Letter",
-                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-PreferredContactMethod"
+                "display": "Letter"
               }
             ]
           }
@@ -74,20 +84,20 @@
           "url": "PreferredContactTimes",
           "valueString": "Not after 7pm"
         }
-      ],
-      "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-ContactPreference"
+      ]
     },
     {
+      "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication",
       "extension": [
         {
           "url": "language",
           "valueCodeableConcept": {
             "coding": [
               {
-                "code": "fr",
-                "display": "French",
                 "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-HumanLanguage",
-                "version": "1.0.0"
+                "version": "1.0.0",
+                "code": "fr",
+                "display": "French"
               }
             ]
           }
@@ -96,63 +106,53 @@
           "url": "interpreterRequired",
           "valueBoolean": true
         }
-      ],
-      "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication"
-    }
-  ],
-  "id": "507B7621",
-  "name": [
-    {
-      "family": "Smith",
-      "given": [
-        "Jane"
-      ],
-      "period": {
-        "end": "2021-12-31",
-        "start": "2020-01-01"
-      },
-      "prefix": [
-        "Mrs"
-      ],
-      "suffix": [
-        "MBE"
-      ],
-      "use": "usual"
-    }
-  ],
-  "patient": {
-    "identifier": {
-      "system": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient",
-      "value": "90000000009"
-    },
-    "reference": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/90000000009",
-    "type": "Patient"
-  },
-  "period": {
-    "end": "2021-12-31",
-    "start": "2020-01-01"
-  },
-  "relationship": [
-    {
-      "coding": [
-        {
-          "code": "Guardian",
-          "display": "Guardian of patient",
-          "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole"
-        }
       ]
     }
   ],
-  "resourceType": "RelatedPerson",
   "telecom": [
     {
       "period": {
-        "end": "2021-12-31",
-        "start": "2020-01-01"
+        "start": "2020-01-01",
+        "end": "2021-12-31"
       },
       "system": "phone",
-      "use": "work",
-      "value": "01632960587"
+      "value": "01632960587",
+      "use": "home"
+    }
+  ],
+  "address": [
+    {
+      "period": {
+        "start": "2020-01-01",
+        "end": "2021-12-31"
+      },
+      "use": "home",
+      "line": [
+        "1 Trevelyan Square",
+        "Boar Lane",
+        "City Centre",
+        "Leeds",
+        "West Yorkshire"
+      ],
+      "postalCode": "LS1 6AE",
+      "extension": [
+        {
+          "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey",
+          "extension": [
+            {
+              "url": "type",
+              "valueCoding": {
+                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType",
+                "code": "PAF"
+              }
+            },
+            {
+              "url": "value",
+              "valueString": "12345678"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
