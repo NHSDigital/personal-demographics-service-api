@@ -20,7 +20,7 @@ properties:
         system:
           type: string
           description: URI of the value set specification.
-          example: https://www.hl7.org/fhir/valueset-security-labels.html
+          example: http://terminology.hl7.org/CodeSystem/v3-Confidentiality
         code:
           type: string
           description: Code defined by the system value set.
