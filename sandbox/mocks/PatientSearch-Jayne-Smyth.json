@@ -129,7 +129,7 @@
       {
         "code": "U",
         "display": "unrestricted",
-        "system": "https://www.hl7.org/fhir/valueset-security-labels.html"
+        "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
       }
     ],
     "versionId": "2"
