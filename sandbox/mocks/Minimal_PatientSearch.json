@@ -1,35 +1,35 @@
 {
-  "resourceType": "Patient",
   "id": "9000000033",
   "identifier": [
     {
-      "system": "https://fhir.nhs.uk/Id/nhs-number",
-      "value": "9000000033",
       "extension": [
         {
           "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
           "valueCodeableConcept": {
             "coding": [
               {
-                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
-                "version": "1.0.0",
                 "code": "01",
-                "display": "Number present and verified"
+                "display": "Number present and verified",
+                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                "version": "1.0.0"
               }
             ]
           }
         }
-      ]
+      ],
+      "system": "https://fhir.nhs.uk/Id/nhs-number",
+      "value": "9000000033"
     }
   ],
   "meta": {
-    "versionId": "2",
     "security": [
       {
-        "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality",
         "code": "U",
-        "display": "unrestricted"
+        "display": "unrestricted",
+        "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
       }
-    ]
-  }
+    ],
+    "versionId": "2"
+  },
+  "resourceType": "Patient"
 }

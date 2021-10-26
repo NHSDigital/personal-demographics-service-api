@@ -101,7 +101,7 @@
       },
       "system": "phone",
       "value": "01632960587",
-      "use": "home"
+      "use": "work"
     },
     {
       "id": "OC789",
@@ -111,7 +111,7 @@
       },
       "system": "other",
       "value": "01632960587",
-      "use": "home",
+      "use": "work",
       "extension": [
         {
           "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-OtherContactSystem",
