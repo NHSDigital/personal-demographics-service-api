@@ -2,29 +2,141 @@
 APIGEE_ENVIRONMENTS:
   - name: internal-dev
     display_name_suffix: Internal Development
+    ratelimiting:
+      personal-demographics-internal-dev:
+        quota:
+          enabled: true
+          limit: 300
+          interval: 1
+          timeunit: minute
+        spikeArrest:
+          enabled: true
+          ratelimit: 10ps
+      app:
+        quota:
+          enabled: false
+        spikeArrest:
+          enabled: false
   # TODO: Remove as we don't want this included in an actual release
   - name: internal-dev-sandbox
     display_name_suffix: Internal Development Sandbox
+    # Ratelimiting is currently disabled for all sandbox environments
+    ratelimiting:
+      personal-demographics-internal-dev-sandbox:
+        quota:
+          enabled: false
+        spikeArrest:
+          enabled: false
+          ratelimit: 10ps  # Required as fed into required (but unused) ratelimit attribute of the API product
+      app:
+        quota:
+          enabled: false
+        spikeArrest:
+          enabled: false
   - name: internal-qa
     display_name_suffix: Internal QA
+    ratelimiting:
+      personal-demographics-internal-qa:
+        quota:
+          enabled: true
+          limit: 300
+          interval: 1
+          timeunit: minute
+        spikeArrest:
+          enabled: true
+          ratelimit: 10ps
+      app:
+        quota:
+          enabled: false
+        spikeArrest:
+          enabled: false
   - name: internal-qa-sandbox
     display_name_suffix: Internal QA Sandbox
+    # Ratelimiting is currently disabled for sandbox environments
+    ratelimiting:
+      personal-demographics-internal-qa-sandbox:
+        quota:
+          enabled: false
+        spikeArrest:
+          enabled: false
+          ratelimit: 10ps  # Required as fed into required (but unused) ratelimit attribute of the API product
+      app:
+        quota:
+          enabled: false
+        spikeArrest:
+          enabled: false
   - name: ref
     display_name_suffix: Reference
-    ratelimit: '31500pm'    # 525 TPS
-    quota: '31500'
+    ratelimiting:
+      personal-demographics-ref:
+        quota:
+          enabled: true
+          limit: 31500
+          interval: 1
+          timeunit: minute
+        spikeArrest:
+          enabled: true
+          ratelimit: 1050ps
+      app:
+        quota:
+          enabled: false
+        spikeArrest:
+          enabled: false
   - name: sandbox
     display_name_suffix: Sandbox
     portal_visibility: false
+    # Ratelimiting is currently disabled for sandbox environments
+    ratelimiting:
+      personal-demographics-sandbox:
+        quota:
+          enabled: false
+        spikeArrest:
+          enabled: false
+          ratelimit: 10ps  # Required as fed into required (but unused) ratelimit attribute of the API product
+      app:
+        quota:
+          enabled: false
+        spikeArrest:
+          enabled: false
   - name: int
     display_name_suffix: Integration Testing
-    ratelimit: '1200pm'    # 20 TPS as agreed with Azhar Sept 2021 - APMSPII-1196
-    quota: '1200'
+    ratelimiting:
+      personal-demographics-int:
+        quota:
+          enabled: true
+          limit: 1200   # 20 TPS as agreed with Azhar Sept 2021 - APMSPII-1196
+          interval: 1
+          timeunit: minute
+        spikeArrest:
+          enabled: true
+          ratelimit: 40ps
+      app:
+        quota:
+          enabled: false
+        spikeArrest:
+          enabled: false
   - name: prod
     approval_type: manual
     display_name_suffix: Production
-    ratelimit: '16200pm'    # Amount Spine indicated they can handle as burst load
-    quota: '16200'           # 270 TPS
+    ratelimiting:
+      personal-demographics-prod:
+        quota:
+          enabled: true
+          limit: 16200  # 270 TPS Amount Spine indicated they can handle as burst load
+          interval: 1
+          timeunit: minute
+        spikeArrest:
+          enabled: true
+          ratelimit: 540ps
+      app:
+        quota:
+          enabled: true
+          limit: 300    # 5TPS
+          interval: 1
+          timeunit: minute
+        spikeArrest:
+          enabled: true
+          ratelimit: 10ps
 
 ACCESS_MODES:
   - name: user-restricted
@@ -72,10 +184,11 @@ apigee:
 {% if mode.nameSuffix == '-patient-access' and env.name == 'prod' %}
             value: private
 {% endif %}
-          - name: ratelimit
-            value: {{ env.ratelimit | default('300pm') }}
           - name: ratelimiting
-            value: '{"personal-demographics-{{ env.name }}":{"quota":{"limit":{{ env.quota | default("300")}},"interval":1,"timeunit":"minute","enabled":true},"spikeArrest":{"ratelimit":"{{env.ratelimit | default("300pm")}}","enabled":true}}}'
+            value: {{ env.ratelimiting }}
+          # This attribute is redundant, but is required
+          - name: ratelimit
+            value: {{ env.ratelimiting["personal-demographics-" + env.name].spikeArrest.ratelimit }}
         description: {{ mode.description }}
         displayName: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
         environments: [ {{ env.name }} ]
@@ -86,7 +199,10 @@ apigee:
           - identity-service-{{ env.name }}-no-smartcard
 {% endif %}
         scopes: {{ mode.scopes }}
-        quota: {{ env.quota | default('300') }}
+        # An API Product requires a quota value but it is not used
+        # (We use the value defined in the ratelimiting attribute)
+        # Hence this is set to a nonsense value to avoid confusion
+        quota: '99999'
         quotaInterval: '1'
         quotaTimeUnit: minute
 {% endfor %}

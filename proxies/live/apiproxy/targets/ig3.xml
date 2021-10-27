@@ -169,11 +169,45 @@
         <Name>AssignMessage.Errors.OAuthPolicyResponse</Name>
       </Step>
     </FaultRule>
-    <!-- APMSPII-1139 capture 429 error from ApplyRateLimiting shared flow -->
-    <FaultRule name="rate_limit_exceeded">
-      <Condition>(error.status.code Equals "429")</Condition>
+    <!-- APMSPII-1206 using ApplyRateLimiting Shared Flow -->
+    <FaultRule name="app_quota_exceeded">
+      <Condition>(ratelimit.QuotaPerApp.failed Equals true)</Condition>
       <Step>
-        <Name>AssignMessage.Errors.RateLimitExceeded</Name>
+        <Name>AssignMessage.Errors.AppQuotaExceeded</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Mirror.CorrelationID</Name>
+        <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Mirror.RequestID</Name>
+        <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Errors.CatchAllMessage</Name>
+      </Step>
+    </FaultRule>
+    <FaultRule name="app_spikearrest_exceeded">
+      <Condition>(ratelimit.SpikeArrestPerApp.failed Equals true)</Condition>
+      <Step>
+        <Name>AssignMessage.Errors.AppSpikeArrestExceeded</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Mirror.CorrelationID</Name>
+        <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Mirror.RequestID</Name>
+        <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Errors.CatchAllMessage</Name>
+      </Step>
+    </FaultRule>
+    <FaultRule name="proxy_ratelimit_exceeded">
+      <Condition>(ratelimit.QuotaPerProxy.failed Equals true OR ratelimit.SpikeArrestPerProxy.failed Equals true)</Condition>
+      <Step>
+        <Name>AssignMessage.Errors.ProxyRatelimitExceeded</Name>
       </Step>
       <Step>
         <Name>AssignMessage.Mirror.CorrelationID</Name>

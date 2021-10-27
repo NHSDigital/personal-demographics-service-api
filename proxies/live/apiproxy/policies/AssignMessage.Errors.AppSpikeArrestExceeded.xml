@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage name="AssignMessage.Errors.AppSpikeArrestExceeded">
+    <AssignVariable>
+        <Name>pds.error.code</Name>
+        <Value>value</Value>
+    </AssignVariable>
+    <AssignVariable>
+        <Name>pds.error.coding.code</Name>
+        <Value>TOO_MANY_REQUESTS</Value>
+    </AssignVariable>
+    <AssignVariable>
+        <Name>pds.error.coding.display</Name>
+        <Value>Too many requests</Value>
+    </AssignVariable>
+    <AssignVariable>
+        <Name>pds.error.diagnostics</Name>
+        <Template>Your application, {developer.app.name}, has created a spike in traffic and is being rate limited. Please reduce the frequency of your requests. Please see: https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits for more details.</Template>
+    </AssignVariable>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</AssignMessage>
