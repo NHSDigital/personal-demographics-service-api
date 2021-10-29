@@ -42,7 +42,7 @@ class ApigeeDebugApi:
         if response.status_code != 201:
             raise ValueError(f"Unable to create apigee debug session {self.session_name}")
 
-    def _get_transaction_id(self) -> str:
+    def _get_transaction_id(self):
         url = f"{APIGEE_API_URL}/environments/{ENVIRONMENT}/apis/{self.proxy}/revisions/{self.revision}/" \
               f"debugsessions/{self.session_name}/data"
 
