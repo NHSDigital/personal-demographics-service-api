@@ -74,7 +74,6 @@ class TestUserRestrictedPatientAccess:
             == "Patient cannot perform this action"
         )
 
-    @pytest.mark.skip(reason="flaky test which requires further investigation")
     async def test_patient_access_update_nhsd_patient_header_sent_downstream(
         self, nhs_login_token_exchange
     ):
