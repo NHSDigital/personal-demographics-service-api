@@ -11,7 +11,7 @@ APIGEE_ENVIRONMENTS:
           timeunit: minute
         spikeArrest:
           enabled: true
-          ratelimit: 10ps
+          ratelimit: 600pm # 10 requests per second
       app:
         quota:
           enabled: false
@@ -27,7 +27,7 @@ APIGEE_ENVIRONMENTS:
           enabled: false
         spikeArrest:
           enabled: false
-          ratelimit: 10ps  # Required as fed into required (but unused) ratelimit attribute of the API product
+          ratelimit: 600pm  # Required as fed into required (but unused) ratelimit attribute of the API product
       app:
         quota:
           enabled: false
@@ -44,7 +44,7 @@ APIGEE_ENVIRONMENTS:
           timeunit: minute
         spikeArrest:
           enabled: true
-          ratelimit: 10ps
+          ratelimit: 600pm # 10 requests per second
       app:
         quota:
           enabled: false
@@ -59,7 +59,7 @@ APIGEE_ENVIRONMENTS:
           enabled: false
         spikeArrest:
           enabled: false
-          ratelimit: 10ps  # Required as fed into required (but unused) ratelimit attribute of the API product
+          ratelimit: 600pm  # Required as fed into required (but unused) ratelimit attribute of the API product
       app:
         quota:
           enabled: false
@@ -76,7 +76,7 @@ APIGEE_ENVIRONMENTS:
           timeunit: minute
         spikeArrest:
           enabled: true
-          ratelimit: 1050ps
+          ratelimit: 63000pm # 1050 requests per second
       app:
         quota:
           enabled: false
@@ -92,7 +92,7 @@ APIGEE_ENVIRONMENTS:
           enabled: false
         spikeArrest:
           enabled: false
-          ratelimit: 10ps  # Required as fed into required (but unused) ratelimit attribute of the API product
+          ratelimit: 600pm  # Required as fed into required (but unused) ratelimit attribute of the API product
       app:
         quota:
           enabled: false
@@ -109,7 +109,7 @@ APIGEE_ENVIRONMENTS:
           timeunit: minute
         spikeArrest:
           enabled: true
-          ratelimit: 40ps
+          ratelimit: 2400pm # 40 requests per second
       app:
         quota:
           enabled: false
@@ -127,7 +127,7 @@ APIGEE_ENVIRONMENTS:
           timeunit: minute
         spikeArrest:
           enabled: true
-          ratelimit: 540ps
+          ratelimit: 32400pm # 540 requests per second
       app:
         quota:
           enabled: true
@@ -136,7 +136,7 @@ APIGEE_ENVIRONMENTS:
           timeunit: minute
         spikeArrest:
           enabled: true
-          ratelimit: 10ps
+          ratelimit: 600pm # 10 requests per second
 
 ACCESS_MODES:
   - name: user-restricted
