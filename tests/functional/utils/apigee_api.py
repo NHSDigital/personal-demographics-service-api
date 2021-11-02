@@ -42,7 +42,7 @@ class ApigeeDebugApi:
         if response.status_code != 201:
             raise ValueError(f"Unable to create apigee debug session {self.session_name}")
 
-    def _get_transaction_id(self) -> str:
+    def _get_transaction_id(self):
         url = f"{APIGEE_API_URL}/environments/{ENVIRONMENT}/apis/{self.proxy}/revisions/{self.revision}/" \
               f"debugsessions/{self.session_name}/data"
 
@@ -51,19 +51,24 @@ class ApigeeDebugApi:
         if response.status_code != 200:
             raise ValueError(f"Unable to get apigee transaction id for {self.session_name}")
 
-        return response.text.strip('[]').replace("\"", "").strip().split(', ')[2]
+        return response.text.strip('[]').replace("\"", "").strip().split(', ')
 
     def _get_transaction_data(self) -> dict:
-        transaction_id = self._get_transaction_id()
-        url = f"{APIGEE_API_URL}/environments/{ENVIRONMENT}/apis/{self.proxy}/revisions/{self.revision}/" \
-              f"debugsessions/{self.session_name}/data/{transaction_id}"
+        transaction_ids = self._get_transaction_id()
+        data = []
 
-        response = self.session.get(url, headers=self.headers)
+        for transaction in transaction_ids:
+            url = f"{APIGEE_API_URL}/environments/{ENVIRONMENT}/apis/{self.proxy}/revisions/{self.revision}/" \
+                  f"debugsessions/{self.session_name}/data/{transaction}"
 
-        if response.status_code != 200:
-            raise ValueError(f"Unable to get apigee transaction {transaction_id}")
+            response = self.session.get(url, headers=self.headers)
 
-        return json.loads(response.text)
+            if response.status_code != 200:
+                raise ValueError(f"Unable to get apigee transaction {transaction}")
+
+            data.append(json.loads(response.text))
+
+        return data
 
     def get_apigee_variable(self, name: str) -> str:
         data = self._get_transaction_data()
@@ -84,17 +89,19 @@ class ApigeeDebugApi:
 
     def get_apigee_header(self, name: str) -> str:
         data = self._get_transaction_data()
-        executions = [x.get('results', None) for x in data['point'] if x.get('id', "") == "Execution"]
-        executions = list(filter(lambda x: x != [], executions))
 
-        request_messages = []
+        for d in data:
+            executions = [x.get('results', None) for x in d['point'] if x.get('id', "") == "Execution"]
+            executions = list(filter(lambda x: x != [], executions))
 
-        for execution in executions:
-            for item in execution:
-                if item.get('ActionResult', '') == 'RequestMessage':
-                    request_messages.append(item)
+            request_messages = []
 
-        for result in request_messages:  # One being sent as the header
-            for item in result['headers']:
-                if item['name'] == name:
-                    return item['value']
+            for execution in executions:
+                for item in execution:
+                    if item.get('ActionResult', '') == 'RequestMessage':
+                        request_messages.append(item)
+
+            for result in request_messages:  # One being sent as the header
+                for item in result['headers']:
+                    if item['name'] == name:
+                        return item['value']
