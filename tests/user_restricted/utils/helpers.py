@@ -258,3 +258,18 @@ def check_retrieve_response_body_shape(response: requests.Response) -> None:
         assert isinstance(response_body["identifier"], list)
 
         assert response_body["meta"] is not None
+
+
+def assert_correct_patient_nhs_number_is_returned(response: requests.Response, expected_nhs_number: str) -> None:
+    response_body = json.loads(response.text)
+
+    with check:
+        assert response_body["entry"][0]["resource"]["id"] is not None
+        assert response_body["entry"][0]["resource"]["id"] == expected_nhs_number
+
+
+def assert_is_sensitive_patient(response: requests.Response) -> None:
+    response_body = json.loads(response.text)
+
+    with check:
+        assert response_body["entry"][0]["resource"]["meta"]["security"][0]["display"] == "restricted"
