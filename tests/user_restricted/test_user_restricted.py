@@ -117,8 +117,8 @@ class TestUserRestrictedSearchPatient:
             search[0]["query_params"],
             self.headers
         )
-        helpers.check_search_response_body(response, search[0]["response"])
         helpers.check_response_status_code(response, 200)
+        helpers.assert_correct_patient_nhs_number_is_returned(response, search[0]["patient_returned"])
         helpers.check_response_headers(response, self.headers)
 
     def test_search_patient_with_missing_auth_header(self, headers):
@@ -196,26 +196,27 @@ class TestUserRestrictedSearchPatient:
             search[9]["query_params"],
             self.headers
         )
-        helpers.check_search_response_body(response, search[9]["response"])
         helpers.check_response_status_code(response, 200)
+        helpers.assert_correct_patient_nhs_number_is_returned(response, search[9]["patient_returned"])
+        helpers.assert_is_sensitive_patient(response)
         helpers.check_response_headers(response, self.headers)
 
-    def test_search_patient_happy_path_genderfree(self, headers_with_token):
+    def test_search_patient_happy_path_gender_free(self, headers_with_token):
         response = helpers.search_patient(
             search[7]["query_params"],
             self.headers
         )
-        helpers.check_search_response_body(response, search[7]["response"])
         helpers.check_response_status_code(response, 200)
+        helpers.assert_correct_patient_nhs_number_is_returned(response, search[7]["patient_returned"])
         helpers.check_response_headers(response, self.headers)
 
-    def test_search_advanced_alphanumeric_genderfree(self, headers_with_token):
+    def test_search_advanced_alphanumeric_gender_free(self, headers_with_token):
         response = helpers.search_patient(
             search[8]["query_params"],
             self.headers
         )
-        helpers.check_search_response_body(response, search[8]["response"])
         helpers.check_response_status_code(response, 200)
+        helpers.assert_correct_patient_nhs_number_is_returned(response, search[8]["patient_returned"])
         helpers.check_response_headers(response, self.headers)
 
     def test_simple_trace_no_gender(self, headers_with_token):
