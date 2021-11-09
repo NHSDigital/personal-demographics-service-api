@@ -121,6 +121,9 @@
           <Name>RaiseFault.InvalidUserNHSlogin</Name>
           <Condition>apigee.method_is_restricted Equals true</Condition>
         </Step>
+        <Step>
+          <Name>AssignMessage.AddPatientUpdateHeader</Name>
+        </Step>
       </Request>
     </Flow>
   </Flows>
