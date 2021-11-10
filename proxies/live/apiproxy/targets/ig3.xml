@@ -122,7 +122,7 @@
           <Condition>apigee.method_is_restricted Equals true</Condition>
         </Step>
         <Step>
-          <Name>AssignMessage.AddPatientUpdateHeader</Name>
+          <Name>AssignMessage.AddPatientAccessHeader</Name>
         </Step>
       </Request>
     </Flow>

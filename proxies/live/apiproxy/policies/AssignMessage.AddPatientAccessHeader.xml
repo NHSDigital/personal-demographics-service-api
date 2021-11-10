@@ -1,4 +1,4 @@
-<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.AddPatientUpdateHeader">
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.AddPatientAccessHeader">
   <Add>
       <Headers>
           <Header name="NHSD-Patient">{jwt.DecodeJWT.DecodeIdToken.claim.identity_proofing_level}:{jwt.DecodeJWT.DecodeIdToken.claim.nhs_number}</Header>
