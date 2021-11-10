@@ -1,3 +1,0 @@
-<DecodeJWT async="false" continueOnError="false" enabled="true" name="DecodeJWT.FromJWTHeader">
-  <Source>request.header.NHSD-Identity-JWT</Source>
-</DecodeJWT>
