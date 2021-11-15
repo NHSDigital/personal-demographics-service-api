@@ -1909,19 +1909,6 @@ components:
     Patient:
       value:
         $ref: 'components/examples/Patient.json'
-    OperationOutcome:
-      summary: OperationOutcome example
-      value:
-        resourceType: OperationOutcome
-        issue:
-          - severity: error
-            code: value
-            details:
-              coding:
-                - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                  version: '1'
-                  code: INVALID_RESOURCE_ID
-                  display: Resource Id is invalid
     INVALID_VALUE:
       value:
         $ref: 'components/examples/4xx/invalid_value.json'
@@ -1937,8 +1924,3 @@ components:
     PRECONDITION_FAILED:
       value:
         $ref: 'components/examples/4xx/precondition_failed.json'
-
-
-
-
-
