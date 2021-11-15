@@ -74,9 +74,11 @@ class TestUserRestrictedPatientAccess:
             == "Patient cannot perform this action"
         )
 
-    async def test_patient_access_update_nhsd_patient_header_sent_downstream(
+    async def test_patient_access_nhsd_patient_header_sent_downstream(
         self, nhs_login_token_exchange
     ):
+        """Requests to the PDS API should include the NHSD-PATIENT-ID header when in Patient Access mode"""
+
         token = await nhs_login_token_exchange()
 
         headers = {
@@ -85,16 +87,23 @@ class TestUserRestrictedPatientAccess:
             "X-Request-ID": str(uuid.uuid4()),
         }
 
+        debug_session_get = ApigeeDebugApi(config.PROXY_NAME)
+        debug_session_get.create_debug_session(headers["X-Request-ID"])
+
         r = requests.get(
             f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}",
             headers=headers,
         )
 
+        # Check the GET request
+        assert r.status_code == 200
+        nhsd_patient_header_get = debug_session_get.get_apigee_header("NHSD-Patient")
+        assert nhsd_patient_header_get == f"P9:{config.TEST_PATIENT_ID}"
+
         body = r.json()
 
-        ''' check if patient already has a telecom object, if so then amend the email address else
-        add a new telecom object
-        '''
+        # check if patient already has a telecom object, if so then amend the email address else
+        # add a new telecom object
         if "telecom" in body:
             telecom_id = body["telecom"][0]["id"]
             patch_body = {
@@ -125,8 +134,8 @@ class TestUserRestrictedPatientAccess:
             "Content-Type": "application/json-patch+json",
         }
 
-        debug_session = ApigeeDebugApi(config.PROXY_NAME)
-        debug_session.create_debug_session(request_id)
+        debug_session_patch = ApigeeDebugApi(config.PROXY_NAME)
+        debug_session_patch.create_debug_session(request_id)
 
         r = requests.patch(
             f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}",
@@ -135,8 +144,8 @@ class TestUserRestrictedPatientAccess:
         )
 
         assert r.status_code == 200
-        nhsd_patient_header = debug_session.get_apigee_header("NHSD-Patient")
-        assert nhsd_patient_header == f"P9:{config.TEST_PATIENT_ID}"
+        nhsd_patient_header_patch = debug_session_patch.get_apigee_header("NHSD-Patient")
+        assert nhsd_patient_header_patch == f"P9:{config.TEST_PATIENT_ID}"
 
     async def test_patient_access_update_happy_path(
         self, nhs_login_token_exchange
