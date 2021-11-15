@@ -1,0 +1,20 @@
+{
+    "resourceType": "OperationOutcome",
+    "issue": [
+      {
+        "severity": "error",
+        "code": "timeout",
+        "details": {
+          "coding": [
+            {
+              "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+              "version": "1",
+              "code": "SERVICE_UNAVAILABLE",
+              "display": "Service unavailable"
+            }
+          ]
+        },
+        "diagnostics": "The downstream domain processing has not completed within the configured timeout period. Using the same 'X-Request-ID' header, retry your request after the time specified by the 'Retry-After' response header."
+      }
+    ]
+  }

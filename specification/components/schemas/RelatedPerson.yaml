@@ -1,70 +1,101 @@
-type: object
-additionalProperties: false
-required:
-  - patient
-  - relationship
-properties:
-  id:
-    type: string
-    description: Unique object identifier for this name.
-    example: "507B7621"
-  resourceType:
-    type: string
-    description: FHIR resource type.
-    default: RelatedPerson
-  patient:
-     "$ref": PatientReference.yaml
-  active:
-    type: boolean
-    default: true
-  period:
-    "$ref": Period.yaml
-  name:
-    type: array
-    description: |
-      List containing zero or one name associated with the related person.
+                type: object
+                properties:
+                  resourceType:
+                    type: string
+                    description: FHIR Resource Type.
+                    default: Bundle
+                  type:
+                    type: string
+                    description: FHIR Bundle Type.
+                    default: searchset
+                  timestamp:
+                    type: string
+                    description: Time the search was performed.
+                    format: datetime
+                    example: '2019-12-25T12:00:00+00:00'
+                  total:
+                    type: integer
+                    description: Number of resources returned in search.
+                    example: 1
+                  entry:
+                    type: array
+                    description: |
+                      A list of related people details attached to the patient. 
+                    items:
+                      type: object
+                      properties:
+                        fullUrl:
+                          type: string
+                          description: Absolute URL of the resource described in this item.
+                          example: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000009/RelatedPerson/507B7621'
+                        resource:
+                          type: object
+                          additionalProperties: false
+                          required:
+                            - patient
+                            - relationship
+                          properties:
+                            id:
+                              type: string
+                              description: Unique object identifier for this name.
+                              example: "507B7621"
+                            resourceType:
+                              type: string
+                              description: FHIR resource type.
+                              default: RelatedPerson
+                            patient:
+                              "$ref": PatientReference.yaml
+                            active:
+                              type: boolean
+                              default: true
+                            period:
+                              "$ref": Period.yaml
+                            name:
+                              type: array
+                              description: |
+                                List containing zero or one name associated with the related person.
 
-      This is an optional field as there may be a `patient` reference which can be used to retrieve any details about the related person.
+                                This is an optional field as there may be a `patient` reference which can be used to retrieve any details about the related person.
 
-      If no `patient` reference is available `name` and `address` must be provided at the minimum.
-    maxItems: 1
-    items:
-      "$ref": HumanName.yaml
-  address:
-    type: array
-    description: |
-      List containing zero or one address associated with the related person.
+                                If no `patient` reference is available `name` and `address` must be provided at the minimum.
+                              maxItems: 1
+                              items:
+                                "$ref": HumanName.yaml
+                            address:
+                              type: array
+                              description: |
+                                List containing zero or one address associated with the related person.
 
-      This is an optional field as there may be a `patient` reference which can be used to retrieve any details about the related person.
+                                This is an optional field as there may be a `patient` reference which can be used to retrieve any details about the related person.
 
-      If no `patient` reference is available `name` and `address` must be provided at the minimum.
-    maxItems: 1
-    items:
-      "$ref": Address.yaml
-  telecom:
-    type: array
-    description: |
-      List containing zero to five contact methods associated with the related person.
+                                If no `patient` reference is available `name` and `address` must be provided at the minimum.
+                              maxItems: 1
+                              items:
+                                "$ref": Address.yaml
+                            telecom:
+                              type: array
+                              description: |
+                                List containing zero to five contact methods associated with the related person.
 
-      This is an optional field as there may be a `patient` reference which can be used to retrieve any details about the related person.
-    maxItems: 5
-    items:
-      "$ref": ContactPoint.yaml
-  relationship:
-    type: array
-    description: |
-      The relationship of the related person to the patient.
-    minItems: 1
-    maxItems: 1
-    items:
-      "$ref": codeable/Relationship.yaml
-  extension:
-    type: array
-    description: |
-      Wrapper array for copy correspondence, contact rank, contact preferences and communication details; these are all FHIR extensions. Always contains zero or one of each extension type.
-    items:
-      anyOf:
-        - "$ref": extensions/CopyCorrespondence.yaml
-        - "$ref": extensions/ContactRank.yaml
-        - "$ref": extensions/ContactPreference.yaml
-        - "$ref": extensions/Communication.yaml
+                                This is an optional field as there may be a `patient` reference which can be used to retrieve any details about the related person.
+                              maxItems: 5
+                              items:
+                                "$ref": ContactPoint.yaml
+                            relationship:
+                              type: array
+                              description: |
+                                The relationship of the related person to the patient.
+                              minItems: 1
+                              maxItems: 1
+                              items:
+                                "$ref": codeable/Relationship.yaml
+                            extension:
+                              type: array
+                              description: |
+                                Wrapper array for copy correspondence, contact rank, contact preferences and communication details; these are all FHIR extensions. Always contains zero or one of each extension type.
+                              items:
+                                anyOf:
+                                  - "$ref": extensions/CopyCorrespondence.yaml
+                                  - "$ref": extensions/ContactRank.yaml
+                                  - "$ref": extensions/ContactPreference.yaml
+                                  - "$ref": extensions/Communication.yaml

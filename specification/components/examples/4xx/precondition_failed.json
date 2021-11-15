@@ -1,0 +1,20 @@
+{
+    "resourceType": "OperationOutcome",
+    "issue": [
+      {
+        "severity": "error",
+        "code": "structure",
+        "details": {
+          "coding": [
+            {
+              "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+              "version": "1",
+              "code": "PRECONDITION_FAILED",
+              "display": "Required condition was not fulfilled"
+            }
+          ]
+        },
+        "diagnostics": "Invalid request with error - X-Request-ID header must be supplied to access this resource"
+      }
+    ]
+  }

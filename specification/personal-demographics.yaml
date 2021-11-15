@@ -255,7 +255,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/BearerAuthorization'
       - $ref: '#/components/parameters/RoleId'
-      - $ref: '#/components/parameters/RequestID'
+      - $ref: '#/components/parameters/XRequestID'
       - $ref: '#/components/parameters/CorrelationID'
     get:
       summary: Search for a patient
@@ -480,238 +480,34 @@ paths:
         
         
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/a1ce1b055839caa384a8?action=collection%2Fimport)
-
       parameters:
-        - name: _fuzzy-match
-          description: |
-            A fuzzy search is performed, including checks for homophones, transposed names and historic information.
-            
-            You cannot use wildcards with a fuzzy search.
-          example: false
-          in: query
-          required: false
-          schema:
-            type: boolean
-            default: false
-        - name: _exact-match
-          description: The search only returns results where the `score` field is 1.0. Use this with care - it is unlikely to work with fuzzy search or wildcards.
-          example: false
-          in: query
-          required: false
-          schema:
-            type: boolean
-            default: false
-        - name: _history
-          description: |
-            The search looks for matches in historic information such as previous names and addresses.
-            
-            This parameter has no effect for a fuzzy search, which always includes historic information.
-          example: true
-          in: query
-          required: false
-          schema:
-            type: boolean
-            default: false
-        - name: _max-results
-          description: |
-            The maximum number of matching patients to return. For healthcare worker access, this must be between 1 and 50, and the default is 50.
-            For application-restricted access, this must be 1, and the default is 1.
-            If too many patients match the search criteria, we return a `TOO_MANY_MATCHES` error.
-          example: 1
-          in: query
-          required: false
-          schema:
-            type: integer
-            format: int32
-        - name: family
-          description: |
-            The patient's family name (surname).
-            
-            Not case sensitive.
-            Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
-            Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
-          examples:
-            simple:
-              value: Smith
-              summary: Matches Smythe if `_fuzzy-match` is specified.
-            wildcarded:
-              value: "Sm*t*"
-              summary: 'Wildcards must contain at least two characters, this matches Smith, Smythe'
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: given
-          description: |
-            The patient's given names.
-
-            Not case sensitive.
-            Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
-            Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
-
-            A patient may have more than one given name. Subsequent given names are commonly referred to as 'middle names'.
-            Specify multiple given names by repeating this parameter.
-            To search for  `Jane Anne Smith` use `given=Jane&given=Anne&family=Smith`.
-            
-            The first given name may be a [compound name](https://en.wikipedia.org/wiki/Given_name#Compound), for example `John Paul`.
-            To search for `John Paul James Smith` (where `John Paul` is the first given name, `James` is the second given name, and `Smith` the family name) use `given=John%20Paul&given=James&family=Smith`.
-            
-            Note that it is not necessary to specify subsequent given (middle) names, and that doing so may impact your search results in the case they are not recorded in the demographics system.
-          example: Jane
-          in: query
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - name: gender
-          description: Gender with which the patient most strongly identifies.
-          example: female
-          in: query
-          required: false
-          schema:
-            type: string
-            enum:
-              - male
-              - female
-              - other
-              - unknown
-            example: female
-        - name: birthdate
-          in: query
-          description: Date of birth in the format `<eq|ge|le>yyyy-mm-dd`. To specify a range, use `birthdate=geyyyy-mm-dd&birthdate=leyyyy-mm-dd`.
-          examples:
-            simple:
-              value: 
-                - eq2010-10-22
-              description: Exact match date
-            rangege:
-              value: 
-                - ge2010-10-22
-              description: Greater than or equals match, which matches 2010-10-22 or 2010-10-23
-            rangele:
-              value: 
-                - le2010-10-22
-              description: Less than or equals match, which matches 2010-10-22 or 2010-10-21
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - name: death-date
-          in: query
-          description: |
-            Date of death in the format `<eq|ge|le>yyyy-mm-dd`. To specify a range, use `death-date=geyyyy-mm-dd&death-date=leyyyy-mm-dd`.
-            
-            For a fuzzy search, this is ignored for matching but included in the score calculation.
-          examples:
-            simple:
-              value: eq2010-10-22
-              description: Exact match date
-            rangege:
-              value: ge2010-10-22
-              description: Greater than or equals match which matches 2010-10-22 or 2010-10-23
-            rangele:
-              value: 'le2010-10-22'
-              description: Less than or equals match, which matches 2010-10-22 or 2010-10-21
-          required: false
-          schema:
-            type: string
-            format: date
-        - name: address-postcode
-          description: |
-            The postcode of any of the patient’s known addresses.
-
-            Not case sensitive.
-            Spaces are ignored, for example `LS16AE` and `LS1 6AE` both match `LS1 6AE`.
-            Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
-            Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
-          examples:
-            simple:
-              value: LS1 6AE
-              summary: 'Spaces ignored, would match LS16AE'
-            wildcarded:
-              value: "LS1*"
-              summary: "Matches 'LS16AE', 'LS1 6AE' and 'LS1 6AB'"
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: general-practitioner
-          description: |
-            The Organisation Data Service (ODS) code of the patient's registered GP practice.
-            
-            Not case sensitive.
-            For a fuzzy search, this is ignored for matching but included in the score calculation.
-          example: Y12345
-          in: query
-          required: false
-          schema:
-            type: string
+        - $ref: '#/components/parameters/FuzzyMatch'
+        - $ref: '#/components/parameters/ExactMatch'
+        - $ref: '#/components/parameters/History'
+        - $ref: '#/components/parameters/MaxResults'
+        - $ref: '#/components/parameters/Family'
+        - $ref: '#/components/parameters/Given'
+        - $ref: '#/components/parameters/Gender'
+        - $ref: '#/components/parameters/BirthDate'
+        - $ref: '#/components/parameters/DeathDate'
+        - $ref: '#/components/parameters/AddressPostcode'
+        - $ref: '#/components/parameters/GeneralPractitioner'
       responses:
         '200':
           description: |
             A completed search. This might contain zero, one or many matching patients, or it might contain a 'TOO_MANY_MATCHES' error.
           headers:
             X-Correlation-Id:
-              $ref: components/schemas/XCorrelationId.yaml
+              $ref: '#/components/headers/X-Correlation-Id'
             X-Request-Id:
-              $ref: components/schemas/XRequestID.yaml
+              $ref: '#/components/headers/X-Request-Id'
           content:
             application/fhir+json:
               schema:
-                type: object
-                properties:
-                  resourceType:
-                    type: string
-                    description: FHIR Resource Type.
-                    default: Bundle
-                  type:
-                    type: string
-                    description: FHIR Bundle Type.
-                    default: searchset
-                  timestamp:
-                    type: string
-                    description: Time the search was performed.
-                    format: datetime
-                    example: '2019-12-25T12:00:00+00:00'
-                  total:
-                    type: integer
-                    description: Number of resources returned in search.
-                    example: 1
-                  entry:
-                    type: array
-                    description: |
-                      A list of matched patients. Empty if none found. The patients are ordered by match score, best first. A maximum of 50 patients are returned.
-                    items:
-                      type: object
-                      properties:
-                        fullUrl:
-                          type: string
-                          description: Absolute URL of the resource described in this item.
-                          example: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000009'
-                        search:
-                          type: object
-                          properties:
-                            score:
-                              description: Search score from 0.0 to 1.0.
-                              type: number
-                              minimum: 0.0
-                              maximum: 1.0
-                              example: 0.75
-                        resource:
-                          $ref: 'components/schemas/PatientSearch.yaml'
-              example:
-                resourceType: Bundle
-                type: searchset
-                timestamp: '2019-12-25T12:00:00+00:00'
-                total: 1
-                entry:
-                  - fullUrl: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000009'
-                    search:
-                      score: 1
-                    resource:
-                      $ref: components/examples/PatientSearch.json
+                $ref: '#/components/schemas/PatientSearch'
+              examples:
+                PatientSearch:
+                  $ref: '#/components/examples/PatientSearch'
         '4XX':
           description: |
             An error occurred as follows:
@@ -728,29 +524,19 @@ paths:
             | 403         | INVALID_VALUE              | Multiple results requested when using the API in application-restricted mode. |
             | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period. |
             | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
-  
           content:
             application/fhir+json:
               schema:
                 $ref: '#/components/schemas/OperationOutcome'
-              example:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: value
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: INVALID_VALUE
-                          display: Provided value is invalid
-                    diagnostics: "Invalid value - 'mal' in field 'gender'"   
+              examples:
+                INVALID_VALUE:
+                  $ref: '#/components/examples/INVALID_VALUE'
   '/Patient/{id}':
     parameters:
       - $ref: '#/components/parameters/Id'
       - $ref: '#/components/parameters/BearerAuthorization'
       - $ref: '#/components/parameters/RoleId'
-      - $ref: '#/components/parameters/RequestID'
+      - $ref: '#/components/parameters/XRequestID'
       - $ref: '#/components/parameters/CorrelationID'
     get:
       description: |
@@ -788,8 +574,6 @@ paths:
         Alternatively, you can try out the sandbox using our Postman collection:
         
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/14719036-953f067f-30b9-4552-8252-7cc10b21dad3)
-              
-         
       summary: "Get patient details"
       operationId: get-patient
       responses:
@@ -797,17 +581,18 @@ paths:
           description: Information successfully returned.
           headers:
             ETag:
-              $ref: components/schemas/ETag.yaml
+              $ref: '#/components/headers/ETag'
             X-Correlation-Id:
-              $ref: components/schemas/XCorrelationId.yaml
+              $ref: '#/components/headers/X-Correlation-Id'
             X-Request-Id:
-              $ref: components/schemas/XRequestID.yaml              
+              $ref: '#/components/headers/X-Request-Id'             
           content:
             application/fhir+json:
               schema:
-                $ref: components/schemas/Patient.yaml
-              example:
-                $ref: components/examples/Patient.json
+                $ref: '#/components/schemas/Patient' 
+              examples:
+                Patient:
+                  $ref: '#/components/examples/Patient' 
         '4XX':
           description: |
             An error occurred as follows:
@@ -829,18 +614,9 @@ paths:
             application/fhir+json:
               schema:
                 $ref: '#/components/schemas/OperationOutcome'
-              example:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: structure
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: MISSING_VALUE
-                          display: Required value is missing
-                    diagnostics: "Missing value - 'birth_date/birth_date_range_start/birth_date_range_end'"      
+              examples:
+                MISSING_VALUE:
+                  $ref: '#/components/examples/MISSING_VALUE'
     patch:
       description: |
         ## Overview
@@ -1594,8 +1370,6 @@ paths:
         Alternatively, you can try out the sandbox using our Postman collection:
         
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/14719036-953f067f-30b9-4552-8252-7cc10b21dad3)
-
-        
       summary: Update patient details
       operationId: update-patient-partial
       externalDocs:
@@ -1614,68 +1388,69 @@ paths:
                 - patches
               properties:
                 patches:
-                  $ref: components/schemas/JsonPatch.yaml
+                  $ref: 'components/schemas/JsonPatch.yaml'
             examples:
               add-deceased-date-time:
                 summary: Add a new single item (deceasedDateTime) to the patient
                 value:
-                  $ref: components/examples/requests/PatientPatch/add-deceased-date-time.json
+                  $ref: 'components/examples/requests/PatientPatch/add-deceased-date-time.json'
               add-name:
                 summary: Add a new list item (name) to the patient
                 value:
-                  $ref: components/examples/requests/PatientPatch/add-name.json
+                  $ref: 'components/examples/requests/PatientPatch/add-name.json'
               add-extension:
                 summary: Add a an extension (nominated pharmacy) to the Patient
                 value:
-                  $ref: components/examples/requests/PatientPatch/add-extension.json
+                  $ref: 'components/examples/requests/PatientPatch/add-extension.json'
               update-gender:
                 summary: Update the simple item (gender)
                 value:
-                  $ref: components/examples/requests/PatientPatch/update-gender.json
+                  $ref: 'components/examples/requests/PatientPatch/update-gender.json'
               update-address:
                 summary: Update specific fields on a list item (address)
                 value:
-                  $ref: components/examples/requests/PatientPatch/update-address.json
+                  $ref: 'components/examples/requests/PatientPatch/update-address.json'
               update-address-alternative:
                 summary: Update whole object on a list item (address)
                 value:
-                  $ref: components/examples/requests/PatientPatch/update-address-alternative.json
+                  $ref: 'components/examples/requests/PatientPatch/update-address-alternative.json'
               update-extension:
                 summary: Update an extension (death notification)
                 value:
-                  $ref: components/examples/requests/PatientPatch/update-extension.json
+                  $ref: 'components/examples/requests/PatientPatch/update-extension.json'
               delete-gender:
                 summary: Remove a single item (gender) no longer in use
                 value:
-                  $ref: components/examples/requests/PatientPatch/delete-gender.json
+                  $ref: 'components/examples/requests/PatientPatch/delete-gender.json'
               delete-name:
                 summary: Remove a list item (name) no longer in use, using test pointing to the name items id
                 value:
-                  $ref: components/examples/requests/PatientPatch/delete-name.json
+                  $ref: 'components/examples/requests/PatientPatch/delete-name.json'
               delete-name-alternative:
                 summary: Remove a list item (name) no longer in use, using test pointing to the name object
                 value:
-                  $ref: components/examples/requests/PatientPatch/delete-name-alternative.json
+                  $ref: 'components/examples/requests/PatientPatch/delete-name-alternative.json'
               delete-extension:
                 summary: Remove an extension (dispensing doctor pharmacy) no longer in use
                 value:
-                  $ref: components/examples/requests/PatientPatch/delete-extension.json
+                  $ref: 'components/examples/requests/PatientPatch/delete-extension.json'
       responses:
         '200':
           description: Patient updated.
           headers:
             ETag:
-              $ref: components/schemas/ETag.yaml
+              $ref: '#/components/headers/ETag'
             X-Correlation-Id:
-              $ref: components/schemas/XCorrelationId.yaml
+              $ref: '#/components/headers/X-Correlation-Id'
             X-Request-Id:
-              $ref: components/schemas/XRequestID.yaml              
+              $ref: '#/components/headers/X-Request-Id'        
           content:
             application/fhir+json:
               schema:
-                $ref: components/schemas/Patient.yaml
-              example:
-                $ref: components/examples/Patient.json   
+                $ref: '#/components/schemas/Patient'
+              examples:
+                Patient:
+                  $ref: '#/components/examples/Patient'   
         '4XX':
           description: |
             An error occurred as follows:
@@ -1706,18 +1481,9 @@ paths:
             application/fhir+json:
               schema:
                 $ref: '#/components/schemas/OperationOutcome'
-              example:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: structure
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: INVALID_UPDATE
-                          display: Update is invalid
-                    diagnostics: "Invalid update with error - Update unsupported for resource - 'pets'"      
+              examples:
+                  INVALID_UPDATE:
+                    $ref: '#/components/examples/INVALID_UPDATE' 
 
         '503':
           description: |
@@ -1726,30 +1492,20 @@ paths:
             Re-send the request after the time specified in the `Retry-After` header using the same `X-Request-ID` value.
           headers:
             Retry-After:
-              $ref: components/schemas/RetryAfter.yaml
+              $ref: '#/components/headers/Retry-After'
           content:
             application/fhir+json:
               schema:
                 $ref: '#/components/schemas/OperationOutcome'
-              example:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: timeout
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: SERVICE_UNAVAILABLE
-                          display: Service unavailable
-                    diagnostics: "The downstream domain processing has not completed within the configured timeout period. Using the same 'X-Request-ID' header, retry your request after the time specified by the 'Retry-After' response header."      
-
+              examples:
+                SERVICE_UNAVAILABLE:
+                  $ref: '#/components/examples/SERVICE_UNAVAILABLE'
   '/Patient/{id}/RelatedPerson':
     parameters:
       - $ref: '#/components/parameters/Id'
       - $ref: '#/components/parameters/BearerAuthorization'
       - $ref: '#/components/parameters/RoleId'
-      - $ref: '#/components/parameters/RequestID'
+      - $ref: '#/components/parameters/XRequestID'
       - $ref: '#/components/parameters/CorrelationID'
     get:
       description: |
@@ -1776,7 +1532,6 @@ paths:
         Alternatively, you can try out the sandbox using our Postman collection:
         
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/14719036-953f067f-30b9-4552-8252-7cc10b21dad3)
-       
       summary: "Get a patient's related people"
       operationId: get-related-people
       responses:
@@ -1784,55 +1539,18 @@ paths:
           description: Information successfully returned.
           headers:
             ETag:
-              $ref: components/schemas/ETag.yaml
+              $ref: '#/components/headers/ETag'
             X-Correlation-Id:
-              $ref: components/schemas/XCorrelationId.yaml
+              $ref: '#/components/headers/X-Correlation-Id'
             X-Request-Id:
-              $ref: components/schemas/XRequestID.yaml
+              $ref: '#/components/headers/X-Request-Id'
           content:
             application/fhir+json:
               schema:
-                type: object
-                properties:
-                  resourceType:
-                    type: string
-                    description: FHIR Resource Type.
-                    default: Bundle
-                  type:
-                    type: string
-                    description: FHIR Bundle Type.
-                    default: searchset
-                  timestamp:
-                    type: string
-                    description: Time the search was performed.
-                    format: datetime
-                    example: '2019-12-25T12:00:00+00:00'
-                  total:
-                    type: integer
-                    description: Number of resources returned in search.
-                    example: 1
-                  entry:
-                    type: array
-                    description: |
-                      A list of related people details attached to the patient. 
-                    items:
-                      type: object
-                      properties:
-                        fullUrl:
-                          type: string
-                          description: Absolute URL of the resource described in this item.
-                          example: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000009/RelatedPerson/507B7621'
-                        resource:
-                          $ref: components/schemas/RelatedPerson.yaml
-              example:
-                resourceType: Bundle
-                type: searchset
-                timestamp: '2019-12-25T12:00:00+00:00'
-                total: 1
-                entry:
-                  - fullUrl: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000009/RelatedPerson/507B7621'
-                    resource:
-                      $ref: components/examples/RelatedPerson.json
+                $ref: '#/components/schemas/RelatedPerson'
+              examples:
+                RelatedPerson:
+                  $ref: '#/components/examples/RelatedPerson'
         '4XX':
           description: |
             An error occurred as follows:
@@ -1852,21 +1570,193 @@ paths:
             application/fhir+json:
               schema:
                 $ref: '#/components/schemas/OperationOutcome'
-              example:
-                resourceType: OperationOutcome
-                issue:
-                  - severity: error
-                    code: structure
-                    details:
-                      coding:
-                        - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
-                          version: '1'
-                          code: PRECONDITION_FAILED
-                          display: Required condition was not fulfilled
-                    diagnostics: "Invalid request with error - X-Request-ID header must be supplied to access this resource"      
-
+              examples:
+                PRECONDITION_FAILED:
+                  $ref: '#/components/examples/PRECONDITION_FAILED'
+ 
 components:
+  headers:
+    X-Correlation-Id:
+      $ref: 'components/schemas/XCorrelationId.yaml'
+    X-Request-Id:
+      $ref: 'components/schemas/XRequestID.yaml'
+    ETag:
+      $ref: 'components/schemas/ETag.yaml'
+    Retry-After:
+      $ref: 'components/schemas/RetryAfter.yaml'
   parameters:
+    FuzzyMatch:
+      name: _fuzzy-match
+      in: query
+      description: |
+        A fuzzy search is performed, including checks for homophones, transposed names and historic information.
+        
+        You cannot use wildcards with a fuzzy search.
+      example: false
+      required: false
+      schema:
+        type: boolean
+        default: false
+    ExactMatch:
+      name: _exact-match
+      in: query
+      description: The search only returns results where the `score` field is 1.0. Use this with care - it is unlikely to work with fuzzy search or wildcards.
+      example: false
+      required: false
+      schema:
+        type: boolean
+        default: false
+    History:
+      name: _history
+      in: query
+      description: |
+        The search looks for matches in historic information such as previous names and addresses.
+        
+        This parameter has no effect for a fuzzy search, which always includes historic information.
+      example: true
+      required: false
+      schema:
+        type: boolean
+        default: false
+    MaxResults:
+      name: _max-results
+      in: query
+      description: |
+        The maximum number of matching patients to return. For healthcare worker access, this must be between 1 and 50, and the default is 50.
+        For application-restricted access, this must be 1, and the default is 1.
+        If too many patients match the search criteria, we return a `TOO_MANY_MATCHES` error.
+      example: 1
+      required: false
+      schema:
+        type: integer
+        format: int32
+    Family:
+      name: family
+      in: query
+      description: |
+        The patient's family name (surname).
+        
+        Not case sensitive.
+        Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
+        Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
+      examples:
+        simple:
+          value: Smith
+          summary: Matches Smythe if `_fuzzy-match` is specified.
+        wildcarded:
+          value: "Sm*t*"
+          summary: 'Wildcards must contain at least two characters, this matches Smith, Smythe'
+      required: false
+      schema:
+        type: string
+    Given:
+      name: given
+      description: |
+        The patient's given names.
+        Not case sensitive.
+        Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
+        Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
+        A patient may have more than one given name. Subsequent given names are commonly referred to as 'middle names'.
+        Specify multiple given names by repeating this parameter.
+        To search for  `Jane Anne Smith` use `given=Jane&given=Anne&family=Smith`.
+        
+        The first given name may be a [compound name](https://en.wikipedia.org/wiki/Given_name#Compound), for example `John Paul`.
+        To search for `John Paul James Smith` (where `John Paul` is the first given name, `James` is the second given name, and `Smith` the family name) use `given=John%20Paul&given=James&family=Smith`.
+        
+        Note that it is not necessary to specify subsequent given (middle) names, and that doing so may impact your search results in the case they are not recorded in the demographics system.
+      example: Jane
+      in: query
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+    Gender:
+      name: gender
+      in: query
+      description: Gender with which the patient most strongly identifies.
+      example: female
+      required: false
+      schema:
+        type: string
+        enum:
+          - male
+          - female
+          - other
+          - unknown
+        example: female
+    BirthDate:
+      name: birthdate
+      in: query
+      description: Date of birth in the format `<eq|ge|le>yyyy-mm-dd`. To specify a range, use `birthdate=geyyyy-mm-dd&birthdate=leyyyy-mm-dd`.
+      examples:
+        simple:
+          value: eq2010-10-22
+          description: Exact match date
+        rangege:
+          value: 'ge2010-10-22'
+          description: Greater than or equals match, which matches 2010-10-22 or 2010-10-23
+        rangele:
+          value: 'le2010-10-22'
+          description: Less than or equals match, which matches 2010-10-22 or 2010-10-21
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+    DeathDate:
+      name: death-date
+      in: query
+      description: |
+        Date of death in the format `<eq|ge|le>yyyy-mm-dd`. To specify a range, use `death-date=geyyyy-mm-dd&death-date=leyyyy-mm-dd`.
+        
+        For a fuzzy search, this is ignored for matching but included in the score calculation.
+      examples:
+        simple:
+          value: eq2010-10-22
+          description: Exact match date
+        rangege:
+          value: ge2010-10-22
+          description: Greater than or equals match which matches 2010-10-22 or 2010-10-23
+        rangele:
+          value: 'le2010-10-22'
+          description: Less than or equals match, which matches 2010-10-22 or 2010-10-21
+      required: false
+      schema:
+        type: string
+        format: date
+    AddressPostcode:
+      name: address-postcode
+      in: query
+      description: |
+        The postcode of any of the patient’s known addresses.
+
+        Not case sensitive.
+        Spaces are ignored, for example `LS16AE` and `LS1 6AE` both match `LS1 6AE`.
+        Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
+        Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
+      examples:
+        simple:
+          value: LS1 6AE
+          summary: 'Spaces ignored, would match LS16AE'
+        wildcarded:
+          value: "LS1*"
+          summary: "Matches 'LS16AE', 'LS1 6AE' and 'LS1 6AB'"
+      required: false
+      schema:
+        type: string
+    GeneralPractitioner:
+      name: general-practitioner
+      in: query
+      description: |
+        The Organisation Data Service (ODS) code of the patient's registered GP practice.
+        
+        Not case sensitive.
+        For a fuzzy search, this is ignored for matching but included in the score calculation.
+      example: Y12345
+      required: false
+      schema:
+        type: string
     Id:
       name: id
       in: path
@@ -1943,7 +1833,7 @@ components:
       schema:
         type: string
         example: application/json-patch+json
-    RequestID:
+    XRequestID:
       in: header
       name: X-Request-ID
       required: false
@@ -1970,16 +1860,55 @@ components:
       schema:
         type: string
         example: 11C46F5F-CDEF-4865-94B2-0EE0EDCC26DA
+    Etag:
+      in: header
+      name: ETag
+      schema:
+        type: string
+        pattern: "^W\/\"[0-9]+\"$" # Printable characters enclosed in quotes. See: https://tools.ietf.org/html/rfc7230#section-3.2.6
+        example: W/"2"
+      description: |
+        Record version identifier enclosed in quotes and preceded by 'W/'. For example, `W/"2"`.
+
+        Corresponds to `meta.versionId` attribute in the patient resource body.
+
+        When you retrieve a patient resource, you get a version number for the resource (in the `ETag` response header and in the `versionId` field in the response).
+        You must then pass the resource's version number in any update request (in the `If-Match` response header) made for the patient.
+    RetryAfter:
+      in: header
+      name: Retry-After
+      description: Time to wait between polls in seconds
+      schema:
+        type: string
+        example: "5"
   schemas:
     Patient:
-      $ref: components/schemas/Patient.yaml
+      $ref: 'components/schemas/Patient.yaml'
     PatientSearch:
-      $ref: components/schemas/PatientSearch.yaml
+      $ref: 'components/schemas/PatientSearch.yaml'
     RelatedPerson:
-      $ref: components/schemas/RelatedPerson.yaml
+      $ref: 'components/schemas/RelatedPerson.yaml'
     OperationOutcome:
-      $ref: components/schemas/OperationOutcome.yaml
+      $ref: 'components/schemas/OperationOutcome.yaml'
   examples:
+    PatientSearch:
+      value:
+        resourceType: Bundle
+        type: searchset
+        timestamp: '2019-12-25T12:00:00+00:00'
+        total: 1
+        entry:
+          - fullUrl: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000009'
+            search:
+              score: 1
+            resource:
+              $ref: components/examples/PatientSearch.json
+    RelatedPerson:
+      value:
+        $ref: 'components/examples/RelatedPerson.json'
+    Patient:
+      value:
+        $ref: 'components/examples/Patient.json'
     OperationOutcome:
       summary: OperationOutcome example
       value:
@@ -1993,3 +1922,23 @@ components:
                   version: '1'
                   code: INVALID_RESOURCE_ID
                   display: Resource Id is invalid
+    INVALID_VALUE:
+      value:
+        $ref: 'components/examples/4xx/invalid_value.json'
+    MISSING_VALUE:
+      value:
+        $ref: 'components/examples/4xx/missing_value.json'
+    INVALID_UPDATE:
+      value:
+        $ref: 'components/examples/4xx/invalid_update.json'
+    SERVICE_UNAVAILABLE:
+      value:
+        $ref: 'components/examples/4xx/service_unavailable.json'
+    PRECONDITION_FAILED:
+      value:
+        $ref: 'components/examples/4xx/precondition_failed.json'
+
+
+
+
+
