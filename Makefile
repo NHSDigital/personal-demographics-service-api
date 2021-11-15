@@ -29,6 +29,10 @@ publish: clean
 	mkdir -p build
 	npm run publish 2> /dev/null
 
+publish-spec: clean
+	mkdir -p build
+	npm run publish-spec 2> /dev/null
+
 serve: update-examples
 	npm run serve
 

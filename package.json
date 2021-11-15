@@ -4,7 +4,8 @@
   "description": "OAS (Swagger v3) API Definition for Patient Information",
   "scripts": {
     "lint": "node_modules/.bin/speccy lint -s openapi-tags -s operation-tags specification/personal-demographics.yaml --skip default-and-example-are-redundant",
-    "publish": "mkdir -p build && node_modules/.bin/swagger-cli bundle specification/personal-demographics.yaml -i | poetry run python scripts/yaml2json.py | poetry run python scripts/set_version.py > build/personal-demographics.json",
+    "publish-spec": "mkdir -p build && node_modules/.bin/swagger-cli bundle specification/personal-demographics.yaml -i | poetry run python scripts/yaml2json.py | poetry run python scripts/set_version.py > build/personal-demographics.json",
+    "publish": "mkdir -p build && node_modules/.bin/speccy resolve specification/personal-demographics.yaml -i | poetry run python scripts/yaml2json.py | poetry run python scripts/set_version.py > build/personal-demographics.json",
     "serve": "node_modules/.bin/speccy serve build/personal-demographics.json",
     "check-licenses": "node_modules/.bin/license-checker --failOn GPL --failOn AGPL"
   },
