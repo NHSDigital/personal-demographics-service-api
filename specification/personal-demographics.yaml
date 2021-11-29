@@ -660,58 +660,9 @@ paths:
           content:
             application/fhir+json:
               schema:
-                type: object
-                properties:
-                  resourceType:
-                    type: string
-                    description: FHIR Resource Type.
-                    default: Bundle
-                  type:
-                    type: string
-                    description: FHIR Bundle Type.
-                    default: searchset
-                  timestamp:
-                    type: string
-                    description: Time the search was performed.
-                    format: datetime
-                    example: '2019-12-25T12:00:00+00:00'
-                  total:
-                    type: integer
-                    description: Number of resources returned in search.
-                    example: 1
-                  entry:
-                    type: array
-                    description: |
-                      A list of matched patients. Empty if none found. The patients are ordered by match score, best first. A maximum of 50 patients are returned.
-                    items:
-                      type: object
-                      properties:
-                        fullUrl:
-                          type: string
-                          description: Absolute URL of the resource described in this item.
-                          example: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000009'
-                        search:
-                          type: object
-                          properties:
-                            score:
-                              description: Search score from 0.0 to 1.0.
-                              type: number
-                              minimum: 0.0
-                              maximum: 1.0
-                              example: 0.75
-                        resource:
-                          $ref: 'components/schemas/PatientSearch.yaml'
+                $ref: '#/components/schemas/PatientSearch'
               example:
-                resourceType: Bundle
-                type: searchset
-                timestamp: '2019-12-25T12:00:00+00:00'
-                total: 1
-                entry:
-                  - fullUrl: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000009'
-                    search:
-                      score: 1
-                    resource:
-                      $ref: components/examples/PatientSearch.json
+                $ref: components/examples/PatientSearch.json
         '4XX':
           description: |
             An error occurred as follows:
@@ -1742,8 +1693,7 @@ paths:
                           version: '1'
                           code: SERVICE_UNAVAILABLE
                           display: Service unavailable
-                    diagnostics: "The downstream domain processing has not completed within the configured timeout period. Using the same 'X-Request-ID' header, retry your request after the time specified by the 'Retry-After' response header."      
-
+                    diagnostics: "The downstream domain processing has not completed within the configured timeout period. Using the same 'X-Request-ID' header, retry your request after the time specified by the 'Retry-After' response header."
   '/Patient/{id}/RelatedPerson':
     parameters:
       - $ref: '#/components/parameters/Id'
@@ -1792,47 +1742,9 @@ paths:
           content:
             application/fhir+json:
               schema:
-                type: object
-                properties:
-                  resourceType:
-                    type: string
-                    description: FHIR Resource Type.
-                    default: Bundle
-                  type:
-                    type: string
-                    description: FHIR Bundle Type.
-                    default: searchset
-                  timestamp:
-                    type: string
-                    description: Time the search was performed.
-                    format: datetime
-                    example: '2019-12-25T12:00:00+00:00'
-                  total:
-                    type: integer
-                    description: Number of resources returned in search.
-                    example: 1
-                  entry:
-                    type: array
-                    description: |
-                      A list of related people details attached to the patient. 
-                    items:
-                      type: object
-                      properties:
-                        fullUrl:
-                          type: string
-                          description: Absolute URL of the resource described in this item.
-                          example: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000009/RelatedPerson/507B7621'
-                        resource:
-                          $ref: components/schemas/RelatedPerson.yaml
+                $ref: '#/components/schemas/RelatedPerson'
               example:
-                resourceType: Bundle
-                type: searchset
-                timestamp: '2019-12-25T12:00:00+00:00'
-                total: 1
-                entry:
-                  - fullUrl: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000009/RelatedPerson/507B7621'
-                    resource:
-                      $ref: components/examples/RelatedPerson.json
+                $ref: components/examples/RelatedPerson.json
         '4XX':
           description: |
             An error occurred as follows:
