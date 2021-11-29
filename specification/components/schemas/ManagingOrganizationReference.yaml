@@ -8,7 +8,7 @@ properties:
       be return exactly the same in any update.
     type: string
     readOnly: true
-    example: 254406A3
+    example: 254406A1
   type:
     description: Type of Reference being returned.
     type: string
