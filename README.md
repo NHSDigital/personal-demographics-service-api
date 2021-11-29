@@ -9,7 +9,6 @@ This is a RESTful HL7® FHIR® API specification for the *Personal Demographics 
 * `scripts/` Utilities helpful to developers of this specification.
 * `apiproxy/` The Apigee API Proxy
 
-
 Consumers of the API will find developer documentation on the [NHS Digital Developer Hub](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir).
 
 ## Contributing
