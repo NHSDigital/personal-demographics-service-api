@@ -14,7 +14,11 @@
       'scope' is a space-separated string of scopes, determined by the Application's API Product assignments.
       Follow pattern used in AssignMessage.SetAccessModeUserRestricted condition. See Apigee docs for JavaRegex gotchas (uses '.match()' behaviour matching whole string only). -->
       <Step>
-        <Name>AssignMessage.SetAccessModeApplicationRestricted</Name>
+          <Name>AssignMessage.SetExtendedAttribute</Name>
+      </Step>
+      <Step>
+          <Name>AssignMessage.SetAccessModeApplicationRestricted</Name>
+          <Condition>extended-attribute Is "false"</Condition>
       </Step>
       <Step>
         <Name>AssignMessage.SetAccessModeUserRestricted</Name>
