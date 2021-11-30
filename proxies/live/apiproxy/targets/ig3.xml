@@ -15,6 +15,7 @@
       Follow pattern used in AssignMessage.SetAccessModeUserRestricted condition. See Apigee docs for JavaRegex gotchas (uses '.match()' behaviour matching whole string only). -->
       <Step>
           <Name>AssignMessage.SetExtendedAttribute</Name>
+          <Condition>app.pds-app-restricted-update IsNot null</Condition>
       </Step>
       <Step>
           <Name>AssignMessage.SetAccessModeApplicationRestricted</Name>
