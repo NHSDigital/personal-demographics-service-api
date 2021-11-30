@@ -19,7 +19,6 @@
       </Step>
       <Step>
           <Name>AssignMessage.SetAccessModeApplicationRestricted</Name>
-          <Condition>extended-attribute Is "false"</Condition>
       </Step>
       <Step>
         <Name>AssignMessage.SetAccessModeUserRestricted</Name>
