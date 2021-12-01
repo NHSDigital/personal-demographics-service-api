@@ -22,7 +22,7 @@
       </Step>
       <Step>
         <Name>AssignMessage.SetAccessModeUserRestricted</Name>
-        <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service$|^urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service$|.+\ personal-demographics-service:USER-RESTRICTED\ .+|^personal-demographics-service:USER-RESTRICTED\ .+|.+\ personal-demographics-service:USER-RESTRICTED$|^personal-demographics-service:USER-RESTRICTED$)") or extended-attribute Is "true"</Condition>
+        <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service$|^urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service$|.+\ personal-demographics-service:USER-RESTRICTED\ .+|^personal-demographics-service:USER-RESTRICTED\ .+|.+\ personal-demographics-service:USER-RESTRICTED$|^personal-demographics-service:USER-RESTRICTED$)") or ((scope JavaRegex "(.+\ urn:nhsd:apim:app:level3:personal-demographics-service\ .+|^urn:nhsd:apim:app:level3:personal-demographics-service\ .+|.+\ urn:nhsd:apim:app:level3:personal-demographics-service$|^urn:nhsd:apim:app:level3:personal-demographics-service$)" extended-attribute Is "true")</Condition>
       </Step>
       <Step>
         <Name>AssignMessage.SetAccessModePatientAccess</Name>
