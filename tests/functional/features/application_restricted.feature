@@ -6,8 +6,8 @@ Feature: Unattended Access
 
   Scenario: PDS FHIR API accepts request with valid access token
     Given I am authenticating using unattended access
-    And I have a valid access token
     And I have a request context
+    And I have a valid access token
 
     When I GET a patient
 
@@ -38,8 +38,8 @@ Feature: Unattended Access
 
   Scenario: PDS FHIR API rejects request with expired access token
     Given I am authenticating using unattended access
-    And I have an expired access token
     And I have a request context
+    And I have an expired access token
 
     When I GET a patient
 
@@ -49,8 +49,8 @@ Feature: Unattended Access
 
   Scenario: PDS FHIR API accepts request without user role ID
     Given I am authenticating using unattended access
-    And I have a valid access token
     And I have a request context
+    And I have a valid access token
 
     When I GET a patient without a user role ID
 
@@ -59,8 +59,8 @@ Feature: Unattended Access
 
   Scenario: PDS FHIR API rejects request for more than one result
     Given I am authenticating using unattended access
-    And I have a valid access token
     And I have a request context
+    And I have a valid access token
 
     When I GET a patient asking for two results
 
@@ -70,8 +70,8 @@ Feature: Unattended Access
 
   Scenario: PDS FHIR API accepts request for one result
     Given I am authenticating using unattended access
-    And I have a valid access token
     And I have a request context
+    And I have a valid access token
 
     When I GET a patient asking for one result
 
@@ -80,8 +80,8 @@ Feature: Unattended Access
 
   Scenario: PDS FHIR API rejects synchronous PATCH requests
     Given I am authenticating using unattended access
-    And I have a valid access token
     And I have a request context
+    And I have a valid access token
 
     When I PATCH a patient and ommit the prefer header
 
