@@ -93,9 +93,9 @@ Feature: Unattended Access
     Given I am authenticating using unattended access
     And I have a request context
     And I create a new app
-    And I add the attribute pds-app-restricted-update to my app with the value TRUE
+    And I add the attribute pds-app-restricted-update with the value TRUE
     And I add the scope urn:nhsd:apim:app:level3:personal-demographics-service
-    And I have a valid access token using my app
+    And I have a valid access token
 
     When I PATCH a patient
     Then I get a 200 HTTP response
@@ -104,9 +104,9 @@ Feature: Unattended Access
     Given I am authenticating using unattended access
     And I have a request context
     And I create a new app
-    And I add the attribute pds-app-restricted-update to my app with the value FALSE
+    And I add the attribute pds-app-restricted-update with the value FALSE
     And I add the scope urn:nhsd:apim:app:level3:personal-demographics-service
-    And I have a valid access token using my app
+    And I have a valid access token
 
     When I PATCH a patient
     Then I get a 400 HTTP response
@@ -115,9 +115,9 @@ Feature: Unattended Access
     Given I am authenticating using unattended access
     And I have a request context
     And I create a new app
-    And I add the attribute pds-app-restricted-update to my app with the value TRUE
+    And I add the attribute pds-app-restricted-update with the value TRUE
     And I add the scope ""
-    And I have a valid access token using my app
+    And I have a valid access token
 
     When I PATCH a patient
     Then I get a 400 HTTP response
