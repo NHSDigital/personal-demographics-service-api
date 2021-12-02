@@ -109,7 +109,7 @@ Feature: Unattended Access
     And I have a valid access token
 
     When I PATCH a patient
-    Then I get a 400 HTTP response
+    Then I get a 403 HTTP response
 
   Scenario: App with pds-app-restricted-update attribute set to TRUE and no scopes does not accept PATCH requests
     Given I am authenticating using unattended access
@@ -120,4 +120,4 @@ Feature: Unattended Access
     And I have a valid access token
 
     When I PATCH a patient
-    Then I get a 400 HTTP response
+    Then I get a 403 HTTP response
