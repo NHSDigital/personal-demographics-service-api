@@ -46,6 +46,8 @@ steps:
 
   - bash: |
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
+      export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
+      export OAUTH_PROXY="oauth2"
 
       poetry run pytest -v tests/functional/test_application_restricted.py --junitxml=tests/functional-test-report.xml
     displayName: Run application restricted tests
