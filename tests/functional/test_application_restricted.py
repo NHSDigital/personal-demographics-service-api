@@ -130,9 +130,6 @@ def test_app_restricted_update_attribute_no_scope():
     pass
 
 
-
-
-
 @given("I am authenticating using unattended access", target_fixture="auth")
 def auth():
     return {}
@@ -337,7 +334,7 @@ def patch_sync_patient(auth, context):
 
 
 @when("I PATCH a patient")
-def patch_patient(auth, context):
+def patch_patient(auth: dict, context: dict):
     auth_token = auth['access_token']
 
     headers = {
@@ -345,7 +342,7 @@ def patch_patient(auth, context):
         "X-Request-ID": str(uuid.uuid4()),
     }
 
-    # GET patient in order to retrieve eTag
+    # GET patient to retrieve eTag
     response = requests.get(
         f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}", headers=headers
     )
@@ -354,13 +351,9 @@ def patch_patient(auth, context):
     current_gender = (json.loads(response.text))["gender"]
     new_gender = 'male' if current_gender == 'female' else 'female'
 
-    # add the new gender to the patch, send the update and check the response
+    # add the new gender to the patch
     patch = json.loads('{"patches":[{"op":"replace","path":"/gender","value":"male"}]}')
     patch["patches"][0]["value"] = new_gender
-    # headers["X-Sync-Wait"] = "29"
-
-    # Prefer header deprecated check that it still returns 200 response
-    # headers["Prefer"] = "respond-async"
 
     headers.update({
         "Content-Type": "application/json-patch+json",
