@@ -1,5 +1,3 @@
-from api_test_utils.apigee_api_apps import ApigeeApiDeveloperApps
-
 from tests.functional.config_files import config
 import requests
 import uuid
@@ -7,35 +5,13 @@ import pytest
 
 from tests.functional.utils.apigee_api import ApigeeDebugApi
 from tests.functional.utils.helper import generate_random_email_address, get_add_telecom_email_patch_body
-from tests.functional.conftest import setup_session
 
 
 @pytest.mark.asyncio
 class TestUserRestrictedPatientAccess:
     async def test_patient_access_retrieve_happy_path(
-        self, nhs_login_token_exchange, setup_session
+        self, nhs_login_token_exchange
     ):
-        product, app, token = setup_session
-
-        context = {
-            "product": product,
-            "app": app,
-            "token": token,
-        }
-
-        await app.set_custom_attributes(
-            {
-                'jwks-resource-url': 'https://raw.githubusercontent.com/NHSDigital/'
-                                     'identity-service-jwks/main/jwks/internal-dev/'
-                                     '9baed6f4-1361-4a8e-8531-1f8426e3aba8.json',
-                'pds-app-restricted-update': 'true'
-            }
-        )
-
-        await product.update_scopes(["urn:nhsd:apim:app:level3:personal-demographics-service"])
-        await app.add_api_product([product.name])
-
-        # test_app_and_product = product, app
         token = await nhs_login_token_exchange()
 
         headers = {

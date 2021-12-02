@@ -6,14 +6,11 @@ import jwt
 import uuid
 import time
 
-import pytest
 import requests
 from .config_files import config
 from pytest_bdd import scenario, given, when, then, parsers
 
-from .conftest import setup_session
 from ..user_restricted.data.pds_scenarios import update
-from ..user_restricted.utils import helpers
 
 
 def teardown_function(function):
@@ -145,7 +142,6 @@ def test_pds_app_restricted_update_attribute_set_to_false():
 def create_app_with_attribute(attr_value, context):
 
     app = context['app']
-    product = context['product']
 
     asyncio.run(app.set_custom_attributes(
         {
@@ -167,7 +163,7 @@ def add_scope(scope, context):
 
 
 @given("I have a valid access token using my app")
-def set_valid_access_token(auth, context):
+def set_valid_access_token_new_app(auth, context):
 
     claims = {
         "sub": context['app'].get_client_id(),
@@ -397,12 +393,11 @@ def patch_patient(auth, context):
 
     headers.update(headers)
     response = requests.patch(
-        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}", headers=headers, json=update[0]["patch"]
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}", headers=headers,
+        json=update[0]["patch"]
     )
 
     context['status'] = response.status_code
-
-
 
 
 @when("I GET a patient asking for one result")
