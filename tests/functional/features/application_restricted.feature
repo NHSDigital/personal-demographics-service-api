@@ -111,12 +111,12 @@ Feature: Unattended Access
     When I PATCH a patient
     Then I get a 403 HTTP response
 
-  Scenario: App with pds-app-restricted-update attribute set to TRUE and no scopes does not accept PATCH requests
+  Scenario: App with pds-app-restricted-update attribute set to TRUE and invalid app restricted scope does not allow a PATCH
     Given I am authenticating using unattended access
     And I have a request context
     And I create a new app
     And I add the attribute pds-app-restricted-update with the value TRUE
-    And I add the scope ""
+    And I add the scope urn:nhsd:apim:app:level3:reasonable-adjustment-flag
     And I have a valid access token
 
     When I PATCH a patient

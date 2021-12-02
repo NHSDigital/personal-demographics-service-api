@@ -9,7 +9,7 @@ import time
 import requests
 from pytest_bdd import scenario, given, when, then, parsers
 
-from .config_files import config
+from tests.functional.config_files import config
 
 
 def teardown_function(function):
@@ -123,9 +123,9 @@ def test_app_restricted_update_attribute_set_to_false():
 
 @scenario(
     "features/application_restricted.feature",
-    "App with pds-app-restricted-update attribute set to TRUE and no scopes does not accept PATCH requests",
+    "App with pds-app-restricted-update attribute set to TRUE and invalid app restricted scope does not allow a PATCH",
 )
-def test_app_restricted_update_attribute_no_scope():
+def test_app_restricted_update_attribute_invalid_scope():
     pass
 
 
