@@ -10,7 +10,6 @@ import requests
 from pytest_bdd import scenario, given, when, then, parsers
 
 from .config_files import config
-from ..user_restricted.data.pds_scenarios import update
 
 
 def teardown_function(function):
