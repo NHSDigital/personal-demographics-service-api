@@ -14,6 +14,7 @@ Feature: Unattended Access
     Then I get a 200 HTTP response
     And I get a Bundle resource in the response
 
+
   Scenario: PDS FHIR API rejects request with invalid access token
     Given I am authenticating using unattended access
     And I have an invalid access token
@@ -89,6 +90,7 @@ Feature: Unattended Access
     And I get an error response
     And I get a diagnosis of insufficient permissions to use this method
 
+  @pytest.mark.asid-required
   Scenario: App with pds-app-restricted-update attribute set to TRUE accepts PATCH requests
     Given I am authenticating using unattended access
     And I have a request context
@@ -100,6 +102,7 @@ Feature: Unattended Access
     When I PATCH a patient
     Then I get a 200 HTTP response
 
+  @pytest.mark.asid-required
   Scenario: App with pds-app-restricted-update attribute set to FALSE does not accept PATCH requests
     Given I am authenticating using unattended access
     And I have a request context
@@ -111,6 +114,7 @@ Feature: Unattended Access
     When I PATCH a patient
     Then I get a 403 HTTP response
 
+  @pytest.mark.asid-required
   Scenario: App with pds-app-restricted-update attribute set to TRUE and invalid app restricted scope does not allow a PATCH
     Given I am authenticating using unattended access
     And I have a request context

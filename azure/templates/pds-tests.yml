@@ -49,7 +49,12 @@ steps:
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2"
 
-      poetry run pytest -v tests/functional/test_application_restricted.py --junitxml=tests/functional-test-report.xml
+      if [[ $ENVIRONMENT  == *"asid-required"* ]]; then
+       poetry run pytest -v tests/functional/test_application_restricted.py -m asid_required --junitxml=tests/functional-test-report.xml
+      else
+       poetry run pytest -v tests/functional/test_application_restricted.py --junitxml=tests/functional-test-report.xml
+      fi
+
     displayName: Run application restricted tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
   - task: PublishTestResults@2
