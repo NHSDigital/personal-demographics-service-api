@@ -114,6 +114,7 @@ def test_rejects_synchronous_patch_request():
 def test_app_restricted_update_attribute_set_to_true():
     pass
 
+
 @pytest.mark.skipif("asid-required" in config.ENVIRONMENT)
 @scenario(
     "features/application_restricted.feature",
