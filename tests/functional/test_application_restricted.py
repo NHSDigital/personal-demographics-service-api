@@ -144,9 +144,9 @@ def create_test_app(setup_session, context):
 
 @given(
     parsers.parse(
-        "I add the attribute {attr_name} with the value {attr_value}")
+        "I add the attribute with key of {key} and a value of {value}")
 )
-def add_custom_attribute_to_app(attr_name: str, attr_value: str, context: dict):
+def add_custom_attribute_to_app(key: str, value: str, context: dict):
 
     app = context['app']
 
@@ -155,7 +155,7 @@ def add_custom_attribute_to_app(attr_name: str, attr_value: str, context: dict):
             'jwks-resource-url': 'https://raw.githubusercontent.com/NHSDigital/'
                                  'identity-service-jwks/main/jwks/internal-dev/'
                                  '9baed6f4-1361-4a8e-8531-1f8426e3aba8.json',
-            attr_name.lower(): attr_value.lower()
+            key: value
         }
     ))
 
@@ -345,6 +345,8 @@ def patch_patient(auth: dict, context: dict):
     response = requests.get(
         f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}", headers=headers
     )
+
+    assert response.ok
 
     patient_version_id = response.headers["Etag"]
     current_gender = (json.loads(response.text))["gender"]

@@ -93,7 +93,7 @@ Feature: Unattended Access
     Given I am authenticating using unattended access
     And I have a request context
     And I create a new app
-    And I add the attribute pds-app-restricted-update with the value TRUE
+    And I add the attribute with key of apim-app-flow-vars and a value of { "pds" : { "app-restricted": true }}
     And I add the scope urn:nhsd:apim:app:level3:personal-demographics-service
     And I have a valid access token
 
@@ -104,7 +104,7 @@ Feature: Unattended Access
     Given I am authenticating using unattended access
     And I have a request context
     And I create a new app
-    And I add the attribute pds-app-restricted-update with the value FALSE
+    And I add the attribute with key of apim-app-flow-vars and a value of { "pds" : { "app-restricted": true }}
     And I add the scope urn:nhsd:apim:app:level3:personal-demographics-service
     And I have a valid access token
 
@@ -115,7 +115,7 @@ Feature: Unattended Access
     Given I am authenticating using unattended access
     And I have a request context
     And I create a new app
-    And I add the attribute pds-app-restricted-update with the value TRUE
+    And I add the attribute with key of apim-app-flow-vars and a value of { "pds" : { "app-restricted": true }}
     And I add the scope urn:nhsd:apim:app:level3:reasonable-adjustment-flag
     And I have a valid access token
 
