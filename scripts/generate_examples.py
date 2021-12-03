@@ -15,7 +15,9 @@ from format_examples import (
     format_patient,
     slim_patient,
     minimal_patient,
+    minimal_bundle,
     sensitive_patient,
+    sensitive_bundle,
     related_person_reference_only,
     related_person_no_reference,
     remove_empty_elements,
@@ -33,9 +35,9 @@ EXAMPLE_TYPES = {
         {"type": "search", "file_prefix": "", "slim_func": [slim_patient]},
         {"type": "sensitive", "file_prefix": "Sensitive_", "slim_func": [
             slim_patient,
-            sensitive_patient
+            sensitive_bundle
         ]},
-        {"type": "minimal", "file_prefix": "Minimal_", "slim_func": [slim_patient, minimal_patient]}
+        {"type": "minimal", "file_prefix": "Minimal_", "slim_func": [slim_patient, minimal_bundle]}
     ],
     "RelatedPerson": [
         {"type": "retrieval", "file_prefix": "", "slim_func": [remove_list_id]},
@@ -114,7 +116,6 @@ def generate_resource_example(schema_dict, path=None):
             example[property_name] = property_value.get(
                 "example", property_value.get("default")
             )
-
     return example
 
 
@@ -135,7 +136,6 @@ def main(arguments):
         resource_example = generate_resource_example(
             component_spec["properties"], [component_name]
         )
-
         example_types = EXAMPLE_TYPES[component_name]
         for example_type in example_types:
             new_resource_example = deepcopy(resource_example)
