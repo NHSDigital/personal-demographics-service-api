@@ -106,7 +106,7 @@ def test_rejects_synchronous_patch_request():
     pass
 
 
-@pytest.mark.skipif("asid-required" in config.ENVIRONMENT)
+@pytest.mark.skipif("asid-required" in config.ENVIRONMENT, reason="App-restricted update skip")
 @scenario(
     "features/application_restricted.feature",
     "App with pds-app-restricted-update attribute set to TRUE accepts PATCH requests",
@@ -115,7 +115,7 @@ def test_app_restricted_update_attribute_set_to_true():
     pass
 
 
-@pytest.mark.skipif("asid-required" in config.ENVIRONMENT)
+@pytest.mark.skipif("asid-required" in config.ENVIRONMENT, reason="App-restricted update skip")
 @scenario(
     "features/application_restricted.feature",
     "App with pds-app-restricted-update attribute set to FALSE does not accept PATCH requests",
@@ -124,7 +124,7 @@ def test_app_restricted_update_attribute_set_to_false():
     pass
 
 
-@pytest.mark.skipif("asid-required" in config.ENVIRONMENT)
+@pytest.mark.skipif("asid-required" in config.ENVIRONMENT, reason="App-restricted update skip")
 @scenario(
     "features/application_restricted.feature",
     "App with pds-app-restricted-update attribute set to TRUE and invalid app restricted scope does not allow a PATCH",
