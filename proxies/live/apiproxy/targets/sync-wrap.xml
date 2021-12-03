@@ -5,6 +5,9 @@
       <Step>
         <Name>OauthV2.VerifyAccessToken</Name>
       </Step>
+      <Step>
+        <Name>FlowCallout.ComplexAttribute</Name>
+      </Step>
       <!-- APMSPII-1139 rate litmiting to be handle by shared flow, must be after authorization policy -->
       <Step>
         <Name>FlowCallout.ApplyRateLimiting</Name>
