@@ -498,10 +498,8 @@ paths:
           description: |
             A completed search. This might contain zero, one or many matching patients, or it might contain a 'TOO_MANY_MATCHES' error.
           headers:
-            X-Correlation-Id:
-              $ref: components/schemas/XCorrelationId.yaml
-            X-Request-Id:
-              $ref: components/schemas/XRequestID.yaml
+            - $ref: '#/components/parameters/XCorrelationId'
+            - $ref: '#/components/parameters/XRequestID' 
           content:
             application/fhir+json:
               schema:
@@ -592,12 +590,9 @@ paths:
         '200':
           description: Information successfully returned.
           headers:
-            ETag:
-              $ref: components/schemas/ETag.yaml
-            X-Correlation-Id:
-              $ref: components/schemas/XCorrelationId.yaml
-            X-Request-Id:
-              $ref: components/schemas/XRequestID.yaml              
+            - $ref: '#/components/parameters/ETag'
+            - $ref: '#/components/parameters/XCorrelationId'
+            - $ref: '#/components/parameters/XRequestID'          
           content:
             application/fhir+json:
               schema:
@@ -1460,12 +1455,9 @@ paths:
         '200':
           description: Patient updated.
           headers:
-            ETag:
-              $ref: components/schemas/ETag.yaml
-            X-Correlation-Id:
-              $ref: components/schemas/XCorrelationId.yaml
-            X-Request-Id:
-              $ref: components/schemas/XRequestID.yaml              
+            - $ref: '#/components/parameters/ETag'
+            - $ref: '#/components/parameters/XCorrelationId'
+            - $ref: '#/components/parameters/XRequestID'             
           content:
             application/fhir+json:
               schema:
@@ -1521,8 +1513,7 @@ paths:
 
             Re-send the request after the time specified in the `Retry-After` header using the same `X-Request-ID` value.
           headers:
-            Retry-After:
-              $ref: components/schemas/RetryAfter.yaml
+            - $ref: '#/components/parameters/RetryAfter' 
           content:
             application/fhir+json:
               schema:
@@ -1578,12 +1569,9 @@ paths:
         '200':
           description: Information successfully returned.
           headers:
-            ETag:
-              $ref: components/schemas/ETag.yaml
-            X-Correlation-Id:
-              $ref: components/schemas/XCorrelationId.yaml
-            X-Request-Id:
-              $ref: components/schemas/XRequestID.yaml
+            - $ref: '#/components/parameters/ETag'
+            - $ref: '#/components/parameters/XCorrelationId'
+            - $ref: '#/components/parameters/XRequestID' 
           content:
             application/fhir+json:
               schema:
@@ -1621,7 +1609,6 @@ paths:
                           code: PRECONDITION_FAILED
                           display: Required condition was not fulfilled
                     diagnostics: "Invalid request with error - X-Request-ID header must be supplied to access this resource"      
-
 components:
   parameters:
     Id:
@@ -1904,6 +1891,36 @@ components:
       required: false
       schema:
         type: string
+    ETag:
+      schema:
+        type: string
+        pattern: "^W\/\"[0-9]+\"$" # Printable characters enclosed in quotes. See: https://tools.ietf.org/html/rfc7230#section-3.2.6
+        example: W/"2"
+      description: |
+        Record version identifier enclosed in quotes and preceded by 'W/'. For example, `W/"2"`.
+
+        Corresponds to `meta.versionId` attribute in the patient resource body.
+
+        When you retrieve a patient resource, you get a version number for the resource (in the `ETag` response header and in the `versionId` field in the response).
+        You must then pass the resource's version number in any update request (in the `If-Match` response header) made for the patient.
+    XCorrelationId:
+      schema:
+        type: string
+        example: 11C46F5F-CDEF-4865-94B2-0EE0EDCC26DA
+      description: |
+        The X-Correlation-ID from the request header, if supplied, mirrored back.
+    XRequestID:
+      schema:
+        type: string
+        pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+        example: 60E0B220-8136-4CA5-AE46-1D97EF59D068
+      description: |
+        The X-Request-ID from the request header, if supplied, mirrored back.
+    RetryAfter:
+      description: Time to wait between polls in seconds
+      schema:
+        type: string
+        example: "5"
   schemas:
     Patient:
       $ref: components/schemas/Patient.yaml
