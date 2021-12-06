@@ -106,11 +106,11 @@ def test_rejects_synchronous_patch_request():
     pass
 
 
+@pytest.mark.skipif("asid-required" in config.ENVIRONMENT, reason="App-restricted update skip")
 @scenario(
     "features/application_restricted.feature",
     "App with pds-app-restricted-update attribute set to TRUE accepts PATCH requests",
 )
-@pytest.mark.skipif("asid-required" in config.ENVIRONMENT, reason="App-restricted update skip")
 def test_app_restricted_update_attribute_set_to_true():
     pass
 
