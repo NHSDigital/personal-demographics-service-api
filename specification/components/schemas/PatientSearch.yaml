@@ -1,74 +1,109 @@
 type: object
-additionalProperties: false
 properties:
   resourceType:
     type: string
-    description: FHIR resource type.
-    default: "Patient"
-  id:
-    $ref: "NhsNumber.yaml"
-  identifier:
-    $ref: "Identifier.yaml"
-  meta:
-    $ref: "Meta.yaml"
-  name:
-    type: array
-    description: | 
-      List of names associated with the patient.
-
-      This is only fully populated on a retrieval or a successful update, only the `usual`, `nickname` and `temp` names are returned on a search.
-      
-      When a patient tagged as `very restricted` is retrieved, all names are removed from the response.
-    minItems: 1
-    items:
-      $ref: "HumanName.yaml"
-  gender:
-    $ref: "Gender.yaml"
-  birthDate:
-    $ref: "BirthDate.yaml"
-  multipleBirthInteger:
-    $ref: "MultipleBirthOrder.yaml"
-  deceasedDateTime:
-    $ref: "DeceasedDateTime.yaml"
-  address:
-    type: array
-    description: | 
-      List of addresses associated with the patient.
-      
-      This is only fully populated on a retrieval or a successful update, only the `home` address is returned on a search.
-
-      When a patient tagged as `restricted` or `very restricted` is retrieved, all addresses are removed from the response.
-    items:
-      $ref: "Address.yaml"
-  telecom:
+    description: FHIR Resource Type.
+    default: Bundle
+  type:
+    type: string
+    description: FHIR Bundle Type.
+    default: searchset
+  timestamp:
+    type: string
+    description: Time the search was performed.
+    format: datetime
+    example: '2019-12-25T12:00:00+00:00'
+  total:
+    type: integer
+    description: Number of resources returned in search.
+    example: 1
+  entry:
     type: array
     description: |
-      List of contact points for the patient; for example, phone numbers or email addresses.
-
-      When a patient tagged as `restricted` or `very restricted` is retrieved, all contact points are removed from the response.
+      A list of matched patients. Empty if none found. The patients are ordered by match score, best first. A maximum of 50 patients are returned.
     items:
-      $ref: "ContactPoint.yaml"
-  contact:
-    type: array
-    description: |
-      A list of patient contacts. Only emergency contacts are returned. Any other contacts are returned on the patients `Related Person`.
-
-      When a patient tagged as `restricted` or `very restricted` is retrieved, all contacts are removed from the response.
-    items:
-      $ref: "Contact.yaml"
-  generalPractitioner:
-    type: array
-    maxItems: 1
-    description: |
-      General Practice (not practitioner) with which the patient is, or was, registered. Always contains zero or one general practitioner object.
-
-      When a patient tagged as `restricted` or `very restricted` is retrieved, the General Practice is removed from the response.
-    items:
-      $ref: "GeneralPractitionerReference.yaml"
-  extension:
-    type: array
-    description: |
-      Wrapper array for the patient's death notification status; this is a FHIR extension. Always contains zero or one death notification status object.
-    items:
-      anyOf:
-        - $ref: extensions/DeathNotificationStatus.yaml
+      type: object
+      properties:
+        fullUrl:
+          type: string
+          description: Absolute URL of the resource described in this item.
+          example: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000009'
+        search:
+          type: object
+          properties:
+            score:
+              description: Search score from 0.0 to 1.0.
+              type: number
+              minimum: 0.0
+              maximum: 1.0
+              example: 0.75
+        resource:
+          type: object
+          additionalProperties: false
+          properties:
+            resourceType:
+              type: string
+              description: FHIR resource type.
+              default: "Patient"
+            id:
+              $ref: "NhsNumber.yaml"
+            identifier:
+              $ref: "Identifier.yaml"
+            meta:
+              $ref: "Meta.yaml"
+            name:
+              type: array
+              description: | 
+                List of names associated with the patient.
+                This is only fully populated on a retrieval or a successful update, only the `usual`, `nickname` and `temp` names are returned on a search.
+                
+                When a patient tagged as `very restricted` is retrieved, all names are removed from the response.
+              minItems: 1
+              items:
+                $ref: "HumanName.yaml"
+            gender:
+              $ref: "Gender.yaml"
+            birthDate:
+              $ref: "BirthDate.yaml"
+            multipleBirthInteger:
+              $ref: "MultipleBirthOrder.yaml"
+            deceasedDateTime:
+              $ref: "DeceasedDateTime.yaml"
+            address:
+              type: array
+              description: | 
+                List of addresses associated with the patient.
+                
+                This is only fully populated on a retrieval or a successful update, only the `home` address is returned on a search.
+                When a patient tagged as `restricted` or `very restricted` is retrieved, all addresses are removed from the response.
+              items:
+                $ref: "Address.yaml"
+            telecom:
+              type: array
+              description: |
+                List of contact points for the patient; for example, phone numbers or email addresses.
+                When a patient tagged as `restricted` or `very restricted` is retrieved, all contact points are removed from the response.
+              items:
+                $ref: "ContactPoint.yaml"
+            contact:
+              type: array
+              description: |
+                A list of patient contacts. Only emergency contacts are returned. Any other contacts are returned on the patients `Related Person`.
+                When a patient tagged as `restricted` or `very restricted` is retrieved, all contacts are removed from the response.
+              items:
+                $ref: "Contact.yaml"
+            generalPractitioner:
+              type: array
+              maxItems: 1
+              description: |
+                General Practice (not practitioner) with which the patient is, or was, registered. Always contains zero or one general practitioner object.
+                When a patient tagged as `restricted` or `very restricted` is retrieved, the General Practice is removed from the response.
+              items:
+                $ref: "GeneralPractitionerReference.yaml"
+            extension:
+              type: array
+              description: |
+                Wrapper array for the patient's death notification status; this is a FHIR extension. Always contains zero or one death notification status object.
+              items:
+                anyOf:
+                  - $ref: extensions/DeathNotificationStatus.yaml
