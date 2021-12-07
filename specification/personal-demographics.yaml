@@ -249,7 +249,7 @@ servers:
   - url: 'https://int.api.service.nhs.uk/personal-demographics/FHIR/R4'
     description: Integration test environment.
   - url: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4'
-    description: 'Production environment.'
+    description: Production environment.
 paths:
   /Patient:
     parameters:
@@ -498,8 +498,10 @@ paths:
           description: |
             A completed search. This might contain zero, one or many matching patients, or it might contain a 'TOO_MANY_MATCHES' error.
           headers:
-            - $ref: '#/components/parameters/XCorrelationId'
-            - $ref: '#/components/parameters/XRequestID' 
+            X-Correlation-Id:
+              $ref: '#/components/headers/X-Correlation-Id'
+            X-Request-Id:
+              $ref: '#/components/headers/X-Request-Id' 
           content:
             application/fhir+json:
               schema:
@@ -590,9 +592,12 @@ paths:
         '200':
           description: Information successfully returned.
           headers:
-            - $ref: '#/components/parameters/ETag'
-            - $ref: '#/components/parameters/XCorrelationId'
-            - $ref: '#/components/parameters/XRequestID'          
+            ETag:
+              $ref: '#/components/headers/ETag'
+            X-Correlation-Id:
+              $ref: '#/components/headers/X-Correlation-Id'
+            X-Request-Id:
+              $ref: '#/components/headers/X-Request-Id'     
           content:
             application/fhir+json:
               schema:
@@ -1455,9 +1460,12 @@ paths:
         '200':
           description: Patient updated.
           headers:
-            - $ref: '#/components/parameters/ETag'
-            - $ref: '#/components/parameters/XCorrelationId'
-            - $ref: '#/components/parameters/XRequestID'             
+            ETag:
+              $ref: '#/components/headers/ETag'
+            X-Correlation-Id:
+              $ref: '#/components/headers/X-Correlation-Id'
+            X-Request-Id:
+              $ref: '#/components/headers/X-Request-Id'            
           content:
             application/fhir+json:
               schema:
@@ -1506,14 +1514,14 @@ paths:
                           code: INVALID_UPDATE
                           display: Update is invalid
                     diagnostics: "Invalid update with error - Update unsupported for resource - 'pets'"      
-
         '503':
           description: |
             The request timed out during processing. This does not imply the request has failed or been rejected. Error code: `SERVICE_UNAVAILABLE`.
 
             Re-send the request after the time specified in the `Retry-After` header using the same `X-Request-ID` value.
           headers:
-            - $ref: '#/components/parameters/RetryAfter' 
+            RetryAfter:
+              $ref: '#/components/headers/RetryAfter'
           content:
             application/fhir+json:
               schema:
@@ -1569,9 +1577,12 @@ paths:
         '200':
           description: Information successfully returned.
           headers:
-            - $ref: '#/components/parameters/ETag'
-            - $ref: '#/components/parameters/XCorrelationId'
-            - $ref: '#/components/parameters/XRequestID' 
+            ETag:
+              $ref: '#/components/headers/ETag'
+            X-Correlation-Id:
+              $ref: '#/components/headers/X-Correlation-Id'
+            X-Request-Id:
+              $ref: '#/components/headers/X-Request-Id'
           content:
             application/fhir+json:
               schema:
@@ -1610,6 +1621,15 @@ paths:
                           display: Required condition was not fulfilled
                     diagnostics: "Invalid request with error - X-Request-ID header must be supplied to access this resource"      
 components:
+  headers:
+    ETag:
+      $ref: 'components/schemas/ETag.yaml'
+    X-Correlation-Id:
+      $ref: 'components/schemas/XCorrelationId.yaml'
+    X-Request-Id:
+      $ref: 'components/schemas/XRequestID.yaml'
+    RetryAfter:
+      $ref: 'components/schemas/RetryAfter.yaml'
   parameters:
     Id:
       name: id
@@ -1920,7 +1940,7 @@ components:
       description: Time to wait between polls in seconds
       schema:
         type: string
-        example: "5"
+        example: "5"    
   schemas:
     Patient:
       $ref: components/schemas/Patient.yaml
