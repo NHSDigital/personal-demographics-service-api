@@ -1912,10 +1912,12 @@ components:
       schema:
         type: string
     ETag:
+      name: etag
       schema:
         type: string
         pattern: "^W\/\"[0-9]+\"$" # Printable characters enclosed in quotes. See: https://tools.ietf.org/html/rfc7230#section-3.2.6
         example: W/"2"
+      in: header
       description: |
         Record version identifier enclosed in quotes and preceded by 'W/'. For example, `W/"2"`.
 
@@ -1924,20 +1926,26 @@ components:
         When you retrieve a patient resource, you get a version number for the resource (in the `ETag` response header and in the `versionId` field in the response).
         You must then pass the resource's version number in any update request (in the `If-Match` response header) made for the patient.
     XCorrelationId:
+      name: x-correlation-id
       schema:
         type: string
         example: 11C46F5F-CDEF-4865-94B2-0EE0EDCC26DA
+      in: header
       description: |
         The X-Correlation-ID from the request header, if supplied, mirrored back.
     XRequestID:
+      name: x-request-id
       schema:
         type: string
         pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
         example: 60E0B220-8136-4CA5-AE46-1D97EF59D068
+      in: header
       description: |
         The X-Request-ID from the request header, if supplied, mirrored back.
     RetryAfter:
+      name: retry-after
       description: Time to wait between polls in seconds
+      in: header
       schema:
         type: string
         example: "5"    
