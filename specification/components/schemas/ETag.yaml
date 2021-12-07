@@ -1,0 +1,10 @@
+schema:
+  type: string
+  pattern: "^W\/\"[0-9]+\"$" # Printable characters enclosed in quotes. See: https://tools.ietf.org/html/rfc7230#section-3.2.6
+  example: W/"2"
+description: |
+  Record version identifier enclosed in quotes and preceded by 'W/'. For example, `W/"2"`.
+  Corresponds to `meta.versionId` attribute in the patient resource body.
+  When you retrieve a patient resource, you get a version number for the resource (in the `ETag` response header and in the `versionId` field in the response).
+  You must then pass the resource's version number in any update request (in the `If-Match` response header) made for the patient.
+  
