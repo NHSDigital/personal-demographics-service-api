@@ -132,9 +132,9 @@ async def setup_session(request):
     yield product, app, token
 
     # Teardown
-    print("\nDestroying Default App..")
-    await app.destroy_app()
-    await product.destroy_product()
+    # print("\nDestroying Default App..")
+    # await app.destroy_app()
+    # await product.destroy_product()
 
 
 @pytest.fixture()
