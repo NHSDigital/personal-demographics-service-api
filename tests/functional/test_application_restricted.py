@@ -277,7 +277,7 @@ def context():
 
 @given(
     parsers.parse(
-        "I wait for {number_of} milliseconds")
+        "I wait for {number_of:d} milliseconds")
 )
 def wait_for_some_milliseconds(number_of: int):
     time.sleep(number_of / 1000)
