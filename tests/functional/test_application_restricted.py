@@ -275,6 +275,14 @@ def context():
     return {}
 
 
+@given(
+    parsers.parse(
+        "I wait for {number_of:d} milliseconds")
+)
+def wait_for_some_milliseconds(number_of: int):
+    time.sleep(number_of / 1000)
+
+
 @when("I GET a patient")
 def get_patient(auth, context):
     authentication = auth["access_token"]
