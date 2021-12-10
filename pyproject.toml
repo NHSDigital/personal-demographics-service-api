@@ -61,5 +61,6 @@ markers = [
     "apmspii_832",
     "apmspii_874",
     "apmspii_921",
-    "smoke_test"
+    "smoke_test",
+    "asid_required"
 ]

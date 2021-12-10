@@ -6,20 +6,21 @@ Feature: Unattended Access
 
   Scenario: PDS FHIR API accepts request with valid access token
     Given I am authenticating using unattended access
-    And I have a valid access token
     And I have a request context
+    And I have a valid access token
 
     When I GET a patient
 
     Then I get a 200 HTTP response
     And I get a Bundle resource in the response
-    
+
+
   Scenario: PDS FHIR API rejects request with invalid access token
     Given I am authenticating using unattended access
     And I have an invalid access token
     And I have a request context
 
-    When I GET a patient 
+    When I GET a patient
 
     Then I get a 401 HTTP response
     And I get an error response
@@ -38,8 +39,8 @@ Feature: Unattended Access
 
   Scenario: PDS FHIR API rejects request with expired access token
     Given I am authenticating using unattended access
-    And I have an expired access token
     And I have a request context
+    And I have an expired access token
 
     When I GET a patient
 
@@ -49,8 +50,8 @@ Feature: Unattended Access
 
   Scenario: PDS FHIR API accepts request without user role ID
     Given I am authenticating using unattended access
-    And I have a valid access token
     And I have a request context
+    And I have a valid access token
 
     When I GET a patient without a user role ID
 
@@ -59,8 +60,8 @@ Feature: Unattended Access
 
   Scenario: PDS FHIR API rejects request for more than one result
     Given I am authenticating using unattended access
-    And I have a valid access token
     And I have a request context
+    And I have a valid access token
 
     When I GET a patient asking for two results
 
@@ -70,8 +71,8 @@ Feature: Unattended Access
 
   Scenario: PDS FHIR API accepts request for one result
     Given I am authenticating using unattended access
-    And I have a valid access token
     And I have a request context
+    And I have a valid access token
 
     When I GET a patient asking for one result
 
@@ -80,11 +81,44 @@ Feature: Unattended Access
 
   Scenario: PDS FHIR API rejects synchronous PATCH requests
     Given I am authenticating using unattended access
-    And I have a valid access token
     And I have a request context
+    And I have a valid access token
 
     When I PATCH a patient and ommit the prefer header
 
     Then I get a 403 HTTP response
     And I get an error response
     And I get a diagnosis of insufficient permissions to use this method
+
+  Scenario: App with pds-app-restricted-update attribute set to TRUE accepts PATCH requests
+    Given I am authenticating using unattended access
+    And I have a request context
+    And I create a new app
+    And I add the attribute with key of apim-app-flow-vars and a value of { "pds" : { "app-restricted": { "update": true } }}
+    And I add the scope urn:nhsd:apim:app:level3:personal-demographics-service
+    And I have a valid access token
+
+    When I PATCH a patient
+    Then I get a 200 HTTP response
+
+  Scenario: App with pds-app-restricted-update attribute set to FALSE does not accept PATCH requests
+    Given I am authenticating using unattended access
+    And I have a request context
+    And I create a new app
+    And I add the attribute with key of apim-app-flow-vars and a value of { "pds" : { "app-restricted": { "update": false } }}
+    And I add the scope urn:nhsd:apim:app:level3:personal-demographics-service
+    And I have a valid access token
+
+    When I PATCH a patient
+    Then I get a 403 HTTP response
+
+  Scenario: App with pds-app-restricted-update attribute set to TRUE and invalid app restricted scope does not allow a PATCH
+    Given I am authenticating using unattended access
+    And I have a request context
+    And I create a new app
+    And I add the attribute with key of apim-app-flow-vars and a value of { "pds" : { "app-restricted": { "update": true } }}
+    And I add the scope urn:nhsd:apim:app:level3:reasonable-adjustment-flag
+    And I have a valid access token
+
+    When I PATCH a patient
+    Then I get a 403 HTTP response
