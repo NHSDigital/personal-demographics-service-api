@@ -16,9 +16,6 @@ install-fhir-validator:
 	mkdir -p bin
 	test -f bin/org.hl7.fhir.validator.jar || curl -L https://github.com/hapifhir/org.hl7.fhir.core/releases/latest/download/validator_cli.jar > bin/org.hl7.fhir.validator.jar
 
-install-swagger-cli:
-	npm install -g @apidevtools/swagger-cli
-
 lint:
 	npm run lint
 	cd sandbox && npm run lint && cd ..
@@ -32,15 +29,18 @@ publish: clean
 	mkdir -p build
 	npm run publish 2> /dev/null
 
+publish-short-version:
+	swagger-cli bundle specification/personal-demographics.yaml -r -o short-version/personal-demographics-short-version.json
+
+publish-merged-version: clean publish publish-short-version
+
 serve: update-examples
 	npm run serve
-
-bundle: install-swagger-cli
-	swagger-cli bundle specification/personal-demographics.yaml -o build/personal-demographics2.json
 
 clean:
 	rm -rf build
 	rm -rf dist
+	rm -rf short-version
 
 generate-examples: publish clean
 	mkdir -p build/examples
