@@ -24,7 +24,8 @@ Feature: Unattended Access
 
     Then I get a 401 HTTP response
     And I get an error response
-    And I get a diagnosis of Invalid Access Token
+    And the error issue.diagnostics value is Invalid Access Token
+
 
   Scenario: PDS FHIR API rejects request with missing access token
     Given I am authenticating using unattended access
@@ -35,7 +36,8 @@ Feature: Unattended Access
 
     Then I get a 401 HTTP response
     And I get an error response
-    And I get a diagnosis of Invalid access token
+    And the error issue.diagnostics value is Invalid access token
+
 
   Scenario: PDS FHIR API rejects request with expired access token
     Given I am authenticating using unattended access
@@ -46,7 +48,8 @@ Feature: Unattended Access
 
     Then I get a 401 HTTP response
     And I get an error response
-    And I get a diagnosis of expired access token
+    And the error issue.diagnostics value is Access Token expired
+
 
   Scenario: PDS FHIR API accepts request without user role ID
     Given I am authenticating using unattended access
@@ -67,7 +70,8 @@ Feature: Unattended Access
 
     Then I get a 403 HTTP response
     And I get an error response
-    And I get a diagnosis of insufficient permissions
+    And the error issue.diagnostics value is Your app has insufficient permissions to perform this search. Please contact support.
+
 
   Scenario: PDS FHIR API accepts request for one result
     Given I am authenticating using unattended access
@@ -88,7 +92,8 @@ Feature: Unattended Access
 
     Then I get a 403 HTTP response
     And I get an error response
-    And I get a diagnosis of insufficient permissions to use this method
+    And the error issue.diagnostics value is Your app has insufficient permissions to use this method. Please contact support.
+
 
   Scenario: App with pds-app-restricted-update attribute set to TRUE accepts PATCH requests
     Given I am authenticating using unattended access
@@ -125,3 +130,19 @@ Feature: Unattended Access
 
     When I PATCH a patient
     Then I get a 403 HTTP response
+
+
+  Scenario: PDS FHIR API rejects app restricted update
+    Given I am authenticating using unattended access
+    And I have a request context
+    And I have a valid access token
+
+    When I PATCH a patient
+
+    Then I get a 403 HTTP response
+    And I get an error response
+    And the error issue.code value is forbidden
+    And the error issue.details.coding.code value is FORBIDDEN_UPDATE
+    And the error issue.details.coding.display value is Cannot update resource with Application-Restricted access token
+    And the error issue.diagnostics value is Your app has insufficient permissions to use this method. Please contact support.
+
