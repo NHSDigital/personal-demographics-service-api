@@ -1,0 +1,18 @@
+{
+    "patches": [
+      {
+        "op": "replace",
+        "path": "/managingOrganization",
+        "value": {
+            "identifier": {
+              "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+              "value": "Y12345",
+              "period": {
+                  "start": "2019-01-22"
+              }
+            }
+        }
+      }
+    ]
+  }
+  

@@ -648,6 +648,18 @@ paths:
           required: false
           schema:
             type: string
+        - name: managing-organisation
+          description: |
+            The Organisation Data Service (ODS) code of the patient's registered GP practice.
+            
+            Not case sensitive.
+            For a fuzzy search, this is ignored for matching but included in the score calculation.
+          example: Y12345
+          in: query
+          required: false
+          internal: true
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -1435,6 +1447,19 @@ paths:
         * removal of a general practice can only be done by [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
         * only a single general practice is supported; emergency, temporary and additional practices must be maintained in the local system only.
 
+        ### Managing Organisation
+
+        Single item found under `managingOrganization` field.
+
+        **NB:** Strictly for internal-use only.
+
+        In a JSON Patch request the path should be `/managingOrganization`.
+
+        The following business rules should be observed:
+        * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes.
+        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
+        * only a single general practice is supported; emergency, temporary and additional practices must be maintained in the local system only.        
+
         ### Multiple birth order
 
         Single item found under `multipleBirthInteger` field.
@@ -1579,6 +1604,10 @@ paths:
                 summary: Add a an extension (nominated pharmacy) to the Patient
                 value:
                   $ref: components/examples/requests/PatientPatch/add-extension.json
+              add-extension:
+                summary: Add a managing organisation to the Patient
+                value:
+                  $ref: components/examples/requests/PatientPatch/add-managing-organization.json
               update-gender:
                 summary: Update the simple item (gender)
                 value:
@@ -1595,6 +1624,10 @@ paths:
                 summary: Update an extension (death notification)
                 value:
                   $ref: components/examples/requests/PatientPatch/update-extension.json
+              update-managing-organization:
+                summary: Update managing organization start date
+                value:
+                  $ref: components/examples/requests/PatientPatch/update-managing-organization.json
               delete-gender:
                 summary: Remove a single item (gender) no longer in use
                 value:
