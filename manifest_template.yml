@@ -119,21 +119,21 @@ APIGEE_ENVIRONMENTS:
       personal-demographics-prod:
         quota:
           enabled: true
-          limit: 16200  # 270 TPS Amount Spine indicated they can handle as burst load
+          limit: 21000  # 350 TPS Amount Spine indicated they can handle as burst load
           interval: 1
           timeunit: minute
         spikeArrest:
           enabled: true
-          ratelimit: 32400pm # 540 requests per second
+          ratelimit: 42000pm # 540 requests per second
       app:
         quota:
-          enabled: true
-          limit: 300    # 5TPS
-          interval: 1
-          timeunit: minute
+          enabled: false
+        #   limit: 300    # 5TPS
+        #   interval: 1
+        #   timeunit: minute
         spikeArrest:
-          enabled: true
-          ratelimit: 600pm # 10 requests per second
+          enabled: false
+        #   ratelimit: 600pm # 10 requests per second
 
 ACCESS_MODES:
   - name: user-restricted

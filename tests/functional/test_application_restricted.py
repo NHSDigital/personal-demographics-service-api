@@ -1,10 +1,16 @@
+import asyncio
+import json
+import pytest
+
 import dateutil.parser
 import jwt
 import uuid
 import time
+
 import requests
-from .config_files import config
 from pytest_bdd import scenario, given, when, then, parsers
+
+from tests.functional.config_files import config
 
 
 def teardown_function(function):
@@ -100,13 +106,76 @@ def test_rejects_synchronous_patch_request():
     pass
 
 
+@pytest.mark.skipif("personal-demographics" in config.PDS_BASE_PATH, reason="App-restricted update skip")
+@scenario(
+    "features/application_restricted.feature",
+    "App with pds-app-restricted-update attribute set to TRUE accepts PATCH requests",
+)
+def test_app_restricted_update_attribute_set_to_true():
+    pass
+
+
+@pytest.mark.skipif("asid-required" in config.PDS_BASE_PATH, reason="App-restricted update skip")
+@scenario(
+    "features/application_restricted.feature",
+    "App with pds-app-restricted-update attribute set to FALSE does not accept PATCH requests",
+)
+def test_app_restricted_update_attribute_set_to_false():
+    pass
+
+
+@pytest.mark.skipif("asid-required" in config.PDS_BASE_PATH, reason="App-restricted update skip")
+@scenario(
+    "features/application_restricted.feature",
+    "App with pds-app-restricted-update attribute set to TRUE and invalid app restricted scope does not allow a PATCH",
+)
+def test_app_restricted_update_attribute_invalid_scope():
+    pass
+
+
 @given("I am authenticating using unattended access", target_fixture="auth")
 def auth():
     return {}
 
 
+@given("I create a new app")
+def create_test_app(setup_session, context):
+    product, app, token = setup_session
+    context['product'] = product
+    context['app'] = app
+    context['token'] = token
+
+
+@given(
+    parsers.parse(
+        "I add the attribute with key of {key} and a value of {value}")
+)
+def add_custom_attribute_to_app(key: str, value: str, context: dict):
+
+    app = context['app']
+
+    asyncio.run(app.set_custom_attributes(
+        {
+            'jwks-resource-url': 'https://raw.githubusercontent.com/NHSDigital/'
+                                 'identity-service-jwks/main/jwks/internal-dev/'
+                                 '9baed6f4-1361-4a8e-8531-1f8426e3aba8.json',
+            key: value
+        }
+    ))
+
+
+@given(
+    parsers.parse(
+        "I add the scope {scope}")
+)
+def add_scope_to_product(scope, context):
+    product = context['product']
+    asyncio.run(product.update_scopes([scope]))
+
+
 @given("I have a valid access token")
-def set_valid_access_token(auth):
+def set_valid_access_token(auth, context):
+
     claims = {
         "sub": config.APPLICATION_RESTRICTED_API_KEY,
         "iss": config.APPLICATION_RESTRICTED_API_KEY,
@@ -114,6 +183,13 @@ def set_valid_access_token(auth):
         "aud": f"{config.BASE_URL}/oauth2/token",
         "exp": int(time.time()) + 300,
     }
+
+    # If one exists, use the client_id of the test app instead
+    if 'app' in context:
+        claims.update({
+            "sub": context['app'].get_client_id(),
+            "iss": context['app'].get_client_id(),
+        })
 
     headers = {"kid": config.KEY_ID}
 
@@ -199,6 +275,14 @@ def context():
     return {}
 
 
+@given(
+    parsers.parse(
+        "I wait for {number_of:d} milliseconds")
+)
+def wait_for_some_milliseconds(number_of: int):
+    time.sleep(number_of / 1000)
+
+
 @when("I GET a patient")
 def get_patient(auth, context):
     authentication = auth["access_token"]
@@ -258,6 +342,41 @@ def patch_sync_patient(auth, context):
 
     context["response"] = response.json()
     context["status"] = response.status_code
+
+
+@when("I PATCH a patient")
+def patch_patient(auth: dict, context: dict):
+    auth_token = auth['access_token']
+
+    headers = {
+        "Authorization": f"Bearer {auth_token}",
+        "X-Request-ID": str(uuid.uuid4()),
+    }
+
+    # GET patient to retrieve eTag
+    response = requests.get(
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}", headers=headers
+    )
+
+    patient_version_id = response.headers["Etag"]
+    current_gender = (json.loads(response.text))["gender"]
+    new_gender = 'male' if current_gender == 'female' else 'female'
+
+    # add the new gender to the patch
+    patch = json.loads('{"patches":[{"op":"replace","path":"/gender","value":"male"}]}')
+    patch["patches"][0]["value"] = new_gender
+
+    headers.update({
+        "Content-Type": "application/json-patch+json",
+        "If-Match": patient_version_id,
+    })
+
+    response = requests.patch(
+        f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}", headers=headers,
+        json=patch
+    )
+
+    context['status'] = response.status_code
 
 
 @when("I GET a patient asking for one result")
