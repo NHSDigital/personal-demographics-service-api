@@ -5,6 +5,10 @@
       <Step>
         <Name>OauthV2.VerifyAccessToken</Name>
       </Step>
+      <!-- shared flow must be after authorization policy -->
+      <Step>
+        <Name>FlowCallout.ExtendedAttributes</Name>
+      </Step>
       <!-- APMSPII-1139 rate litmiting to be handle by shared flow must be after authorization policy -->
       <Step>
         <Name>FlowCallout.ApplyRateLimiting</Name>
@@ -14,11 +18,11 @@
       'scope' is a space-separated string of scopes, determined by the Application's API Product assignments.
       Follow pattern used in AssignMessage.SetAccessModeUserRestricted condition. See Apigee docs for JavaRegex gotchas (uses '.match()' behaviour matching whole string only). -->
       <Step>
-        <Name>AssignMessage.SetAccessModeApplicationRestricted</Name>
+          <Name>AssignMessage.SetAccessModeApplicationRestricted</Name>
       </Step>
       <Step>
         <Name>AssignMessage.SetAccessModeUserRestricted</Name>
-        <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service$|^urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service$|.+\ personal-demographics-service:USER-RESTRICTED\ .+|^personal-demographics-service:USER-RESTRICTED\ .+|.+\ personal-demographics-service:USER-RESTRICTED$|^personal-demographics-service:USER-RESTRICTED$)")</Condition>
+        <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service$|^urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service$|.+\ personal-demographics-service:USER-RESTRICTED\ .+|^personal-demographics-service:USER-RESTRICTED\ .+|.+\ personal-demographics-service:USER-RESTRICTED$|^personal-demographics-service:USER-RESTRICTED$)") or ((scope JavaRegex "(.+\ urn:nhsd:apim:app:level3:personal-demographics-service\ .+|^urn:nhsd:apim:app:level3:personal-demographics-service\ .+|.+\ urn:nhsd:apim:app:level3:personal-demographics-service$|^urn:nhsd:apim:app:level3:personal-demographics-service$)" and apim-app-flow-vars.pds.app-restricted.update Is "true")</Condition>
       </Step>
       <Step>
         <Name>AssignMessage.SetAccessModePatientAccess</Name>
@@ -35,7 +39,7 @@
       </Step>
       <Step>
         <Name>FlowCallout.UserRoleService</Name>
-        <Condition>(access-mode Equals "user-restricted")</Condition>
+        <Condition>(access-mode Equals "user-restricted") and apim-app-flow-vars.pds.app-restricted.update IsNot "true"</Condition>
       </Step>
       <Step>
         <Name>AssignMessage.AddUserIdHeader</Name>

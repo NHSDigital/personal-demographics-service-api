@@ -207,7 +207,13 @@ info:
     ## Onboarding
     You need to get your software approved by us before it can go live with this API. We call this onboarding. The onboarding process can sometimes be quite long, so it’s worth planning well ahead.
     
-    To onboard for this API, follow the [Supplier Conformance Assessment List (SCAL) process.](https://digital.nhs.uk/developer/guides-and-documentation/onboarding-process#onboard-using-the-supplier-conformance-assessment-list-scal-process)
+    ### New applications - after 9 December 2021
+    To onboard for this API, follow our online [digital onboarding process](https://digital.nhs.uk/developer/guides-and-documentation/onboarding-process#digital-onboarding).
+
+    To get started, send us an email at [api.management@nhs.net](mailto:api.management@nhs.net).
+    
+    ### In progress applications
+    If your onboarding is already in progress, or we tell you that you're an exception, follow the [Supplier Conformance Assessment List (SCAL)](https://digital.nhs.uk/developer/guides-and-documentation/onboarding-process#onboard-using-the-supplier-conformance-assessment-list-scal-process) process.
 
     When following the general SCAL process steps, for this API you must do the following:
     
