@@ -1610,7 +1610,7 @@ paths:
                 summary: Add a an extension (nominated pharmacy) to the Patient
                 value:
                   $ref: components/examples/requests/PatientPatch/add-extension.json
-              add-extension:
+              add-managing-organization:
                 summary: Add a managing organisation to the Patient
                 value:
                   $ref: components/examples/requests/PatientPatch/add-managing-organization.json
