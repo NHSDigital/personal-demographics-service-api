@@ -1287,11 +1287,9 @@ paths:
         * removal of a general practice can only be done by [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
         * only a single general practice is supported; emergency, temporary and additional practices must be maintained in the local system only.
 
-        ### Managing Organisation
+        ### Managing Organisation (internal-use only)
 
         Single item found under `managingOrganization` field.
-
-        **NB:** Strictly for internal-use only.
 
         In a JSON Patch request the path should be `/managingOrganization`.
 
