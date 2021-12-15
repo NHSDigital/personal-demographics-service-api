@@ -142,7 +142,7 @@ Feature: Unattended Access
     Then I get a 403 HTTP response
     And I get an error response
     And the error issue.code value is forbidden
-    And the error issue.details.coding.code value is FORBIDDEN_UPDATE
+    And the error issue.details.coding.code value is INVALID_METHOD
     And the error issue.details.coding.display value is Cannot update resource with Application-Restricted access token
     And the error issue.diagnostics value is Your app has insufficient permissions to use this method. Please contact support.
 
