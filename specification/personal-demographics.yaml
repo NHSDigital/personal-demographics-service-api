@@ -255,7 +255,7 @@ servers:
   - url: 'https://int.api.service.nhs.uk/personal-demographics/FHIR/R4'
     description: Integration test environment.
   - url: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4'
-    description: 'Production environment.'
+    description: Production environment.
 paths:
   /Patient:
     parameters:
@@ -488,194 +488,27 @@ paths:
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/a1ce1b055839caa384a8?action=collection%2Fimport)
 
       parameters:
-        - name: _fuzzy-match
-          description: |
-            A fuzzy search is performed, including checks for homophones, transposed names and historic information.
-            
-            You cannot use wildcards with a fuzzy search.
-          example: false
-          in: query
-          required: false
-          schema:
-            type: boolean
-            default: false
-        - name: _exact-match
-          description: The search only returns results where the `score` field is 1.0. Use this with care - it is unlikely to work with fuzzy search or wildcards.
-          example: false
-          in: query
-          required: false
-          schema:
-            type: boolean
-            default: false
-        - name: _history
-          description: |
-            The search looks for matches in historic information such as previous names and addresses.
-            
-            This parameter has no effect for a fuzzy search, which always includes historic information.
-          example: true
-          in: query
-          required: false
-          schema:
-            type: boolean
-            default: false
-        - name: _max-results
-          description: |
-            The maximum number of matching patients to return. For healthcare worker access, this must be between 1 and 50, and the default is 50.
-            For application-restricted access, this must be 1, and the default is 1.
-            If too many patients match the search criteria, we return a `TOO_MANY_MATCHES` error.
-          example: 1
-          in: query
-          required: false
-          schema:
-            type: integer
-            format: int32
-        - name: family
-          description: |
-            The patient's family name (surname).
-            
-            Not case sensitive.
-            Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
-            Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
-          examples:
-            simple:
-              value: Smith
-              summary: Matches Smythe if `_fuzzy-match` is specified.
-            wildcarded:
-              value: "Sm*t*"
-              summary: 'Wildcards must contain at least two characters, this matches Smith, Smythe'
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: given
-          description: |
-            The patient's given names.
-
-            Not case sensitive.
-            Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
-            Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
-
-            A patient may have more than one given name. Subsequent given names are commonly referred to as 'middle names'.
-            Specify multiple given names by repeating this parameter.
-            To search for  `Jane Anne Smith` use `given=Jane&given=Anne&family=Smith`.
-            
-            The first given name may be a [compound name](https://en.wikipedia.org/wiki/Given_name#Compound), for example `John Paul`.
-            To search for `John Paul James Smith` (where `John Paul` is the first given name, `James` is the second given name, and `Smith` the family name) use `given=John%20Paul&given=James&family=Smith`.
-            
-            Note that it is not necessary to specify subsequent given (middle) names, and that doing so may impact your search results in the case they are not recorded in the demographics system.
-          example: Jane
-          in: query
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - name: gender
-          description: Gender with which the patient most strongly identifies.
-          example: female
-          in: query
-          required: false
-          schema:
-            type: string
-            enum:
-              - male
-              - female
-              - other
-              - unknown
-            example: female
-        - name: birthdate
-          in: query
-          description: Date of birth in the format `<eq|ge|le>yyyy-mm-dd`. To specify a range, use `birthdate=geyyyy-mm-dd&birthdate=leyyyy-mm-dd`.
-          examples:
-            simple:
-              value: 
-                - eq2010-10-22
-              description: Exact match date
-            rangege:
-              value: 
-                - ge2010-10-22
-              description: Greater than or equals match, which matches 2010-10-22 or 2010-10-23
-            rangele:
-              value: 
-                - le2010-10-22
-              description: Less than or equals match, which matches 2010-10-22 or 2010-10-21
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-        - name: death-date
-          in: query
-          description: |
-            Date of death in the format `<eq|ge|le>yyyy-mm-dd`. To specify a range, use `death-date=geyyyy-mm-dd&death-date=leyyyy-mm-dd`.
-            
-            For a fuzzy search, this is ignored for matching but included in the score calculation.
-          examples:
-            simple:
-              value: eq2010-10-22
-              description: Exact match date
-            rangege:
-              value: ge2010-10-22
-              description: Greater than or equals match which matches 2010-10-22 or 2010-10-23
-            rangele:
-              value: 'le2010-10-22'
-              description: Less than or equals match, which matches 2010-10-22 or 2010-10-21
-          required: false
-          schema:
-            type: string
-            format: date
-        - name: address-postcode
-          description: |
-            The postcode of any of the patient’s known addresses.
-
-            Not case sensitive.
-            Spaces are ignored, for example `LS16AE` and `LS1 6AE` both match `LS1 6AE`.
-            Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
-            Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
-          examples:
-            simple:
-              value: LS1 6AE
-              summary: 'Spaces ignored, would match LS16AE'
-            wildcarded:
-              value: "LS1*"
-              summary: "Matches 'LS16AE', 'LS1 6AE' and 'LS1 6AB'"
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: general-practitioner
-          description: |
-            The Organisation Data Service (ODS) code of the patient's registered GP practice.
-            
-            Not case sensitive.
-            For a fuzzy search, this is ignored for matching but included in the score calculation.
-          example: Y12345
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: managing-organisation
-          description: |
-            The Organisation Data Service (ODS) code of the patient's registered GP practice.
-            
-            This field is for internal-use only.
-            
-            Not case sensitive.
-            For a fuzzy search, this is ignored for matching but included in the score calculation.
-          example: Y12345
-          in: query
-          required: false
-          schema:
-            type: string
+        - $ref: '#/components/parameters/FuzzyMatch'
+        - $ref: '#/components/parameters/ExactMatch'
+        - $ref: '#/components/parameters/History'
+        - $ref: '#/components/parameters/MaxResults'
+        - $ref: '#/components/parameters/Family'
+        - $ref: '#/components/parameters/Given'
+        - $ref: '#/components/parameters/Gender'
+        - $ref: '#/components/parameters/Birthdate'
+        - $ref: '#/components/parameters/DeathDate'
+        - $ref: '#/components/parameters/AddressPostcode'
+        - $ref: '#/components/parameters/GeneralPractitioner'
+        - $ref: '#/components/parameters/ManagingOrganization'
       responses:
         '200':
           description: |
             A completed search. This might contain zero, one or many matching patients, or it might contain a 'TOO_MANY_MATCHES' error.
           headers:
             X-Correlation-Id:
-              $ref: components/schemas/XCorrelationId.yaml
+              $ref: '#/components/headers/X-Correlation-Id'
             X-Request-Id:
-              $ref: components/schemas/XRequestID.yaml
+              $ref: '#/components/headers/X-Request-Id' 
           content:
             application/fhir+json:
               schema:
@@ -767,11 +600,11 @@ paths:
           description: Information successfully returned.
           headers:
             ETag:
-              $ref: components/schemas/ETag.yaml
+              $ref: '#/components/headers/ETag'
             X-Correlation-Id:
-              $ref: components/schemas/XCorrelationId.yaml
+              $ref: '#/components/headers/X-Correlation-Id'
             X-Request-Id:
-              $ref: components/schemas/XRequestID.yaml              
+              $ref: '#/components/headers/X-Request-Id'     
           content:
             application/fhir+json:
               schema:
@@ -1656,11 +1489,11 @@ paths:
           description: Patient updated.
           headers:
             ETag:
-              $ref: components/schemas/ETag.yaml
+              $ref: '#/components/headers/ETag'
             X-Correlation-Id:
-              $ref: components/schemas/XCorrelationId.yaml
+              $ref: '#/components/headers/X-Correlation-Id'
             X-Request-Id:
-              $ref: components/schemas/XRequestID.yaml              
+              $ref: '#/components/headers/X-Request-Id'            
           content:
             application/fhir+json:
               schema:
@@ -1709,15 +1542,14 @@ paths:
                           code: INVALID_UPDATE
                           display: Update is invalid
                     diagnostics: "Invalid update with error - Update unsupported for resource - 'pets'"      
-
         '503':
           description: |
             The request timed out during processing. This does not imply the request has failed or been rejected. Error code: `SERVICE_UNAVAILABLE`.
 
             Re-send the request after the time specified in the `Retry-After` header using the same `X-Request-ID` value.
           headers:
-            Retry-After:
-              $ref: components/schemas/RetryAfter.yaml
+            RetryAfter:
+              $ref: '#/components/headers/RetryAfter'
           content:
             application/fhir+json:
               schema:
@@ -1774,11 +1606,11 @@ paths:
           description: Information successfully returned.
           headers:
             ETag:
-              $ref: components/schemas/ETag.yaml
+              $ref: '#/components/headers/ETag'
             X-Correlation-Id:
-              $ref: components/schemas/XCorrelationId.yaml
+              $ref: '#/components/headers/X-Correlation-Id'
             X-Request-Id:
-              $ref: components/schemas/XRequestID.yaml
+              $ref: '#/components/headers/X-Request-Id'
           content:
             application/fhir+json:
               schema:
@@ -1816,8 +1648,16 @@ paths:
                           code: PRECONDITION_FAILED
                           display: Required condition was not fulfilled
                     diagnostics: "Invalid request with error - X-Request-ID header must be supplied to access this resource"      
-
 components:
+  headers:
+    ETag:
+      $ref: 'components/schemas/ETag.yaml'
+    X-Correlation-Id:
+      $ref: 'components/schemas/XCorrelationId.yaml'
+    X-Request-Id:
+      $ref: 'components/schemas/XRequestID.yaml'
+    RetryAfter:
+      $ref: 'components/schemas/RetryAfter.yaml'
   parameters:
     Id:
       name: id
@@ -1922,6 +1762,221 @@ components:
       schema:
         type: string
         example: 11C46F5F-CDEF-4865-94B2-0EE0EDCC26DA
+    FuzzyMatch:
+      name: _fuzzy-match
+      description: |
+        A fuzzy search is performed, including checks for homophones, transposed names and historic information.
+
+        You cannot use wildcards with a fuzzy search.
+      example: false
+      in: query
+      required: false
+      schema:
+        type: boolean
+        default: false
+    ExactMatch:
+      name: _exact-match
+      description: The search only returns results where the `score` field is 1.0. Use this with care - it is unlikely to work with fuzzy search or wildcards.
+      example: false
+      in: query
+      required: false
+      schema:
+        type: boolean
+        default: false
+    History:
+      name: _history
+      description: |
+        The search looks for matches in historic information such as previous names and addresses.
+
+        This parameter has no effect for a fuzzy search, which always includes historic information.
+      example: true
+      in: query
+      required: false
+      schema:
+        type: boolean
+        default: false
+    MaxResults:
+      name: _max-results
+      description: |
+        The maximum number of matching patients to return. For healthcare worker access, this must be between 1 and 50, and the default is 50.
+        For application-restricted access, this must be 1, and the default is 1.
+        If too many patients match the search criteria, we return a `TOO_MANY_MATCHES` error.
+      example: 1
+      in: query
+      required: false
+      schema:
+        type: integer
+        format: int32
+    Family:
+      name: family
+      description: |
+        The patient's family name (surname).
+
+        Not case sensitive.
+        Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
+        Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
+      examples:
+        simple:
+          value: Smith
+          summary: Matches Smythe if `_fuzzy-match` is specified.
+        wildcarded:
+          value: "Sm*t*"
+          summary: 'Wildcards must contain at least two characters, this matches Smith, Smythe'
+      in: query
+      required: false
+      schema:
+        type: string
+    Given:
+      name: given
+      description: |
+        The patient's given names.
+
+        Not case sensitive.
+        Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
+        Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
+
+        A patient may have more than one given name. Subsequent given names are commonly referred to as 'middle names'.
+        Specify multiple given names by repeating this parameter.
+        To search for  `Jane Anne Smith` use `given=Jane&given=Anne&family=Smith`.
+
+        The first given name may be a [compound name](https://en.wikipedia.org/wiki/Given_name#Compound), for example `John Paul`.
+        To search for `John Paul James Smith` (where `John Paul` is the first given name, `James` is the second given name, and `Smith` the family name) use `given=John%20Paul&given=James&family=Smith`.
+
+        Note that it is not necessary to specify subsequent given (middle) names, and that doing so may impact your search results in the case they are not recorded in the demographics system.
+      example: Jane
+      in: query
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+    Gender:
+      name: gender
+      description: Gender with which the patient most strongly identifies.
+      example: female
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - male
+          - female
+          - other
+          - unknown
+        example: female
+    Birthdate:
+      name: birthdate
+      in: query
+      description: Date of birth in the format `<eq|ge|le>yyyy-mm-dd`. To specify a range, use `birthdate=geyyyy-mm-dd&birthdate=leyyyy-mm-dd`.
+      examples:
+        simple:
+          value:
+            - eq2010-10-22
+          description: Exact match date
+        rangege:
+          value:
+            - ge2010-10-22
+          description: Greater than or equals match, which matches 2010-10-22 or 2010-10-23
+        rangele:
+          value:
+            - le2010-10-22
+          description: Less than or equals match, which matches 2010-10-22 or 2010-10-21
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+    DeathDate:
+      name: death-date
+      in: query
+      description: |
+        Date of death in the format `<eq|ge|le>yyyy-mm-dd`. To specify a range, use `death-date=geyyyy-mm-dd&death-date=leyyyy-mm-dd`.
+
+        For a fuzzy search, this is ignored for matching but included in the score calculation.
+      examples:
+        simple:
+          value: eq2010-10-22
+          description: Exact match date
+        rangege:
+          value: ge2010-10-22
+          description: Greater than or equals match which matches 2010-10-22 or 2010-10-23
+        rangele:
+          value: 'le2010-10-22'
+          description: Less than or equals match, which matches 2010-10-22 or 2010-10-21
+      required: false
+      schema:
+        type: string
+        format: date
+    AddressPostcode:
+      name: address-postcode
+      description: |
+        The postcode of any of the patient’s known addresses.
+
+        Not case sensitive.
+        Spaces are ignored, for example `LS16AE` and `LS1 6AE` both match `LS1 6AE`.
+        Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
+        Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
+      examples:
+        simple:
+          value: LS1 6AE
+          summary: 'Spaces ignored, would match LS16AE'
+        wildcarded:
+          value: "LS1*"
+          summary: "Matches 'LS16AE', 'LS1 6AE' and 'LS1 6AB'"
+      in: query
+      required: false
+      schema:
+        type: string
+    GeneralPractitioner:
+      name: general-practitioner
+      description: |
+        The Organisation Data Service (ODS) code of the patient's registered GP practice.
+
+        Not case sensitive.
+        For a fuzzy search, this is ignored for matching but included in the score calculation.
+      example: Y12345
+      in: query
+      required: false
+      schema:
+        type: string
+    ETag:
+      name: etag
+      schema:
+        type: string
+        pattern: "^W\/\"[0-9]+\"$" # Printable characters enclosed in quotes. See: https://tools.ietf.org/html/rfc7230#section-3.2.6
+        example: W/"2"
+      in: header
+      description: |
+        Record version identifier enclosed in quotes and preceded by 'W/'. For example, `W/"2"`.
+
+        Corresponds to `meta.versionId` attribute in the patient resource body.
+
+        When you retrieve a patient resource, you get a version number for the resource (in the `ETag` response header and in the `versionId` field in the response).
+        You must then pass the resource's version number in any update request (in the `If-Match` response header) made for the patient.
+    XCorrelationId:
+      name: x-correlation-id
+      schema:
+        type: string
+        example: 11C46F5F-CDEF-4865-94B2-0EE0EDCC26DA
+      in: header
+      description: |
+        The X-Correlation-ID from the request header, if supplied, mirrored back.
+    XRequestID:
+      name: x-request-id
+      schema:
+        type: string
+        pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+        example: 60E0B220-8136-4CA5-AE46-1D97EF59D068
+      in: header
+      description: |
+        The X-Request-ID from the request header, if supplied, mirrored back.
+    RetryAfter:
+      name: retry-after
+      description: Time to wait between polls in seconds
+      in: header
+      schema:
+        type: string
+        example: "5"    
   schemas:
     Patient:
       $ref: components/schemas/Patient.yaml

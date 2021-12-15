@@ -133,6 +133,14 @@ def test_app_restricted_update_attribute_invalid_scope():
     pass
 
 
+@scenario(
+    "features/application_restricted.feature",
+    "PDS FHIR API rejects app restricted update"
+)
+def test_app_restricted_update_returns_error_msg():
+    pass
+
+
 @given("I am authenticating using unattended access", target_fixture="auth")
 def auth():
     return {}
@@ -377,6 +385,7 @@ def patch_patient(auth: dict, context: dict):
     )
 
     context['status'] = response.status_code
+    context['response'] = response.json()
 
 
 @when("I GET a patient asking for one result")
@@ -435,38 +444,26 @@ def check_bundle_resource(context):
     assert dateutil.parser.parse(response["timestamp"])
 
 
-@then("I get a diagnosis of Invalid Access Token")
-def check_diagnosis_invalid(context):
-    assert context["response"]["issue"][0]["diagnostics"] == "Invalid Access Token"
-
-
-@then("I get a diagnosis of insufficient permissions")
-def check_diagnosis_insufficient_perms(context):
-    assert (
-        context["response"]["issue"][0]["diagnostics"]
-        == "Your app has insufficient permissions to perform this search. Please contact support."
-    )
-
-
-@then("I get a diagnosis of insufficient permissions to use this method")
-def check_diagnosis_invalid_method(context):
-    assert (
-        context["response"]["issue"][0]["diagnostics"]
-        == "Your app has insufficient permissions to use this method. Please contact support."
-    )
-
-
-# This needs to be changed, as it's a confusing message
-@then("I get a diagnosis of Invalid access token")
-def check_diagnosis_missing(context):
-    assert context["response"]["issue"][0]["diagnostics"] == "Invalid access token"
-
-
-@then("I get a diagnosis of expired access token")
-def check_diagnosis_expired(context):
-    assert context["response"]["issue"][0]["diagnostics"] == "Access Token expired"
-
-
 @then("I get an error response")
 def check_error_response(context):
     assert context["response"]["issue"][0]["severity"] == "error"
+
+
+@then(
+    parsers.parse("the error {error_path} value is {error_msg}")
+)
+def check_error_message_contains_value(error_path, error_msg, context):
+    error_msg_set = map_error_response_to_dict(context)
+    assert error_msg_set.get(error_path) == error_msg
+
+
+def map_error_response_to_dict(context) -> dict:
+    error_resp = context['response']
+
+    return {
+      'issue.code': error_resp['issue'][0]['code'],
+      'issue.details.coding.code': error_resp['issue'][0]['details']['coding'][0]['code'],
+      'issue.details.coding.display': error_resp['issue'][0]['details']['coding'][0]['display'],
+      'issue.diagnostics': error_resp['issue'][0]['diagnostics'],
+      'issue.severity': error_resp['issue'][0]['severity']
+    }
