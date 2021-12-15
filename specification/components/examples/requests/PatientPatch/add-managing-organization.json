@@ -1,15 +1,14 @@
 {
-    "patches": [
-      {
-        "op": "add",
-        "path": "/managingOrganization",
-        "value": {
-            "identifier": {
-              "system": "https://fhir.nhs.uk/Id/ods-organization-code",
-              "value": "Y12345"
-            }
+  "patches": [
+    {
+      "op": "add",
+      "path": "/managingOrganization",
+      "value": {
+        "identifier": {
+          "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+          "value": "Y12345"
         }
       }
-    ]
-  }
-  
+    }
+  ]
+}

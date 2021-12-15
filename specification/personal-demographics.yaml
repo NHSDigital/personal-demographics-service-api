@@ -658,12 +658,13 @@ paths:
           description: |
             The Organisation Data Service (ODS) code of the patient's registered GP practice.
             
+            This field is for internal-use only.
+            
             Not case sensitive.
             For a fuzzy search, this is ignored for matching but included in the score calculation.
           example: Y12345
           in: query
           required: false
-          internal: true
           schema:
             type: string
       responses:
