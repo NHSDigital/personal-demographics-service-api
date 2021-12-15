@@ -1,4 +1,4 @@
-description: General practice (not practitioner) with which the patient is or was registered. 
+description: The managing organization of the a de-registered patient. 
 type: object
 required:
   - identifier
