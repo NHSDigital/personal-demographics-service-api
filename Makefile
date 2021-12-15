@@ -30,7 +30,7 @@ publish: clean
 	npm run publish 2> /dev/null
 
 publish-short-version:
-	swagger-cli bundle specification/personal-demographics.yaml -r -o short-version/personal-demographics-short-version.json
+	swagger-cli bundle specification/personal-demographics.yaml -o short-version/personal-demographics-short-version.json
 
 publish-merged-version: clean publish publish-short-version
 
