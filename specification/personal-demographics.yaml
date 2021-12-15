@@ -1939,6 +1939,18 @@ components:
       required: false
       schema:
         type: string
+    ManagingOrganization:
+      name: managing-organization
+      description: |
+        The Organisation Data Service (ODS) code of the patient's current managing organization.
+
+        Not case sensitive.
+        For a fuzzy search, this is ignored for matching but included in the score calculation.
+      example: Y12345
+      in: query
+      required: false
+      schema:
+        type: string
     ETag:
       name: etag
       schema:
