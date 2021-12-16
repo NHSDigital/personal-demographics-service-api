@@ -1940,6 +1940,8 @@ components:
     ManagingOrganization:
       name: managing-organization
       description: |
+        **This field is for internal-use only**.
+        
         The Organisation Data Service (ODS) code of the patient's current managing organization.
 
         Not case sensitive.
