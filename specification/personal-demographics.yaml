@@ -499,7 +499,6 @@ paths:
         - $ref: '#/components/parameters/DeathDate'
         - $ref: '#/components/parameters/AddressPostcode'
         - $ref: '#/components/parameters/GeneralPractitioner'
-        - $ref: '#/components/parameters/ManagingOrganization'
       responses:
         '200':
           description: |
@@ -1922,19 +1921,6 @@ components:
       description: |
         The Organisation Data Service (ODS) code of the patient's registered GP practice.
 
-        Not case sensitive.
-        For a fuzzy search, this is ignored for matching but included in the score calculation.
-      example: Y12345
-      in: query
-      required: false
-      schema:
-        type: string
-    ManagingOrganization:
-      name: managing-organization
-      description: |
-        **This field is for internal-use only**.
-        
-        The Organisation Data Service (ODS) code of the patient's current managing organization.
         Not case sensitive.
         For a fuzzy search, this is ignored for matching but included in the score calculation.
       example: Y12345
