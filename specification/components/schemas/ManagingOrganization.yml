@@ -1,0 +1,26 @@
+description: The managing organization of the a de-registered patient.
+type: object
+required:
+  - identifier
+properties:
+  type:
+    description: Type of Reference being returned.
+    type: string
+    example: 'Organization'
+  identifier:
+    description: Identifier and system of identification used for this Organisation.
+    type: object
+    required:
+      - value
+    properties:
+      system:
+        description: URL for the Organisation Data Service - who are responsible for publishing codes that identify organisations and individuals across health and social care.
+        type: string
+        example: 'https://fhir.nhs.uk/Id/ods-organization-code'
+      value:
+        description: Organisation code for the registered general practice, as held in the [Organisation Data Service](https://developer.nhs.uk/apis/ods/).
+        type: string
+        pattern: ^[0-9A-Z]+$
+        example: Y12345
+      period:
+        $ref: "Period.yaml"
