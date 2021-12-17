@@ -8,11 +8,11 @@
     </Set>
     <AssignVariable>
       <Name>pds.error.code</Name>
-      <Value>token</Value>
+      <Value>forbidden</Value>
     </AssignVariable>
     <AssignVariable>
       <Name>pds.error.coding.code</Name>
-      <Value>INVALID_METHOD</Value>
+      <Value>FORBIDDEN_UPDATE</Value>
     </AssignVariable>
     <AssignVariable>
       <Name>pds.error.coding.display</Name>
