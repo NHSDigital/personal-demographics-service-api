@@ -205,7 +205,8 @@ def sensitive_patient(resource):
         "address",
         "telecom",
         "contact",
-        "generalPractitioner"
+        "generalPractitioner",
+        "managingOrganization"
     ]
     new_resource = _process_blacklist(resource, blacklist)
     new_resource["meta"]["security"][0]["code"] = "R"
