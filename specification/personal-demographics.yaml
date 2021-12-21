@@ -1286,6 +1286,17 @@ paths:
         * removal of a general practice can only be done by [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
         * only a single general practice is supported; emergency, temporary and additional practices must be maintained in the local system only.
 
+        ### Managing Organisation (internal-use only)
+
+        Single item found under `managingOrganization` field.
+
+        In a JSON Patch request the path should be `/managingOrganization`.
+
+        The following business rules should be observed:
+        * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes.
+        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
+        * only a single general practice is supported; emergency, temporary and additional practices must be maintained in the local system only.
+
         ### Multiple birth order
 
         Single item found under `multipleBirthInteger` field.
@@ -1910,6 +1921,19 @@ components:
       description: |
         The Organisation Data Service (ODS) code of the patient's registered GP practice.
 
+        Not case sensitive.
+        For a fuzzy search, this is ignored for matching but included in the score calculation.
+      example: Y12345
+      in: query
+      required: false
+      schema:
+        type: string
+    ManagingOrganization:
+      name: managing-organization
+      description: |
+        **This field is for internal-use only**.
+        
+        The Organisation Data Service (ODS) code of the patient's current managing organization.
         Not case sensitive.
         For a fuzzy search, this is ignored for matching but included in the score calculation.
       example: Y12345
