@@ -12,7 +12,7 @@
     </AssignVariable>
     <AssignVariable>
       <Name>pds.error.coding.code</Name>
-      <Value>FORBIDDEN_UPDATE</Value>
+      <Value>INVALID_METHOD</Value>
     </AssignVariable>
     <AssignVariable>
       <Name>pds.error.coding.display</Name>
