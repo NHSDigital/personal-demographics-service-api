@@ -1,4 +1,4 @@
-description: The managing organization of the a de-registered patient.
+description: The managing organization of a de-registered patient.
 type: object
 required:
   - identifier
