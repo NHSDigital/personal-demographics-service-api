@@ -140,6 +140,7 @@ def test_app_restricted_update_attribute_invalid_scope():
 def test_app_restricted_update_returns_error_msg():
     pass
 
+
 @pytest.mark.skipif("asid-required" not in config.PDS_BASE_PATH, reason="ASID required test only")
 @scenario(
     "features/application_restricted.feature",
@@ -147,6 +148,7 @@ def test_app_restricted_update_returns_error_msg():
 )
 def test_app_without_asid_fails():
     pass
+
 
 @pytest.mark.skipif("asid-required" not in config.PDS_BASE_PATH, reason="ASID required test only")
 @scenario(
@@ -186,6 +188,7 @@ def add_custom_attribute_to_app(key: str, value: str, context: dict):
             key: value
         }
     ))
+
 
 @given("add an asid attribute")
 def add_asid_attribute_to_app(context: dict):
