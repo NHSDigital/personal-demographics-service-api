@@ -24,6 +24,7 @@ steps:
      secret_ids:
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_API_KEY
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_WITH_ASID_API_KEY
+      - ptl/backends/ig3/INTERNAL_DEV_ASID
 
   - bash: |
       echo '##vso[task.setvariable variable=PDS_BASE_PATH]$(SERVICE_BASE_PATH)'
@@ -42,6 +43,7 @@ steps:
       echo '##vso[task.setvariable variable=AUTH_TOKEN_EXPIRY_MS_INT]$(AUTH_TOKEN_EXPIRY_MS_INT)'
       echo '##vso[task.setvariable variable=REDIRECT_URI]https://nhsd-apim-testing-internal-dev.herokuapp.com/callback'
       echo '##vso[task.setvariable variable=APIGEE_API_TOKEN]$(secret.AccessToken)'
+      echo '##vso[task.setvariable variable=INTERNAL_DEV_ASID]$(INTERNAL_DEV_ASID)'
     displayName: Expose common variables
 
   - bash: |

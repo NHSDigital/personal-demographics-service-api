@@ -146,3 +146,25 @@ Feature: Unattended Access
     And the error issue.details.coding.display value is Cannot update resource with Application-Restricted access token
     And the error issue.diagnostics value is Your app has insufficient permissions to use this method. Please contact support.
 
+  Scenario: App without an ASID fails in an asid-required API Proxy
+    Given I am authenticating using unattended access
+    And I have a request context
+    And I create a new app
+    And I wait for 100 milliseconds
+    And I have a valid access token
+
+    When I GET a patient
+    Then I get a 400 HTTP response
+    And the error issue.diagnostics value is No ASID is associated with your app. Please contact support.
+
+  Scenario: App WITH an ASID works in an asid-required API Proxy
+    Given I am authenticating using unattended access
+    And I have a request context
+    And I create a new app
+    And I add an asid attribute
+    And I wait for 100 milliseconds
+    And I have a valid access token
+
+    When I GET a patient
+    Then I get a 200 HTTP response
+
