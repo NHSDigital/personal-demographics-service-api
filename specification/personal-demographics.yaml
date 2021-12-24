@@ -1570,7 +1570,7 @@ paths:
         ## Restricted patients
         Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record) and are sometimes known as sensitive patients. Related people are not returned for a restricted patient and an empty bundle is returned.
 
-        If a related person only contains a patient reference reference, and when the patient is retrieved, it is restricted; location sensitive fields such as `address` and `telecom` are removed.
+        If a related person only contains a patient reference, and when the patient is retrieved, it is restricted; location sensitive fields such as `address` and `telecom` are removed.
 
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
