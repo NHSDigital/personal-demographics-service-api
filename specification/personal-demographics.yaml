@@ -1974,7 +1974,7 @@ components:
         The X-Request-ID from the request header, if supplied, mirrored back.
     RetryAfter:
       name: retry-after
-      description: Time to wait between polls in seconds
+      description: Time to wait before retrying your request in seconds
       in: header
       schema:
         type: string
