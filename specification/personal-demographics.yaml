@@ -96,6 +96,12 @@ info:
     
     If you have any other queries, please [contact us](https://digital.nhs.uk/developer/help-and-support).
 
+    ## Service level
+    
+    This API is a platinum service, meaning it is available and supported 24 x 7 x 365.
+
+    For more details, see [service levels](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#service-levels).
+    
     ## Technology
     This API is [RESTful](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#basic-rest).
 
