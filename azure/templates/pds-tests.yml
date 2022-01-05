@@ -4,10 +4,6 @@ steps:
     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
     displayName: Setup tests
 
-  - bash: |
-      env
-    displayName: Show environment variables
-
   - template: "azure/components/aws-assume-role.yml@common"
     parameters:
      role: "auto-ops"
@@ -47,14 +43,13 @@ steps:
       echo '##vso[task.setvariable variable=AUTH_TOKEN_EXPIRY_MS_INT]$(AUTH_TOKEN_EXPIRY_MS_INT)'
       echo '##vso[task.setvariable variable=REDIRECT_URI]https://nhsd-apim-testing-internal-dev.herokuapp.com/callback'
       echo '##vso[task.setvariable variable=APIGEE_API_TOKEN]$(secret.AccessToken)'
-      echo '##vso[task.setvariable variable=INTERNAL_DEV_ASID]$(INTERNAL_DEV_ASID)'
     displayName: Expose common variables
 
   - bash: |
-      env
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2"
+      export INTERNAL_DEV_ASID="$(INTERNAL_DEV_ASID)"
 
       poetry run pytest -v tests/functional/test_application_restricted.py --junitxml=tests/functional-test-report.xml
     displayName: Run application restricted tests
@@ -66,7 +61,6 @@ steps:
       failTaskOnFailedTests: true
 
   - bash: |
-      env
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2"
@@ -82,7 +76,6 @@ steps:
       failTaskOnFailedTests: true
 
   - bash: |
-      env
       export AUTHENTICATE_URL="https://nhsd-apim-testing-internal-dev.herokuapp.com/"
 
       poetry run pytest -v tests/user_restricted/test_user_restricted.py --junitxml=tests/user-restricted-test-report.xml --reruns 3 --reruns-delay 1
@@ -95,7 +88,6 @@ steps:
       failTaskOnFailedTests: true
 
   - bash: |
-      env
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2"
@@ -111,7 +103,6 @@ steps:
       failTaskOnFailedTests: true
 
   - bash: |
-      env
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2"

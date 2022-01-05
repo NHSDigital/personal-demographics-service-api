@@ -45,7 +45,6 @@ CLIENT_ID = ENV['client_id']
 CLIENT_SECRET = ENV['client_secret']
 TEST_PATIENT_ID = ENV['test_patient_id']
 REDIRECT_URI = ENV['redirect_uri']
-INTERNAL_DEV_ASID = ENV['internal_dev_asid']
 
 # JWT keys
 ID_TOKEN_NHS_LOGIN_PRIVATE_KEY = ENV['nhs_login_private_key']

@@ -200,7 +200,7 @@ def add_asid_attribute_to_app(context: dict):
             'jwks-resource-url': 'https://raw.githubusercontent.com/NHSDigital/'
                                  'identity-service-jwks/main/jwks/internal-dev/'
                                  '9baed6f4-1361-4a8e-8531-1f8426e3aba8.json',
-            'asid': config.INTERNAL_DEV_ASID
+            'asid': config.ENV["internal_dev_asid"]
         }
     ))
 
