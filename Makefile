@@ -29,12 +29,18 @@ publish: clean
 	mkdir -p build
 	npm run publish 2> /dev/null
 
+publish-short-version:
+	swagger-cli bundle specification/personal-demographics.yaml -o short-version/personal-demographics-short-version.json
+
+publish-merged-version: clean publish publish-short-version
+
 serve: update-examples
 	npm run serve
 
 clean:
 	rm -rf build
 	rm -rf dist
+	rm -rf short-version
 
 generate-examples: publish clean
 	mkdir -p build/examples
