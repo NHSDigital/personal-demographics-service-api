@@ -96,6 +96,12 @@ info:
     
     If you have any other queries, please [contact us](https://digital.nhs.uk/developer/help-and-support).
 
+    ## Service level
+    
+    This API is a platinum service, meaning it is available and supported 24 x 7 x 365.
+
+    For more details, see [service levels](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#service-levels).
+    
     ## Technology
     This API is [RESTful](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#basic-rest).
 
@@ -648,7 +654,7 @@ paths:
         ## Overview
         Use this endpoint to update patient details in PDS.
 
-        This is a 'patch' operation - you can update specific parts of the patient record, such as name or gender, without having to update the entire record.
+        This is a 'PATCH' operation - you can update specific parts of the patient record, such as name or gender, without having to update the entire record.
 
         When you make a PATCH request with your application, the endpoint will respond with a successful (200) response code, along with the updated patient resource, or, an unsuccessful (4xx/5xx) response. 
 
@@ -1286,6 +1292,17 @@ paths:
         * removal of a general practice can only be done by [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
         * only a single general practice is supported; emergency, temporary and additional practices must be maintained in the local system only.
 
+        ### Managing Organisation (internal-use only)
+
+        Single item found under `managingOrganization` field.
+
+        In a JSON Patch request the path should be `/managingOrganization`.
+
+        The following business rules should be observed:
+        * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes.
+        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
+        * only a single general practice is supported; emergency, temporary and additional practices must be maintained in the local system only.
+
         ### Multiple birth order
 
         Single item found under `multipleBirthInteger` field.
@@ -1559,7 +1576,7 @@ paths:
         ## Restricted patients
         Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record) and are sometimes known as sensitive patients. Related people are not returned for a restricted patient and an empty bundle is returned.
 
-        If a related person only contains a patient reference reference, and when the patient is retrieved, it is restricted; location sensitive fields such as `address` and `telecom` are removed.
+        If a related person only contains a patient reference, and when the patient is retrieved, it is restricted; location sensitive fields such as `address` and `telecom` are removed.
 
         ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
@@ -1917,6 +1934,19 @@ components:
       required: false
       schema:
         type: string
+    ManagingOrganization:
+      name: managing-organization
+      description: |
+        **This field is for internal-use only**.
+        
+        The Organisation Data Service (ODS) code of the patient's current managing organization.
+        Not case sensitive.
+        For a fuzzy search, this is ignored for matching but included in the score calculation.
+      example: Y12345
+      in: query
+      required: false
+      schema:
+        type: string
     ETag:
       name: etag
       schema:
@@ -1950,7 +1980,7 @@ components:
         The X-Request-ID from the request header, if supplied, mirrored back.
     RetryAfter:
       name: retry-after
-      description: Time to wait between polls in seconds
+      description: Time to wait before retrying your request in seconds
       in: header
       schema:
         type: string

@@ -12,7 +12,8 @@
   "license": "MIT",
   "homepage": "https://github.com/NHSDigital/personal-demographics-service-api",
   "dependencies": {
-    "speccy": "^0.11.0"
+    "speccy": "^0.11.0",
+    "swagger-cli": "^4.0.4"
   },
   "devDependencies": {
     "apigeetool": "^0.14.2",
