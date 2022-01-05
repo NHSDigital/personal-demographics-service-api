@@ -654,7 +654,7 @@ paths:
         ## Overview
         Use this endpoint to update patient details in PDS.
 
-        This is a 'patch' operation - you can update specific parts of the patient record, such as name or gender, without having to update the entire record.
+        This is a 'PATCH' operation - you can update specific parts of the patient record, such as name or gender, without having to update the entire record.
 
         When you make a PATCH request with your application, the endpoint will respond with a successful (200) response code, along with the updated patient resource, or, an unsuccessful (4xx/5xx) response. 
 
