@@ -190,7 +190,7 @@ def add_custom_attribute_to_app(key: str, value: str, context: dict):
     ))
 
 
-@given("add an asid attribute")
+@given("I add an asid attribute")
 def add_asid_attribute_to_app(context: dict):
 
     app = context['app']
