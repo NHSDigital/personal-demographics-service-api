@@ -13,7 +13,6 @@ ENV = EnvVarWrapper(
         'client_id': 'CLIENT_ID',
         'client_secret': 'CLIENT_SECRET',
         'nhs_login_private_key': 'ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH',
-        'jwt_private_key': 'JWT_PRIVATE_KEY_ABSOLUTE_PATH',
         'test_patient_id': 'TEST_PATIENT_ID',
         'auth_token_expiry_ms': 'AUTH_TOKEN_EXPIRY_MS',
         'auth_token_expiry_ms_int': 'AUTH_TOKEN_EXPIRY_MS_INT',
@@ -45,10 +44,15 @@ CLIENT_ID = ENV['client_id']
 CLIENT_SECRET = ENV['client_secret']
 TEST_PATIENT_ID = ENV['test_patient_id']
 REDIRECT_URI = ENV['redirect_uri']
+JWKS_RESOURCE_URL = ('https://raw.githubusercontent.com/NHSDigital/'
+                     'identity-service-jwks/main/jwks/internal-dev/'
+                     '9baed6f4-1361-4a8e-8531-1f8426e3aba8.json')
+JWKS_RESOURCE_URL_ASID_REQUIRED_APP = ('https://raw.githubusercontent.com/NHSDigital/'
+                                       'identity-service-jwks/main/jwks/internal-dev/'
+                                       'e143bb5f-ce9d-4adf-b5b2-2f25ae380c66.json')
 
 # JWT keys
 ID_TOKEN_NHS_LOGIN_PRIVATE_KEY = ENV['nhs_login_private_key']
-JWT_PRIVATE_KEY_ABSOLUTE_PATH = ENV['jwt_private_key']
 
 AUTH_TOKEN_EXPIRY_MS = (
     ENV['auth_token_expiry_ms'] if ENVIRONMENT == "internal-dev" else ENV['auth_token_expiry_ms_int']

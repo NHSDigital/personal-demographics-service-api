@@ -117,9 +117,7 @@ async def setup_session(request):
     # Set default JWT Testing resource url
     await app.set_custom_attributes(
             {
-                'jwks-resource-url': 'https://raw.githubusercontent.com/NHSDigital/'
-                                     'identity-service-jwks/main/jwks/internal-dev/'
-                                     '9baed6f4-1361-4a8e-8531-1f8426e3aba8.json'
+                'jwks-resource-url': config.JWKS_RESOURCE_URL
             }
     )
 
@@ -309,9 +307,7 @@ async def test_app_and_product(app, product):
     await app.add_api_product([product.name])
     await app.set_custom_attributes(
         {
-            "jwks-resource-url": "https://raw.githubusercontent.com/NHSDigital/"
-                                 "identity-service-jwks/main/jwks/internal-dev/"
-                                 "9baed6f4-1361-4a8e-8531-1f8426e3aba8.json"
+            "jwks-resource-url": config.JWKS_RESOURCE_URL
         }
     )
 
