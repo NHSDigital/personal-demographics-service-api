@@ -73,5 +73,5 @@ extends:
           - internal_qa
           - internal_qa_sandbox
         jinja_templates:
-          REQUIRE_ASID: true
+          REQUIRE_ASID: True
           PDS_TARGET_SERVER: spine-demographics
