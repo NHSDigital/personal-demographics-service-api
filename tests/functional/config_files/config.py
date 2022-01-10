@@ -13,6 +13,7 @@ ENV = EnvVarWrapper(
         'client_id': 'CLIENT_ID',
         'client_secret': 'CLIENT_SECRET',
         'nhs_login_private_key': 'ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH',
+        'jwt_private_key': 'JWT_PRIVATE_KEY_ABSOLUTE_PATH',
         'test_patient_id': 'TEST_PATIENT_ID',
         'auth_token_expiry_ms': 'AUTH_TOKEN_EXPIRY_MS',
         'auth_token_expiry_ms_int': 'AUTH_TOKEN_EXPIRY_MS_INT',
