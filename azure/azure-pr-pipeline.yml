@@ -47,7 +47,7 @@ extends:
           stage_name: internal_dev_asid_required
           jinja_templates:
             PDS_TARGET_SERVER: spine-demographics
-            REQUIRE_ASID: "True"
+            REQUIRE_ASID: true
           post_deploy:
             - template: templates/pds-tests.yml
           depends_on:
