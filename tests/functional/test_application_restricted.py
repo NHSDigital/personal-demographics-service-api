@@ -40,6 +40,7 @@ def check_which_test_app_to_use():
     if "asid-required" in config.PDS_BASE_PATH:
         config.APPLICATION_RESTRICTED_API_KEY = config.APPLICATION_RESTRICTED_WITH_ASID_API_KEY
         config.SIGNING_KEY = config.APPLICATION_RESTRICTED_WITH_ASID_SIGNING_KEY
+        config.JWKS_RESOURCE_URL = config.JWKS_RESOURCE_URL_ASID_REQUIRED_APP
 
 
 @scenario(
@@ -141,6 +142,24 @@ def test_app_restricted_update_returns_error_msg():
     pass
 
 
+@pytest.mark.skipif("asid-required" not in config.PDS_BASE_PATH, reason="ASID required test only")
+@scenario(
+    "features/application_restricted.feature",
+    "App without an ASID fails in an asid-required API Proxy",
+)
+def test_app_without_asid_fails():
+    pass
+
+
+@pytest.mark.skipif("asid-required" not in config.PDS_BASE_PATH, reason="ASID required test only")
+@scenario(
+    "features/application_restricted.feature",
+    "App WITH an ASID works in an asid-required API Proxy",
+)
+def test_app_with_asid_works():
+    pass
+
+
 @given("I am authenticating using unattended access", target_fixture="auth")
 def auth():
     return {}
@@ -164,10 +183,21 @@ def add_custom_attribute_to_app(key: str, value: str, context: dict):
 
     asyncio.run(app.set_custom_attributes(
         {
-            'jwks-resource-url': 'https://raw.githubusercontent.com/NHSDigital/'
-                                 'identity-service-jwks/main/jwks/internal-dev/'
-                                 '9baed6f4-1361-4a8e-8531-1f8426e3aba8.json',
+            'jwks-resource-url': config.JWKS_RESOURCE_URL,
             key: value
+        }
+    ))
+
+
+@given("I add an asid attribute")
+def add_asid_attribute_to_app(context: dict):
+
+    app = context['app']
+
+    asyncio.run(app.set_custom_attributes(
+        {
+            'jwks-resource-url': config.JWKS_RESOURCE_URL,
+            'asid': config.ENV["internal_dev_asid"]
         }
     ))
 

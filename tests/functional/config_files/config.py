@@ -18,7 +18,8 @@ ENV = EnvVarWrapper(
         'auth_token_expiry_ms': 'AUTH_TOKEN_EXPIRY_MS',
         'auth_token_expiry_ms_int': 'AUTH_TOKEN_EXPIRY_MS_INT',
         'redirect_uri': 'REDIRECT_URI',
-        'apigee_api_token': 'APIGEE_API_TOKEN'
+        'apigee_api_token': 'APIGEE_API_TOKEN',
+        'internal_dev_asid': 'INTERNAL_DEV_ASID',
     }
 )
 
@@ -44,6 +45,12 @@ CLIENT_ID = ENV['client_id']
 CLIENT_SECRET = ENV['client_secret']
 TEST_PATIENT_ID = ENV['test_patient_id']
 REDIRECT_URI = ENV['redirect_uri']
+JWKS_RESOURCE_URL = ('https://raw.githubusercontent.com/NHSDigital/'
+                     'identity-service-jwks/main/jwks/internal-dev/'
+                     '9baed6f4-1361-4a8e-8531-1f8426e3aba8.json')
+JWKS_RESOURCE_URL_ASID_REQUIRED_APP = ('https://raw.githubusercontent.com/NHSDigital/'
+                                       'identity-service-jwks/main/jwks/internal-dev/'
+                                       'e143bb5f-ce9d-4adf-b5b2-2f25ae380c66.json')
 
 # JWT keys
 ID_TOKEN_NHS_LOGIN_PRIVATE_KEY = ENV['nhs_login_private_key']

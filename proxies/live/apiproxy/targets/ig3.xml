@@ -54,7 +54,7 @@
         <Name>AssignMessage.PopulateAsidFromApp</Name>
         <Condition>(app.asid IsNot null)</Condition>
       </Step>
-      {% if REQUIRE_ASID == 'True' %}
+      {% if REQUIRE_ASID %}
       <Step>
         <Name>RaiseFault.400BadRequest</Name>
         <Condition>(app.asid is null)</Condition>
@@ -241,7 +241,7 @@
         <Name>AssignMessage.Errors.CatchAllMessage</Name>
       </Step>
     </FaultRule>
-    {% if REQUIRE_ASID == 'True' %}
+    {% if REQUIRE_ASID %}
     <FaultRule name="no_asid_provided">
       <Condition>(app.asid is null)</Condition>
       <Step>
