@@ -191,6 +191,10 @@ apigee:
           - identity-service-{{ env.name }}
 {% if env.name == 'int' %}
           - identity-service-{{ env.name }}-no-smartcard
+          - identity-service-mock-{{ env.name }}
+{% endif %}
+{% if env.name == 'internal-dev' or env.name == 'internal-qa' %}
+          - identity-service-mock-{{ env.name }}
 {% endif %}
         scopes: {{ mode.scopes }}
 {% endfor %}
