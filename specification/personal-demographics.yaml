@@ -1,4 +1,4 @@
-# This is an OpenAPI Specification (https://swagger.io/specification/)
+l# This is an OpenAPI Specification (https://swagger.io/specification/)
 # for the Personal Demographics Service (PDS) API
 # owned by NHS Digital (https://digital.nhs.uk/)
 openapi: "3.0.0"
@@ -98,7 +98,7 @@ info:
 
     ## Service level
     
-    This API is a platinum service, meaning it is available and supported 24 x 7 x 365.
+    This API is a platinum service, meaning it is operational and supported 24 x 7 x 365.
 
     For more details, see [service levels](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#service-levels).
     
