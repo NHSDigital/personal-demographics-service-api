@@ -77,7 +77,7 @@ class TestUserRestrictedPatientAccess:
     async def test_patient_access_nhsd_patient_header_sent_downstream(
         self, nhs_login_token_exchange
     ):
-        """Requests to the PDS API should include the NHSD-PATIENT-ID header when in Patient Access mode"""
+        """Requests to the PDS API should include the NHSD-NHSLogin-User header when in Patient Access mode"""
 
         token = await nhs_login_token_exchange()
 
@@ -97,7 +97,7 @@ class TestUserRestrictedPatientAccess:
 
         # Check the GET request
         assert r.status_code == 200
-        nhsd_patient_header_get = debug_session_get.get_apigee_header("NHSD-Patient")
+        nhsd_patient_header_get = debug_session_get.get_apigee_header("NHSD-NHSLogin-User")
         assert nhsd_patient_header_get == f"P9:{config.TEST_PATIENT_ID}"
 
         body = r.json()
@@ -144,7 +144,7 @@ class TestUserRestrictedPatientAccess:
         )
 
         assert r.status_code == 200
-        nhsd_patient_header_patch = debug_session_patch.get_apigee_header("NHSD-Patient")
+        nhsd_patient_header_patch = debug_session_patch.get_apigee_header("NHSD-NHSLogin-User")
         assert nhsd_patient_header_patch == f"P9:{config.TEST_PATIENT_ID}"
 
     async def test_patient_access_update_happy_path(
