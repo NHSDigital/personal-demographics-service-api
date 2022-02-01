@@ -1,0 +1,7 @@
+version: "3"
+services:
+  chromedriver:
+    image: selenium/standalone-chrome:4.0.0-20211025
+    container_name: chromedriver
+    ports:
+      - "4444:4444"

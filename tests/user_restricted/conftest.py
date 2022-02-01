@@ -1,4 +1,6 @@
 import pytest
+
+from .utils import helpers
 from .utils.check_oauth import CheckOauth
 import uuid
 import random
@@ -6,12 +8,14 @@ from ..scripts import config
 
 
 @pytest.fixture()
-def headers_with_token(get_token, request):
+async def headers_with_token(get_token, request):
     """Assign required headers with the Authorization header"""
     token = get_token
+    role_id = helpers.get_user_id_from_identity_service_user_info_endpoint(token)
+
     headers = {"X-Request-ID": str(uuid.uuid1()),
                "X-Correlation-ID": str(uuid.uuid1()),
-               "NHSD-Session-URID": config.ROLE_ID,
+               "NHSD-Session-URID": role_id,
                "Authorization": f'Bearer {token}'
                }
     setattr(request.cls, 'headers', headers)
@@ -28,10 +32,10 @@ def headers():
 
 
 @pytest.fixture()
-def get_token():
+async def get_token(webdriver_session):
     """Get an access token"""
     oauth_endpoints = CheckOauth()
-    token = oauth_endpoints.get_token_response()
+    token = await oauth_endpoints.get_token_response(webdriver_session)
     access_token = token['access_token']
     return access_token
 
