@@ -11,7 +11,8 @@ ENV = EnvVarWrapper(
         'redirect_uri': 'REDIRECT_URI',
         'authenticate_url': 'AUTHENTICATE_URL',
         'test_patient_id': 'TEST_PATIENT_ID',
-        'oauth_proxy': 'OAUTH_PROXY'
+        'oauth_proxy': 'OAUTH_PROXY',
+        'oauth_base_uri': 'OAUTH_BASE_URI'
     }
 )
 
@@ -21,6 +22,7 @@ BASE_URL = f"https://{ENVIRONMENT}.api.service.nhs.uk"  # Apigee proxy url
 
 IDENTITY_SERVICE_MOCK_USER_ID = "656005750107"
 OAUTH_PROXY = ENV["oauth_proxy"]
+OAUTH_BASE_URI = ENV["oauth_base_uri"]
 
 AUTHORIZE_URL = f"{BASE_URL}/{OAUTH_PROXY}/authorize"
 TOKEN_URL = f"{BASE_URL}/{OAUTH_PROXY}/token"
