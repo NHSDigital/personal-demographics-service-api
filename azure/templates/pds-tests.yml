@@ -77,6 +77,7 @@ steps:
 
   - bash: |
       export AUTHENTICATE_URL="https://nhsd-apim-testing-internal-dev.herokuapp.com/"
+      export OAUTH_PROXY="oauth2"
 
       poetry run pytest -v tests/user_restricted/test_user_restricted.py --junitxml=tests/user-restricted-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run user restricted tests
@@ -90,7 +91,7 @@ steps:
   - bash: |
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
-      export OAUTH_PROXY="oauth2"
+      export OAUTH_PROXY="oauth2-mock"
 
       poetry run pytest -v tests/functional/test_sync_wrap.py --junitxml=tests/sync-wrap-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run sync wrap tests

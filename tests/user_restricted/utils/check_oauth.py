@@ -7,7 +7,7 @@ class CheckOauth:
     def __init__(self):
         super(CheckOauth, self).__init__()
         self.session = requests.Session()
-        self.base_uri = f"{config.BASE_URL}/{config.IDENTITY_SERVICE}"
+        self.base_uri = f"{config.BASE_URL}/{config.OAUTH_PROXY}"
 
     @staticmethod
     def get_token_response():

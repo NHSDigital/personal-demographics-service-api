@@ -19,15 +19,14 @@ ENV = EnvVarWrapper(
 ENVIRONMENT = ENV["environment"]
 BASE_URL = f"https://{ENVIRONMENT}.api.service.nhs.uk"  # Apigee proxy url
 
-IDENTITY_SERVICE = "oauth2-mock"
 IDENTITY_SERVICE_MOCK_USER_ID = "656005750107"
 OAUTH_PROXY = ENV["oauth_proxy"]
 
-AUTHORIZE_URL = f"{BASE_URL}/{IDENTITY_SERVICE}/authorize"
-TOKEN_URL = f"{BASE_URL}/{IDENTITY_SERVICE}/token"
-SIM_AUTH_URL = f"{BASE_URL}/{IDENTITY_SERVICE}/simulated_auth"
+AUTHORIZE_URL = f"{BASE_URL}/{OAUTH_PROXY}/authorize"
+TOKEN_URL = f"{BASE_URL}/{OAUTH_PROXY}/token"
+SIM_AUTH_URL = f"{BASE_URL}/{OAUTH_PROXY}/simulated_auth"
 AUTHENTICATE_URL = ENV["authenticate_url"]
-CALLBACK_URL = f"{BASE_URL}/{IDENTITY_SERVICE}/callback"
+CALLBACK_URL = f"{BASE_URL}/{OAUTH_PROXY}/callback"
 
 # PDS
 PDS_BASE_PATH = ENV["pds_base_path"]
