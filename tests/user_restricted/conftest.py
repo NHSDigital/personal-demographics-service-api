@@ -5,21 +5,18 @@ from .utils.check_oauth import CheckOauth
 import uuid
 import random
 from ..scripts import config
-from api_test_utils.fixtures import webdriver_service  # pylint: disable=unused-import
-from api_test_utils.fixtures import webdriver_session  # pylint: disable=unused-import
-from api_test_utils.fixtures import docker_compose_file  # pylint: disable=unused-import
 
 
 @pytest.fixture()
 async def headers_with_token(get_token, request):
     """Assign required headers with the Authorization header"""
-    token = get_token
-    role_id = await helpers.get_role_id_from_user_info_endpoint(token)
+    access_token = get_token
+    role_id = await helpers.get_role_id_from_user_info_endpoint(access_token)
 
     headers = {"X-Request-ID": str(uuid.uuid1()),
                "X-Correlation-ID": str(uuid.uuid1()),
                "NHSD-Session-URID": role_id,
-               "Authorization": f'Bearer {token}'
+               "Authorization": f'Bearer {access_token}'
                }
     setattr(request.cls, 'headers', headers)
 
@@ -35,10 +32,9 @@ def headers():
 
 
 @pytest.fixture()
-async def get_token(docker_compose_file, webdriver_session):
+def get_token():
     """Get an access token"""
-    oauth_endpoints = CheckOauth()
-    token = await oauth_endpoints.get_token_response(webdriver_session)
+    token = CheckOauth.get_token_response()
     access_token = token['access_token']
     return access_token
 
