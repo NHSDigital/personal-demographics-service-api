@@ -1,3 +1,4 @@
+"""Main configuration file for test suites."""
 from tests.scripts.pds_request import GenericPdsRequestor, PdsRecord
 import pytest
 import asyncio
@@ -19,10 +20,9 @@ async def _set_default_rate_limit(product: ApigeeApiProducts):
     Args:
         product (ApigeeApiProducts): Apigee product.
     """
-    await product.update_ratelimits(quota=60000,
-                                    quota_interval="1",
-                                    quota_time_unit="minute",
-                                    rate_limit="1000ps")
+    await product.update_ratelimits(
+        quota=60000, quota_interval="1", quota_time_unit="minute", rate_limit="1000ps"
+    )
 
 
 async def _product_with_full_access():
@@ -34,11 +34,13 @@ async def _product_with_full_access():
     product = ApigeeApiProducts()
     await product.create_new_product()
     await _set_default_rate_limit(product)
-    await product.update_scopes([
-        "personal-demographics-service:USER-RESTRICTED",
-        "urn:nhsd:apim:app:level3:personal-demographics-service",
-        "urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service"
-    ])
+    await product.update_scopes(
+        [
+            "personal-demographics-service:USER-RESTRICTED",
+            "urn:nhsd:apim:app:level3:personal-demographics-service",
+            "urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service",
+        ]
+    )
     # Allows access to all proxy paths - so we don't have to specify the pr proxy explicitly
     await product.update_paths(paths=["/", "/*"])
     return product
@@ -66,14 +68,17 @@ async def get_token(request):
         _token(dict): Identity Service HTTP Response body
         e.g. { "accessToken" : "eJkajgolJ...", "refreshToken" : "eJjagk.."}.
     """
+
     async def _token(
         grant_type: str = "authorization_code",
         test_app: ApigeeApiDeveloperApps = None,
-        **kwargs
+        **kwargs,
     ):
         if test_app:
             # Use provided test app
-            oauth = OauthHelper(test_app.client_id, test_app.client_secret, test_app.callback_url)
+            oauth = OauthHelper(
+                test_app.client_id, test_app.client_secret, test_app.callback_url
+            )
             resp = await oauth.get_token_response(grant_type=grant_type, **kwargs)
         else:
             # Use env vars
@@ -84,16 +89,18 @@ async def get_token(request):
             )
             resp = await oauth.get_token_response(grant_type=grant_type, **kwargs)
 
-        if resp['status_code'] != 200:
-            message = 'unable to get token'
-            raise RuntimeError(f"\n{'*' * len(message)}\n"
-                               f"MESSAGE: {message}\n"
-                               f"URL: {resp.get('url')}\n"
-                               f"STATUS CODE: {resp.get('status_code')}\n"
-                               f"RESPONSE: {resp.get('body')}\n"
-                               f"HEADERS: {resp.get('headers')}\n"
-                               f"{'*' * len(message)}\n")
-        return resp['body']
+        if resp["status_code"] != 200:
+            message = "unable to get token"
+            raise RuntimeError(
+                f"\n{'*' * len(message)}\n"
+                f"MESSAGE: {message}\n"
+                f"URL: {resp.get('url')}\n"
+                f"STATUS CODE: {resp.get('status_code')}\n"
+                f"RESPONSE: {resp.get('body')}\n"
+                f"HEADERS: {resp.get('headers')}\n"
+                f"{'*' * len(message)}\n"
+            )
+        return resp["body"]
 
     return _token
 
@@ -108,23 +115,19 @@ async def setup_session(request):
     print("\nCreating Default App..")
     # Create a new app
     app = ApigeeApiDeveloperApps()
-    await app.create_new_app(
-        callback_url="https://example.org/callback"
-    )
+    await app.create_new_app(callback_url="https://example.org/callback")
     # Assign the new product to the app
     await app.add_api_product([product.name])
 
     # Set default JWT Testing resource url
-    await app.set_custom_attributes(
-            {
-                'jwks-resource-url': config.JWKS_RESOURCE_URL
-            }
-    )
+    await app.set_custom_attributes({"jwks-resource-url": config.JWKS_RESOURCE_URL})
 
     await product.update_environments([config.ENVIRONMENT])
     oauth = OauthHelper(app.client_id, app.client_secret, app.callback_url)
     # APMSPII-1139 increase token expiry time to provide sufficient time to conduct the tests
-    resp = await oauth.get_token_response(grant_type="authorization_code", timeout=20000)
+    resp = await oauth.get_token_response(
+        grant_type="authorization_code", timeout=20000
+    )
     token = resp["body"]["access_token"]
 
     yield product, app, token
@@ -153,7 +156,7 @@ def setup_patch(setup_session):
 
     pds.headers = {
         "If-Match": response.headers["Etag"],
-        "Content-Type": "application/json-patch+json"
+        "Content-Type": "application/json-patch+json",
     }
 
     return {
@@ -173,7 +176,9 @@ async def setup_patch_short_lived_token(setup_session):
     product, app, _ = setup_session
 
     oauth = OauthHelper(app.client_id, app.client_secret, app.callback_url)
-    resp = await oauth.get_token_response(grant_type="authorization_code", timeout=config.AUTH_TOKEN_EXPIRY_MS)
+    resp = await oauth.get_token_response(
+        grant_type="authorization_code", timeout=config.AUTH_TOKEN_EXPIRY_MS
+    )
     token = resp["body"]["access_token"]
 
     pds = GenericPdsRequestor(
@@ -186,21 +191,25 @@ async def setup_patch_short_lived_token(setup_session):
 
     pds.headers = {
         "If-Match": response.headers["Etag"],
-        "Content-Type": "application/json-patch+json"
+        "Content-Type": "application/json-patch+json",
     }
 
     return pds
 
 
 @pytest.fixture()
-def sync_wrap_low_wait_update(setup_patch: GenericPdsRequestor, create_random_date) -> PdsRecord:
+def sync_wrap_low_wait_update(
+    setup_patch: GenericPdsRequestor, create_random_date
+) -> PdsRecord:
     pds = setup_patch["pds"]
-    pds.headers = {
-        "X-Sync-Wait": "0.25"
-    }
+    pds.headers = {"X-Sync-Wait": "0.25"}
     resp = pds.update_patient_response(
         patient_id=config.TEST_PATIENT_ID,
-        payload={"patches": [{"op": "replace", "path": "/birthDate", "value": create_random_date}]}
+        payload={
+            "patches": [
+                {"op": "replace", "path": "/birthDate", "value": create_random_date}
+            ]
+        },
     )
     return resp
 
@@ -213,7 +222,7 @@ def set_quota_and_rate_limit(
     quota_time_unit: str = "minute",
     quota_enabled: bool = True,
     rate_enabled: bool = True,
-    proxy: str = ""
+    proxy: str = "",
 ) -> None:
     """Sets the quota and rate limit on an apigee product or app.
 
@@ -227,24 +236,23 @@ def set_quota_and_rate_limit(
         rate_enabled (bool): Enable or disable proxy level spike arrest.
         proxy (str): The proxy to apply rate limiting to.
     """
-    value = json.dumps({
-        proxy: {
-            "quota": {
-                "limit": quota,
-                "interval": quota_interval,
-                "timeunit": quota_time_unit,
-                "enabled": quota_enabled
-            },
-            "spikeArrest": {
-                "ratelimit": rate_limit,
-                "enabled": rate_enabled
+    value = json.dumps(
+        {
+            proxy: {
+                "quota": {
+                    "limit": quota,
+                    "interval": quota_interval,
+                    "timeunit": quota_time_unit,
+                    "enabled": quota_enabled,
+                },
+                "spikeArrest": {"ratelimit": rate_limit, "enabled": rate_enabled},
             }
         }
-    })
+    )
 
-    rate_limiting = {'ratelimiting': value}
+    rate_limiting = {"ratelimiting": value}
 
-    if (isinstance(apigeeObj, ApigeeApiProducts)):
+    if isinstance(apigeeObj, ApigeeApiProducts):
         asyncio.run(apigeeObj.update_attributes(rate_limiting))
     elif isinstance(apigeeObj, ApigeeApiDeveloperApps):
         asyncio.run(apigeeObj.set_custom_attributes(rate_limiting))
@@ -305,11 +313,7 @@ async def test_app_and_product(app, product):
         ]
     )
     await app.add_api_product([product.name])
-    await app.set_custom_attributes(
-        {
-            "jwks-resource-url": config.JWKS_RESOURCE_URL
-        }
-    )
+    await app.set_custom_attributes({"jwks-resource-url": config.JWKS_RESOURCE_URL})
 
     yield product, app
 
@@ -376,5 +380,6 @@ def nhs_login_token_exchange(test_app_and_product):
             },
         )
         assert token_resp["status_code"] == 200
-        return token_resp["body"]['access_token']
+        return token_resp["body"]["access_token"]
+
     return get_token_nhs_login_token_exchange
