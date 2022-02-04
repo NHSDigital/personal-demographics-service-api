@@ -1,4 +1,3 @@
-"""Main configuration file for test suites."""
 from tests.scripts.pds_request import GenericPdsRequestor, PdsRecord
 import pytest
 import asyncio
