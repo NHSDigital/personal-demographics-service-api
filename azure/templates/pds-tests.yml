@@ -77,6 +77,8 @@ steps:
 
   - bash: |
       export AUTHENTICATE_URL="https://nhsd-apim-testing-internal-dev.herokuapp.com/"
+      export OAUTH_PROXY="oauth2-mock"
+      export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
 
       poetry run pytest -v tests/user_restricted/test_user_restricted.py --junitxml=tests/user-restricted-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run user restricted tests

@@ -45,10 +45,11 @@ black = "^20.8b1"
 jinja2 = "^2.11.2"
 pytest = "^6.1.2"
 pytest_check = "^1.0.1"
-api-test-utils = {url = "https://github.com/NHSDigital/apim-test-utils/releases/download/v1.1.11-alpha/api_test_utils-1.1.11a0-py3-none-any.whl"}
+api-test-utils = {url = "https://github.com/NHSDigital/apim-test-utils/releases/download/v1.1.31-alpha/api_test_utils-1.1.31a0-py3-none-any.whl"}
 pyjwt = "^2.0.1"
 pytest-rerunfailures = "9.1.1"
 pip-licenses = "^3.5.3"
+pytest-docker = "^0.10.3"
 
 [tool.poetry.scripts]
 

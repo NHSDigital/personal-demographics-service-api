@@ -2,6 +2,7 @@ import json
 import urllib.parse
 from typing import Union
 import requests
+from api_test_utils.oauth_helper import OauthHelper
 from pytest_check import check
 import time
 from ..configuration import config
@@ -273,3 +274,16 @@ def assert_is_sensitive_patient(response: requests.Response) -> None:
 
     with check:
         assert response_body["entry"][0]["resource"]["meta"]["security"][0]["display"] == "restricted"
+
+
+async def get_role_id_from_user_info_endpoint(token) -> str:
+    oauth = OauthHelper(config.CLIENT_ID, config.CLIENT_SECRET, config.REDIRECT_URI)
+
+    user_info_resp = await oauth.hit_oauth_endpoint(
+        method="GET",
+        endpoint="userinfo",
+        headers={"Authorization": f"Bearer {token}"}
+    )
+
+    assert user_info_resp['status_code'] == 200
+    return user_info_resp['body']['nhsid_nrbac_roles'][0]['person_roleid']
