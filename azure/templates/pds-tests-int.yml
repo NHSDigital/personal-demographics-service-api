@@ -34,7 +34,7 @@ steps:
       export KEY_ID="test-1"
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
-      export OAUTH_PROXY="oauth2"
+      export OAUTH_PROXY="oauth2-mock"
       export REDIRECT_URI="https://nhsd-apim-testing-$(ENVIRONMENT).herokuapp.com/callback"
       export AUTHENTICATE_URL="https://nhsd-apim-testing-$(ENVIRONMENT).herokuapp.com/"
       export CLIENT_ID="$(CLIENT_ID_INT)"
