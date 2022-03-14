@@ -1178,7 +1178,7 @@ paths:
         You can find examples of the above requests in our sandbox Postman collection
 
         There are a number of business rules that should be taken into account:
-        * preferred language must not be supplied where it is English even though the [code list](https://simplifier.net/ukcore/codesystem-ukcore-humanlanguage) contains a value for English (en).
+        * preferred language must not be supplied where it is English even though the [code list](https://simplifier.net/resolve?target=simplifier&scope=uk.nhsdigital.r4&canonical=https://fhir.hl7.org.uk/ValueSet/UKCore-HumanLanguage) contains a value for English (en).
         * any language codes outside the accepted list are rejected; such as local system `qa` codes.
 
         ### Contact preferences
