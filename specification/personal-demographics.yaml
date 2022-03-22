@@ -669,7 +669,9 @@ paths:
         | Application-restricted access  | Updates not allowed                 |
         | Healthcare worker access       | Updates allowed                     |
         | Patient access                 | Updates allowed (Available in integration environment only)|
-
+                
+        <a name="patient-resource-versioning"/>
+        
         ## Patient resource versioning
         To update a patient's resource you must have retrieved it first, to ensure you are working against an up-to-date patient resource.
 
