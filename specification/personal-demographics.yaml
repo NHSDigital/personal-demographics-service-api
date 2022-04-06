@@ -67,7 +67,7 @@ info:
     ## Related APIs
     The following APIs also give access to the Personal Demographics Service:
     - [Personal Demographics Service (SMSP) API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-smsp) - this API is now deprecated.
-    - [Personal Demographics Service (HL7 V3) API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3) - use this if you want to use functions that are not yet available on the FHIR API.
+    - [Personal Demographics Service (HL7 V3) API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3) - use this if you want to use functions that are not yet available on the FHIR API, such as creating a new record for a birth, receiving birth notifications, or creating a record for a new patient (except when registering a new patient at a GP Practice, use [NHAIS](https://digital.nhs.uk/services/nhais)).
 
     Once our roadmap is complete, the above APIs will become redundant.
 
@@ -214,9 +214,11 @@ info:
     You need to get your software approved by us before it can go live with this API. We call this onboarding. The onboarding process can sometimes be quite long, so it’s worth planning well ahead.
     
     ### New applications - after 9 December 2021
-    This API uses our online [digital onboarding process](https://digital.nhs.uk/developer/guides-and-documentation/onboarding-process#digital-onboarding). As part of this process, you need to demonstrate your technical conformance to the requirements for this API. For more details, see [PDS FHIR API technical conformance](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-technical-conformance).
+    This API uses our online digital onboarding process. To get started, send us an email at [api.management@nhs.net](mailto:api.management@nhs.net).
+    
+    As part of this process, you need to demonstrate your technical conformance to the requirements for this API. For more details, see [PDS FHIR API technical conformance](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-technical-conformance).
 
-    To get started, send us an email at [api.management@nhs.net](mailto:api.management@nhs.net).
+    To find out more about the process, see [digital onboarding](https://digital.nhs.uk/developer/guides-and-documentation/onboarding-process#digital-onboarding) 
     
     ### In progress applications
     If your onboarding is already in progress, or we tell you that you're an exception, follow the [Supplier Conformance Assessment List (SCAL)](https://digital.nhs.uk/developer/guides-and-documentation/onboarding-process#onboard-using-the-supplier-conformance-assessment-list-scal-process) process.
