@@ -221,7 +221,9 @@ info:
     ### New applications - after 9 December 2021
     This API uses our online digital onboarding process. To get started, send us an email at [api.management@nhs.net](mailto:api.management@nhs.net).
     
-    As part of this process, you need to demonstrate your technical conformance to the requirements for this API. For more details, see [PDS FHIR API technical conformance](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-technical-conformance).
+    As part of this process, you need to demonstrate your technical conformance to the requirements for this API. For more details according to your access mode, see:
+    * [PDS FHIR API technical conformance - application-restricted access mode](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-technical-conformance---application-restricted-access-mode)
+    * [PDS FHIR API technical conformance - healthcare worker access mode](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-technical-conformance---healthcare-worker-access-mode)
 
     To find out more about the process, see [digital onboarding](https://digital.nhs.uk/developer/guides-and-documentation/onboarding-process#digital-onboarding). 
     
