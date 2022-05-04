@@ -132,9 +132,9 @@ info:
 
     ### Application-restricted access
     
-    Use this access mode if you only need to:
+    Use this access mode if you need to:
     * search for a patient – and only get a result if there is a unique match
-    * get patient details 
+    * get a single patient's details
     
     This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis),
     meaning we authenticate the calling application but not the end user.
