@@ -228,7 +228,6 @@ info:
     ## Onboarding
     You need to get your software approved by us before it can go live with this API. We call this onboarding. The onboarding process can sometimes be quite long, so it’s worth planning well ahead.
     
-    ### New applications - after 9 December 2021
     This API uses our online digital onboarding process. To get started, send us an email at [api.management@nhs.net](mailto:api.management@nhs.net).
     
     As part of this process, you need to demonstrate your technical conformance to the requirements for this API. For more details according to your access mode, see:
@@ -237,39 +236,6 @@ info:
 
     To find out more about the process, see [digital onboarding](https://digital.nhs.uk/developer/guides-and-documentation/onboarding-process#digital-onboarding). 
     
-    ### In progress applications
-    If your onboarding is already in progress, or we tell you that you're an exception, follow the [Supplier Conformance Assessment List (SCAL)](https://digital.nhs.uk/developer/guides-and-documentation/onboarding-process#onboard-using-the-supplier-conformance-assessment-list-scal-process) process.
-
-    When following the general SCAL process steps, for this API you must do the following:
-    
-    In step 1, to confirm your use case, you need to [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service), even if you already access PDS via another method.
-    
-    In step 2, when requesting the SCAL, tell us which access mode you're using:
-    - healthcare worker search and retrieve
-    - healthcare worker update
-    - application-restricted
-    - patient access
-    
-    In step 2, if using healthcare worker access mode, tell us which security pattern you are using:
-    - NHS CIS2 - combined authentication and authorisation
-    - NHS CIS2 - separate authentication and authorisation
-    
-    In step 2, if using patient access mode, tell us which security pattern you are using:
-    - NHS login - combined authentication and authorisation - available only upon request
-    - NHS login - separate authentication and authorisation
-    
-    In step 6, when implementing your clinical risk management process, you must review and integrate the PDS FHIR API hazard log into your own risk log. It's embedded within the PDS FHIR API tab in the SCAL.
-    
-    In step 8, you need to review and complete the PDS FHIR API risk log to show that you have understood and mitigated the various risks. You might be asked to provide some evidence to prove that controls have been put in place. You can find the risk log embedded within the PDS FHIR API tab in the SCAL. This is separate from the clinical safety hazard log mentioned above.
-    
-    In step 9, you must conduct penetration testing to [CHECK standards](https://www.ncsc.gov.uk/information/check-penetration-testing).
-    
-    In step 10, when you complete the Service Desk Registration Form, send it to [api.management@nhs.net](mailto:api.management@nhs.net).
-    
-    In step 11, submit your completed SCAL to [api.management@nhs.net](mailto:api.management@nhs.net).
-    
-    In step 14, to request production access, contact us at [api.management@nhs.net](mailto:api.management@nhs.net).
-
   contact:
     name: Personal Demographics Service FHIR API Support
     url: 'https://digital.nhs.uk/developer/help-and-support'
