@@ -24,3 +24,7 @@ tests/functional-test-report.xml
 tests/docker.env
 tests/*.key
 tests/.pytest_cache
+
+ID_TOKEN_NHS_LOGIN_PRIVATE_KEY
+JWT_TESTING_PRIVATE_KEY
+JWT_TESTING_WITH_ASID_PRIVATE_KEY

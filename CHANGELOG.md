@@ -1,5 +1,10 @@
 # Changelog
 
+## 2022-05-13
+* Enforcing upper case 'p' for scope in manifest_template.yml file and testing for access denied with lower case 'p'.
+* Refactor conftest fixture get_token_nhs_login_token_exchange to not use assert, but check for 200 status or return
+  token body and status_code (body contains error)
+  
 ## 2021-08-20
 * Updating spec to correctly list birthdate examples in 'Try this API'
 * Updating spec and sandbox server to set up patient response for default 'Try this API' parameters
