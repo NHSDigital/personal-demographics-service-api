@@ -2,6 +2,7 @@ from tests.functional.config_files import config
 import requests
 import uuid
 import pytest
+import json
 
 from tests.functional.utils.apigee_api import ApigeeDebugApi
 from tests.functional.utils.helper import generate_random_email_address, get_add_telecom_email_patch_body
@@ -341,3 +342,11 @@ class TestUserRestrictedPatientAccess:
             body["issue"][0]["details"]["coding"][0]["display"]
             == "Patient cannot perform this action"
         )
+
+    async def test_patient_access_denied_p5_scope(
+        self, nhs_login_token_exchange
+    ):
+        token = await nhs_login_token_exchange(scope="p5")
+        assert token["status_code"] == 401
+        assert token["body"]["error"] == 'unauthorized_client'
+        assert token["body"]["error_description"] == 'you have tried to requests authorization but your application is not configured to use this authorization grant type'

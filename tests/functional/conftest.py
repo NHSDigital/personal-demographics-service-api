@@ -375,6 +375,7 @@ def nhs_login_token_exchange(test_app_and_product):
                 "client_assertion": client_assertion_jwt,
             },
         )
-        assert token_resp["status_code"] == 200
-        return token_resp["body"]['access_token']
+        if token_resp["status_code"] == 200:
+            return token_resp["body"]['access_token']
+        return token_resp
     return get_token_nhs_login_token_exchange
