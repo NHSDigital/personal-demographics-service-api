@@ -342,7 +342,7 @@ class TestUserRestrictedPatientAccess:
             == "Patient cannot perform this action"
         )
 
-    async def test_patient_access_denied_p5_scope(
+    async def test_patient_access_scope_case_sensitivity_with_p5(
         self, nhs_login_token_exchange
     ):
         token = await nhs_login_token_exchange(scope="p5")
