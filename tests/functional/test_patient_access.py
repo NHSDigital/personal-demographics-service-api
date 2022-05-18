@@ -341,3 +341,12 @@ class TestUserRestrictedPatientAccess:
             body["issue"][0]["details"]["coding"][0]["display"]
             == "Patient cannot perform this action"
         )
+
+    async def test_patient_access_scope_case_sensitivity_with_p5(
+        self, nhs_login_token_exchange
+    ):
+        token = await nhs_login_token_exchange(scope="p5")
+        assert token["status_code"] == 401
+        assert token["body"]["error"] == 'unauthorized_client'
+        assert "you have tried to requests authorization but your application" in token["body"]["error_description"]
+        assert " is not configured to use this authorization grant type" in token["body"]["error_description"]
