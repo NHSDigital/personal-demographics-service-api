@@ -25,7 +25,6 @@ info:
     * receive notifications about a patient's change of GP - use [PDS Notifications FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir) 
     * receive notifications about any PDS record change - use [PDS Notifications FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir) 
     
- 
     You can read and update the following data:
     * NHS number (read only)
     * name
@@ -171,7 +170,6 @@ info:
     |[NHS CIS2 - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-combined-authentication-and-authorisation) |OAuth 2.0 authorisation code flow with API key and secret |No need to integrate and onboard separately with NHS CIS2.                |No access to user information.</br> Not recommended for use in GP software.     |
     |[NHS CIS2 - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-separate-authentication-and-authorisation) |OAuth 2.0 token exchange with signed JWT                  |Gives access to user information.</br>Recommended for use in GP software.     |Need to integrate and onboard separately with NHS CIS2.                    |
 
-
     ### Patient access
     Use this access mode if the end user is a patient and you need to: 
     * get the patient’s own details
@@ -231,13 +229,13 @@ info:
     ## Onboarding
     You need to get your software approved by us before it can go live with this API. We call this onboarding. The onboarding process can sometimes be quite long, so it’s worth planning well ahead.
     
-    This API uses our online digital onboarding process. To get started, send us an email at [api.management@nhs.net](mailto:api.management@nhs.net).
+    This API uses our online digital onboarding process.
     
     As part of this process, you need to demonstrate your technical conformance to the requirements for this API. For more details according to your access mode, see:
     * [PDS FHIR API technical conformance - application-restricted access mode](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-technical-conformance---application-restricted-access-mode)
     * [PDS FHIR API technical conformance - healthcare worker access mode](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-technical-conformance---healthcare-worker-access-mode)
 
-    To find out more about the process, see [digital onboarding](https://digital.nhs.uk/developer/guides-and-documentation/onboarding-process#digital-onboarding). 
+    For more details, and to get started, see [digital onboarding](https://digital.nhs.uk/developer/guides-and-documentation/onboarding-process#digital-onboarding). 
     
   contact:
     name: Personal Demographics Service FHIR API Support
