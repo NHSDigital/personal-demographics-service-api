@@ -12,8 +12,11 @@ info:
     You can:
     * search for patients
     * get patient details
-    * update patient details
     * verify an NHS number for a patient
+    * update patient details
+
+    Note: 
+    The [Ordnance Survey Places API (OS Places)](https://digital.nhs.uk/developer/api-catalogue/ordnance-survey-places-api) is recommended to be used instead of the [Gazetteer service API](https://digital.nhs.uk/developer/api-catalogue/gazetteer-service-soap) for looking up and verifying addresses prior to a PDS update. The PDS FHIR API isn't yet ready to handle UPRNs required by the OS Places API. The API Management team are planning to enable support for UPRNs in the near future.
 
     You cannot currently use this API to:
     * create a new record for a birth - use [PDS HL7 V3 API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3)
