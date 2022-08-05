@@ -12,11 +12,8 @@ info:
     You can:
     * search for patients
     * get patient details
-    * verify an NHS number for a patient
     * update patient details
-
-    Note: 
-    The [Ordnance Survey Places API (OS Places)](https://digital.nhs.uk/developer/api-catalogue/ordnance-survey-places-api) is recommended to be used instead of the [Gazetteer service API](https://digital.nhs.uk/developer/api-catalogue/gazetteer-service-soap) for looking up and verifying addresses prior to a PDS update. The PDS FHIR API isn't yet ready to handle UPRNs required by the OS Places API. The API Management team are planning to enable support for UPRNs in the near future.
+    * verify an NHS number for a patient
 
     You cannot currently use this API to:
     * create a new record for a birth - use [PDS HL7 V3 API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3)
@@ -81,7 +78,8 @@ info:
     The following APIs are also related to this API:
     - [Personal Demographics Service Notifications - FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir) - use this to subscribe to be notified of a set of patient record changes, including any record update, birth, death, change of address and change of GP.
     - [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) - use this to get full details for the organisations related to the patient, such as their registered GP or nominated pharmacy.
-
+    - [Ordnance Survey (OS Places) API](https://digital.nhs.uk/developer/api-catalogue/ordnance-survey-places-api) - use this to Identify, look up and verify addresses prior to a PDS update.
+    
     ## API status and roadmap
     ### Application-restricted access
     This access mode is [stable](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status):
@@ -1067,6 +1065,8 @@ paths:
         If the address has no postcode, use a [pseudo postcode from the list defined by the Office for National Statistics](https://digital.nhs.uk/services/organisation-data-service/data-downloads/office-for-national-statistics-data) (see the ‘look_ups’ file).
         
         In particular, for a patient at no fixed abode, use the pseudo postcode `ZZ99 3VZ`.
+        
+        We recommend you use the [OS Places API](https://digital.nhs.uk/developer/api-catalogue/ordnance-survey-places-api) instead of the Gazetter service API for looking up and verifying addresses prior to a PDS Update. The PDS FHIR API cannot yet handle UPRNs required by the OS Places API. We are planning to support these in future.
         
         When adding or replacing address lines, use the following rules:
         *	line 1 - premises ID and/or house name, for example `Flat 1` or `The Old Schoolhouse`
