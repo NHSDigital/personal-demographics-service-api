@@ -236,7 +236,9 @@ info:
     * [PDS FHIR API technical conformance - application-restricted access mode](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-technical-conformance---application-restricted-access-mode)
     * [PDS FHIR API technical conformance - healthcare worker access mode](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-technical-conformance---healthcare-worker-access-mode)
 
-    For more details, and to get started, see [digital onboarding](https://digital.nhs.uk/developer/guides-and-documentation/digital-onboarding). 
+    You also need to demonstrate that you can manage risks. This might impact the design of your software. For details, see [Onboarding support information](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/onboarding-support-information).
+    
+    To get started, see [digital onboarding](https://digital.nhs.uk/developer/guides-and-documentation/digital-onboarding). 
     
   contact:
     name: Personal Demographics Service FHIR API Support
