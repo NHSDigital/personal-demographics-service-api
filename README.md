@@ -1,4 +1,4 @@
-# personal-demographics-service-api
+# personal-demographics-service-api .
 
 ![Build](https://github.com/NHSDigital/personal-demographics-service-api/workflows/Build/badge.svg?branch=master)
 
