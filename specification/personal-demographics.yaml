@@ -258,6 +258,7 @@ paths:
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/RequestID'
       - $ref: '#/components/parameters/CorrelationID'
+      - $ref: '#/components/parameters/NHSD-End-User-Organisation-ODS'
     get:
       summary: Search for a patient
       operationId: search-patient
@@ -549,6 +550,7 @@ paths:
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/RequestID'
       - $ref: '#/components/parameters/CorrelationID'
+      - $ref: '#/components/parameters/NHSD-End-User-Organisation-ODS'
     get:
       description: |
         ## Overview
@@ -1559,6 +1561,7 @@ paths:
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/RequestID'
       - $ref: '#/components/parameters/CorrelationID'
+      - $ref: '#/components/parameters/NHSD-End-User-Organisation-ODS'
     get:
       description: |
         ## Overview
@@ -1748,6 +1751,15 @@ components:
       schema:
         type: string
         example: 11C46F5F-CDEF-4865-94B2-0EE0EDCC26DA
+    NHSD-End-User-Organisation-ODS:
+      in: header
+      name: NHSD-End-User-Organisation-ODS
+      required: false
+      description: |
+        The ODS code of an End User Organisation (EUO). Currently optional but will be updated to be mandatory for client applications which service multiple End User organisations, in order to correctly attribute calls to each EUO. Date of change to a mandatory field to be defined.
+      schema:
+        type: string
+        example: Y12345
     FuzzyMatch:
       name: _fuzzy-match
       description: |
