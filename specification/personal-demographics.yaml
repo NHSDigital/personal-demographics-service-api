@@ -258,6 +258,7 @@ paths:
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/RequestID'
       - $ref: '#/components/parameters/CorrelationID'
+      - $ref: '#/components/parameters/NHSD-End-User-Organisation-ODS'
     get:
       summary: Search for a patient
       operationId: search-patient
@@ -549,6 +550,7 @@ paths:
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/RequestID'
       - $ref: '#/components/parameters/CorrelationID'
+      - $ref: '#/components/parameters/NHSD-End-User-Organisation-ODS'
     get:
       description: |
         ## Overview
@@ -1414,7 +1416,6 @@ paths:
       parameters:
         - $ref: '#/components/parameters/IfMatch'
         - $ref: '#/components/parameters/ContentType'
-        - $ref: '#/components/parameters/NHSD-End-User-Organisation-ODS'
       requestBody:
         required: true
         content:
@@ -1560,6 +1561,7 @@ paths:
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/RequestID'
       - $ref: '#/components/parameters/CorrelationID'
+      - $ref: '#/components/parameters/NHSD-End-User-Organisation-ODS'
     get:
       description: |
         ## Overview
