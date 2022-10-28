@@ -1,0 +1,52 @@
+type: object
+description: An extension to carry the reason a PDS record has been removed from the Patient Demographic Service. This will only be populated on a retrieval and not a search.
+required:
+  - url
+  - extension
+properties:
+  url:
+    type: string
+    description: Definition of the removal from registration extension.
+    default: https://fhir.nhs.uk/StructureDefinition/Extension-PDS-RemovalFromRegistration
+    enum:
+      - https://fhir.nhs.uk/StructureDefinition/Extension-PDS-RemovalFromRegistration
+    readOnly: true
+  extension:
+    type: array
+    description: An extension reason a PDS record has been removed from the Patient Demographic Service.
+    minItems: 1
+    maxItems: 2
+    items:
+      anyOf:
+        - type: object
+          description: Wrapper object for removalFromRegistrationCode.
+          required:
+            - url
+            - valueCodeableConcept
+          properties:
+            url:
+              type: string
+              description: To identify the removal reason code.
+              default: removalFromRegistrationCode
+              enum:
+                - removalFromRegistrationCode
+              readOnly: true
+            valueCodeableConcept:
+              $ref: "../codeable/RemovalReasonCode.json"
+        - type: object
+          description: Wrapper object for effectiveTime.
+          required:
+            - url
+            - effectiveTime
+          properties:
+            url:
+              type: string
+              description: Key of this object. Always `effectiveTime`.
+              default: effectiveTime
+              enum:
+                - effectiveTime
+              readOnly: true
+            effectiveTime:
+              type: string
+              description: The effective time of removal of the Patient record from PDS.
+              example: '2021-06-01T00:00:00+00:00'
