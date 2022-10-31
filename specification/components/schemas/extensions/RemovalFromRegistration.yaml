@@ -32,7 +32,7 @@ properties:
                 - removalFromRegistrationCode
               readOnly: true
             valueCodeableConcept:
-              $ref: "../codeable/RemovalReasonCode.json"
+              $ref: "../codeable/RemovalReasonExitCode.json"
         - type: object
           description: Wrapper object for effectiveTime.
           required:
