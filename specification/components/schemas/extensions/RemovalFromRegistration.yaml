@@ -47,6 +47,6 @@ properties:
                 - effectiveTime
               readOnly: true
             effectiveTime:
-              type: string
+              type: Period
               description: The effective time of removal of the Patient record from PDS.
               example: '2021-06-01T00:00:00+00:00'
