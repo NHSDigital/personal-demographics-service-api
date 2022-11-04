@@ -37,7 +37,7 @@ properties:
           description: Wrapper object for removal from registration effective time.
           required:
             - url
-            - valueDateTime
+            - valuePeriod
           properties:
             url:
               type: string
@@ -46,8 +46,19 @@ properties:
               enum:
                 - effectiveTime
               readOnly: true
-            valueDateTime:
-              type: string
+            valuePeriod:
+              type: object
               description: The effective time of removal of the Patient record from PDS.
-              format: date-time
-              example: '2021-06-01T00:00:00+00:00'
+              required:
+                - start
+              properties:
+                start:
+                  type: string
+                  format: date-time
+                  description: Start date of time period, if known, in format `yyyy-mm-dd`. Can be a future date.
+                  example: '2020-01-01T00:00:00+00:00'
+                end:
+                  type: string
+                  format: date-time
+                  description: End date of time period, if known and if not ongoing, in format `yyyy-mm-dd`. Can be a future date.
+                  example: '2021-12-31T00:00:00+00:00'
