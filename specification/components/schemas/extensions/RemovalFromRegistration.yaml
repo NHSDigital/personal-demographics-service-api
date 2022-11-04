@@ -17,7 +17,7 @@ properties:
     minItems: 1
     maxItems: 2
     items:
-      anyOf:
+      oneOf:
         - type: object
           description: Wrapper object for removalFromRegistrationCode.
           required:
