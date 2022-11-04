@@ -34,10 +34,10 @@ properties:
             valueCodeableConcept:
               $ref: "../codeable/RemovalReasonExitCode.yaml"
         - type: object
-          description: Wrapper object for effectiveTime.
+          description: Wrapper object for removal from registration effective time.
           required:
             - url
-            - effectiveTime
+            - valueDateTime
           properties:
             url:
               type: string
@@ -46,7 +46,8 @@ properties:
               enum:
                 - effectiveTime
               readOnly: true
-            effectiveTime:
+            valueDateTime:
               type: string
               description: The effective time of removal of the Patient record from PDS.
+              format: date-time
               example: '2021-06-01T00:00:00+00:00'
