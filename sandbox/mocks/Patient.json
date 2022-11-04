@@ -182,6 +182,27 @@
         "district": "Greater Manchester",
         "country": "GBR"
       }
+    },
+    {
+      "url": "https://fhir.nhs.uk/StructureDefinition/Extension-PDS-RemovalFromRegistration",
+      "extension": [
+        {
+          "url": "removalFromRegistrationCode",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://fhir.nhs.uk/CodeSystem/PDS-RemovalReasonExitCode",
+                "code": "SCT",
+                "display": "Transferred to Scotland"
+              }
+            ]
+          }
+        },
+        {
+          "url": "effectiveTime",
+          "effectiveTime": "2021-06-01T00:00:00+00:00"
+        }
+      ]
     }
   ],
   "telecom": [
