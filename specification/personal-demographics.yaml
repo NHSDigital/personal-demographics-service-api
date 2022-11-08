@@ -82,18 +82,20 @@ info:
     
     ## API status and roadmap
     ### Application-restricted access
-    This access mode is [stable](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status):
+    This access mode is [in production](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#statuses):
     * you should strongly consider it as the primary choice for PDS integration
     * we do not make routine breaking changes, if it cannot be avoided, for example, for security reasons, we will give advance notice
      
     ### Healthcare worker access
-    This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
-    - it is available in production
+    This access mode is [in production, beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#statuses), meaning:
     - we might make breaking changes, but only if we cannot avoid it, and we will give advance notice
+    
+    If you would like to be involved in our beta programme, [contact us](https://digital.nhs.uk/developer/help-and-support).
         
     ### Patient access
-    This access mode is in [alpha](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
-    - it is available for testing in the integration environment, but not for production use
+    This access mode is [in development](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#statuses), meaning:
+    - it is available for testing in the integration environment
+    - it is not available for production use
     - we might make breaking changes, but only if we cannot avoid it, and we will give advance notice
     
     ### Roadmap
