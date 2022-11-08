@@ -4,14 +4,15 @@ import uuid
 import pytest
 
 from tests.functional.utils.apigee_api import ApigeeDebugApi
-from tests.functional.utils.helper import generate_random_email_address, get_add_telecom_email_patch_body
+from tests.functional.utils.helper import (
+    generate_random_email_address,
+    get_add_telecom_email_patch_body,
+)
 
 
 @pytest.mark.asyncio
 class TestUserRestrictedPatientAccess:
-    async def test_patient_access_retrieve_happy_path(
-        self, nhs_login_token_exchange
-    ):
+    async def test_patient_access_retrieve_happy_path(self, nhs_login_token_exchange):
         token = await nhs_login_token_exchange()
         headers = {
             "NHSD-SESSION-URID": "123",
@@ -22,7 +23,7 @@ class TestUserRestrictedPatientAccess:
             f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}",
             headers=headers,
         )
-        
+
         assert r.status_code == 200
 
     async def test_patient_access_retrieve_non_matching_nhs_number(
@@ -96,7 +97,9 @@ class TestUserRestrictedPatientAccess:
 
         # Check the GET request
         assert r.status_code == 200
-        nhsd_patient_header_get = debug_session_get.get_apigee_header("NHSD-NHSLogin-User")
+        nhsd_patient_header_get = debug_session_get.get_apigee_header(
+            "NHSD-NHSLogin-User"
+        )
         assert nhsd_patient_header_get == f"P9:{config.TEST_PATIENT_ID}"
 
         body = r.json()
@@ -114,8 +117,8 @@ class TestUserRestrictedPatientAccess:
                             "id": telecom_id,
                             "system": "email",
                             "use": "work",
-                            "value": generate_random_email_address()
-                        }
+                            "value": generate_random_email_address(),
+                        },
                     }
                 ]
             }
@@ -143,12 +146,12 @@ class TestUserRestrictedPatientAccess:
         )
 
         assert r.status_code == 200
-        nhsd_patient_header_patch = debug_session_patch.get_apigee_header("NHSD-NHSLogin-User")
+        nhsd_patient_header_patch = debug_session_patch.get_apigee_header(
+            "NHSD-NHSLogin-User"
+        )
         assert nhsd_patient_header_patch == f"P9:{config.TEST_PATIENT_ID}"
 
-    async def test_patient_access_update_happy_path(
-        self, nhs_login_token_exchange
-    ):
+    async def test_patient_access_update_happy_path(self, nhs_login_token_exchange):
         token = await nhs_login_token_exchange()
 
         headers = {
@@ -164,9 +167,9 @@ class TestUserRestrictedPatientAccess:
 
         body = r.json()
 
-        ''' check if patient already has a telecom object, if so then amend the email address else
+        """ check if patient already has a telecom object, if so then amend the email address else
             add a new telecom object
-        '''
+        """
         if "telecom" in body:
             telecom_id = body["telecom"][0]["id"]
             patch_body = {
@@ -178,8 +181,8 @@ class TestUserRestrictedPatientAccess:
                             "id": telecom_id,
                             "system": "email",
                             "use": "work",
-                            "value": generate_random_email_address()
-                        }
+                            "value": generate_random_email_address(),
+                        },
                     }
                 ]
             }
@@ -293,9 +296,7 @@ class TestUserRestrictedPatientAccess:
             == "Patient cannot perform this action"
         )
 
-    async def test_patient_access_retrieve_P5_scope(
-        self, nhs_login_token_exchange
-    ):
+    async def test_patient_access_retrieve_P5_scope(self, nhs_login_token_exchange):
         token = await nhs_login_token_exchange(scope="P5")
 
         headers = {
@@ -317,9 +318,7 @@ class TestUserRestrictedPatientAccess:
             == "Patient cannot perform this action"
         )
 
-    async def test_patient_access_retrieve_P0_scope(
-        self, nhs_login_token_exchange
-    ):
+    async def test_patient_access_retrieve_P0_scope(self, nhs_login_token_exchange):
         token = await nhs_login_token_exchange(scope="P0")
 
         headers = {
@@ -346,6 +345,12 @@ class TestUserRestrictedPatientAccess:
     ):
         token = await nhs_login_token_exchange(scope="p5")
         assert token["status_code"] == 401
-        assert token["body"]["error"] == 'unauthorized_client'
-        assert "you have tried to request authorization but your application" in token["body"]["error_description"]
-        assert " is not configured to use this authorization grant type" in token["body"]["error_description"]
+        assert token["body"]["error"] == "unauthorized_client"
+        assert (
+            "you have tried to request authorization but your application"
+            in token["body"]["error_description"]
+        )
+        assert (
+            " is not configured to use this authorization grant type"
+            in token["body"]["error_description"]
+        )
