@@ -1079,7 +1079,7 @@ paths:
         *	line 4 - post town, for example `Leeds`
         *	line 5 - county (if present), for example `West Yorkshire`
         
-        When updating an address, you must populate lines 1 or 2, and line 4. You should not include line 5 in manually created addresses but you may include it in PAF-derived addresses.
+        When updating an address, you should populate lines 1 or 2, and line 4. You should not include line 5 in manually created addresses but you may include it in PAF-derived addresses.
 
         There are exceptions:
         * if you submit a postcode and PAF key, in which case the lines are automatically populated, however if there are no matches or too many matches the message is rejected due to missing address lines
