@@ -2,11 +2,6 @@
   "patches": [
     {
       "op": "replace",
-      "path": "/address/0/id",
-      "value": "87DAD823"
-    },
-    {
-      "op": "replace",
       "path": "/address/0/line/0",
       "value": "2 Whitehall Quay"
     },
