@@ -364,6 +364,22 @@ class TestSandboxUpdateFailureSuite:
         helpers.check_response_status_code(update_response, 404)
         helpers.check_response_headers(update_response, additional_headers)
 
+    @pytest.mark.parametrize("additional_headers", [
+        dict(prefer=False),
+        dict(prefer=True)],
+        indirect=["additional_headers"]
+    )
+    def test_update_invalid_patch_no_address_id(self, set_delay, additional_headers):
+        # send update request
+        update_response = helpers.update_patient(
+            update[12]["patient"],
+            update[12]["patient_record"],
+            update[12]["patch"],
+            additional_headers,
+        )
+        helpers.check_update_response_body(update_response, update[12]["response"])
+        helpers.check_response_status_code(update_response, 400)
+        helpers.check_response_headers(update_response, additional_headers)
 
 @pytest.mark.related_person_scenarios
 class TestSandboxRelatedPersonSuite:
