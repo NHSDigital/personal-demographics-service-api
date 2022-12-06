@@ -22,5 +22,21 @@ module.exports = {
         return request.payload && request.payload.patches && request.payload.patches.length !== 0
     },
 
-    validateRequestIdHeader: ({ headers: { "x-request-id": xRequestId }}) => !!xRequestId && isUUID(xRequestId, 4)
+    validateRequestIdHeader: ({ headers: { "x-request-id": xRequestId }}) => !!xRequestId && isUUID(xRequestId, 4),
+
+    verifyAddressIdNotPresentWhenRequired: function(request) {
+        var idRequired = false
+        var idPresent = false
+        for (let i of Object.keys(request.payload.patches)) {
+            let path = request.payload.patches[i].path
+            if (path.includes("/address/" && "/line/") || path.includes("/address/" && "/postalCode") || path.includes("/address/" && "/extension")) {
+                idRequired = true
+            } else if (path.includes("/address/" && "/id")) {
+                idPresent = true
+            }
+        }
+        if (idRequired && !idPresent) {
+            return true 
+        }
+    }
 }

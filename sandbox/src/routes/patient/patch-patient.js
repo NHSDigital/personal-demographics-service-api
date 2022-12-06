@@ -79,6 +79,13 @@ module.exports = [
                 }
             }
 
+            // Verify that the address id is not present when required in the request
+            if (requestValidator.verifyAddressIdNotPresentWhenRequired(request)) {
+                throw Boom.badRequest(
+                    "Invalid update with error - no id or url found for path with root /address/0",
+                    {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid"})
+            }
+
             // Apply the submitted patches
             try {
                 patchedPatient = jsonpatch.applyPatch(
