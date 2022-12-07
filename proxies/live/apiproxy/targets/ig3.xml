@@ -161,6 +161,9 @@
         <Name>ExtractVariables.OAuthErrorFaultString</Name>
       </Step>
       <Step>
+        <Name>javascript.UpdateInvalidAccessTokenFaultString</Name>
+      </Step>
+      <Step>
         <Name>AssignMessage.Mirror.CorrelationID</Name>
         <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>
       </Step>

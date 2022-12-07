@@ -15,6 +15,29 @@ Feature: Unattended Access
     And I get a Bundle resource in the response
 
 
+  Scenario: PDS FHIR API rejects request with missing authorization header
+    Given I am authenticating using unattended access
+    And I have no Authorization header
+    And I have a request context
+
+    When I GET a patient
+
+    Then I get a 401 HTTP response
+    And I get an error response
+    And the error issue.diagnostics value is Missing authorization header
+
+
+  Scenario: PDS FHIR API rejects request with an empty authorization header
+    Given I am authenticating using unattended access
+    And I have an empty Authorization header
+    And I have a request context
+
+    When I GET a patient
+
+    Then I get a 401 HTTP response
+    And I get an error response
+    And the error issue.diagnostics value is Empty authorization header
+
   Scenario: PDS FHIR API rejects request with invalid access token
     Given I am authenticating using unattended access
     And I have an invalid access token
@@ -36,7 +59,7 @@ Feature: Unattended Access
 
     Then I get a 401 HTTP response
     And I get an error response
-    And the error issue.diagnostics value is Invalid access token
+    And the error issue.diagnostics value is Missing access token
 
 
   Scenario: PDS FHIR API rejects request with expired access token
