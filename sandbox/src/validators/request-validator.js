@@ -27,16 +27,25 @@ module.exports = {
     verifyAddressIdNotPresentWhenRequired: function(request) {
         var idRequired = false
         var idPresent = false
+        var validId = false
+        var validAddressId = ["456", "T456"]
         for (let i of Object.keys(request.payload.patches)) {
             let path = request.payload.patches[i].path
+            let addressId = request.payload.patches[i].value
             if (path.includes("/address/" && "/line/") || path.includes("/address/" && "/postalCode") || path.includes("/address/" && "/extension")) {
                 idRequired = true
-            } else if (path.includes("/address/" && "/id")) {
+            } else if (path.includes("/address/" && "/id") && validAddressId.includes(addressId)) {
                 idPresent = true
-            }
+                validId = true
+            } else if (path.includes("/address/" && "/id") && !validAddressId.includes(addressId)) {
+                idPresent = true
+                validId = false
         }
         if (idRequired && !idPresent) {
-            return true 
+            return "no_id_or_url_found" 
+        } else if (idPresent && validId != true) {
+            return addressId
+        }
         }
     }
 }

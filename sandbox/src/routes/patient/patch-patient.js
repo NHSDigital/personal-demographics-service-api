@@ -80,9 +80,14 @@ module.exports = [
             }
 
             // Verify that the address id is not present when required in the request
-            if (requestValidator.verifyAddressIdNotPresentWhenRequired(request)) {
+            const addressError = requestValidator.verifyAddressIdNotPresentWhenRequired(request)
+            if (addressError == "no_id_or_url_found" ) {
                 throw Boom.badRequest(
                     "Invalid update with error - no id or url found for path with root /address/0",
+                    {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid"})
+            } else if (addressError !== undefined ) { 
+                throw Boom.badRequest(
+                    `Invalid update with error - no 'address' resources with object id ${addressError}`,
                     {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid"})
             }
 
