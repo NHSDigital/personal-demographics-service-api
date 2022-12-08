@@ -43,7 +43,7 @@ module.exports = {
         }
         if (idRequired && !idPresent) {
             return "no_id_or_url_found" 
-        } else if (idPresent && validId != true) {
+        } else if (idRequired && idPresent && validId != true) {
             return addressId
         }
         }
