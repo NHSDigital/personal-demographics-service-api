@@ -32,19 +32,22 @@ module.exports = {
         for (let i of Object.keys(request.payload.patches)) {
             let path = request.payload.patches[i].path
             let addressId = request.payload.patches[i].value
-            if (path.includes("/address/" && "/line/") || path.includes("/address/" && "/postalCode") || path.includes("/address/" && "/extension")) {
+            if (path.includes("/address/")){
                 idRequired = true
-            } else if (path.includes("/address/" && "/id") && validAddressId.includes(addressId)) {
+                console.log("idRequired:" + idRequired)
+            } 
+            if (idRequired && path.includes("/address/" && "/id") && validAddressId.includes(addressId)) {
                 idPresent = true
                 validId = true
-            } else if (path.includes("/address/" && "/id") && !validAddressId.includes(addressId)) {
+            } else if (idRequired && path.includes("/address/" && "/id") && !validAddressId.includes(addressId)) {
                 idPresent = true
                 validId = false
+                var wrongId = addressId
         }
         if (idRequired && !idPresent) {
             return "no_id_or_url_found" 
         } else if (idRequired && idPresent && validId != true) {
-            return addressId
+            return wrongId
         }
         }
     }
