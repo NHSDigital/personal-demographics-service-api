@@ -34,7 +34,6 @@ module.exports = {
             let addressId = request.payload.patches[i].value
             if (path.includes("/address/")){
                 idRequired = true
-                console.log("idRequired:" + idRequired)
             } 
             if (idRequired && path.includes("/address/" && "/id") && validAddressId.includes(addressId)) {
                 idPresent = true
