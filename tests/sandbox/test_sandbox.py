@@ -380,7 +380,7 @@ class TestSandboxUpdateFailureSuite:
         helpers.check_update_response_body(update_response, update[12]["response"])
         helpers.check_response_status_code(update_response, 400)
         helpers.check_response_headers(update_response, additional_headers)
-        
+
     @pytest.mark.parametrize("additional_headers", [
         dict(prefer=False),
         dict(prefer=True)],
