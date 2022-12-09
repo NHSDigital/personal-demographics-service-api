@@ -79,15 +79,15 @@ module.exports = [
                 }
             }
 
-            // Verify that the address id is not present when required in the request
-            const addressError = requestValidator.verifyAddressIdNotPresentWhenRequired(request)
-            if (addressError == "no_id_or_url_found" ) {
+            // Verify that the object id is not present when required in the request
+            const invalidPatch = requestValidator.verifyObjectIdNotPresentWhenRequired(request)
+            if (invalidPatch && 0 in invalidPatch ) {
                 throw Boom.badRequest(
-                    "Invalid update with error - no id or url found for path with root /address/0",
+                    `Invalid update with error - no id or url found for path with root /${invalidPatch[0]}/0`,
                     {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid"})
-            } else if (addressError !== undefined ) { 
+            } else if (invalidPatch && 1 in invalidPatch) { 
                 throw Boom.badRequest(
-                    `Invalid update with error - no 'address' resources with object id ${addressError}`,
+                    `Invalid update with error - no '${invalidPatch[1]}' resources with object id ${invalidPatch[2]}`,
                     {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid"})
             }
 

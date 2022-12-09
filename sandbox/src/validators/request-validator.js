@@ -24,29 +24,30 @@ module.exports = {
 
     validateRequestIdHeader: ({ headers: { "x-request-id": xRequestId }}) => !!xRequestId && isUUID(xRequestId, 4),
 
-    verifyAddressIdNotPresentWhenRequired: function(request) {
+    verifyObjectIdNotPresentWhenRequired: function(request) {
         var idRequired = false
         var idPresent = false
         var validId = false
-        var validAddressId = ["456", "T456"]
+        var validObjectId = ["456", "T456"]
         for (let i of Object.keys(request.payload.patches)) {
             let path = request.payload.patches[i].path
+            let pathValue = path.split("/")[1]
             let addressId = request.payload.patches[i].value
-            if (path.includes("/address/")){
+            if (path.includes("/address/")) {
                 idRequired = true
             } 
-            if (idRequired && path.includes("/address/" && "/id") && validAddressId.includes(addressId)) {
+            if (idRequired && path.includes("/id") && validObjectId.includes(addressId)) {
                 idPresent = true
                 validId = true
-            } else if (idRequired && path.includes("/address/" && "/id") && !validAddressId.includes(addressId)) {
+            } else if (idRequired && path.includes("/id") && !validObjectId.includes(addressId)) {
                 idPresent = true
                 validId = false
                 var wrongId = addressId
         }
         if (idRequired && !idPresent) {
-            return "no_id_or_url_found" 
+            return {0: pathValue} 
         } else if (idRequired && idPresent && validId != true) {
-            return wrongId
+            return {1: pathValue, 2: wrongId}
         }
         }
     }
