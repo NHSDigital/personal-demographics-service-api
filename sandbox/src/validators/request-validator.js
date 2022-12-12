@@ -24,7 +24,7 @@ module.exports = {
 
     validateRequestIdHeader: ({ headers: { "x-request-id": xRequestId }}) => !!xRequestId && isUUID(xRequestId, 4),
 
-    verifyAddressIdNotPresentWhenRequired: function(patientToUpdate, request) {
+    verifyAddressIdNotPresentWhenRequired: function(request, patientToUpdate) {
         var idRequired = false
         var idPresent = false
         var validId = false

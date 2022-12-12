@@ -80,7 +80,7 @@ module.exports = [
             }
 
             // Verify that the address id is not present when required in the request
-            const invalidPatch = requestValidator.verifyAddressIdNotPresentWhenRequired(patientToUpdate, request)
+            const invalidPatch = requestValidator.verifyAddressIdNotPresentWhenRequired(request, patientToUpdate)
             if (invalidPatch && 0 in invalidPatch ) {
                 throw Boom.badRequest(
                     `Invalid update with error - no id or url found for path with root /${invalidPatch[0]}/0`,
