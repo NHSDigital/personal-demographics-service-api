@@ -34,9 +34,7 @@ module.exports = {
             for (let i of patientToUpdate.address) {
                 objectId.push(i.id)
             }
-        } else {
-            return {3: ""} 
-        }
+        } else return
 
         for (let i of Object.keys(request.payload.patches)) {
             let path = request.payload.patches[i].path
