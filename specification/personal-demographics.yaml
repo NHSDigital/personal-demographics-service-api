@@ -68,6 +68,9 @@ info:
     
     Patients who receive health and social care or make use of NHS services in England, Wales, the Isle of Man, Scotland, Northern Ireland and the Channel Islands.
 
+    ### Existing API users
+    To find out which healthcare software development organisations and products are already using this API, see [PDS FHIR API - integrated products](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/integrated-products).
+
     ## Related APIs
     The following APIs also give access to the Personal Demographics Service:
     - [Personal Demographics Service (SMSP) API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-smsp) - this API is now deprecated.
