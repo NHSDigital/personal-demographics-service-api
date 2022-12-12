@@ -22,5 +22,15 @@ module.exports = {
         return request.payload && request.payload.patches && request.payload.patches.length !== 0
     },
 
-    validateRequestIdHeader: ({ headers: { "x-request-id": xRequestId }}) => !!xRequestId && isUUID(xRequestId, 4)
+    validateRequestIdHeader: ({ headers: { "x-request-id": xRequestId }}) => !!xRequestId && isUUID(xRequestId, 4),
+
+    validatePatchReplaceAddressAllLineEntries: function(request) {
+        for (let i of Object.keys(request.payload.patches)) {
+            let path = request.payload.patches[i].path
+            let pathValue = path.split("/").pop()
+            if (pathValue == "line") {
+                return true
+            }
+        }
+    }
 }

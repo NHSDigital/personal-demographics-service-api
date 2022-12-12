@@ -59,6 +59,13 @@ module.exports = [
                     {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED", display: "Required condition was not fulfilled"})
             }
 
+            // Verify that patch replaces the address with all line entries
+            if (requestValidator.validatePatchReplaceAddressAllLineEntries(request)) {
+                throw Boom.badRequest(
+                    "Invalid update with error - Invalid patch - can't replace non-existent object 'line'",
+                    {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid"})
+            }
+
             // Deep Copy the patient
             let patchedPatient = JSON.parse(JSON.stringify(patientToUpdate));
 
