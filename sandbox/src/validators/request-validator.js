@@ -29,14 +29,15 @@ module.exports = {
         var idPresent = false
         var validId = false
         var objectId = []
+        var addressPresent = false
 
         if (patientToUpdate.meta.security[0].display == "restricted") return
 
         if (patientToUpdate.address != undefined) {
+            addressPresent = true
             for (let i of patientToUpdate.address) {
                 objectId.push(i.id)
-            }
-        } else return {3: ""}
+            }}
 
         for (let i of Object.keys(request.payload.patches)) {
             let path = request.payload.patches[i].path
@@ -56,9 +57,10 @@ module.exports = {
         
         if (idRequired && !idPresent) {
             return {0: pathValue} 
-        } else if (idRequired && idPresent && validId != true) {
+        } else if (idRequired && idPresent && addressPresent && validId != true) {
             return {1: pathValue, 2: wrongId}
-        }
-        }
+        } else if (idRequired && idPresent && !addressPresent) {
+            return {3: ""}
+        }}
     }
 }
