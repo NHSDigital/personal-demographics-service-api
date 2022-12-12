@@ -89,6 +89,10 @@ module.exports = [
                 throw Boom.badRequest(
                     `Invalid update with error - no '${invalidPatch[1]}' resources with object id ${invalidPatch[2]}`,
                     {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid"})
+            } else if (invalidPatch && 3 in invalidPatch) { 
+                throw Boom.badRequest(
+                    "Invalid update with error - Invalid patch - index '0' is out of bounds",
+                    {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid"})
             }
 
             // Apply the submitted patches
