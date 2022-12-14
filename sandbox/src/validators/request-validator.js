@@ -29,6 +29,7 @@ module.exports = {
         var idPresent = false
         var validId = false
         var objectId = []
+        var addressId = []
         var addressPresent = false
 
         if (patientToUpdate.meta.security[0].display == "restricted") return
@@ -42,10 +43,13 @@ module.exports = {
         for (let i of Object.keys(request.payload.patches)) {
             let path = request.payload.patches[i].path
             let pathValue = path.split("/")[1]
-            let addressId = request.payload.patches[i].value
+     
             if (path.includes("/address/")) {
                 idRequired = true
             } 
+            if (path.split("/").pop() == "id") {
+                addressId = request.payload.patches[i].value
+            }
             if (idRequired && path.includes("/id") && objectId.includes(addressId)) {
                 idPresent = true
                 validId = true
