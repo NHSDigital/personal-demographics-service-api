@@ -15,7 +15,7 @@ info:
     * update patient details
     * verify an NHS number for a patient
 
-    You cannot currently use this API to:
+    You cannot currently use this API to:     
     * create a new record for a birth - use [PDS HL7 V3 API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3)
     * receive birth notifications - use [PDS HL7 V3 API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3) or [PDS Notifications FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir) 
     * create a record for a new patient - use [PDS HL7 V3 API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3)
