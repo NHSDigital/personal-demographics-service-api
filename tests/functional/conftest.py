@@ -80,7 +80,7 @@ async def get_token(request):
             oauth = OauthHelper(
                 client_id=config.CLIENT_ID,
                 client_secret=config.CLIENT_SECRET,
-                redirect_uri="https://nhsd-apim-testing-internal-dev.herokuapp.com/",
+                redirect_uri="https://example.org/callback",
             )
             resp = await oauth.get_token_response(grant_type=grant_type, **kwargs)
 
