@@ -64,6 +64,9 @@
         <Name>ExtractVariables.OAuthErrorFaultString</Name>
       </Step>
       <Step>
+        <Name>javascript.UpdateInvalidAccessTokenFaultString</Name>
+      </Step>
+      <Step>
         <Name>AssignMessage.Errors.OAuthPolicyResponse</Name>
       </Step>
       <Condition>oauthV2.OauthV2.VerifyAccessToken.failed</Condition>

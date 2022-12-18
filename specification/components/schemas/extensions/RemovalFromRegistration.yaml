@@ -1,0 +1,64 @@
+type: object
+description: An extension to carry the reason a PDS record has been removed from the Patient Demographic Service. This will only be populated on a retrieval and not a search.
+required:
+  - url
+  - extension
+properties:
+  url:
+    type: string
+    description: Definition of the removal from registration extension.
+    default: https://fhir.nhs.uk/StructureDefinition/Extension-PDS-RemovalFromRegistration
+    enum:
+      - https://fhir.nhs.uk/StructureDefinition/Extension-PDS-RemovalFromRegistration
+    readOnly: true
+  extension:
+    type: array
+    description: An extension reason a PDS record has been removed from the Patient Demographic Service.
+    minItems: 1
+    maxItems: 2
+    items:
+      oneOf:
+        - type: object
+          description: Wrapper object for removalFromRegistrationCode.
+          required:
+            - url
+            - valueCodeableConcept
+          properties:
+            url:
+              type: string
+              description: To identify the removal reason code.
+              default: removalFromRegistrationCode
+              enum:
+                - removalFromRegistrationCode
+              readOnly: true
+            valueCodeableConcept:
+              $ref: "../codeable/RemovalReasonExitCode.yaml"
+        - type: object
+          description: Wrapper object for removal from registration effective time.
+          required:
+            - url
+            - valuePeriod
+          properties:
+            url:
+              type: string
+              description: Key of this object. Always `effectiveTime`.
+              default: effectiveTime
+              enum:
+                - effectiveTime
+              readOnly: true
+            valuePeriod:
+              type: object
+              description: The effective time of removal of the Patient record from PDS.
+              required:
+                - start
+              properties:
+                start:
+                  type: string
+                  format: date-time
+                  description: Start date of time period, if known, in format `yyyy-mm-dd`. Can be a future date.
+                  example: '2020-01-01T00:00:00+00:00'
+                end:
+                  type: string
+                  format: date-time
+                  description: End date of time period, if known and if not ongoing, in format `yyyy-mm-dd`. Can be a future date.
+                  example: '2021-12-31T00:00:00+00:00'
