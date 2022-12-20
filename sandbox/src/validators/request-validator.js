@@ -56,14 +56,15 @@ module.exports = {
         }
         
         if (idRequired && !idPresent) {
-            return [`Invalid update with error - no id or url found for path with root /${pathValue}/0`,
-            {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid"}]
+            throw Boom.badRequest(`Invalid update with error - no id or url found for path with root /${pathValue}/0`,
+                { operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid" })
         } else if (idRequired && idPresent && addressPresent && validId != true) {
-            return [`Invalid update with error - no '${pathValue}' resources with object id ${wrongId}`,
-            {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid"}]
+            throw Boom.badRequest(`Invalid update with error - no '${pathValue}' resources with object id ${wrongId}`,
+                { operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid" })
         } else if (idRequired && idPresent && !addressPresent) {
-            return ["Invalid update with error - Invalid patch - index '0' is out of bounds",
-            {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid"}]
-        } else return
-    }}
+            throw Boom.badRequest("Invalid update with error - Invalid patch - index '0' is out of bounds",
+                { operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid" })
+        }
+        }
+    }
 }

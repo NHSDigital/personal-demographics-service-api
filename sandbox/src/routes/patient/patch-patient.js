@@ -80,10 +80,7 @@ module.exports = [
             }
 
             // Verify that the address id is not present when required in the request
-            const addressException = requestValidator.verifyAddressIdNotPresentWhenRequired(request, patientToUpdate) 
-            if (addressException) {
-                throw Boom.badRequest(addressException[0], addressException[1])
-            }
+            requestValidator.verifyAddressIdNotPresentWhenRequired(request, patientToUpdate) 
             
             // Apply the submitted patches
             try {
