@@ -60,7 +60,7 @@ module.exports = [
             }
 
             // Verify that patch replaces the address with all line entries
-            requestValidator.validatePatchReplaceAddressAllLineEntries(request, patientToUpdate))
+            requestValidator.validatePatchReplaceAddressAllLineEntries(request, patientToUpdate);
 
             // Deep Copy the patient
             let patchedPatient = JSON.parse(JSON.stringify(patientToUpdate));
