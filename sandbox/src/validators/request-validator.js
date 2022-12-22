@@ -1,4 +1,5 @@
 const { isUUID } = require("validator");
+const Boom = require('boom');
 
 module.exports = {
     
