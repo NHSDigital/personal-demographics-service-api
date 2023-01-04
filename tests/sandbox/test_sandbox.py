@@ -394,7 +394,7 @@ class TestSandboxUpdateFailureSuite:
             update[13]["patch"],
             additional_headers,
         )
-        helpers.check_update_response_body(update_response, update[12]["response"])
+        helpers.check_update_response_body(update_response, update[13]["response"])
         helpers.check_response_status_code(update_response, 400)
         helpers.check_response_headers(update_response, additional_headers)
 
@@ -411,7 +411,7 @@ class TestSandboxUpdateFailureSuite:
             update[14]["patch"],
             additional_headers,
         )
-        helpers.check_update_response_body(update_response, update[13]["response"])
+        helpers.check_update_response_body(update_response, update[14]["response"])
         helpers.check_response_status_code(update_response, 400)
         helpers.check_response_headers(update_response, additional_headers)
 
@@ -428,7 +428,7 @@ class TestSandboxUpdateFailureSuite:
             update[15]["patch"],
             additional_headers,
         )
-        helpers.check_update_response_body(update_response, update[14]["response"])
+        helpers.check_update_response_body(update_response, update[15]["response"])
         helpers.check_response_status_code(update_response, 400)
         helpers.check_response_headers(update_response, additional_headers)
 
@@ -445,7 +445,7 @@ class TestSandboxUpdateFailureSuite:
             update[16]["patch"],
             additional_headers,
         )
-        helpers.check_update_response_body(update_response, update[15]["response"])
+        helpers.check_update_response_body(update_response, update[16]["response"])
         helpers.check_response_status_code(update_response, 400)
         helpers.check_response_headers(update_response, additional_headers)
 
@@ -462,7 +462,7 @@ class TestSandboxUpdateFailureSuite:
             update[17]["patch"],
             additional_headers,
         )
-        helpers.check_update_response_body(update_response, update[16]["response"])
+        helpers.check_update_response_body(update_response, update[17]["response"])
         helpers.check_response_status_code(update_response, 400)
         helpers.check_response_headers(update_response, additional_headers)
 
