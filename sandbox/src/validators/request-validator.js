@@ -34,9 +34,6 @@ module.exports = {
                 return true
             }
         }
-        throw Boom.badRequest(
-            "Invalid update with error - Invalid patch - can't replace non-existent object 'line'",
-            {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid"})
     },
 
     verifyAddressIdNotPresentWhenRequired: function(request, patientToUpdate) {
