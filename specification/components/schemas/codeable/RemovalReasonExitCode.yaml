@@ -1,0 +1,36 @@
+type: object
+description: PDS Removal Reason Exit Code
+required:
+  - coding
+properties:
+  coding:
+    type: array
+    description: Array containing exactly one removal reason exit code object
+    items:
+      type: object
+      required:
+        - system
+        - code
+        - display
+      properties:
+        system:
+          type: string
+          format: url
+          description: URL of the Removal Reason Exit Code. Always uses the 'PDS-RemovalReasonExitCode' Code System.
+          example: https://fhir.nhs.uk/CodeSystem/PDS-RemovalReasonExitCode
+          readOnly: true
+        code:
+          type: string
+          description: A CodeSystem that identifies the reason a PDS record has been removed.
+          example: SCT
+          enum:
+            - DEA
+            - EMB
+            - SCT
+            - NIT
+            - TRA
+            - ORR
+        display:
+          type: string
+          description: Display-friendly representation of the removal reason exit code.
+          example: Transferred to Scotland

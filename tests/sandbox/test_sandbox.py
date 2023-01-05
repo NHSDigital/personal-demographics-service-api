@@ -364,6 +364,91 @@ class TestSandboxUpdateFailureSuite:
         helpers.check_response_status_code(update_response, 404)
         helpers.check_response_headers(update_response, additional_headers)
 
+    @pytest.mark.parametrize("additional_headers", [
+        dict(prefer=False),
+        dict(prefer=True)],
+        indirect=["additional_headers"]
+    )
+    def test_no_address_id(self, set_delay, additional_headers):
+        # send update request
+        update_response = helpers.update_patient(
+            update[12]["patient"],
+            update[12]["patient_record"],
+            update[12]["patch"],
+            additional_headers,
+        )
+        helpers.check_update_response_body(update_response, update[12]["response"])
+        helpers.check_response_status_code(update_response, 400)
+        helpers.check_response_headers(update_response, additional_headers)
+
+    @pytest.mark.parametrize("additional_headers", [
+        dict(prefer=False),
+        dict(prefer=True)],
+        indirect=["additional_headers"]
+    )
+    def test_invalid_address_id(self, set_delay, additional_headers):
+        # send update request
+        update_response = helpers.update_patient(
+            update[13]["patient"],
+            update[13]["patient_record"],
+            update[13]["patch"],
+            additional_headers,
+        )
+        helpers.check_update_response_body(update_response, update[13]["response"])
+        helpers.check_response_status_code(update_response, 400)
+        helpers.check_response_headers(update_response, additional_headers)
+
+    @pytest.mark.parametrize("additional_headers", [
+        dict(prefer=False),
+        dict(prefer=True)],
+        indirect=["additional_headers"]
+    )
+    def test_invalid_address_id_only(self, set_delay, additional_headers):
+        # send update request
+        update_response = helpers.update_patient(
+            update[14]["patient"],
+            update[14]["patient_record"],
+            update[14]["patch"],
+            additional_headers,
+        )
+        helpers.check_update_response_body(update_response, update[14]["response"])
+        helpers.check_response_status_code(update_response, 400)
+        helpers.check_response_headers(update_response, additional_headers)
+
+    @pytest.mark.parametrize("additional_headers", [
+        dict(prefer=False),
+        dict(prefer=True)],
+        indirect=["additional_headers"]
+    )
+    def test_patient_with_no_address(self, set_delay, additional_headers):
+        # send update request
+        update_response = helpers.update_patient(
+            update[15]["patient"],
+            update[15]["patient_record"],
+            update[15]["patch"],
+            additional_headers,
+        )
+        helpers.check_update_response_body(update_response, update[15]["response"])
+        helpers.check_response_status_code(update_response, 400)
+        helpers.check_response_headers(update_response, additional_headers)
+
+    @pytest.mark.parametrize("additional_headers", [
+        dict(prefer=False),
+        dict(prefer=True)],
+        indirect=["additional_headers"]
+    )
+    def test_patient_with_no_address_request_without_addres_id(self, set_delay, additional_headers):
+        # send update request
+        update_response = helpers.update_patient(
+            update[16]["patient"],
+            update[16]["patient_record"],
+            update[16]["patch"],
+            additional_headers,
+        )
+        helpers.check_update_response_body(update_response, update[16]["response"])
+        helpers.check_response_status_code(update_response, 400)
+        helpers.check_response_headers(update_response, additional_headers)
+
 
 @pytest.mark.related_person_scenarios
 class TestSandboxRelatedPersonSuite:

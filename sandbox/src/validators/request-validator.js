@@ -1,4 +1,5 @@
 const { isUUID } = require("validator");
+const Boom = require('boom')
 
 module.exports = {
     
@@ -22,5 +23,49 @@ module.exports = {
         return request.payload && request.payload.patches && request.payload.patches.length !== 0
     },
 
-    validateRequestIdHeader: ({ headers: { "x-request-id": xRequestId }}) => !!xRequestId && isUUID(xRequestId, 4)
+    validateRequestIdHeader: ({ headers: { "x-request-id": xRequestId }}) => !!xRequestId && isUUID(xRequestId, 4),
+
+    verifyAddressIdNotPresentWhenRequired: function(request, patientToUpdate) {
+        var idRequired = false
+        var idPresent = false
+        var validId = false
+        var objectId = []
+        var addressPresent = false
+
+        if (patientToUpdate.meta.security[0].display == "restricted") return
+
+        if (patientToUpdate.address != undefined) {
+            addressPresent = true
+            for (let i of patientToUpdate.address) {
+                objectId.push(i.id)
+            }}
+
+        for (let i of Object.keys(request.payload.patches)) {
+            let path = request.payload.patches[i].path
+            let pathValue = path.split("/")[1]
+            let addressId = request.payload.patches[i].value
+            if (path.includes("/address/")) {
+                idRequired = true
+            } 
+            if (idRequired && path.includes("/id") && objectId.includes(addressId)) {
+                idPresent = true
+                validId = true
+            } else if (idRequired && path.includes("/id") && !objectId.includes(addressId)) {
+                idPresent = true
+                validId = false
+                var wrongId = addressId
+        }
+        
+        if (idRequired && !idPresent) {
+            throw Boom.badRequest(`Invalid update with error - no id or url found for path with root /${pathValue}/0`,
+                { operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid" })
+        } else if (idRequired && idPresent && addressPresent && validId != true) {
+            throw Boom.badRequest(`Invalid update with error - no '${pathValue}' resources with object id ${wrongId}`,
+                { operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid" })
+        } else if (idRequired && idPresent && !addressPresent) {
+            throw Boom.badRequest("Invalid update with error - Invalid patch - index '0' is out of bounds",
+                { operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid" })
+        }
+        }
+    }
 }
