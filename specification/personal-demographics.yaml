@@ -16,11 +16,15 @@ info:
     * verify an NHS number for a patient
 
     You cannot currently use this API to:
-    * create a new record for a birth
-    * receive birth notifications
-    * create a record for a new patient
-    * register a new patient at a GP Practice - instead, use [NHAIS GP Links API](https://digital.nhs.uk/developer/api-catalogue/nhais-gp-links)
- 
+    * create a new record for a birth - use [PDS HL7 V3 API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3)
+    * receive birth notifications - use [PDS HL7 V3 API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3) or [PDS Notifications FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir) 
+    * create a record for a new patient - use [PDS HL7 V3 API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3)
+    * register a new patient at a GP Practice - use [NHAIS GP Links API](https://digital.nhs.uk/developer/api-catalogue/nhais-gp-links)
+    * receive patient death notifications - use [PDS Notifications FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir) 
+    * receive notifications about a patient's change of address - use [PDS Notifications FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir) 
+    * receive notifications about a patient's change of GP - use [PDS Notifications FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir) 
+    * receive notifications about any PDS record change - use [PDS Notifications FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir) 
+    
     You can read and update the following data:
     * NHS number (read only)
     * name
@@ -42,16 +46,16 @@ info:
     ### Access modes
     This API has three access modes:
     
+    | Access mode                    | Functions          | Availability |
+    | ------------------------------ | ------------------ | ------------ |
+    | [Application-restricted access](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis)  |Search for a patient (single result).<br>Get patient details.                                    | Available in production ([stable](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status)) |
+    | [Healthcare worker access](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis)              |Search for patients (multiple results).<br>Get patient details.<br>Update patient details.    | Available in production ([beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status))   |
+    | [Patient access](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis)                        |Get own details.<br>Update own details (limited).                                                 | Available in integration environment ([alpha](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status))|
     
-    | Access mode                    | End user authentication                             | Functions          | Availability |
-    | ------------------------------ | --------------------------------------------------- | ------------------ | ------------ |
-    | Application-restricted access  | None                                                | Search for a patient (single result). Get patient details. | Available in production (stable) | 
-    | Healthcare worker access       | NHS Care Identity Service 2 (NHS CIS2) using [NHS smartcard or modern alternative](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/nhs-smartcards-for-developers)  | Search for patients (multiple results). Get patient details. Update patient details. | Available in production (beta) |
-    | Patient access                 | [NHS login](https://digital.nhs.uk/services/nhs-login)  | Get own details. Update own details (limited). | Available in integration environment (alpha)   |
-
-  
+    For further details about the access modes for this API, see [Security and authorisation](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir#api-description__security-and-authorisation) below.
+    
     ## Who can use this API
-    This API can only be used where there is a [legal basis](http://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) to do so. Make sure you have a valid use case before you go too far with your development.  To do this, make a [PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service). 
+    This API can only be used where there is a [legal basis](http://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) to do so. Make sure you have a valid use case before you go too far with your development.  You must demonstrate you have a [valid use case](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) as part of digital onboarding. 
     
     You must do this before you can go live (see ‘Onboarding’ below).
 
@@ -64,31 +68,37 @@ info:
     
     Patients who receive health and social care or make use of NHS services in England, Wales, the Isle of Man, Scotland, Northern Ireland and the Channel Islands.
 
+    ### Existing API users
+    To find out which healthcare software development organisations and products are already using this API, see [PDS FHIR API - integrated products](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/integrated-products).
+
     ## Related APIs
     The following APIs also give access to the Personal Demographics Service:
     - [Personal Demographics Service (SMSP) API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-smsp) - this API is now deprecated.
-    - [Personal Demographics Service (HL7 V3) API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3) - use this if you want to use functions that are not yet available on the FHIR API.
+    - [Personal Demographics Service (HL7 V3) API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3) - use this if you want to use functions that are not yet available on the FHIR API, such as creating a new record for a birth, receiving birth notifications, or creating a record for a new patient (except when registering a new patient at a GP Practice, use [NHAIS](https://digital.nhs.uk/services/nhais)). For birth notifications, another option is [PDS Notifications - FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir).
 
     Once our roadmap is complete, the above APIs will become redundant.
 
     The following APIs are also related to this API:
-    - [Personal Demographics Service Notifications - FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir) - use this to subscribe to be notified of a limited set of patient record changes, such as birth, death, change of address and change of GP. If you would like to see this list expanded, please tell us about your use case and vote [here](https://nhs-digital-api-management.featureupvote.com/suggestions/184902/pds-to-proactively-tell-a-gp-system-when-a-patient-record-is-updated)
+    - [Personal Demographics Service Notifications - FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir) - use this to subscribe to be notified of a set of patient record changes, including any record update, birth, death, change of address and change of GP.
     - [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) - use this to get full details for the organisations related to the patient, such as their registered GP or nominated pharmacy.
-
+    - [Ordnance Survey (OS Places) API](https://digital.nhs.uk/developer/api-catalogue/ordnance-survey-places-api) - use this to identify, look up and verify addresses prior to a PDS update.
+    
     ## API status and roadmap
     ### Application-restricted access
-    This access mode is [stable](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status):
+    This access mode is [in production](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#statuses):
     * you should strongly consider it as the primary choice for PDS integration
     * we do not make routine breaking changes, if it cannot be avoided, for example, for security reasons, we will give advance notice
      
     ### Healthcare worker access
-    This access mode is in [beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
-    - it is available in production
+    This access mode is [in production, beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#statuses), meaning:
     - we might make breaking changes, but only if we cannot avoid it, and we will give advance notice
+    
+    If you would like to be involved in our beta programme, [contact us](https://digital.nhs.uk/developer/help-and-support).
         
     ### Patient access
-    This access mode is in [alpha](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status), meaning:
-    - it is available for testing in the integration environment, but not for production use
+    This access mode is [in development](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#statuses), meaning:
+    - it is available for testing in the integration environment
+    - it is not available for production use
     - we might make breaking changes, but only if we cannot avoid it, and we will give advance notice
     
     ### Roadmap
@@ -103,11 +113,12 @@ info:
     For more details, see [service levels](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#service-levels).
     
     ## Technology
-    This API is [RESTful](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#basic-rest).
+    This API is [RESTful](https://digital.nhs.uk/developer/guides-and-documentation/our-api-technologies#basic-rest).
 
-    It also conforms to the [FHIR](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#fhir) global standard for health care data exchange.
-    Specifically, it is aligned with [FHIR UK Core](https://digital.nhs.uk/services/fhir-uk-core), which is built on FHIR Release 4.
+    It conforms to the [FHIR](https://digital.nhs.uk/developer/guides-and-documentation/our-api-technologies#fhir) global standard for health care data exchange, specifically to [FHIR R4 (v4.0.1)](https://hl7.org/fhir/r4/), except that it does not support the [capabilities](http://hl7.org/fhir/R4/http.html#capabilities) interaction.
 
+    It includes some country-specific FHIR extensions, which are built against [FHIR UK Core](https://digital.nhs.uk/services/fhir-uk-core), specifically [UK.core.r4 1.0.0](https://simplifier.net/packages/uk.core.r4/1.0.0).
+    
     You do not need to know much about FHIR to use this API - FHIR APIs are just RESTful APIs that follow specific rules.
     In particular:
     - resource names are capitalised and singular, for example `/Patient` not `/patients`
@@ -119,38 +130,39 @@ info:
     ## Network access
     This API is available on the internet and, indirectly, on the [Health and Social Care Network (HSCN)](https://digital.nhs.uk/services/health-and-social-care-network).
 
-    To use this API with [NHS smartcards](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/nhs-smartcards-for-developers) you do need an HSCN connection, although internet-facing alternatives are available.
+    To use this API with [NHS smartcards](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/nhs-smartcards-for-developers), the end user needs an HSCN connection, although internet-facing alternatives to smartcards are available.
     
     For more details see [Network access for APIs](https://digital.nhs.uk/developer/guides-and-documentation/network-access-for-apis).
     
     ## Security and authorisation
     
-    Refer the table below to understand the recommended security pattern. The suggestions are based on who the users is, the functionality that they can access, authentication methods and ease of integration and onboarding.
-    
-
-    |	User			|	Functions	                                                                     |	User authentication	 | Ease of integration and onboarding	|	OAuth 2.0 flow and client authentication	|	Recommended security pattern                        |
-    |-------------------| ---------------------------------------------------------------------------------- | ---------------------- |------------------------------------- | --------------------------------------------- |	--------------------------------------------------- |
-    |Any or not present	|Search for a patient (single result). Get patient details.                          | Not needed	          | Easiest	                            | Client credentials with signed JWT	        | [Application restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-signed-jwt-authentication)                                |
-    |Healthcare worker (except [GP software user](https://digital.nhs.uk/developer/guides-and-documentation/developer-guides/gp-software-developer-guide/integrating-with-national-services#api-authorisation))  |Search for patients (multiple results). Get patient details. Update patient details.| NHS CIS2 - [smartcards or modern alternatives](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/nhs-smartcards-for-developers)|Easier|Authorisation code with API key and secret  | [NHS CIS2 - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-combined-authentication-and-authorisation)|
-    |Healthcare worker (including [GP software user](https://digital.nhs.uk/developer/guides-and-documentation/developer-guides/gp-software-developer-guide/integrating-with-national-services#api-authorisation)) |Search for patients (multiple results). Get patient details. Update patient details.| NHS CIS2 - [smartcards or modern alternatives](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/nhs-smartcards-for-developers)|Easy|Token exchange with signed JWT                | [NHS CIS2 - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-separate-authentication-and-authorisation)|
-    |Patient	        |Get own details. Update own details (limited).                                      | NHS login              | Easier                               |	Authorisation code with API key and secret	| [NHS login -  combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-login-combined-authentication-and-authorisation)|
-    |Patient            |Get own details. Update own details (limited).                                      | NHS login              | Easy                                 |	Token exchange with signed JWT				| [NHS login -  separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-login-separate-authentication-and-authorisation)|
-
+    This API has three access modes:
+    - application-restricted access
+    - healthcare worker access
+    - patient access
 
     ### Application-restricted access
-    This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis),
-    meaning we authenticate the calling application but not the end user.
+    Use this access mode if you need to:
+    * search for a patient – and only get a result if there is a unique match
+    * get a single patient's details
     
-    You can use this access mode as follows:
-    * unattended (end user not present), for example as part of a back end process to check NHS numbers for data flowing from one system to another
-    * attended (end user present) - in which case, you must ensure the end user is authenticated and suitably authorised locally by the calling application
+    This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis), meaning we authenticate the calling application but not the end user.
+    
+    The end user could be:
+    * a healthcare worker - in which case you must ensure they are authenticated and suitably authorised locally
+    * a patient - in which case you must ensure they are authenticated locally
+    * not present at all - for example as part of a back end process to check NHS numbers for data flowing from one system to another
     
     To use this access mode, use the following security pattern:
     * [Application-restricted RESTful API - signed JWT authentication](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-signed-jwt-authentication)
     
     ### Healthcare worker access
-    This access mode is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis),
-    meaning an end user must be present, authenticated and authorised.
+    Use this access mode if the end user is a healthcare worker and you need to: 
+    * search for patients – and be able to present a list of matches for the user to choose from 
+    * get patient details 
+    * update patient details 
+
+    This access mode is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis), meaning an end user must be present, authenticated and authorised.
 
     The end user must be:
     * a healthcare worker
@@ -158,10 +170,17 @@ info:
     * authorised, using [national role-based access control (RBAC)](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/national-rbac-for-developers)
 
     To use this access mode, use one of the following security patterns:
-    * [user-restricted RESTful API - using NHS CIS2 - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-combined-authentication-and-authorisation)
-    * [user-restricted RESTful API - using NHS CIS2 - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-separate-authentication-and-authorisation)
+    
+    |	Security pattern		                                                                                                                                                                                                  |	Technical details	                                             |	Advantages                                                              | Disadvantages                                                             |
+    |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| ---------------------------------------------------------| -------------------------------------------------------------------------|---------------------------------------------------------------------------|
+    |[NHS CIS2 - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-combined-authentication-and-authorisation) |OAuth 2.0 authorisation code flow with API key and secret |No need to integrate and onboard separately with NHS CIS2.                |No access to user information.<br> Not recommended for use in GP software.     |
+    |[NHS CIS2 - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-separate-authentication-and-authorisation) |OAuth 2.0 token exchange with signed JWT                  |Gives access to user information.<br>Recommended for use in GP software.     |Need to integrate and onboard separately with NHS CIS2.                    |
 
     ### Patient access
+    Use this access mode if the end user is a patient and you need to: 
+    * get the patient’s own details
+    * update the patient’s own details
+    
     This access mode is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis), meaning an end user must be present, authenticated and authorised.
     
     The end user must be:
@@ -169,8 +188,11 @@ info:
     * strongly authenticated, using [NHS login](https://digital.nhs.uk/services/nhs-login)
     
     To use this access mode, use one of the following security patterns:
-    * [user-restricted RESTful APIs - using NHS login - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-login-combined-authentication-and-authorisation)
-    * [user-restricted RESTful APIs - using NHS login - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-login-separate-authentication-and-authorisation)
+    
+    |	Security pattern		                                                                                                                                                                                                          |	Technical details	                                  |	Advantages	                                                | Disadvantages                                           |
+    |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| ----------------------------------------------------| ------------------------------------------------------------|---------------------------------------------------------|
+    |[NHS login - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-login-combined-authentication-and-authorisation) |OAuth 2.0 authorisation code with API key and secret |No need to integrate and onboard separately with NHS login.  |No access to user information.                           |
+    |[NHS login - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-login-separate-authentication-and-authorisation) |OAuth 2.0 token exchange with signed JWT             |Gives access to user information.                            |Need to integrate and onboard separately with NHS login. |
     
     ## Environments and testing
 
@@ -213,44 +235,25 @@ info:
     ## Onboarding
     You need to get your software approved by us before it can go live with this API. We call this onboarding. The onboarding process can sometimes be quite long, so it’s worth planning well ahead.
     
-    ### New applications - after 9 December 2021
-    This API uses our online [digital onboarding process](https://digital.nhs.uk/developer/guides-and-documentation/onboarding-process#digital-onboarding).
+    This API uses our online digital onboarding process.
+    
+    As part of this process, you need to demonstrate your technical conformance to the requirements for this API. For more details according to your access mode, see:
+    * [PDS FHIR API technical conformance - application-restricted access mode](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-technical-conformance---application-restricted-access-mode)
+    * [PDS FHIR API technical conformance - healthcare worker access mode](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-technical-conformance---healthcare-worker-access-mode)
 
-    To get started, send us an email at [api.management@nhs.net](mailto:api.management@nhs.net).
+    You also need to demonstrate that you can manage risks. This might impact the design of your software. For details, see [Onboarding support information](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/onboarding-support-information).
     
-    ### In progress applications
-    If your onboarding is already in progress, or we tell you that you're an exception, follow the [Supplier Conformance Assessment List (SCAL)](https://digital.nhs.uk/developer/guides-and-documentation/onboarding-process#onboard-using-the-supplier-conformance-assessment-list-scal-process) process.
+    To get started, see [digital onboarding](https://digital.nhs.uk/developer/guides-and-documentation/digital-onboarding). 
+    
+    ## Errors
+    We use standard HTTP status codes to show whether an API request succeeded or not. They are usually in the range:
 
-    When following the general SCAL process steps, for this API you must do the following:
+    * 200 to 299 if it succeeded, including code 202 if it was accepted by an API that needs to wait for further action
+    * 400 to 499 if it failed because of a client error by your application
+    * 500 to 599 if it failed because of an error on our server
     
-    In step 1, to confirm your use case, you need to [make a PDS access request](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service), even if you already access PDS via another method.
+    Errors specific to each API are shown in the Endpoints section, under Response. See our [reference guide](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#http-status-codes) for more on errors.
     
-    In step 2, when requesting the SCAL, tell us which access mode you're using:
-    - healthcare worker search and retrieve
-    - healthcare worker update
-    - application-restricted
-    - patient access
-    
-    In step 2, if using healthcare worker access mode, tell us which security pattern you are using:
-    - NHS CIS2 - combined authentication and authorisation
-    - NHS CIS2 - separate authentication and authorisation
-    
-    In step 2, if using patient access mode, tell us which security pattern you are using:
-    - NHS login - combined authentication and authorisation - available only upon request
-    - NHS login - separate authentication and authorisation
-    
-    In step 6, when implementing your clinical risk management process, you must review and integrate the PDS FHIR API hazard log into your own risk log. It's embedded within the PDS FHIR API tab in the SCAL.
-    
-    In step 8, you need to review and complete the PDS FHIR API risk log to show that you have understood and mitigated the various risks. You might be asked to provide some evidence to prove that controls have been put in place. You can find the risk log embedded within the PDS FHIR API tab in the SCAL. This is separate from the clinical safety hazard log mentioned above.
-    
-    In step 9, you must conduct penetration testing to [CHECK standards](https://www.ncsc.gov.uk/information/check-penetration-testing).
-    
-    In step 10, when you complete the Service Desk Registration Form, send it to [api.management@nhs.net](mailto:api.management@nhs.net).
-    
-    In step 11, submit your completed SCAL to [api.management@nhs.net](mailto:api.management@nhs.net).
-    
-    In step 14, to request production access, contact us at [api.management@nhs.net](mailto:api.management@nhs.net).
-
   contact:
     name: Personal Demographics Service FHIR API Support
     url: 'https://digital.nhs.uk/developer/help-and-support'
@@ -269,6 +272,7 @@ paths:
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/RequestID'
       - $ref: '#/components/parameters/CorrelationID'
+      - $ref: '#/components/parameters/NHSD-End-User-Organisation-ODS'
     get:
       summary: Search for a patient
       operationId: search-patient
@@ -560,6 +564,7 @@ paths:
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/RequestID'
       - $ref: '#/components/parameters/CorrelationID'
+      - $ref: '#/components/parameters/NHSD-End-User-Organisation-ODS'
     get:
       description: |
         ## Overview
@@ -669,7 +674,7 @@ paths:
         | Application-restricted access  | Updates not allowed                 |
         | Healthcare worker access       | Updates allowed                     |
         | Patient access                 | Updates allowed (Available in integration environment only)|
-
+ 
         ## Patient resource versioning
         To update a patient's resource you must have retrieved it first, to ensure you are working against an up-to-date patient resource.
 
@@ -1077,6 +1082,8 @@ paths:
         
         In particular, for a patient at no fixed abode, use the pseudo postcode `ZZ99 3VZ`.
         
+        We recommend you use the [OS Places API](https://digital.nhs.uk/developer/api-catalogue/ordnance-survey-places-api) for looking up and verifying addresses prior to a PDS update. The PDS FHIR API cannot yet handle UPRNs required by the OS Places API. We are planning to support these in future.
+        
         When adding or replacing address lines, use the following rules:
         *	line 1 - premises ID and/or house name, for example `Flat 1` or `The Old Schoolhouse`
         *	line 2 - house number, dependent thoroughfare name and descriptor (if present), thoroughfare name and descriptor, for example `23 Mill Lane`
@@ -1084,7 +1091,7 @@ paths:
         *	line 4 - post town, for example `Leeds`
         *	line 5 - county (if present), for example `West Yorkshire`
         
-        When updating an address, you must populate lines 1 or 2, and line 4. You should not include line 5 in manually created addresses but you may include it in PAF-derived addresses.
+        When updating an address, you should populate lines 1 or 2, and line 4. You should not include line 5 in manually created addresses but you may include it in PAF-derived addresses. The address ID must also be included in the update as shown in the below examples.
 
         There are exceptions:
         * if you submit a postcode and PAF key, in which case the lines are automatically populated, however if there are no matches or too many matches the message is rejected due to missing address lines
@@ -1178,7 +1185,7 @@ paths:
         You can find examples of the above requests in our sandbox Postman collection
 
         There are a number of business rules that should be taken into account:
-        * preferred language must not be supplied where it is English even though the [code list](https://simplifier.net/ukcore/codesystem-ukcore-humanlanguage) contains a value for English (en).
+        * preferred language must not be supplied where it is English even though the [code list](https://simplifier.net/resolve?target=simplifier&scope=uk.nhsdigital.r4&canonical=https://fhir.hl7.org.uk/ValueSet/UKCore-HumanLanguage) contains a value for English (en).
         * any language codes outside the accepted list are rejected; such as local system `qa` codes.
 
         ### Contact preferences
@@ -1398,7 +1405,7 @@ paths:
 
         | Scenario                            | Request                                                                   | Response                                         |
         | ----------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------ |
-        | Successful update                   | `id`=`9000000009`<br/><br/>Body: One of the provided examples or your own combination of patches<br/><br/>Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json-patch+json` | HTTP Status 200 with updated patient resource. |
+        | Successful update                   | `id`=`9000000009`<br><br>Body: One of the provided examples or your own combination of patches<br><br>Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json-patch+json` | HTTP Status 200 with updated patient resource. |
         | Patient does not exist               | `id`=`9111231130` (or any other valid NHS number)                         | HTTP Status 404 with problem description         |
         | Invalid NHS number                  | `id`=`9000000000` (or any invalid NHS number)                             | HTTP Status 400 with problem description         |
         | Missing resource version identifier | `If-Match` header missing or set to format other than `W/"<version>"`     | HTTP Status 412 with problem description         |
@@ -1568,6 +1575,7 @@ paths:
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/RequestID'
       - $ref: '#/components/parameters/CorrelationID'
+      - $ref: '#/components/parameters/NHSD-End-User-Organisation-ODS'
     get:
       description: |
         ## Overview
@@ -1757,6 +1765,15 @@ components:
       schema:
         type: string
         example: 11C46F5F-CDEF-4865-94B2-0EE0EDCC26DA
+    NHSD-End-User-Organisation-ODS:
+      in: header
+      name: NHSD-End-User-Organisation-ODS
+      required: false
+      description: |
+        The ODS code of an End User Organisation (EUO). Currently optional but will be updated to be mandatory for client applications which service multiple End User organisations, in order to correctly attribute calls to each EUO. Date of change to a mandatory field to be defined.
+      schema:
+        type: string
+        example: Y12345
     FuzzyMatch:
       name: _fuzzy-match
       description: |

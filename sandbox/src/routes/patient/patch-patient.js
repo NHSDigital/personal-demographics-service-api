@@ -79,6 +79,9 @@ module.exports = [
                 }
             }
 
+            // Verify that the address id is not present when required in the request
+            requestValidator.verifyAddressIdNotPresentWhenRequired(request, patientToUpdate) 
+            
             // Apply the submitted patches
             try {
                 patchedPatient = jsonpatch.applyPatch(

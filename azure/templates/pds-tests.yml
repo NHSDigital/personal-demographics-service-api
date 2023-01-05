@@ -41,7 +41,7 @@ steps:
       echo '##vso[task.setvariable variable=ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH]$(Pipeline.Workspace)/secrets/$(ID_TOKEN_NHS_LOGIN_PRIVATE_KEY)'
       echo '##vso[task.setvariable variable=AUTH_TOKEN_EXPIRY_MS]$(AUTH_TOKEN_EXPIRY_MS)'
       echo '##vso[task.setvariable variable=AUTH_TOKEN_EXPIRY_MS_INT]$(AUTH_TOKEN_EXPIRY_MS_INT)'
-      echo '##vso[task.setvariable variable=REDIRECT_URI]https://nhsd-apim-testing-internal-dev.herokuapp.com/callback'
+      echo '##vso[task.setvariable variable=REDIRECT_URI]https://example.org/callback'
       echo '##vso[task.setvariable variable=APIGEE_API_TOKEN]$(secret.AccessToken)'
     displayName: Expose common variables
 
@@ -76,7 +76,7 @@ steps:
       failTaskOnFailedTests: true
 
   - bash: |
-      export AUTHENTICATE_URL="https://nhsd-apim-testing-internal-dev.herokuapp.com/"
+      export AUTHENTICATE_URL="https://example.org/callback"
       export OAUTH_PROXY="oauth2-mock"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
 
