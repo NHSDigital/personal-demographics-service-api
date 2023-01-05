@@ -420,7 +420,7 @@ class TestSandboxUpdateFailureSuite:
         dict(prefer=True)],
         indirect=["additional_headers"]
     )
-    def test_invalid_address_id_only(self, set_delay, additional_headers):
+    def test_patient_with_no_address(self, set_delay, additional_headers):
         # send update request
         update_response = helpers.update_patient(
             update[15]["patient"],
@@ -437,7 +437,7 @@ class TestSandboxUpdateFailureSuite:
         dict(prefer=True)],
         indirect=["additional_headers"]
     )
-    def test_patient_with_no_address(self, set_delay, additional_headers):
+    def test_patient_with_no_address_request_without_addres_id(self, set_delay, additional_headers):
         # send update request
         update_response = helpers.update_patient(
             update[16]["patient"],
@@ -446,23 +446,6 @@ class TestSandboxUpdateFailureSuite:
             additional_headers,
         )
         helpers.check_update_response_body(update_response, update[16]["response"])
-        helpers.check_response_status_code(update_response, 400)
-        helpers.check_response_headers(update_response, additional_headers)
-
-    @pytest.mark.parametrize("additional_headers", [
-        dict(prefer=False),
-        dict(prefer=True)],
-        indirect=["additional_headers"]
-    )
-    def test_patient_with_no_address_request_without_addres_id(self, set_delay, additional_headers):
-        # send update request
-        update_response = helpers.update_patient(
-            update[17]["patient"],
-            update[17]["patient_record"],
-            update[17]["patch"],
-            additional_headers,
-        )
-        helpers.check_update_response_body(update_response, update[17]["response"])
         helpers.check_response_status_code(update_response, 400)
         helpers.check_response_headers(update_response, additional_headers)
 
