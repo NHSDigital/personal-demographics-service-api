@@ -59,6 +59,9 @@ module.exports = [
                     {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED", display: "Required condition was not fulfilled"})
             }
 
+            // Verify that patch replaces the address with all line entries
+            requestValidator.validatePatchReplaceAddressAllLineEntries(request, patientToUpdate);
+
             // Deep Copy the patient
             let patchedPatient = JSON.parse(JSON.stringify(patientToUpdate));
 
