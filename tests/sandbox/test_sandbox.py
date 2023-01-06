@@ -201,7 +201,7 @@ class TestPDSSandboxUpdateSyncWrapSuite:
         helpers.check_response_status_code(update_response, 200)
         helpers.check_response_headers(update_response, additional_headers)
 
-    def test_update_suffix_from_name(self, additional_headers):
+    def test_remove_suffix_from_name(self, additional_headers):
         # Prefer header deprecated, check that header is ignored
         additional_headers["Prefer"] = "respond-async"
         # send update request
