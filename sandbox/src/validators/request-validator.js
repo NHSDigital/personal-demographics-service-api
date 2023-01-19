@@ -1,5 +1,5 @@
 const { isUUID } = require("validator");
-const Boom = require('boom')
+const Boom = require('boom');
 
 module.exports = {
     
@@ -24,6 +24,19 @@ module.exports = {
     },
 
     validateRequestIdHeader: ({ headers: { "x-request-id": xRequestId }}) => !!xRequestId && isUUID(xRequestId, 4),
+
+    validatePatchReplaceAddressAllLineEntries: function(request, patientToUpdate) {
+        if (patientToUpdate.meta.security[0].display == "restricted") return
+        for (let i of Object.keys(request.payload.patches)) {
+            let path = request.payload.patches[i].path
+            let pathValue = path.split("/").pop()
+            if (pathValue == "line") {
+                throw Boom.badRequest(
+                    "Invalid update with error - Invalid patch - can't replace non-existent object 'line'",
+                    {operationOutcomeCode: "structure", apiErrorCode: "INVALID_UPDATE", display: "Update is invalid"})
+            }
+        }
+    },
 
     verifyAddressIdNotPresentWhenRequired: function(request, patientToUpdate) {
         var idRequired = false
