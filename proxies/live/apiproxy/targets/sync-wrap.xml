@@ -5,11 +5,13 @@
       <Step>
         <Name>OauthV2.VerifyAccessToken</Name>
       </Step>
+      <!-- shared flow must be after authorization policy -->
       <Step>
-        <Name>Quota</Name>
+        <Name>FlowCallout.ExtendedAttributes</Name>
       </Step>
+      <!-- APMSPII-1139 rate litmiting to be handle by shared flow, must be after authorization policy -->
       <Step>
-        <Name>SpikeArrest</Name>
+        <Name>FlowCallout.ApplyRateLimiting</Name>
       </Step>
       <Step>
         <Name>AssignMessage.AddSyncWaitHeader</Name>
@@ -62,14 +64,60 @@
         <Name>ExtractVariables.OAuthErrorFaultString</Name>
       </Step>
       <Step>
+        <Name>javascript.UpdateInvalidAccessTokenFaultString</Name>
+      </Step>
+      <Step>
         <Name>AssignMessage.Errors.OAuthPolicyResponse</Name>
       </Step>
       <Condition>oauthV2.OauthV2.VerifyAccessToken.failed</Condition>
     </FaultRule>
-    <FaultRule name="rate_limit_exceeded">
-      <Condition>(fault.name Equals "QuotaViolation") or (fault.name Equals "SpikeArrestViolation")</Condition>
+    <!-- APMSPII-1206 using ApplyRateLimiting Shared Flow -->
+    <FaultRule name="app_quota_exceeded">
+      <Condition>(ratelimit.QuotaPerApp.failed Equals true)</Condition>
       <Step>
-        <Name>AssignMessage.Errors.RateLimitExceeded</Name>
+        <Name>AssignMessage.Errors.AppQuotaExceeded</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Mirror.CorrelationID</Name>
+        <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Mirror.RequestID</Name>
+        <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Errors.CatchAllMessage</Name>
+      </Step>
+    </FaultRule>
+    <FaultRule name="app_spikearrest_exceeded">
+      <Condition>(ratelimit.SpikeArrestPerApp.failed Equals true)</Condition>
+      <Step>
+        <Name>AssignMessage.Errors.AppSpikeArrestExceeded</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Mirror.CorrelationID</Name>
+        <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Mirror.RequestID</Name>
+        <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Errors.CatchAllMessage</Name>
+      </Step>
+    </FaultRule>
+    <FaultRule name="proxy_ratelimit_exceeded">
+      <Condition>(ratelimit.QuotaPerProxy.failed Equals true OR ratelimit.SpikeArrestPerProxy.failed Equals true)</Condition>
+      <Step>
+        <Name>AssignMessage.Errors.ProxyRatelimitExceeded</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Mirror.CorrelationID</Name>
+        <Condition>(original-request-details.header.X-Correlation-ID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Mirror.RequestID</Name>
+        <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
       </Step>
       <Step>
         <Name>AssignMessage.Errors.CatchAllMessage</Name>

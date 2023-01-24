@@ -59,6 +59,9 @@ module.exports = [
                     {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED", display: "Required condition was not fulfilled"})
             }
 
+            // Verify that patch replaces the address with all line entries
+            requestValidator.validatePatchReplaceAddressAllLineEntries(request, patientToUpdate);
+
             // Deep Copy the patient
             let patchedPatient = JSON.parse(JSON.stringify(patientToUpdate));
 
@@ -79,6 +82,9 @@ module.exports = [
                 }
             }
 
+            // Verify that the address id is not present when required in the request
+            requestValidator.verifyAddressIdNotPresentWhenRequired(request, patientToUpdate) 
+            
             // Apply the submitted patches
             try {
                 patchedPatient = jsonpatch.applyPatch(
@@ -98,7 +104,7 @@ module.exports = [
 
             const messageId = fhirHelper.createMessageId();
             h.context.messages[messageId] = patchedPatient;
-            return fhirHelper.createAcceptedResponse(h, messageId);
+            return fhirHelper.createFhirResponse(h, patchedPatient, patchedPatient.meta.versionId)
         }
     }
 ]

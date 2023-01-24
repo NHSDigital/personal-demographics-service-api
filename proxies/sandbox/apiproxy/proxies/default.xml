@@ -80,12 +80,6 @@
     <RouteRule name="NoRouteStatus">
       <Condition>(proxy.pathsuffix MatchesPath "/_status") and ((request.verb = "GET") or (request.verb = "HEAD"))</Condition>
     </RouteRule>
-    <RouteRule name="sync-wrap-sandbox">
-      <Condition>
-        request.verb = "PATCH" AND (proxy.pathsuffix MatchesPath "/Patient/{id}") AND request.header.x-sync-wrapped NotEquals "true"
-      </Condition>
-    <TargetEndpoint>sync-wrap-sandbox</TargetEndpoint>
-  </RouteRule>
   <RouteRule name="sandbox">
       <TargetEndpoint>apim</TargetEndpoint>
   </RouteRule>

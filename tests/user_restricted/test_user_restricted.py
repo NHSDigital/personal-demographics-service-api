@@ -37,12 +37,12 @@ class TestUserRestrictedRetrievePatient:
     def test_retrieve_patient_with_blank_auth_header(self, headers):
         headers['authorization'] = ''
         response = helpers.retrieve_patient(
-            retrieve[1]["patient"],
+            retrieve[2]["patient"],
             headers
         )
         helpers.check_retrieve_response_body(
             response,
-            retrieve[1]["response"]
+            retrieve[2]["response"]
         )
         helpers.check_response_status_code(response, 401)
         helpers.check_response_headers(response, headers)
@@ -50,10 +50,10 @@ class TestUserRestrictedRetrievePatient:
     def test_retrieve_patient_with_invalid_auth_header(self, headers):
         headers['authorization'] = 'Bearer abcdef123456789'
         response = helpers.retrieve_patient(
-            retrieve[2]["patient"],
+            retrieve[3]["patient"],
             headers
         )
-        helpers.check_retrieve_response_body(response, retrieve[2]["response"])
+        helpers.check_retrieve_response_body(response, retrieve[3]["response"])
         helpers.check_response_status_code(response, 401)
         helpers.check_response_headers(response, headers)
 
@@ -70,20 +70,20 @@ class TestUserRestrictedRetrievePatient:
     def test_user_role_sharedflow_invalid_role(self, headers_with_token):
         self.headers["NHSD-Session-URID"] = "invalid"
         response = helpers.retrieve_patient(
-            retrieve[8]["patient"],
+            retrieve[9]["patient"],
             self.headers
         )
-        helpers.check_retrieve_response_body(response, retrieve[8]["response"])
+        helpers.check_retrieve_response_body(response, retrieve[9]["response"])
         helpers.check_response_status_code(response, 400)
         helpers.check_response_headers(response, self.headers)
 
     def test_retrieve_patient_with_blank_x_request_header(self, headers_with_token):
         self.headers["X-Request-ID"] = ''
         response = helpers.retrieve_patient(
-            retrieve[4]["patient"],
+            retrieve[5]["patient"],
             self.headers
         )
-        helpers.check_retrieve_response_body(response, retrieve[4]["response"])
+        helpers.check_retrieve_response_body(response, retrieve[5]["response"])
         helpers.check_response_status_code(response, 400)
         self.headers.pop("X-Request-ID")
         helpers.check_response_headers(response, self.headers)
@@ -91,20 +91,20 @@ class TestUserRestrictedRetrievePatient:
     def test_retrieve_patient_with_invalid_x_request_header(self, headers_with_token):
         self.headers["X-Request-ID"] = '1234'
         response = helpers.retrieve_patient(
-            retrieve[5]["patient"],
+            retrieve[6]["patient"],
             self.headers
         )
-        helpers.check_retrieve_response_body(response, retrieve[5]["response"])
+        helpers.check_retrieve_response_body(response, retrieve[6]["response"])
         helpers.check_response_status_code(response, 400)
         helpers.check_response_headers(response, self.headers)
 
     def test_retrieve_patient_with_missing_x_request_header(self, headers_with_token):
         self.headers.pop("X-Request-ID")
         response = helpers.retrieve_patient(
-            retrieve[6]["patient"],
+            retrieve[7]["patient"],
             self.headers
         )
-        helpers.check_retrieve_response_body(response, retrieve[6]["response"])
+        helpers.check_retrieve_response_body(response, retrieve[7]["response"])
         helpers.check_response_status_code(response, 412)
         helpers.check_response_headers(response, self.headers)
 
@@ -117,8 +117,8 @@ class TestUserRestrictedSearchPatient:
             search[0]["query_params"],
             self.headers
         )
-        helpers.check_search_response_body(response, search[0]["response"])
         helpers.check_response_status_code(response, 200)
+        helpers.assert_correct_patient_nhs_number_is_returned(response, search[0]["patient_returned"])
         helpers.check_response_headers(response, self.headers)
 
     def test_search_patient_with_missing_auth_header(self, headers):
@@ -133,26 +133,6 @@ class TestUserRestrictedSearchPatient:
     def test_search_patient_with_blank_auth_header(self, headers):
         headers['authorization'] = ''
         response = helpers.search_patient(
-            search[1]["query_params"],
-            headers
-        )
-        helpers.check_search_response_body(response, search[1]["response"])
-        helpers.check_response_status_code(response, 401)
-        helpers.check_response_headers(response, headers)
-
-    def test_search_patient_with_blank_auth_header_at(self, headers_with_token):
-        self.headers['Authorization'] = ''
-        response = helpers.search_patient(
-            search[1]["query_params"],
-            self.headers
-        )
-        helpers.check_search_response_body(response, search[1]["response"])
-        helpers.check_response_status_code(response, 401)
-        helpers.check_response_headers(response, self.headers)
-
-    def test_search_patient_with_invalid_auth_header(self, headers):
-        headers['authorization'] = 'Bearer abcdef123456789'
-        response = helpers.search_patient(
             search[2]["query_params"],
             headers
         )
@@ -160,13 +140,33 @@ class TestUserRestrictedSearchPatient:
         helpers.check_response_status_code(response, 401)
         helpers.check_response_headers(response, headers)
 
+    def test_search_patient_with_blank_auth_header_at(self, headers_with_token):
+        self.headers['authorization'] = ''
+        response = helpers.search_patient(
+            search[2]["query_params"],
+            self.headers
+        )
+        helpers.check_search_response_body(response, search[2]["response"])
+        helpers.check_response_status_code(response, 401)
+        helpers.check_response_headers(response, self.headers)
+
+    def test_search_patient_with_invalid_auth_header(self, headers):
+        headers['authorization'] = 'Bearer abcdef123456789'
+        response = helpers.search_patient(
+            search[3]["query_params"],
+            headers
+        )
+        helpers.check_search_response_body(response, search[3]["response"])
+        helpers.check_response_status_code(response, 401)
+        helpers.check_response_headers(response, headers)
+
     def test_search_patient_with_blank_x_request_header(self, headers_with_token):
         self.headers["X-Request-ID"] = ''
         response = helpers.search_patient(
-            search[4]["query_params"],
+            search[5]["query_params"],
             self.headers
         )
-        helpers.check_search_response_body(response, search[4]["response"])
+        helpers.check_search_response_body(response, search[5]["response"])
         helpers.check_response_status_code(response, 400)
         self.headers.pop("X-Request-ID")
         helpers.check_response_headers(response, self.headers)
@@ -174,48 +174,49 @@ class TestUserRestrictedSearchPatient:
     def test_search_patient_with_invalid_x_request_header(self, headers_with_token):
         self.headers["X-Request-ID"] = '1234'
         response = helpers.search_patient(
-            search[5]["query_params"],
+            search[6]["query_params"],
             self.headers
         )
-        helpers.check_search_response_body(response, search[5]["response"])
+        helpers.check_search_response_body(response, search[6]["response"])
         helpers.check_response_status_code(response, 400)
         helpers.check_response_headers(response, self.headers)
 
     def test_search_patient_with_missing_x_request_header(self, headers_with_token):
         self.headers.pop("X-Request-ID")
         response = helpers.search_patient(
-            search[6]["query_params"],
+            search[7]["query_params"],
             self.headers
         )
-        helpers.check_search_response_body(response, search[6]["response"])
+        helpers.check_search_response_body(response, search[7]["response"])
         helpers.check_response_status_code(response, 412)
         helpers.check_response_headers(response, self.headers)
 
     def test_search_patient_happy_path_sensitive(self, headers_with_token):
         response = helpers.search_patient(
-            search[9]["query_params"],
+            search[10]["query_params"],
             self.headers
         )
-        helpers.check_search_response_body(response, search[9]["response"])
         helpers.check_response_status_code(response, 200)
+        helpers.assert_correct_patient_nhs_number_is_returned(response, search[10]["patient_returned"])
+        helpers.assert_is_sensitive_patient(response)
         helpers.check_response_headers(response, self.headers)
 
-    def test_search_patient_happy_path_genderfree(self, headers_with_token):
-        response = helpers.search_patient(
-            search[7]["query_params"],
-            self.headers
-        )
-        helpers.check_search_response_body(response, search[7]["response"])
-        helpers.check_response_status_code(response, 200)
-        helpers.check_response_headers(response, self.headers)
-
-    def test_search_advanced_alphanumeric_genderfree(self, headers_with_token):
+    def test_search_patient_happy_path_gender_free(self, headers_with_token):
         response = helpers.search_patient(
             search[8]["query_params"],
             self.headers
         )
-        helpers.check_search_response_body(response, search[8]["response"])
         helpers.check_response_status_code(response, 200)
+        helpers.assert_correct_patient_nhs_number_is_returned(response, search[8]["patient_returned"])
+        helpers.check_response_headers(response, self.headers)
+
+    def test_search_advanced_alphanumeric_gender_free(self, headers_with_token):
+        response = helpers.search_patient(
+            search[9]["query_params"],
+            self.headers
+        )
+        helpers.check_response_status_code(response, 200)
+        helpers.assert_correct_patient_nhs_number_is_returned(response, search[9]["patient_returned"])
         helpers.check_response_headers(response, self.headers)
 
     def test_simple_trace_no_gender(self, headers_with_token):
@@ -613,18 +614,6 @@ class TestUserRestrictedPatientUpdateSyncWrap:
     def test_update_patient_with_blank_auth_header(self, headers):
         headers['authorization'] = ''
         update_response = helpers.update_patient(
-            update[1]["patient"],
-            'W/"14"',
-            update[1]["patch"],
-            headers
-        )
-        helpers.check_retrieve_response_body(update_response, update[1]["response"])
-        helpers.check_response_status_code(update_response, 401)
-        helpers.check_response_headers(update_response, headers)
-
-    def test_update_patient_with_invalid_auth_header(self, headers):
-        headers['authorization'] = 'Bearer abcdef123456789'
-        update_response = helpers.update_patient(
             update[2]["patient"],
             'W/"14"',
             update[2]["patch"],
@@ -634,21 +623,20 @@ class TestUserRestrictedPatientUpdateSyncWrap:
         helpers.check_response_status_code(update_response, 401)
         helpers.check_response_headers(update_response, headers)
 
+    def test_update_patient_with_invalid_auth_header(self, headers):
+        headers['authorization'] = 'Bearer abcdef123456789'
+        update_response = helpers.update_patient(
+            update[3]["patient"],
+            'W/"14"',
+            update[3]["patch"],
+            headers
+        )
+        helpers.check_retrieve_response_body(update_response, update[3]["response"])
+        helpers.check_response_status_code(update_response, 401)
+        helpers.check_response_headers(update_response, headers)
+
     def test_update_patient_with_blank_x_request_header(self, headers_with_token):
         self.headers["X-Request-ID"] = ''
-        update_response = helpers.update_patient(
-            update[4]["patient"],
-            'W/"14"',
-            update[4]["patch"],
-            self.headers
-        )
-        helpers.check_retrieve_response_body(update_response, update[4]["response"])
-        helpers.check_response_status_code(update_response, 400)
-        self.headers.pop("X-Request-ID")
-        helpers.check_response_headers(update_response, self.headers)
-
-    def test_update_patient_with_invalid_x_request_header(self, headers_with_token):
-        self.headers["X-Request-ID"] = '1234'
         update_response = helpers.update_patient(
             update[5]["patient"],
             'W/"14"',
@@ -657,10 +645,11 @@ class TestUserRestrictedPatientUpdateSyncWrap:
         )
         helpers.check_retrieve_response_body(update_response, update[5]["response"])
         helpers.check_response_status_code(update_response, 400)
+        self.headers.pop("X-Request-ID")
         helpers.check_response_headers(update_response, self.headers)
 
-    def test_update_patient_with_missing_x_request_header(self, headers_with_token):
-        self.headers.pop("X-Request-ID")
+    def test_update_patient_with_invalid_x_request_header(self, headers_with_token):
+        self.headers["X-Request-ID"] = '1234'
         update_response = helpers.update_patient(
             update[6]["patient"],
             'W/"14"',
@@ -668,6 +657,18 @@ class TestUserRestrictedPatientUpdateSyncWrap:
             self.headers
         )
         helpers.check_retrieve_response_body(update_response, update[6]["response"])
+        helpers.check_response_status_code(update_response, 400)
+        helpers.check_response_headers(update_response, self.headers)
+
+    def test_update_patient_with_missing_x_request_header(self, headers_with_token):
+        self.headers.pop("X-Request-ID")
+        update_response = helpers.update_patient(
+            update[7]["patient"],
+            'W/"14"',
+            update[7]["patch"],
+            self.headers
+        )
+        helpers.check_retrieve_response_body(update_response, update[7]["response"])
         helpers.check_response_status_code(update_response, 412)
         helpers.check_response_headers(update_response, self.headers)
 
@@ -677,10 +678,10 @@ class TestUserRestrictedRetrieveRelatedPerson:
     @pytest.mark.smoke_test
     def test_retrieve_related_person(self, headers_with_token):
         response = helpers.retrieve_patient_related_person(
-            retrieve[7]["patient"],
+            retrieve[8]["patient"],
             self.headers
         )
-        helpers.check_retrieve_related_person_response_body(response, retrieve[7]["response"])
+        helpers.check_retrieve_related_person_response_body(response, retrieve[8]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, self.headers)
 

@@ -1,17 +1,34 @@
-from .environment import ENV
 
+from ...scripts.environment import EnvVarWrapper
+
+
+ENV = EnvVarWrapper(
+    **{
+        "environment": "APIGEE_ENVIRONMENT",
+        "pds_base_path": "PDS_BASE_PATH",
+        'client_id': 'CLIENT_ID',
+        'client_secret': 'CLIENT_SECRET',
+        'redirect_uri': 'REDIRECT_URI',
+        'authenticate_url': 'AUTHENTICATE_URL',
+        'test_patient_id': 'TEST_PATIENT_ID',
+        'oauth_proxy': 'OAUTH_PROXY',
+        'oauth_base_uri': 'OAUTH_BASE_URI'
+    }
+)
 
 # Api Details
 ENVIRONMENT = ENV["environment"]
 BASE_URL = f"https://{ENVIRONMENT}.api.service.nhs.uk"  # Apigee proxy url
 
-IDENTITY_SERVICE = "oauth2-no-smartcard" if ENVIRONMENT == "int" else "oauth2"
+IDENTITY_SERVICE_MOCK_USER_ID = "656005750107"
+OAUTH_PROXY = ENV["oauth_proxy"]
+OAUTH_BASE_URI = ENV["oauth_base_uri"]
 
-AUTHORIZE_URL = f"{BASE_URL}/{IDENTITY_SERVICE}/authorize"
-TOKEN_URL = f"{BASE_URL}/{IDENTITY_SERVICE}/token"
-SIM_AUTH_URL = f"{BASE_URL}/{IDENTITY_SERVICE}/simulated_auth"
+AUTHORIZE_URL = f"{BASE_URL}/{OAUTH_PROXY}/authorize"
+TOKEN_URL = f"{BASE_URL}/{OAUTH_PROXY}/token"
+SIM_AUTH_URL = f"{BASE_URL}/{OAUTH_PROXY}/simulated_auth"
 AUTHENTICATE_URL = ENV["authenticate_url"]
-CALLBACK_URL = f"{BASE_URL}/{IDENTITY_SERVICE}/callback"
+CALLBACK_URL = f"{BASE_URL}/{OAUTH_PROXY}/callback"
 
 # PDS
 PDS_BASE_PATH = ENV["pds_base_path"]

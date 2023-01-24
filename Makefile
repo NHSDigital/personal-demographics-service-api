@@ -14,7 +14,7 @@ install-hooks:
 
 install-fhir-validator:
 	mkdir -p bin
-	test -f bin/org.hl7.fhir.validator.jar || curl https://storage.googleapis.com/ig-build/org.hl7.fhir.validator.jar > bin/org.hl7.fhir.validator.jar
+	test -f bin/org.hl7.fhir.validator.jar || curl -L https://github.com/hapifhir/org.hl7.fhir.core/releases/download/5.6.42/validator_cli.jar > bin/org.hl7.fhir.validator.jar
 
 lint:
 	npm run lint
@@ -29,12 +29,18 @@ publish: clean
 	mkdir -p build
 	npm run publish 2> /dev/null
 
+publish-short-version:
+	swagger-cli bundle specification/personal-demographics.yaml -o short-version/personal-demographics-short-version.json
+
+publish-merged-version: clean publish publish-short-version
+
 serve: update-examples
 	npm run serve
 
 clean:
 	rm -rf build
 	rm -rf dist
+	rm -rf short-version
 
 generate-examples: publish clean
 	mkdir -p build/examples
@@ -81,5 +87,5 @@ test-sandbox: export PDS_BASE_PATH = local
 test-sandbox:
 	poetry run pytest -v tests/sandbox/test_sandbox.py
 
-validate-xml: 
+validate-xml:
 	poetry run python scripts/xml_validator.py

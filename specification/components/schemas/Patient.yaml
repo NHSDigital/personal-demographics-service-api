@@ -36,7 +36,6 @@ properties:
       List of addresses associated with the patient.
       
       These are fully populated on a retrieval or a successful update, only the `home` address is returned on a search.
-
       When a patient tagged as `restricted` or `very restricted` is retrieved, all addresses are removed from the response.
     items:
       $ref: "Address.yaml"
@@ -44,7 +43,6 @@ properties:
     type: array
     description: |
       List of contact points for the patient; for example, phone numbers or email addresses.
-
       When a patient tagged as `restricted` or `very restricted` is retrieved, all contact points are removed from the response.
     items:
       $ref: "ContactPoint.yaml"
@@ -52,10 +50,8 @@ properties:
     type: array
     description: |
       A list of patient contacts. Only emergency contacts are returned and only emergency contacts should be added. Any other contacts should be added to the patients `Related Person`.
-
       Patients designate here any contact number they desire to be used in case of an emergency.
       Note, while a patient may also desire to record various related persons telecom details, these do not separately allow for a concept of emergency contact; only ranking. See RelatedPerson endpoint.
-
       When a patient tagged as `restricted` or `very restricted` is retrieved, all contacts are removed from the response.
     items:
       $ref: "Contact.yaml"
@@ -64,16 +60,16 @@ properties:
     maxItems: 1
     description: |
       General Practice (not practitioner) with which the patient is, or was, registered. Always contains zero or one general practitioner object.
-
       When a patient tagged as `restricted` or `very restricted` is retrieved, the General Practice is removed from the response.
     items:
       $ref: "GeneralPractitionerReference.yaml"
+  managingOrganization:
+    $ref: "ManagingOrganization.yaml"
   extension:
     type: array
     description: |
       Wrapper array for the patient's pharmacies, death notification status, communication details, contact preferences and place of birth; these are all FHIR extensions.
       Always contains zero or one of each pharmacy object, zero or one death notification status object, zero or one communication details object, zero or one contact preference and zero or one place of birth object.
-
       When a patient tagged as `restricted` or `very restricted` is retrieved, the pharmacy and birth place extensions are removed from the response.
     items:
       anyOf:
@@ -84,3 +80,4 @@ properties:
         - $ref: extensions/Communication.yaml
         - $ref: extensions/ContactPreference.yaml
         - $ref: extensions/BirthPlace.yaml
+        - $ref: extensions/RemovalFromRegistration.yaml

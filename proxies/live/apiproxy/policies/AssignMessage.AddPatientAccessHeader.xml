@@ -1,0 +1,9 @@
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.AddPatientAccessHeader">
+  <Add>
+      <Headers>
+          <Header name="NHSD-NHSLogin-User">{jwt.DecodeJWT.DecodeIdToken.claim.identity_proofing_level}:{jwt.DecodeJWT.DecodeIdToken.claim.nhs_number}</Header>
+      </Headers>
+  </Add>
+  <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+  <AssignTo createNew="false" transport="http" type="request"/>
+</AssignMessage>

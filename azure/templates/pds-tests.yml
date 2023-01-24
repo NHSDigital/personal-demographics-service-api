@@ -24,20 +24,32 @@ steps:
      secret_ids:
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_API_KEY
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_WITH_ASID_API_KEY
+      - ptl/backends/ig3/INTERNAL_DEV_ASID
 
   - bash: |
-      export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
-      export APPLICATION_RESTRICTED_WITH_ASID_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_WITH_ASID_PRIVATE_KEY)"
-      export APPLICATION_RESTRICTED_API_KEY="$(JWT_TESTING_API_KEY)"
-      export APPLICATION_RESTRICTED_WITH_ASID_API_KEY="$(JWT_TESTING_WITH_ASID_API_KEY)"
-      export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
-      export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
-      export KEY_ID="test-1"
-      export ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH="$(Pipeline.Workspace)/secrets/$(ID_TOKEN_NHS_LOGIN_PRIVATE_KEY)"
-      export JWT_PRIVATE_KEY_ABSOLUTE_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
-      export TEST_PATIENT_ID="$(TEST_PATIENT_ID)"
-      export AUTH_TOKEN_EXPIRY_MS="$(AUTH_TOKEN_EXPIRY_MS)"
-      export AUTH_TOKEN_EXPIRY_MS_INT="$(AUTH_TOKEN_EXPIRY_MS_INT)"
+      echo '##vso[task.setvariable variable=PDS_BASE_PATH]$(SERVICE_BASE_PATH)'
+      echo '##vso[task.setvariable variable=APIGEE_ENVIRONMENT]$(ENVIRONMENT)'
+      echo '##vso[task.setvariable variable=CLIENT_ID]$(CLIENT_ID)'
+      echo '##vso[task.setvariable variable=CLIENT_SECRET]$(CLIENT_SECRET)'
+      echo '##vso[task.setvariable variable=KEY_ID]test-1'
+      echo '##vso[task.setvariable variable=TEST_PATIENT_ID]$(TEST_PATIENT_ID)'
+      echo '##vso[task.setvariable variable=APPLICATION_RESTRICTED_SIGNING_KEY_PATH]$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)'
+      echo '##vso[task.setvariable variable=APPLICATION_RESTRICTED_WITH_ASID_SIGNING_KEY_PATH]$(Pipeline.Workspace)/secrets/$(JWT_TESTING_WITH_ASID_PRIVATE_KEY)'
+      echo '##vso[task.setvariable variable=APPLICATION_RESTRICTED_API_KEY]$(JWT_TESTING_API_KEY)'
+      echo '##vso[task.setvariable variable=APPLICATION_RESTRICTED_WITH_ASID_API_KEY]$(JWT_TESTING_WITH_ASID_API_KEY)'
+      echo '##vso[task.setvariable variable=JWT_PRIVATE_KEY_ABSOLUTE_PATH]$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)'
+      echo '##vso[task.setvariable variable=ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH]$(Pipeline.Workspace)/secrets/$(ID_TOKEN_NHS_LOGIN_PRIVATE_KEY)'
+      echo '##vso[task.setvariable variable=AUTH_TOKEN_EXPIRY_MS]$(AUTH_TOKEN_EXPIRY_MS)'
+      echo '##vso[task.setvariable variable=AUTH_TOKEN_EXPIRY_MS_INT]$(AUTH_TOKEN_EXPIRY_MS_INT)'
+      echo '##vso[task.setvariable variable=REDIRECT_URI]https://example.org/callback'
+      echo '##vso[task.setvariable variable=APIGEE_API_TOKEN]$(secret.AccessToken)'
+    displayName: Expose common variables
+
+  - bash: |
+      export APIGEE_API_TOKEN="$(secret.AccessToken)"
+      export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
+      export OAUTH_PROXY="oauth2"
+      export INTERNAL_DEV_ASID="$(INTERNAL_DEV_ASID)"
 
       poetry run pytest -v tests/functional/test_application_restricted.py --junitxml=tests/functional-test-report.xml
     displayName: Run application restricted tests
@@ -49,21 +61,9 @@ steps:
       failTaskOnFailedTests: true
 
   - bash: |
-      export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
-      export APPLICATION_RESTRICTED_WITH_ASID_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_WITH_ASID_PRIVATE_KEY)"
-      export APPLICATION_RESTRICTED_API_KEY=" "
-      export APPLICATION_RESTRICTED_WITH_ASID_API_KEY=" "
-      export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
-      export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
-      export KEY_ID="test-1"
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2"
-      export ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH="$(Pipeline.Workspace)/secrets/$(ID_TOKEN_NHS_LOGIN_PRIVATE_KEY)"
-      export JWT_PRIVATE_KEY_ABSOLUTE_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
-      export TEST_PATIENT_ID="$(TEST_PATIENT_ID)"
-      export AUTH_TOKEN_EXPIRY_MS="$(AUTH_TOKEN_EXPIRY_MS)"
-      export AUTH_TOKEN_EXPIRY_MS_INT="$(AUTH_TOKEN_EXPIRY_MS_INT)"
 
       poetry run pytest -v tests/functional/test_proxy_behaviour.py --junitxml=tests/proxy-behaviour-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run proxy behaviour tests
@@ -76,13 +76,9 @@ steps:
       failTaskOnFailedTests: true
 
   - bash: |
-      export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
-      export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
-      export CLIENT_ID="$(CLIENT_ID)"
-      export CLIENT_SECRET="$(CLIENT_SECRET)"
-      export REDIRECT_URI="https://nhsd-apim-testing-internal-dev.herokuapp.com/callback"
-      export AUTHENTICATE_URL="https://nhsd-apim-testing-internal-dev.herokuapp.com/"
-      export TEST_PATIENT_ID="$(TEST_PATIENT_ID)"
+      export AUTHENTICATE_URL="https://example.org/callback"
+      export OAUTH_PROXY="oauth2-mock"
+      export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
 
       poetry run pytest -v tests/user_restricted/test_user_restricted.py --junitxml=tests/user-restricted-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run user restricted tests
@@ -94,23 +90,9 @@ steps:
       failTaskOnFailedTests: true
 
   - bash: |
-      export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
-      export APPLICATION_RESTRICTED_WITH_ASID_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_WITH_ASID_PRIVATE_KEY)"
-      export APPLICATION_RESTRICTED_API_KEY=" "
-      export APPLICATION_RESTRICTED_WITH_ASID_API_KEY=" "
-      export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
-      export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
-      export KEY_ID="test-1"
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2"
-      export CLIENT_ID="$(CLIENT_ID)"
-      export CLIENT_SECRET="$(CLIENT_SECRET)"
-      export ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH="$(Pipeline.Workspace)/secrets/$(ID_TOKEN_NHS_LOGIN_PRIVATE_KEY)"
-      export JWT_PRIVATE_KEY_ABSOLUTE_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
-      export TEST_PATIENT_ID="$(TEST_PATIENT_ID)"
-      export AUTH_TOKEN_EXPIRY_MS="$(AUTH_TOKEN_EXPIRY_MS)"
-      export AUTH_TOKEN_EXPIRY_MS_INT="$(AUTH_TOKEN_EXPIRY_MS_INT)"
 
       poetry run pytest -v tests/functional/test_sync_wrap.py --junitxml=tests/sync-wrap-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run sync wrap tests
@@ -123,22 +105,9 @@ steps:
       failTaskOnFailedTests: true
 
   - bash: |
-      export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
-      export APPLICATION_RESTRICTED_WITH_ASID_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_WITH_ASID_PRIVATE_KEY)"
-      export APPLICATION_RESTRICTED_API_KEY=" "
-      export APPLICATION_RESTRICTED_WITH_ASID_API_KEY=" "
-      export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
-      export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
-      export KEY_ID="test-1"
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2"
-      export CLIENT_ID="$(CLIENT_ID)"
-      export CLIENT_SECRET="$(CLIENT_SECRET)"
-      export ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH="$(Pipeline.Workspace)/secrets/$(ID_TOKEN_NHS_LOGIN_PRIVATE_KEY)"
-      export JWT_PRIVATE_KEY_ABSOLUTE_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
-      export AUTH_TOKEN_EXPIRY_MS="$(AUTH_TOKEN_EXPIRY_MS)"
-      export AUTH_TOKEN_EXPIRY_MS_INT="$(AUTH_TOKEN_EXPIRY_MS_INT)"
 
       poetry run pytest -v tests/functional/test_patient_access.py --junitxml=tests/patient-access-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run patient access tests

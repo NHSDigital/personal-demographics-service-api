@@ -152,7 +152,22 @@ def minimal_patient(resource):
     return _process_whitelist(resource, whitelist)
 
 
+def minimal_bundle(resource):
+    """
+    Remove all but the mandatory details on the patient inside a bundle
+    """
+    patient = resource['entry'][0]['resource']
+    resource['entry'][0]['resource'] = minimal_patient(patient)
+    return resource
+
+
 def slim_patient(resource):
+    patient = resource['entry'][0]['resource']
+    resource['entry'][0]['resource'] = _slim_patient(patient)
+    return resource
+
+
+def _slim_patient(resource):
     """
     Remove parts of the patient that will not be returned on a search response
     to align with how the backend actually performs.
@@ -185,26 +200,40 @@ def sensitive_patient(resource):
     Only include parts of the patient that will be returned on a sensitive response
     to align with how the backend actually performs.
     """
-
     # These are the fields that will be removed
     blacklist = [
         "address",
         "telecom",
         "contact",
-        "generalPractitioner"
+        "generalPractitioner",
+        "managingOrganization"
     ]
-
     new_resource = _process_blacklist(resource, blacklist)
     new_resource["meta"]["security"][0]["code"] = "R"
     new_resource["meta"]["security"][0]["display"] = "restricted"
 
     if "extension" in resource:
         new_resource["extension"] = _slim_extension(resource, "extension")
-
     return new_resource
 
 
+def sensitive_bundle(resource):
+    """
+    Only include parts of the patient in a bundle that will be returned on a sensitive response
+    to align with how the backend actually performs.
+    """
+    patient = resource['entry'][0]['resource']
+    resource['entry'][0]['resource'] = sensitive_patient(patient)
+    return resource
+
+
 def related_person_reference_only(resource):
+    patient = resource['entry'][0]['resource']
+    resource['entry'][0]['resource'] = _related_person_reference_only(patient)
+    return resource
+
+
+def _related_person_reference_only(resource):
     """
     Returning a related person resource with only the reference details
     """
@@ -218,6 +247,12 @@ def related_person_reference_only(resource):
 
 
 def related_person_no_reference(resource):
+    patient = resource['entry'][0]['resource']
+    resource['entry'][0]['resource'] = _related_person_no_reference(patient)
+    return resource
+
+
+def _related_person_no_reference(resource):
     """
     Returning a related person resource with no reference details
     """
@@ -229,6 +264,12 @@ def related_person_no_reference(resource):
 
 
 def remove_list_id(resource):
+    patient = resource['entry'][0]['resource']
+    resource['entry'][0]['resource'] = _remove_list_id(patient)
+    return resource
+
+
+def _remove_list_id(resource):
     """
     Remove `id` from list fields.
     """

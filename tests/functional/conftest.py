@@ -7,6 +7,10 @@ from api_test_utils.apigee_api_products import ApigeeApiProducts
 from .config_files import config
 import random
 from time import time
+import json
+from typing import Union
+
+from .config_files.config import BASE_URL, CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
 
 
 async def _set_default_rate_limit(product: ApigeeApiProducts):
@@ -76,7 +80,7 @@ async def get_token(request):
             oauth = OauthHelper(
                 client_id=config.CLIENT_ID,
                 client_secret=config.CLIENT_SECRET,
-                redirect_uri="https://nhsd-apim-testing-internal-dev.herokuapp.com/",
+                redirect_uri="https://example.org/callback",
             )
             resp = await oauth.get_token_response(grant_type=grant_type, **kwargs)
 
@@ -113,15 +117,14 @@ async def setup_session(request):
     # Set default JWT Testing resource url
     await app.set_custom_attributes(
             {
-                'jwks-resource-url': 'https://raw.githubusercontent.com/NHSDigital/'
-                                     'identity-service-jwks/main/jwks/internal-dev/'
-                                     '9baed6f4-1361-4a8e-8531-1f8426e3aba8.json'
+                'jwks-resource-url': config.JWKS_RESOURCE_URL
             }
     )
 
     await product.update_environments([config.ENVIRONMENT])
     oauth = OauthHelper(app.client_id, app.client_secret, app.callback_url)
-    resp = await oauth.get_token_response(grant_type="authorization_code")
+    # APMSPII-1139 increase token expiry time to provide sufficient time to conduct the tests
+    resp = await oauth.get_token_response(grant_type="authorization_code", timeout=20000)
     token = resp["body"]["access_token"]
 
     yield product, app, token
@@ -203,25 +206,50 @@ def sync_wrap_low_wait_update(setup_patch: GenericPdsRequestor, create_random_da
 
 
 def set_quota_and_rate_limit(
-    product: ApigeeApiProducts,
+    apigeeObj: Union[ApigeeApiProducts, ApigeeApiDeveloperApps],
     rate_limit: str = "1000ps",
     quota: int = 60000,
     quota_interval: str = "1",
-    quota_time_unit: str = "minute"
+    quota_time_unit: str = "minute",
+    quota_enabled: bool = True,
+    rate_enabled: bool = True,
+    proxy: str = ""
 ) -> None:
-    """Sets the quota and rate limit on an apigee product.
+    """Sets the quota and rate limit on an apigee product or app.
 
     Args:
-        product (ApigeeApiProducts): Apigee product
+        obj (Union[ApigeeApiProducts,ApigeeApiDeveloperApps]): Apigee product or Apigee app
         rate_limit (str): The rate limit to be set.
         quota (int): The amount of requests per quota interval.
         quoata_interval (str): The length of a quota interval in quota units.
         quota_time_unit (str): The quota unit length e.g. minute.
+        quota_enabled (bool): Enable or disable proxy level quota.
+        rate_enabled (bool): Enable or disable proxy level spike arrest.
+        proxy (str): The proxy to apply rate limiting to.
     """
-    asyncio.run(product.update_ratelimits(quota=quota,
-                                          quota_interval=quota_interval,
-                                          quota_time_unit=quota_time_unit,
-                                          rate_limit=rate_limit))
+    value = json.dumps({
+        proxy: {
+            "quota": {
+                "limit": quota,
+                "interval": quota_interval,
+                "timeunit": quota_time_unit,
+                "enabled": quota_enabled
+            },
+            "spikeArrest": {
+                "ratelimit": rate_limit,
+                "enabled": rate_enabled
+            }
+        }
+    })
+
+    rate_limiting = {'ratelimiting': value}
+
+    if (isinstance(apigeeObj, ApigeeApiProducts)):
+        asyncio.run(apigeeObj.update_attributes(rate_limiting))
+    elif isinstance(apigeeObj, ApigeeApiDeveloperApps):
+        asyncio.run(apigeeObj.set_custom_attributes(rate_limiting))
+    else:
+        raise TypeError("Please provide an Apigee product or Apigee app")
 
 
 @pytest.fixture()
@@ -279,9 +307,7 @@ async def test_app_and_product(app, product):
     await app.add_api_product([product.name])
     await app.set_custom_attributes(
         {
-            "jwks-resource-url": "https://raw.githubusercontent.com/NHSDigital/"
-                                 "identity-service-jwks/main/jwks/internal-dev/"
-                                 "9baed6f4-1361-4a8e-8531-1f8426e3aba8.json"
+            "jwks-resource-url": config.JWKS_RESOURCE_URL
         }
     )
 
@@ -299,18 +325,18 @@ def nhs_login_token_exchange(test_app_and_product):
         """Call identity server to get an access token"""
         test_product, test_app = test_app_and_product
         oauth = OauthHelper(
-            client_id=test_app.client_id,
-            client_secret=test_app.client_secret,
-            redirect_uri=test_app.callback_url,
+            client_id=CLIENT_ID,
+            client_secret=CLIENT_SECRET,
+            redirect_uri=REDIRECT_URI,
         )
 
         id_token_claims = {
             "aud": "tf_-APIM-1",
             "id_status": "verified",
-            "nhs_number": "9912003071",
+            "nhs_number": config.TEST_PATIENT_ID,
             "token_use": "id",
             "auth_time": 1616600683,
-            "iss": "https://internal-dev.api.service.nhs.uk",
+            "iss": BASE_URL,
             "vot": "P9.Cp.Cd",
             "exp": int(time()) + 600,
             "iat": int(time()) - 10,
@@ -322,22 +348,20 @@ def nhs_login_token_exchange(test_app_and_product):
             "sub": "49f470a1-cc52-49b7-beba-0f9cec937c46",
             "aud": "APIM-1",
             "kid": "nhs-login",
-            "iss": "https://internal-dev.api.service.nhs.uk",
+            "iss": BASE_URL,
             "typ": "JWT",
             "exp": 1616604574,
             "iat": 1616600974,
             "alg": "RS512",
             "jti": "b68ddb28-e440-443d-8725-dfe0da330118",
         }
-        with open(config.ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH, "r") as f:
-            contents = f.read()
 
         client_assertion_jwt = oauth.create_jwt(kid="test-1")
         id_token_jwt = oauth.create_id_token_jwt(
             algorithm="RS512",
             claims=id_token_claims,
             headers=id_token_headers,
-            signing_key=contents,
+            signing_key=config.ID_TOKEN_NHS_LOGIN_PRIVATE_KEY,
         )
 
         # When
@@ -351,6 +375,7 @@ def nhs_login_token_exchange(test_app_and_product):
                 "client_assertion": client_assertion_jwt,
             },
         )
-        assert token_resp["status_code"] == 200
-        return token_resp["body"]['access_token']
+        if token_resp["status_code"] == 200:
+            return token_resp["body"]["access_token"]
+        return token_resp
     return get_token_nhs_login_token_exchange

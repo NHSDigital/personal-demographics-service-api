@@ -1,35 +1,49 @@
 {
-  "id": "9000000033",
-  "identifier": [
+  "resourceType": "Bundle",
+  "type": "searchset",
+  "timestamp": "2019-12-25T12:00:00+00:00",
+  "total": 1,
+  "entry": [
     {
-      "extension": [
-        {
-          "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
-          "valueCodeableConcept": {
-            "coding": [
+      "fullUrl": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000033",
+      "search": {
+        "score": 0.75
+      },
+      "resource": {
+        "resourceType": "Patient",
+        "id": "9000000033",
+        "identifier": [
+          {
+            "system": "https://fhir.nhs.uk/Id/nhs-number",
+            "value": "9000000033",
+            "extension": [
               {
-                "code": "01",
-                "display": "Number present and verified",
-                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
-                "version": "1.0.0"
+                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                      "version": "1.0.0",
+                      "code": "01",
+                      "display": "Number present and verified"
+                    }
+                  ]
+                }
               }
             ]
           }
+        ],
+        "meta": {
+          "versionId": "2",
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality",
+              "code": "U",
+              "display": "unrestricted"
+            }
+          ]
         }
-      ],
-      "system": "https://fhir.nhs.uk/Id/nhs-number",
-      "value": "9000000033"
-    }
-  ],
-  "meta": {
-    "security": [
-      {
-        "code": "U",
-        "display": "unrestricted",
-        "system": "https://www.hl7.org/fhir/valueset-security-labels.html"
       }
-    ],
-    "versionId": "2"
-  },
-  "resourceType": "Patient"
+    }
+  ]
 }

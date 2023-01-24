@@ -30,9 +30,6 @@ extends:
     service_name: ${{ variables.service_name }}
     short_service_name: ${{ variables.short_service_name }}
     service_base_path: ${{ variables.service_base_path }}
-    product_display_name: ${{ variables.product_display_name }}
-    product_description: ${{ variables.product_description }}
-    spec_file: ${{ variables.spec_file }}
     enable_monitoring: true
     enable_status_monitoring: true
     jinja_templates:
@@ -40,30 +37,26 @@ extends:
       PDS_TARGET_SERVER: spine-demographics
     apigee_deployments:
       - environment: internal-dev
-        make_spec_visible: true
         post_deploy:
           - template: templates/pds-tests.yml
       - environment: internal-qa
-        make_spec_visible: true
         post_deploy:
-          - template: templates/pds-tests-internal-qa.yml
+          - template: templates/pds-tests.yml
         depends_on:
             - internal_dev
       - environment: internal-qa-sandbox
-        make_spec_visible: true
         enable_status_monitoring: false
         proxy_path: sandbox
         post_deploy:
           - template: templates/sandbox-tests.yml
       - environment: int
-        make_spec_visible: true
         post_deploy:
            - template: templates/pds-tests-int.yml
         depends_on:
           - internal_qa
           - internal_qa_sandbox
       - environment: ref
-        make_spec_visible: true
+        enable_status_monitoring: false # revert when /_status implemented or endpoint updated
         depends_on:
           - internal_qa
           - internal_qa_sandbox
@@ -76,7 +69,6 @@ extends:
           - internal_qa
           - internal_qa_sandbox
       - environment: prod
-        make_spec_visible: true
         depends_on:
           - internal_qa
           - internal_qa_sandbox
