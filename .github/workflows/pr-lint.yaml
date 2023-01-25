@@ -1,11 +1,27 @@
 name: PR Quality Check
 on: pull_request
+
+permissions:
+  actions: write
+  checks: write
+  contents: write
+  deployments: write
+  discussions: write
+  issues: write
+  id-token: write
+  packages: write
+  pages: write
+  pull-requests: write
+  repository-projects: write
+  security-events: write
+  statuses: write
+
 jobs:
   auto-approve:
     runs-on: ubuntu-latest
     steps:
     - uses: hmarr/auto-approve-action@v2.0.0
-      if: (github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]') && contains(github.event.pull_request.labels.*.name, 'security')
+      if: (github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]') && contains(github.event.pull_request.labels.*.name, 'dependencies')
       with:
         github-token: "${{ secrets.GITHUB_TOKEN }}"
   link-ticket:
