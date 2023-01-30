@@ -178,9 +178,6 @@ apigee:
         attributes:
           - name: access
             value: public
-{% if mode.nameSuffix == '-patient-access' and env.name == 'prod' %}
-            value: private
-{% endif %}
           - name: ratelimiting
             value: {{ env.ratelimiting }}
         description: {{ mode.description }}
@@ -208,12 +205,7 @@ apigee:
         description: Personal Demographics Service FHIR API - {{ mode.displayName|lower  }} access mode - {{ env.display_name_suffix|lower }} environment
         requireCallbackUrl: {{ mode.requireCallbackUrl }}
         title: Personal Demographics Service - {{ mode.displayName }} ({{ env.display_name_suffix }})
-{# Special-case so we don't (yet) show Patient Access as available in Production #}
-{% if mode.nameSuffix == '-patient-access' and env.name == 'prod' %}
-        visibility: false
-{% else %}
         visibility: {{ portal_visibility }}
-{% endif %}
         specId: personal-demographics-{{ env.name }}
 {% endfor %}
 {% endfor %}
