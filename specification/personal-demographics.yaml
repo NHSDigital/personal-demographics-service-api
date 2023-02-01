@@ -50,7 +50,7 @@ info:
     | ------------------------------ | ------------------ | ------------ |
     | [Application-restricted access](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis)  |Search for a patient (single result).<br>Get patient details.                                    | Available in production ([stable](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status)) |
     | [Healthcare worker access](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis)              |Search for patients (multiple results).<br>Get patient details.<br>Update patient details.    | Available in production ([beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status))   |
-    | [Patient access](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis)                        |Get own details.<br>Update own details (limited).                                                 | Available in integration environment ([alpha](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status))|
+    | [Patient access](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis)                        |Get own details.<br>Update own details (limited).                                                 | Available in production ([beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status))   |
     
     For further details about the access modes for this API, see [Security and authorisation](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir#api-description__security-and-authorisation) below.
     
@@ -96,10 +96,10 @@ info:
     If you would like to be involved in our beta programme, [contact us](https://digital.nhs.uk/developer/help-and-support).
         
     ### Patient access
-    This access mode is [in development](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#statuses), meaning:
-    - it is available for testing in the integration environment
-    - it is not available for production use
+    This access mode is [in production, beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#statuses), meaning:
     - we might make breaking changes, but only if we cannot avoid it, and we will give advance notice
+    
+    If you would like to be involved in our beta programme, [contact us](https://digital.nhs.uk/developer/help-and-support).
     
     ### Roadmap
     To see our roadmap, or to suggest, comment or vote on features for this API, see our [interactive product backlog](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
@@ -673,7 +673,7 @@ paths:
         | ------------------------------ | ----------------------------------- |
         | Application-restricted access  | Updates not allowed                 |
         | Healthcare worker access       | Updates allowed                     |
-        | Patient access                 | Updates allowed (Available in integration environment only)|
+        | Patient access                 | Updates allowed                     |
  
         ## Patient resource versioning
         To update a patient's resource you must have retrieved it first, to ensure you are working against an up-to-date patient resource.
