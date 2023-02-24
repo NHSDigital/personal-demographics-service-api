@@ -16,7 +16,7 @@
     "swagger-cli": "^4.0.4"
   },
   "devDependencies": {
-    "apigeetool": "^0.14.2",
+    "apigeetool": "^0.16.1",
     "license-checker": "^25.0.1",
     "puppeteer": "^5.3.1"
   }
