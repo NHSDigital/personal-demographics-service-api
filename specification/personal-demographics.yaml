@@ -235,15 +235,28 @@ info:
     ## Onboarding
     You need to get your software approved by us before it can go live with this API. We call this onboarding. The onboarding process can sometimes be quite long, so it’s worth planning well ahead.
     
-    This API uses our online digital onboarding process.
-    
     As part of this process, you need to demonstrate your technical conformance to the requirements for this API. For more details according to your access mode, see:
     * [PDS FHIR API technical conformance - application-restricted access mode](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-technical-conformance---application-restricted-access-mode)
     * [PDS FHIR API technical conformance - healthcare worker access mode](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-technical-conformance---healthcare-worker-access-mode)
 
     You also need to demonstrate that you can manage risks. This might impact the design of your software. For details, see [Onboarding support information](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/onboarding-support-information).
     
-    To get started, see [digital onboarding](https://digital.nhs.uk/developer/guides-and-documentation/digital-onboarding). 
+    To understand how our online digital onboarding process works, see [digital onboarding](https://digital.nhs.uk/developer/guides-and-documentation/digital-onboarding). 
+    
+    <div class="nhsd-m-emphasis-box nhsd-m-emphasis-box--emphasis nhsd-!t-margin-bottom-6" aria-label="Highlighted Information">
+        <div class="nhsd-a-box nhsd-a-box--border-blue">
+            <div class="nhsd-m-emphasis-box__image-box">
+                <figure class="nhsd-a-image">
+                    <picture class="nhsd-a-image__picture">
+                        <img src="//nhs-prod.global.ssl.fastly.net/svg-magic/binaries/content/gallery/icons/play-circle.svg?colour=231f20" alt="" style="object-fit:fill">
+                    </picture>
+                </figure>
+            </div>
+            <div class="nhsd-m-emphasis-box__content-box">
+                <div data-uipath="website.contentblock.emphasis.content" class="nhsd-t-word-break"><p class="nhsd-t-body">To get started, sign in or create a <a href="http://onboarding.prod.api.platform.nhs.uk/">developer account</a>, then select 'product onboarding'.</p></div>            
+            </div>
+        </div>
+    </div> 
     
     ## Errors
     We use standard HTTP status codes to show whether an API request succeeded or not. They are usually in the range:
