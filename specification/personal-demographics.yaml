@@ -248,7 +248,7 @@ info:
             <div class="nhsd-m-emphasis-box__image-box">
                 <figure class="nhsd-a-image">
                     <picture class="nhsd-a-image__picture">
-                        <img src="//nhs-prod.global.ssl.fastly.net/svg-magic/binaries/content/gallery/icons/play-circle.svg?colour=231f20" alt="" style="object-fit:fill">
+                        <img src="http://digital.nhs.uk/binaries/content/gallery/icons/play-circle.svg?colour=231f20" alt="" style="object-fit:fill">
                     </picture>
                 </figure>
             </div>
