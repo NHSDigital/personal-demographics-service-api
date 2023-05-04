@@ -1,4 +1,4 @@
-description: The managing organization of a de-registered patient.
+description: The managing organization of a de-registered patient. This will not be returned when the reason for de-registration is death.
 type: object
 required:
   - identifier
