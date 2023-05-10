@@ -65,9 +65,22 @@ function buildPatientResponse(examplePatients = [], searchScore = 1.0) {
             })
         });
     } else {
-        delete response.entry
+        response.entry.push({
+            search: {
+              mode: 'outcome'
+            },
+            resource: {
+              resourceType: 'OperationOutcome',
+              issue: [
+                {
+                  severity: 'warning',
+                  code: 'not-supported',
+                  diagnostics: 'This mock endpoint has no example response for this combination of search parameters'
+                }
+              ]
+            }
+          })
     }
-
     return response;
 }
 
