@@ -20,6 +20,10 @@ readme = 'README.md'
 repository = "https://github.com/NHSDigital/personal-demographics-service-api"
 homepage = ""
 
+[build-system]
+requires = ["setuptools", "poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
 keywords = ["healthcare", "uk", "nhs", "demographics"]
 
 
