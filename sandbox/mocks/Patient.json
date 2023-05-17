@@ -70,6 +70,17 @@
       }
     }
   ],
+  "managingOrganization": {
+    "type": "Organization",
+    "identifier": {
+      "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+      "value": "Y12345",
+      "period": {
+        "start": "2020-01-01",
+        "end": "2021-12-31"
+      }
+    }
+  },
   "extension": [
     {
       "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NominatedPharmacy",
@@ -182,6 +193,30 @@
         "district": "Greater Manchester",
         "country": "GBR"
       }
+    },
+    {
+      "url": "https://fhir.nhs.uk/StructureDefinition/Extension-PDS-RemovalFromRegistration",
+      "extension": [
+        {
+          "url": "removalFromRegistrationCode",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://fhir.nhs.uk/CodeSystem/PDS-RemovalReasonExitCode",
+                "code": "SCT",
+                "display": "Transferred to Scotland"
+              }
+            ]
+          }
+        },
+        {
+          "url": "effectiveTime",
+          "valuePeriod": {
+            "start": "2020-01-01T00:00:00+00:00",
+            "end": "2021-12-31T00:00:00+00:00"
+          }
+        }
+      ]
     }
   ],
   "telecom": [

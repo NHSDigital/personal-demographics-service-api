@@ -11,4 +11,4 @@ jq -rM . <build/examples/resources/Minimal_PatientSearch.json >specification/com
 jq -rM . <build/examples/resources/RelatedPerson.json >specification/components/examples/RelatedPerson.json
 jq -rM . <build/examples/resources/Referenced_RelatedPerson.json >specification/components/examples/Referenced_RelatedPerson.json
 jq -rM . <build/examples/resources/Personal_Details_RelatedPerson.json >specification/components/examples/Personal_Details_RelatedPerson.json
-jq -rM . <build/examples/resources/PatientSearch-CompoundName.json >specification/components/examples/PatientCompoundName.json
+# jq -rM . <build/examples/resources/PatientSearch-CompoundName.json >specification/components/examples/PatientCompoundName.json
