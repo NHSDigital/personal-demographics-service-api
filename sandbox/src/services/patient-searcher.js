@@ -46,15 +46,15 @@ function containsSearchParameters(request, searchParameters) {
 }
 
 function buildPatientResponse(examplePatients = [], searchScore = 1.0) {
-    let response = {
-        resourceType: "Bundle",
-        type: "searchset",
-        timestamp: datefns.format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss+00:00"),
-        total: examplePatients.length,
-        entry: []
-    }
 
     if (examplePatients.length > 0) {
+        let response = {
+            resourceType: "Bundle",
+            type: "searchset",
+            timestamp: datefns.format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss+00:00"),
+            total: examplePatients.length,
+            entry: []
+        }
         examplePatients.forEach(patient => {
             response.entry.push({
                 fullUrl: "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/" + patient["id"],
@@ -64,24 +64,17 @@ function buildPatientResponse(examplePatients = [], searchScore = 1.0) {
                 resource: patient,
             })
         });
+        return response;
     } else {
-        response.entry.push({
-            search: {
-              mode: 'outcome'
-            },
-            resource: {
-              resourceType: 'OperationOutcome',
-              issue: [
-                {
-                  severity: 'warning',
-                  code: 'not-supported',
-                  diagnostics: 'This mock endpoint has no example response for this combination of search parameters'
-                }
-              ]
-            }
-          })
-    }
-    return response;
+        return {
+            resourceType: "OperationOutcome",
+            timestamp: datefns.format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss+00:00"),
+            "issue": [{"severity": "warning", "code": "not-supported", 
+            "details": {"coding": [{"system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode", 
+            "version": "1", "code": "not-supported", "display": "Unsupported operation"}]}, 
+            "diagnostics": "This mock endpoint has no example response for this combination of search parameters"}]}
+        }
+
 }
 
 // Verify search contains parameters
