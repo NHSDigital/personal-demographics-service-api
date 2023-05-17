@@ -1,4 +1,6 @@
 [flake8]
 max-line-length=120
 exclude = .git,__pycache__,dist,node_modules/*,utils/*,tests/functional/test_env/*
+per-file-ignores = tests/sandbox/data/scenarios.py:E501
+
 
