@@ -137,7 +137,7 @@ class TestPDSSandboxSearchSuite:
     def test_unsuccessful_search(self, additional_headers):
         response = helpers.search_patient(search[6]["query_params"], additional_headers)
         helpers.check_search_response_body(response, search[11]["response"])
-        helpers.check_response_status_code(response, 200)
+        helpers.check_response_status_code(response, 501)
         helpers.check_response_headers(response, additional_headers)
 
     def test_invalid_date_format_search(self, additional_headers):

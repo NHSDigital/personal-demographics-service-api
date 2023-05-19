@@ -66,15 +66,9 @@ function buildPatientResponse(examplePatients = [], searchScore = 1.0) {
         });
         return response;
     } else {
-        return {
-            resourceType: "OperationOutcome",
-            timestamp: datefns.format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss+00:00"),
-            "issue": [{"severity": "warning", "code": "not-supported", 
-            "details": {"coding": [{"system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode", 
-            "version": "1", "code": "not-supported", "display": "Unsupported operation"}]}, 
-            "diagnostics": "This mock endpoint has no example response for this combination of search parameters"}]}
-        }
-
+            throw Boom.notImplemented(`This mock endpoint has no example response for this combination of search parameters`,
+                {operationOutcomeCode: "not-supported", apiErrorCode: "not-supported", display: "Unsupported operation"})
+    }
 }
 
 // Verify search contains parameters
