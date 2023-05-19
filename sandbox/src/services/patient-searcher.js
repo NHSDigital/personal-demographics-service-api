@@ -46,15 +46,15 @@ function containsSearchParameters(request, searchParameters) {
 }
 
 function buildPatientResponse(examplePatients = [], searchScore = 1.0) {
-    let response = {
-        resourceType: "Bundle",
-        type: "searchset",
-        timestamp: datefns.format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss+00:00"),
-        total: examplePatients.length,
-        entry: []
-    }
 
     if (examplePatients.length > 0) {
+        let response = {
+            resourceType: "Bundle",
+            type: "searchset",
+            timestamp: datefns.format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss+00:00"),
+            total: examplePatients.length,
+            entry: []
+        }
         examplePatients.forEach(patient => {
             response.entry.push({
                 fullUrl: "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/" + patient["id"],
@@ -64,11 +64,11 @@ function buildPatientResponse(examplePatients = [], searchScore = 1.0) {
                 resource: patient,
             })
         });
+        return response;
     } else {
-        delete response.entry
+            throw Boom.notImplemented(`This mock endpoint has no example response for this combination of search parameters`,
+                {operationOutcomeCode: "not-supported", apiErrorCode: "not-supported", display: "Unsupported operation"})
     }
-
-    return response;
 }
 
 // Verify search contains parameters

@@ -1,4 +1,8 @@
 # Changelog
+## 2023-05-18
+* Updated response patient-searcher.js to return defined response to search params that return no results in test sandbox so more
+informative. Adjusted test scenario and test in test_sandbox.py to reflect this.
+* PatientCompoundName.json added as was missing and update_examples.sh script was failing so is now generated in the            duplicate_examples.sh script so that localhost can be started using command 'make sandbox' for local dev. Also, other sandbox mocks (Patient.json, Patient-Jayne-Smyth.json) were adjusted slightly when the update_examples.sh script was run with 'make  sandbox' command.
 
 ## 2021-08-20
 * Updating spec to correctly list birthdate examples in 'Try this API'
