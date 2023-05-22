@@ -1606,7 +1606,7 @@ paths:
         | ------------------------------- | --------------------------------------------- | ------------------------------------------------------------- |
         | Multiple related people exists  | `id`=`9000000009`                             | HTTP Status 200 with related person data in a response Bundle |
         | Single related person exists    | `id`=`9000000017`                             | HTTP Status 200 with related person data in a response Bundle |
-        | Related people do not exist     | `id`=`9000000025`                             | HTTP Status 404 with problem description                      |
+        | Related people do not exist     | `id`=`9000000025`                             | HTTP Status 200 with an empty bundle                          |
         | Missing X-Request-ID            | `id`=`9000000009` (or any other valid NHS number) | HTTP Status 412 with problem description                  |
 
         You can try out the sandbox using the 'Try this API' feature on this page.
