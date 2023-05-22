@@ -1,6 +1,6 @@
 type: object
 description: |
-  Business effective period when name was, is, or will be in use.
+  Business effective period when data item was, is, or will be in use.
 required:
   - start
 properties:
