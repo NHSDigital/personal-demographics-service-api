@@ -19,18 +19,89 @@ This code is dual licensed under the MIT license and the OGL (Open Government Li
 
 The contents of this repository are protected by Crown Copyright (C).
 
+
+## Setup
+
+N.B. that some functioanlity requires environment variables to be set. Some of these are described lower down in the readme, whilst others can be found in [the environment variables section of this confluence page](https://nhsd-confluence.digital.nhs.uk/display/SPINE/Personal+Demographics+Service+api+setup)
+
+
+Windows users should install [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install). Any distro is fine, though ubuntu/debian are recommended.
+
+## Installing requirements
+Install build requirements. This will make sure you don't hit any weird python issues later.
+```
+$ sudo apt update
+$ sudo apt install make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev git net-tools python-openssl
+```
+If you get the error "Unable to locate package python-openssl", try
+```
+$ sudo apt install python3-openssl
+```
+
+Install [pyenv](https://github.com/pyenv/pyenv) using the code below and then follow their [guide](https://github.com/pyenv/pyenv#set-up-your-shell-environment-for-pyenv) to integrating it with your terminal
+```
+$ curl https://pyenv.run | bash
+$ exec $SHELL
+```
+If the command isn't working you can also [try the instructions here.](https://www.liquidweb.com/kb/how-to-install-pyenv-on-ubuntu-18-04/)
+
+Install python 3.8.2
+```
+$ pyenv install 3.8.2
+```
+Either set this as your global python (if this is not incompatible with your other projects),
+```
+$ pyenv global 3.8.2
+```
+or local to repository, if there is not a python-version file installed (you might have to raise a PR to add the file that's created).
+```
+$ pyenv local 3.8.2
+$ python --version
+```
+
+Install poetry, then run 'poerty install' to install dependencies. Makes sure you change directory to this repo.
+```
+$ curl -sSL https://install.python-poetry.org | python3
+$ poetry install
+```
+
+Install nvm & npn
+```
+$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
+  # Close and reopen your terminal window, or use 'exec $SHELL'
+$ nvm install lts/fermium
+$ nvm use lts/fermium
+$ npm --version
+```
+
+Install Java
+```
+$ sudo apt install default-jre default-jdk
+$ java -version
+```
+
+Install pytest
+```
+$ pip install -U pytest
+$ sudo apt-get update
+$ sudo apt-get install jq
+```
+
+
+Next open powershell and get the wsl ip
+```
+$ wsl hostname -i
+```
+Add a proxy and open the windows fire wall, replace [PORT] with the ip from the previous command
+```
+$ netsh interface portproxy add v4tov4 listenport=9000 listenaddress=0.0.0.0 connectport=[PORT] connectaddress=127.0.1.1
+  # Check it's been added
+$ netsh interface portproxy show v4tov4
+$ firewall -add port 9000 
+```
+
 ## Development
 
-### Requirements
-* make
-* nodejs v12 or v14
-* npm/yarn
-* [poetry](https://github.com/python-poetry/poetry)
-
-### Install
-```
-$ make install
-```
 
 #### Updating hooks
 You can install some pre-commit hooks to ensure you can't commit invalid spec changes by accident. These are also run
@@ -56,6 +127,11 @@ There are `make` commands that alias some of this functionality:
 ### Running tests
 #### Sandbox Tests
 
+To start the sandbox, run the install command if not ran already
+```
+make install
+```
+
 Start the sandbox locally:
 ```
 make sandbox
@@ -65,6 +141,7 @@ To run local tests, use:
 ```
 make test-sandbox
 ```
+If a lot of the tests fail and the sandbox crashes with Cannot read properties of null (reading 'statusCode')  you may not be using the correct version of node. Check the version being used by that instance of the terminal and run re-run nvm use lts/fermium if required
 
 
 ### VS Code Plugins
