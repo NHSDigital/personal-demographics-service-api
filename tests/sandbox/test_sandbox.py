@@ -164,6 +164,30 @@ class TestPDSSandboxSearchSuite:
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
+    def test_sandbox_multi_phone_search_returns_hit(self, additional_headers):
+        response = helpers.search_patient(search[12]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[12]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_sandbox_multi_email_search_returns_hit(self, additional_headers):
+        response = helpers.search_patient(search[14]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[14]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_sandbox_multi_phone_search_returns_none(self, additional_headers):
+        response = helpers.search_patient(search[13]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[11]["response"])
+        helpers.check_response_status_code(response, 501)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_sandbox_multi_email_search_returns_none(self, additional_headers):
+        response = helpers.search_patient(search[15]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[11]["response"])
+        helpers.check_response_status_code(response, 501)
+        helpers.check_response_headers(response, additional_headers)
+
 
 @pytest.mark.update_scenarios
 class TestPDSSandboxUpdateSyncWrapSuite:

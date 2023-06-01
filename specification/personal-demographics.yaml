@@ -304,6 +304,8 @@ paths:
           * date of birth - which can be a range
           * date of death - which can be a range
           * registered GP practice
+          * email address
+          * phone number
           
         There are various search options, such as fuzzy search, exact match, history and wildcards.
         
@@ -433,6 +435,12 @@ paths:
         ### General practitioner
         This is an ODS code. If you use it, it must match exactly.
 
+        ### Phone number and email address
+        If you use phone number and/or email address, only exact matches will be returned.
+          * Wildcards are not supported
+          * Only current data will be searched, unless a history search is also requested in which case the match will take into account both current and historic data
+          * Email addresses are not case-sensitive.
+
         ## Patient data returned
         The patient data returned on a search is not the full set of data that is returned on a retrieval by NHS number. The following data is included:
         * NHS number
@@ -489,19 +497,20 @@ paths:
         ## Sandbox testing
         You can test the following scenarios in our sandbox environment:
 
-        | Scenario                    | Request                                                      | Response                                   |
-        | --------------------------- | ------------------------------------------------------------ | ------------------------------------------ |
-        | Basic search                | `family`=`Smith`, `gender`=`female`, `birthdate`=`eq2010-10-22` | HTTP Status 200 with single search result. |
-        | Wildcard search             | `family`=`Sm*`, `gender`=`female`, `birthdate`=`eq2010-10-22` | HTTP Status 200 with search result of two. |
-        | Search with limited results | `family`=`Sm*`, `gender`=`female`, `birthdate`=`eq2010-10-22`, `_max-results`=`2` | HTTP Status 200 with search result of two. |
-        | Search with date range      | `family`=`Smith`, `gender`=`female`, `birthdate`=`ge2010-10-21`, `birthdate`=`le2010-10-23` | HTTP Status 200 with single search result. |
-        | Fuzzy search                | `family`=`Smith`, `given`=`Jane`, `gender`=`female`, `birthdate`=`eq2010-10-22`, `_fuzzy-match`=`true` | HTTP Status 200 with single search result. |
-        | Restricted patient search   | `family`=`Smythe`, `given`=`Janet`, `gender`=`female`, `birthdate`=`eq2005-06-16` | HTTP Status 200 with single search result with restricted data omitted. |
-        | Compound name search        | `family`=`Smith`, `given`=`John Paul`, `given`=`James`, `gender`=`female`, `birthdate`=`eq2010-10-22` | HTTP Status 200 with single search result. |
-        | Unsuccessful search         | Any other valid search query parameters                      | HTTP Status 200 with no search results     |
-        | Invalid date format         | `birthdate` or `death-date` query parameters with values not in format `YYYY-MM-DD` | HTTP Status 400 with problem description   |
-        | Too few search parameters   | Any invalid combination of query parameters                  | HTTP Status 400 with problem description   |
-        | Missing X-Request-ID        | `id`=`9000000009` (or any other valid NHS number)            | HTTP Status 412 with problem description   |
+        | Scenario                                | Request                                                                                                                                                         | Response                                                                |
+        | ----------------------------------------| ----------------------------------------------------------------------------------------------------------------------------------------------------------------| ------------------------------------------------------------------------|
+        | Basic search                            | `family`=`Smith`, `gender`=`female`, `birthdate`=`eq2010-10-22`, `email`=`jane.smith@example.com`, `phone`=`01632960587`                                        | HTTP Status 200 with single search result.                              |
+        | Wildcard search                         | `family`=`Sm*`, `gender`=`female`, `birthdate`=`eq2010-10-22`, `email`=`jane.smith@example.com`, `phone`=`01632960587`                                          | HTTP Status 200 with single search result.                              |
+        | Search with limited results             | `family`=`Sm*`, `gender`=`female`, `birthdate`=`eq2010-10-22`, `email`=`jane.smith@example.com`, `phone`=`01632960587`, `_max-results`=`1`                      | HTTP Status 200 with single search result.                              |
+        | Search with date range                  | `family`=`Smith`, `gender`=`female`, `birthdate`=`ge2010-10-21`, `birthdate`=`le2010-10-23`, `email`=`jane.smith@example.com`, `phone`=`01632960587`            | HTTP Status 200 with single search result.                              |
+        | Fuzzy search                            | `family`=`Smith`, `given`=`Jane`, `gender`=`female`, `birthdate`=`eq2010-10-22`, `email`=`jane.smith@example.com`, `phone`=`01632960587`, `_fuzzy-match`=`true` | HTTP Status 200 with single search result.                              |
+        | Restricted patient search               | `family`=`Smythe`, `given`=`Janet`, `gender`=`female`, `birthdate`=`eq2005-06-16`, `email`=`jane.smith@example.com`, `phone`=`01632960587`                      | HTTP Status 200 with single search result with restricted data omitted. |
+        | Compound name search                    | `family`=`Smith`, `given`=`John Paul`, `given`=`James`, `gender`=`female`, `birthdate`=`eq2010-10-22`, `email`=`jane.smith@example.com`, `phone`=`01632960587`  | HTTP Status 200 with single search result.                              |
+        | Unsuccessful search                     | Any other valid search query parameters                                                                                                                         | HTTP Status 200 with no search results                                  |
+        | Unsuccessful search on email and phone  | `email`=`j.smith@example.com`, `phone`=`0163`                                                                                                                   | HTTP Status 200 with no search results                                  |
+        | Invalid date format                     | `birthdate` or `death-date` query parameters with values not in format `YYYY-MM-DD`                                                                             | HTTP Status 400 with problem description                                |
+        | Too few search parameters               | Any invalid combination of query parameters                                                                                                                     | HTTP Status 400 with problem description                                |
+        | Missing X-Request-ID                    | `id`=`9000000009` (or any other valid NHS number)                                                                                                               | HTTP Status 412 with problem description                                |
 
         You can try out the sandbox using the 'Try this API' feature on this page.
 
@@ -522,6 +531,8 @@ paths:
         - $ref: '#/components/parameters/DeathDate'
         - $ref: '#/components/parameters/AddressPostcode'
         - $ref: '#/components/parameters/GeneralPractitioner'
+        - $ref: '#/components/parameters/EmailAddress'
+        - $ref: '#/components/parameters/PhoneNumber'
       responses:
         '200':
           description: |
@@ -1279,7 +1290,7 @@ paths:
         * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
         * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
         * the date period, if present, should be on the parent `contact` object and not any `telecom` child objects.
-        * if the system is email, the value must be a valid email format, for example john.smith@nhs.net; and must be more than 6 characters and less than 90 characters
+        * if the system is email, the value must be a valid email format, for example john.smith@example.com; and must be more than 6 characters and less than 90 characters
         * the relationship can only be `C` meaning `Emergency Contact`
 
         ### Gender
@@ -1405,7 +1416,7 @@ paths:
         There are a number of business rules that should be taken into account:
         * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date
         * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
-        * if the telecom system is email, the value must be a valid email format, for example john.smith@nhs.net; and must be more than 6 characters and less than 90 characters
+        * if the telecom system is email, the value must be a valid email format, for example john.smith@example.com; and must be more than 6 characters and less than 90 characters
 
         ## Sandbox test scenarios
 
@@ -2015,6 +2026,24 @@ components:
       schema:
         type: string
         example: "5"    
+    EmailAddress:
+      name: email
+      description: |
+        Email address
+      example: jane.smith@example.com
+      in: query
+      required: false
+      schema:
+        type: string
+    PhoneNumber:
+      name: phone
+      description: |
+        Phone number
+      example: "01632960587"
+      in: query
+      required: false
+      schema:
+        type: string
   schemas:
     Patient:
       $ref: components/schemas/Patient.yaml
