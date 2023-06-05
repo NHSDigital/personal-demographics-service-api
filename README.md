@@ -127,12 +127,12 @@ There are `make` commands that alias some of this functionality:
 ### Running tests
 #### Sandbox Tests
 
-To start the sandbox, run the install command if not ran already
+Run the install command if not ran already
 ```
 make install
 ```
 
-Start the sandbox locally:
+Then start the sandbox locally
 ```
 make sandbox
 ```
