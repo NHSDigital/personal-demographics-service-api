@@ -115,15 +115,15 @@
             "use": "home"
           },
           {
-          "id": "790",
-          "period": {
-            "start": "2019-01-01",
-            "end": "2022-12-31"
+            "id": "790",
+            "period": {
+              "start": "2019-01-01",
+              "end": "2022-12-31"
+            },
+            "system": "email",
+            "value": "jane.smith@example.com",
+            "use": "home"
           },
-          "system": "email",
-          "value": "jane.smith@example.com",
-          "use": "home"
-        },
           {
             "id": "OC789",
             "period": {

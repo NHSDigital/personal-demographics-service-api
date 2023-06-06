@@ -85,15 +85,6 @@ properties:
                 When a patient tagged as `restricted` or `very restricted` is retrieved, all contact points are removed from the response.
               items:
                 $ref: "ContactPoint.yaml"
-              example:
-                - id: '789'
-                  system: phone
-                  use: home
-                  value: '01632960587'
-                - id: '790'
-                  system: email
-                  use: home
-                  value: 'jane.smith@example.com'
             contact:
               type: array
               description: |

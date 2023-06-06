@@ -9,8 +9,6 @@ install-node:
 	npm install
 	npm install nvm
 	cd sandbox && npm install
-		. ${HOME}/.nvm/nvm.sh install lts/fermium
-	. ${HOME}/.nvm/nvm.sh use lts/fermium
 
 install-hooks:
 	cp scripts/pre-commit .git/hooks/pre-commit

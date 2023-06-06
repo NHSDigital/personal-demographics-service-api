@@ -112,7 +112,10 @@ module.exports.search = function(request) {
         birthdate: "eq2010-10-22",
         "death-date": "eq2010-10-22",
         "address-postcode": "LS1 6AE",
-        "general-practitioner": "Y12345"
+        "general-practitioner": "Y12345",
+        "phone": "01632960587",
+        "email": "jane.smith@example.com"
+
     }
     if (containsSearchParameters(request, tryThisApiParams)) {
         return buildPatientResponse([patients.search.exampleSearchPatientSmith])
