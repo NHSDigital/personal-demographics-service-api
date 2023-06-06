@@ -1,5 +1,8 @@
 # Changelog
 
+## 2023-06-06
+* Update to document new email and phone filter functionality
+
 ## 2023-05-22
 * Changed description of period object to make the data item referenced more generic.
 * Changed description of behaviour for historic flag.
