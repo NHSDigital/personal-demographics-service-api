@@ -1,7 +1,13 @@
 # Changelog
 
-## 2023-06-01
+## 2023-06-06
 * Added setup instructions to readme.md that better describe how to get the project running
+
+
+## 2023-05-22
+* Changed description of period object to make the data item referenced more generic.
+* Changed description of behaviour for historic flag.
+* Changed description of 'related people do not exist'.
 
 ## 2023-05-18
 * Updated response patient-searcher.js to return defined response to search params that return no results in test sandbox so more

@@ -1919,7 +1919,7 @@
                                 },
                                 "period": {
                                     "type": "object",
-                                    "description": "Business effective period when name was, is, or will be in use.\n",
+                                    "description": "Business effective period when data item was, is, or will be in use.\n",
                                     "required": [
                                         "start"
                                     ],
@@ -2033,7 +2033,7 @@
                                 },
                                 "period": {
                                     "type": "object",
-                                    "description": "Business effective period when name was, is, or will be in use.\n",
+                                    "description": "Business effective period when data item was, is, or will be in use.\n",
                                     "required": [
                                         "start"
                                     ],
@@ -2206,7 +2206,7 @@
                                 },
                                 "period": {
                                     "type": "object",
-                                    "description": "Business effective period when name was, is, or will be in use.\n",
+                                    "description": "Business effective period when data item was, is, or will be in use.\n",
                                     "required": [
                                         "start"
                                     ],
@@ -2313,7 +2313,7 @@
                                 },
                                 "period": {
                                     "type": "object",
-                                    "description": "Business effective period when name was, is, or will be in use.\n",
+                                    "description": "Business effective period when data item was, is, or will be in use.\n",
                                     "required": [
                                         "start"
                                     ],
@@ -2394,7 +2394,7 @@
                                             },
                                             "period": {
                                                 "type": "object",
-                                                "description": "Business effective period when name was, is, or will be in use.\n",
+                                                "description": "Business effective period when data item was, is, or will be in use.\n",
                                                 "required": [
                                                     "start"
                                                 ],
@@ -2527,7 +2527,7 @@
                                         },
                                         "period": {
                                             "type": "object",
-                                            "description": "Business effective period when name was, is, or will be in use.\n",
+                                            "description": "Business effective period when data item was, is, or will be in use.\n",
                                             "required": [
                                                 "start"
                                             ],
@@ -3365,7 +3365,7 @@
                                                     },
                                                     "period": {
                                                         "type": "object",
-                                                        "description": "Business effective period when name was, is, or will be in use.\n",
+                                                        "description": "Business effective period when data item was, is, or will be in use.\n",
                                                         "required": [
                                                             "start"
                                                         ],
@@ -3479,7 +3479,7 @@
                                                     },
                                                     "period": {
                                                         "type": "object",
-                                                        "description": "Business effective period when name was, is, or will be in use.\n",
+                                                        "description": "Business effective period when data item was, is, or will be in use.\n",
                                                         "required": [
                                                             "start"
                                                         ],
@@ -3652,7 +3652,7 @@
                                                     },
                                                     "period": {
                                                         "type": "object",
-                                                        "description": "Business effective period when name was, is, or will be in use.\n",
+                                                        "description": "Business effective period when data item was, is, or will be in use.\n",
                                                         "required": [
                                                             "start"
                                                         ],
@@ -3759,7 +3759,7 @@
                                                     },
                                                     "period": {
                                                         "type": "object",
-                                                        "description": "Business effective period when name was, is, or will be in use.\n",
+                                                        "description": "Business effective period when data item was, is, or will be in use.\n",
                                                         "required": [
                                                             "start"
                                                         ],
@@ -3840,7 +3840,7 @@
                                                                 },
                                                                 "period": {
                                                                     "type": "object",
-                                                                    "description": "Business effective period when name was, is, or will be in use.\n",
+                                                                    "description": "Business effective period when data item was, is, or will be in use.\n",
                                                                     "required": [
                                                                         "start"
                                                                     ],
@@ -3973,7 +3973,7 @@
                                                             },
                                                             "period": {
                                                                 "type": "object",
-                                                                "description": "Business effective period when name was, is, or will be in use.\n",
+                                                                "description": "Business effective period when data item was, is, or will be in use.\n",
                                                                 "required": [
                                                                     "start"
                                                                 ],
@@ -4230,7 +4230,7 @@
                                         },
                                         "period": {
                                             "type": "object",
-                                            "description": "Business effective period when name was, is, or will be in use.\n",
+                                            "description": "Business effective period when data item was, is, or will be in use.\n",
                                             "required": [
                                                 "start"
                                             ],
@@ -4280,7 +4280,7 @@
                                                     },
                                                     "period": {
                                                         "type": "object",
-                                                        "description": "Business effective period when name was, is, or will be in use.\n",
+                                                        "description": "Business effective period when data item was, is, or will be in use.\n",
                                                         "required": [
                                                             "start"
                                                         ],
@@ -4364,7 +4364,7 @@
                                                     },
                                                     "period": {
                                                         "type": "object",
-                                                        "description": "Business effective period when name was, is, or will be in use.\n",
+                                                        "description": "Business effective period when data item was, is, or will be in use.\n",
                                                         "required": [
                                                             "start"
                                                         ],
@@ -4538,7 +4538,7 @@
                                                     },
                                                     "period": {
                                                         "type": "object",
-                                                        "description": "Business effective period when name was, is, or will be in use.\n",
+                                                        "description": "Business effective period when data item was, is, or will be in use.\n",
                                                         "required": [
                                                             "start"
                                                         ],
