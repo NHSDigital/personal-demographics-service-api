@@ -383,7 +383,7 @@ paths:
 
         A fuzzy search always includes history. For a non-fuzzy search, you can request to include history.
 
-        Searching history can match patients where only a previous name or address is known, or if a patient provides a previous name or address on the assumption that their record hasn’t been updated.
+        Searching history can match patients when only a previous name or address is known, or if a patient provides a previous name or address on the assumption that their record hasn’t been updated. When a search done on historic data results in a match, the patient's current data will be returned in the response message, not the historic data used to identify the match.
 
         ### Exact match
         You can request an exact match.
@@ -1617,7 +1617,7 @@ paths:
         | ------------------------------- | --------------------------------------------- | ------------------------------------------------------------- |
         | Multiple related people exists  | `id`=`9000000009`                             | HTTP Status 200 with related person data in a response Bundle |
         | Single related person exists    | `id`=`9000000017`                             | HTTP Status 200 with related person data in a response Bundle |
-        | Related people do not exist     | `id`=`9000000025`                             | HTTP Status 404 with problem description                      |
+        | Related people do not exist     | `id`=`9000000025`                             | HTTP Status 200 with an empty bundle                          |
         | Missing X-Request-ID            | `id`=`9000000009` (or any other valid NHS number) | HTTP Status 412 with problem description                  |
 
         You can try out the sandbox using the 'Try this API' feature on this page.
