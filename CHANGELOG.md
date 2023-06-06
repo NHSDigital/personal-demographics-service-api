@@ -1,5 +1,9 @@
 # Changelog
 
+## 2023-06-06
+* Added setup instructions to readme.md that better describe how to get the project running
+
+
 ## 2023-05-22
 * Changed description of period object to make the data item referenced more generic.
 * Changed description of behaviour for historic flag.
@@ -8,7 +12,319 @@
 ## 2023-05-18
 * Updated response patient-searcher.js to return defined response to search params that return no results in test sandbox so more
 informative. Adjusted test scenario and test in test_sandbox.py to reflect this.
-* PatientCompoundName.json added as was missing and update_examples.sh script was failing so is now generated in the            duplicate_examples.sh script so that localhost can be started using command 'make sandbox' for local dev. Also, other sandbox mocks (Patient.json, Patient-Jayne-Smyth.json) were adjusted slightly when the update_examples.sh script was run with 'make  sandbox' command.
+* PatientCompoundName.json added as was missing and update_examples.sh script was failing so is now generated in the duplicate_examples.sh script so that localhost can be started using command 'make sandbox' for local dev. Also, other sandbox mocks (Patient.json, Patient-Jayne-Smyth.json) were adjusted slightly when the update_examples.sh script was run with 'make  sandbox' command.
+
+## 2023-04-14
+* Updated the managing organization description to reflect the logic added in SPINEDEM-685
+
+## 2023-04-14
+* Documentation: Changed image in digital onboarding emphasis box
+
+## 2023-03-09
+* Documentation: Added emphasis box in digital onboarding section
+
+## 2023-03-09
+* Updated poerty.lock
+
+## 2023-01-25
+* Updated documentation and manifest for patient-access mode move to beta
+
+## 2023-01-24
+* Removed "metadata: read" in pr-lint.yaml, added "id-token: write"
+
+## 2023-01-24
+* Made permissions explicit for dependabot in pr-lint.yaml
+
+## 2023-01-06
+* Added new address tests, test_patient_with_no_address and test_patient_with_no_address_request_without_addres_id
+
+## 2022-12-15
+* Added tests for addresses
+* Added verifyAddressIdNotPresentWhenRequired in requests-validator.js
+
+## 2022-12-20
+* Documentation: Changed wording on addresses
+
+## 2022-12-15
+* Updated schema to include new PDS-RemovalReasonExitCode
+* Updated scearios.py
+
+## 2022-12-12
+* Documentation: Added section on error codes
+
+## 2022-12-09
+* Documentation: Added section on existing API users
+
+## 2022-12-07
+* Added new scenarios for missing access token error message
+
+## 2022-12-05
+* Updated redirect-uri to no longer point to the herokuapp
+
+## 2022-11-21
+* Updated postman_collection.json to fix import fail error
+
+## 2022-11-11
+* Documentation: Changed text around smart cards
+
+## 2022-11-08
+* Documentation: Changed text around access modes
+
+## 2022-11-08
+* Fix patient_access tests
+
+## 2022-10-19
+* Updated CORS policies to allow nhsd-end-user-organisation-ods
+
+## 2022-10-10
+* Documentation: "NHSD-End-User-Organisation-ODS" added as a paramter to "/Patient", "/Patient/{id}", and "Patient{id}/RelatedPerson"
+
+## 2022-10-06
+* Documentation: personal-demographics.yaml changes to fix rendering issues, removing redundant self-closing <a> tags, and using properly formatted <br> tags
+
+## 2022-09-02
+* Documentation: Updated the Onboarding section to point to the new Onboarding support information page.
+
+## 2022-08-11
+* Documentation: Updated the security pattern benefits table.
+
+## 2022-08-05
+* Documentation: Removed reference to Gazetter service API
+
+## 2022-08-05
+* Documentation: Reworded guidence around address checking
+
+## 2022-08-03
+* Added SPINEDEM to pr-lint.yaml ticket names
+* Documentation: Added guidence around address checking
+
+## 2022-07-18
+* Updated azure location of client_id and client_secret for the test app
+
+## 2022-07-18
+* Updated azure location of client_id and client_secret for the test app
+
+## 2022-06-14
+* Documentation: Updated contact us guidence, now pointing to digital onboarding process
+* Minor change to pr-lint.yaml around ticket names
+
+## 2022-06-14
+* Documentation: Updated contact us guidence, now pointing to digital onboarding process
+* Minor change to pr-lint.yaml around ticket names
+
+## 2022-06-07
+* Documentation: Tweaks to related APIs from PDS Notifications general update
+
+## 2022-06-07
+* Documentation: Added more details about use cases for PDS Notifications API to Overview
+
+## 2022-06-04
+* Documentation: Changed wording and URLs around conformance
+
+## 2022-05-18
+* Test for patient access with scope sensitivity
+
+## 2022-05-17
+* Documentation: Remove reference to needing a PDS access request - point to digital onboarding instead.
+
+## 2022-05-10
+* Documentation: Changed text explaining access modes
+
+## 2022-05-05
+* Documentation: Reverted previous changes
+
+## 2022-05-05
+* Documentation: Changed text explaining access modes
+
+## 2022-05-04
+* Documentation: Removed non-digital instructions now that DOS takes care of it all
+
+## 2022-05-03
+* Fixed pr-lint.yaml to include dos tickets
+
+## 2022-05-03
+* Changed version of FHIR validator in Makefile from latest to 5.6.42
+
+## 2022-04-28
+* Documentation: Add tech conformance links to two new pages for each access mode
+
+## 2022-04-27
+* Documentation: Typos and formatting fro acces mode tables
+
+## 2022-04-26
+* Documentation: Updated table that referred to access modes
+
+## 2022-04-07
+* Documentation: Added links in Overview to which APIs for the "cannot" use cases
+
+## 2022-04-07
+* Documentation: Fixed typo
+
+## 2022-04-06
+* Documentation: Added Contact us link to personal-demographics.yaml
+
+## 2022-03-24
+* Documentation: Added reference of technical conformance
+
+## 2022-03-24
+* Documentation: Added tag to fix broken page link
+
+## 2022-03-14
+* Documentation: Updated URL in personal-demographics.yaml
+
+## 2022-02-09
+* Updated the oauth endpoint for the INT tests
+
+## 2022-02-07
+* Updated tests to use the new identity service mock
+* Added pytest-docker to dependencies
+
+## 2022-01-20
+* Documentation: Changed wording in personal-demographics.yaml
+
+## 2022-01-19
+* Renamed NHSD-Patient header to NHSD-NHSLogin-User
+
+## 2022-01-14
+* Added mock identity service proxy to products
+
+## 2022-01-13
+* Added scenario for an app without and ASID interacting with an asid-required API Proxy
+* Increased a wait time in application_restricted.feature
+
+## 2022-01-05
+* Documentation: Changed patch to PATCH
+
+## 2022-01-05
+* Documentation: Reworded the description for the Retry-After header
+
+## 2022-01-05
+* Documentation: Added service level section
+
+## 2022-01-04
+* Made new makefile target to genereate short version spec
+
+## 2021-12-24
+* Fixed a typo
+
+## 2021-12-21
+* Fixed a typo
+
+## 2021-12-21
+* Added schema and test for scenario organization
+
+## 2021-12-20
+* Reverted change to issue.details.coding.code
+
+## 2021-12-17
+* Documentation: Minor rewording of personal-demographics.yaml
+
+## 2021-12-15
+* Changed issue.code and issue.details.coding.code values for AppRestricted patch attempt error message
+* Added an automated test
+
+## 2021-12-15
+* Changed more inline components from personal-demographics.yaml to refs
+
+## 2021-12-13
+* Reinstate the Extended Attributes shared flow - had to take this functionality out to deploy master to production as the shared flow wasn't yet deployed
+
+## 2021-12-13
+* Increased the rate limit in production to 350TPS
+* Disabled Per-App Quota and SpikeArrest policies
+
+## 2021-12-13
+* Documentation: Changed contact URL to email
+
+## 2021-12-10
+* Added waits to application_restricted scenarios
+
+## 2021-12-10
+* Tests for per app permissions
+
+## 2021-12-03
+* Documentation: Updated onboarding steps
+
+## 2021-12-03
+* Moved some schemas in personal-demographics.yaml to be referenced internally
+* Updated mock data
+* Added minimal_bundle to in formatting scripts
+
+## 2021-11-22
+* Documentation: changed wording around smart cards, updated URLs
+
+## 2021-11-19
+* Documentation: changed wording of advice returning patient address
+
+## 2021-11-11
+* Removed apiproxy/policies
+* Refactored patient access tests
+
+## 2021-11-08
+* Removed ratelimit and quota attributes on an API Product as they are no longer required
+
+## 2021-11-08
+* Changed tests to only validate response body contains expected nhs number
+
+## 2021-11-02
+* Fixed flaky test
+
+## 2021-10-27
+* Updated system url to fix failing tests
+* Updated python packages
+
+## 2021-10-26
+* Implemented strategic ratelimiting
+
+## 2021-10-22
+* Added fuzzy match and history search parameters to patient-searcher.js
+
+## 2021-10-22
+* Added test for patient access header
+* Created apigee_api.py
+
+## 2021-10-20
+* Removed deprecated build pipeline parameters
+
+## 2021-10-20
+* Removed deprecated build pipeline parameters
+
+## 2021-10-20
+* Updated postman collection
+
+## 2021-10-19
+* Documentation: Updated personal-demographics.yaml
+
+## 2021-10-18
+* Fixed test for searches with spaces in names
+
+## 2021-10-18
+* Added test for searches with spaces in names
+* Updated sandbox readme
+
+## 2021-10-12
+* Documentation: Changed wording for onboarding steps
+
+## 2021-09-30
+* Documentation: Updated URLs for health care worker access modes
+
+## 2021-09-28
+* Fixed sandbox test errors
+
+## 2021-09-23
+* Increased rate limit to 20TPS
+
+## 2021-09-06
+* Reverted rate limiting back to 525 TPS
+
+## 2021-09-03
+* Increased sleep time in conftest.py from 1.5 to 2.5 seconds to reduce timeout errors
+
+## 2021-09-03
+* Fixed environment vairable in pds-test.yml
+
+## 2021-09-02
+* Added shared flow Ratelimiting
 
 ## 2021-08-20
 * Updating spec to correctly list birthdate examples in 'Try this API'
