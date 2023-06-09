@@ -1,7 +1,7 @@
 const Boom = require('boom')
 const lodash = require('lodash')
 const datefns = require('date-fns')
-const patients = require('./patients')
+const patients = require('./patients');
 
 function containsSearchParameters(request, searchParameters) {
 
@@ -84,6 +84,8 @@ module.exports.requestContainsParameters = function(request) {
         "death-date": true,
         "address-postcode": true,
         organisation: true,
+        phone: true,
+        email: true
     };
 
     let hasAnySearchParam = false
@@ -99,20 +101,17 @@ module.exports.requestContainsParameters = function(request) {
 // Determine which 'search' to perform based on parameters passed
 module.exports.search = function(request) {
 
-    // let validParams = [request.query.family,request.query.birthedate,request.query.given,request.query.gender,request.query.death-date,
-    //                     request.query.address-postcode,request.query.general-practitioner,request.query.phone,request.query.email]
+    let validParams = ["family","birthdate","given","gender","death-date","address-postcode","general-practitioner",
+                        "phone","email","_fuzzy-match","_exact-match","_history","_max-results"]
 
-    // let notEnoughValidParamsCounter = 0;
-    // for (let param in validParams) {
-    //     console.log(param);
-    //     if (!param) {
-    //     notEnoughValidParamsCounter++;
-    //     }
-    // }
-    // if (notEnoughValidParamsCounter === validParams.length) {
-    //     throw Boom.notImplemented(`This mock endpoint has no example response for this combination of search parameters`,
-    //     {operationOutcomeCode: "not-supported", apiErrorCode: "not-supported", display: "Unsupported operation"})
-    // }
+    let requestKeys = Object.keys(request.query);
+    for (let i=0; i < requestKeys.length; i++) {
+        if ((!validParams.includes(requestKeys[i])) || ((!request.query.family) && (!request.query.birthdate))) {
+            throw Boom.badRequest(
+                "Not enough search parameters were provided to be able to make a search",
+                {operationOutcomeCode: "required", apiErrorCode: "MISSING_VALUE", display: "Required value is missing"})
+        }
+    }
 
     // Check for default 'Try this API' params
     const tryThisApiParams = {
@@ -194,6 +193,37 @@ module.exports.search = function(request) {
         "_fuzzy-match": "true"
     }
 
+    // fuzzy search params inc phone
+    const fuzzySearchParamsIncPhone = {
+        family: "Smith",
+        gender: "female",
+        birthdate: "eq2010-10-22",
+        given: "Jane",
+        phone: "01632960587",
+        "_fuzzy-match": "true"
+    }
+
+    // fuzzy search params inc email
+    const fuzzySearchParamsIncEmail = {
+        family: "Smith",
+        gender: "female",
+        birthdate: "eq2010-10-22",
+        given: "Jane",
+        email: "jane.smith@example.com",
+        "_fuzzy-match": "true"
+    }
+
+    // fuzzy search params inc phone and email
+    const fuzzySearchParamsIncEmailPhone = {
+        family: "Smith",
+        gender: "female",
+        birthdate: "eq2010-10-22",
+        given: "Jane",
+        phone: "01632960587",
+        email: "jane.smith@example.com",
+        "_fuzzy-match": "true"
+    }
+
     // wildcard search params
     const wildcardDefaultSearchParams = {
         family: "Sm*",
@@ -228,6 +258,15 @@ module.exports.search = function(request) {
     const simpleSearchParamsGenderFree = {
         family: "Smith",
         birthdate: "eq2010-10-22",
+    }
+
+    // simple email only search params
+    const simplePhoneOnly = {
+        phone: "01632960587"
+    }
+
+    const simpleEmailOnly = {
+        email: "jane.smith@example.com"
     }
 
     // simple search params inc phone
@@ -335,12 +374,16 @@ module.exports.search = function(request) {
     (containsSearchParameters(request,tryEmailPhoneApiParams)) || (containsSearchParameters(request,dateRangeSearchParams)) || (containsSearchParameters(request,simpleSearchParams)) ||
     (containsSearchParameters(request,simpleSearchParamsGenderFree)) || (containsSearchParameters(request,simplePhoneSearchParams)) || (containsSearchParameters(request,simplePhoneSearchParamsGenderFree)) ||
     (containsSearchParameters(request,simpleEmailSearchParams)) || (containsSearchParameters(request,simpleEmailSearchParamsGenderFree)) || (containsSearchParameters(request,simpleEmailPhoneSearchParams)) ||
-    (containsSearchParameters(request,simpleEmailPhoneSearchParamsGenderFree))) {
+    (containsSearchParameters(request,simpleEmailPhoneSearchParamsGenderFree)) || (containsSearchParameters(request,simplePhoneOnly)) || (containsSearchParameters(request,simpleEmailOnly))) {
         return buildPatientResponse([patients.search.exampleSearchPatientSmith])
     }
 
     if (containsSearchParameters(request, fuzzySearchParams)) {
         return buildPatientResponse([patients.search.exampleSearchPatientSmyth], 0.8976)
+    } else if ((containsSearchParameters(request,fuzzySearchParamsIncEmail)) || (containsSearchParameters(request,fuzzySearchParamsIncPhone))) {
+        return buildPatientResponse([patients.search.exampleSearchPatientSmith], 0.9124)
+    } else if (containsSearchParameters(request,fuzzySearchParamsIncEmailPhone)) {
+        return buildPatientResponse([patients.search.exampleSearchPatientSmith], 0.9542)
     }
 
     if (containsSearchParameters(request, sensitiveSearchParams)) {
