@@ -2,7 +2,6 @@
 ## 2023-06-09
 * Updated various patient.json files to include email and phone telecom snippets via script updates
 * Updated format_examples.py to add additional telecom email snippet to patient 9000000009 (not possible to do multiple examples in OAS 2.0 in yaml file)
-* Updated personal-demographics.yaml with changes from SPINEDEM-443.
 * Updated duplicate_examples.sh to amend patient email addresses using sed for purposes of test data.
 * Adding relevant additional scenarios and tests in scenarios.py and test_sandbox.py to support phone and email search parameters, including simple search with telecom, multiparam search with telecom, fuzzy search with telecom, date range search with telecom and wildcard search with telecom. Also included are searches using telecoms that yield no results and invalid param searches that yield 400 results.
 * Updated/refactored patient-searcher.js. Added data to support new test cases/scenarios. Refactored to enable easier reading and less code re-use.
