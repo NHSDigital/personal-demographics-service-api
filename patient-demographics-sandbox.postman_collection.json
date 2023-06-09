@@ -89,6 +89,350 @@
 					"response": []
 				},
 				{
+					"name": "Basic search including phone",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22&phone=01632960587&X-Request-ID={{$guid}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							],
+							"query": [
+								{
+									"key": "family",
+									"value": "Smith"
+								},
+								{
+									"key": "gender",
+									"value": "female"
+								},
+								{
+									"key": "birthdate",
+									"value": "eq2010-10-22"
+								},
+								{
+									"key": "phone",
+									"value": "01632960587"
+								},
+								{
+									"key": "X-Request-ID",
+									"value": "{{$guid}}"
+								}
+							]
+						},
+						"description": "Example of a simple search including phone using minimum search parameters (\"family\" name, \"gender\" & \"date of birth\" & \"phone\") will return a single result."
+					},
+					"response": []
+				},
+				{
+					"name": "Basic search including email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22&email=jane.smith@example.com&X-Request-ID={{$guid}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							],
+							"query": [
+								{
+									"key": "family",
+									"value": "Smith"
+								},
+								{
+									"key": "gender",
+									"value": "female"
+								},
+								{
+									"key": "birthdate",
+									"value": "eq2010-10-22"
+								},
+								{
+									"key": "email",
+									"value": "jane.smith@example.com"
+								},
+								{
+									"key": "X-Request-ID",
+									"value": "{{$guid}}"
+								}
+							]
+						},
+						"description": "Example of a simple search including email using minimum search parameters (\"family\" name, \"gender\" & \"date of birth\" & \"email\") will return a single result."
+					},
+					"response": []
+				},
+				{
+					"name": "Basic search including email and phone",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22&phone=01632960587&email=jane.smith@example.com&X-Request-ID={{$guid}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							],
+							"query": [
+								{
+									"key": "family",
+									"value": "Smith"
+								},
+								{
+									"key": "gender",
+									"value": "female"
+								},
+								{
+									"key": "birthdate",
+									"value": "eq2010-10-22"
+								},
+								{
+									"key": "phone",
+									"value": "01632960587"
+								},
+								{
+									"key": "email",
+									"value": "jane.smith@example.com"
+								},
+								{
+									"key": "X-Request-ID",
+									"value": "{{$guid}}"
+								}
+							]
+						},
+						"description": "Example of a simple search including phone and email using minimum search parameters (\"family\" name, \"gender\" & \"date of birth\" & \"phone\" & \"email\") will return a single result."
+					},
+					"response": []
+				},
+				{
+					"name": "Multi parameter search including phone",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/Patient?_fuzzy-match=false&_exact_match=false&history=true&_max-results=1&family=Smith&gender=female&birthdate=eq2010-10-22&given=Jane&death-date=eq2010-10-22&address-postcode=LS1 6AE&general-practitioner=Y12345&phone=01632960587&X-Request-ID={{$guid}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							],
+							"query": [
+								{
+									"key": "_fuzzy-match",
+									"value": "false"
+								},
+								{
+									"key": "_exact-match",
+									"value": "false"
+								},
+								{
+									"key": "history",
+									"value": "true"
+								},
+								{
+									"key": "_max-results",
+									"value": "1"
+								},
+								{
+									"key": "family",
+									"value": "Smith"
+								},
+								{
+									"key": "gender",
+									"value": "female"
+								},
+								{
+									"key": "birthdate",
+									"value": "eq2010-10-22"
+								},
+								{
+									"key": "given",
+									"value": "Jane"
+								},
+								{
+									"key": "death-date",
+									"value": "eq2010-10-22"
+								},
+								{
+									"key": "address-postcode",
+									"value": "LS1 6AE"
+								},
+								{
+									"key": "general-practitioner",
+									"value": "Y12345"
+								},
+								{
+									"key": "phone",
+									"value": "01632960587"
+								},
+								{
+									"key": "X-Request-ID",
+									"value": "{{$guid}}"
+								}
+							]
+						},
+						"description": "Example of a multiparameter search using various search parameters including phone (\"family\" name, \"gender\" & \"date of birth\" & \"given\" & \"death-date\" & \"address-postcode\" & \"general-practitioner\" & \"phone\") will return a single result."
+					},
+					"response": []
+				},
+				{
+					"name": "Multi parameter search including email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/Patient?_fuzzy-match=false&_exact_match=false&history=true&_max-results=1&family=Smith&gender=female&birthdate=eq2010-10-22&given=Jane&death-date=eq2010-10-22&address-postcode=LS1 6AE&general-practitioner=Y12345&email=jane.smith@example.com&X-Request-ID={{$guid}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							],
+							"query": [
+								{
+									"key": "_fuzzy-match",
+									"value": "false"
+								},
+								{
+									"key": "_exact-match",
+									"value": "false"
+								},
+								{
+									"key": "history",
+									"value": "true"
+								},
+								{
+									"key": "_max-results",
+									"value": "1"
+								},
+								{
+									"key": "family",
+									"value": "Smith"
+								},
+								{
+									"key": "gender",
+									"value": "female"
+								},
+								{
+									"key": "birthdate",
+									"value": "eq2010-10-22"
+								},
+								{
+									"key": "given",
+									"value": "Jane"
+								},
+								{
+									"key": "death-date",
+									"value": "eq2010-10-22"
+								},
+								{
+									"key": "address-postcode",
+									"value": "LS1 6AE"
+								},
+								{
+									"key": "general-practitioner",
+									"value": "Y12345"
+								},
+								{
+									"key": "email",
+									"value": "jane.smith@example.com"
+								},
+								{
+									"key": "X-Request-ID",
+									"value": "{{$guid}}"
+								}
+							]
+						},
+						"description": "Example of a multiparameter search using various search parameters including phone (\"family\" name, \"gender\" & \"date of birth\" & \"given\" & \"death-date\" & \"address-postcode\" & \"general-practitioner\" & \"email\") will return a single result."
+					},
+					"response": []
+				},
+				{
+					"name": "Multi parameter search including phone and email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/Patient?_fuzzy-match=false&_exact_match=false&history=true&_max-results=1&family=Smith&gender=female&birthdate=eq2010-10-22&given=Jane&death-date=eq2010-10-22&address-postcode=LS1 6AE&general-practitioner=Y12345&phone=01632960587&email=jane.smith@example.com&X-Request-ID={{$guid}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							],
+							"query": [
+								{
+									"key": "_fuzzy-match",
+									"value": "false"
+								},
+								{
+									"key": "_exact-match",
+									"value": "false"
+								},
+								{
+									"key": "history",
+									"value": "true"
+								},
+								{
+									"key": "_max-results",
+									"value": "1"
+								},
+								{
+									"key": "family",
+									"value": "Smith"
+								},
+								{
+									"key": "gender",
+									"value": "female"
+								},
+								{
+									"key": "birthdate",
+									"value": "eq2010-10-22"
+								},
+								{
+									"key": "given",
+									"value": "Jane"
+								},
+								{
+									"key": "death-date",
+									"value": "eq2010-10-22"
+								},
+								{
+									"key": "address-postcode",
+									"value": "LS1 6AE"
+								},
+								{
+									"key": "general-practitioner",
+									"value": "Y12345"
+								},
+								{
+									"key": "phone",
+									"value": "01632960587"
+								},
+								{
+									"key": "email",
+									"value": "jane.smith@example.com"
+								},
+								{
+									"key": "X-Request-ID",
+									"value": "{{$guid}}"
+								}
+							]
+						},
+						"description": "Example of a multiparameter search using various search parameters including phone (\"family\" name, \"gender\" & \"date of birth\" & \"given\" & \"death-date\" & \"address-postcode\" & \"general-practitioner\" & \"phone\" & \"email\") will return a single result."
+					},
+					"response": []
+				},
+				{
 					"name": "Too few search parameters",
 					"request": {
 						"method": "GET",
@@ -225,6 +569,160 @@
 					"response": []
 				},
 				{
+					"name": "Fuzzy search including phone",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/Patient?family=smith&given=Jane&gender=female&birthdate=2010-10-22&phone=01632960587&_fuzzy-match=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							],
+							"query": [
+								{
+									"key": "family",
+									"value": "smith"
+								},
+								{
+									"key": "given",
+									"value": "Jane"
+								},
+								{
+									"key": "gender",
+									"value": "female"
+								},
+								{
+									"key": "birthdate",
+									"value": "2010-10-22"
+								},
+								{
+									"key": "phone",
+									"value": "01632960587"
+								},
+								{
+									"key": "_fuzzy-match",
+									"value": "true"
+								}
+							]
+						},
+						"description": "HTTP Status 200 with single search result."
+					},
+					"response": []
+				},
+				{
+					"name": "Fuzzy search including email",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/Patient?family=smith&given=Jane&gender=female&birthdate=2010-10-22&email=jane.smith@example.com&_fuzzy-match=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							],
+							"query": [
+								{
+									"key": "family",
+									"value": "smith"
+								},
+								{
+									"key": "given",
+									"value": "Jane"
+								},
+								{
+									"key": "gender",
+									"value": "female"
+								},
+								{
+									"key": "birthdate",
+									"value": "2010-10-22"
+								},
+								{
+									"key": "email",
+									"value": "jane.smith@example.com"
+								},
+								{
+									"key": "_fuzzy-match",
+									"value": "true"
+								}
+							]
+						},
+						"description": "HTTP Status 200 with single search result."
+					},
+					"response": []
+				},
+				{
+					"name": "Fuzzy search including phone and email",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/Patient?family=smith&given=Jane&gender=female&birthdate=2010-10-22&phone=01632960587&email=jane.smith@example.com&_fuzzy-match=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							],
+							"query": [
+								{
+									"key": "family",
+									"value": "smith"
+								},
+								{
+									"key": "given",
+									"value": "Jane"
+								},
+								{
+									"key": "gender",
+									"value": "female"
+								},
+								{
+									"key": "birthdate",
+									"value": "2010-10-22"
+								},
+								{
+									"key": "phone",
+									"value": "01632960587"
+								},
+								{
+									"key": "email",
+									"value": "jane.smith@example.com"
+								},
+								{
+									"key": "_fuzzy-match",
+									"value": "true"
+								}
+							]
+						},
+						"description": "HTTP Status 200 with single search result."
+					},
+					"response": []
+				},
+				{
 					"name": "Invalid date format - death date",
 					"request": {
 						"method": "GET",
@@ -301,6 +799,90 @@
 							]
 						},
 						"description": "Example of a wildcarded search, where the \"family\" name is wildcarded, will return a result of 2 patients - Jane Smith patient (nhsId - 9000000009) & Jayne Smith (nhsId - 9000000017)"
+					},
+					"response": []
+				},
+				{
+					"name": "Wildcard search including phone",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/Patient?family=Sm*&gender=female&birthdate=eq2010-10-22&phone=01632960587",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							],
+							"query": [
+								{
+									"key": "family",
+									"value": "Sm*"
+								},
+								{
+									"key": "gender",
+									"value": "female"
+								},
+								{
+									"key": "birthdate",
+									"value": "eq2010-10-22"
+								},
+								{
+									"key": "phone",
+									"value": "01632960587"
+								}
+							]
+						},
+						"description": "Example of a wildcarded search, where the \"family\" name is wildcarded, when phone is included will return 1 patient - Jane Smith patient (nhsId - 9000000009)"
+					},
+					"response": []
+				},
+				{
+					"name": "Wildcard search including email",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/Patient?family=Sm*&gender=female&birthdate=eq2010-10-22&email=jane.smith@example.com",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							],
+							"query": [
+								{
+									"key": "family",
+									"value": "Sm*"
+								},
+								{
+									"key": "gender",
+									"value": "female"
+								},
+								{
+									"key": "birthdate",
+									"value": "eq2010-10-22"
+								},
+								{
+									"key": "email",
+									"value": "jane.smith@example.com"
+								}
+							]
+						},
+						"description": "Example of a wildcarded search, where the \"family\" name is wildcarded, when email is included will return 1 patient - Jane Smith patient (nhsId - 9000000009)"
 					},
 					"response": []
 				},

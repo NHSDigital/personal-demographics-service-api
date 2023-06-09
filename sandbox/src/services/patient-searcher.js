@@ -184,6 +184,31 @@ module.exports.search = function(request) {
         birthdate: ["ge2010-10-21", "le2010-10-23"]
     }
 
+    // daterange search params inc phone
+    const dateRangeSearchParamsIncPhone = {
+        family: "Smith",
+        gender: "female",
+        birthdate: ["ge2010-10-21", "le2010-10-23"],
+        phone: "01632960587"
+    }
+
+    // daterange search params inc email
+    const dateRangeSearchParamsIncEmail = {
+        family: "Smith",
+        gender: "female",
+        birthdate: ["ge2010-10-21", "le2010-10-23"],
+        email: "jane.smith@example.com"
+    }
+
+    // daterange search params inc email and phone
+    const dateRangeSearchParamsPhoneEmail = {
+        family: "Smith",
+        gender: "female",
+        birthdate: ["ge2010-10-21", "le2010-10-23"],
+        phone: "01632960587",
+        email: "jane.smith@example.com"
+    }
+
     // fuzzy search params
     const fuzzySearchParams = {
         family: "Smith",
@@ -374,7 +399,8 @@ module.exports.search = function(request) {
     (containsSearchParameters(request,tryEmailPhoneApiParams)) || (containsSearchParameters(request,dateRangeSearchParams)) || (containsSearchParameters(request,simpleSearchParams)) ||
     (containsSearchParameters(request,simpleSearchParamsGenderFree)) || (containsSearchParameters(request,simplePhoneSearchParams)) || (containsSearchParameters(request,simplePhoneSearchParamsGenderFree)) ||
     (containsSearchParameters(request,simpleEmailSearchParams)) || (containsSearchParameters(request,simpleEmailSearchParamsGenderFree)) || (containsSearchParameters(request,simpleEmailPhoneSearchParams)) ||
-    (containsSearchParameters(request,simpleEmailPhoneSearchParamsGenderFree)) || (containsSearchParameters(request,simplePhoneOnly)) || (containsSearchParameters(request,simpleEmailOnly))) {
+    (containsSearchParameters(request,simpleEmailPhoneSearchParamsGenderFree)) || (containsSearchParameters(request,dateRangeSearchParamsIncEmail)) || (containsSearchParameters(request,dateRangeSearchParamsIncPhone)) ||
+    (containsSearchParameters(request,dateRangeSearchParamsPhoneEmail))) {
         return buildPatientResponse([patients.search.exampleSearchPatientSmith])
     }
 
@@ -389,10 +415,15 @@ module.exports.search = function(request) {
     if (containsSearchParameters(request, sensitiveSearchParams)) {
         return buildPatientResponse([patients.search.exampleSearchPatientSmythe]);
     }
-
-    
+  
     if (containsSearchParameters(request, multiNameSearchParams)) {
         return buildPatientResponse([patients.search.exampleSearchPatientCompoundName])
+    }
+
+    if ((containsSearchParameters(request, simplePhoneOnly)) || (containsSearchParameters(request, simpleEmailOnly))) {
+        throw Boom.badRequest(
+            "Not enough search parameters were provided to be able to make a search",
+            {operationOutcomeCode: "required", apiErrorCode: "MISSING_VALUE", display: "Required value is missing"})
     }
 
     return buildPatientResponse([])
