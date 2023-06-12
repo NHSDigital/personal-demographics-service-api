@@ -22,7 +22,7 @@ The contents of this repository are protected by Crown Copyright (C).
 
 ## Setup
 
-N.B. that some functioanlity requires environment variables to be set. Some of these are described lower down in the readme, whilst others can be found in [the environment variables section of this confluence page](https://nhsd-confluence.digital.nhs.uk/display/SPINE/Personal+Demographics+Service+api+setup)
+N.B. that some functionality requires environment variables to be set. Some of these are described lower down in the readme, whilst others can be found in [the environment variables section of this confluence page](https://nhsd-confluence.digital.nhs.uk/display/SPINE/Personal+Demographics+Service+api+setup)
 
 
 Windows users should install [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install). Any distro is fine, though ubuntu/debian are recommended.
@@ -38,7 +38,7 @@ If you get the error "Unable to locate package python-openssl", try
 $ sudo apt install python3-openssl
 ```
 
-Install [pyenv](https://github.com/pyenv/pyenv) using the code below and then follow their [guide](https://github.com/pyenv/pyenv#set-up-your-shell-environment-for-pyenv) to integrating it with your terminal
+Install [pyenv](https://github.com/pyenv/pyenv) using the code below and then follow their [guide](https://github.com/pyenv/pyenv#set-up-your-shell-environment-for-pyenv) to integrate it with your terminal
 ```
 $ curl https://pyenv.run | bash
 $ exec $SHELL
@@ -59,7 +59,7 @@ $ pyenv local 3.8.2
 $ python --version
 ```
 
-Install poetry, then run 'poerty install' to install dependencies. Makes sure you change directory to this repo.
+Install poetry, then run 'poetry install' to install dependencies. Makes sure you change directory to this repo.
 ```
 $ curl -sSL https://install.python-poetry.org | python3
 $ poetry install
@@ -88,11 +88,13 @@ $ sudo apt-get install jq
 ```
 
 
-Next open powershell and get the wsl ip
+Next open powershell and get the wsl ip (make sure wsl is running)
+The purpose of the following instructions is to enable you to use postman if you wish against the sandbox.
 ```
 $ wsl hostname -i
 ```
-Add a proxy and open the windows fire wall, replace [PORT] with the ip from the previous command
+Add a proxy and open the windows fire wall, replace [PORT] with the port you want to connect on from the previous command.
+connected address is the ip wsl is operating on (from 'wsl hostname -i')
 ```
 $ netsh interface portproxy add v4tov4 listenport=9000 listenaddress=0.0.0.0 connectport=[PORT] connectaddress=127.0.1.1
   # Check it's been added
@@ -141,7 +143,7 @@ To run local tests, use:
 ```
 make test-sandbox
 ```
-If a lot of the tests fail and the sandbox crashes with Cannot read properties of null (reading 'statusCode')  you may not be using the correct version of node. Check the version being used by that instance of the terminal and run re-run nvm use lts/fermium if required
+If a lot of the tests fail and the sandbox crashes with '''Cannot read properties of null (reading 'statusCode')'''  you may not be using the correct version of node. Check the version being used by that instance of the terminal and run re-run 'nvm use lts/fermium' if required.
 
 
 ### VS Code Plugins
