@@ -108,7 +108,7 @@ module.exports.search = function(request) {
     for (let i=0; i < requestKeys.length; i++) {
         if ((!validParams.includes(requestKeys[i])) || ((!request.query.family) && (!request.query.birthdate))) {
             throw Boom.badRequest(
-                "Not enough search parameters were provided to be able to make a search",
+                "Not enough search parameters were provided for a valid search, you must supply family and birthdate as a minimum and only use recognised parameters from the api catalogue.",
                 {operationOutcomeCode: "required", apiErrorCode: "MISSING_VALUE", display: "Required value is missing"})
         }
     }
@@ -349,12 +349,77 @@ module.exports.search = function(request) {
         birthdate: "eq2005-06-16",
     }
 
+    // 'sensitive search' params with phone
+    const sensitiveSearchParamsIncPhone = {
+        family: "Smythe",
+        given: "Janet",
+        gender: "female",
+        birthdate: "eq2005-06-16",
+        phone: "01632960587"
+    }
+
+    // 'sensitive search' params with email
+    const sensitiveSearchParamsIncEmail = {
+        family: "Smythe",
+        given: "Janet",
+        gender: "female",
+        birthdate: "eq2005-06-16",
+        email: "janet.smythe@example.com"
+    }
+
+    // 'sensitive search' params with phone and email
+    const sensitiveSearchParamsIncPhoneEmail = {
+        family: "Smythe",
+        given: "Janet",
+        gender: "female",
+        birthdate: "eq2005-06-16",
+        phone: "01632960587",
+        email: "janet.smythe@example.com"
+    }
+
     // Multi name search params
     const multiNameSearchParams = {
         family: "Smith",
         given: ["John Paul", "James"],
         gender: "male",
         birthdate: "eq2010-10-22",
+        "_fuzzy-match": "false",
+        "_exact-match": "false",
+        "_history": "true",
+        }
+    
+    // Multi name search params inc phone
+    const multiNameSearchParamsIncPhone = {
+        family: "Smith",
+        given: ["John Paul", "James"],
+        gender: "male",
+        birthdate: "eq2010-10-22",
+        phone: "01632960587",
+        "_fuzzy-match": "false",
+        "_exact-match": "false",
+        "_history": "true",
+        }
+
+    // Multi name search params inc email
+    const multiNameSearchParamsIncEmail = {
+        family: "Smith",
+        given: ["John Paul", "James"],
+        gender: "male",
+        birthdate: "eq2010-10-22",
+        email: "johnp.smith@example.com",
+        "_fuzzy-match": "false",
+        "_exact-match": "false",
+        "_history": "true",
+        }
+
+    // Multi name search params inc phone and email
+    const multiNameSearchParamsIncPhoneEmail = {
+        family: "Smith",
+        given: ["John Paul", "James"],
+        gender: "male",
+        birthdate: "eq2010-10-22",
+        phone: "01632960587",
+        email: "johnp.smith@example.com",
         "_fuzzy-match": "false",
         "_exact-match": "false",
         "_history": "true",
@@ -412,17 +477,19 @@ module.exports.search = function(request) {
         return buildPatientResponse([patients.search.exampleSearchPatientSmith], 0.9542)
     }
 
-    if (containsSearchParameters(request, sensitiveSearchParams)) {
+    if ((containsSearchParameters(request, sensitiveSearchParams)) || (containsSearchParameters(request, sensitiveSearchParamsIncPhone)) || (containsSearchParameters(request, sensitiveSearchParamsIncEmail)) ||
+    (containsSearchParameters(request, sensitiveSearchParamsIncPhoneEmail)) ) {
         return buildPatientResponse([patients.search.exampleSearchPatientSmythe]);
     }
   
-    if (containsSearchParameters(request, multiNameSearchParams)) {
+    if ((containsSearchParameters(request, multiNameSearchParamsIncEmail)) || (containsSearchParameters(request, multiNameSearchParamsIncPhone)) || (containsSearchParameters(request, multiNameSearchParams)) ||
+    (containsSearchParameters(request, multiNameSearchParamsIncPhoneEmail))) {
         return buildPatientResponse([patients.search.exampleSearchPatientCompoundName])
     }
 
     if ((containsSearchParameters(request, simplePhoneOnly)) || (containsSearchParameters(request, simpleEmailOnly))) {
         throw Boom.badRequest(
-            "Not enough search parameters were provided to be able to make a search",
+            "Not enough search parameters were provided for a valid search, you must supply family and birthdate as a minimum and only use recognised parameters from the api catalogue.",
             {operationOutcomeCode: "required", apiErrorCode: "MISSING_VALUE", display: "Required value is missing"})
     }
 
