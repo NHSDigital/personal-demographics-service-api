@@ -93,8 +93,8 @@ The purpose of the following instructions is to enable you to use postman if you
 ```
 $ wsl hostname -i
 ```
-Add a proxy and open the windows fire wall, replace [PORT] with the port you want to connect on from the previous command.
-connected address is the ip wsl is operating on (from 'wsl hostname -i')
+Add a proxy and open the windows fire wall, replace [PORT] with the port you want to connect to.
+connected address is the ip wsl is operating on (from `wsl hostname -i`)
 ```
 $ netsh interface portproxy add v4tov4 listenport=9000 listenaddress=0.0.0.0 connectport=[PORT] connectaddress=127.0.1.1
   # Check it's been added
@@ -143,7 +143,11 @@ To run local tests, use:
 ```
 make test-sandbox
 ```
-If a lot of the tests fail and the sandbox crashes with '''Cannot read properties of null (reading 'statusCode')'''  you may not be using the correct version of node. Check the version being used by that instance of the terminal and run re-run 'nvm use lts/fermium' if required.
+If a lot of the tests fail and the sandbox crashes with 
+```
+Cannot read properties of null (reading 'statusCode')
+```  
+you may not be using the correct version of node. Check the version being used by that instance of the terminal and run re-run '`nvm use lts/fermium`' if required.
 
 
 ### VS Code Plugins
