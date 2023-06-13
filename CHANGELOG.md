@@ -1,4 +1,7 @@
 # Changelog
+## 2023-06-13
+* Documentation: Added address-postalcode as a search parameter in personal-demographics.yaml
+
 ## 2023-05-18
 * Updated response patient-searcher.js to return defined response to search params that return no results in test sandbox so more
 informative. Adjusted test scenario and test in test_sandbox.py to reflect this.
