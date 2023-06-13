@@ -1015,7 +1015,99 @@
 					"response": []
 				},
 				{
-					"name": "Restricted (sensetive) patient search",
+					"name": "Search with limited results inc phone",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/Patient?family=Sm*&gender=female&birthdate=eq2010-10-22&phone=01632960587&_max-results=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							],
+							"query": [
+								{
+									"key": "family",
+									"value": "Sm*"
+								},
+								{
+									"key": "gender",
+									"value": "female"
+								},
+								{
+									"key": "birthdate",
+									"value": "eq2010-10-22"
+								},
+								{
+									"key": "phone",
+									"value": "01632960587"
+								},
+								{
+									"key": "_max-results",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Example of a wildcarded search with limited results, where the \"family\" name is wildcarded and \"_max-results\" is added, but adding phone/email should only return 1 result, so \"_max-results\" is superfluous in this case"
+					},
+					"response": []
+				},
+				{
+					"name": "Search with limited results inc phone",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/Patient?family=Sm*&gender=female&birthdate=eq2010-10-22&email=janet.smythe@example.com&_max-results=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							],
+							"query": [
+								{
+									"key": "family",
+									"value": "Sm*"
+								},
+								{
+									"key": "gender",
+									"value": "female"
+								},
+								{
+									"key": "birthdate",
+									"value": "eq2010-10-22"
+								},
+								{
+									"key": "email",
+									"value": "janet.smythe@example.com"
+								},
+								{
+									"key": "_max-results",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Example of a wildcarded search with limited results, where the \"family\" name is wildcarded and \"_max-results\" is added, but adding phone/email should only return 1 result, so \"_max-results\" is superfluous in this case"
+					},
+					"response": []
+				},
+				{
+					"name": "Restricted (sensitive) patient search",
 					"event": [
 						{
 							"listen": "test",
