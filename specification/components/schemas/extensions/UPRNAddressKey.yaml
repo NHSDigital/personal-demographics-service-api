@@ -1,0 +1,60 @@
+type: object
+description: Unique identifier for an address.
+properties:
+  url:
+    type: string
+    description: URL of specification of the AddressKey extension.
+    default: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey
+    enum:
+      - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey
+  extension:
+    type: array
+    description: "Specification of address key system and address key value. Contains exactly two items: one describing the code system the Address Key uses, and the other specifying the value of the Address Key."
+    minItems: 2
+    maxItems: 2
+    items:
+      anyOf:
+        - type: object
+          description: Coding system of the address key.
+          required:
+            - url
+            - valueCoding
+          properties:
+            url:
+              type: string
+              description: Always 'type'.
+              default: type
+            valueCoding:
+              type: object
+              description: URL of specification of address key format.
+              required:
+                - system
+                - code
+              properties:
+                system:
+                  type: string
+                  description: URL of Code System that describes available Address Key formats.
+                  default: https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType
+                code:
+                  type: string
+                  description: Address Key system. Always 'UPRN'.
+                  default: "UPRN"
+                  example: "UPRN"
+        - type: object
+          description: Value of the address key.
+          required:
+            - url
+            - valueString
+          properties:
+            url:
+              type: string
+              description: Always 'value'.
+              default: value
+              example: value
+            valueString:
+              type: string
+              description: Address key in UPRN format. A number containing from 1 up to 12 digits.
+              minLength: 1
+              maxLength: 12
+              pattern: '^[0-9]{1-12}$'
+              example: '123456789012'

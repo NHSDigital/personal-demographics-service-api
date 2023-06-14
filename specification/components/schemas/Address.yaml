@@ -81,6 +81,8 @@ properties:
     example: LS1 6AE
   extension:
     type: array
-    description: Postal Address File (PAF) key associated with this address formatted as a FHIR extension. Empty if no PAF key for the address is known, or an object specifying the code system of the address key and the value of the address key. 
+    description: List of address keys which can include Unique Property Reference Number (UPRN) and Postal Address File (PAF) key associated with this address formatted as a FHIR extension. Empty if no PAF key for the address is known, or an object specifying the code system of the address key and the value of the address key.
     items:
-      $ref: 'extensions/AddressKey.yaml'
+      anyOf:
+        - $ref: 'extensions/PAFAddressKey.yaml'
+        - $ref: 'extensions/UPRNAddressKey.yaml'

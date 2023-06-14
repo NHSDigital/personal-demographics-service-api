@@ -154,6 +154,22 @@
                     "valueString": "12345678"
                   }
                 ]
+              },
+              {
+                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey",
+                "extension": [
+                  {
+                    "url": "type",
+                    "valueCoding": {
+                      "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType",
+                      "code": "UPRN"
+                    }
+                  },
+                  {
+                    "url": "value",
+                    "valueString": "123456789012"
+                  }
+                ]
               }
             ]
           }
