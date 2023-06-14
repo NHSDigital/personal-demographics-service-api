@@ -1,5 +1,9 @@
 # Changelog
 
+## 2023-06-14
+* Documentation: added details regarding the newly supported address key type - UPRN
+* Updated the sandbox mocks and test scenarios to include the UPRN changes
+
 ## 2023-06-06
 * Added setup instructions to readme.md that better describe how to get the project running
 
