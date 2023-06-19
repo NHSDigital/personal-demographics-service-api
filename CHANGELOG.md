@@ -2,7 +2,7 @@
 
 ## 2023-06-06
 * Added setup instructions to readme.md that better describe how to get the project running
-
+* Update to document new email and phone filter functionality
 
 ## 2023-05-22
 * Changed description of period object to make the data item referenced more generic.
