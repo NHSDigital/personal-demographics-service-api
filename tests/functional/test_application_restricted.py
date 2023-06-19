@@ -410,7 +410,7 @@ def patch_patient(auth: dict, context: dict):
         headers=headers,
     )
 
-    patient_version_id = response.headers.get("Etag")
+    patient_version_id = response.headers['Etag']
     current_gender = (json.loads(response.text))["gender"]
     new_gender = "male" if current_gender == "female" else "female"
 
