@@ -1088,7 +1088,7 @@ paths:
         * `/address/0` if the address to be replaced or removed is the first item in the list. If it is the second item in the list the path is `/address/1`, and so on.
         * `/address/-` when adding a new address.
 
-        An address consists of 5 lines of unstructured text, postcode and address keys, which can include a PAF (Postcode Address File) and a UPRN (Unique Property Reference Number).
+        An address consists of 5 lines of unstructured text, postcode, and address keys. Address keys can include a PAF and a UPRN.
         
         Postcode is optional but strongly encouraged.
         If the address has no postcode, use a [pseudo postcode from the list defined by the Office for National Statistics](https://digital.nhs.uk/services/organisation-data-service/data-downloads/office-for-national-statistics-data) (see the ‘look_ups’ file).
