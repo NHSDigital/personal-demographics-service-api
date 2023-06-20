@@ -101,6 +101,30 @@ class TestPDSSandboxSearchSuite:
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
+    def test_sandbox_simple_search_including_phone(self, additional_headers):
+        response = helpers.search_patient(search[22]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[22]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_sandbox_simple_search_including_email(self, additional_headers):
+        response = helpers.search_patient(search[23]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[23]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_sandbox_simple_search_including_phone_and_email(self, additional_headers):
+        response = helpers.search_patient(search[24]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[24]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_sandbox_simple_search_including_phone_and_email_non_match(self, additional_headers):
+        response = helpers.search_patient(search[27]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[27]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, additional_headers)
+
     def test_wildcard_search(self, additional_headers):
         response = helpers.search_patient(search[1]["query_params"], additional_headers)
         helpers.check_search_response_body(response, search[1]["response"])
@@ -122,9 +146,45 @@ class TestPDSSandboxSearchSuite:
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
+    def test_sandbox_date_range_search_inc_phone(self, additional_headers):
+        response = helpers.search_patient(
+            "family=Smith&gender=female&birthdate=ge2010-10-21&birthdate=le2010-10-23&phone=01632960587",
+            additional_headers,
+        )
+        helpers.check_search_response_body(response, search[25]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_sandbox_date_range_search_inc_email(self, additional_headers):
+        response = helpers.search_patient(
+            "family=Smith&gender=female&birthdate=ge2010-10-21&birthdate=le2010-10-23&email=jane.smith@example.com",
+            additional_headers,
+        )
+        helpers.check_search_response_body(response, search[26]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, additional_headers)
+
     def test_fuzzy_search(self, additional_headers):
         response = helpers.search_patient(search[4]["query_params"], additional_headers)
         helpers.check_search_response_body(response, search[4]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_fuzzy_search_with_email(self, additional_headers):
+        response = helpers.search_patient(search[18]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[18]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_fuzzy_search_with_phone(self, additional_headers):
+        response = helpers.search_patient(search[19]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[19]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_fuzzy_search_with_phone_email(self, additional_headers):
+        response = helpers.search_patient(search[20]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[20]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
@@ -134,10 +194,16 @@ class TestPDSSandboxSearchSuite:
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
-    def test_unsuccessful_search(self, additional_headers):
+    def test_restricted_patient_search_inc_phone_and_email(self, additional_headers):
+        response = helpers.search_patient(search[28]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[28]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_unsuccessful_search_returns_empty_bundle(self, additional_headers):
         response = helpers.search_patient(search[6]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[11]["response"])
-        helpers.check_response_status_code(response, 501)
+        helpers.check_search_response_body(response, search[6]["response"])
+        helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_invalid_date_format_search(self, additional_headers):
@@ -162,6 +228,60 @@ class TestPDSSandboxSearchSuite:
         response = helpers.search_patient(search[10]["query_params"], additional_headers)
         helpers.check_search_response_body(response, search[10]["response"])
         helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_sandbox_multi_given_name_search_inc_phone_and_email(self, additional_headers):
+        response = helpers.search_patient(search[29]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[29]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_sandbox_multi_phone_search_returns_hit(self, additional_headers):
+        response = helpers.search_patient(search[12]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[12]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_sandbox_multi_email_search_returns_hit(self, additional_headers):
+        response = helpers.search_patient(search[14]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[14]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_sandbox_multi_phone_search_returns_empty_bundle(self, additional_headers):
+        response = helpers.search_patient(search[13]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[13]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_sandbox_multi_email_search_returns_empty_bundle(self, additional_headers):
+        response = helpers.search_patient(search[15]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[15]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_wildcard_search_with_phone(self, additional_headers):
+        response = helpers.search_patient(search[16]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[16]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_wildcard_search_with_email(self, additional_headers):
+        response = helpers.search_patient(search[17]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[17]["response"])
+        helpers.check_response_status_code(response, 200)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_unsupported_operation_with_invalid_param_and_family_birthdate(self, additional_headers):
+        response = helpers.search_patient(search[11]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[11]["response"])
+        helpers.check_response_status_code(response, 400)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_unsupported_operation_with_completely_invalid_params(self, additional_headers):
+        response = helpers.search_patient(search[21]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[21]["response"])
+        helpers.check_response_status_code(response, 400)
         helpers.check_response_headers(response, additional_headers)
 
 

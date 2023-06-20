@@ -41,6 +41,10 @@ def _format_telecom(resource, key, add_textphone_extension=True, whitelist=None)
             telecom["id"] = "OC{}".format(telecom["id"])
             resource[key].append(telecom)
 
+    if resource["id"] == "9000000009":
+        email_telecom = {"id": "790", "period": {"start": "2019-01-01", "end": "2022-12-31"}, "system": "email",
+                         "value": "jane.smith@example.com", "use": "home"}
+        resource[key].insert(1, email_telecom)
     return resource[key]
 
 
