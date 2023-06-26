@@ -464,7 +464,7 @@ paths:
         ### Restricted patients
         Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record) and are sometimes known as sensitive patients. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telecom`, `contact` and `generalPractitioner` are removed.
 
-        If `address-postalcode` or `general-practitioner` are included in the search parameters, no restricted patients are returned even if a match is identified.
+        If `address-postalcode`, `address-postcode`, or `general-practitioner` are included in the search parameters, no restricted patients are returned even if a match is identified.
 
         The restricted flag can be found in the data under `meta/security` on the patient resource.
         
