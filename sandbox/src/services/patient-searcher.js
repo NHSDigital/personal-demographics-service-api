@@ -1,7 +1,7 @@
 const Boom = require('boom')
 const lodash = require('lodash')
 const datefns = require('date-fns')
-const patients = require('./patients')
+const patients = require('./patients');
 
 function containsSearchParameters(request, searchParameters) {
 
@@ -46,15 +46,14 @@ function containsSearchParameters(request, searchParameters) {
 }
 
 function buildPatientResponse(examplePatients = [], searchScore = 1.0) {
-
+    let response = {
+        resourceType: "Bundle",
+        type: "searchset",
+        timestamp: datefns.format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss+00:00"),
+        total: examplePatients.length,
+        entry: []
+    }
     if (examplePatients.length > 0) {
-        let response = {
-            resourceType: "Bundle",
-            type: "searchset",
-            timestamp: datefns.format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss+00:00"),
-            total: examplePatients.length,
-            entry: []
-        }
         examplePatients.forEach(patient => {
             response.entry.push({
                 fullUrl: "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/" + patient["id"],
@@ -64,11 +63,11 @@ function buildPatientResponse(examplePatients = [], searchScore = 1.0) {
                 resource: patient,
             })
         });
-        return response;
+
     } else {
-            throw Boom.notImplemented(`This mock endpoint has no example response for this combination of search parameters`,
-                {operationOutcomeCode: "not-supported", apiErrorCode: "not-supported", display: "Unsupported operation"})
+        delete response.entry;
     }
+        return response;
 }
 
 // Verify search contains parameters
@@ -85,6 +84,8 @@ module.exports.requestContainsParameters = function(request) {
         "death-date": true,
         "address-postcode": true,
         organisation: true,
+        phone: true,
+        email: true
     };
 
     let hasAnySearchParam = false
@@ -100,6 +101,18 @@ module.exports.requestContainsParameters = function(request) {
 // Determine which 'search' to perform based on parameters passed
 module.exports.search = function(request) {
 
+    let validParams = ["family","birthdate","given","gender","death-date","address-postcode","general-practitioner",
+                        "phone","email","_fuzzy-match","_exact-match","_history","_max-results"]
+
+    let requestKeys = Object.keys(request.query);
+    for (let i=0; i < requestKeys.length; i++) {
+        if ((!validParams.includes(requestKeys[i])) || ((!request.query.family) && (!request.query.birthdate))) {
+            throw Boom.badRequest(
+                "Not enough search parameters were provided for a valid search, you must supply family and birthdate as a minimum and only use recognised parameters from the api catalogue.",
+                {operationOutcomeCode: "required", apiErrorCode: "MISSING_VALUE", display: "Required value is missing"})
+        }
+    }
+
     // Check for default 'Try this API' params
     const tryThisApiParams = {
         "_fuzzy-match": "false",
@@ -114,22 +127,89 @@ module.exports.search = function(request) {
         "address-postcode": "LS1 6AE",
         "general-practitioner": "Y12345"
     }
-    if (containsSearchParameters(request, tryThisApiParams)) {
-        return buildPatientResponse([patients.search.exampleSearchPatientSmith])
+
+    // Check for default 'Try this Api' params inc. phone
+    const tryPhoneApiParams = {
+        "_fuzzy-match": "false",
+        "_exact-match": "false",
+        "_history": "true",
+        "_max-results": 1,
+        family: "Smith",
+        given: "Jane",
+        gender: "female",
+        birthdate: "eq2010-10-22",
+        "death-date": "eq2010-10-22",
+        "address-postcode": "LS1 6AE",
+        "general-practitioner": "Y12345",
+        "phone": "01632960587"
     }
 
+    // Check for default 'Try this Api' params inc. email
+    const tryEmailApiParams = {
+        "_fuzzy-match": "false",
+        "_exact-match": "false",
+        "_history": "true",
+        "_max-results": 1,
+        family: "Smith",
+        given: "Jane",
+        gender: "female",
+        birthdate: "eq2010-10-22",
+        "death-date": "eq2010-10-22",
+        "address-postcode": "LS1 6AE",
+        "general-practitioner": "Y12345",
+        "email": "jane.smith@example.com"
+    }
 
-    // Perform daterange search
+    // Check for default 'Try this Api' params inc. email and phone
+    const tryEmailPhoneApiParams = {
+        "_fuzzy-match": "false",
+        "_exact-match": "false",
+        "_history": "true",
+        "_max-results": 1,
+        family: "Smith",
+        given: "Jane",
+        gender: "female",
+        birthdate: "eq2010-10-22",
+        "death-date": "eq2010-10-22",
+        "address-postcode": "LS1 6AE",
+        "general-practitioner": "Y12345",
+        "phone": "01632960587",
+        "email": "jane.smith@example.com"
+    }
+
+    // daterange search params
     const dateRangeSearchParams = {
         family: "Smith",
         gender: "female",
         birthdate: ["ge2010-10-21", "le2010-10-23"]
     }
-    if (containsSearchParameters(request, dateRangeSearchParams)) {
-        return buildPatientResponse([patients.search.exampleSearchPatientSmith])
+
+    // daterange search params inc phone
+    const dateRangeSearchParamsIncPhone = {
+        family: "Smith",
+        gender: "female",
+        birthdate: ["ge2010-10-21", "le2010-10-23"],
+        phone: "01632960587"
     }
 
-    // Perform a fuzzy search
+    // daterange search params inc email
+    const dateRangeSearchParamsIncEmail = {
+        family: "Smith",
+        gender: "female",
+        birthdate: ["ge2010-10-21", "le2010-10-23"],
+        email: "jane.smith@example.com"
+    }
+
+    // daterange search params inc email and phone
+    const dateRangeSearchParamsPhoneEmail = {
+        family: "Smith",
+        gender: "female",
+        birthdate: ["ge2010-10-21", "le2010-10-23"],
+        phone: "01632960587",
+        email: "jane.smith@example.com"
+    }
+
+    // fuzzy search params
     const fuzzySearchParams = {
         family: "Smith",
         gender: "female",
@@ -137,19 +217,225 @@ module.exports.search = function(request) {
         given: "Jane",
         "_fuzzy-match": "true"
     }
-    if (containsSearchParameters(request, fuzzySearchParams)) {
-        return buildPatientResponse([patients.search.exampleSearchPatientSmyth], 0.8976)
+
+    // fuzzy search params inc phone
+    const fuzzySearchParamsIncPhone = {
+        family: "Smith",
+        gender: "female",
+        birthdate: "eq2010-10-22",
+        given: "Jane",
+        phone: "01632960587",
+        "_fuzzy-match": "true"
     }
 
-    // Check for wildcard search
-    const wildcardSearchParams = {
+    // fuzzy search params inc email
+    const fuzzySearchParamsIncEmail = {
+        family: "Smith",
+        gender: "female",
+        birthdate: "eq2010-10-22",
+        given: "Jane",
+        email: "jane.smith@example.com",
+        "_fuzzy-match": "true"
+    }
+
+    // fuzzy search params inc phone and email
+    const fuzzySearchParamsIncEmailPhone = {
+        family: "Smith",
+        gender: "female",
+        birthdate: "eq2010-10-22",
+        given: "Jane",
+        phone: "01632960587",
+        email: "jane.smith@example.com",
+        "_fuzzy-match": "true"
+    }
+
+    // wildcard search params
+    const wildcardDefaultSearchParams = {
         family: "Sm*",
         gender: "female",
         birthdate: "eq2010-10-22"
     }
-    let wildcardMatch = containsSearchParameters(request, wildcardSearchParams)
+
+    // wildcard search inc phone params
+    const wildcardPhoneSearchParams = {
+        family: "Sm*",
+        gender: "female",
+        birthdate: "eq2010-10-22",
+        phone: "01632960587"
+    }
+
+    // wildcard search inc email params
+    const wildcardEmailSearchParams = {
+        family: "Sm*",
+        gender: "female",
+        birthdate: "eq2010-10-22",
+        email: "jane.smith@example.com"
+    }
+
+    // simple search params
+    const simpleSearchParams = {
+        family: "Smith",
+        gender: "female",
+        birthdate: "eq2010-10-22",
+    }
+
+    // simple search 'gender' free params
+    const simpleSearchParamsGenderFree = {
+        family: "Smith",
+        birthdate: "eq2010-10-22",
+    }
+
+    // simple email only search params
+    const simplePhoneOnly = {
+        phone: "01632960587"
+    }
+
+    const simpleEmailOnly = {
+        email: "jane.smith@example.com"
+    }
+
+    // simple search params inc phone
+    const simplePhoneSearchParams = {
+        family: "Smith",
+        gender: "female",
+        birthdate: "eq2010-10-22",
+        phone: "01632960587"
+    }
+
+    // simple search 'gender' free params inc phone
+    const simplePhoneSearchParamsGenderFree = {
+        family: "Smith",
+        birthdate: "eq2010-10-22",
+        phone: "01632960587"
+    }
+
+    // simple search params inc email
+    const simpleEmailSearchParams = {
+        family: "Smith",
+        gender: "female",
+        birthdate: "eq2010-10-22",
+        email: "jane.smith@example.com"
+    }
+
+    // simple search 'gender' free params inc email
+    const simpleEmailSearchParamsGenderFree = {
+        family: "Smith",
+        birthdate: "eq2010-10-22",
+        email: "jane.smith@example.com"
+    }
+
+    // simple search params inc email and phone
+    const simpleEmailPhoneSearchParams = {
+        family: "Smith",
+        gender: "female",
+        birthdate: "eq2010-10-22",
+        phone: "01632960587",
+        email: "jane.smith@example.com"
+    }
+
+    // simple search 'gender' free params inc email and phone
+    const simpleEmailPhoneSearchParamsGenderFree = {
+        family: "Smith",
+        birthdate: "eq2010-10-22",
+        phone: "01632960587",
+        email: "jane.smith@example.com"
+    }
+
+    // 'sensitive search' params
+    const sensitiveSearchParams = {
+        family: "Smythe",
+        given: "Janet",
+        gender: "female",
+        birthdate: "eq2005-06-16",
+    }
+
+    // 'sensitive search' params with phone
+    const sensitiveSearchParamsIncPhone = {
+        family: "Smythe",
+        given: "Janet",
+        gender: "female",
+        birthdate: "eq2005-06-16",
+        phone: "01632960587"
+    }
+
+    // 'sensitive search' params with email
+    const sensitiveSearchParamsIncEmail = {
+        family: "Smythe",
+        given: "Janet",
+        gender: "female",
+        birthdate: "eq2005-06-16",
+        email: "janet.smythe@example.com"
+    }
+
+    // 'sensitive search' params with phone and email
+    const sensitiveSearchParamsIncPhoneEmail = {
+        family: "Smythe",
+        given: "Janet",
+        gender: "female",
+        birthdate: "eq2005-06-16",
+        phone: "01632960587",
+        email: "janet.smythe@example.com"
+    }
+
+    // Multi name search params
+    const multiNameSearchParams = {
+        family: "Smith",
+        given: ["John Paul", "James"],
+        gender: "male",
+        birthdate: "eq2010-10-22",
+        "_fuzzy-match": "false",
+        "_exact-match": "false",
+        "_history": "true",
+        }
+    
+    // Multi name search params inc phone
+    const multiNameSearchParamsIncPhone = {
+        family: "Smith",
+        given: ["John Paul", "James"],
+        gender: "male",
+        birthdate: "eq2010-10-22",
+        phone: "01632960587",
+        "_fuzzy-match": "false",
+        "_exact-match": "false",
+        "_history": "true",
+        }
+
+    // Multi name search params inc email
+    const multiNameSearchParamsIncEmail = {
+        family: "Smith",
+        given: ["John Paul", "James"],
+        gender: "male",
+        birthdate: "eq2010-10-22",
+        email: "johnp.smith@example.com",
+        "_fuzzy-match": "false",
+        "_exact-match": "false",
+        "_history": "true",
+        }
+
+    // Multi name search params inc phone and email
+    const multiNameSearchParamsIncPhoneEmail = {
+        family: "Smith",
+        given: ["John Paul", "James"],
+        gender: "male",
+        birthdate: "eq2010-10-22",
+        phone: "01632960587",
+        email: "johnp.smith@example.com",
+        "_fuzzy-match": "false",
+        "_exact-match": "false",
+        "_history": "true",
+        }
+
+    let wildcardMatch = containsSearchParameters(request, wildcardDefaultSearchParams)
+    let wildcardPhoneMatch = containsSearchParameters(request, wildcardPhoneSearchParams)
+    let wildcardEmailMatch = containsSearchParameters(request, wildcardEmailSearchParams)
+    let wildcardTelecomMatch = false;
+    if (wildcardEmailMatch) {
+        wildcardTelecomMatch = wildcardEmailMatch
+    } else if (wildcardPhoneMatch) {
+        wildcardTelecomMatch = wildcardPhoneMatch
+    }
     // Perform a search with max result set using the wildcard params and the max-result parameter
-    if (wildcardMatch && request.query["_max-results"]) {
+    if ((wildcardMatch && request.query["_max-results"]) || (wildcardTelecomMatch && request.query["_max-results"])) {
         if (isNaN(request.query["_max-results"]) || request.query["_max-results"] < 1 || request.query["_max-results"] > 50) {
             // Invalid parameter (Not integer)
             throw Boom.badRequest("Invalid value - '" + request.query["_max-results"] + "' in field '_max-results'", {
@@ -169,52 +455,44 @@ module.exports.search = function(request) {
     // Perform a advanced search as wildcard provided and max-result parameter not set
     } else if (wildcardMatch) {
         return buildPatientResponse([patients.search.exampleSearchPatientSmith, patients.search.exampleSearchPatientSmyth], 0.8343);
-    }
-
-    // Perform a 'simple search'
-    const simpleSearchParams = {
-        family: "Smith",
-        gender: "female",
-        birthdate: "eq2010-10-22",
-    }
-
-    const simpleSearchParamsGenderFree = {
-        family: "Smith",
-        birthdate: "eq2010-10-22",
-    }
-    // If so, try it
-    if (containsSearchParameters(request, simpleSearchParams) || containsSearchParameters(request, simpleSearchParamsGenderFree)) {
-        return buildPatientResponse([patients.search.exampleSearchPatientSmith]);
-    }
-
-    // Perform a 'sensitive search'
-    const sensitiveSearchParams = {
-        family: "Smythe",
-        given: "Janet",
-        gender: "female",
-        birthdate: "eq2005-06-16",
-    }
-    // If so, try it
-    if (containsSearchParameters(request, sensitiveSearchParams)) {
-        return buildPatientResponse([patients.search.exampleSearchPatientSmythe]);
-    }
-
-    // Multi name search
-    const multiNameSearchParams = {
-      family: "Smith",
-      given: ["John Paul", "James"],
-      gender: "male",
-      birthdate: "eq2010-10-22",
-      "_fuzzy-match": "false",
-      "_exact-match": "false",
-      "_history": "true",
+    } else if (wildcardTelecomMatch) {
+        return buildPatientResponse([patients.search.exampleSearchPatientSmith])
     }
     
-    if (containsSearchParameters(request, multiNameSearchParams)) {
+
+    if ((containsSearchParameters(request,tryThisApiParams)) || (containsSearchParameters(request,tryPhoneApiParams)) || (containsSearchParameters(request,tryEmailApiParams)) ||
+    (containsSearchParameters(request,tryEmailPhoneApiParams)) || (containsSearchParameters(request,dateRangeSearchParams)) || (containsSearchParameters(request,simpleSearchParams)) ||
+    (containsSearchParameters(request,simpleSearchParamsGenderFree)) || (containsSearchParameters(request,simplePhoneSearchParams)) || (containsSearchParameters(request,simplePhoneSearchParamsGenderFree)) ||
+    (containsSearchParameters(request,simpleEmailSearchParams)) || (containsSearchParameters(request,simpleEmailSearchParamsGenderFree)) || (containsSearchParameters(request,simpleEmailPhoneSearchParams)) ||
+    (containsSearchParameters(request,simpleEmailPhoneSearchParamsGenderFree)) || (containsSearchParameters(request,dateRangeSearchParamsIncEmail)) || (containsSearchParameters(request,dateRangeSearchParamsIncPhone)) ||
+    (containsSearchParameters(request,dateRangeSearchParamsPhoneEmail))) {
+        return buildPatientResponse([patients.search.exampleSearchPatientSmith])
+    }
+
+    if (containsSearchParameters(request, fuzzySearchParams)) {
+        return buildPatientResponse([patients.search.exampleSearchPatientSmyth], 0.8976)
+    } else if ((containsSearchParameters(request,fuzzySearchParamsIncEmail)) || (containsSearchParameters(request,fuzzySearchParamsIncPhone))) {
+        return buildPatientResponse([patients.search.exampleSearchPatientSmith], 0.9124)
+    } else if (containsSearchParameters(request,fuzzySearchParamsIncEmailPhone)) {
+        return buildPatientResponse([patients.search.exampleSearchPatientSmith], 0.9542)
+    }
+
+    if ((containsSearchParameters(request, sensitiveSearchParams)) || (containsSearchParameters(request, sensitiveSearchParamsIncPhone)) || (containsSearchParameters(request, sensitiveSearchParamsIncEmail)) ||
+    (containsSearchParameters(request, sensitiveSearchParamsIncPhoneEmail)) ) {
+        return buildPatientResponse([patients.search.exampleSearchPatientSmythe]);
+    }
+  
+    if ((containsSearchParameters(request, multiNameSearchParamsIncEmail)) || (containsSearchParameters(request, multiNameSearchParamsIncPhone)) || (containsSearchParameters(request, multiNameSearchParams)) ||
+    (containsSearchParameters(request, multiNameSearchParamsIncPhoneEmail))) {
         return buildPatientResponse([patients.search.exampleSearchPatientCompoundName])
     }
 
-    return buildPatientResponse();
+    if ((containsSearchParameters(request, simplePhoneOnly)) || (containsSearchParameters(request, simpleEmailOnly))) {
+        throw Boom.badRequest(
+            "Not enough search parameters were provided for a valid search, you must supply family and birthdate as a minimum and only use recognised parameters from the api catalogue.",
+            {operationOutcomeCode: "required", apiErrorCode: "MISSING_VALUE", display: "Required value is missing"})
+    }
 
+    return buildPatientResponse([])
 }
 
