@@ -1,4 +1,7 @@
 # Changelog
+## 2023-06-26
+* Documentation: Added address-postalcode as a search parameter in personal-demographics.yaml
+
 ## 2023-06-09
 * Updated various patient.json files to include email and phone telecom snippets via script updates
 * Updated format_examples.py to add additional telecom email snippet to patient 9000000009 (not possible to do multiple examples in OAS 2.0 in yaml file)

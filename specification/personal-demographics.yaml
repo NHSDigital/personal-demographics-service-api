@@ -464,7 +464,7 @@ paths:
         ### Restricted patients
         Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record) and are sometimes known as sensitive patients. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telecom`, `contact` and `generalPractitioner` are removed.
 
-        If `address-postcode` or `general-practitioner` are included in the search parameters, no restricted patients are returned even if a match is identified.
+        If `address-postalcode`, `address-postcode`, or `general-practitioner` are included in the search parameters, no restricted patients are returned even if a match is identified.
 
         The restricted flag can be found in the data under `meta/security` on the patient resource.
         
@@ -533,6 +533,7 @@ paths:
         - $ref: '#/components/parameters/Gender'
         - $ref: '#/components/parameters/Birthdate'
         - $ref: '#/components/parameters/DeathDate'
+        - $ref: '#/components/parameters/AddressPostalcode'
         - $ref: '#/components/parameters/AddressPostcode'
         - $ref: '#/components/parameters/GeneralPractitioner'
         - $ref: '#/components/parameters/EmailAddress'
@@ -1947,9 +1948,31 @@ components:
       schema:
         type: string
         format: date
+    AddressPostalcode:
+      name: address-postalcode
+      description: |
+        The postcode of any of the patient’s known addresses.
+
+        Not case sensitive.
+        Spaces are ignored, for example `LS16AE` and `LS1 6AE` both match `LS1 6AE`.
+        Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
+        Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
+      examples:
+        simple:
+          value: LS1 6AE
+          summary: 'Spaces ignored, would match LS16AE'
+        wildcarded:
+          value: "LS1*"
+          summary: "Matches 'LS16AE', 'LS1 6AE' and 'LS1 6AB'"
+      in: query
+      required: false
+      schema:
+        type: string
     AddressPostcode:
       name: address-postcode
       description: |
+        **N.B. that address-postcode will be deprecated in the future, address-postalcode should be used instead. 
+        If both address-postcode and address-postalcode are provided, an INVALID_SEARCH_DATA error will be returned.**
         The postcode of any of the patient’s known addresses.
 
         Not case sensitive.
