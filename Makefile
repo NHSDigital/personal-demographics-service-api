@@ -7,6 +7,7 @@ install-python:
 
 install-node:
 	npm install
+	npm install nvm
 	cd sandbox && npm install
 
 install-hooks:

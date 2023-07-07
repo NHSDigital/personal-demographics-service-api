@@ -131,6 +131,16 @@
             "use": "home"
           },
           {
+            "id": "790",
+            "period": {
+              "start": "2019-01-01",
+              "end": "2022-12-31"
+            },
+            "system": "email",
+            "value": "jayne.smyth@example.com",
+            "use": "home"
+          },
+          {
             "id": "OC789",
             "period": {
               "start": "2020-01-01",

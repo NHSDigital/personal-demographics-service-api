@@ -77,7 +77,7 @@ module.exports = [
 
             if (!patientSearcher.requestContainsParameters(request)) {
                 throw Boom.badRequest(
-                    "Not enough search parameters were provided to be able to make a search",
+                    "Not enough search parameters were provided for a valid search, you must supply family and birthdate as a minimum and only use recognised parameters from the api catalogue.",
                     {operationOutcomeCode: "required", apiErrorCode: "MISSING_VALUE", display: "Required value is missing"})
             }
 
