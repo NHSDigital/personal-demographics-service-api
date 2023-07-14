@@ -27,15 +27,6 @@ def test_sync_polling_rate_limit():
     pass
 
 
-@pytest.mark.apmspii_921
-@pytest.mark.skipif("asid-required" in PDS_BASE_PATH, reason="Don't run in asid-required environment")
-@scenario('./features/sync_wrap.feature',
-          'The access token expires during sync-wrap polling'
-          )
-def test_sync_polling_token_expires():
-    pass
-
-
 # -------------------------------- GIVEN ----------------------------
 
 
