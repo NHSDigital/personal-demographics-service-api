@@ -9,6 +9,10 @@
 * Adding relevant additional scenarios and tests in scenarios.py and test_sandbox.py to support phone and email search parameters, including simple search with telecom, multiparam search with telecom, fuzzy search with telecom, date range search with telecom and wildcard search with telecom. Also included are searches using telecoms that yield no results and invalid param searches that yield 400 results.
 * Updated/refactored patient-searcher.js. Added data to support new test cases/scenarios. Refactored to enable easier reading and less code re-use.
 
+## 2023-06-14
+* Documentation: added details regarding the newly supported address key type - UPRN
+* Updated the sandbox mocks and test scenarios to include the UPRN changes
+
 ## 2023-06-06
 * Added setup instructions to readme.md that better describe how to get the project running
 * Update to document new email and phone filter functionality
