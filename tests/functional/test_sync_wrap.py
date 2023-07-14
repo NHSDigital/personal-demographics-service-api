@@ -76,12 +76,6 @@ def setup_patch_request(context):
     return context
 
 
-@given("I have an access token expiring soon", target_fixture="context")
-def setup_expired_token(setup_patch_short_lived_token):
-    return {
-        "pds": setup_patch_short_lived_token
-    }
-
 # -------------------------------- WHEN ----------------------------
 
 
