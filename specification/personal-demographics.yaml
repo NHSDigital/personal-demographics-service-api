@@ -127,6 +127,15 @@ info:
 
     There are [libraries and SDKs available](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#fhir-libraries-and-sdks) to help with FHIR API integration.
 
+    ### Open source
+    We have a number of open source resources that you might find useful:
+
+    | Resource                  | Description                                               | Links                                                                                                              |
+    |---------------------------|-----------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+    | PDS FHIR API              | Source code for the API proxy, sandbox and specification. | [GitHub repo](https://github.com/NHSDigital/personal-demographics-service-api/tree/master)                         |
+    | TBC back-end              | TBC.                                                      | [TBC](TBC)                                                                                                         |
+
+
     ## Network access
     This API is available on the internet and, indirectly, on the [Health and Social Care Network (HSCN)](https://digital.nhs.uk/services/health-and-social-care-network).
 
