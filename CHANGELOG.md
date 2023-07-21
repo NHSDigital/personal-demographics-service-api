@@ -1,4 +1,8 @@
 # Changelog
+
+## 2023-07-21
+* Documentation: Updated the link to onboarding.prod.api.platform.nhs.uk/ so it uses https instead of http
+
 ## 2023-06-26
 * Documentation: Added address-postalcode as a search parameter in personal-demographics.yaml
 
