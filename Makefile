@@ -24,7 +24,7 @@ lint:
 	find -name '*.sh' | grep -v node_modules | xargs shellcheck
 
 validate: generate-examples
-	java -jar bin/org.hl7.fhir.validator.jar build/examples/**/*application_fhir+json*.json -version 4.0.1 -tx n/a | tee /tmp/validation.txt
+	java -jar bin/org.hl7.fhir.validator.jar build/examples/**/*application_fhir+json*.json -version 4.0.1 -tx n/a -extension any | tee /tmp/validation.txt
 
 publish: clean
 	mkdir -p build
