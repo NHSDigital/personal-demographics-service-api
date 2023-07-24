@@ -15,7 +15,7 @@ install-hooks:
 
 install-fhir-validator:
 	mkdir -p bin
-	test -f bin/org.hl7.fhir.validator.jar || curl -L https://github.com/hapifhir/org.hl7.fhir.core/releases/download/5.6.117/validator_cli.jar > bin/org.hl7.fhir.validator.jar
+	test -f bin/org.hl7.fhir.validator.jar || curl -L https://github.com/hapifhir/org.hl7.fhir.core/releases/download/6.0.1/validator_cli.jar > bin/org.hl7.fhir.validator.jar
 
 lint:
 	npm run lint
