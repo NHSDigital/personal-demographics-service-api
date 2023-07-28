@@ -127,6 +127,17 @@ info:
 
     There are [libraries and SDKs available](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#fhir-libraries-and-sdks) to help with FHIR API integration.
 
+    ### Open source
+    You might find the following open source resources useful:
+
+    | Resource                  | Description                                               | Links                                                                      |
+    |---------------------------|-----------------------------------------------------------|----------------------------------------------------------------------------|
+    | PDS FHIR API              | Source code for the API proxy, sandbox and specification. | [GitHub repo](https://github.com/NHSDigital/personal-demographics-service) |
+
+    We currently don't have any open source client libraries or sample code for this API. If you think this would be useful, you can [upvote the suggestion on our Interactive Product Backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/107439/client-libraries-and-reference-implementations).
+
+    The source code for the PDS FHIR back end (the Core Spine source code) is not currently in the open. If you think this would be useful, you can [upvote the suggestion on our Interactive Product Backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/466692/open-source-core-spine-including-pds-eps-scr-and-more).
+
     ## Network access
     This API is available on the internet and, indirectly, on the [Health and Social Care Network (HSCN)](https://digital.nhs.uk/services/health-and-social-care-network).
 
