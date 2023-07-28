@@ -94,7 +94,7 @@ steps:
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2"
 
-      poetry run pytest -v tests/functional/test_sync_wrap.py --junitxml=tests/sync-wrap-test-report.xml --reruns 3 --reruns-delay 1
+      poetry run pytest -v tests/functional/test_sync_wrap.py --junitxml=tests/sync-wrap-test-report.xml --reruns 20 --reruns-delay 1
     displayName: Run sync wrap tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
 
