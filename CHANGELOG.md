@@ -2,6 +2,9 @@
 ## 2023-07-25
 * Updated the Makefile to use the latest version of the hapifhir validator
 
+## 2023-07-24
+* Documentation: added section on open source resources.
+
 ## 2023-06-26
 * Documentation: Added address-postalcode as a search parameter in personal-demographics.yaml
 
