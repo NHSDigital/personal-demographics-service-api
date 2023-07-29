@@ -15,7 +15,7 @@ install-hooks:
 
 install-fhir-validator:
 	mkdir -p bin
-	test -f bin/org.hl7.fhir.validator.jar || curl -L https://github.com/hapifhir/org.hl7.fhir.core/releases/download/5.6.42/validator_cli.jar > bin/org.hl7.fhir.validator.jar
+	test -f bin/org.hl7.fhir.validator.jar || curl -L https://github.com/hapifhir/org.hl7.fhir.core/releases/latest/download/validator_cli.jar > bin/org.hl7.fhir.validator.jar
 
 lint:
 	npm run lint
@@ -24,7 +24,7 @@ lint:
 	find -name '*.sh' | grep -v node_modules | xargs shellcheck
 
 validate: generate-examples
-	java -jar bin/org.hl7.fhir.validator.jar build/examples/**/*application_fhir+json*.json -version 4.0.1 -tx n/a | tee /tmp/validation.txt
+	java -jar bin/org.hl7.fhir.validator.jar build/examples/**/*application_fhir+json*.json -version 4.0.1 -tx n/a -extension any | tee /tmp/validation.txt
 
 publish: clean
 	mkdir -p build
