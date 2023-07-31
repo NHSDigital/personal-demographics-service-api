@@ -127,7 +127,7 @@ info:
 
     There are [libraries and SDKs available](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#fhir-libraries-and-sdks) to help with FHIR API integration.
 
-    ### Open source
+    ## Open source
     You might find the following open source resources useful:
 
     | Resource                  | Description                                               | Links                                                                      |
