@@ -132,7 +132,7 @@ info:
 
     | Resource                  | Description                                               | Links                                                                      |
     |---------------------------|-----------------------------------------------------------|----------------------------------------------------------------------------|
-    | PDS FHIR API              | Source code for the API proxy, sandbox and specification. | [GitHub repo](https://github.com/NHSDigital/personal-demographics-service) |
+    | PDS FHIR API              | Source code for the API proxy, sandbox and specification. | [GitHub repo](https://github.com/NHSDigital/personal-demographics-service-api) |
 
     We currently don't have any open source client libraries or sample code for this API. If you think this would be useful, you can [upvote the suggestion on our Interactive Product Backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/107439/client-libraries-and-reference-implementations).
 
