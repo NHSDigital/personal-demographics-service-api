@@ -205,6 +205,27 @@ info:
     |[NHS login - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-login-combined-authentication-and-authorisation) |OAuth 2.0 authorisation code with API key and secret |No need to integrate and onboard separately with NHS login.  |No access to user information.                           |
     |[NHS login - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-login-separate-authentication-and-authorisation) |OAuth 2.0 token exchange with signed JWT             |Gives access to user information.                            |Need to integrate and onboard separately with NHS login. |
     
+    ## Errors
+    We use standard HTTP status codes to show whether an API request succeeded or not. They are usually in the range:
+
+    * 200 to 299 if it succeeded, including code 202 if it was accepted by an API that needs to wait for further action
+    * 400 to 499 if it failed because of a client error by your application
+    * 500 to 599 if it failed because of an error on our server
+    
+    Errors specific to each API are shown in the Endpoints section, under Response. See our [reference guide](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#http-status-codes) for more on errors.
+    
+    ## Open source
+    You might find the following open source resources useful:
+
+    | Resource                  | Description                                                          | Links                                                                          |
+    |---------------------------|----------------------------------------------------------------------|--------------------------------------------------------------------------------|
+    | PDS FHIR API              | Source code for the API proxy, sandbox and specification.            | [GitHub repo](https://github.com/NHSDigital/personal-demographics-service-api) |
+    | FHIR libraries and SDKs   | Various open source libraries for integrating with FHIR APIs.        | [FHIR libraries and SDKs](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#fhir-libraries-and-sdks) |
+
+    We currently don't have any open source client libraries or sample code for this API. If you think this would be useful, you can [upvote the suggestion on our Interactive Product Backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/107439/client-libraries-and-reference-implementations).
+
+    The source code for the PDS FHIR back end (the Core Spine source code) is not currently in the open. If you think this would be useful, you can [upvote the suggestion on our Interactive Product Backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/466692/open-source-core-spine-including-pds-eps-scr-and-more).
+
     ## Environments and testing
 
     | Environment       | Base URL                                                               |
@@ -268,15 +289,6 @@ info:
             </div>
         </div>
     </div> 
-    
-    ## Errors
-    We use standard HTTP status codes to show whether an API request succeeded or not. They are usually in the range:
-
-    * 200 to 299 if it succeeded, including code 202 if it was accepted by an API that needs to wait for further action
-    * 400 to 499 if it failed because of a client error by your application
-    * 500 to 599 if it failed because of an error on our server
-    
-    Errors specific to each API are shown in the Endpoints section, under Response. See our [reference guide](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#http-status-codes) for more on errors.
     
   contact:
     name: Personal Demographics Service FHIR API Support
