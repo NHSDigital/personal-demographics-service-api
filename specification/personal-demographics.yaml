@@ -132,7 +132,7 @@ info:
 
     | Resource                  | Description                                               | Links                                                                      |
     |---------------------------|-----------------------------------------------------------|----------------------------------------------------------------------------|
-    | PDS FHIR API              | Source code for the API proxy, sandbox and specification. | [GitHub repo](https://github.com/NHSDigital/personal-demographics-service) |
+    | PDS FHIR API              | Source code for the API proxy, sandbox and specification. | [GitHub repo](https://github.com/NHSDigital/personal-demographics-service-api) |
 
     We currently don't have any open source client libraries or sample code for this API. If you think this would be useful, you can [upvote the suggestion on our Interactive Product Backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/107439/client-libraries-and-reference-implementations).
 
@@ -264,7 +264,7 @@ info:
                 </figure>
             </div>
             <div class="nhsd-m-emphasis-box__content-box">
-                <div data-uipath="website.contentblock.emphasis.content" class="nhsd-t-word-break"><p class="nhsd-t-body">To get started, sign in or create a <a href="http://onboarding.prod.api.platform.nhs.uk/">developer account</a>, then select 'product onboarding'.</p></div>            
+                <div data-uipath="website.contentblock.emphasis.content" class="nhsd-t-word-break"><p class="nhsd-t-body">To get started, sign in or create a <a href="https://onboarding.prod.api.platform.nhs.uk/">developer account</a>, then select 'product onboarding'.</p></div>            
             </div>
         </div>
     </div> 
