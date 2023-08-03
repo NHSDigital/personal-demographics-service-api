@@ -1,4 +1,7 @@
 # Changelog
+
+## 2023-08-03
+* Documentation: Added Open Source as a "first class" section and re-ordered the side nav
 ## 2023-07-31
 * Documentation: Updated the link to onboarding.prod.api.platform.nhs.uk/ so it uses https instead of http
 * Documentation: Corrected the link to the repository
