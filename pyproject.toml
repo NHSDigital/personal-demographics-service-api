@@ -37,6 +37,7 @@ cryptography = "^3.2.1"
 python-dateutil = "^2.8.1"
 pytest-rerunfailures = "^9.1.1"
 polling2 = "^0.4.7"
+pytest-nhsd-apim = "^3.3.7"
 
 
 [tool.poetry.dev-dependencies]
