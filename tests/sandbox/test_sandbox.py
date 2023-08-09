@@ -25,6 +25,18 @@ class TestPDSSandboxDeploymentSuite:
         )
 
     @pytest.mark.asyncio
+    async def test_wait_for_ping_v2(self, api_client: APISessionClient, api_test_config: APITestSessionConfig):
+        async def apigee_deployed(response: ClientResponse):
+            if response.status != 200:
+                return False
+            body = await response.json(content_type=None)
+            return body.get("commitId") == api_test_config.commit_id
+
+        await helpers.poll_until_v2(
+            make_request=lambda: api_client.get("_ping"), until=apigee_deployed, timeout=30
+        )
+
+    @pytest.mark.asyncio
     async def test_check_status_is_secured(self, api_client: APISessionClient):
         async with api_client.get("_status", allow_retries=True) as response:
             assert response.status == 401

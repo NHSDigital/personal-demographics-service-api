@@ -1,6 +1,9 @@
+from aiohttp import ClientResponse
+import asyncio
+from multidict import CIMultiDictProxy
+from typing import Union, Callable, Awaitable, List, Tuple, Any
 import json
 import urllib.parse
-from typing import Union
 import requests
 from pytest_check import check
 from ..configuration import config
@@ -67,7 +70,67 @@ def poll_message(content_location: str) -> requests.Response:
     response = requests.get(f"{config.SANDBOX_BASE_URL}{content_location}")
     return response
 
+class PollTimeoutError(TimeoutError):
+    """
+        Wraps TimeoutError, but also has a place to hold responses
+    """
 
+    def __init__(self, responses: List[Tuple[int, CIMultiDictProxy, Any]]):
+        self.responses = responses
+
+        message = 'no responses received'
+
+        if responses:
+
+            status, headers, text = responses[-1]
+            message = f"last status: {status}\nlast headers:{headers}\nlast body:{text}"
+
+        super().__init__(message)
+
+async def poll_until_v2(
+    make_request: Callable[[], Awaitable[ClientResponse]],
+    until: Callable[[ClientResponse], Awaitable[bool]] = None,
+    timeout: int = 5
+):
+    """
+        repeat an api request until a specified condition is met or raise a timeout
+    Args:
+        make_request: request factory, e.g. lambda: session.get('http://test.com')
+        until: predicate to evaluate the response ,  e.g. lambda r: r.status == 404
+        body_resolver: factory to resolve the body (evaluated on every response for tracking responses)
+                        e.g.  lambda r: await r.body()
+                        set to None not to retrieve the body, obviously retrieving the body will potentially have an
+                        overhead, and attempt to parse or load invalid responses will break the polling
+
+        timeout: timeout in seconds
+        sleep_for: poll frequency in seconds
+
+    Returns:
+        List[Tuple[int, IMultiDictProxy, Any]]: responses received, (status, headers, body)
+    """
+
+    responses = []
+
+    async def _poll_until():
+
+        while True:
+            async with make_request() as response:
+                body = await response.json()
+
+                responses.append((response.status, response.headers, body))
+                should_stop = await until(response)
+
+                if not should_stop:
+                    await asyncio.sleep(1)
+                    continue
+
+                return responses
+
+    try:
+        return await asyncio.wait_for(_poll_until(), timeout=timeout)
+    except asyncio.TimeoutError as e:
+        raise PollTimeoutError(responses) from e
+    
 #  A Function to check the Response Body of a Retrieve or Polling Request.
 #  Arguments accepted are the actual Response & expected Response.
 def check_retrieve_response_body(response: requests.Response, expected_response: dict) -> None:
