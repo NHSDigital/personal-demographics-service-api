@@ -70,6 +70,7 @@ def poll_message(content_location: str) -> requests.Response:
     response = requests.get(f"{config.SANDBOX_BASE_URL}{content_location}")
     return response
 
+
 class PollTimeoutError(TimeoutError):
     """
         Wraps TimeoutError, but also has a place to hold responses
@@ -86,6 +87,7 @@ class PollTimeoutError(TimeoutError):
             message = f"last status: {status}\nlast headers:{headers}\nlast body:{text}"
 
         super().__init__(message)
+
 
 async def poll_until_v2(
     make_request: Callable[[], Awaitable[ClientResponse]],
@@ -130,7 +132,9 @@ async def poll_until_v2(
         return await asyncio.wait_for(_poll_until(), timeout=timeout)
     except asyncio.TimeoutError as e:
         raise PollTimeoutError(responses) from e
-    
+
+
+
 #  A Function to check the Response Body of a Retrieve or Polling Request.
 #  Arguments accepted are the actual Response & expected Response.
 def check_retrieve_response_body(response: requests.Response, expected_response: dict) -> None:
