@@ -117,7 +117,7 @@ async def poll_until_v2(
 
         while True:
             async with make_request() as response:
-                body = await response.json()
+                body = await response.json(content_type=None)
 
                 responses.append((response.status, response.headers, body))
                 should_stop = await until(response)
