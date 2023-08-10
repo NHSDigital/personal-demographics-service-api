@@ -1,10 +1,12 @@
 import pytest
+import requests
 from aiohttp import ClientResponse
 from .data.scenarios import relatedPerson, retrieve, search, update
 from .utils import helpers
 from api_test_utils import env
 from api_test_utils.api_session_client import APISessionClient
 from api_test_utils.api_test_session_config import APITestSessionConfig
+from pytest_nhsd_apim.apigee_edge import nhsd_apim_proxy_url
 
 
 @pytest.mark.deployment_scenarios
@@ -19,8 +21,8 @@ class TestPDSSandboxDeploymentSuite:
             body = await response.json(content_type=None)
             return body.get("commitId") == api_test_config.commit_id
 
-        await helpers.poll_until_v2(
-            make_request=lambda: api_client.get("_ping"), until=apigee_deployed, timeout=30
+        await helpers.poll_until(
+            make_request=lambda: requests.get(f"{nhsd_apim_proxy_url}/_ping"), until=apigee_deployed, timeout=30
         )
 
     @pytest.mark.asyncio
@@ -44,7 +46,7 @@ class TestPDSSandboxDeploymentSuite:
 
             return backend.get("commitId") == api_test_config.commit_id
 
-        await helpers.poll_until_v2(
+        await helpers.poll_until(
             make_request=lambda: api_client.get(
                 "_status", headers={"apikey": env.status_endpoint_api_key()}
             ),

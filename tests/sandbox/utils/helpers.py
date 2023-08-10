@@ -71,9 +71,9 @@ def poll_message(content_location: str) -> requests.Response:
     return response
 
 
-async def poll_until_v2(make_request: Callable[[], Awaitable[ClientResponse]],
-                        until: Callable[[ClientResponse], Awaitable[bool]] = None,
-                        timeout: int = 5) -> None:
+async def poll_until(make_request: Callable[[], Awaitable[ClientResponse]],
+                    until: Callable[[ClientResponse], Awaitable[bool]] = None,
+                    timeout: int = 5) -> None:
     last_response: ClientResponse = None
 
     async def _poll_until():
