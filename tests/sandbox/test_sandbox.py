@@ -3,7 +3,6 @@ from aiohttp import ClientResponse
 from .data.scenarios import relatedPerson, retrieve, search, update
 from .utils import helpers
 from api_test_utils import env
-from api_test_utils import poll_until
 from api_test_utils.api_session_client import APISessionClient
 from api_test_utils.api_test_session_config import APITestSessionConfig
 
@@ -14,18 +13,6 @@ class TestPDSSandboxDeploymentSuite:
 
     @pytest.mark.asyncio
     async def test_wait_for_ping(self, api_client: APISessionClient, api_test_config: APITestSessionConfig):
-        async def apigee_deployed(response: ClientResponse):
-            if response.status != 200:
-                return False
-            body = await response.json(content_type=None)
-            return body.get("commitId") == api_test_config.commit_id
-
-        await poll_until(
-            make_request=lambda: api_client.get("_ping"), until=apigee_deployed, timeout=30
-        )
-
-    @pytest.mark.asyncio
-    async def test_wait_for_ping_v2(self, api_client: APISessionClient, api_test_config: APITestSessionConfig):
         async def apigee_deployed(response: ClientResponse):
             if response.status != 200:
                 return False
@@ -57,7 +44,7 @@ class TestPDSSandboxDeploymentSuite:
 
             return backend.get("commitId") == api_test_config.commit_id
 
-        await poll_until(
+        await helpers.poll_until_v2(
             make_request=lambda: api_client.get(
                 "_status", headers={"apikey": env.status_endpoint_api_key()}
             ),
