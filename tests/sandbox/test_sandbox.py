@@ -3,10 +3,8 @@ import requests
 from aiohttp import ClientResponse
 from .data.scenarios import relatedPerson, retrieve, search, update
 from .utils import helpers
-from api_test_utils import env
 from api_test_utils.api_session_client import APISessionClient
 from api_test_utils.api_test_session_config import APITestSessionConfig
-from pytest_nhsd_apim.apigee_edge import nhsd_apim_proxy_url
 
 
 @pytest.mark.deployment_scenarios
@@ -14,7 +12,10 @@ class TestPDSSandboxDeploymentSuite:
     """Sandbox PDS Deployment Scenarios. Checks performed: status_codes and version deployed"""
 
     @pytest.mark.asyncio
-    async def test_wait_for_ping(self, api_client: APISessionClient, api_test_config: APITestSessionConfig):
+    async def test_wait_for_ping(self,
+                                 api_client: APISessionClient,
+                                 api_test_config: APITestSessionConfig,
+                                 nhsd_apim_proxy_url):
         async def apigee_deployed(response: ClientResponse):
             if response.status != 200:
                 return False
@@ -31,7 +32,11 @@ class TestPDSSandboxDeploymentSuite:
             assert response.status == 401
 
     @pytest.mark.asyncio
-    async def test_wait_for_status(self, api_client: APISessionClient, api_test_config: APITestSessionConfig):
+    async def test_wait_for_status(self,
+                                   api_client: APISessionClient,
+                                   api_test_config: APITestSessionConfig,
+                                   nhsd_apim_proxy_url,
+                                   status_endpoint_auth_headers):
         async def is_deployed(response: ClientResponse):
             if response.status != 200:
                 return False
@@ -46,13 +51,10 @@ class TestPDSSandboxDeploymentSuite:
 
             return backend.get("commitId") == api_test_config.commit_id
 
-        await helpers.poll_until(
-            make_request=lambda: api_client.get(
-                "_status", headers={"apikey": env.status_endpoint_api_key()}
-            ),
-            until=is_deployed,
-            timeout=120,
-        )
+        await helpers.poll_until(make_request=lambda: requests.get(f"{nhsd_apim_proxy_url}/_status",
+                                                                   status_endpoint_auth_headers),
+                                 until=is_deployed,
+                                 timeout=120)
 
 
 @pytest.mark.retrieve_scenarios

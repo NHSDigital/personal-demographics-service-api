@@ -5,6 +5,10 @@ from api_test_utils.api_session_client import APISessionClient
 from api_test_utils.api_test_session_config import APITestSessionConfig
 
 
+pytest_plugins = ["pytest_nhsd_apim.apigee_edge",
+                  "pytest_nhsd_apim.secrets"]
+
+
 @pytest.fixture(params=[{"prefer": False}])
 def additional_headers(request):
     """Set additional headers and optionally add prefer header"""
