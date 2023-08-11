@@ -8,6 +8,7 @@ steps:
       export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
       export SOURCE_COMMIT_ID=$(Build.SourceVersion)
       export STATUS_ENDPOINT_API_KEY="$(status-endpoint-api-key)"
+      export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
 
       poetry run pytest -v tests/sandbox/test_sandbox.py --junitxml=tests/sandbox-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run sandbox tests
