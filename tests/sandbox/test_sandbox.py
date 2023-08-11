@@ -56,7 +56,7 @@ class TestPDSSandboxDeploymentSuite:
 
         await helpers.poll_until(
             make_request=lambda: session.get(f"{nhsd_apim_proxy_url}/_ping",
-                                             status_endpoint_auth_headers),
+                                             headers=status_endpoint_auth_headers),
             until=is_deployed,
             timeout=120
         )
