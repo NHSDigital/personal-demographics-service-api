@@ -9,9 +9,8 @@ steps:
       export SOURCE_COMMIT_ID=$(Build.SourceVersion)
       export STATUS_ENDPOINT_API_KEY="$(status-endpoint-api-key)"
       export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
-      export PROXY_NAME="personal-demographics-pr-893"
 
-      poetry run pytest -v tests/sandbox/test_sandbox.py --junitxml=tests/sandbox-test-report.xml --reruns 3 --reruns-delay 1
+      poetry run pytest -v tests/sandbox/test_sandbox.py --junitxml=tests/sandbox-test-report.xml --reruns 3 --reruns-delay 1 --proxy-name personal-demographics-pr-893
     displayName: Run sandbox tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
 
