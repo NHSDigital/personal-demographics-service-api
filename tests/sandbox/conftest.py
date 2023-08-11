@@ -6,7 +6,8 @@ from api_test_utils.api_test_session_config import APITestSessionConfig
 
 
 pytest_plugins = ["pytest_nhsd_apim.apigee_edge",
-                  "pytest_nhsd_apim.secrets"]
+                  "pytest_nhsd_apim.secrets",
+                  "pytest_nhsd_apim.config"]
 
 
 @pytest.fixture(params=[{"prefer": False}])
