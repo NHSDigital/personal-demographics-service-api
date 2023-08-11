@@ -1,6 +1,6 @@
 import pytest
 import requests
-from aiohttp import ClientResponse
+from aiohttp import ClientResponse, ClientSession
 from .data.scenarios import relatedPerson, retrieve, search, update
 from .utils import helpers
 from api_test_utils.api_session_client import APISessionClient
@@ -22,8 +22,10 @@ class TestPDSSandboxDeploymentSuite:
             body = await response.json(content_type=None)
             return body.get("commitId") == api_test_config.commit_id
 
+        session = ClientSession()
+
         await helpers.poll_until(
-            make_request=lambda: requests.session().get(f"{nhsd_apim_proxy_url}/_ping"),
+            make_request=lambda: session.get(f"{nhsd_apim_proxy_url}/_ping"),
             until=apigee_deployed,
             timeout=30
         )
