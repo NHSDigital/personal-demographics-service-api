@@ -23,7 +23,9 @@ class TestPDSSandboxDeploymentSuite:
             return body.get("commitId") == api_test_config.commit_id
 
         await helpers.poll_until(
-            make_request=lambda: requests.get(f"{nhsd_apim_proxy_url}/_ping"), until=apigee_deployed, timeout=30
+            make_request=lambda: requests.session().get(f"{nhsd_apim_proxy_url}/_ping"),
+            until=apigee_deployed,
+            timeout=30
         )
 
     @pytest.mark.asyncio
