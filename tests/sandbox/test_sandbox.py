@@ -1,5 +1,4 @@
 import pytest
-import requests
 from aiohttp import ClientResponse, ClientSession
 from .data.scenarios import relatedPerson, retrieve, search, update
 from .utils import helpers
@@ -13,7 +12,6 @@ class TestPDSSandboxDeploymentSuite:
 
     @pytest.mark.asyncio
     async def test_wait_for_ping(self,
-                                 api_client: APISessionClient,
                                  api_test_config: APITestSessionConfig,
                                  nhsd_apim_proxy_url):
         async def apigee_deployed(response: ClientResponse):
@@ -37,7 +35,6 @@ class TestPDSSandboxDeploymentSuite:
 
     @pytest.mark.asyncio
     async def test_wait_for_status(self,
-                                   api_client: APISessionClient,
                                    api_test_config: APITestSessionConfig,
                                    nhsd_apim_proxy_url,
                                    status_endpoint_auth_headers):
@@ -55,10 +52,14 @@ class TestPDSSandboxDeploymentSuite:
 
             return backend.get("commitId") == api_test_config.commit_id
 
-        await helpers.poll_until(make_request=lambda: requests.get(f"{nhsd_apim_proxy_url}/_status",
-                                                                   status_endpoint_auth_headers),
-                                 until=is_deployed,
-                                 timeout=120)
+        session = ClientSession()
+
+        await helpers.poll_until(
+            make_request=lambda: session.get(f"{nhsd_apim_proxy_url}/_ping",
+                                             status_endpoint_auth_headers),
+            until=is_deployed,
+            timeout=120
+        )
 
 
 @pytest.mark.retrieve_scenarios
