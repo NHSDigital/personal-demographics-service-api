@@ -16,12 +16,15 @@ class TestUserRestrictedRetrievePatient:
         helpers.check_response_status_code(response, 404)
 
     @pytest.mark.smoke_test
-    def test_retrieve_patient(self, headers_with_token):
+    # def test_retrieve_patient(self, headers_with_token):
+    @pytest.mark.nhsd_apim_authorization({"access": "application", "level": "level0"})
+    def test_retrieve_patient(self, nhsd_apim_auth_headers):
         response = helpers.retrieve_patient(
             retrieve[0]["patient"],
-            self.headers
+            nhsd_apim_auth_headers
         )
-        helpers.check_response_headers(response, self.headers)
+        raise RuntimeError(f"Status code!!! {response.status_code}")
+        helpers.check_response_headers(response, nhsd_apim_auth_headers)
         helpers.check_response_status_code(response, 200)
         helpers.check_retrieve_response_body_shape(response)
 
