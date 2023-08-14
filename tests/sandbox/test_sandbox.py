@@ -25,7 +25,7 @@ class TestPDSSandboxDeploymentSuite:
                                  timeout=30)
 
     @pytest.mark.asyncio
-    async def test_check_status_is_secured(self, nhsd_apim_proxy_url):
+    async def test_check_status_is_secured(self, nhsd_apim_proxy_url: str):
         response = requests.get(f"{nhsd_apim_proxy_url}/_status")
         assert response.status_code == 401
 
