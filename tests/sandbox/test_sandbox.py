@@ -1,9 +1,9 @@
 import pytest
 from aiohttp import ClientResponse, ClientSession
 from .data.scenarios import relatedPerson, retrieve, search, update
+import requests
 from typing import Dict
 from .utils import helpers
-from api_test_utils.api_session_client import APISessionClient
 
 
 @pytest.mark.deployment_scenarios
@@ -29,9 +29,9 @@ class TestPDSSandboxDeploymentSuite:
         )
 
     @pytest.mark.asyncio
-    async def test_check_status_is_secured(self, api_client: APISessionClient):
-        async with api_client.get("_status", allow_retries=True) as response:
-            assert response.status == 401
+    async def test_check_status_is_secured(self, nhsd_apim_proxy_url):
+        response = requests.get(f"{nhsd_apim_proxy_url}/_status")
+        assert response.status == 401
 
     @pytest.mark.asyncio
     async def test_wait_for_status(self,
