@@ -1,6 +1,6 @@
-from aiohttp import ClientResponse
+from aiohttp import ClientResponse, ClientSession
 from asyncio import sleep, wait_for, TimeoutError
-from typing import Union, Callable, Awaitable
+from typing import Union, Callable, Awaitable, Dict
 import json
 import urllib.parse
 import requests
@@ -71,19 +71,22 @@ def poll_message(content_location: str) -> requests.Response:
     return response
 
 
-async def poll_until(make_request: Callable[[], Awaitable[ClientResponse]],
+async def poll_until(url: str,
+                     headers: Dict[str, str] = None,
                      until: Callable[[ClientResponse], Awaitable[bool]] = None,
                      timeout: int = 5) -> None:
+    session = ClientSession()
     last_response: ClientResponse = None
 
     async def _poll_until():
         while True:
-            async with make_request() as response:
+            async with session.get(url, headers=headers) as response:
+                last_response = response
                 should_stop = await until(response)
                 if not should_stop:
                     await sleep(1)
                     continue
-                return
+                return last_response
 
     try:
         return await wait_for(_poll_until(), timeout=timeout)

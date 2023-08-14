@@ -1,5 +1,5 @@
 import pytest
-from aiohttp import ClientResponse, ClientSession
+from aiohttp import ClientResponse
 from .data.scenarios import relatedPerson, retrieve, search, update
 import requests
 from typing import Dict
@@ -20,13 +20,9 @@ class TestPDSSandboxDeploymentSuite:
             body = await response.json(content_type=None)
             return body.get("commitId") == commit_id
 
-        session = ClientSession()
-
-        await helpers.poll_until(
-            make_request=lambda: session.get(f"{nhsd_apim_proxy_url}/_ping"),
-            until=apigee_deployed,
-            timeout=30
-        )
+        await helpers.poll_until(url=f"{nhsd_apim_proxy_url}/_ping",
+                                 until=apigee_deployed,
+                                 timeout=30)
 
     @pytest.mark.asyncio
     async def test_check_status_is_secured(self, nhsd_apim_proxy_url):
@@ -52,14 +48,10 @@ class TestPDSSandboxDeploymentSuite:
 
             return backend.get("commitId") == commit_id
 
-        session = ClientSession()
-
-        await helpers.poll_until(
-            make_request=lambda: session.get(f"{nhsd_apim_proxy_url}/_status",
-                                             headers=status_endpoint_auth_headers),
-            until=is_deployed,
-            timeout=120
-        )
+        await helpers.poll_until(url=f"{nhsd_apim_proxy_url}/_status",
+                                 headers=status_endpoint_auth_headers,
+                                 until=is_deployed,
+                                 timeout=120)
 
 
 @pytest.mark.retrieve_scenarios
