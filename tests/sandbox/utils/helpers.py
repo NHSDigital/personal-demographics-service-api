@@ -74,12 +74,12 @@ def poll_message(content_location: str) -> requests.Response:
 async def poll_until(url: str,
                      headers: Dict[str, str] = None,
                      until: Callable[[ClientResponse], Awaitable[bool]] = None,
-                     timeout: int = 5) -> None:
-    session = ClientSession()
+                     timeout: int = 5) -> ClientResponse:
     last_response: ClientResponse = None
 
     async def _poll_until():
         while True:
+            session = ClientSession()
             async with session.get(url, headers=headers) as response:
                 last_response = response
                 should_stop = await until(response)
