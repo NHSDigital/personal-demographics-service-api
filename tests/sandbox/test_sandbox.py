@@ -1,9 +1,9 @@
 import pytest
 from aiohttp import ClientResponse, ClientSession
 from .data.scenarios import relatedPerson, retrieve, search, update
+from typing import Dict
 from .utils import helpers
 from api_test_utils.api_session_client import APISessionClient
-from api_test_utils.api_test_session_config import APITestSessionConfig
 
 
 @pytest.mark.deployment_scenarios
@@ -35,22 +35,22 @@ class TestPDSSandboxDeploymentSuite:
 
     @pytest.mark.asyncio
     async def test_wait_for_status(self,
-                                   api_test_config: APITestSessionConfig,
-                                   nhsd_apim_proxy_url,
-                                   status_endpoint_auth_headers):
+                                   commit_id: str,
+                                   nhsd_apim_proxy_url: str,
+                                   status_endpoint_auth_headers: Dict[str, str]):
         async def is_deployed(response: ClientResponse):
             if response.status != 200:
                 return False
             body = await response.json()
 
-            if body.get("commitId") != api_test_config.commit_id:
+            if body.get("commitId") != commit_id:
                 return False
 
             backend = helpers.dict_path(body, path=["checks", "healthcheck", "outcome", "version"])
             if not backend:
                 return True
 
-            return backend.get("commitId") == api_test_config.commit_id
+            return backend.get("commitId") == commit_id
 
         session = ClientSession()
 

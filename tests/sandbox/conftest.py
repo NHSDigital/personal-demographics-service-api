@@ -39,6 +39,7 @@ async def api_client(api_test_config: APITestSessionConfig):
 
     await session_client.close()
 
+
 @pytest.fixture
 def commit_id() -> str:
     return os.environ.get('SOURCE_COMMIT_ID', 'not-set')
