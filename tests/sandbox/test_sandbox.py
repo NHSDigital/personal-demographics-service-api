@@ -12,13 +12,13 @@ class TestPDSSandboxDeploymentSuite:
 
     @pytest.mark.asyncio
     async def test_wait_for_ping(self,
-                                 api_test_config: APITestSessionConfig,
-                                 nhsd_apim_proxy_url):
+                                 commit_id: str,
+                                 nhsd_apim_proxy_url: str):
         async def apigee_deployed(response: ClientResponse):
             if response.status != 200:
                 return False
             body = await response.json(content_type=None)
-            return body.get("commitId") == api_test_config.commit_id
+            return body.get("commitId") == commit_id
 
         session = ClientSession()
 

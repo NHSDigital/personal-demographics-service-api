@@ -1,3 +1,4 @@
+import os
 import pytest
 import uuid
 import time
@@ -37,3 +38,7 @@ async def api_client(api_test_config: APITestSessionConfig):
     yield session_client
 
     await session_client.close()
+
+@pytest.fixture
+def commit_id() -> str:
+    return os.environ.get('SOURCE_COMMIT_ID', 'not-set')
