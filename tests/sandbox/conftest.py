@@ -1,8 +1,11 @@
+import os
 import pytest
 import uuid
 import time
-from api_test_utils.api_session_client import APISessionClient
-from api_test_utils.api_test_session_config import APITestSessionConfig
+
+
+pytest_plugins = ["pytest_nhsd_apim.apigee_edge",
+                  "pytest_nhsd_apim.secrets"]
 
 
 @pytest.fixture(params=[{"prefer": False}])
@@ -20,16 +23,6 @@ def set_delay():
     return time.sleep(2.5)
 
 
-@pytest.fixture(scope="session")
-def api_test_config() -> APITestSessionConfig:
-    return APITestSessionConfig()
-
-
-@pytest.fixture(scope='function')
-async def api_client(api_test_config: APITestSessionConfig):
-
-    session_client = APISessionClient(api_test_config.base_uri)
-
-    yield session_client
-
-    await session_client.close()
+@pytest.fixture
+def commit_id() -> str:
+    return os.environ.get('SOURCE_COMMIT_ID', 'not-set')

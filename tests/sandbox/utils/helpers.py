@@ -1,8 +1,11 @@
+from aiohttp import ClientResponse, ClientSession
+from asyncio import sleep, wait_for, TimeoutError
+from typing import Union, Callable, Awaitable, Dict
 import json
 import urllib.parse
-from typing import Union
 import requests
 from pytest_check import check
+from pytest import fail
 from ..configuration import config
 
 
@@ -66,6 +69,33 @@ def retrieve_related_person(patient: str, headers={}) -> requests.Response:
 def poll_message(content_location: str) -> requests.Response:
     response = requests.get(f"{config.SANDBOX_BASE_URL}{content_location}")
     return response
+
+
+async def poll_until(url: str,
+                     headers: Dict[str, str] = None,
+                     until: Callable[[ClientResponse], Awaitable[bool]] = None,
+                     timeout: int = 5) -> ClientResponse:
+    last_response: ClientResponse = None
+
+    async def _poll_until():
+        while True:
+            session = ClientSession()
+            async with session.get(url, headers=headers) as response:
+                last_response = response
+                should_stop = await until(response)
+                if not should_stop:
+                    await sleep(1)
+                    continue
+                return last_response
+
+    try:
+        return await wait_for(_poll_until(), timeout=timeout)
+    except TimeoutError:
+        fail(f"""
+                last status: {last_response.status}
+                last headers:{last_response.headers}
+                last body:{last_response.body}
+            """)
 
 
 #  A Function to check the Response Body of a Retrieve or Polling Request.
