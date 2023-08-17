@@ -30,7 +30,7 @@ class TestUserRestrictedRetrievePatient:
     def test_retrieve_patient(self, headers, nhsd_apim_auth_headers):
 
         headers = {**headers, **nhsd_apim_auth_headers}
-        
+
         response = helpers.retrieve_patient(
             retrieve[0]["patient"],
             headers
