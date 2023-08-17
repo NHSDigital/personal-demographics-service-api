@@ -52,12 +52,10 @@ class TestUserRestrictedRetrievePatient:
         LOGGER.info(f'response.status_code:{response.status_code}')
         LOGGER.info(f'response.text:{response.text}')
         LOGGER.info(f'self.headers:{self.headers}')
-        
 
         helpers.check_response_headers(response, nhsd_apim_auth_headers)
         helpers.check_response_status_code(response, 200)
         helpers.check_retrieve_response_body_shape(response)
-
 
     def test_retrieve_patient_with_missing_auth_header(self, headers):
         response = helpers.retrieve_patient(
