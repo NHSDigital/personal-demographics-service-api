@@ -3,6 +3,9 @@ from .data.pds_scenarios import retrieve, search, update
 from .utils import helpers
 import pytest
 from pytest_check import check
+import logging
+
+LOGGER = logging.getLogger(__name__)
 
 
 class TestUserRestrictedRetrievePatient:
@@ -16,14 +19,45 @@ class TestUserRestrictedRetrievePatient:
         helpers.check_response_status_code(response, 404)
 
     @pytest.mark.smoke_test
-    def test_retrieve_patient(self, headers_with_token):
+    def test_retrieve_patient_old(self, headers_with_token):
         response = helpers.retrieve_patient(
             retrieve[0]["patient"],
             self.headers
         )
+        LOGGER.info(f'response.status_code:{response.status_code}')
+        LOGGER.info(f'response.text:{response.text}')
+        LOGGER.info(f'headers:{self.headers}')
         helpers.check_response_headers(response, self.headers)
         helpers.check_response_status_code(response, 200)
         helpers.check_retrieve_response_body_shape(response)
+
+    @pytest.mark.smoke_test
+    @pytest.mark.nhsd_apim_authorization(
+        {
+            "access": "healthcare_worker",
+            "level": "aal3",
+            "login_form": {"username": "656005750104"},
+            "authentication": "separate",
+        }
+    )
+    def test_retrieve_patient(self, nhsd_apim_auth_headers):
+
+        LOGGER.info(f'nhsd_apim_auth_headers:{nhsd_apim_auth_headers}')
+
+        response = helpers.retrieve_patient(
+            retrieve[0]["patient"],
+            nhsd_apim_auth_headers
+        )
+
+        LOGGER.info(f'response.status_code:{response.status_code}')
+        LOGGER.info(f'response.text:{response.text}')
+        LOGGER.info(f'self.headers:{self.headers}')
+        
+
+        helpers.check_response_headers(response, nhsd_apim_auth_headers)
+        helpers.check_response_status_code(response, 200)
+        helpers.check_retrieve_response_body_shape(response)
+
 
     def test_retrieve_patient_with_missing_auth_header(self, headers):
         response = helpers.retrieve_patient(
