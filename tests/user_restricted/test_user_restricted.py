@@ -19,19 +19,6 @@ class TestUserRestrictedRetrievePatient:
         helpers.check_response_status_code(response, 404)
 
     @pytest.mark.smoke_test
-    def test_retrieve_patient_old(self, headers_with_token):
-        response = helpers.retrieve_patient(
-            retrieve[0]["patient"],
-            self.headers
-        )
-        LOGGER.info(f'response.status_code:{response.status_code}')
-        LOGGER.info(f'response.text:{response.text}')
-        LOGGER.info(f'headers:{self.headers}')
-        helpers.check_response_headers(response, self.headers)
-        helpers.check_response_status_code(response, 200)
-        helpers.check_retrieve_response_body_shape(response)
-
-    @pytest.mark.smoke_test
     @pytest.mark.nhsd_apim_authorization(
         {
             "access": "healthcare_worker",
@@ -40,20 +27,16 @@ class TestUserRestrictedRetrievePatient:
             "authentication": "separate",
         }
     )
-    def test_retrieve_patient(self, nhsd_apim_auth_headers):
+    def test_retrieve_patient(self, headers, nhsd_apim_auth_headers):
 
-        LOGGER.info(f'nhsd_apim_auth_headers:{nhsd_apim_auth_headers}')
-
+        headers = {**headers, **nhsd_apim_auth_headers}
+        
         response = helpers.retrieve_patient(
             retrieve[0]["patient"],
-            nhsd_apim_auth_headers
+            headers
         )
 
-        LOGGER.info(f'response.status_code:{response.status_code}')
-        LOGGER.info(f'response.text:{response.text}')
-        LOGGER.info(f'self.headers:{self.headers}')
-
-        helpers.check_response_headers(response, nhsd_apim_auth_headers)
+        helpers.check_response_headers(response, headers)
         helpers.check_response_status_code(response, 200)
         helpers.check_retrieve_response_body_shape(response)
 
