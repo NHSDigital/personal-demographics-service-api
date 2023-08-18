@@ -4,10 +4,6 @@ import uuid
 import time
 
 
-pytest_plugins = ["pytest_nhsd_apim.apigee_edge",
-                  "pytest_nhsd_apim.secrets"]
-
-
 @pytest.fixture(params=[{"prefer": False}])
 def additional_headers(request):
     """Set additional headers and optionally add prefer header"""
