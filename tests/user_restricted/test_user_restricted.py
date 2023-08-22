@@ -7,16 +7,15 @@ import logging
 
 LOGGER = logging.getLogger(__name__)
 
+AUTH_HEALTHCARE_WORKER = {
+    "access": "healthcare_worker",
+    "level": "aal3",
+    "login_form": {"username": "656005750104"},        
+}
 
 class TestUserRestrictedRetrievePatient:
 
-    @pytest.mark.nhsd_apim_authorization(
-        {
-            "access": "healthcare_worker",
-            "level": "aal3",
-            "login_form": {"username": "656005750104"},        
-        }
-    )
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_retrieve_deprecated_url(self, headers_with_token):
         response = helpers.retrieve_patient_deprecated_url(
             retrieve[0]["patient"],
@@ -26,13 +25,7 @@ class TestUserRestrictedRetrievePatient:
         helpers.check_response_status_code(response, 404)
 
     @pytest.mark.smoke_test
-    @pytest.mark.nhsd_apim_authorization(
-        {
-            "access": "healthcare_worker",
-            "level": "aal3",
-            "login_form": {"username": "656005750104"},        
-        }
-    )
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_retrieve_patient(self, headers_with_token):
 
         response = helpers.retrieve_patient(
@@ -76,13 +69,7 @@ class TestUserRestrictedRetrievePatient:
         helpers.check_response_status_code(response, 401)
         helpers.check_response_headers(response, headers)
 
-    @pytest.mark.nhsd_apim_authorization(
-        {
-            "access": "healthcare_worker",
-            "level": "aal3",
-            "login_form": {"username": "656005750104"},        
-        }
-    )
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_user_role_sharedflow_retrieve_patient_with_missing_urid_header(self, headers_with_token):
         self.headers.pop("NHSD-Session-URID")
         response = helpers.retrieve_patient(
@@ -93,13 +80,7 @@ class TestUserRestrictedRetrievePatient:
         helpers.check_retrieve_response_body_shape(response)
         helpers.check_response_headers(response, self.headers)
 
-    @pytest.mark.nhsd_apim_authorization(
-        {
-            "access": "healthcare_worker",
-            "level": "aal3",
-            "login_form": {"username": "656005750104"},        
-        }
-    )
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_user_role_sharedflow_invalid_role(self, headers_with_token):
         self.headers["NHSD-Session-URID"] = "invalid"
         LOGGER.info(f'self.headers: {self.headers}')
@@ -111,13 +92,7 @@ class TestUserRestrictedRetrievePatient:
         helpers.check_response_status_code(response, 400)
         helpers.check_response_headers(response, self.headers)
 
-    @pytest.mark.nhsd_apim_authorization(
-        {
-            "access": "healthcare_worker",
-            "level": "aal3",
-            "login_form": {"username": "656005750104"},        
-        }
-    )
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_retrieve_patient_with_blank_x_request_header(self, headers_with_token):
         self.headers["X-Request-ID"] = ''
         response = helpers.retrieve_patient(
@@ -129,13 +104,7 @@ class TestUserRestrictedRetrievePatient:
         self.headers.pop("X-Request-ID")
         helpers.check_response_headers(response, self.headers)
 
-    @pytest.mark.nhsd_apim_authorization(
-        {
-            "access": "healthcare_worker",
-            "level": "aal3",
-            "login_form": {"username": "656005750104"},        
-        }
-    )
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_retrieve_patient_with_invalid_x_request_header(self, headers_with_token):
         self.headers["X-Request-ID"] = '1234'
         response = helpers.retrieve_patient(
@@ -146,13 +115,7 @@ class TestUserRestrictedRetrievePatient:
         helpers.check_response_status_code(response, 400)
         helpers.check_response_headers(response, self.headers)
 
-    @pytest.mark.nhsd_apim_authorization(
-        {
-            "access": "healthcare_worker",
-            "level": "aal3",
-            "login_form": {"username": "656005750104"},        
-        }
-    )
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_retrieve_patient_with_missing_x_request_header(self, headers_with_token):
         self.headers.pop("X-Request-ID")
         response = helpers.retrieve_patient(
@@ -167,13 +130,7 @@ class TestUserRestrictedRetrievePatient:
 class TestUserRestrictedSearchPatient:
 
     @pytest.mark.smoke_test
-    @pytest.mark.nhsd_apim_authorization(
-        {
-            "access": "healthcare_worker",
-            "level": "aal3",
-            "login_form": {"username": "656005750104"},        
-        }
-    )
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_search_patient_happy_path(self, headers_with_token):
         response = helpers.search_patient(
             search[0]["query_params"],
@@ -202,6 +159,7 @@ class TestUserRestrictedSearchPatient:
         helpers.check_response_status_code(response, 401)
         helpers.check_response_headers(response, headers)
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_search_patient_with_blank_auth_header_at(self, headers_with_token):
         self.headers['authorization'] = ''
         response = helpers.search_patient(
@@ -222,6 +180,7 @@ class TestUserRestrictedSearchPatient:
         helpers.check_response_status_code(response, 401)
         helpers.check_response_headers(response, headers)
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_search_patient_with_blank_x_request_header(self, headers_with_token):
         self.headers["X-Request-ID"] = ''
         response = helpers.search_patient(
@@ -233,6 +192,7 @@ class TestUserRestrictedSearchPatient:
         self.headers.pop("X-Request-ID")
         helpers.check_response_headers(response, self.headers)
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_search_patient_with_invalid_x_request_header(self, headers_with_token):
         self.headers["X-Request-ID"] = '1234'
         response = helpers.search_patient(
@@ -243,6 +203,7 @@ class TestUserRestrictedSearchPatient:
         helpers.check_response_status_code(response, 400)
         helpers.check_response_headers(response, self.headers)
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_search_patient_with_missing_x_request_header(self, headers_with_token):
         self.headers.pop("X-Request-ID")
         response = helpers.search_patient(
@@ -253,6 +214,7 @@ class TestUserRestrictedSearchPatient:
         helpers.check_response_status_code(response, 412)
         helpers.check_response_headers(response, self.headers)
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_search_patient_happy_path_sensitive(self, headers_with_token):
         response = helpers.search_patient(
             search[10]["query_params"],
@@ -263,6 +225,7 @@ class TestUserRestrictedSearchPatient:
         helpers.assert_is_sensitive_patient(response)
         helpers.check_response_headers(response, self.headers)
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_search_patient_happy_path_gender_free(self, headers_with_token):
         response = helpers.search_patient(
             search[8]["query_params"],
@@ -272,6 +235,7 @@ class TestUserRestrictedSearchPatient:
         helpers.assert_correct_patient_nhs_number_is_returned(response, search[8]["patient_returned"])
         helpers.check_response_headers(response, self.headers)
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_search_advanced_alphanumeric_gender_free(self, headers_with_token):
         response = helpers.search_patient(
             search[9]["query_params"],
@@ -281,6 +245,7 @@ class TestUserRestrictedSearchPatient:
         helpers.assert_correct_patient_nhs_number_is_returned(response, search[9]["patient_returned"])
         helpers.check_response_headers(response, self.headers)
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_simple_trace_no_gender(self, headers_with_token):
         """See TestBase37101 Chain 7001"""
         print(self.headers)
@@ -296,6 +261,7 @@ class TestUserRestrictedSearchPatient:
         assert response_body["total"] == 1
         assert response_body["entry"][0]["resource"]["id"] == "9693632109"
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_simple_trace_no_gender_no_result(self, headers_with_token):
         """See TestBase37101 Chain 7002"""
         print(self.headers)
@@ -310,6 +276,7 @@ class TestUserRestrictedSearchPatient:
         assert response_body["type"] == "searchset"
         assert response_body["total"] == 0
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_no_gender_postcode_format_doesnt_affect_score(self, headers_with_token):
         """See TestBase37101 Chain 7003"""
         response_1 = helpers.search_patient(
@@ -331,6 +298,7 @@ class TestUserRestrictedSearchPatient:
         assert response_1_body["entry"][0]["search"]["score"] == 1
         assert response_1_body["entry"][0]["search"]["score"] == response_2_body["entry"][0]["search"]["score"]
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_algorithmic_search_without_gender(self, headers_with_token):
         """See TestBase37102 Chain 7001"""
         response = helpers.search_patient(
@@ -338,6 +306,7 @@ class TestUserRestrictedSearchPatient:
             self.headers
         )
         response_body = response.json()
+        LOGGER.info(f'response_body: {response_body}')
 
         assert response.status_code == 200
         assert response_body["type"] == "searchset"
@@ -360,6 +329,7 @@ class TestUserRestrictedSearchPatient:
         assert response_body["entry"][3]["resource"]["gender"] == "other"
         assert response_body["entry"][3]["resource"]["birthDate"] == "1970-01-24"
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_algorithmic_fuzzy_match_unknown_gender(self, headers_with_token):
         """See TestBase37104 Chain 0001"""
         response = helpers.search_patient(
@@ -374,6 +344,7 @@ class TestUserRestrictedSearchPatient:
         assert response_body["entry"][0]["search"]["score"] == 1
         assert response_body["entry"][0]["resource"]["id"] == "9693632109"
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_algorithmic_fuzzy_match_unicode(self, headers_with_token):
         """See TestBase37104 Chain 0007"""
         response = helpers.search_patient(
@@ -396,6 +367,7 @@ class TestUserRestrictedSearchPatient:
         assert response_body["entry"][1]["resource"]["gender"] == "female"
         assert response_body["entry"][1]["resource"]["birthDate"] == "1960-07-14"
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_algorithmic_fuzzy_match_regular_returns_unicode(self, headers_with_token):
         """See TestBase37104 Chain 0008"""
         response = helpers.search_patient(
@@ -418,6 +390,7 @@ class TestUserRestrictedSearchPatient:
         assert response_body["entry"][1]["resource"]["gender"] == "female"
         assert response_body["entry"][1]["resource"]["birthDate"] == "1960-07-14"
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_algorithmic_fuzzy_match_for_birthdate_range(self, headers_with_token):
         """See TestBase37104 Chain 0009"""
         response = helpers.search_patient(
@@ -432,6 +405,7 @@ class TestUserRestrictedSearchPatient:
         assert response_body["entry"][0]["search"]["score"] == 1
         assert response_body["entry"][0]["resource"]["id"] == "9693632109"
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_algorithmic_exact_match_requested_but_not_found(self, headers_with_token):
         """See TestBase37105 Chain 0003"""
         response = helpers.search_patient(
@@ -448,6 +422,7 @@ class TestUserRestrictedSearchPatient:
         assert response_body["resourceType"] == "Bundle"
         assert response_body["total"] == 0
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_algorithmic_requesting_50_results(self, headers_with_token):
         """See TestBase37107 Chain 0004"""
         response = helpers.search_patient(
@@ -466,6 +441,7 @@ class TestUserRestrictedSearchPatient:
         assert response_body["entry"][0]["resource"]["id"] == "9693633121"
         assert response_body["entry"][1]["search"]["score"] == 0.9648
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_algorithmic_requesting_1_result_too_many_matches(self, headers_with_token):
         """See TestBase37107 Chain 0008"""
         response = helpers.search_patient(
@@ -480,6 +456,7 @@ class TestUserRestrictedSearchPatient:
         assert response_body["issue"][0]["details"]["coding"][0]["code"] == "TOO_MANY_MATCHES"
         assert response_body["issue"][0]["details"]["coding"][0]["display"] == "Too Many Matches"
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_simple_search_family_name_still_required(self, headers_with_token):
         response = helpers.search_patient(
             {"given": "PAULINE", "birthdate": "1979-07-27"},
@@ -491,6 +468,7 @@ class TestUserRestrictedSearchPatient:
         assert response_body["resourceType"] == "OperationOutcome"
         assert response_body["issue"][0]["details"]["coding"][0]["code"] == "INVALID_SEARCH_DATA"
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_simple_search_birthdate_still_required(self, headers_with_token):
         response = helpers.search_patient(
             {"family": "PATSON", "given": "PAULINE"},
@@ -502,6 +480,7 @@ class TestUserRestrictedSearchPatient:
         assert response_body["resourceType"] == "OperationOutcome"
         assert response_body["issue"][0]["details"]["coding"][0]["code"] == "MISSING_VALUE"
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_search_for_similar_patient_different_genders(self, headers_with_token):
         """Performing a gender-free search where there exists four patients with the same
         name and date of birth, but differing gender values, should return multiple distinct results."""
@@ -593,6 +572,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
             assert int((json.loads(update_response.text))["meta"]["versionId"]) == int(versionId) + 1
         helpers.check_response_status_code(update_response, 200)
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_update_patient_gender_with_invalid_x_sync_wait_header(self, headers_with_token, create_random_date):
         #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
         def retrieve_patient():
@@ -639,6 +619,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
         else:
             assert_update_response(update_response)
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_update_patient_gender_with_low_sync_wait_timeout(self, headers_with_token, create_random_date):
         #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
         response = helpers.retrieve_patient(
@@ -697,6 +678,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
         helpers.check_response_status_code(update_response, 401)
         helpers.check_response_headers(update_response, headers)
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_update_patient_with_blank_x_request_header(self, headers_with_token):
         self.headers["X-Request-ID"] = ''
         update_response = helpers.update_patient(
@@ -710,6 +692,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
         self.headers.pop("X-Request-ID")
         helpers.check_response_headers(update_response, self.headers)
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_update_patient_with_invalid_x_request_header(self, headers_with_token):
         self.headers["X-Request-ID"] = '1234'
         update_response = helpers.update_patient(
@@ -722,6 +705,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
         helpers.check_response_status_code(update_response, 400)
         helpers.check_response_headers(update_response, self.headers)
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_update_patient_with_missing_x_request_header(self, headers_with_token):
         self.headers.pop("X-Request-ID")
         update_response = helpers.update_patient(
@@ -738,6 +722,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
 class TestUserRestrictedRetrieveRelatedPerson:
 
     @pytest.mark.smoke_test
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_retrieve_related_person(self, headers_with_token):
         response = helpers.retrieve_patient_related_person(
             retrieve[8]["patient"],
@@ -755,6 +740,7 @@ class TestStatusEndpoints:
         response = helpers.ping_request()
         helpers.check_response_status_code(response, 200)
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_health_check_endpoint(self, headers_with_token):
         response = helpers.check_health_check_endpoint(self.headers)
         helpers.check_response_status_code(response, 200)
