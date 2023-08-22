@@ -10,6 +10,13 @@ LOGGER = logging.getLogger(__name__)
 
 class TestUserRestrictedRetrievePatient:
 
+    @pytest.mark.nhsd_apim_authorization(
+        {
+            "access": "healthcare_worker",
+            "level": "aal3",
+            "login_form": {"username": "656005750104"},        
+        }
+    )
     def test_retrieve_deprecated_url(self, headers_with_token):
         response = helpers.retrieve_patient_deprecated_url(
             retrieve[0]["patient"],
@@ -23,20 +30,17 @@ class TestUserRestrictedRetrievePatient:
         {
             "access": "healthcare_worker",
             "level": "aal3",
-            "login_form": {"username": "656005750104"},
-            "authentication": "separate",
+            "login_form": {"username": "656005750104"},        
         }
     )
-    def test_retrieve_patient(self, headers, nhsd_apim_auth_headers):
-
-        headers = {**headers, **nhsd_apim_auth_headers}
+    def test_retrieve_patient(self, headers_with_token):
 
         response = helpers.retrieve_patient(
             retrieve[0]["patient"],
-            headers
+            self.headers
         )
 
-        helpers.check_response_headers(response, headers)
+        helpers.check_response_headers(response, self.headers)
         helpers.check_response_status_code(response, 200)
         helpers.check_retrieve_response_body_shape(response)
 
@@ -72,6 +76,13 @@ class TestUserRestrictedRetrievePatient:
         helpers.check_response_status_code(response, 401)
         helpers.check_response_headers(response, headers)
 
+    @pytest.mark.nhsd_apim_authorization(
+        {
+            "access": "healthcare_worker",
+            "level": "aal3",
+            "login_form": {"username": "656005750104"},        
+        }
+    )
     def test_user_role_sharedflow_retrieve_patient_with_missing_urid_header(self, headers_with_token):
         self.headers.pop("NHSD-Session-URID")
         response = helpers.retrieve_patient(
@@ -82,8 +93,16 @@ class TestUserRestrictedRetrievePatient:
         helpers.check_retrieve_response_body_shape(response)
         helpers.check_response_headers(response, self.headers)
 
+    @pytest.mark.nhsd_apim_authorization(
+        {
+            "access": "healthcare_worker",
+            "level": "aal3",
+            "login_form": {"username": "656005750104"},        
+        }
+    )
     def test_user_role_sharedflow_invalid_role(self, headers_with_token):
         self.headers["NHSD-Session-URID"] = "invalid"
+        LOGGER.info(f'self.headers: {self.headers}')
         response = helpers.retrieve_patient(
             retrieve[9]["patient"],
             self.headers
@@ -92,6 +111,13 @@ class TestUserRestrictedRetrievePatient:
         helpers.check_response_status_code(response, 400)
         helpers.check_response_headers(response, self.headers)
 
+    @pytest.mark.nhsd_apim_authorization(
+        {
+            "access": "healthcare_worker",
+            "level": "aal3",
+            "login_form": {"username": "656005750104"},        
+        }
+    )
     def test_retrieve_patient_with_blank_x_request_header(self, headers_with_token):
         self.headers["X-Request-ID"] = ''
         response = helpers.retrieve_patient(
@@ -103,6 +129,13 @@ class TestUserRestrictedRetrievePatient:
         self.headers.pop("X-Request-ID")
         helpers.check_response_headers(response, self.headers)
 
+    @pytest.mark.nhsd_apim_authorization(
+        {
+            "access": "healthcare_worker",
+            "level": "aal3",
+            "login_form": {"username": "656005750104"},        
+        }
+    )
     def test_retrieve_patient_with_invalid_x_request_header(self, headers_with_token):
         self.headers["X-Request-ID"] = '1234'
         response = helpers.retrieve_patient(
@@ -113,6 +146,13 @@ class TestUserRestrictedRetrievePatient:
         helpers.check_response_status_code(response, 400)
         helpers.check_response_headers(response, self.headers)
 
+    @pytest.mark.nhsd_apim_authorization(
+        {
+            "access": "healthcare_worker",
+            "level": "aal3",
+            "login_form": {"username": "656005750104"},        
+        }
+    )
     def test_retrieve_patient_with_missing_x_request_header(self, headers_with_token):
         self.headers.pop("X-Request-ID")
         response = helpers.retrieve_patient(
@@ -127,6 +167,13 @@ class TestUserRestrictedRetrievePatient:
 class TestUserRestrictedSearchPatient:
 
     @pytest.mark.smoke_test
+    @pytest.mark.nhsd_apim_authorization(
+        {
+            "access": "healthcare_worker",
+            "level": "aal3",
+            "login_form": {"username": "656005750104"},        
+        }
+    )
     def test_search_patient_happy_path(self, headers_with_token):
         response = helpers.search_patient(
             search[0]["query_params"],

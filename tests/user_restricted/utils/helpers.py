@@ -2,7 +2,7 @@ import json
 import urllib.parse
 from typing import Union
 import requests
-from api_test_utils.oauth_helper import OauthHelper
+from .oauth_helper import OauthHelper
 from pytest_check import check
 import time
 from ..configuration import config
