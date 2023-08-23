@@ -64,7 +64,7 @@ extends:
         proxy_path: sandbox
         enable_status_monitoring: false
         post_deploy:
-          - template: templates/sandbox-tests.yml
+          - template: templates/sandbox-tests-int.yml
         depends_on:
           - internal_qa
           - internal_qa_sandbox
