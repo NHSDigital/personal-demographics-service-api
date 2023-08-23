@@ -52,7 +52,7 @@ steps:
       export OAUTH_PROXY="oauth2"
       export INTERNAL_DEV_ASID="$(INTERNAL_DEV_ASID)"
 
-      poetry run pytest -v tests/functional/test_application_restricted.py --api-name=personal-demographics --junitxml=tests/functional-test-report.xml
+      poetry run pytest -v tests/functional/test_application_restricted.py --api-name=personal-demographics --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/functional-test-report.xml
     displayName: Run application restricted tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
   - task: PublishTestResults@2
@@ -67,7 +67,7 @@ steps:
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2"
 
-      poetry run pytest -v tests/functional/test_proxy_behaviour.py --api-name=personal-demographics --junitxml=tests/proxy-behaviour-test-report.xml --reruns 3 --reruns-delay 1
+      poetry run pytest -v tests/functional/test_proxy_behaviour.py --api-name=personal-demographics --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/proxy-behaviour-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run proxy behaviour tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
 
@@ -83,7 +83,7 @@ steps:
       export OAUTH_PROXY="oauth2-mock"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
 
-      poetry run pytest -v tests/user_restricted/test_user_restricted.py --api-name=personal-demographics --junitxml=tests/user-restricted-test-report.xml --reruns 3 --reruns-delay 1
+      poetry run pytest -v tests/user_restricted/test_user_restricted.py --api-name=personal-demographics --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/user-restricted-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run user restricted tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
   - task: PublishTestResults@2
@@ -98,7 +98,7 @@ steps:
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2"
 
-      poetry run pytest -v tests/functional/test_sync_wrap.py --api-name=personal-demographics --junitxml=tests/sync-wrap-test-report.xml --reruns 3 --reruns-delay 1
+      poetry run pytest -v tests/functional/test_sync_wrap.py --api-name=personal-demographics --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/sync-wrap-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run sync wrap tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
 
@@ -114,6 +114,6 @@ steps:
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2"
 
-      poetry run pytest -v tests/functional/test_patient_access.py --api-name=personal-demographics --junitxml=tests/patient-access-test-report.xml --reruns 3 --reruns-delay 1
+      poetry run pytest -v tests/functional/test_patient_access.py --api-name=personal-demographics --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/patient-access-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run patient access tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
