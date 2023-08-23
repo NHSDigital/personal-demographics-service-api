@@ -78,6 +78,7 @@ steps:
       failTaskOnFailedTests: true
 
   - bash: |
+      export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
       export AUTHENTICATE_URL="https://example.org/callback"
       export OAUTH_PROXY="oauth2-mock"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
