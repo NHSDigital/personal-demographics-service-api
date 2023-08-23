@@ -3,6 +3,11 @@ steps:
     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
     displayName: Setup sandbox tests
 
+  - template: "azure/components/get-aws-secrets-and-ssm-params.yml@common"
+    parameters:
+     secret_ids:
+      - ptl/azure-devops/personal-demographics/int/TEST_APP_ID
+
   - bash: |
       export SERVICE_BASE_PATH="$(SERVICE_BASE_PATH)"
       export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
