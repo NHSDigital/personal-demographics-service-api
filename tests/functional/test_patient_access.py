@@ -240,6 +240,8 @@ class TestUserRestrictedPatientAccess:
             json=patch_body,
         )
 
+        LOGGER.info(f'patch response: {r.json()}')
+
         assert r.status_code == 200
         assert int(r.json()["meta"]["versionId"]) == int(version_id) + 1
 

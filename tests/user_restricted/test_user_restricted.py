@@ -542,6 +542,7 @@ class TestUserRestrictedSearchPatient:
 
 
 class TestUserRestrictedPatientUpdateSyncWrap:
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_update_patient_gender(self, headers_with_token):
         #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
         response = helpers.retrieve_patient(

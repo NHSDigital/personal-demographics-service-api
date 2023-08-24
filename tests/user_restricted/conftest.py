@@ -7,11 +7,11 @@ from ..scripts import config
 
 
 @pytest.fixture()
-async def headers_with_token(_nhsd_apim_auth_token_data, request):
+async def headers_with_token(_nhsd_apim_auth_token_data, request, identity_service_base_url):
     """Assign required headers with the Authorization header"""
 
     access_token = _nhsd_apim_auth_token_data.get("access_token", "")
-    role_id = await helpers.get_role_id_from_user_info_endpoint(access_token)
+    role_id = await helpers.get_role_id_from_user_info_endpoint(access_token, identity_service_base_url)
 
     headers = {"X-Request-ID": str(uuid.uuid1()),
                "X-Correlation-ID": str(uuid.uuid1()),

@@ -280,25 +280,13 @@ def assert_is_sensitive_patient(response: requests.Response) -> None:
         assert response_body["entry"][0]["resource"]["meta"]["security"][0]["display"] == "restricted"
 
 
-async def get_role_id_from_user_info_endpoint(token) -> str:
-
-    LOGGER.info(f'Called get_role_id_from_user_info_endpoint with token: {token}')
-    # TODO remove this
-    # oauth = OauthHelper(config.CLIENT_ID, config.CLIENT_SECRET, config.REDIRECT_URI)
-    
-    # TODO Introduce this
-    session = ClientSession()
+async def get_role_id_from_user_info_endpoint(token, identity_service_base_url) -> str:
 
     url=f'{identity_service_base_url}/userinfo'
     headers={"Authorization": f"Bearer {token}"}
-    
-    user_info_resp = await session.get(url, headers=headers)
 
-    # user_info_resp = await oauth.hit_oauth_endpoint(
-    #     method="GET",
-    #     endpoint="userinfo",
-    #     headers={"Authorization": f"Bearer {token}"}
-    # )
+    user_info_resp = requests.get(url, headers=headers)
+    user_info = json.loads(user_info_resp.text)
 
-    assert user_info_resp['status_code'] == 200
-    return user_info_resp['body']['nhsid_nrbac_roles'][0]['person_roleid']
+    assert user_info_resp.status_code == 200
+    return user_info['nhsid_nrbac_roles'][0]['person_roleid']
