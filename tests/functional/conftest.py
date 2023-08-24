@@ -12,6 +12,11 @@ from typing import Union
 
 from .config_files.config import BASE_URL, CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
 
+from pytest_nhsd_apim.identity_service import (
+    ClientCredentialsConfig,
+    ClientCredentialsAuthenticator,
+)
+
 
 async def _set_default_rate_limit(product: ApigeeApiProducts):
     """Updates an Apigee Product with a default rate limit and quota.
@@ -45,7 +50,7 @@ async def _product_with_full_access():
 
 
 @pytest.fixture(scope="function")
-async def setup_session(request, _test_app_credentials, apigee_environment):
+async def setup_session(request, _test_app_credentials, _jwt_keys, apigee_environment):
     """This fixture is called at a function level.
     The default app created here should be modified by your tests.
     """
@@ -71,7 +76,7 @@ async def setup_session(request, _test_app_credentials, apigee_environment):
 
     # Pass the config to the Authenticator
     authenticator = ClientCredentialsAuthenticator(config=config)
- 
+
     # Get token
     token_response = authenticator.get_token()
     assert "access_token" in token_response
