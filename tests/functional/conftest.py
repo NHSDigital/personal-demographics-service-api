@@ -43,6 +43,7 @@ async def _product_with_full_access():
     await product.update_paths(paths=["/", "/*"])
     return product
 
+
 @pytest.fixture(scope="function")
 async def setup_session(request, _test_app_credentials, apigee_environment):
     """This fixture is called at a function level.
@@ -58,15 +59,6 @@ async def setup_session(request, _test_app_credentials, apigee_environment):
     )
     # Assign the new product to the app
     await app.add_api_product([product.name])
-
-    # Set default JWT Testing resource url
-    await app.set_custom_attributes(
-            {
-                'jwks-resource-url': config.JWKS_RESOURCE_URL
-            }
-    )
-
-    await product.update_environments([config.ENVIRONMENT])
 
     # Set up app config
     config = AuthorizationCodeConfig(
@@ -86,6 +78,15 @@ async def setup_session(request, _test_app_credentials, apigee_environment):
     token_response = authenticator.get_token()
     assert "access_token" in token_response
     token = token_response["access_token"]
+
+    # Set default JWT Testing resource url
+    await app.set_custom_attributes(
+            {
+                'jwks-resource-url': config.JWKS_RESOURCE_URL
+            }
+    )
+
+    await product.update_environments([config.ENVIRONMENT])
 
     yield product, app, token
 

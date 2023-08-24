@@ -8,7 +8,6 @@ import time
 from ..configuration import config
 import re
 from ..data.pds_scenarios import retrieve
-from aiohttp import ClientResponse, ClientSession
 import logging
 
 LOGGER = logging.getLogger(__name__)
@@ -283,7 +282,7 @@ def assert_is_sensitive_patient(response: requests.Response) -> None:
 async def get_role_id_from_user_info_endpoint(token, identity_service_base_url) -> str:
 
     url=f'{identity_service_base_url}/userinfo'
-    headers={"Authorization": f"Bearer {token}"}
+    headers = {"Authorization": f"Bearer {token}"}
 
     user_info_resp = requests.get(url, headers=headers)
     user_info = json.loads(user_info_resp.text)

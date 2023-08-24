@@ -12,29 +12,30 @@ import logging
 
 LOGGER = logging.getLogger(__name__)
 
-AUTH_PATIENT = { 
+AUTH_PATIENT = {
     "access": "patient",
     "level": "P9",
     "login_form": {"username": "9912003071"},
 }
 
-AUTH_PATIENT_P5 = { 
+AUTH_PATIENT_P5 = {
     "access": "patient",
     "level": "P5",
     "login_form": {"username": "9912003071"},
 }
 
-AUTH_PATIENT_p5 = { 
+AUTH_PATIENT_p5 = {
     "access": "patient",
     "level": "p5",
     "login_form": {"username": "9912003071"},
 }
 
-AUTH_PATIENT_P0 = { 
+AUTH_PATIENT_P0 = {
     "access": "patient",
     "level": "P0",
     "login_form": {"username": "9912003071"},
 }
+
 
 @pytest.mark.asyncio
 class TestUserRestrictedPatientAccess:
