@@ -61,19 +61,17 @@ async def setup_session(request, _test_app_credentials, apigee_environment):
     await app.add_api_product([product.name])
 
     # Set up app config
-    config = AuthorizationCodeConfig(
+    config = ClientCredentialsConfig(
         environment=apigee_environment,
         identity_service_base_url=f"https://{apigee_environment}.api.service.nhs.uk/oauth2-mock",
-        callback_url="https://example.org/callback",
         client_id=_test_app_credentials["consumerKey"],
-        client_secret=_test_app_credentials["consumerSecret"],
-        scope="nhs-cis2",
-        login_form={"username": "656005750104"},
+        jwt_private_key=_jwt_keys["private_key_pem"],
+        jwt_kid="test-1",
     )
 
     # Pass the config to the Authenticator
-    authenticator = AuthorizationCodeAuthenticator(config=config)
-
+    authenticator = ClientCredentialsAuthenticator(config=config)
+ 
     # Get token
     token_response = authenticator.get_token()
     assert "access_token" in token_response
