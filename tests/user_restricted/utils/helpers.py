@@ -8,6 +8,10 @@ import time
 from ..configuration import config
 import re
 from ..data.pds_scenarios import retrieve
+from aiohttp import ClientResponse, ClientSession
+import logging
+
+LOGGER = logging.getLogger(__name__)
 
 
 def retrieve_patient_deprecated_url(patient: str, headers) -> requests.Response:
@@ -277,13 +281,24 @@ def assert_is_sensitive_patient(response: requests.Response) -> None:
 
 
 async def get_role_id_from_user_info_endpoint(token) -> str:
-    oauth = OauthHelper(config.CLIENT_ID, config.CLIENT_SECRET, config.REDIRECT_URI)
 
-    user_info_resp = await oauth.hit_oauth_endpoint(
-        method="GET",
-        endpoint="userinfo",
-        headers={"Authorization": f"Bearer {token}"}
-    )
+    LOGGER.info(f'Called get_role_id_from_user_info_endpoint with token: {token}')
+    # TODO remove this
+    # oauth = OauthHelper(config.CLIENT_ID, config.CLIENT_SECRET, config.REDIRECT_URI)
+    
+    # TODO Introduce this
+    session = ClientSession()
+
+    url=f'{identity_service_base_url}/userinfo'
+    headers={"Authorization": f"Bearer {token}"}
+    
+    user_info_resp = await session.get(url, headers=headers)
+
+    # user_info_resp = await oauth.hit_oauth_endpoint(
+    #     method="GET",
+    #     endpoint="userinfo",
+    #     headers={"Authorization": f"Bearer {token}"}
+    # )
 
     assert user_info_resp['status_code'] == 200
     return user_info_resp['body']['nhsid_nrbac_roles'][0]['person_roleid']

@@ -44,62 +44,63 @@ async def _product_with_full_access():
     return product
 
 
-@pytest.fixture()
-async def get_token(request):
-    """Get an access or refresh token
-    some examples:
-        1. access_token via simulated oauth (default)
-            get_token()
-        2. get access token with a specified timeout value (default is 5 seconds)
-            get_token(timeout=500000)  # 5 minuets
-        3. refresh_token via simulated oauth
-            get_token(grant_type="refresh_token", refresh_token=<refresh_token>)
-        4. access_token with JWT
-            get_token(grant_type='client_credentials', _jwt=jwt)
-        5. access_token using a specific app
-            get_token(app=<app>)
+# @pytest.fixture()
+# async def get_token(request):
+#     """Get an access or refresh token
+#     some examples:
+#         1. access_token via simulated oauth (default)
+#             get_token()
+#         2. get access token with a specified timeout value (default is 5 seconds)
+#             get_token(timeout=500000)  # 5 minuets
+#         3. refresh_token via simulated oauth
+#             get_token(grant_type="refresh_token", refresh_token=<refresh_token>)
+#         4. access_token with JWT
+#             get_token(grant_type='client_credentials', _jwt=jwt)
+#         5. access_token using a specific app
+#             get_token(app=<app>)
 
-    Args:
-        request(requests): HTTP requests object.
+#     Args:
+#         request(requests): HTTP requests object.
 
-    Returns:
-        _token(dict): Identity Service HTTP Response body
-        e.g. { "accessToken" : "eJkajgolJ...", "refreshToken" : "eJjagk.."}.
-    """
-    async def _token(
-        grant_type: str = "authorization_code",
-        test_app: ApigeeApiDeveloperApps = None,
-        **kwargs
-    ):
-        if test_app:
-            # Use provided test app
-            oauth = OauthHelper(test_app.client_id, test_app.client_secret, test_app.callback_url)
-            resp = await oauth.get_token_response(grant_type=grant_type, **kwargs)
-        else:
-            # Use env vars
-            oauth = OauthHelper(
-                client_id=config.CLIENT_ID,
-                client_secret=config.CLIENT_SECRET,
-                redirect_uri="https://example.org/callback",
-            )
-            resp = await oauth.get_token_response(grant_type=grant_type, **kwargs)
+#     Returns:
+#         _token(dict): Identity Service HTTP Response body
+#         e.g. { "accessToken" : "eJkajgolJ...", "refreshToken" : "eJjagk.."}.
+#     """
+#     async def _token(
+#         grant_type: str = "authorization_code",
+#         test_app: ApigeeApiDeveloperApps = None,
+#         **kwargs
+#     ):
+#         if test_app:
+#             # Use provided test app
+#             oauth = OauthHelper(test_app.client_id, test_app.client_secret, test_app.callback_url)
+#             resp = await oauth.get_token_response(grant_type=grant_type, **kwargs)
+#         else:
+#             # Use env vars
+#             oauth = OauthHelper(
+#                 client_id=config.CLIENT_ID,
+#                 client_secret=config.CLIENT_SECRET,
+#                 redirect_uri="https://example.org/callback",
+#             )
+#             resp = await oauth.get_token_response(grant_type=grant_type, **kwargs)
 
-        if resp['status_code'] != 200:
-            message = 'unable to get token'
-            raise RuntimeError(f"\n{'*' * len(message)}\n"
-                               f"MESSAGE: {message}\n"
-                               f"URL: {resp.get('url')}\n"
-                               f"STATUS CODE: {resp.get('status_code')}\n"
-                               f"RESPONSE: {resp.get('body')}\n"
-                               f"HEADERS: {resp.get('headers')}\n"
-                               f"{'*' * len(message)}\n")
-        return resp['body']
+#         if resp['status_code'] != 200:
+#             message = 'unable to get token'
+#             raise RuntimeError(f"\n{'*' * len(message)}\n"
+#                                f"MESSAGE: {message}\n"
+#                                f"URL: {resp.get('url')}\n"
+#                                f"STATUS CODE: {resp.get('status_code')}\n"
+#                                f"RESPONSE: {resp.get('body')}\n"
+#                                f"HEADERS: {resp.get('headers')}\n"
+#                                f"{'*' * len(message)}\n")
+#         return resp['body']
 
-    return _token
+#     return _token
 
 
 @pytest.fixture(scope="function")
-async def setup_session(request):
+# async def setup_session(request):
+async def setup_session(request, _test_app_credentials, apigee_environment):
     """This fixture is called at a function level.
     The default app created here should be modified by your tests.
     """
@@ -122,10 +123,31 @@ async def setup_session(request):
     )
 
     await product.update_environments([config.ENVIRONMENT])
-    oauth = OauthHelper(app.client_id, app.client_secret, app.callback_url)
-    # APMSPII-1139 increase token expiry time to provide sufficient time to conduct the tests
-    resp = await oauth.get_token_response(grant_type="authorization_code", timeout=20000)
-    token = resp["body"]["access_token"]
+
+    # Set up app config
+    config = AuthorizationCodeConfig(
+        environment=apigee_environment,
+        identity_service_base_url=f"https://{apigee_environment}.api.service.nhs.uk/oauth2-mock",
+        callback_url="https://example.org/callback",
+        client_id=_test_app_credentials["consumerKey"],
+        client_secret=_test_app_credentials["consumerSecret"],
+        scope="nhs-cis2",
+        login_form={"username": "656005750104"},
+    )
+
+    # Pass the config to the Authenticator
+    authenticator = AuthorizationCodeAuthenticator(config=config)
+
+    # Get token
+    token_response = authenticator.get_token()
+    assert "access_token" in token_response
+    token = token_response["access_token"]
+
+    # TODO needs a new method of getting this token
+    # oauth = OauthHelper(app.client_id, app.client_secret, app.callback_url)
+    # # APMSPII-1139 increase token expiry time to provide sufficient time to conduct the tests
+    # resp = await oauth.get_token_response(grant_type="authorization_code", timeout=20000)
+    # token = resp["body"]["access_token"]
 
     yield product, app, token
 
@@ -289,6 +311,7 @@ async def test_app_and_product(app, product):
     await product.destroy_product()
 
 
+# TODO this will be replaced with the use of nhsd_apim_authorization
 @pytest.fixture()
 def nhs_login_token_exchange(test_app_and_product):
     test_product, test_app = test_app_and_product
