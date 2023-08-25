@@ -1,9 +1,10 @@
+from .apigee_api import ApigeeApi
 import logging
 
 LOGGER = logging.getLogger(__name__)
 
 
-class ApigeeApiProducts():
+class ApigeeApiProducts(ApigeeApi):
     """ A simple class to help facilitate CRUD operations for products in Apigee """
 
     def __init__(self, org_name: str = "nhsd-nonprod"):

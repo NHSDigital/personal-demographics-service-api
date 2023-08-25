@@ -1,4 +1,6 @@
-class ApigeeApiDeveloperApps():
+from .apigee_api import ApigeeApi
+
+class ApigeeApiDeveloperApps(ApigeeApi):
     """ A simple class to help facilitate CRUD operations for developer apps in Apigee """
 
     def __init__(self, org_name: str = "nhsd-nonprod", developer_email: str = "apm-testing-internal-dev@nhs.net"):
