@@ -32,7 +32,6 @@ class ApigeeApiDeveloperApps():
 
     def add_api_product(self, products: list, developer_apps) -> dict:
         """ Add a number of API Products to the app """
-
         data = {
             "apiProducts": products,
             "name": self.name,
@@ -40,35 +39,31 @@ class ApigeeApiDeveloperApps():
         }
         return developer_apps.put_app_by_name(email=self.developer_email, app_name=self.name, body=data)
 
-
     def set_custom_attributes(self, attributes: dict, developer_apps) -> dict:
-        """ Replaces the current list of attributes with the attributes specified """
-        
+        """ Replaces the current list of attributes with the attributes specified """        
         custom_attributes = [{"name": "DisplayName", "value": self.name}]
         for key, value in attributes.items():
             custom_attributes.append({"name": key, "value": value})
-        data = {"attribute": custom_attributes}        
+        data = {"attribute": custom_attributes}
         return developer_apps.post_app_attributes(email=self.developer_email, app_name=self.name, body=data)
 
-
     def update_custom_attribute(self, attribute_name: str, attribute_value: str, developer_apps) -> dict:
-        """ Update an existing custom attribute """
-   
+        """ Update an existing custom attribute """   
         data = {
             "value": attribute_value
         }
         return developer_apps.post_app_attribute_by_name(
-            email=self.developer_email, 
-            app_name=self.name, 
-            attribute_name=attribute_name, 
+            email=self.developer_email,
+            app_name=self.name,
+            attribute_name=attribute_name,
             body=data
         )
 
     def delete_custom_attribute(self, attribute_name: str, developer_apps) -> dict:
         """ Delete a custom attribute """
         return developer_apps.delete_app_attribute_by_name(
-            email=self.developer_email, 
-            app_name=self.name, 
+            email=self.developer_email,
+            app_name=self.name,
             attribute_name=attribute_name
         )
 
