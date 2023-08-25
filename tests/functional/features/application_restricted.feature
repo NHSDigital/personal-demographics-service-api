@@ -148,7 +148,7 @@ Feature: Unattended Access
     And I create a new app
     And I add the attribute with key of apim-app-flow-vars and a value of { "pds" : { "app-restricted": { "update": true } }}
     And I add the scope urn:nhsd:apim:app:level3:reasonable-adjustment-flag
-    And I wait for 100 milliseconds
+    And I wait for 200 milliseconds
     And I have a valid access token
 
     When I PATCH a patient
@@ -185,7 +185,7 @@ Feature: Unattended Access
     And I have a request context
     And I create a new app
     And I add an asid attribute
-    And I wait for 100 milliseconds
+    And I wait for 200 milliseconds
     And I have a valid access token
 
     When I GET a patient
