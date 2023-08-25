@@ -1,9 +1,4 @@
-from api_test_utils.apigee_api import ApigeeApi
-from api_test_utils.api_session_client import APISessionClient
-from . import helper
-
-
-class ApigeeApiDeveloperApps(ApigeeApi):
+class ApigeeApiDeveloperApps():
     """ A simple class to help facilitate CRUD operations for developer apps in Apigee """
 
     def __init__(self, org_name: str = "nhsd-nonprod", developer_email: str = "apm-testing-internal-dev@nhs.net"):

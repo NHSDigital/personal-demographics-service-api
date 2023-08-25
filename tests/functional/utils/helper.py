@@ -69,6 +69,7 @@ def add_auth_header(headers: Dict[str, str], auth: Optional[Dict[str, str]]):
 
     return headers
 
+
 def throw_friendly_error(message: str, url: str, status_code: int, response: str, headers: dict) -> Exception:
     raise Exception(f"\n{'*' * len(message)}\n"
                     f"MESSAGE: {message}\n"

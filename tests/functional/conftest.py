@@ -1,6 +1,5 @@
 from tests.scripts.pds_request import GenericPdsRequestor, PdsRecord
 import pytest
-import asyncio
 
 from .utils.apigee_api_apps import ApigeeApiDeveloperApps
 from .utils.apigee_api_products import ApigeeApiProducts
@@ -15,7 +14,7 @@ from pytest_nhsd_apim.identity_service import (
     ClientCredentialsAuthenticator,
 )
 
-from pytest_nhsd_apim.apigee_apis import (   
+from pytest_nhsd_apim.apigee_apis import (
     ApigeeClient,
     ApiProductsAPI,
     ApigeeNonProdCredentials,
@@ -27,14 +26,17 @@ import logging
 LOGGER = logging.getLogger(__name__)
 TEST_PRODUCT_NAME = "personal-demographics-test-api-product"
 
+
 @pytest.fixture()
 def client():
     config = ApigeeNonProdCredentials()
     return ApigeeClient(config=config)
 
+
 @pytest.fixture()
 def api_products(client):
     return ApiProductsAPI(client=client)
+
 
 def _set_default_rate_limit(product: ApigeeApiProducts, api_products):
     """Updates an Apigee Product with a default rate limit and quota.
@@ -43,10 +45,10 @@ def _set_default_rate_limit(product: ApigeeApiProducts, api_products):
         product (ApigeeApiProducts): Apigee product.
     """
     product.update_ratelimits(quota=60000,
-                                    quota_interval="1",
-                                    quota_time_unit="minute",
-                                    rate_limit="1000ps",
-                                    api_products=api_products)
+                                quota_interval="1",
+                                quota_time_unit="minute",
+                                rate_limit="1000ps",
+                                api_products=api_products)
 
 
 def _product_with_full_access(api_products):
@@ -75,13 +77,13 @@ def setup_session(request, _test_app_credentials, _jwt_keys, apigee_environment,
     """This fixture is called at a function level.
     The default app created here should be modified by your tests.
     """
-    
+
     product = _product_with_full_access(api_products)
 
     print("\nCreating Default App..")
     # Create a new app
     developer_apps = DeveloperAppsAPI(client=client)
-   
+
     app = ApigeeApiDeveloperApps()
     app.create_new_app(callback_url="https://example.org/callback", status="approved", developer_apps=developer_apps)
 
@@ -108,7 +110,7 @@ def setup_session(request, _test_app_credentials, _jwt_keys, apigee_environment,
     yield product, app, token, developer_apps, api_products
 
     # Teardown
-    print("\nDestroying Default App..")    
+    print("\nDestroying Default App..")
 
     app.destroy_app(developer_apps)
     product.destroy_product(api_products)

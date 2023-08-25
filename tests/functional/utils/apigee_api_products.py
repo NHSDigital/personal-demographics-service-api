@@ -1,11 +1,9 @@
-from api_test_utils.apigee_api import ApigeeApi
-from api_test_utils.api_session_client import APISessionClient
 from . import helper
 import logging
 
 LOGGER = logging.getLogger(__name__)
 
-class ApigeeApiProducts(ApigeeApi):
+class ApigeeApiProducts():
     """ A simple class to help facilitate CRUD operations for products in Apigee """
 
     def __init__(self, org_name: str = "nhsd-nonprod"):

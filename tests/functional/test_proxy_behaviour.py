@@ -7,7 +7,6 @@ from http import HTTPStatus
 from tests.scripts.pds_request import GenericPdsRequestor
 from pytest_bdd import scenario, given, when, then, parsers
 from .config_files.config import BASE_URL, PDS_BASE_PATH, TEST_PATIENT_ID, PROXY_NAME
-import asyncio
 import json
 from .utils.helper import find_item_in_dict
 
@@ -116,7 +115,13 @@ def setup_rate_limit_proxy(setup_session):
         "developer_apps": developer_apps,
         "api_products": api_products
     }
-    set_quota_and_rate_limit(context["product"], rate_limit="1pm", proxy=PROXY_NAME, developer_apps=context["developer_apps"], api_products=context["api_products"])
+    set_quota_and_rate_limit(
+        context["product"],
+        rate_limit="1pm",
+        proxy=PROXY_NAME,
+        developer_apps=context["developer_apps"],
+        api_products=context["api_products"]
+    )
 
     product_attributes = (
         context["product"].get_product_details(api_products)
@@ -143,7 +148,13 @@ def setup_quota_proxy(setup_session):
         "developer_apps": setup_session[3],
         "api_products": setup_session[4],
     }
-    set_quota_and_rate_limit(context["product"], quota=1, proxy=PROXY_NAME, developer_apps=context["developer_apps"], api_products=context["api_products"])
+    set_quota_and_rate_limit(
+        context["product"],
+        quota=1,
+        proxy=PROXY_NAME,
+        developer_apps=context["developer_apps"],
+        api_products=context["api_products"]
+    )
 
     product_attributes = (
         context["product"].get_product_details(api_products)
@@ -170,7 +181,13 @@ def setup_quota_app(setup_session):
         "developer_apps": setup_session[3],
         "api_products": setup_session[4],
     }
-    set_quota_and_rate_limit(context["app"], quota=1, proxy=PROXY_NAME, developer_apps=context["developer_apps"], api_products=context["api_products"])
+    set_quota_and_rate_limit(
+        context["app"],
+        quota=1,
+        proxy=PROXY_NAME,
+        developer_apps=context["developer_apps"],
+        api_products=context["api_products"]
+    )
 
     app_attributes = (
         context["app"].get_custom_attributes()
@@ -197,7 +214,13 @@ def setup_rate_limit_app(setup_session):
         "developer_apps": setup_session[3],
         "api_products": setup_session[4],
     }
-    set_quota_and_rate_limit(context["app"], rate_limit="1pm", proxy=PROXY_NAME, developer_apps=context["developer_apps"], api_products=context["api_products"])
+    set_quota_and_rate_limit(
+        context["app"],
+        rate_limit="1pm",
+        proxy=PROXY_NAME,
+        developer_apps=context["developer_apps"],
+        api_products=context["api_products"]
+    )
 
     app_attributes = (
         context["app"].get_custom_attributes()
