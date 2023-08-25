@@ -8,10 +8,12 @@ steps:
       parameters:
         secret_ids:
           - ptl/azure-devops/personal-demographics/int/APIGEE_APP_ID
+      displayName: Set APIGEE_APP_ID for sandbox env
   
   ${{ if neq(parameters.environment, 'sandbox') }}:
     - bash: |
-      echo "#vso[task.setvariable variable=APIGEE_APP_ID;issecret=true]"
+        echo "#vso[task.setvariable variable=APIGEE_APP_ID;issecret=true]"
+      displayName: Set APIGEE_APP_ID for non-sandbox env
 
   - bash: |
       export SERVICE_BASE_PATH="$(SERVICE_BASE_PATH)"
