@@ -6,11 +6,9 @@ from api_test_utils.apigee_api_apps import ApigeeApiDeveloperApps
 from api_test_utils.apigee_api_products import ApigeeApiProducts
 from .config_files import config
 import random
-from time import time
 import json
 from typing import Union
 
-from .config_files.config import BASE_URL, CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
 
 from pytest_nhsd_apim.identity_service import (
     ClientCredentialsConfig,
@@ -242,4 +240,3 @@ async def test_app_and_product(app, product):
 
     await app.destroy_app()
     await product.destroy_product()
-
