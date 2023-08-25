@@ -3,14 +3,14 @@ steps:
     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
     displayName: Setup sandbox tests
 
-  ${{ if eq(parameters.environment, 'sandbox') }}:
+  - ${{ if eq(parameters.environment, 'sandbox') }}:
     - template: "azure/components/get-aws-secrets-and-ssm-params.yml@common"
       parameters:
         secret_ids:
           - ptl/azure-devops/personal-demographics/int/APIGEE_APP_ID
       displayName: Set APIGEE_APP_ID for sandbox env
   
-  ${{ if neq(parameters.environment, 'sandbox') }}:
+  - ${{ if neq(parameters.environment, 'sandbox') }}:
     - bash: |
         echo "#vso[task.setvariable variable=APIGEE_APP_ID;issecret=true]"
       displayName: Set APIGEE_APP_ID for non-sandbox env
