@@ -5,7 +5,7 @@ steps:
 
   - template: "azure/components/get-aws-secrets-and-ssm-params.yml@common"
     parameters:
-      ${{ if eq(apigee_deployment.environment, 'sandbox') }}:
+      ${{ if eq(apigee_deployments.environment, 'sandbox') }}:
         secret_ids:
           - ptl/azure-devops/personal-demographics/int/APIGEE_APP_ID
 
