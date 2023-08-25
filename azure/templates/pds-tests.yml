@@ -43,6 +43,7 @@ steps:
       echo '##vso[task.setvariable variable=AUTH_TOKEN_EXPIRY_MS_INT]$(AUTH_TOKEN_EXPIRY_MS_INT)'
       echo '##vso[task.setvariable variable=REDIRECT_URI]https://example.org/callback'
       echo '##vso[task.setvariable variable=APIGEE_API_TOKEN]$(secret.AccessToken)'
+      echo '##vso[task.setvariable variable=INTERNAL_DEV_ASID]$(secret.INTERNAL_DEV_ASID)'
     displayName: Expose common variables
 
   - bash: |
