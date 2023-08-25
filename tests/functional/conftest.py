@@ -24,7 +24,6 @@ from pytest_nhsd_apim.apigee_apis import (
 import logging
 
 LOGGER = logging.getLogger(__name__)
-TEST_PRODUCT_NAME = "personal-demographics-test-api-product"
 
 
 @pytest.fixture()
@@ -45,10 +44,10 @@ def _set_default_rate_limit(product: ApigeeApiProducts, api_products):
         product (ApigeeApiProducts): Apigee product.
     """
     product.update_ratelimits(quota=60000,
-                                quota_interval="1",
-                                quota_time_unit="minute",
-                                rate_limit="1000ps",
-                                api_products=api_products)
+                              quota_interval="1",
+                              quota_time_unit="minute",
+                              rate_limit="1000ps",
+                              api_products=api_products)
 
 
 def _product_with_full_access(api_products):

@@ -1,7 +1,7 @@
-from . import helper
 import logging
 
 LOGGER = logging.getLogger(__name__)
+
 
 class ApigeeApiProducts():
     """ A simple class to help facilitate CRUD operations for products in Apigee """
@@ -86,7 +86,7 @@ class ApigeeApiProducts():
 
     def create_new_product(self, api_products) -> dict:
         """ Create a new developer product in apigee """
-    
+
         resp = api_products.post_products(body=self._product())
         LOGGER.info(f'Created product with name: {resp.get("name")}')
 
@@ -106,7 +106,7 @@ class ApigeeApiProducts():
         return resp
 
     def destroy_product(self, api_products) -> dict:
-        """ Delete the product """        
+        """ Delete the product """
         resp = api_products.delete_product_by_name(product_name=self.name)
 
         return resp

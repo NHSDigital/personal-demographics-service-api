@@ -57,7 +57,7 @@ def setup_rate_limit_proxy(setup_patch):
     )
 
     product_attributes = asyncio.run(
-        context["product"].get_product_details(api_products)
+        context["product"].get_product_details(context["api_products"])
     )["attributes"]
 
     rate_limiting = json.loads(

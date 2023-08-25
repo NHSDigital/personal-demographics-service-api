@@ -38,19 +38,16 @@ class ApigeeApiDeveloperApps():
             "name": self.name,
             "status": "approved"
         }
-
         return developer_apps.put_app_by_name(email=self.developer_email, app_name=self.name, body=data)
 
 
     def set_custom_attributes(self, attributes: dict, developer_apps) -> dict:
         """ Replaces the current list of attributes with the attributes specified """
+        
         custom_attributes = [{"name": "DisplayName", "value": self.name}]
-
         for key, value in attributes.items():
             custom_attributes.append({"name": key, "value": value})
-
-        data = {"attribute": custom_attributes}
-
+        data = {"attribute": custom_attributes}        
         return developer_apps.post_app_attributes(email=self.developer_email, app_name=self.name, body=data)
 
 
@@ -60,22 +57,27 @@ class ApigeeApiDeveloperApps():
         data = {
             "value": attribute_value
         }
-
-        return developer_apps.post_app_attribute_by_name(email=self.developer_email, app_name=self.name, attribute_name=attribute_name, body=data)
+        return developer_apps.post_app_attribute_by_name(
+            email=self.developer_email, 
+            app_name=self.name, 
+            attribute_name=attribute_name, 
+            body=data
+        )
 
     def delete_custom_attribute(self, attribute_name: str, developer_apps) -> dict:
         """ Delete a custom attribute """
-
-        return developer_apps.delete_app_attribute_by_name(email=self.developer_email, app_name=self.name, attribute_name=attribute_name)
+        return developer_apps.delete_app_attribute_by_name(
+            email=self.developer_email, 
+            app_name=self.name, 
+            attribute_name=attribute_name
+        )
 
     def get_custom_attributes(self, developer_apps) -> dict:
         """ Get the list of custom attributes assigned to the app """
-
         return developer_apps.get_app_attributes(email=self.developer_email, app_name=self.name)
 
     def get_app_details(self, developer_apps) -> dict:
-        """ Return all available details for the app """
-        
+        """ Return all available details for the app """        
         return developer_apps.get_app_by_name(email=self.developer_email, app_name=self.name)
 
     def get_client_id(self):

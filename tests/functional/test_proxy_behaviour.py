@@ -9,7 +9,9 @@ from pytest_bdd import scenario, given, when, then, parsers
 from .config_files.config import BASE_URL, PDS_BASE_PATH, TEST_PATIENT_ID, PROXY_NAME
 import json
 from .utils.helper import find_item_in_dict
+import logging
 
+LOGGER = logging.getLogger(__name__)
 
 class HTTPMethods(Enum):
     GET = "GET"
@@ -49,6 +51,8 @@ def _trip_rate_limit(token: str, req_type: HTTPMethods, timeout: int = 30, step:
                 patient_id=TEST_PATIENT_ID,
                 payload={"patches": [{"op": "replace", "path": "/birthDate", "value": "2001-01-01"}]}
             )
+        
+        LOGGER.info(f'_pds_response: {_pds_response}')
         return response
 
     def _check_correct_response(response):
@@ -157,7 +161,7 @@ def setup_quota_proxy(setup_session):
     )
 
     product_attributes = (
-        context["product"].get_product_details(api_products)
+        context["product"].get_product_details(context["api_products"])
     )["attributes"]
 
     rate_limiting = json.loads(
