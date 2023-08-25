@@ -68,3 +68,12 @@ def add_auth_header(headers: Dict[str, str], auth: Optional[Dict[str, str]]):
         headers["Authorization"] = f"{token_type} {access_token}"
 
     return headers
+
+def throw_friendly_error(message: str, url: str, status_code: int, response: str, headers: dict) -> Exception:
+    raise Exception(f"\n{'*' * len(message)}\n"
+                    f"MESSAGE: {message}\n"
+                    f"URL: {url}\n"
+                    f"STATUS CODE: {status_code}\n"
+                    f"RESPONSE: {response}\n"
+                    f"HEADERS: {headers}\n"
+                    f"{'*' * len(message)}\n")

@@ -107,17 +107,19 @@ def test_app_spike_arrest():
 @pytest.mark.apmspii_627
 @given("I have a proxy with a low rate limit set", target_fixture="context")
 def setup_rate_limit_proxy(setup_session):
-    product, app, token = setup_session
+    product, app, token, developer_apps, api_products = setup_session
 
     context = {
         "product": product,
         "app": app,
         "token": token,
+        "developer_apps": developer_apps,
+        "api_products": api_products
     }
-    set_quota_and_rate_limit(context["product"], rate_limit="1pm", proxy=PROXY_NAME)
+    set_quota_and_rate_limit(context["product"], rate_limit="1pm", proxy=PROXY_NAME, developer_apps=context["developer_apps"], api_products=context["api_products"])
 
-    product_attributes = asyncio.run(
-        context["product"].get_product_details()
+    product_attributes = (
+        context["product"].get_product_details(api_products)
     )["attributes"]
 
     rate_limiting = json.loads(
@@ -138,11 +140,13 @@ def setup_quota_proxy(setup_session):
         "product": setup_session[0],
         "app": setup_session[1],
         "token": setup_session[2],
+        "developer_apps": setup_session[3],
+        "api_products": setup_session[4],
     }
-    set_quota_and_rate_limit(context["product"], quota=1, proxy=PROXY_NAME)
+    set_quota_and_rate_limit(context["product"], quota=1, proxy=PROXY_NAME, developer_apps=context["developer_apps"], api_products=context["api_products"])
 
-    product_attributes = asyncio.run(
-        context["product"].get_product_details()
+    product_attributes = (
+        context["product"].get_product_details(api_products)
     )["attributes"]
 
     rate_limiting = json.loads(
@@ -163,10 +167,12 @@ def setup_quota_app(setup_session):
         "product": setup_session[0],
         "app": setup_session[1],
         "token": setup_session[2],
+        "developer_apps": setup_session[3],
+        "api_products": setup_session[4],
     }
-    set_quota_and_rate_limit(context["app"], quota=1, proxy=PROXY_NAME)
+    set_quota_and_rate_limit(context["app"], quota=1, proxy=PROXY_NAME, developer_apps=context["developer_apps"], api_products=context["api_products"])
 
-    app_attributes = asyncio.run(
+    app_attributes = (
         context["app"].get_custom_attributes()
     )["attribute"]
 
@@ -188,10 +194,12 @@ def setup_rate_limit_app(setup_session):
         "product": setup_session[0],
         "app": setup_session[1],
         "token": setup_session[2],
+        "developer_apps": setup_session[3],
+        "api_products": setup_session[4],
     }
-    set_quota_and_rate_limit(context["app"], rate_limit="1pm", proxy=PROXY_NAME)
+    set_quota_and_rate_limit(context["app"], rate_limit="1pm", proxy=PROXY_NAME, developer_apps=context["developer_apps"], api_products=context["api_products"])
 
-    app_attributes = asyncio.run(
+    app_attributes = (
         context["app"].get_custom_attributes()
     )["attribute"]
 

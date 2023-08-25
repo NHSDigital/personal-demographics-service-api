@@ -180,10 +180,12 @@ def auth():
 
 @given("I create a new app")
 def create_test_app(setup_session, context):
-    product, app, token = setup_session
+    product, app, token, developer_apps = setup_session
     context["product"] = product
     context["app"] = app
     context["token"] = token
+    context["developer_apps"] = developer_apps
+    context["api_products"] = api_products
 
 
 @given(parsers.parse("I add the attribute with key of {key} and a value of {value}"))

@@ -45,11 +45,13 @@ def setup_rate_limit_proxy(setup_patch):
         "product": setup_patch["product"],
         "app": setup_patch["app"],
         "token": setup_patch["token"],
+        "developer_apps": developer_apps,
+        "api_products": api_products
     }
-    set_quota_and_rate_limit(context["product"], rate_limit="1pm", proxy=PROXY_NAME)
+    set_quota_and_rate_limit(context["product"], rate_limit="1pm", proxy=PROXY_NAME, developer_apps=context["developer_apps"], api_products=context["api_products"])
 
     product_attributes = asyncio.run(
-        context["product"].get_product_details()
+        context["product"].get_product_details(api_products)
     )["attributes"]
 
     rate_limiting = json.loads(

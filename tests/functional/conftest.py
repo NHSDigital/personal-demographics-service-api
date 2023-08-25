@@ -2,8 +2,8 @@ from tests.scripts.pds_request import GenericPdsRequestor, PdsRecord
 import pytest
 import asyncio
 
-from api_test_utils.apigee_api_apps import ApigeeApiDeveloperApps
-from api_test_utils.apigee_api_products import ApigeeApiProducts
+from .utils.apigee_api_apps import ApigeeApiDeveloperApps
+from .utils.apigee_api_products import ApigeeApiProducts
 from .config_files import config
 import random
 import json
@@ -17,8 +17,8 @@ from pytest_nhsd_apim.identity_service import (
 
 from pytest_nhsd_apim.apigee_apis import (   
     ApigeeClient,
-    ApigeeNonProdCredentials,
     ApiProductsAPI,
+    ApigeeNonProdCredentials,
     DeveloperAppsAPI,
 )
 
@@ -32,81 +32,61 @@ def client():
     config = ApigeeNonProdCredentials()
     return ApigeeClient(config=config)
 
-async def _set_default_rate_limit(product: ApigeeApiProducts):
+@pytest.fixture()
+def api_products(client):
+    return ApiProductsAPI(client=client)
+
+def _set_default_rate_limit(product: ApigeeApiProducts, api_products):
     """Updates an Apigee Product with a default rate limit and quota.
 
     Args:
         product (ApigeeApiProducts): Apigee product.
     """
-    await product.update_ratelimits(quota=60000,
+    product.update_ratelimits(quota=60000,
                                     quota_interval="1",
                                     quota_time_unit="minute",
-                                    rate_limit="1000ps")
+                                    rate_limit="1000ps",
+                                    api_products=api_products)
 
 
 def _product_with_full_access(api_products):
+    """Creates an apigee product with access to all proxy paths and scopes.
+    Returns:
+        product (ApigeeApiProducts): Apigee product.
     """
-    Creates an apigee product with access to all proxy paths and scopes.
-    """
 
-    body = {
-        "apiResources": ["/"],
-        "approvalType": "auto",
-        "attributes": [{"name": "access", "value": "public"}],
-        "description": "My API product",
-        "displayName": "My API product",
-        "environments": ["internal-dev"],
-        "name": TEST_PRODUCT_NAME,
-        "proxies": ["personal-demographics-internal-dev"],
-        "scopes": [
-            "personal-demographics-service:USER-RESTRICTED",
-            "urn:nhsd:apim:app:level3:personal-demographics-service",
-            "urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service"
-        ],
-    }
-    print(api_products.post_products(body=body))
+    product = ApigeeApiProducts()
+    product.create_new_product(api_products)
+    _set_default_rate_limit(product, api_products)
+    product.update_scopes([
+        "personal-demographics-service:USER-RESTRICTED",
+        "urn:nhsd:apim:app:level3:personal-demographics-service",
+        "urn:nhsd:apim:user-nhs-cis2:aal3:personal-demographics",
+        "urn:nhsd:apim:user-nhs-login:P9:personal-demographics"
+    ], api_products)
+    # Allows access to all proxy paths - so we don't have to specify the pr proxy explicitly
+    product.update_paths(paths=["/", "/*"], api_products=api_products)
 
-    # api_product = api_products.get_product_by_name(product_name=TEST_PRODUCT_NAME)
-
-    # LOGGER.info(f'api_product: {api_product}')
+    return product
 
 
 @pytest.fixture(scope="function")
-async def setup_session(request, _test_app_credentials, _jwt_keys, apigee_environment, client):
+def setup_session(request, _test_app_credentials, _jwt_keys, apigee_environment, client, api_products):
     """This fixture is called at a function level.
     The default app created here should be modified by your tests.
     """
-
-    api_products = ApiProductsAPI(client=client)
-    _product_with_full_access(api_products)
+    
+    product = _product_with_full_access(api_products)
 
     print("\nCreating Default App..")
     # Create a new app
     developer_apps = DeveloperAppsAPI(client=client)
-    body = {
-        "apiProducts": [TEST_PRODUCT_NAME],
-        "attributes": [
-            {"name": "ADMIN_EMAIL", "value": "lucas.fantini@nhs.net"},
-            {"name": "DisplayName", "value": "My App"},
-            {"name": "Notes", "value": "Notes for developer app"},
-            {"name": "MINT_BILLING_TYPE", "value": "POSTPAID"},
-        ],
-        "callbackUrl": "example.com",
-        "name": "myapp",
-        "scopes": [],
-        "status": "approved",
-    }
-    print(
-        developer_apps.create_app(email="lucas.fantini@nhs.net", body=body)
-    )
-
-    # app = ApigeeApiDeveloperApps()
-    # await app.create_new_app(
-    #     callback_url="https://example.org/callback"
-    # )
+   
+    app = ApigeeApiDeveloperApps()
+    app.create_new_app(callback_url="https://example.org/callback", status="approved", developer_apps=developer_apps)
 
     # Assign the new product to the app
-    # await app.add_api_product([product.name])
+    app.add_api_product([product.name], developer_apps=developer_apps)
 
     # Set up app config
     config = ClientCredentialsConfig(
@@ -125,20 +105,13 @@ async def setup_session(request, _test_app_credentials, _jwt_keys, apigee_enviro
     assert "access_token" in token_response
     token = token_response["access_token"]
 
-    # TODO What needs returning for "app"?
-    # yield product, app, token
-    yield product, None, token
+    yield product, app, token, developer_apps, api_products
 
     # Teardown
     print("\nDestroying Default App..")    
 
-    print(
-        developer_apps.delete_app_by_name(email="lucas.fantini@nhs.net", app_name="myapp")
-    )
-
-    print(
-        api_products.delete_product_by_name(product_name=TEST_PRODUCT_NAME)
-    )
+    app.destroy_app(developer_apps)
+    product.destroy_product(api_products)
 
 
 @pytest.fixture()
@@ -147,7 +120,7 @@ def setup_patch(setup_session):
     GET /Patient -> PATCH /Patient
     """
 
-    [product, app, token] = setup_session
+    [product, app, token, developer_apps, api_products] = setup_session
 
     pds = GenericPdsRequestor(
         pds_base_path=config.PDS_BASE_PATH,
@@ -191,7 +164,9 @@ def set_quota_and_rate_limit(
     quota_time_unit: str = "minute",
     quota_enabled: bool = True,
     rate_enabled: bool = True,
-    proxy: str = ""
+    proxy: str = "",
+    api_products: ApiProductsAPI = None,
+    developer_apps: DeveloperAppsAPI = None
 ) -> None:
     """Sets the quota and rate limit on an apigee product or app.
 
@@ -225,9 +200,9 @@ def set_quota_and_rate_limit(
     rate_limiting = {'ratelimiting': value}
 
     if (isinstance(apigeeObj, ApigeeApiProducts)):
-        asyncio.run(apigeeObj.update_attributes(rate_limiting))
+        apigeeObj.update_attributes(rate_limiting, api_products)
     elif isinstance(apigeeObj, ApigeeApiDeveloperApps):
-        asyncio.run(apigeeObj.set_custom_attributes(rate_limiting))
+        apigeeObj.set_custom_attributes(rate_limiting, developer_apps)
     else:
         raise TypeError("Please provide an Apigee product or Apigee app")
 
@@ -266,32 +241,3 @@ def product():
             - Update custom ratelimits
     """
     return ApigeeApiProducts()
-
-
-@pytest.fixture()
-async def test_app_and_product(app, product):
-    """Create a test app and product which can be modified in the test"""
-    await product.create_new_product()
-
-    await app.create_new_app()
-
-    await product.update_scopes(
-        [
-            "urn:nhsd:apim:app:level3:personal-demographics-service",
-            "urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service",
-            "urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service",
-            "urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service",
-            "urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service",
-        ]
-    )
-    await app.add_api_product([product.name])
-    await app.set_custom_attributes(
-        {
-            "jwks-resource-url": config.JWKS_RESOURCE_URL
-        }
-    )
-
-    yield product, app
-
-    await app.destroy_app()
-    await product.destroy_product()
