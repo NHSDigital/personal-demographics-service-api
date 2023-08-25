@@ -42,9 +42,7 @@ class TestUserRestrictedPatientAccess:
 
     @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
     async def test_patient_access_retrieve_happy_path(self, _nhsd_apim_auth_token_data):
-        # token = await nhs_login_token_exchange()
 
-        # LOGGER.info(f'token: {token}')
         LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
 
         token = _nhsd_apim_auth_token_data.get("access_token", "")

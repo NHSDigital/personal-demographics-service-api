@@ -1,7 +1,7 @@
 from tests.scripts.pds_request import GenericPdsRequestor, PdsRecord
 import pytest
 import asyncio
-from api_test_utils.oauth_helper import OauthHelper
+
 from api_test_utils.apigee_api_apps import ApigeeApiDeveloperApps
 from api_test_utils.apigee_api_products import ApigeeApiProducts
 from .config_files import config
@@ -81,15 +81,6 @@ async def setup_session(request, _test_app_credentials, _jwt_keys, apigee_enviro
     token_response = authenticator.get_token()
     assert "access_token" in token_response
     token = token_response["access_token"]
-
-    # Set default JWT Testing resource url
-    await app.set_custom_attributes(
-            {
-                'jwks-resource-url': config.JWKS_RESOURCE_URL
-            }
-    )
-
-    await product.update_environments([config.ENVIRONMENT])
 
     yield product, app, token
 
@@ -252,67 +243,3 @@ async def test_app_and_product(app, product):
     await app.destroy_app()
     await product.destroy_product()
 
-
-# TODO this will be replaced with the use of nhsd_apim_authorization
-@pytest.fixture()
-def nhs_login_token_exchange(test_app_and_product):
-    test_product, test_app = test_app_and_product
-
-    async def get_token_nhs_login_token_exchange(scope: str = "P9"):
-        """Call identity server to get an access token"""
-        test_product, test_app = test_app_and_product
-        oauth = OauthHelper(
-            client_id=CLIENT_ID,
-            client_secret=CLIENT_SECRET,
-            redirect_uri=REDIRECT_URI,
-        )
-
-        id_token_claims = {
-            "aud": "tf_-APIM-1",
-            "id_status": "verified",
-            "nhs_number": config.TEST_PATIENT_ID,
-            "token_use": "id",
-            "auth_time": 1616600683,
-            "iss": BASE_URL,
-            "vot": "P9.Cp.Cd",
-            "exp": int(time()) + 600,
-            "iat": int(time()) - 10,
-            "vtm": "https://auth.sandpit.signin.nhs.uk/trustmark/auth.sandpit.signin.nhs.uk",
-            "jti": "b68ddb28-e440-443d-8725-dfe0da330118",
-            "identity_proofing_level": scope,
-        }
-        id_token_headers = {
-            "sub": "49f470a1-cc52-49b7-beba-0f9cec937c46",
-            "aud": "APIM-1",
-            "kid": "nhs-login",
-            "iss": BASE_URL,
-            "typ": "JWT",
-            "exp": 1616604574,
-            "iat": 1616600974,
-            "alg": "RS512",
-            "jti": "b68ddb28-e440-443d-8725-dfe0da330118",
-        }
-
-        client_assertion_jwt = oauth.create_jwt(kid="test-1")
-        id_token_jwt = oauth.create_id_token_jwt(
-            algorithm="RS512",
-            claims=id_token_claims,
-            headers=id_token_headers,
-            signing_key=config.ID_TOKEN_NHS_LOGIN_PRIVATE_KEY,
-        )
-
-        # When
-        token_resp = await oauth.get_token_response(
-            grant_type="token_exchange",
-            data={
-                "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
-                "subject_token_type": "urn:ietf:params:oauth:token-type:id_token",
-                "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
-                "subject_token": id_token_jwt,
-                "client_assertion": client_assertion_jwt,
-            },
-        )
-        if token_resp["status_code"] == 200:
-            return token_resp["body"]["access_token"]
-        return token_resp
-    return get_token_nhs_login_token_exchange
