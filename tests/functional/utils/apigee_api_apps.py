@@ -1,5 +1,6 @@
 from .apigee_api import ApigeeApi
 
+
 class ApigeeApiDeveloperApps(ApigeeApi):
     """ A simple class to help facilitate CRUD operations for developer apps in Apigee """
 

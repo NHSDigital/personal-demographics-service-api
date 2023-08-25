@@ -7,6 +7,7 @@ from uuid import uuid4
 
 from tests.functional.config_files.config import APIGEE_API_TOKEN, APIGEE_API_URL, ENVIRONMENT
 
+
 class ApigeeApi:
     """ A parent class to hold reusable methods and shared properties for the different ApigeeApi* classes"""
 
