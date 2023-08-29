@@ -1,6 +1,5 @@
 from typing import Optional, Dict
-import random
-import string
+from random import randint
 
 
 def find_item_in_dict(obj={}, search_key=""):
@@ -26,14 +25,10 @@ def get_proxy_name(base_path, environment):
 
     return f'{base_path.replace("/FHIR/R4", "")}-{environment}'
 
+def generate_random_phone_number():
+    return f"07784{randint(100000, 999999)}"
 
-def generate_random_email_address():
-    letters = string.ascii_lowercase
-    random_letters = "".join(random.choice(letters) for i in range(10))
-    return f"random.{random_letters}@test.com"
-
-
-def get_add_telecom_email_patch_body():
+def get_add_telecom_phone_patch_body():
     return {
         "patches": [
             {
@@ -41,9 +36,9 @@ def get_add_telecom_email_patch_body():
                 "path": "/telecom/-",
                 "value": {
                     "period": {"start": "2020-02-27"},
-                    "system": "email",
-                    "use": "work",
-                    "value": "test@test.com",
+                    "system": "phone",
+                    "use": "mobile",
+                    "value": "07784123456",
                 },
             }
         ]

@@ -5,8 +5,8 @@ import pytest
 
 from tests.functional.utils.apigee_api import ApigeeDebugApi
 from tests.functional.utils.helper import (
-    generate_random_email_address,
-    get_add_telecom_email_patch_body,
+    generate_random_phone_number,
+    get_add_telecom_phone_patch_body,
 )
 import logging
 
@@ -145,15 +145,15 @@ class TestUserRestrictedPatientAccess:
                         "path": "/telecom/0",
                         "value": {
                             "id": telecom_id,
-                            "system": "email",
-                            "use": "work",
-                            "value": generate_random_email_address(),
+                            "system": "phone",
+                            "use": "mobile",
+                            "value": generate_random_phone_number(),
                         },
                     }
                 ]
             }
         else:
-            patch_body = get_add_telecom_email_patch_body()
+            patch_body = get_add_telecom_phone_patch_body()
 
         e_tag = r.headers["Etag"]
         request_id = str(uuid.uuid4())
@@ -199,6 +199,8 @@ class TestUserRestrictedPatientAccess:
 
         body = r.json()
 
+        LOGGER.info(f'body: {body}')
+
         """ check if patient already has a telecom object, if so then amend the email address else
             add a new telecom object
         """
@@ -211,15 +213,15 @@ class TestUserRestrictedPatientAccess:
                         "path": "/telecom/0",
                         "value": {
                             "id": telecom_id,
-                            "system": "email",
-                            "use": "work",
-                            "value": generate_random_email_address(),
+                            "system": "phone",
+                            "use": "mobile",
+                            "value": generate_random_phone_number(),
                         },
                     }
                 ]
             }
         else:
-            patch_body = get_add_telecom_email_patch_body()
+            patch_body = get_add_telecom_phone_patch_body()
 
         eTag = r.headers["Etag"]
         version_id = r.json()["meta"]["versionId"]
