@@ -178,6 +178,9 @@ apigee:
         attributes:
           - name: access
             value: public
+{% if mode.nameSuffix == '-patient-access' and env.name == 'prod' %}
+            value: private
+{% endif %}
           - name: ratelimiting
             value: {{ env.ratelimiting }}
         description: {{ mode.description }}
