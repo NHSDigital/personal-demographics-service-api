@@ -175,14 +175,13 @@ def set_quota_and_rate_limit(
         obj (Union[ApigeeApiProducts,ApigeeApiDeveloperApps]): Apigee product or Apigee app
         rate_limit (str): The rate limit to be set.
         quota (int): The amount of requests per quota interval.
-        quoata_interval (str): The length of a quota interval in quota units.
+        quota_interval (str): The length of a quota interval in quota units.
         quota_time_unit (str): The quota unit length e.g. minute.
         quota_enabled (bool): Enable or disable proxy level quota.
         rate_enabled (bool): Enable or disable proxy level spike arrest.
         proxy (str): The proxy to apply rate limiting to.
     """
 
-    # TODO Update Apigee product and app
     value = json.dumps({
         proxy: {
             "quota": {

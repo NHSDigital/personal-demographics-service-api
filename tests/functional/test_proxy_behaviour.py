@@ -53,7 +53,6 @@ def _trip_rate_limit(token: str, req_type: HTTPMethods, timeout: int = 30, step:
                 payload={"patches": [{"op": "replace", "path": "/birthDate", "value": "2001-01-01"}]}
             )
 
-        LOGGER.info(f'_pds_response: {_pds_response}')
         return response
 
     def _check_correct_response(response):
