@@ -1,26 +1,32 @@
+paramters:
+  - name: is_prod_sandbox
+    displayName: Is the environment sandbox in prod?
+    type: boolean
+    default: false
+
 steps:
   - bash: poetry install
     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
     displayName: Setup sandbox tests
 
   - task: Bash@3
-    displayName: Find out what parameters.environment is?
+    displayName: Find out what parameters.is_prod_sandbox is?
     inputs:
       targetType: 'inline'
       script: |
-        echo ${{parameters.environment}}
+        echo ${{parameters.is_prod_sandbox}}
 
-  - ${{ if eq(parameters.environment, 'sandbox') }}:
+  - ${{ if eq(parameters.is_prod_sandbox, true) }}:
     - template: "azure/components/get-aws-secrets-and-ssm-params.yml@common"
       parameters:
         secret_ids:
           - ptl/azure-devops/personal-demographics/int/APIGEE_APP_ID
-      displayName: Set APIGEE_APP_ID for sandbox env
+      displayName: Set APIGEE_APP_ID for prod sandbox env
   
-  - ${{ if ne(parameters.environment, 'sandbox') }}:
+  - ${{ if eq(parameters.is_prod_sandbox, false) }}:
     - bash: |
         echo "#vso[task.setvariable variable=APIGEE_APP_ID;issecret=true]"
-      displayName: Set APIGEE_APP_ID for non-sandbox env
+      displayName: Set APIGEE_APP_ID for non-prod sandbox env
 
   - bash: |
       export SERVICE_BASE_PATH="$(SERVICE_BASE_PATH)"
