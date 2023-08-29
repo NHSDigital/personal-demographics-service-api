@@ -72,37 +72,43 @@ def _product_with_full_access(api_products):
 
 
 @pytest.fixture(scope="function")
-def setup_session(request, _test_app_credentials, _jwt_keys, apigee_environment, client, api_products):
+def setup_session(request, _test_app_credentials, _jwt_keys, apigee_environment, client, api_products, _create_test_app):
     """This fixture is called at a function level.
     The default app created here should be modified by your tests.
     """
 
     product = _product_with_full_access(api_products)
+    product.update_environments([config.ENVIRONMENT], api_products=api_products)
 
     print("\nCreating Default App..")
     # Create a new app
     developer_apps = DeveloperAppsAPI(client=client)
 
     app = ApigeeApiDeveloperApps()
-    create_app_response = app.create_new_app(callback_url="https://example.org/callback", status="approved", jwks_resource_url=config.JWKS_RESOURCE_URL, developer_apps=developer_apps)
+    create_app_response = app.create_new_app(callback_url="https://example.org/callback", status="approved", jwks_resource_url=config.JWKS_RESOURCE_URL, products=[product.name], developer_apps=developer_apps)
+    # create_app_response = app.create_new_app_test_app(_create_test_app)
     LOGGER.info(f'create_app_response: {create_app_response}')
 
     # app.set_custom_attributes({'jwks-resource-url': config.JWKS_RESOURCE_URL}, developer_apps=developer_apps)
-    product.update_environments([config.ENVIRONMENT], api_products=api_products)
+    # product.update_environments([config.ENVIRONMENT], api_products=api_products)
 
     # Assign the new product to the app
-    app.add_api_product([product.name], developer_apps=developer_apps)
+    # app.add_api_product([product.name], developer_apps=developer_apps)
 
     LOGGER.info(f'app.get_app_details(): {app.get_app_details(developer_apps=developer_apps)}')
     # LOGGER.info(f'consumerKey: {_test_app_credentials["consumerKey"]}')
     # LOGGER.info(f'_jwt_keys["private_key_pem"]: {_jwt_keys["private_key_pem"]}')
 
+    # LOGGER.info(f'JWT_PRIVATE_KEY_ABSOLUTE_PATH: {config.JWT_PRIVATE_KEY_ABSOLUTE_PATH}')
+
     # Set up app config
     client_credentials_config = ClientCredentialsConfig(
         environment=apigee_environment,
         identity_service_base_url=f"https://{apigee_environment}.api.service.nhs.uk/oauth2-mock",
+        # client_id=_test_app_credentials["consumerKey"],
         client_id=app.get_client_id(),
-        jwt_private_key=_jwt_keys["private_key_pem"],
+        # jwt_private_key=_jwt_keys["private_key_pem"],
+        jwt_private_key=config.JWT_PRIVATE_KEY_ABSOLUTE_PATH,
         jwt_kid="test-1",
     )
 

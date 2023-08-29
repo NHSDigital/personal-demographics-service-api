@@ -193,18 +193,18 @@ def add_custom_attribute_to_app(key: str, value: str, context: dict):
 
     app = context["app"]
 
-    asyncio.run(
-        app.set_custom_attributes(
-            {"jwks-resource-url": config.JWKS_RESOURCE_URL, key: value}
-        )
-    )
+    # asyncio.run(
+    #     app.set_custom_attributes(
+    #         {"jwks-resource-url": config.JWKS_RESOURCE_URL, key: value}
+    #     )
+    # )
 
 
 @given("I add an asid attribute")
 def add_asid_attribute_to_app(context: dict):
 
     app = context["app"]
-
+# TODO update all asyncio.run references
     asyncio.run(
         app.set_custom_attributes(
             {
@@ -218,7 +218,8 @@ def add_asid_attribute_to_app(context: dict):
 @given(parsers.parse("I add the scope {scope}"))
 def add_scope_to_product(scope, context):
     product = context["product"]
-    asyncio.run(product.update_scopes([scope]))
+    api_products = context["api_products"]
+    product.update_scopes([scope], api_products)
 
 
 @given("I have a valid access token")

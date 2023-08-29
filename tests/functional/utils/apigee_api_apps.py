@@ -19,7 +19,7 @@ class ApigeeApiDeveloperApps(ApigeeApi):
             "developer_email": self.developer_email,
         }
 
-    def create_new_app(self, callback_url, status, jwks_resource_url, developer_apps) -> dict:
+    def create_new_app(self, callback_url, status, jwks_resource_url, products: list, developer_apps) -> dict:
         """ Create a new developer app in apigee """
         self.callback_url = callback_url
 
@@ -35,6 +35,7 @@ class ApigeeApiDeveloperApps(ApigeeApi):
                 }
             ],
             "callbackUrl": self.callback_url,
+            "apiProducts": products,
             "name": self.name,
             "status": status
         }
@@ -45,6 +46,12 @@ class ApigeeApiDeveloperApps(ApigeeApi):
         self.client_secret = response["credentials"][0]["consumerSecret"]
 
         return response
+    
+    def create_new_app_test_app(self, _create_test_app):
+        """ Create a new developer app in apigee """
+        self.name = _create_test_app["name"]
+        return _create_test_app["name"]
+
 
     def add_api_product(self, products: list, developer_apps) -> dict:
         """ Add a number of API Products to the app """
