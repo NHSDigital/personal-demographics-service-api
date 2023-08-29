@@ -83,7 +83,7 @@ class TestUserRestrictedRetrievePatient:
 
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_user_role_sharedflow_invalid_role(self, headers_with_token):
-        self.headers["NHSD-Session-URID"] = "invalid"        
+        self.headers["NHSD-Session-URID"] = "invalid"
         response = helpers.retrieve_patient(
             retrieve[9]["patient"],
             self.headers
