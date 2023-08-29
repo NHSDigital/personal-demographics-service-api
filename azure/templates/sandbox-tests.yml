@@ -18,7 +18,7 @@ steps:
   
   - ${{ if eq(parameters.is_prod_sandbox, false) }}:
     - bash: |
-        echo "#vso[task.setvariable variable=APIGEE_APP_ID;issecret=true]"
+        echo "##vso[task.setvariable variable=APIGEE_APP_ID;issecret=true]"
       displayName: Set APIGEE_APP_ID for non-prod sandbox env
 
     - task: Bash@3
