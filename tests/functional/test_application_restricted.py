@@ -192,8 +192,10 @@ def create_test_app(setup_session, context):
 def add_custom_attribute_to_app(key: str, value: str, context: dict):
 
     app = context["app"]
+    developer_apps = context["developer_apps"]
     app.set_custom_attributes(
-        {"jwks-resource-url": config.JWKS_RESOURCE_URL, key: value}
+        {"jwks-resource-url": config.JWKS_RESOURCE_URL, key: value},
+        developer_apps
     )
 
 
