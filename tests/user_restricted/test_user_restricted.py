@@ -74,17 +74,16 @@ class TestUserRestrictedRetrievePatient:
     def test_user_role_sharedflow_retrieve_patient_with_missing_urid_header(self, headers_with_token):
         self.headers.pop("NHSD-Session-URID")
         response = helpers.retrieve_patient(
-            retrieve[0]["patient"],
+            retrieve[10]["patient"],
             self.headers
         )
-        helpers.check_response_status_code(response, 200)
-        helpers.check_retrieve_response_body_shape(response)
+        helpers.check_retrieve_response_body(response, retrieve[10]["response"])
+        helpers.check_response_status_code(response, 400)
         helpers.check_response_headers(response, self.headers)
 
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_user_role_sharedflow_invalid_role(self, headers_with_token):
-        self.headers["NHSD-Session-URID"] = "invalid"
-        LOGGER.info(f'self.headers: {self.headers}')
+        self.headers["NHSD-Session-URID"] = "invalid"        
         response = helpers.retrieve_patient(
             retrieve[9]["patient"],
             self.headers
