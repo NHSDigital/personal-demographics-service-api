@@ -1,4 +1,4 @@
-paramters:
+parameters:
   - name: is_prod_sandbox
     displayName: Is the environment sandbox in prod?
     type: boolean
