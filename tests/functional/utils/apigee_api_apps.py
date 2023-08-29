@@ -19,18 +19,32 @@ class ApigeeApiDeveloperApps(ApigeeApi):
             "developer_email": self.developer_email,
         }
 
-    def create_new_app(self, callback_url, status, developer_apps) -> dict:
+    def create_new_app(self, callback_url, status, jwks_resource_url, developer_apps) -> dict:
         """ Create a new developer app in apigee """
         self.callback_url = callback_url
 
         data = {
-            "attributes": [{"name": "DisplayName", "value": self.name}],
+            "attributes": [
+                {
+                    "name": "DisplayName", 
+                    "value": self.name                
+                },
+                {
+                    "name": "jwks-resource-url", 
+                    "value": jwks_resource_url               
+                }
+            ],
             "callbackUrl": self.callback_url,
             "name": self.name,
             "status": status
         }
 
-        return developer_apps.create_app(email=self.developer_email, body=data)
+        response = developer_apps.create_app(email=self.developer_email, body=data)
+
+        self.client_id = response["credentials"][0]["consumerKey"]
+        self.client_secret = response["credentials"][0]["consumerSecret"]
+
+        return response
 
     def add_api_product(self, products: list, developer_apps) -> dict:
         """ Add a number of API Products to the app """
@@ -79,6 +93,7 @@ class ApigeeApiDeveloperApps(ApigeeApi):
 
     def get_client_id(self):
         """ Get the client id """
+        # TODO RUntimeError thrown ; self.client_id not getting set
         if not self.client_id:
             raise RuntimeError("\nthe application has not been created! \n"
                                "please invoke 'create_new_app()' method before requesting the client_id")

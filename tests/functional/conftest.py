@@ -84,27 +84,37 @@ def setup_session(request, _test_app_credentials, _jwt_keys, apigee_environment,
     developer_apps = DeveloperAppsAPI(client=client)
 
     app = ApigeeApiDeveloperApps()
-    app.create_new_app(callback_url="https://example.org/callback", status="approved", developer_apps=developer_apps)
+    create_app_response = app.create_new_app(callback_url="https://example.org/callback", status="approved", jwks_resource_url=config.JWKS_RESOURCE_URL, developer_apps=developer_apps)
+    LOGGER.info(f'create_app_response: {create_app_response}')
+
+    # app.set_custom_attributes({'jwks-resource-url': config.JWKS_RESOURCE_URL}, developer_apps=developer_apps)
+    product.update_environments([config.ENVIRONMENT], api_products=api_products)
 
     # Assign the new product to the app
     app.add_api_product([product.name], developer_apps=developer_apps)
 
+    LOGGER.info(f'app.get_app_details(): {app.get_app_details(developer_apps=developer_apps)}')
+    # LOGGER.info(f'consumerKey: {_test_app_credentials["consumerKey"]}')
+    # LOGGER.info(f'_jwt_keys["private_key_pem"]: {_jwt_keys["private_key_pem"]}')
+
     # Set up app config
-    config = ClientCredentialsConfig(
+    client_credentials_config = ClientCredentialsConfig(
         environment=apigee_environment,
         identity_service_base_url=f"https://{apigee_environment}.api.service.nhs.uk/oauth2-mock",
-        client_id=_test_app_credentials["consumerKey"],
+        client_id=app.get_client_id(),
         jwt_private_key=_jwt_keys["private_key_pem"],
         jwt_kid="test-1",
     )
 
     # Pass the config to the Authenticator
-    authenticator = ClientCredentialsAuthenticator(config=config)
+    authenticator = ClientCredentialsAuthenticator(config=client_credentials_config)
 
     # Get token
     token_response = authenticator.get_token()
     assert "access_token" in token_response
     token = token_response["access_token"]
+
+    LOGGER.info(f'token: {token}')
 
     yield product, app, token, developer_apps, api_products
 
