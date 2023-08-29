@@ -163,6 +163,8 @@ def setup_patch(setup_session):
         "product": product,
         "app": app,
         "token": token,
+        "developer_apps": developer_apps,
+        "api_products": api_products
     }
 
 
