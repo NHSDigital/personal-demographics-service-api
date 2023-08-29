@@ -424,6 +424,7 @@ def patch_patient(auth: dict, context: dict):
         {
             "Content-Type": "application/json-patch+json",
             "If-Match": patient_version_id,
+            "X-Request-ID": str(uuid.uuid4()),
         }
     )
 
