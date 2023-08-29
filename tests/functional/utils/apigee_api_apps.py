@@ -26,12 +26,12 @@ class ApigeeApiDeveloperApps(ApigeeApi):
         data = {
             "attributes": [
                 {
-                    "name": "DisplayName", 
-                    "value": self.name                
+                    "name": "DisplayName",
+                    "value": self.name
                 },
                 {
-                    "name": "jwks-resource-url", 
-                    "value": jwks_resource_url               
+                    "name": "jwks-resource-url",
+                    "value": jwks_resource_url
                 }
             ],
             "callbackUrl": self.callback_url,
@@ -46,12 +46,11 @@ class ApigeeApiDeveloperApps(ApigeeApi):
         self.client_secret = response["credentials"][0]["consumerSecret"]
 
         return response
-    
+
     def create_new_app_test_app(self, _create_test_app):
         """ Create a new developer app in apigee """
         self.name = _create_test_app["name"]
         return _create_test_app["name"]
-
 
     def add_api_product(self, products: list, developer_apps) -> dict:
         """ Add a number of API Products to the app """

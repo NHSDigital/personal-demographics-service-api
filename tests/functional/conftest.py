@@ -72,7 +72,7 @@ def _product_with_full_access(api_products):
 
 
 @pytest.fixture(scope="function")
-def setup_session(request, _test_app_credentials, _jwt_keys, apigee_environment, client, api_products, _create_test_app):
+def setup_session(request, _test_app_credentials, _jwt_keys, apigee_environment, client, api_products):
     """This fixture is called at a function level.
     The default app created here should be modified by your tests.
     """
@@ -85,8 +85,14 @@ def setup_session(request, _test_app_credentials, _jwt_keys, apigee_environment,
     developer_apps = DeveloperAppsAPI(client=client)
 
     app = ApigeeApiDeveloperApps()
-    create_app_response = app.create_new_app(callback_url="https://example.org/callback", status="approved", jwks_resource_url=config.JWKS_RESOURCE_URL, products=[product.name], developer_apps=developer_apps)
-    # create_app_response = app.create_new_app_test_app(_create_test_app)
+    create_app_response = app.create_new_app(
+        callback_url="https://example.org/callback",
+        status="approved",
+        jwks_resource_url=config.JWKS_RESOURCE_URL,
+        products=[product.name],
+        developer_apps=developer_apps
+    )
+
     LOGGER.info(f'create_app_response: {create_app_response}')
 
     # app.set_custom_attributes({'jwks-resource-url': config.JWKS_RESOURCE_URL}, developer_apps=developer_apps)
