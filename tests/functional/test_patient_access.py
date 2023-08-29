@@ -8,6 +8,7 @@ from tests.functional.utils.helper import (
     generate_random_phone_number,
     get_add_telecom_phone_patch_body,
 )
+from .config_files.config import TEST_PATIENT_ID
 import logging
 
 LOGGER = logging.getLogger(__name__)
@@ -15,25 +16,25 @@ LOGGER = logging.getLogger(__name__)
 AUTH_PATIENT = {
     "access": "patient",
     "level": "P9",
-    "login_form": {"username": "9912003071"},
+    "login_form": {"username": TEST_PATIENT_ID},
 }
 
 AUTH_PATIENT_P5 = {
     "access": "patient",
     "level": "P5",
-    "login_form": {"username": "9912003071"},
+    "login_form": {"username": TEST_PATIENT_ID},
 }
 
 AUTH_PATIENT_p5 = {
     "access": "patient",
     "level": "p5",
-    "login_form": {"username": "9912003071"},
+    "login_form": {"username": TEST_PATIENT_ID},
 }
 
 AUTH_PATIENT_P0 = {
     "access": "patient",
     "level": "P0",
-    "login_form": {"username": "9912003071"},
+    "login_form": {"username": TEST_PATIENT_ID},
 }
 
 
@@ -198,8 +199,6 @@ class TestUserRestrictedPatientAccess:
         )
 
         body = r.json()
-
-        LOGGER.info(f'body: {body}')
 
         """ check if patient already has a telecom object, if so then amend the email address else
             add a new telecom object
