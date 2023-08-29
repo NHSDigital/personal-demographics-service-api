@@ -9,13 +9,6 @@ steps:
     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
     displayName: Setup sandbox tests
 
-  - task: Bash@3
-    displayName: Find out what parameters.is_prod_sandbox is?
-    inputs:
-      targetType: 'inline'
-      script: |
-        echo ${{parameters.is_prod_sandbox}}
-
   - ${{ if eq(parameters.is_prod_sandbox, true) }}:
     - template: "azure/components/get-aws-secrets-and-ssm-params.yml@common"
       parameters:
