@@ -1,5 +1,8 @@
 # Changelog
 
+## 2023-08-25
+* Begin move away from apim-test-utils package
+
 ## 2023-08-03
 * Documentation: Added Open Source as a "first class" section and re-ordered the side nav
 
