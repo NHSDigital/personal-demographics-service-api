@@ -194,7 +194,7 @@ def setup_quota_app(setup_session):
     )
 
     app_attributes = (
-        context["app"].get_custom_attributes()
+        context["app"].get_custom_attributes(developer_apps=context["developer_apps"],)
     )["attribute"]
 
     rate_limiting = json.loads(
@@ -227,7 +227,7 @@ def setup_rate_limit_app(setup_session):
     )
 
     app_attributes = (
-        context["app"].get_custom_attributes()
+        context["app"].get_custom_attributes(developer_apps=context["developer_apps"],)
     )["attribute"]
 
     rate_limiting = json.loads(
