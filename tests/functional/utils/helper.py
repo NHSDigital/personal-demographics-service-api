@@ -25,8 +25,10 @@ def get_proxy_name(base_path, environment):
 
     return f'{base_path.replace("/FHIR/R4", "")}-{environment}'
 
+
 def generate_random_phone_number():
     return f"07784{randint(100000, 999999)}"
+
 
 def get_add_telecom_phone_patch_body():
     return {
