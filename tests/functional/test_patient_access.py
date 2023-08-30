@@ -8,7 +8,6 @@ from tests.functional.utils.helper import (
     generate_random_phone_number,
     get_add_telecom_phone_patch_body,
 )
-from .config_files.config import TEST_PATIENT_ID
 import logging
 
 LOGGER = logging.getLogger(__name__)
@@ -45,7 +44,6 @@ class TestUserRestrictedPatientAccess:
     async def test_patient_access_retrieve_happy_path(self, _nhsd_apim_auth_token_data):
 
         LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
-        LOGGER.info(f'TEST_PATIENT_ID: {TEST_PATIENT_ID}')
 
         token = _nhsd_apim_auth_token_data.get("access_token", "")
 
@@ -55,7 +53,7 @@ class TestUserRestrictedPatientAccess:
             "X-Request-ID": str(uuid.uuid4()),
         }
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}",
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9912003071",
             headers=headers,
         )
 
@@ -123,7 +121,7 @@ class TestUserRestrictedPatientAccess:
         debug_session_get.create_debug_session(headers["X-Request-ID"])
 
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}",
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9912003071",
             headers=headers,
         )
 
@@ -132,7 +130,7 @@ class TestUserRestrictedPatientAccess:
         nhsd_patient_header_get = debug_session_get.get_apigee_header(
             "NHSD-NHSLogin-User"
         )
-        assert nhsd_patient_header_get == f"P9:{config.TEST_PATIENT_ID}"
+        assert nhsd_patient_header_get == "P9:9912003071"
 
         body = r.json()
 
@@ -172,7 +170,7 @@ class TestUserRestrictedPatientAccess:
         debug_session_patch.create_debug_session(request_id)
 
         r = requests.patch(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}",
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9912003071",
             headers=headers,
             json=patch_body,
         )
@@ -181,7 +179,7 @@ class TestUserRestrictedPatientAccess:
         nhsd_patient_header_patch = debug_session_patch.get_apigee_header(
             "NHSD-NHSLogin-User"
         )
-        assert nhsd_patient_header_patch == f"P9:{config.TEST_PATIENT_ID}"
+        assert nhsd_patient_header_patch == "P9:9912003071"
 
     @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
     async def test_patient_access_update_happy_path(self, _nhsd_apim_auth_token_data):
@@ -195,7 +193,7 @@ class TestUserRestrictedPatientAccess:
         }
 
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}",
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9912003071",
             headers=headers,
         )
 
@@ -236,7 +234,7 @@ class TestUserRestrictedPatientAccess:
             "Content-Type": "application/json-patch+json",
         }
         r = requests.patch(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}",
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9912003071",
             headers=headers,
             json=patch_body,
         )
@@ -263,7 +261,7 @@ class TestUserRestrictedPatientAccess:
         }
 
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}",
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9912003071",
             headers=headers,
         )
         Etag = r.headers["Etag"]
@@ -306,7 +304,7 @@ class TestUserRestrictedPatientAccess:
         }
 
         r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{config.TEST_PATIENT_ID}",
+            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9912003071",
             headers=headers,
         )
         Etag = r.headers["Etag"]
