@@ -1,4 +1,3 @@
-import asyncio
 import json
 import pytest
 
@@ -203,14 +202,13 @@ def add_custom_attribute_to_app(key: str, value: str, context: dict):
 def add_asid_attribute_to_app(context: dict):
 
     app = context["app"]
-# TODO update all asyncio.run references
-    asyncio.run(
-        app.set_custom_attributes(
-            {
-                "jwks-resource-url": config.JWKS_RESOURCE_URL,
-                "asid": config.ENV["internal_dev_asid"],
-            }
-        )
+    developer_apps = context["developer_apps"]
+    app.set_custom_attributes(
+        {
+            "jwks-resource-url": config.JWKS_RESOURCE_URL,
+            "asid": config.ENV["internal_dev_asid"],
+        },
+        developer_apps
     )
 
 

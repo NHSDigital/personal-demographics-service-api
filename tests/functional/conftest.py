@@ -114,7 +114,7 @@ def setup_session(request, _test_app_credentials, _jwt_keys, apigee_environment,
         # client_id=_test_app_credentials["consumerKey"],
         client_id=app.get_client_id(),
         # jwt_private_key=_jwt_keys["private_key_pem"],
-        jwt_private_key=config.JWT_PRIVATE_KEY_ABSOLUTE_PATH,
+        jwt_private_key=config.SIGNING_KEY,
         jwt_kid="test-1",
     )
 
