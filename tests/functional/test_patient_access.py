@@ -16,25 +16,25 @@ LOGGER = logging.getLogger(__name__)
 AUTH_PATIENT = {
     "access": "patient",
     "level": "P9",
-    "login_form": {"username": TEST_PATIENT_ID},
+    "login_form": {"username": "9912003071"},
 }
 
 AUTH_PATIENT_P5 = {
     "access": "patient",
     "level": "P5",
-    "login_form": {"username": TEST_PATIENT_ID},
+    "login_form": {"username": "9912003071"},
 }
 
 AUTH_PATIENT_p5 = {
     "access": "patient",
     "level": "p5",
-    "login_form": {"username": TEST_PATIENT_ID},
+    "login_form": {"username": "9912003071"},
 }
 
 AUTH_PATIENT_P0 = {
     "access": "patient",
     "level": "P0",
-    "login_form": {"username": TEST_PATIENT_ID},
+    "login_form": {"username": "9912003071"},
 }
 
 
@@ -45,6 +45,7 @@ class TestUserRestrictedPatientAccess:
     async def test_patient_access_retrieve_happy_path(self, _nhsd_apim_auth_token_data):
 
         LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
+        LOGGER.info(f'TEST_PATIENT_ID: {TEST_PATIENT_ID}')
 
         token = _nhsd_apim_auth_token_data.get("access_token", "")
 
