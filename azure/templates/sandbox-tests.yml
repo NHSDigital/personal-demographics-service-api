@@ -13,7 +13,7 @@ steps:
       parameters:
         secret_ids:
           - ptl/azure-devops/personal-demographics/int/APIGEE_APP_ID
-  
+
   - ${{ if eq(parameters.is_prod_sandbox, false) }}:
     - bash: |
         echo "##vso[task.setvariable variable=APIGEE_APP_ID;issecret=true]"
