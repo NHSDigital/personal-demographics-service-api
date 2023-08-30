@@ -9,10 +9,10 @@ steps:
     displayName: Setup sandbox tests
 
   - ${{ if eq(parameters.is_prod_sandbox, true) }}:
-      - template: "azure/components/aws-assume-role.yml@common"
-        parameters:
-          role: "auto-ops"
-          profile: "apm_ptl"
+    - template: "azure/components/aws-assume-role.yml@common"
+      parameters:
+        role: "auto-ops"
+        profile: "apm_ptl"
 
     - template: "azure/components/get-aws-secrets-and-ssm-params.yml@common"
       parameters:
