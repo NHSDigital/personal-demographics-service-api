@@ -13,7 +13,6 @@ steps:
       parameters:
         secret_ids:
           - ptl/azure-devops/personal-demographics/int/APIGEE_APP_ID
-      displayName: Set APIGEE_APP_ID for prod sandbox env
   
   - ${{ if eq(parameters.is_prod_sandbox, false) }}:
     - bash: |
