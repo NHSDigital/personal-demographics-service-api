@@ -67,18 +67,22 @@ def _product_with_full_access(api_products):
     ], api_products)
     # Allows access to all proxy paths - so we don't have to specify the pr proxy explicitly
     product.update_paths(paths=["/", "/*"], api_products=api_products)
+    # product.update_proxies(proxies=[config.PROXY_NAME], api_products=api_products)
+    LOGGER.info(f'product.get_product_details(): {product.get_product_details(api_products)}')
 
     return product
 
 
 @pytest.fixture(scope="function")
-def setup_session(request, _test_app_credentials, _jwt_keys, apigee_environment, client, api_products):
+def setup_session(request, _test_app_credentials, _jwt_keys, apigee_environment, client, api_products, auth):
     """This fixture is called at a function level.
     The default app created here should be modified by your tests.
     """
 
     product = _product_with_full_access(api_products)
     product.update_environments([config.ENVIRONMENT], api_products=api_products)
+
+    LOGGER.info(f'product.proxies: {product.proxies}')
 
     print("\nCreating Default App..")
     # Create a new app
@@ -125,6 +129,12 @@ def setup_session(request, _test_app_credentials, _jwt_keys, apigee_environment,
     token_response = authenticator.get_token()
     assert "access_token" in token_response
     token = token_response["access_token"]
+
+    LOGGER.info(f'token_response: {token_response}')
+
+    auth["response"] = token_response
+    auth["access_token"] = token_response["access_token"]
+    auth["token_type"] = token_response["token_type"]
 
     LOGGER.info(f'token: {token}')
 
