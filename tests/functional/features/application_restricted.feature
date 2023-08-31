@@ -173,7 +173,8 @@ Feature: Unattended Access
     Given I am authenticating using unattended access
     And I have a request context
     And I create a new app
-    And I wait for 100 milliseconds    
+    And I wait for 500 milliseconds
+    And I have a valid access token    
 
     When I GET a patient
     Then I get a 400 HTTP response
@@ -184,7 +185,8 @@ Feature: Unattended Access
     And I have a request context
     And I create a new app
     And I add an asid attribute
-    And I wait for 200 milliseconds
+    And I wait for 500 milliseconds
+    And I have a valid access token
 
     When I GET a patient
     Then I get a 200 HTTP response

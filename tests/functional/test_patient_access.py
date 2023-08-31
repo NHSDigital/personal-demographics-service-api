@@ -111,6 +111,8 @@ class TestUserRestrictedPatientAccess:
 
         token = _nhsd_apim_auth_token_data.get("access_token", "")
 
+        LOGGER.info(f'token: {token}')
+
         headers = {
             "NHSD-SESSION-URID": "123",
             "Authorization": "Bearer " + token,
@@ -133,6 +135,8 @@ class TestUserRestrictedPatientAccess:
         assert nhsd_patient_header_get == "P9:9912003071"
 
         body = r.json()
+
+        LOGGER.info(f'body: {body}')
 
         # check if patient already has a telecom object, if so then amend the email address else
         # add a new telecom object
@@ -174,6 +178,8 @@ class TestUserRestrictedPatientAccess:
             headers=headers,
             json=patch_body,
         )
+
+        LOGGER.info(f'patch response: {r.json()}')
 
         assert r.status_code == 200
         nhsd_patient_header_patch = debug_session_patch.get_apigee_header(
