@@ -1,37 +1,15 @@
-parameters:
-  - name: is_prod_sandbox
-    type: boolean
-    default: false
-
 steps:
   - bash: poetry install
     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
     displayName: Setup sandbox tests
-
-  - ${{ if eq(parameters.is_prod_sandbox, true) }}:
-    - template: "azure/components/aws-assume-role.yml@common"
-      parameters:
-        role: "auto-ops"
-        profile: "apm_ptl"
-
-    - template: "azure/components/get-aws-secrets-and-ssm-params.yml@common"
-      parameters:
-        secret_ids:
-          - ptl/azure-devops/personal-demographics/int/APIGEE_APP_ID
-
-  - ${{ if eq(parameters.is_prod_sandbox, false) }}:
-    - bash: |
-        echo "##vso[task.setvariable variable=APIGEE_APP_ID;issecret=true]"
-      displayName: Set APIGEE_APP_ID for non-prod sandbox env
 
   - bash: |
       export SERVICE_BASE_PATH="$(SERVICE_BASE_PATH)"
       export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
       export SOURCE_COMMIT_ID=$(Build.SourceVersion)
       export STATUS_ENDPOINT_API_KEY="$(status-endpoint-api-key)"
-      export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
 
-      poetry run pytest -v tests/sandbox/test_sandbox.py --junitxml=tests/sandbox-test-report.xml --reruns 3 --reruns-delay 1 --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --apigee-app-id "$(APIGEE_APP_ID)"
+      poetry run pytest -v tests/sandbox/test_sandbox.py --junitxml=tests/sandbox-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run sandbox tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
 
