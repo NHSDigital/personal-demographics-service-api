@@ -265,7 +265,7 @@ def set_valid_access_token(auth, context):
         assert {"access_token", "expires_in", "token_type", "issued_at"} <= set(
             token_response.keys()
         )
-    
+
     assert token_response["access_token"] is not None
     assert token_response["token_type"] == "Bearer"
     assert token_response["expires_in"] and int(token_response["expires_in"]) > 0
