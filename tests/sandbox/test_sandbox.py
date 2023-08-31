@@ -32,7 +32,7 @@ class TestPDSSandboxDeploymentSuite:
     @pytest.mark.asyncio
     async def test_wait_for_status(self,
                                    commit_id: str,
-                                   status_endpoint_auth_headers: Dict[str, str]):
+                                   status_endpoint_header: Dict[str, str]):
         async def is_deployed(response: ClientResponse):
             if response.status != 200:
                 return False
@@ -48,7 +48,7 @@ class TestPDSSandboxDeploymentSuite:
             return backend.get("commitId") == commit_id
 
         await helpers.poll_until(url=f"{config.SANDBOX_BASE_URL}/_status",
-                                 headers=status_endpoint_auth_headers,
+                                 headers=status_endpoint_header,
                                  until=is_deployed,
                                  timeout=120)
 
