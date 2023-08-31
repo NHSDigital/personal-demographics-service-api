@@ -4,6 +4,7 @@ from .data.scenarios import relatedPerson, retrieve, search, update
 import requests
 from typing import Dict
 from .utils import helpers
+from .configuration import config
 
 
 @pytest.mark.deployment_scenarios
@@ -12,27 +13,25 @@ class TestPDSSandboxDeploymentSuite:
 
     @pytest.mark.asyncio
     async def test_wait_for_ping(self,
-                                 commit_id: str,
-                                 nhsd_apim_proxy_url: str):
+                                 commit_id: str):
         async def apigee_deployed(response: ClientResponse):
             if response.status != 200:
                 return False
             body = await response.json(content_type=None)
             return body.get("commitId") == commit_id
 
-        await helpers.poll_until(url=f"{nhsd_apim_proxy_url}/_ping",
+        await helpers.poll_until(url=f"{config.SANDBOX_BASE_URL}/_ping",
                                  until=apigee_deployed,
                                  timeout=30)
 
     @pytest.mark.asyncio
-    async def test_check_status_is_secured(self, nhsd_apim_proxy_url: str):
-        response = requests.get(f"{nhsd_apim_proxy_url}/_status")
+    async def test_check_status_is_secured(self):
+        response = requests.get(f"{config.SANDBOX_BASE_URL}/_status")
         assert response.status_code == 401
 
     @pytest.mark.asyncio
     async def test_wait_for_status(self,
                                    commit_id: str,
-                                   nhsd_apim_proxy_url: str,
                                    status_endpoint_auth_headers: Dict[str, str]):
         async def is_deployed(response: ClientResponse):
             if response.status != 200:
@@ -48,7 +47,7 @@ class TestPDSSandboxDeploymentSuite:
 
             return backend.get("commitId") == commit_id
 
-        await helpers.poll_until(url=f"{nhsd_apim_proxy_url}/_status",
+        await helpers.poll_until(url=f"{config.SANDBOX_BASE_URL}/_status",
                                  headers=status_endpoint_auth_headers,
                                  until=is_deployed,
                                  timeout=120)
