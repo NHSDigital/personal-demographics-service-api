@@ -51,7 +51,7 @@ steps:
       export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2"
-      export INTERNAL_DEV_ASID="$(INTERNAL_DEV_ASID)"
+      export INTERNAL_DEV_ASID="$(secret.INTERNAL_DEV_ASID)"
 
       poetry run pytest -v tests/functional/test_application_restricted.py --api-name=personal-demographics --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/functional-test-report.xml
     displayName: Run application restricted tests
