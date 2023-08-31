@@ -74,7 +74,7 @@ def _product_with_full_access(api_products):
 
 
 @pytest.fixture(scope="function")
-def setup_session(request, _test_app_credentials, _jwt_keys, apigee_environment, client, api_products):
+def setup_session(request, _jwt_keys, apigee_environment, client, api_products):
     """This fixture is called at a function level.
     The default app created here should be modified by your tests.
     """
