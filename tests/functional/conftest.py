@@ -74,7 +74,7 @@ def _product_with_full_access(api_products):
 
 
 @pytest.fixture(scope="function")
-def setup_session(request, _test_app_credentials, _jwt_keys, apigee_environment, client, api_products, auth):
+def setup_session(request, _test_app_credentials, _jwt_keys, apigee_environment, client, api_products):
     """This fixture is called at a function level.
     The default app created here should be modified by your tests.
     """
@@ -132,13 +132,13 @@ def setup_session(request, _test_app_credentials, _jwt_keys, apigee_environment,
 
     LOGGER.info(f'token_response: {token_response}')
 
-    auth["response"] = token_response
-    auth["access_token"] = token_response["access_token"]
-    auth["token_type"] = token_response["token_type"]
+    # auth["response"] = token_response
+    # auth["access_token"] = token_response["access_token"]
+    # auth["token_type"] = token_response["token_type"]
 
     LOGGER.info(f'token: {token}')
 
-    yield product, app, token, developer_apps, api_products
+    yield product, app, token_response, developer_apps, api_products
 
     # Teardown
     print("\nDestroying Default App..")
@@ -153,12 +153,12 @@ def setup_patch(setup_session):
     GET /Patient -> PATCH /Patient
     """
 
-    [product, app, token, developer_apps, api_products] = setup_session
+    [product, app, token_response, developer_apps, api_products] = setup_session
 
     pds = GenericPdsRequestor(
         pds_base_path=config.PDS_BASE_PATH,
         base_url=config.BASE_URL,
-        token=token,
+        token=token_response["access_token"],
     )
 
     response = pds.get_patient_response(patient_id=config.TEST_PATIENT_ID)
@@ -172,7 +172,7 @@ def setup_patch(setup_session):
         "pds": pds,
         "product": product,
         "app": app,
-        "token": token,
+        "token": token_response["access_token"],
         "developer_apps": developer_apps,
         "api_products": api_products
     }
