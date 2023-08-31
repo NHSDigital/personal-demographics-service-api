@@ -222,7 +222,7 @@ def add_scope_to_product(scope, context):
 @given("I have a valid access token")
 def set_valid_access_token(auth, context):
 
-    # TODO No need for this, we get the token during setup, should be available in context 
+    # TODO No need for this, we get the token during setup, should be available in context
 
     claims = {
         "sub": config.APPLICATION_RESTRICTED_API_KEY,
