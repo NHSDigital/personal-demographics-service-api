@@ -82,6 +82,7 @@ steps:
       export AUTHENTICATE_URL="https://example.org/callback"
       export OAUTH_PROXY="oauth2-mock"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
+      export INTERNAL_DEV_ASID="$(INTERNAL_DEV_ASID)"
 
       poetry run pytest -v tests/user_restricted/test_user_restricted.py --api-name=personal-demographics --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/user-restricted-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run user restricted tests
