@@ -65,8 +65,6 @@ extends:
         enable_status_monitoring: false
         post_deploy:
           - template: templates/sandbox-tests.yml
-            parameters:
-              is_prod_sandbox: true
         depends_on:
           - internal_qa
           - internal_qa_sandbox
