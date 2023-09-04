@@ -1,6 +1,7 @@
 import pytest
 
 from .utils import helpers
+from ..functional.conftest import _product_with_full_access
 import uuid
 import random
 from ..scripts import config
@@ -8,11 +9,18 @@ from tests.functional.config_files import config as functional_config
 from pytest_nhsd_apim.apigee_apis import (
     ApigeeClient,
     ApigeeNonProdCredentials,
+    ApiProductsAPI,
     DeveloperAppsAPI,
 )
 import logging
 
 LOGGER = logging.getLogger(__name__)
+
+AUTH_HEALTHCARE_WORKER = {
+    "access": "healthcare_worker",
+    "level": "aal3",
+    "login_form": {"username": "656005750104"},
+}
 
 
 @pytest.fixture()
@@ -22,12 +30,76 @@ def client():
 
 
 @pytest.fixture()
+def api_products(client):
+    return ApiProductsAPI(client=client)
+
+
+@pytest.fixture()
+def test_setup(api_products, client, nhsd_apim_test_app):
+    # LOGGER.info('Testing class level fixture')
+    # product = _product_with_full_access(api_products)
+    # product.update_environments([functional_config.ENVIRONMENT], api_products=api_products)
+
+    # LOGGER.info(f'product.proxies: {product.proxies}')
+
+    # print("\nCreating Default App..")
+    # # Create a new app
+    # developer_apps = DeveloperAppsAPI(client=client)
+
+    # app = ApigeeApiDeveloperApps()
+    # create_app_response = app.create_new_app(
+    #     callback_url="https://example.org/callback",
+    #     status="approved",
+    #     jwks_resource_url=functional_config.JWKS_RESOURCE_URL,
+    #     products=[product.name],
+    #     developer_apps=developer_apps
+    # )
+
+    # LOGGER.info(f'create_app_response: {create_app_response}')
+    # yield create_app_response["name"]
+
+    developer_apps = DeveloperAppsAPI(client=client)
+    developer_email = "apm-testing-internal-dev@nhs.net"
+    app = nhsd_apim_test_app()
+    # LOGGER.info(f'app:{app}')
+    app_name = app["name"]
+
+    # Updating app with new product
+    app = developer_apps.get_app_by_name(email=developer_email, app_name=app_name)
+    LOGGER.info(f'app: {app}')
+    LOGGER.info(f'app credentials: {app["credentials"]}')
+    new_product = _product_with_full_access(api_products)
+    new_product.update_environments([functional_config.ENVIRONMENT], api_products=api_products)
+
+    data = {
+        "attributes": app['attributes'],
+        "callbackUrl": app['callbackUrl'],
+        "apiProducts": [new_product.name],
+        "name": app_name,
+        "status": app['status']
+    }
+
+    developer_apps.put_app_by_name(email=developer_email, app_name=app_name, body=data)
+
+    app = developer_apps.get_app_by_name(email=developer_email, app_name=app_name)
+    LOGGER.info(f'app updated: {app}')
+
+# @pytest.fixture()
+# @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+# def authorisation_fixture(test_setup, headers_with_token):
+#     """authorisation_fixture"""
+#     new_app = test_setup
+#     LOGGER.info(f'New Test app name: {new_app}')
+
+
+@pytest.fixture()
 async def headers_with_token(
     _nhsd_apim_auth_token_data,
     request,
     identity_service_base_url,
     nhsd_apim_test_app,
-    client
+    client,
+    api_products
 ):
     """Assign required headers with the Authorization header"""
 
