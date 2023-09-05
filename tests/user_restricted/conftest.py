@@ -1,5 +1,5 @@
 import pytest
-
+import json
 from .utils import helpers
 # from ..functional.conftest import _product_with_full_access
 import uuid
@@ -35,7 +35,7 @@ def api_products(client):
 
 
 @pytest.fixture()
-def test_setup(api_products, client, nhsd_apim_test_app):
+def test_setup(api_products, client, nhsd_apim_test_app, nhsd_apim_config):
     # LOGGER.info('Testing class level fixture')
     # product = _product_with_full_access(api_products)
     # product.update_environments([functional_config.ENVIRONMENT], api_products=api_products)
@@ -64,7 +64,7 @@ def test_setup(api_products, client, nhsd_apim_test_app):
     LOGGER.info(f'app:{app}')
     # app_name = app["name"]
 
-    default_product_name = "personal-demographics-pr-898"
+    default_product_name = nhsd_apim_config['PROXY_NAME']
     default_product = api_products.get_product_by_name(product_name=default_product_name)
     LOGGER.info(f'default_product: {default_product}')
 
