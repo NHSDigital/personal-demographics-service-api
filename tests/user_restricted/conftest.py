@@ -74,8 +74,8 @@ def test_setup(api_products, client, nhsd_apim_test_app):
     # proxies = default_product['proxies']
     # LOGGER.info(f'proxies: {proxies}')
 
-    # default_product_updated = api_products.put_product_by_name(product_name=default_product_name, body=default_product)
-    # LOGGER.info(f'default_product_updated: {default_product_updated}')
+    # product_updated = api_products.put_product_by_name(product_name=default_product_name, body=default_product)
+    # LOGGER.info(f'product_updated: {product_updated}')
 
     # Check if the ASID attribute is already available
     app_attributes = developer_apps.get_app_attributes(email=developer_email, app_name=app_name)
