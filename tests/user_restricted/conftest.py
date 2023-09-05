@@ -1,7 +1,7 @@
 import pytest
 
 from .utils import helpers
-from ..functional.conftest import _product_with_full_access
+# from ..functional.conftest import _product_with_full_access
 import uuid
 import random
 from ..scripts import config
@@ -58,31 +58,42 @@ def test_setup(api_products, client, nhsd_apim_test_app):
     # LOGGER.info(f'create_app_response: {create_app_response}')
     # yield create_app_response["name"]
 
-    developer_apps = DeveloperAppsAPI(client=client)
-    developer_email = "apm-testing-internal-dev@nhs.net"
+    # developer_apps = DeveloperAppsAPI(client=client)
+    # developer_email = "apm-testing-internal-dev@nhs.net"
     app = nhsd_apim_test_app()
-    # LOGGER.info(f'app:{app}')
-    app_name = app["name"]
+    LOGGER.info(f'app:{app}')
+    # app_name = app["name"]
 
-    # Updating app with new product
-    app = developer_apps.get_app_by_name(email=developer_email, app_name=app_name)
-    LOGGER.info(f'app: {app}')
-    LOGGER.info(f'app credentials: {app["credentials"]}')
-    new_product = _product_with_full_access(api_products)
-    new_product.update_environments([functional_config.ENVIRONMENT], api_products=api_products)
+    default_product_name = "personal-demographics-pr-898"
+    default_product = api_products.get_product_by_name(product_name=default_product_name)
+    LOGGER.info(f'default_product: {default_product}')
 
-    data = {
-        "attributes": app['attributes'],
-        "callbackUrl": app['callbackUrl'],
-        "apiProducts": [new_product.name],
-        "name": app_name,
-        "status": app['status']
-    }
+    default_product['proxies'].append(functional_config.PROXY_NAME)
+    proxies = default_product['proxies']
+    LOGGER.info(f'proxies: {proxies}')
 
-    developer_apps.put_app_by_name(email=developer_email, app_name=app_name, body=data)
+    default_product_updated = api_products.put_product_by_name(product_name=default_product_name, body=default_product)
+    LOGGER.info(f'default_product_updated: {default_product_updated}')
 
-    app = developer_apps.get_app_by_name(email=developer_email, app_name=app_name)
-    LOGGER.info(f'app updated: {app}')
+    # # Updating app with new product
+    # app = developer_apps.get_app_by_name(email=developer_email, app_name=app_name)
+    # LOGGER.info(f'app: {app}')
+    # LOGGER.info(f'app credentials: {app["credentials"]}')
+    # new_product = _product_with_full_access(api_products)
+    # new_product.update_environments([functional_config.ENVIRONMENT], api_products=api_products)
+
+    # data = {
+    #     "attributes": app['attributes'],
+    #     "callbackUrl": app['callbackUrl'],
+    #     "apiProducts": [new_product.name],
+    #     "name": app_name,
+    #     "status": app['status']
+    # }
+
+    # developer_apps.put_app_by_name(email=developer_email, app_name=app_name, body=data)
+
+    # app = developer_apps.get_app_by_name(email=developer_email, app_name=app_name)
+    # LOGGER.info(f'app updated: {app}')
 
 # @pytest.fixture()
 # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
@@ -106,8 +117,28 @@ async def headers_with_token(
     developer_apps = DeveloperAppsAPI(client=client)
     developer_email = "apm-testing-internal-dev@nhs.net"
     app = nhsd_apim_test_app()
-    # LOGGER.info(f'app:{app}')
+    LOGGER.info(f'app:{app}')
     app_name = app["name"]
+
+    # # Updating app with new product
+    # app = developer_apps.get_app_by_name(email=developer_email, app_name=app_name)
+    # LOGGER.info(f'app: {app}')
+    # LOGGER.info(f'app credentials: {app["credentials"]}')
+    # new_product = _product_with_full_access(api_products)
+    # new_product.update_environments([functional_config.ENVIRONMENT], api_products=api_products)
+
+    # data = {
+    #     "attributes": app['attributes'],
+    #     "callbackUrl": app['callbackUrl'],
+    #     "apiProducts": [new_product.name],
+    #     "name": app_name,
+    #     "status": app['status']
+    # }
+
+    # developer_apps.put_app_by_name(email=developer_email, app_name=app_name, body=data)
+
+    # app = developer_apps.get_app_by_name(email=developer_email, app_name=app_name)
+    # LOGGER.info(f'app updated: {app}')
 
     # Check if the ASID attribute is already available
     app_attributes = developer_apps.get_app_attributes(email=developer_email, app_name=app_name)
