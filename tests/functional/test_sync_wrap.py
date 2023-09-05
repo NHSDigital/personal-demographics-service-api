@@ -5,7 +5,6 @@ from polling2 import poll, TimeoutException
 from pytest_bdd import scenario, given, when, then, parsers
 from .config_files.config import TEST_PATIENT_ID, PROXY_NAME, PDS_BASE_PATH
 from .utils.helper import find_item_in_dict
-import asyncio
 import json
 
 
@@ -45,11 +44,19 @@ def setup_rate_limit_proxy(setup_patch):
         "product": setup_patch["product"],
         "app": setup_patch["app"],
         "token": setup_patch["token"],
+        "developer_apps": setup_patch["developer_apps"],
+        "api_products": setup_patch["api_products"]
     }
-    set_quota_and_rate_limit(context["product"], rate_limit="1pm", proxy=PROXY_NAME)
+    set_quota_and_rate_limit(
+        context["product"],
+        rate_limit="1pm",
+        proxy=PROXY_NAME,
+        developer_apps=context["developer_apps"],
+        api_products=context["api_products"]
+    )
 
-    product_attributes = asyncio.run(
-        context["product"].get_product_details()
+    product_attributes = (
+        context["product"].get_product_details(context["api_products"])
     )["attributes"]
 
     rate_limiting = json.loads(

@@ -1,6 +1,5 @@
 from typing import Optional, Dict
-import random
-import string
+from random import randint
 
 
 def find_item_in_dict(obj={}, search_key=""):
@@ -27,13 +26,11 @@ def get_proxy_name(base_path, environment):
     return f'{base_path.replace("/FHIR/R4", "")}-{environment}'
 
 
-def generate_random_email_address():
-    letters = string.ascii_lowercase
-    random_letters = "".join(random.choice(letters) for i in range(10))
-    return f"random.{random_letters}@test.com"
+def generate_random_phone_number():
+    return f"07784{randint(100000, 999999)}"
 
 
-def get_add_telecom_email_patch_body():
+def get_add_telecom_phone_patch_body():
     return {
         "patches": [
             {
@@ -41,9 +38,9 @@ def get_add_telecom_email_patch_body():
                 "path": "/telecom/-",
                 "value": {
                     "period": {"start": "2020-02-27"},
-                    "system": "email",
-                    "use": "work",
-                    "value": "test@test.com",
+                    "system": "phone",
+                    "use": "mobile",
+                    "value": "07784123456",
                 },
             }
         ]
@@ -68,3 +65,13 @@ def add_auth_header(headers: Dict[str, str], auth: Optional[Dict[str, str]]):
         headers["Authorization"] = f"{token_type} {access_token}"
 
     return headers
+
+
+def throw_friendly_error(message: str, url: str, status_code: int, response: str, headers: dict) -> Exception:
+    raise Exception(f"\n{'*' * len(message)}\n"
+                    f"MESSAGE: {message}\n"
+                    f"URL: {url}\n"
+                    f"STATUS CODE: {status_code}\n"
+                    f"RESPONSE: {response}\n"
+                    f"HEADERS: {headers}\n"
+                    f"{'*' * len(message)}\n")

@@ -1,4 +1,3 @@
-import asyncio
 import json
 import pytest
 
@@ -180,21 +179,22 @@ def auth():
 
 @given("I create a new app")
 def create_test_app(setup_session, context):
-    product, app, token = setup_session
+    product, app, token_response, developer_apps, api_products = setup_session
     context["product"] = product
     context["app"] = app
-    context["token"] = token
+    context["token_response"] = token_response
+    context["developer_apps"] = developer_apps
+    context["api_products"] = api_products
 
 
 @given(parsers.parse("I add the attribute with key of {key} and a value of {value}"))
 def add_custom_attribute_to_app(key: str, value: str, context: dict):
 
     app = context["app"]
-
-    asyncio.run(
-        app.set_custom_attributes(
-            {"jwks-resource-url": config.JWKS_RESOURCE_URL, key: value}
-        )
+    developer_apps = context["developer_apps"]
+    app.set_custom_attributes(
+        {"jwks-resource-url": config.JWKS_RESOURCE_URL, key: value},
+        developer_apps
     )
 
 
@@ -202,72 +202,77 @@ def add_custom_attribute_to_app(key: str, value: str, context: dict):
 def add_asid_attribute_to_app(context: dict):
 
     app = context["app"]
-
-    asyncio.run(
-        app.set_custom_attributes(
-            {
-                "jwks-resource-url": config.JWKS_RESOURCE_URL,
-                "asid": config.ENV["internal_dev_asid"],
-            }
-        )
+    developer_apps = context["developer_apps"]
+    app.set_custom_attributes(
+        {
+            "jwks-resource-url": config.JWKS_RESOURCE_URL,
+            "asid": config.ENV["internal_dev_asid"],
+        },
+        developer_apps
     )
 
 
 @given(parsers.parse("I add the scope {scope}"))
 def add_scope_to_product(scope, context):
     product = context["product"]
-    asyncio.run(product.update_scopes([scope]))
+    api_products = context["api_products"]
+    product.update_scopes([scope], api_products)
 
 
 @given("I have a valid access token")
 def set_valid_access_token(auth, context):
 
-    claims = {
-        "sub": config.APPLICATION_RESTRICTED_API_KEY,
-        "iss": config.APPLICATION_RESTRICTED_API_KEY,
-        "jti": str(uuid.uuid4()),
-        "aud": f"{config.BASE_URL}/oauth2/token",
-        "exp": int(time.time()) + 300,
-    }
+    token_response = context.get("token_response")
 
-    # If one exists, use the client_id of the test app instead
-    if "app" in context:
-        claims.update(
-            {
-                "sub": context["app"].get_client_id(),
-                "iss": context["app"].get_client_id(),
-            }
+    # If a token is not available in the context, get a new one
+    if not token_response:
+        claims = {
+            "sub": config.APPLICATION_RESTRICTED_API_KEY,
+            "iss": config.APPLICATION_RESTRICTED_API_KEY,
+            "jti": str(uuid.uuid4()),
+            "aud": f"{config.BASE_URL}/oauth2/token",
+            "exp": int(time.time()) + 300,
+        }
+
+        # If one exists, use the client_id of the test app instead
+        if "app" in context:
+            claims.update(
+                {
+                    "sub": context["app"].get_client_id(),
+                    "iss": context["app"].get_client_id(),
+                }
+            )
+
+        headers = {"kid": config.KEY_ID}
+
+        encoded_jwt = jwt.encode(
+            claims, config.SIGNING_KEY, algorithm="RS512", headers=headers
         )
 
-    headers = {"kid": config.KEY_ID}
+        response = requests.post(
+            f"{config.BASE_URL}/oauth2/token",
+            data={
+                "grant_type": "client_credentials",
+                "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+                "client_assertion": encoded_jwt,
+            },
+        )
 
-    encoded_jwt = jwt.encode(
-        claims, config.SIGNING_KEY, algorithm="RS512", headers=headers
-    )
+        token_response = response.json()
+        print(token_response)
 
-    response = requests.post(
-        f"{config.BASE_URL}/oauth2/token",
-        data={
-            "grant_type": "client_credentials",
-            "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
-            "client_assertion": encoded_jwt,
-        },
-    )
+        # Does our response object contain the expected keys (maybe others too):
+        assert {"access_token", "expires_in", "token_type", "issued_at"} <= set(
+            token_response.keys()
+        )
 
-    response_json = response.json()
-    print(response_json)
+    assert token_response["access_token"] is not None
+    assert token_response["token_type"] == "Bearer"
+    assert token_response["expires_in"] and int(token_response["expires_in"]) > 0
 
-    # Does our response object contain the expected keys (maybe others too):
-    assert {"access_token", "expires_in", "token_type", "issued_at"} <= set(
-        response_json.keys()
-    )
-    assert response_json["access_token"] is not None
-    assert response_json["token_type"] == "Bearer"
-    assert response_json["expires_in"] and int(response_json["expires_in"]) > 0
-
-    auth["response"] = response_json
-    auth["access_token"] = response_json["access_token"]
-    auth["token_type"] = response_json["token_type"]
+    auth["response"] = token_response
+    auth["access_token"] = token_response["access_token"]
+    auth["token_type"] = token_response["token_type"]
 
 
 @given("I have no Authorization header")

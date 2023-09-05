@@ -2,12 +2,15 @@ import json
 import urllib.parse
 from typing import Union
 import requests
-from api_test_utils.oauth_helper import OauthHelper
+
 from pytest_check import check
 import time
 from ..configuration import config
 import re
 from ..data.pds_scenarios import retrieve
+import logging
+
+LOGGER = logging.getLogger(__name__)
 
 
 def retrieve_patient_deprecated_url(patient: str, headers) -> requests.Response:
@@ -276,14 +279,13 @@ def assert_is_sensitive_patient(response: requests.Response) -> None:
         assert response_body["entry"][0]["resource"]["meta"]["security"][0]["display"] == "restricted"
 
 
-async def get_role_id_from_user_info_endpoint(token) -> str:
-    oauth = OauthHelper(config.CLIENT_ID, config.CLIENT_SECRET, config.REDIRECT_URI)
+async def get_role_id_from_user_info_endpoint(token, identity_service_base_url) -> str:
 
-    user_info_resp = await oauth.hit_oauth_endpoint(
-        method="GET",
-        endpoint="userinfo",
-        headers={"Authorization": f"Bearer {token}"}
-    )
+    url = f'{identity_service_base_url}/userinfo'
+    headers = {"Authorization": f"Bearer {token}"}
 
-    assert user_info_resp['status_code'] == 200
-    return user_info_resp['body']['nhsid_nrbac_roles'][0]['person_roleid']
+    user_info_resp = requests.get(url, headers=headers)
+    user_info = json.loads(user_info_resp.text)
+
+    assert user_info_resp.status_code == 200
+    return user_info['nhsid_nrbac_roles'][0]['person_roleid']
