@@ -1,5 +1,4 @@
 import pytest
-import json
 from .utils import helpers
 # from ..functional.conftest import _product_with_full_access
 import uuid
