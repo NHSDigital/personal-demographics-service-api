@@ -185,6 +185,7 @@ apigee:
         environments: [ {{ env.name }} ]
         proxies:
           - personal-demographics-{{ env.name }}
+          - personal-demographics-asid-required-{{ env.name }}
           - identity-service-{{ env.name }}
 {% if env.name == 'int' %}
           - identity-service-{{ env.name }}-no-smartcard

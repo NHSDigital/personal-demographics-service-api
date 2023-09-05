@@ -4,6 +4,8 @@ from .utils import helpers
 # from ..functional.conftest import _product_with_full_access
 import uuid
 import random
+# import time
+# from asyncio import sleep
 from ..scripts import config
 from tests.functional.config_files import config as functional_config
 from pytest_nhsd_apim.apigee_apis import (
@@ -58,22 +60,40 @@ def test_setup(api_products, client, nhsd_apim_test_app):
     # LOGGER.info(f'create_app_response: {create_app_response}')
     # yield create_app_response["name"]
 
-    # developer_apps = DeveloperAppsAPI(client=client)
-    # developer_email = "apm-testing-internal-dev@nhs.net"
+    developer_apps = DeveloperAppsAPI(client=client)
+    developer_email = "apm-testing-internal-dev@nhs.net"
     app = nhsd_apim_test_app()
     LOGGER.info(f'app:{app}')
-    # app_name = app["name"]
+    app_name = app["name"]
 
-    default_product_name = "personal-demographics-pr-898"
-    default_product = api_products.get_product_by_name(product_name=default_product_name)
-    LOGGER.info(f'default_product: {default_product}')
+    # default_product_name = "personal-demographics-pr-898"
+    # default_product = api_products.get_product_by_name(product_name=default_product_name)
+    # LOGGER.info(f'default_product: {default_product}')
 
-    default_product['proxies'].append(functional_config.PROXY_NAME)
-    proxies = default_product['proxies']
-    LOGGER.info(f'proxies: {proxies}')
+    # default_product['proxies'].append(functional_config.PROXY_NAME)
+    # proxies = default_product['proxies']
+    # LOGGER.info(f'proxies: {proxies}')
 
-    default_product_updated = api_products.put_product_by_name(product_name=default_product_name, body=default_product)
-    LOGGER.info(f'default_product_updated: {default_product_updated}')
+    # default_product_updated = api_products.put_product_by_name(product_name=default_product_name, body=default_product)
+    # LOGGER.info(f'default_product_updated: {default_product_updated}')
+
+    # Check if the ASID attribute is already available
+    app_attributes = developer_apps.get_app_attributes(email=developer_email, app_name=app_name)
+    # LOGGER.info(f'app_attributes: {app_attributes}')
+    custom_attributes = app_attributes['attribute']
+    # LOGGER.info(f'custom_attributes: {custom_attributes}')
+    existing_asid_attribute = None
+    for attribute in custom_attributes:
+        if attribute['name'] == 'asid':
+            existing_asid_attribute = attribute['value']
+
+    if not existing_asid_attribute:
+        # Add ASID to the test app - To be refactored when we move to .feature files TODO
+        custom_attributes.append({"name": "asid", "value": functional_config.ENV["internal_dev_asid"]})
+        # LOGGER.info(f'custom_attributes: {custom_attributes}')
+        data = {"attribute": custom_attributes}
+        response = developer_apps.post_app_attributes(email=developer_email, app_name=app_name, body=data)
+        LOGGER.info(f'post_app_attributes_response: {response}')
 
     # # Updating app with new product
     # app = developer_apps.get_app_by_name(email=developer_email, app_name=app_name)
@@ -155,8 +175,12 @@ async def headers_with_token(
         custom_attributes.append({"name": "asid", "value": functional_config.ENV["internal_dev_asid"]})
         # LOGGER.info(f'custom_attributes: {custom_attributes}')
         data = {"attribute": custom_attributes}
-        developer_apps.post_app_attributes(email=developer_email, app_name=app_name, body=data)
-        # LOGGER.info(f'post_app_attributes_response: {response}')
+        response = developer_apps.post_app_attributes(email=developer_email, app_name=app_name, body=data)
+        # LOGGER.info('Before sleep')
+        # # time.sleep(2)
+        # await sleep(5)
+        # LOGGER.info('After sleep')
+        LOGGER.info(f'post_app_attributes_response: {response}')
 
     LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
     access_token = _nhsd_apim_auth_token_data.get("access_token", "")
