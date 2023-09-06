@@ -41,7 +41,7 @@ AUTH_PATIENT_P0 = {
 class TestUserRestrictedPatientAccess:
 
     @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
-    async def test_patient_access_retrieve_happy_path(self, _nhsd_apim_auth_token_data):
+    async def test_patient_access_retrieve_happy_path(self, _nhsd_apim_auth_token_data, add_asid_to_testapp):
 
         LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
 
@@ -60,7 +60,7 @@ class TestUserRestrictedPatientAccess:
         assert r.status_code == 200
 
     @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
-    async def test_patient_access_retrieve_non_matching_nhs_number(self, _nhsd_apim_auth_token_data):
+    async def test_patient_access_retrieve_non_matching_nhs_number(self, _nhsd_apim_auth_token_data, add_asid_to_testapp):
 
         token = _nhsd_apim_auth_token_data.get("access_token", "")
 
@@ -83,7 +83,7 @@ class TestUserRestrictedPatientAccess:
         )
 
     @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
-    async def test_patient_access_retrieve_incorrect_path(self, _nhsd_apim_auth_token_data):
+    async def test_patient_access_retrieve_incorrect_path(self, _nhsd_apim_auth_token_data, add_asid_to_testapp):
 
         token = _nhsd_apim_auth_token_data.get("access_token", "")
 
@@ -106,7 +106,7 @@ class TestUserRestrictedPatientAccess:
         )
 
     @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
-    async def test_patient_access_nhsd_patient_header_sent_downstream(self, _nhsd_apim_auth_token_data):
+    async def test_patient_access_nhsd_patient_header_sent_downstream(self, _nhsd_apim_auth_token_data, add_asid_to_testapp):
         """Requests to the PDS API should include the NHSD-NHSLogin-User header when in Patient Access mode"""
 
         token = _nhsd_apim_auth_token_data.get("access_token", "")
@@ -188,7 +188,7 @@ class TestUserRestrictedPatientAccess:
         assert nhsd_patient_header_patch == "P9:9912003071"
 
     @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
-    async def test_patient_access_update_happy_path(self, _nhsd_apim_auth_token_data):
+    async def test_patient_access_update_happy_path(self, _nhsd_apim_auth_token_data, add_asid_to_testapp):
 
         LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
         token = _nhsd_apim_auth_token_data.get("access_token", "")
@@ -338,7 +338,7 @@ class TestUserRestrictedPatientAccess:
 
     # nhsd_apim_authorization throws an exception before sending the request to the proxy, as there is no matching scope
     # @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT_P5)
-    # async def test_patient_access_retrieve_P5_scope(self, _nhsd_apim_auth_token_data):
+    # async def test_patient_access_retrieve_P5_scope(self, _nhsd_apim_auth_token_data, add_asid_to_testapp):
     #     token = _nhsd_apim_auth_token_data.get("access_token", "")
 
     #     headers = {
@@ -362,7 +362,7 @@ class TestUserRestrictedPatientAccess:
 
     # nhsd_apim_authorization throws an exception before sending the request to the proxy, as there is no matching scope
     # @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT_P0)
-    # async def test_patient_access_retrieve_P0_scope(self, _nhsd_apim_auth_token_data):
+    # async def test_patient_access_retrieve_P0_scope(self, _nhsd_apim_auth_token_data, add_asid_to_testapp):
     #     token = _nhsd_apim_auth_token_data.get("access_token", "")
 
     #     headers = {
@@ -386,7 +386,7 @@ class TestUserRestrictedPatientAccess:
 
     # The new fixture throws exception for invalid level: e.g. p5
     # @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT_p5)
-    # async def test_patient_access_scope_case_sensitivity_with_p5(self, _nhsd_apim_auth_token_data):
+    # async def test_patient_access_scope_case_sensitivity_with_p5(self, _nhsd_apim_auth_token_data, add_asid_to_testapp):
     #     token = _nhsd_apim_auth_token_data.get("access_token", "")
     #     assert token["status_code"] == 401
     #     assert token["body"]["error"] == "unauthorized_client"
