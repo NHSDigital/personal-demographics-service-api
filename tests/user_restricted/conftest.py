@@ -50,15 +50,15 @@ def add_asid_to_testapp(developer_apps, nhsd_apim_test_app):
 
     # Check if the ASID attribute is already available
     app_attributes = developer_apps.get_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name)
-    # LOGGER.info(f'app_attributes: {app_attributes}')
+    LOGGER.info(f'app_attributes: {app_attributes}')
     custom_attributes = app_attributes['attribute']
-    # LOGGER.info(f'custom_attributes: {custom_attributes}')
+    LOGGER.info(f'custom_attributes: {custom_attributes}')
     existing_asid_attribute = None
     for attribute in custom_attributes:
         if attribute['name'] == 'asid':
             existing_asid_attribute = attribute['value']
 
-    if not existing_asid_attribute:
+    if not existing_asid_attribute and functional_config.ENV.contains("internal_dev_asid"):
         LOGGER.info(f'ASID attribute not found. Adding {functional_config.ENV["internal_dev_asid"]} to {app_name}')
         # Add ASID to the test app - To be refactored when we move to .feature files TODO
         custom_attributes.append({"name": "asid", "value": functional_config.ENV["internal_dev_asid"]})
