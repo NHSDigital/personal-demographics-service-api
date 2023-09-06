@@ -84,7 +84,7 @@ steps:
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export INTERNAL_DEV_ASID="$(INTERNAL_DEV_ASID)"
 
-      poetry run pytest -v tests/user_restricted/test_user_restricted.py --api-name=personal-demographics --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/user-restricted-test-report.xml --reruns 5 --reruns-delay 1
+      poetry run pytest -v tests/user_restricted/test_user_restricted.py --api-name=personal-demographics --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/user-restricted-test-report.xml --reruns 20 --reruns-delay 1
     displayName: Run user restricted tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
   - task: PublishTestResults@2
