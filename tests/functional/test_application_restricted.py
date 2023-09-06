@@ -230,7 +230,7 @@ def set_valid_access_token(auth, context):
             "sub": config.APPLICATION_RESTRICTED_API_KEY,
             "iss": config.APPLICATION_RESTRICTED_API_KEY,
             "jti": str(uuid.uuid4()),
-            "aud": f"{config.BASE_URL}/oauth2/token",
+            "aud": f"{config.BASE_URL}/{config.OAUTH_PROXY}/token",
             "exp": int(time.time()) + 300,
         }
 
@@ -250,7 +250,7 @@ def set_valid_access_token(auth, context):
         )
 
         response = requests.post(
-            f"{config.BASE_URL}/oauth2/token",
+            f"{config.BASE_URL}/{config.OAUTH_PROXY}/token",
             data={
                 "grant_type": "client_credentials",
                 "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
@@ -303,7 +303,7 @@ def set_expired_access_token(auth):
         "sub": config.APPLICATION_RESTRICTED_API_KEY,
         "iss": config.APPLICATION_RESTRICTED_API_KEY,
         "jti": str(uuid.uuid4()),
-        "aud": f"{config.BASE_URL}/oauth2/token",
+        "aud": f"{config.BASE_URL}/{config.OAUTH_PROXY}/token",
         "exp": int(time.time()) + 300,
     }
 
@@ -312,7 +312,7 @@ def set_expired_access_token(auth):
     )
 
     response = requests.post(
-        f"{config.BASE_URL}/oauth2/token",
+        f"{config.BASE_URL}/{config.OAUTH_PROXY}/token",
         data={
             "_access_token_expiry_ms": "1",
             "grant_type": "client_credentials",

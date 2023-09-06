@@ -115,7 +115,7 @@ def setup_session(request, _jwt_keys, apigee_environment, client, api_products):
     # Set up app config
     client_credentials_config = ClientCredentialsConfig(
         environment=apigee_environment,
-        identity_service_base_url=f"https://{apigee_environment}.api.service.nhs.uk/oauth2-mock",
+        identity_service_base_url=f"https://{apigee_environment}.api.service.nhs.uk/{config.OAUTH_PROXY}",
         # client_id=_test_app_credentials["consumerKey"],
         client_id=app.get_client_id(),
         # jwt_private_key=_jwt_keys["private_key_pem"],

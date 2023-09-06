@@ -49,7 +49,7 @@ steps:
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
-      export OAUTH_PROXY="oauth2"
+      export OAUTH_PROXY="oauth2-mock"
       export INTERNAL_DEV_ASID="$(INTERNAL_DEV_ASID)"
 
       poetry run pytest -v tests/functional/test_application_restricted.py --api-name=personal-demographics --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/functional-test-report.xml
@@ -65,7 +65,7 @@ steps:
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
-      export OAUTH_PROXY="oauth2"
+      export OAUTH_PROXY="oauth2-mock"
 
       poetry run pytest -v tests/functional/test_proxy_behaviour.py --api-name=personal-demographics --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/proxy-behaviour-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run proxy behaviour tests
@@ -97,7 +97,7 @@ steps:
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
-      export OAUTH_PROXY="oauth2"
+      export OAUTH_PROXY="oauth2-mock"
 
       poetry run pytest -v tests/functional/test_sync_wrap.py --api-name=personal-demographics --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/sync-wrap-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run sync wrap tests
@@ -113,7 +113,7 @@ steps:
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
-      export OAUTH_PROXY="oauth2"
+      export OAUTH_PROXY="oauth2-mock"
       export TEST_PATIENT_ID="$(TEST_PATIENT_ID)"
 
       poetry run pytest -v tests/functional/test_patient_access.py --api-name=personal-demographics --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/patient-access-test-report.xml --reruns 3 --reruns-delay 1
