@@ -68,7 +68,6 @@ def add_asid_to_testapp(developer_apps, nhsd_apim_test_app):
         LOGGER.info(f'Test app updated with ASID attribute: {response}')
 
 
-
 @pytest.fixture()
 def test_setup(api_products, add_asid_to_testapp):
     # LOGGER.info('Testing class level fixture')
