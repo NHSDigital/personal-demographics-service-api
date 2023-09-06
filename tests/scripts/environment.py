@@ -22,3 +22,10 @@ class EnvVarWrapper(object):
             return file_content
         else:
             return value
+
+    def contains(self, key: str):
+        try:
+            _ = self[key]
+        except KeyError:
+            return False
+        return True
