@@ -60,7 +60,11 @@ class TestUserRestrictedPatientAccess:
         assert r.status_code == 200
 
     @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
-    async def test_patient_access_retrieve_non_matching_nhs_number(self, _nhsd_apim_auth_token_data, add_asid_to_testapp):
+    async def test_patient_access_retrieve_non_matching_nhs_number(
+        self,
+        _nhsd_apim_auth_token_data,
+        add_asid_to_testapp
+    ):
 
         token = _nhsd_apim_auth_token_data.get("access_token", "")
 
@@ -106,7 +110,11 @@ class TestUserRestrictedPatientAccess:
         )
 
     @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
-    async def test_patient_access_nhsd_patient_header_sent_downstream(self, _nhsd_apim_auth_token_data, add_asid_to_testapp):
+    async def test_patient_access_nhsd_patient_header_sent_downstream(
+        self,
+        _nhsd_apim_auth_token_data,
+        add_asid_to_testapp
+    ):
         """Requests to the PDS API should include the NHSD-NHSLogin-User header when in Patient Access mode"""
 
         token = _nhsd_apim_auth_token_data.get("access_token", "")
@@ -384,9 +392,13 @@ class TestUserRestrictedPatientAccess:
     #         == "Patient cannot perform this action"
     #     )
 
-    # The new fixture throws exception for invalid level: e.g. p5
+    # # The new fixture throws exception for invalid level: e.g. p5
     # @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT_p5)
-    # async def test_patient_access_scope_case_sensitivity_with_p5(self, _nhsd_apim_auth_token_data, add_asid_to_testapp):
+    # async def test_patient_access_scope_case_sensitivity_with_p5(
+    #     self,
+    #     _nhsd_apim_auth_token_data,
+    #     add_asid_to_testapp
+    # ):
     #     token = _nhsd_apim_auth_token_data.get("access_token", "")
     #     assert token["status_code"] == 401
     #     assert token["body"]["error"] == "unauthorized_client"
