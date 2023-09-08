@@ -13,26 +13,10 @@ AUTH_HEALTHCARE_WORKER = {
     "level": "aal3",
     "login_form": {"username": "656005750104"},
     # "force_new_token": True,
-    # "api_name": "personal-demographics"
 }
-# TODO api_name is the proxy one
 
 
 class TestUserRestrictedRetrievePatient:
-
-    # LOGGER.info(f'Test app name: {self.app_name}')
-
-    # @pytest.mark.usefixtures("test_setup")
-    # def setup_class(self, test_setup):
-    #     LOGGER.info("setup_class called once for the class")
-    #     self.test_app_name = test_setup
-    #     LOGGER.info(f' self.test_app_name:{ self.test_app_name}')
-
-    # TODO test just for setting up the app - workaround
-
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_app_setup(self, test_setup):
-        LOGGER.info('Setting up app')
 
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_retrieve_deprecated_url(self, headers_with_token):

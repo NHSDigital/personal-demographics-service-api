@@ -51,9 +51,7 @@ def add_asid_to_testapp(developer_apps, nhsd_apim_test_app):
 
     # Check if the ASID attribute is already available
     app_attributes = developer_apps.get_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name)
-    # LOGGER.info(f'app_attributes: {app_attributes}')
     custom_attributes = app_attributes['attribute']
-    # LOGGER.info(f'custom_attributes: {custom_attributes}')
     existing_asid_attribute = None
     for attribute in custom_attributes:
         if attribute['name'] == 'asid':
@@ -63,7 +61,6 @@ def add_asid_to_testapp(developer_apps, nhsd_apim_test_app):
         LOGGER.info(f'ASID attribute not found. Adding {config.ENV["internal_dev_asid"]} to {app_name}')
         # Add ASID to the test app - To be refactored when we move to .feature files TODO
         custom_attributes.append({"name": "asid", "value": config.ENV["internal_dev_asid"]})
-        # LOGGER.info(f'custom_attributes: {custom_attributes}')
         data = {"attribute": custom_attributes}
         response = developer_apps.post_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name, body=data)
         LOGGER.info(f'Test app updated with ASID attribute: {response}')
@@ -95,7 +92,6 @@ def _product_with_full_access(api_products):
         "personal-demographics-service:USER-RESTRICTED",
         "urn:nhsd:apim:app:level3:personal-demographics-service",
         "urn:nhsd:apim:user-nhs-cis2:aal3:personal-demographics",
-        # f"urn:nhsd:apim:user-nhs-cis2:aal3:{config.PROXY_NAME}",
         "urn:nhsd:apim:user-nhs-login:P9:personal-demographics"
     ], api_products)
     # Allows access to all proxy paths - so we don't have to specify the pr proxy explicitly
@@ -132,25 +128,11 @@ def setup_session(request, _jwt_keys, apigee_environment, client, api_products):
 
     LOGGER.info(f'create_app_response: {create_app_response}')
 
-    # app.set_custom_attributes({'jwks-resource-url': config.JWKS_RESOURCE_URL}, developer_apps=developer_apps)
-    # product.update_environments([config.ENVIRONMENT], api_products=api_products)
-
-    # Assign the new product to the app
-    # app.add_api_product([product.name], developer_apps=developer_apps)
-
-    LOGGER.info(f'app.get_app_details(): {app.get_app_details(developer_apps=developer_apps)}')
-    # LOGGER.info(f'consumerKey: {_test_app_credentials["consumerKey"]}')
-    # LOGGER.info(f'_jwt_keys["private_key_pem"]: {_jwt_keys["private_key_pem"]}')
-
-    # LOGGER.info(f'JWT_PRIVATE_KEY_ABSOLUTE_PATH: {config.JWT_PRIVATE_KEY_ABSOLUTE_PATH}')
-
     # Set up app config
     client_credentials_config = ClientCredentialsConfig(
         environment=apigee_environment,
         identity_service_base_url=f"https://{apigee_environment}.api.service.nhs.uk/{config.OAUTH_PROXY}",
-        # client_id=_test_app_credentials["consumerKey"],
         client_id=app.get_client_id(),
-        # jwt_private_key=_jwt_keys["private_key_pem"],
         jwt_private_key=config.SIGNING_KEY,
         jwt_kid="test-1",
     )
@@ -162,12 +144,6 @@ def setup_session(request, _jwt_keys, apigee_environment, client, api_products):
     token_response = authenticator.get_token()
     assert "access_token" in token_response
     token = token_response["access_token"]
-
-    LOGGER.info(f'token_response: {token_response}')
-
-    # auth["response"] = token_response
-    # auth["access_token"] = token_response["access_token"]
-    # auth["token_type"] = token_response["token_type"]
 
     LOGGER.info(f'token: {token}')
 

@@ -1,11 +1,8 @@
 import pytest
 
 from .utils import helpers
-# from ..functional.conftest import _product_with_full_access
 import uuid
 import random
-# import time
-# from asyncio import sleep
 from ..scripts import config
 from tests.functional.config_files import config as functional_config
 from pytest_nhsd_apim.apigee_apis import (
@@ -62,95 +59,9 @@ def add_asid_to_testapp(developer_apps, nhsd_apim_test_app):
         LOGGER.info(f'ASID attribute not found. Adding {functional_config.ENV["internal_dev_asid"]} to {app_name}')
         # Add ASID to the test app - To be refactored when we move to .feature files TODO
         custom_attributes.append({"name": "asid", "value": functional_config.ENV["internal_dev_asid"]})
-        # LOGGER.info(f'custom_attributes: {custom_attributes}')
         data = {"attribute": custom_attributes}
         response = developer_apps.post_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name, body=data)
         LOGGER.info(f'Test app updated with ASID attribute: {response}')
-
-
-@pytest.fixture()
-def test_setup(api_products, add_asid_to_testapp):
-    # LOGGER.info('Testing class level fixture')
-    # product = _product_with_full_access(api_products)
-    # product.update_environments([functional_config.ENVIRONMENT], api_products=api_products)
-
-    # LOGGER.info(f'product.proxies: {product.proxies}')
-
-    # print("\nCreating Default App..")
-    # # Create a new app
-    # developer_apps = DeveloperAppsAPI(client=client)
-
-    # app = ApigeeApiDeveloperApps()
-    # create_app_response = app.create_new_app(
-    #     callback_url="https://example.org/callback",
-    #     status="approved",
-    #     jwks_resource_url=functional_config.JWKS_RESOURCE_URL,
-    #     products=[product.name],
-    #     developer_apps=developer_apps
-    # )
-
-    # LOGGER.info(f'create_app_response: {create_app_response}')
-    # yield create_app_response["name"]
-
-    # app = nhsd_apim_test_app()
-    # LOGGER.info(f'app:{app}')
-    # app_name = app["name"]
-
-    default_product_name = "personal-demographics-internal-dev"
-    default_product = api_products.get_product_by_name(product_name=default_product_name)
-    LOGGER.info(f'default_product: {default_product}')
-
-    # default_product['proxies'].append(functional_config.PROXY_NAME)
-    # proxies = default_product['proxies']
-    # LOGGER.info(f'proxies: {proxies}')
-
-    # product_updated = api_products.put_product_by_name(product_name=default_product_name, body=default_product)
-    # LOGGER.info(f'product_updated: {product_updated}')
-
-    # # Check if the ASID attribute is already available
-    # app_attributes = developer_apps.get_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name)
-    # # LOGGER.info(f'app_attributes: {app_attributes}')
-    # custom_attributes = app_attributes['attribute']
-    # # LOGGER.info(f'custom_attributes: {custom_attributes}')
-    # existing_asid_attribute = None
-    # for attribute in custom_attributes:
-    #     if attribute['name'] == 'asid':
-    #         existing_asid_attribute = attribute['value']
-
-    # if not existing_asid_attribute:
-    #     # Add ASID to the test app - To be refactored when we move to .feature files TODO
-    #     custom_attributes.append({"name": "asid", "value": functional_config.ENV["internal_dev_asid"]})
-    #     # LOGGER.info(f'custom_attributes: {custom_attributes}')
-    #     data = {"attribute": custom_attributes}
-    #     response = developer_apps.post_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name, body=data)
-    #     LOGGER.info(f'post_app_attributes_response: {response}')
-
-    # # Updating app with new product
-    # app = developer_apps.get_app_by_name(email=DEVELOPER_EMAIL, app_name=app_name)
-    # LOGGER.info(f'app: {app}')
-    # LOGGER.info(f'app credentials: {app["credentials"]}')
-    # new_product = _product_with_full_access(api_products)
-    # new_product.update_environments([functional_config.ENVIRONMENT], api_products=api_products)
-
-    # data = {
-    #     "attributes": app['attributes'],
-    #     "callbackUrl": app['callbackUrl'],
-    #     "apiProducts": [new_product.name],
-    #     "name": app_name,
-    #     "status": app['status']
-    # }
-
-    # developer_apps.put_app_by_name(email=DEVELOPER_EMAIL, app_name=app_name, body=data)
-
-    # app = developer_apps.get_app_by_name(email=DEVELOPER_EMAIL, app_name=app_name)
-    # LOGGER.info(f'app updated: {app}')
-
-# @pytest.fixture()
-# @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-# def authorisation_fixture(test_setup, headers_with_token):
-#     """authorisation_fixture"""
-#     new_app = test_setup
-#     LOGGER.info(f'New Test app name: {new_app}')
 
 
 @pytest.fixture()
@@ -164,53 +75,6 @@ async def headers_with_token(
     add_asid_to_testapp
 ):
     """Assign required headers with the Authorization header"""
-
-    # developer_apps = DeveloperAppsAPI(client=client)
-    # app = nhsd_apim_test_app()
-    # LOGGER.info(f'app:{app}')
-    # app_name = app["name"]
-
-    # # Updating app with new product
-    # app = developer_apps.get_app_by_name(email=DEVELOPER_EMAIL, app_name=app_name)
-    # LOGGER.info(f'app: {app}')
-    # LOGGER.info(f'app credentials: {app["credentials"]}')
-    # new_product = _product_with_full_access(api_products)
-    # new_product.update_environments([functional_config.ENVIRONMENT], api_products=api_products)
-
-    # data = {
-    #     "attributes": app['attributes'],
-    #     "callbackUrl": app['callbackUrl'],
-    #     "apiProducts": [new_product.name],
-    #     "name": app_name,
-    #     "status": app['status']
-    # }
-
-    # developer_apps.put_app_by_name(email=DEVELOPER_EMAIL, app_name=app_name, body=data)
-
-    # app = developer_apps.get_app_by_name(email=DEVELOPER_EMAIL, app_name=app_name)
-    # LOGGER.info(f'app updated: {app}')
-
-    # # Check if the ASID attribute is already available
-    # app_attributes = developer_apps.get_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name)
-    # # LOGGER.info(f'app_attributes: {app_attributes}')
-    # custom_attributes = app_attributes['attribute']
-    # # LOGGER.info(f'custom_attributes: {custom_attributes}')
-    # existing_asid_attribute = None
-    # for attribute in custom_attributes:
-    #     if attribute['name'] == 'asid':
-    #         existing_asid_attribute = attribute['value']
-
-    # if not existing_asid_attribute:
-    #     # Add ASID to the test app - To be refactored when we move to .feature files TODO
-    #     custom_attributes.append({"name": "asid", "value": functional_config.ENV["internal_dev_asid"]})
-    #     # LOGGER.info(f'custom_attributes: {custom_attributes}')
-    #     data = {"attribute": custom_attributes}
-    #     response = developer_apps.post_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name, body=data)
-    #     # LOGGER.info('Before sleep')
-    #     # # time.sleep(2)
-    #     # await sleep(5)
-    #     # LOGGER.info('After sleep')
-    #     LOGGER.info(f'post_app_attributes_response: {response}')
 
     LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
     access_token = _nhsd_apim_auth_token_data.get("access_token", "")
