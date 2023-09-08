@@ -151,7 +151,7 @@ ACCESS_MODES:
   - name: patient-access
     nameSuffix: -patient-access
     displayName: Patient-Access
-    scopes: ['urn:nhsd:apim:user-nhs-login:P9:personal-demographics']
+    scopes: ['urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service']
     requireCallbackUrl: false
     description: Patient Access
 

@@ -26,11 +26,11 @@
       </Step>
       <Step>
         <Name>AssignMessage.SetAccessModePatientAccess</Name>
-        <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-login:P9:personal-demographics\ .+|^urn:nhsd:apim:user-nhs-login:P9:personal-demographics\ .+|.+\ urn:nhsd:apim:user-nhs-login:P9:personal-demographics$|^urn:nhsd:apim:user-nhs-login:P9:personal-demographics$)")</Condition>
+        <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service$|^urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service$)")</Condition>
       </Step>
       <Step>
         <Name>RaiseFault.InvalidUserNHSlogin</Name>
-        <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-login:P5:personal-demographics\ .+|^urn:nhsd:apim:user-nhs-login:P5:personal-demographics\ .+|.+\ urn:nhsd:apim:user-nhs-login:P5:personal-demographics$|^urn:nhsd:apim:user-nhs-login:P5:personal-demographics$|.+\ urn:nhsd:apim:user-nhs-login:P0:personal-demographics\ .+|^urn:nhsd:apim:user-nhs-login:P0:personal-demographics\ .+|.+\ urn:nhsd:apim:user-nhs-login:P0:personal-demographics$|^urn:nhsd:apim:user-nhs-login:P0:personal-demographics$)")</Condition>
+        <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service$|^urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service$|.+\ urn:nhsd:apim:user-nhs-login:P0:personal-demographics\ .+|^urn:nhsd:apim:user-nhs-login:P0:personal-demographics\ .+|.+\ urn:nhsd:apim:user-nhs-login:P0:personal-demographics$|^urn:nhsd:apim:user-nhs-login:P0:personal-demographics$)")</Condition>
       </Step>
       <Step>
         <!-- Header NHSD-Request-ID must be in the correct format (GUID) -->
