@@ -38,6 +38,7 @@ AUTH_PATIENT_P0 = {
 
 TEST_PATIENT_ID = "9912003071"
 
+
 class TestUserRestrictedPatientAccess:
 
     @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
