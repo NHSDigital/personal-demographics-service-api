@@ -259,7 +259,12 @@ class TestUserRestrictedPatientAccess:
         assert int(r.json()["meta"]["versionId"]) == int(version_id) + 1
 
     @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
-    async def test_patient_access_update_non_matching_nhs_number(self, _nhsd_apim_auth_token_data, create_random_date):
+    async def test_patient_access_update_non_matching_nhs_number(
+        self,
+        _nhsd_apim_auth_token_data,
+        add_asid_to_testapp,
+        create_random_date
+    ):
         token = _nhsd_apim_auth_token_data.get("access_token", "")
 
         date = create_random_date
@@ -302,7 +307,12 @@ class TestUserRestrictedPatientAccess:
         )
 
     @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
-    async def test_patient_access_update_incorrect_path(self, _nhsd_apim_auth_token_data, create_random_date):
+    async def test_patient_access_update_incorrect_path(
+        self,
+        _nhsd_apim_auth_token_data,
+        add_asid_to_testapp,
+        create_random_date
+    ):
         token = _nhsd_apim_auth_token_data.get("access_token", "")
 
         date = create_random_date
@@ -321,6 +331,7 @@ class TestUserRestrictedPatientAccess:
             f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/9912003071",
             headers=headers,
         )
+
         Etag = r.headers["Etag"]
 
         headers = {
