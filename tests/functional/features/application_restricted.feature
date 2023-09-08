@@ -174,7 +174,7 @@ Feature: Unattended Access
     And I have a request context
     And I create a new app
     And I wait for 500 milliseconds
-    And I have a valid access token    
+    And I have a valid access token
 
     When I GET a patient
     Then I get a 400 HTTP response

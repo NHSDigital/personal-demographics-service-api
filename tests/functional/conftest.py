@@ -96,7 +96,6 @@ def _product_with_full_access(api_products):
     ], api_products)
     # Allows access to all proxy paths - so we don't have to specify the pr proxy explicitly
     product.update_paths(paths=["/", "/*"], api_products=api_products)
-    # product.update_proxies(proxies=[config.PROXY_NAME], api_products=api_products)
     LOGGER.info(f'product.get_product_details(): {product.get_product_details(api_products)}')
 
     return product
