@@ -59,10 +59,14 @@ def add_asid_to_testapp(developer_apps, nhsd_apim_test_app):
 
     if not existing_asid_attribute and config.ENV.contains("internal_dev_asid"):
         LOGGER.info(f'ASID attribute not found. Adding {config.ENV["internal_dev_asid"]} to {app_name}')
-        # Add ASID to the test app - To be refactored when we move to .feature files TODO
-        custom_attributes.append({"name": "asid", "value": config.ENV["internal_dev_asid"]})
-        data = {"attribute": custom_attributes}
-        response = developer_apps.post_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name, body=data)
+        # Add ASID to the test app - To be refactored when we move to .feature files TODO SPINEDEM-1680
+        data = {"name": "asid", "value": config.ENV["internal_dev_asid"]}
+        response = developer_apps.post_app_attribute_by_name(
+            email=DEVELOPER_EMAIL,
+            app_name=app_name,
+            attribute_name="asid",
+            body=data
+        )
         LOGGER.info(f'Test app updated with ASID attribute: {response}')
 
 
