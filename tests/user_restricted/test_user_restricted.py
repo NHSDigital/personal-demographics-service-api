@@ -12,7 +12,6 @@ AUTH_HEALTHCARE_WORKER = {
     "access": "healthcare_worker",
     "level": "aal3",
     "login_form": {"username": "656005750104"},
-    # "force_new_token": True,
 }
 
 

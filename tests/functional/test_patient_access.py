@@ -141,7 +141,7 @@ class TestUserRestrictedPatientAccess:
         nhsd_patient_header_get = debug_session_get.get_apigee_header(
             "NHSD-NHSLogin-User"
         )
-        assert nhsd_patient_header_get == "P9:9912003071"
+        assert nhsd_patient_header_get == f"P9:{TEST_PATIENT_ID}"
 
         body = r.json()
 
@@ -194,7 +194,7 @@ class TestUserRestrictedPatientAccess:
         nhsd_patient_header_patch = debug_session_patch.get_apigee_header(
             "NHSD-NHSLogin-User"
         )
-        assert nhsd_patient_header_patch == "P9:9912003071"
+        assert nhsd_patient_header_patch == f"P9:{TEST_PATIENT_ID}"
 
     @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
     def test_patient_access_update_happy_path(self, _nhsd_apim_auth_token_data, add_asid_to_testapp):
