@@ -193,7 +193,11 @@ def add_custom_attribute_to_app(key: str, value: str, context: dict):
     app = context["app"]
     developer_apps = context["developer_apps"]
     app.set_custom_attributes(
-        {"jwks-resource-url": config.JWKS_RESOURCE_URL, key: value},
+        {
+            "jwks-resource-url": config.JWKS_RESOURCE_URL,
+            "asid": config.ENV["internal_dev_asid"],
+            key: value
+        },
         developer_apps
     )
 
