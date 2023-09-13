@@ -139,19 +139,19 @@ ACCESS_MODES:
   - name: user-restricted
     nameSuffix: ''
     displayName: Healthcare Worker
-    scopes: ['urn:nhsd:apim:user-nhs-cis2:aal3:personal-demographics-service']
+    scopes: ['urn:nhsd:apim:user-nhs-cis2:aal3:personal-demographics']
     requireCallbackUrl: true
     description: User restricted
   - name: application-restricted
     nameSuffix: -application-restricted
     displayName: Application-Restricted
-    scopes: ['urn:nhsd:apim:app:level3:personal-demographics-service']
+    scopes: ['urn:nhsd:apim:app:level3:personal-demographics']
     requireCallbackUrl: false
     description: Application Restricted
   - name: patient-access
     nameSuffix: -patient-access
     displayName: Patient-Access
-    scopes: ['urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service']
+    scopes: ['urn:nhsd:apim:user-nhs-login:P9:personal-demographics']
     requireCallbackUrl: false
     description: Patient Access
 
