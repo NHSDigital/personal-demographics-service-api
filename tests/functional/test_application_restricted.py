@@ -226,49 +226,46 @@ def add_scope_to_product(scope, context):
 @given("I have a valid access token")
 def set_valid_access_token(auth, context):
 
-    token_response = context.get("token_response")
+    # Get new access token
+    claims = {
+        "sub": config.APPLICATION_RESTRICTED_API_KEY,
+        "iss": config.APPLICATION_RESTRICTED_API_KEY,
+        "jti": str(uuid.uuid4()),
+        "aud": f"{config.BASE_URL}/{config.OAUTH_PROXY}/token",
+        "exp": int(time.time()) + 300,
+    }
 
-    # If a token is not available in the context, get a new one
-    if not token_response:
-        claims = {
-            "sub": config.APPLICATION_RESTRICTED_API_KEY,
-            "iss": config.APPLICATION_RESTRICTED_API_KEY,
-            "jti": str(uuid.uuid4()),
-            "aud": f"{config.BASE_URL}/{config.OAUTH_PROXY}/token",
-            "exp": int(time.time()) + 300,
-        }
-
-        # If one exists, use the client_id of the test app instead
-        if "app" in context:
-            claims.update(
-                {
-                    "sub": context["app"].get_client_id(),
-                    "iss": context["app"].get_client_id(),
-                }
-            )
-
-        headers = {"kid": config.KEY_ID}
-
-        encoded_jwt = jwt.encode(
-            claims, config.SIGNING_KEY, algorithm="RS512", headers=headers
+    # If one exists, use the client_id of the test app instead
+    if "app" in context:
+        claims.update(
+            {
+                "sub": context["app"].get_client_id(),
+                "iss": context["app"].get_client_id(),
+            }
         )
 
-        response = requests.post(
-            f"{config.BASE_URL}/{config.OAUTH_PROXY}/token",
-            data={
-                "grant_type": "client_credentials",
-                "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
-                "client_assertion": encoded_jwt,
-            },
-        )
+    headers = {"kid": config.KEY_ID}
 
-        token_response = response.json()
-        print(token_response)
+    encoded_jwt = jwt.encode(
+        claims, config.SIGNING_KEY, algorithm="RS512", headers=headers
+    )
 
-        # Does our response object contain the expected keys (maybe others too):
-        assert {"access_token", "expires_in", "token_type", "issued_at"} <= set(
-            token_response.keys()
-        )
+    response = requests.post(
+        f"{config.BASE_URL}/{config.OAUTH_PROXY}/token",
+        data={
+            "grant_type": "client_credentials",
+            "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+            "client_assertion": encoded_jwt,
+        },
+    )
+
+    token_response = response.json()
+    print(token_response)
+
+    # Does our response object contain the expected keys (maybe others too):
+    assert {"access_token", "expires_in", "token_type", "issued_at"} <= set(
+        token_response.keys()
+    )
 
     assert token_response["access_token"] is not None
     assert token_response["token_type"] == "Bearer"
