@@ -9,7 +9,7 @@ import logging
 LOGGER = logging.getLogger(__name__)
 
 AUTH_HEALTHCARE_WORKER = {
-    "api_name": "personal-demographics",
+    "api_name": "personal-demographics-service",
     "access": "healthcare_worker",
     "level": "aal3",
     "login_form": {"username": "656005750104"},
