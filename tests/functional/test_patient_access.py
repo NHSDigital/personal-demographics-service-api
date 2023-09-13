@@ -13,24 +13,28 @@ import logging
 LOGGER = logging.getLogger(__name__)
 
 AUTH_PATIENT = {
+    "api_name": "personal-demographics",
     "access": "patient",
     "level": "P9",
     "login_form": {"username": "9912003071"},
 }
 
 AUTH_PATIENT_P5 = {
+    "api_name": "personal-demographics",
     "access": "patient",
     "level": "P5",
     "login_form": {"username": "9912003071"},
 }
 
 AUTH_PATIENT_p5 = {
+    "api_name": "personal-demographics",
     "access": "patient",
     "level": "p5",
     "login_form": {"username": "9912003071"},
 }
 
 AUTH_PATIENT_P0 = {
+    "api_name": "personal-demographics",
     "access": "patient",
     "level": "P0",
     "login_form": {"username": "9912003071"},
