@@ -1,4 +1,3 @@
-import asyncio
 import json
 import pytest
 
@@ -180,21 +179,26 @@ def auth():
 
 @given("I create a new app")
 def create_test_app(setup_session, context):
-    product, app, token = setup_session
+    product, app, token_response, developer_apps, api_products = setup_session
     context["product"] = product
     context["app"] = app
-    context["token"] = token
+    context["token_response"] = token_response
+    context["developer_apps"] = developer_apps
+    context["api_products"] = api_products
 
 
 @given(parsers.parse("I add the attribute with key of {key} and a value of {value}"))
 def add_custom_attribute_to_app(key: str, value: str, context: dict):
 
     app = context["app"]
-
-    asyncio.run(
-        app.set_custom_attributes(
-            {"jwks-resource-url": config.JWKS_RESOURCE_URL, key: value}
-        )
+    developer_apps = context["developer_apps"]
+    app.set_custom_attributes(
+        {
+            "jwks-resource-url": config.JWKS_RESOURCE_URL,
+            "asid": config.ENV["internal_dev_asid"],
+            key: value
+        },
+        developer_apps
     )
 
 
@@ -202,31 +206,32 @@ def add_custom_attribute_to_app(key: str, value: str, context: dict):
 def add_asid_attribute_to_app(context: dict):
 
     app = context["app"]
-
-    asyncio.run(
-        app.set_custom_attributes(
-            {
-                "jwks-resource-url": config.JWKS_RESOURCE_URL,
-                "asid": config.ENV["internal_dev_asid"],
-            }
-        )
+    developer_apps = context["developer_apps"]
+    app.set_custom_attributes(
+        {
+            "jwks-resource-url": config.JWKS_RESOURCE_URL,
+            "asid": config.ENV["internal_dev_asid"],
+        },
+        developer_apps
     )
 
 
 @given(parsers.parse("I add the scope {scope}"))
 def add_scope_to_product(scope, context):
     product = context["product"]
-    asyncio.run(product.update_scopes([scope]))
+    api_products = context["api_products"]
+    product.update_scopes([scope], api_products)
 
 
 @given("I have a valid access token")
 def set_valid_access_token(auth, context):
 
+    # Get new access token
     claims = {
         "sub": config.APPLICATION_RESTRICTED_API_KEY,
         "iss": config.APPLICATION_RESTRICTED_API_KEY,
         "jti": str(uuid.uuid4()),
-        "aud": f"{config.BASE_URL}/oauth2/token",
+        "aud": f"{config.BASE_URL}/{config.OAUTH_PROXY}/token",
         "exp": int(time.time()) + 300,
     }
 
@@ -246,7 +251,7 @@ def set_valid_access_token(auth, context):
     )
 
     response = requests.post(
-        f"{config.BASE_URL}/oauth2/token",
+        f"{config.BASE_URL}/{config.OAUTH_PROXY}/token",
         data={
             "grant_type": "client_credentials",
             "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
@@ -254,20 +259,21 @@ def set_valid_access_token(auth, context):
         },
     )
 
-    response_json = response.json()
-    print(response_json)
+    token_response = response.json()
+    print(token_response)
 
     # Does our response object contain the expected keys (maybe others too):
     assert {"access_token", "expires_in", "token_type", "issued_at"} <= set(
-        response_json.keys()
+        token_response.keys()
     )
-    assert response_json["access_token"] is not None
-    assert response_json["token_type"] == "Bearer"
-    assert response_json["expires_in"] and int(response_json["expires_in"]) > 0
 
-    auth["response"] = response_json
-    auth["access_token"] = response_json["access_token"]
-    auth["token_type"] = response_json["token_type"]
+    assert token_response["access_token"] is not None
+    assert token_response["token_type"] == "Bearer"
+    assert token_response["expires_in"] and int(token_response["expires_in"]) > 0
+
+    auth["response"] = token_response
+    auth["access_token"] = token_response["access_token"]
+    auth["token_type"] = token_response["token_type"]
 
 
 @given("I have no Authorization header")
@@ -298,7 +304,7 @@ def set_expired_access_token(auth):
         "sub": config.APPLICATION_RESTRICTED_API_KEY,
         "iss": config.APPLICATION_RESTRICTED_API_KEY,
         "jti": str(uuid.uuid4()),
-        "aud": f"{config.BASE_URL}/oauth2/token",
+        "aud": f"{config.BASE_URL}/{config.OAUTH_PROXY}/token",
         "exp": int(time.time()) + 300,
     }
 
@@ -307,7 +313,7 @@ def set_expired_access_token(auth):
     )
 
     response = requests.post(
-        f"{config.BASE_URL}/oauth2/token",
+        f"{config.BASE_URL}/{config.OAUTH_PROXY}/token",
         data={
             "_access_token_expiry_ms": "1",
             "grant_type": "client_credentials",
