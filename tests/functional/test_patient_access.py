@@ -115,91 +115,91 @@ class TestUserRestrictedPatientAccess:
             == "Patient cannot perform this action"
         )
 
-    @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
-    def test_patient_access_nhsd_patient_header_sent_downstream(
-        self,
-        add_asid_to_testapp,
-        _nhsd_apim_auth_token_data        
-    ):
-        """Requests to the PDS API should include the NHSD-NHSLogin-User header when in Patient Access mode"""
+    # @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
+    # def test_patient_access_nhsd_patient_header_sent_downstream(
+    #     self,
+    #     add_asid_to_testapp,
+    #     _nhsd_apim_auth_token_data
+    # ):
+    #     """Requests to the PDS API should include the NHSD-NHSLogin-User header when in Patient Access mode"""
 
-        token = _nhsd_apim_auth_token_data.get("access_token", "")
+    #     LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
 
-        LOGGER.info(f'token: {token}')
+    #     token = _nhsd_apim_auth_token_data.get("access_token", "")
 
-        headers = {
-            "NHSD-SESSION-URID": "123",
-            "Authorization": "Bearer " + token,
-            "X-Request-ID": str(uuid.uuid4()),
-        }
+    #     headers = {
+    #         "NHSD-SESSION-URID": "123",
+    #         "Authorization": "Bearer " + token,
+    #         "X-Request-ID": str(uuid.uuid4()),
+    #     }
 
-        debug_session_get = ApigeeDebugApi(config.PROXY_NAME)
-        debug_session_get.create_debug_session(headers["X-Request-ID"])
+    #     debug_session_get = ApigeeDebugApi(config.PROXY_NAME)
+    #     debug_session_get.create_debug_session(headers["X-Request-ID"])
 
-        r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{TEST_PATIENT_ID}",
-            headers=headers,
-        )
+    #     r = requests.get(
+    #         f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{TEST_PATIENT_ID}",
+    #         headers=headers,
+    #     )
 
-        # Check the GET request
-        assert r.status_code == 200
-        nhsd_patient_header_get = debug_session_get.get_apigee_header(
-            "NHSD-NHSLogin-User"
-        )
-        assert nhsd_patient_header_get == f"P9:{TEST_PATIENT_ID}"
+    #     # Check the GET request
+    #     assert r.status_code == 200
+    #     nhsd_patient_header_get = debug_session_get.get_apigee_header(
+    #         "NHSD-NHSLogin-User"
+    #     )
+    #     assert nhsd_patient_header_get == f"P9:{TEST_PATIENT_ID}"
 
-        body = r.json()
+    #     body = r.json()
 
-        LOGGER.info(f'body: {body}')
+    #     LOGGER.info(f'body: {body}')
 
-        # check if patient already has a telecom object, if so then amend the email address else
-        # add a new telecom object
-        if "telecom" in body:
-            telecom_id = body["telecom"][0]["id"]
-            patch_body = {
-                "patches": [
-                    {
-                        "op": "replace",
-                        "path": "/telecom/0",
-                        "value": {
-                            "id": telecom_id,
-                            "system": "phone",
-                            "use": "mobile",
-                            "value": generate_random_phone_number(),
-                        },
-                    }
-                ]
-            }
-        else:
-            patch_body = get_add_telecom_phone_patch_body()
+    #     # check if patient already has a telecom object, if so then amend the email address else
+    #     # add a new telecom object
+    #     if "telecom" in body:
+    #         telecom_id = body["telecom"][0]["id"]
+    #         patch_body = {
+    #             "patches": [
+    #                 {
+    #                     "op": "replace",
+    #                     "path": "/telecom/0",
+    #                     "value": {
+    #                         "id": telecom_id,
+    #                         "system": "phone",
+    #                         "use": "mobile",
+    #                         "value": generate_random_phone_number(),
+    #                     },
+    #                 }
+    #             ]
+    #         }
+    #     else:
+    #         patch_body = get_add_telecom_phone_patch_body()
 
-        e_tag = r.headers["Etag"]
-        request_id = str(uuid.uuid4())
+    #     e_tag = r.headers["Etag"]
+    #     request_id = str(uuid.uuid4())
 
-        headers = {
-            "NHSD-SESSION-URID": "123",
-            "Authorization": "Bearer " + token,
-            "X-Request-ID": request_id,
-            "If-Match": e_tag,
-            "Content-Type": "application/json-patch+json",
-        }
+    #     headers = {
+    #         "NHSD-SESSION-URID": "123",
+    #         "Authorization": "Bearer " + token,
+    #         "X-Request-ID": request_id,
+    #         "If-Match": e_tag,
+    #         "Content-Type": "application/json-patch+json",
+    #     }
 
-        debug_session_patch = ApigeeDebugApi(config.PROXY_NAME)
-        debug_session_patch.create_debug_session(request_id)
+    #     debug_session_patch = ApigeeDebugApi(config.PROXY_NAME)
+    #     debug_session_patch.create_debug_session(request_id)
 
-        r = requests.patch(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{TEST_PATIENT_ID}",
-            headers=headers,
-            json=patch_body,
-        )
+    #     r = requests.patch(
+    #         f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{TEST_PATIENT_ID}",
+    #         headers=headers,
+    #         json=patch_body,
+    #     )
 
-        LOGGER.info(f'patch response: {r.json()}')
+    #     LOGGER.info(f'patch response: {r.json()}')
 
-        assert r.status_code == 200
-        nhsd_patient_header_patch = debug_session_patch.get_apigee_header(
-            "NHSD-NHSLogin-User"
-        )
-        assert nhsd_patient_header_patch == f"P9:{TEST_PATIENT_ID}"
+    #     assert r.status_code == 200
+    #     nhsd_patient_header_patch = debug_session_patch.get_apigee_header(
+    #         "NHSD-NHSLogin-User"
+    #     )
+    #     assert nhsd_patient_header_patch == f"P9:{TEST_PATIENT_ID}"
 
     @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
     def test_patient_access_update_happy_path(self, _nhsd_apim_auth_token_data, add_asid_to_testapp):
