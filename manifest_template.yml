@@ -195,7 +195,6 @@ apigee:
 {% endif %}
 {% if env.name == 'internal-dev' or env.name == 'internal-qa' %}
           - identity-service-mock-{{ env.name }}
-          - personal-demographics-asid-required-{{ env.name }}
 {% endif %}
         scopes: {{ mode.scopes }}
 {% endfor %}

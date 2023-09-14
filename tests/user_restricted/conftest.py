@@ -34,10 +34,23 @@ def developer_apps(client):
 
 
 @pytest.fixture()
-def add_asid_to_testapp(developer_apps, nhsd_apim_test_app):
+def add_asid_to_testapp(api_products, developer_apps, nhsd_apim_test_app):
     app = nhsd_apim_test_app()
     LOGGER.info(f'app:{app}')
     app_name = app["name"]
+
+    proxy_name = functional_config.PROXY_NAME
+    LOGGER.info(f'proxy_name: {proxy_name}')
+    product_name = proxy_name.replace("-asid-required", "")
+    LOGGER.info(f'product_name: {product_name}')
+
+    default_product = api_products.get_product_by_name(product_name=product_name)
+    LOGGER.info(f'default_product: {default_product}')
+
+    if(proxy_name not in default_product['proxies']):
+        default_product['proxies'].append(proxy_name)
+        product_updated = api_products.put_product_by_name(product_name=product_name, body=default_product)
+        LOGGER.info(f'product_updated: {product_updated}')
 
     # Check if the ASID attribute is already available
     app_attributes = developer_apps.get_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name)
