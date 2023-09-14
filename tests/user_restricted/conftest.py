@@ -39,6 +39,7 @@ def add_asid_to_testapp(api_products, developer_apps, nhsd_apim_test_app):
     LOGGER.info(f'app:{app}')
     app_name = app["name"]
 
+    # Check if we need to add an extra proxy *-asid-required-* to the product used for testing
     proxy_name = functional_config.PROXY_NAME
     LOGGER.info(f'proxy_name: {proxy_name}')
     product_name = proxy_name.replace("-asid-required", "")
