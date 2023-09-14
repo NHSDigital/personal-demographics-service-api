@@ -17,6 +17,7 @@ AUTH_PATIENT = {
     "access": "patient",
     "level": "P9",
     "login_form": {"username": "9912003071"},
+    "force_new_token": True
 }
 
 AUTH_PATIENT_P5 = {
@@ -117,8 +118,8 @@ class TestUserRestrictedPatientAccess:
     @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
     def test_patient_access_nhsd_patient_header_sent_downstream(
         self,
-        _nhsd_apim_auth_token_data,
-        add_asid_to_testapp
+        add_asid_to_testapp,
+        _nhsd_apim_auth_token_data        
     ):
         """Requests to the PDS API should include the NHSD-NHSLogin-User header when in Patient Access mode"""
 
