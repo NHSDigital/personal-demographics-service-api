@@ -20,6 +20,7 @@ ENV = EnvVarWrapper(
         'redirect_uri': 'REDIRECT_URI',
         'apigee_api_token': 'APIGEE_API_TOKEN',
         'internal_dev_asid': 'INTERNAL_DEV_ASID',
+        'oauth-proxy': 'OAUTH_PROXY'
     }
 )
 
@@ -59,3 +60,6 @@ JWT_PRIVATE_KEY_ABSOLUTE_PATH = ENV['jwt_private_key']
 AUTH_TOKEN_EXPIRY_MS = (
     ENV['auth_token_expiry_ms'] if ENVIRONMENT == "internal-dev" else ENV['auth_token_expiry_ms_int']
 )
+
+# OAUTH
+OAUTH_PROXY = ENV['oauth-proxy']
