@@ -3,7 +3,6 @@ import requests
 import uuid
 import pytest
 
-from tests.functional.utils.apigee_api import ApigeeDebugApi
 from tests.functional.utils.helper import (
     generate_random_phone_number,
     get_add_telecom_phone_patch_body,
