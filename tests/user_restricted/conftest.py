@@ -85,6 +85,24 @@ async def headers_with_token(
 
 
 @pytest.fixture()
+def add_proxies_to_products(api_products):
+
+    # Check if we need to add an extra proxy *-asid-required-* to the product used for testing
+    proxy_name = functional_config.PROXY_NAME
+    LOGGER.info(f'proxy_name: {proxy_name}')
+    product_name = proxy_name.replace("-asid-required", "")
+    LOGGER.info(f'product_name: {product_name}')
+
+    default_product = api_products.get_product_by_name(product_name=product_name)
+    LOGGER.info(f'default_product: {default_product}')
+
+    if(proxy_name not in default_product['proxies']):
+        default_product['proxies'].append(proxy_name)
+        product_updated = api_products.put_product_by_name(product_name=product_name, body=default_product)
+        LOGGER.info(f'product_updated: {product_updated}')
+
+
+@pytest.fixture()
 def headers():
     """Assign required headers without the Authorization header"""
     headers = {"X-Request-ID": str(uuid.uuid1()),
