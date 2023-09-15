@@ -44,10 +44,30 @@ def developer_apps(client):
 
 
 @pytest.fixture()
-def add_asid_to_testapp(api_products, developer_apps, nhsd_apim_test_app):
+def add_asid_to_testapp(developer_apps, nhsd_apim_test_app):
     app = nhsd_apim_test_app()
     LOGGER.info(f'app:{app}')
     app_name = app["name"]
+
+    # Check if the ASID attribute is already available
+    app_attributes = developer_apps.get_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name)
+    custom_attributes = app_attributes['attribute']
+    existing_asid_attribute = None
+    for attribute in custom_attributes:
+        if attribute['name'] == 'asid':
+            existing_asid_attribute = attribute['value']
+
+    if not existing_asid_attribute and config.ENV.contains("internal_dev_asid"):
+        LOGGER.info(f'ASID attribute not found. Adding {config.ENV["internal_dev_asid"]} to {app_name}')
+        # Add ASID to the test app - To be refactored when we move to .feature files TODO SPINEDEM-1680
+        custom_attributes.append({"name": "asid", "value": config.ENV["internal_dev_asid"]})
+        data = {"attribute": custom_attributes}
+        response = developer_apps.post_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name, body=data)
+        LOGGER.info(f'Test app updated with ASID attribute: {response}')
+
+
+@pytest.fixture()
+def add_proxies_to_products(api_products, developer_apps):
 
     # Check if we need to add an extra proxy *-asid-required-* to the product used for testing
     proxy_name = config.PROXY_NAME
@@ -75,22 +95,6 @@ def add_asid_to_testapp(api_products, developer_apps, nhsd_apim_test_app):
             body=patient_access_product
         )
         LOGGER.info(f'patient_access_product_updated: {patient_access_product_updated}')
-
-    # Check if the ASID attribute is already available
-    app_attributes = developer_apps.get_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name)
-    custom_attributes = app_attributes['attribute']
-    existing_asid_attribute = None
-    for attribute in custom_attributes:
-        if attribute['name'] == 'asid':
-            existing_asid_attribute = attribute['value']
-
-    if not existing_asid_attribute and config.ENV.contains("internal_dev_asid"):
-        LOGGER.info(f'ASID attribute not found. Adding {config.ENV["internal_dev_asid"]} to {app_name}')
-        # Add ASID to the test app - To be refactored when we move to .feature files TODO SPINEDEM-1680
-        custom_attributes.append({"name": "asid", "value": config.ENV["internal_dev_asid"]})
-        data = {"attribute": custom_attributes}
-        response = developer_apps.post_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name, body=data)
-        LOGGER.info(f'Test app updated with ASID attribute: {response}')
 
 
 def _set_default_rate_limit(product: ApigeeApiProducts, api_products):
