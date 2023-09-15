@@ -85,7 +85,7 @@ async def headers_with_token(
 
 
 @pytest.fixture()
-def add_proxies_to_products(api_products, developer_apps):
+def add_proxies_to_products(api_products):
 
     # Check if we need to add an extra proxy *-asid-required-* to the product used for testing
     proxy_name = functional_config.PROXY_NAME

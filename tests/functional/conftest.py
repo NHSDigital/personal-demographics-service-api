@@ -67,7 +67,7 @@ def add_asid_to_testapp(developer_apps, nhsd_apim_test_app):
 
 
 @pytest.fixture()
-def add_proxies_to_products(api_products, developer_apps):
+def add_proxies_to_products(api_products):
 
     # Check if we need to add an extra proxy *-asid-required-* to the product used for testing
     proxy_name = config.PROXY_NAME
