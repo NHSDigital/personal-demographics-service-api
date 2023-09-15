@@ -55,6 +55,8 @@ def add_asid_to_testapp(api_products, developer_apps, nhsd_apim_test_app):
     product_name = proxy_name.replace("-asid-required", "")
     LOGGER.info(f'product_name: {product_name}')
 
+    patient_access_product_name = f'{product_name}-patient-access'
+
     default_product = api_products.get_product_by_name(product_name=product_name)
     LOGGER.info(f'default_product: {default_product}')
 
@@ -62,6 +64,17 @@ def add_asid_to_testapp(api_products, developer_apps, nhsd_apim_test_app):
         default_product['proxies'].append(proxy_name)
         product_updated = api_products.put_product_by_name(product_name=product_name, body=default_product)
         LOGGER.info(f'product_updated: {product_updated}')
+
+    patient_access_product = api_products.get_product_by_name(product_name=patient_access_product_name)
+    LOGGER.info(f'patient_access_product: {patient_access_product}')
+
+    if(proxy_name not in patient_access_product['proxies']):
+        patient_access_product['proxies'].append(proxy_name)
+        patient_access_product_updated = api_products.put_product_by_name(
+            product_name=patient_access_product_name,
+            body=patient_access_product
+        )
+        LOGGER.info(f'patient_access_product_updated: {patient_access_product_updated}')
 
     # Check if the ASID attribute is already available
     app_attributes = developer_apps.get_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name)
