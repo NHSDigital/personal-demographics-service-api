@@ -31,7 +31,7 @@ class TestUserRestrictedRetrievePatient:
 
         helpers.check_response_status_code(response, 404)
 
-    @pytest.mark.smoke_test
+    # @pytest.mark.smoke_test
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_retrieve_patient(self, headers_with_token):
 
@@ -135,7 +135,7 @@ class TestUserRestrictedRetrievePatient:
 
 class TestUserRestrictedSearchPatient:
 
-    @pytest.mark.smoke_test
+    # @pytest.mark.smoke_test
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_search_patient_happy_path(self, headers_with_token):
         response = helpers.search_patient(
@@ -728,7 +728,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
 
 class TestUserRestrictedRetrieveRelatedPerson:
 
-    @pytest.mark.smoke_test
+    # @pytest.mark.smoke_test
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_retrieve_related_person(self, headers_with_token):
         response = helpers.retrieve_patient_related_person(
@@ -740,9 +740,10 @@ class TestUserRestrictedRetrieveRelatedPerson:
         helpers.check_response_headers(response, self.headers)
 
 
-@pytest.mark.smoke_test
+# @pytest.mark.smoke_test
 class TestStatusEndpoints:
 
+    @pytest.mark.smoke_test
     def test_ping_endpoint(self):
         response = helpers.ping_request()
         helpers.check_response_status_code(response, 200)
