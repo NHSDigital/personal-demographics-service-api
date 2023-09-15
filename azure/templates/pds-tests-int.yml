@@ -33,6 +33,7 @@ steps:
       export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
       export KEY_ID="test-1"
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
+      export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2-mock"
       export REDIRECT_URI="https://example.org/callback"
