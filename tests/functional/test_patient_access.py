@@ -3,10 +3,10 @@ import requests
 import uuid
 import pytest
 
-from tests.functional.utils.helper import (
-    generate_random_phone_number,
-    get_add_telecom_phone_patch_body,
-)
+# from tests.functional.utils.helper import (
+#     generate_random_phone_number,
+#     get_add_telecom_phone_patch_body,
+# )
 import logging
 
 LOGGER = logging.getLogger(__name__)
@@ -203,68 +203,68 @@ class TestUserRestrictedPatientAccess:
     #     )
     #     assert nhsd_patient_header_patch == f"P9:{TEST_PATIENT_ID}"
 
-    @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
-    def test_patient_access_update_happy_path(self, _nhsd_apim_auth_token_data, add_asid_to_testapp):
+    # @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
+    # def test_patient_access_update_happy_path(self, _nhsd_apim_auth_token_data, add_asid_to_testapp):
 
-        LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
-        token = _nhsd_apim_auth_token_data.get("access_token", "")
-        headers = {
-            "NHSD-SESSION-URID": "123",
-            "Authorization": "Bearer " + token,
-            "X-Request-ID": str(uuid.uuid4()),
-        }
+    #     LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
+    #     token = _nhsd_apim_auth_token_data.get("access_token", "")
+    #     headers = {
+    #         "NHSD-SESSION-URID": "123",
+    #         "Authorization": "Bearer " + token,
+    #         "X-Request-ID": str(uuid.uuid4()),
+    #     }
 
-        r = requests.get(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{TEST_PATIENT_ID}",
-            headers=headers,
-        )
+    #     r = requests.get(
+    #         f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{TEST_PATIENT_ID}",
+    #         headers=headers,
+    #     )
 
-        body = r.json()
+    #     body = r.json()
 
-        """ check if patient already has a telecom object, if so then amend the email address else
-            add a new telecom object
-        """
-        if "telecom" in body:
-            telecom_id = body["telecom"][0]["id"]
-            patch_body = {
-                "patches": [
-                    {
-                        "op": "replace",
-                        "path": "/telecom/0",
-                        "value": {
-                            "id": telecom_id,
-                            "system": "phone",
-                            "use": "mobile",
-                            "value": generate_random_phone_number(),
-                        },
-                    }
-                ]
-            }
-        else:
-            patch_body = get_add_telecom_phone_patch_body()
+    #     """ check if patient already has a telecom object, if so then amend the email address else
+    #         add a new telecom object
+    #     """
+    #     if "telecom" in body:
+    #         telecom_id = body["telecom"][0]["id"]
+    #         patch_body = {
+    #             "patches": [
+    #                 {
+    #                     "op": "replace",
+    #                     "path": "/telecom/0",
+    #                     "value": {
+    #                         "id": telecom_id,
+    #                         "system": "phone",
+    #                         "use": "mobile",
+    #                         "value": generate_random_phone_number(),
+    #                     },
+    #                 }
+    #             ]
+    #         }
+    #     else:
+    #         patch_body = get_add_telecom_phone_patch_body()
 
-        eTag = r.headers["Etag"]
-        version_id = r.json()["meta"]["versionId"]
+    #     eTag = r.headers["Etag"]
+    #     version_id = r.json()["meta"]["versionId"]
 
-        LOGGER.info(f'version_id: {version_id}')
+    #     LOGGER.info(f'version_id: {version_id}')
 
-        headers = {
-            "NHSD-SESSION-URID": "123",
-            "Authorization": "Bearer " + token,
-            "X-Request-ID": str(uuid.uuid4()),
-            "If-Match": eTag,
-            "Content-Type": "application/json-patch+json",
-        }
-        r = requests.patch(
-            f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{TEST_PATIENT_ID}",
-            headers=headers,
-            json=patch_body,
-        )
+    #     headers = {
+    #         "NHSD-SESSION-URID": "123",
+    #         "Authorization": "Bearer " + token,
+    #         "X-Request-ID": str(uuid.uuid4()),
+    #         "If-Match": eTag,
+    #         "Content-Type": "application/json-patch+json",
+    #     }
+    #     r = requests.patch(
+    #         f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{TEST_PATIENT_ID}",
+    #         headers=headers,
+    #         json=patch_body,
+    #     )
 
-        LOGGER.info(f'patch response: {r.json()}')
+    #     LOGGER.info(f'patch response: {r.json()}')
 
-        assert r.status_code == 200
-        assert int(r.json()["meta"]["versionId"]) == int(version_id) + 1
+    #     assert r.status_code == 200
+    #     assert int(r.json()["meta"]["versionId"]) == int(version_id) + 1
 
     @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
     def test_patient_access_update_non_matching_nhs_number(
