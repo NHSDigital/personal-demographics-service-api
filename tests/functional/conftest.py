@@ -66,6 +66,37 @@ def add_asid_to_testapp(developer_apps, nhsd_apim_test_app):
         LOGGER.info(f'Test app updated with ASID attribute: {response}')
 
 
+@pytest.fixture()
+def add_proxies_to_products(api_products):
+
+    # Check if we need to add an extra proxy *-asid-required-* to the product used for testing
+    proxy_name = config.PROXY_NAME
+    LOGGER.info(f'proxy_name: {proxy_name}')
+    product_name = proxy_name.replace("-asid-required", "")
+    LOGGER.info(f'product_name: {product_name}')
+
+    patient_access_product_name = f'{product_name}-patient-access'
+
+    default_product = api_products.get_product_by_name(product_name=product_name)
+    LOGGER.info(f'default_product: {default_product}')
+
+    if(proxy_name not in default_product['proxies']):
+        default_product['proxies'].append(proxy_name)
+        product_updated = api_products.put_product_by_name(product_name=product_name, body=default_product)
+        LOGGER.info(f'product_updated: {product_updated}')
+
+    patient_access_product = api_products.get_product_by_name(product_name=patient_access_product_name)
+    LOGGER.info(f'patient_access_product: {patient_access_product}')
+
+    if(proxy_name not in patient_access_product['proxies']):
+        patient_access_product['proxies'].append(proxy_name)
+        patient_access_product_updated = api_products.put_product_by_name(
+            product_name=patient_access_product_name,
+            body=patient_access_product
+        )
+        LOGGER.info(f'patient_access_product_updated: {patient_access_product_updated}')
+
+
 def _set_default_rate_limit(product: ApigeeApiProducts, api_products):
     """Updates an Apigee Product with a default rate limit and quota.
 

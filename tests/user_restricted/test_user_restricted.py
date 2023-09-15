@@ -19,6 +19,9 @@ AUTH_HEALTHCARE_WORKER = {
 
 class TestUserRestrictedRetrievePatient:
 
+    def test_setup(self, add_proxies_to_products):
+        LOGGER.info("Setting up the products and proxies for testing")
+
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_retrieve_deprecated_url(self, headers_with_token):
         response = helpers.retrieve_patient_deprecated_url(
