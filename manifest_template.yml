@@ -127,13 +127,13 @@ APIGEE_ENVIRONMENTS:
           ratelimit: 42000pm # 700 requests per second
       app:
         quota:
-          enabled: false
-        #   limit: 300    # 5TPS
-        #   interval: 1
-        #   timeunit: minute
+          enabled: true
+          limit: 21000  # 350 TPS
+          interval: 1
+          timeunit: minute
         spikeArrest:
-          enabled: false
-        #   ratelimit: 600pm # 10 requests per second
+          enabled: true
+          ratelimit: 21000pm # 350 requests per second
 
 ACCESS_MODES:
   - name: user-restricted
