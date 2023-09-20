@@ -746,7 +746,7 @@ class TestUserRestrictedRetrieveRelatedPerson:
         self.retrieve_patient_and_assert(retrieve[8], self.headers)
 
     @pytest.mark.smoke_test
-    @pytest.skipif(ENVIRONMENT != 'int', reason="INT can only use pre-built test app")
+    @pytest.mark.skipif(ENVIRONMENT != 'int', reason="INT can only use pre-built test app")
     def test_retrieve_related_person_for_int(self,
                                              apigee_environment,
                                              nhsd_apim_config,
