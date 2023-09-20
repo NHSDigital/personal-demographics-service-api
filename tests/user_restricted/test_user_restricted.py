@@ -1,10 +1,13 @@
+import requests
+import uuid
 import json
 from .data.pds_scenarios import retrieve, search, update
 from .utils import helpers
 import pytest
 from pytest_check import check
-
+from pytest_nhsd_apim.identity_service import AuthorizationCodeConfig, AuthorizationCodeAuthenticator
 import logging
+from .configuration.config import ENVIRONMENT
 
 LOGGER = logging.getLogger(__name__)
 
@@ -15,6 +18,43 @@ AUTH_HEALTHCARE_WORKER = {
     "login_form": {"username": "656005750104"},
     "force_new_token": True
 }
+
+IDENTITY_SERVICE_BASE_URL = "https://int.api.service.nhs.uk/oauth2-mock"
+
+
+def get_access_token_for_int__test_app(apigee_environment, nhsd_apim_config, _test_app_credentials):
+    user_restricted_app_config = AuthorizationCodeConfig(
+        environment=apigee_environment,
+        org=nhsd_apim_config["APIGEE_ORGANIZATION"],
+        callback_url="https://example.org/callback",
+        identity_service_base_url=IDENTITY_SERVICE_BASE_URL,
+        client_id=_test_app_credentials["consumerKey"],
+        client_secret=_test_app_credentials["consumerSecret"],
+        scope="nhs-cis2",
+        login_form=AUTH_HEALTHCARE_WORKER['login_form']
+    )
+
+    authenticator = AuthorizationCodeAuthenticator(config=user_restricted_app_config)
+
+    token_response = authenticator.get_token()
+    assert "access_token" in token_response
+    access_token = token_response["access_token"]
+
+    LOGGER.info(f'token: {access_token}')
+
+    return access_token
+
+
+def get_role_id(access_token, identity_base_url):
+    url = f'{identity_base_url}/userinfo'
+    headers = {"Authorization": f"Bearer {access_token}"}
+
+    user_info_resp = requests.get(url, headers=headers)
+    user_info = json.loads(user_info_resp.text)
+
+    assert user_info_resp.status_code == 200
+    role_id = user_info['nhsid_nrbac_roles'][0]['person_roleid']
+    return role_id
 
 
 class TestUserRestrictedRetrievePatient:
@@ -135,16 +175,35 @@ class TestUserRestrictedRetrievePatient:
 
 class TestUserRestrictedSearchPatient:
 
-    # @pytest.mark.smoke_test
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_search_patient_happy_path(self, headers_with_token):
+    def search_patient_and_assert(self, headers):
         response = helpers.search_patient(
             search[0]["query_params"],
-            self.headers
+            headers
         )
         helpers.check_response_status_code(response, 200)
         helpers.assert_correct_patient_nhs_number_is_returned(response, search[0]["patient_returned"])
-        helpers.check_response_headers(response, self.headers)
+        helpers.check_response_headers(response, headers)
+
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    def test_search_patient_happy_path_for_non_int(self, headers_with_token):
+        self.search_patient_and_assert(self.headers)
+
+    @pytest.mark.smoke_test
+    @pytest.mark.skipif(ENVIRONMENT != 'int', reason="INT can only use pre-built test app")
+    def test_search_patient_happy_path_for_int(self, apigee_environment, nhsd_apim_config, _test_app_credentials):
+        access_token = get_access_token_for_int__test_app(apigee_environment,
+                                                          nhsd_apim_config,
+                                                          _test_app_credentials)
+
+        role_id = get_role_id(access_token, IDENTITY_SERVICE_BASE_URL)
+
+        headers = {
+            "X-Request-ID": str(uuid.uuid1()),
+            "X-Correlation-ID": str(uuid.uuid1()),
+            "NHSD-Session-URID": role_id,
+            "Authorization": f'Bearer {access_token}'
+        }
+        self.search_patient_and_assert(headers)
 
     def test_search_patient_with_missing_auth_header(self, headers):
         response = helpers.search_patient(
