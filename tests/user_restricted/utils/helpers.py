@@ -297,7 +297,7 @@ async def get_role_id_from_user_info_endpoint(token, identity_service_base_url) 
 def get_access_token_for_int_test_app(apigee_environment: str,
                                       nhsd_apim_config: dict,
                                       _test_app_credentials: dict,
-                                      authorization_details: dict):
+                                      authorization_details: dict) -> str:
     user_restricted_app_config = AuthorizationCodeConfig(
         environment=apigee_environment,
         org=nhsd_apim_config["APIGEE_ORGANIZATION"],
@@ -320,7 +320,7 @@ def get_access_token_for_int_test_app(apigee_environment: str,
     return access_token
 
 
-def get_role_id(access_token: str, identity_base_url: str):
+def get_role_id(access_token: str, identity_base_url: str) -> str:
     url = f'{identity_base_url}/userinfo'
     headers = {"Authorization": f"Bearer {access_token}"}
 
@@ -335,7 +335,7 @@ def get_role_id(access_token: str, identity_base_url: str):
 def get_headers(apigee_environment: str,
                 nhsd_apim_config: dict,
                 _test_app_credentials: dict,
-                authorization_details: dict):
+                authorization_details: dict) -> dict:
     access_token = get_access_token_for_int_test_app(apigee_environment,
                                                      nhsd_apim_config,
                                                      _test_app_credentials,
