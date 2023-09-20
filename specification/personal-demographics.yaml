@@ -204,6 +204,19 @@ info:
     Errors specific to each API are shown in the Endpoints section, under Response. See our [reference guide](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#http-status-codes) for more on errors.
     
     ## Open source
+    ### Coding in the open
+
+    You can access the source code for this API in its Github [GitHub repo](https://github.com/NHSDigital/personal-demographics-service-api).
+
+    The source code for the PDS back end (the Core Spine source code) is not currently in the open. If you think this would be useful, you can [upvote the suggestion on our Interactive Product Backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/466692/open-source-core-spine-including-pds-eps-scr-and-more).
+
+    ### API client code
+
+    We currently don't have any open source client libraries or sample code for this API. If you think this would be useful, you can [upvote the suggestion on our Interactive Product Backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/107439/client-libraries-and-reference-implementations).
+
+    TBC remainder - point out to FHIR libraries
+    TBC point out to open source section in ref guide
+    
     You might find the following open source resources useful:
 
     | Resource                  | Description                                                          | Links                                                                          |
