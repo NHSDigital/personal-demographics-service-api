@@ -34,6 +34,7 @@ class TestUserRestrictedRetrievePatient:
         helpers.check_response_status_code(response, 404)
 
     @pytest.mark.smoke_test
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     @pytest.mark.skipif(ENVIRONMENT != 'int', reason="INT can only use pre-built test app")
     def test_retrieve_patient_for_int(self,
                                       apigee_environment,
@@ -155,6 +156,7 @@ class TestUserRestrictedSearchPatient:
         self.search_patient_and_assert(self.headers)
 
     @pytest.mark.smoke_test
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     @pytest.mark.skipif(ENVIRONMENT != 'int', reason="INT can only use pre-built test app")
     def test_search_patient_happy_path_for_int(self, apigee_environment, nhsd_apim_config, _test_app_credentials):
         headers = helpers.get_headers(apigee_environment,
@@ -759,6 +761,7 @@ class TestUserRestrictedRetrieveRelatedPerson:
         self.retrieve_patient_and_assert(retrieve[8], self.headers)
 
     @pytest.mark.smoke_test
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     @pytest.mark.skipif(ENVIRONMENT != 'int', reason="INT can only use pre-built test app")
     def test_retrieve_related_person_for_int(self,
                                              apigee_environment,
@@ -793,6 +796,7 @@ class TestStatusEndpoints:
         helpers.check_response_status_code(response, 200)
 
     @pytest.mark.smoke_test
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     @pytest.mark.skipif(ENVIRONMENT != 'int', reason="INT can only use pre-built test app")
     def test_health_check_endpoint_for_int(self,
                                            apigee_environment,
