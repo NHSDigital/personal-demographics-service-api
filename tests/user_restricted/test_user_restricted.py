@@ -50,7 +50,7 @@ class TestUserRestrictedRetrievePatient:
     def test_retrieve_patient_for_non_int(self, headers_with_token):
         self.retrieve_patient_and_assert(retrieve[0], self.headers)
 
-    def retrieve_patient_and_assert(self, paitent: dict, headers):
+    def retrieve_patient_and_assert(self, patient: dict, headers):
         response = helpers.retrieve_patient(
             retrieve[0]["patient"],
             headers
