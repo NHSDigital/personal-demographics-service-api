@@ -19,6 +19,7 @@ steps:
        - /ptl/azure-devops/personal-demographics/TEST_PATIENT_ID
        - /ptl/azure-devops/personal-demographics/AUTH_TOKEN_EXPIRY_MS
        - /ptl/azure-devops/personal-demographics/AUTH_TOKEN_EXPIRY_MS_INT
+       - /ptl/azure-devops/personal-demographics/int/APIGEE_APP_ID
      secret_ids:
        - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_API_KEY
        - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_WITH_ASID_API_KEY
@@ -46,7 +47,7 @@ steps:
       export AUTH_TOKEN_EXPIRY_MS="$(AUTH_TOKEN_EXPIRY_MS)"
       export AUTH_TOKEN_EXPIRY_MS_INT="$(AUTH_TOKEN_EXPIRY_MS_INT)"
 
-      poetry run pytest -v tests/ -m smoke_test --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --apigee-app-id=af8b8f26-8178-440a-9166-bb093ff3c1f4 --junitxml=tests/test-report.xml --reruns 5 --reruns-delay 1
+      poetry run pytest -v tests/ -m smoke_test --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --apigee-app-id "$(APIGEE_APP_ID)" --junitxml=tests/test-report.xml --reruns 5 --reruns-delay 1
     displayName: Run smoke tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
   - task: PublishTestResults@2

@@ -3,8 +3,8 @@ from .data.pds_scenarios import retrieve, search, update
 from .utils import helpers
 import pytest
 from pytest_check import check
-
 import logging
+from .configuration.config import ENVIRONMENT
 
 LOGGER = logging.getLogger(__name__)
 
@@ -15,6 +15,8 @@ AUTH_HEALTHCARE_WORKER = {
     "login_form": {"username": "656005750104"},
     "force_new_token": True
 }
+
+IDENTITY_SERVICE_BASE_URL = "https://int.api.service.nhs.uk/oauth2-mock"
 
 
 class TestUserRestrictedRetrievePatient:
@@ -31,16 +33,30 @@ class TestUserRestrictedRetrievePatient:
 
         helpers.check_response_status_code(response, 404)
 
-    # @pytest.mark.smoke_test
+    @pytest.mark.smoke_test
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_retrieve_patient(self, headers_with_token):
+    @pytest.mark.skipif(ENVIRONMENT != 'int', reason="INT can only use pre-built test app")
+    def test_retrieve_patient_for_int(self,
+                                      apigee_environment,
+                                      nhsd_apim_config,
+                                      _test_app_credentials):
+        headers = helpers.get_headers(apigee_environment,
+                                      nhsd_apim_config,
+                                      _test_app_credentials,
+                                      AUTH_HEALTHCARE_WORKER)
+        self.retrieve_patient_and_assert(retrieve[0], headers)
 
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    def test_retrieve_patient_for_non_int(self, headers_with_token):
+        self.retrieve_patient_and_assert(retrieve[0], self.headers)
+
+    def retrieve_patient_and_assert(self, patient: dict, headers):
         response = helpers.retrieve_patient(
             retrieve[0]["patient"],
-            self.headers
+            headers
         )
 
-        helpers.check_response_headers(response, self.headers)
+        helpers.check_response_headers(response, headers)
         helpers.check_response_status_code(response, 200)
         helpers.check_retrieve_response_body_shape(response)
 
@@ -135,16 +151,28 @@ class TestUserRestrictedRetrievePatient:
 
 class TestUserRestrictedSearchPatient:
 
-    # @pytest.mark.smoke_test
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_search_patient_happy_path(self, headers_with_token):
+    def test_search_patient_happy_path_for_non_int(self, headers_with_token):
+        self.search_patient_and_assert(self.headers)
+
+    @pytest.mark.smoke_test
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    @pytest.mark.skipif(ENVIRONMENT != 'int', reason="INT can only use pre-built test app")
+    def test_search_patient_happy_path_for_int(self, apigee_environment, nhsd_apim_config, _test_app_credentials):
+        headers = helpers.get_headers(apigee_environment,
+                                      nhsd_apim_config,
+                                      _test_app_credentials,
+                                      AUTH_HEALTHCARE_WORKER)
+        self.search_patient_and_assert(headers)
+
+    def search_patient_and_assert(self, headers):
         response = helpers.search_patient(
             search[0]["query_params"],
-            self.headers
+            headers
         )
         helpers.check_response_status_code(response, 200)
         helpers.assert_correct_patient_nhs_number_is_returned(response, search[0]["patient_returned"])
-        helpers.check_response_headers(response, self.headers)
+        helpers.check_response_headers(response, headers)
 
     def test_search_patient_with_missing_auth_header(self, headers):
         response = helpers.search_patient(
@@ -728,19 +756,33 @@ class TestUserRestrictedPatientUpdateSyncWrap:
 
 class TestUserRestrictedRetrieveRelatedPerson:
 
-    # @pytest.mark.smoke_test
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_retrieve_related_person(self, headers_with_token):
+    def test_retrieve_related_person_for_non_int(self, headers_with_token):
+        self.retrieve_patient_and_assert(retrieve[8], self.headers)
+
+    @pytest.mark.smoke_test
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    @pytest.mark.skipif(ENVIRONMENT != 'int', reason="INT can only use pre-built test app")
+    def test_retrieve_related_person_for_int(self,
+                                             apigee_environment,
+                                             nhsd_apim_config,
+                                             _test_app_credentials,):
+        headers = helpers.get_headers(apigee_environment,
+                                      nhsd_apim_config,
+                                      _test_app_credentials,
+                                      AUTH_HEALTHCARE_WORKER)
+        self.retrieve_patient_and_assert(retrieve[8], headers)
+
+    def retrieve_patient_and_assert(self, patient: dict, headers: dict):
         response = helpers.retrieve_patient_related_person(
-            retrieve[8]["patient"],
-            self.headers
+            patient["patient"],
+            headers
         )
-        helpers.check_retrieve_related_person_response_body(response, retrieve[8]["response"])
+        helpers.check_retrieve_related_person_response_body(response, patient["response"])
         helpers.check_response_status_code(response, 200)
-        helpers.check_response_headers(response, self.headers)
+        helpers.check_response_headers(response, headers)
 
 
-# @pytest.mark.smoke_test
 class TestStatusEndpoints:
 
     @pytest.mark.smoke_test
@@ -749,6 +791,20 @@ class TestStatusEndpoints:
         helpers.check_response_status_code(response, 200)
 
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_health_check_endpoint(self, headers_with_token):
+    def test_health_check_endpoint_for_non_int(self, headers_with_token):
         response = helpers.check_health_check_endpoint(self.headers)
+        helpers.check_response_status_code(response, 200)
+
+    @pytest.mark.smoke_test
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    @pytest.mark.skipif(ENVIRONMENT != 'int', reason="INT can only use pre-built test app")
+    def test_health_check_endpoint_for_int(self,
+                                           apigee_environment,
+                                           nhsd_apim_config,
+                                           _test_app_credentials):
+        headers = helpers.get_headers(apigee_environment,
+                                      nhsd_apim_config,
+                                      _test_app_credentials,
+                                      AUTH_HEALTHCARE_WORKER)
+        response = helpers.check_health_check_endpoint(headers)
         helpers.check_response_status_code(response, 200)
