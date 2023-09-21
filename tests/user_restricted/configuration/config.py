@@ -54,3 +54,4 @@ ENDPOINTS = {
 }
 
 TEST_PATIENT_ID = ENV["test_patient_id"]
+DEVELOPER_EMAIL = "apm-testing-internal-dev@nhs.net"
