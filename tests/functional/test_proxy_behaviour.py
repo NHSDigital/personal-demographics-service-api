@@ -1,11 +1,13 @@
 from enum import Enum
 from tests.functional.conftest import set_quota_and_rate_limit
 import pytest
+from functools import partial
 import requests
 from polling2 import poll, TimeoutException
 from http import HTTPStatus
 from tests.scripts.pds_request import GenericPdsRequestor
-from pytest_bdd import scenario, given, when, then, parsers
+from pytest_bdd import given, when, then, parsers
+import pytest_bdd
 from .configuration.config import BASE_URL, PDS_BASE_PATH, TEST_PATIENT_ID
 import json
 from .utils.helpers import find_item_in_dict
@@ -13,6 +15,7 @@ import logging
 
 LOGGER = logging.getLogger(__name__)
 
+scenario = partial(pytest_bdd.scenario, './features/proxy_behaviour.feature')
 
 class HTTPMethods(Enum):
     GET = "GET"
@@ -69,7 +72,7 @@ def _trip_rate_limit(token: str, req_type: HTTPMethods, timeout: int = 30, step:
 @pytest.mark.happy_path
 @pytest.mark.rate_limit
 @pytest.mark.apmspii_627
-@scenario('./features/proxy_behaviour.feature', 'API Proxy rate limit tripped')
+@scenario('API Proxy rate limit tripped')
 def test_spike_arrest_policy():
     pass
 
@@ -77,7 +80,7 @@ def test_spike_arrest_policy():
 @pytest.mark.happy_path
 @pytest.mark.rate_limit
 @pytest.mark.apmspii_874
-@scenario('./features/proxy_behaviour.feature', 'The rate limit tripped for PATCH requests')
+@scenario('The rate limit tripped for PATCH requests')
 def test_async_spike_arrest_policy():
     pass
 
@@ -85,7 +88,7 @@ def test_async_spike_arrest_policy():
 @pytest.mark.happy_path
 @pytest.mark.quota
 @pytest.mark.apmspii_627
-@scenario('./features/proxy_behaviour.feature', 'API quota is tripped')
+@scenario('API quota is tripped')
 def test_quota_limit():
     pass
 
@@ -93,7 +96,7 @@ def test_quota_limit():
 @pytest.mark.happy_path
 @pytest.mark.quota
 @pytest.mark.apmspii_1139
-@scenario('./features/proxy_behaviour.feature', 'App based quota is tripped')
+@scenario('App based quota is tripped')
 def test_app_quota():
     pass
 
@@ -101,7 +104,7 @@ def test_app_quota():
 @pytest.mark.happy_path
 @pytest.mark.rate_limit
 @pytest.mark.apmspii_1139
-@scenario('./features/proxy_behaviour.feature', 'App based rate limit is tripped')
+@scenario('App based rate limit is tripped')
 def test_app_spike_arrest():
     pass
 

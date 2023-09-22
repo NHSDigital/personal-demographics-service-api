@@ -1,5 +1,6 @@
 import json
 import pytest
+from functools import partial
 
 import dateutil.parser
 import jwt
@@ -7,11 +8,13 @@ import uuid
 import time
 
 import requests
-from pytest_bdd import scenario, given, when, then, parsers
+from pytest_bdd import given, when, then, parsers
+import pytest_bdd
 
 from tests.functional.configuration import config
 from tests.functional.utils import helpers
 
+scenario = partial(pytest_bdd.scenario, "features/application_restricted.feature")
 
 def teardown_function(function):
     time.sleep(0.01)
@@ -45,66 +48,42 @@ def check_which_test_app_to_use():
         config.JWKS_RESOURCE_URL = config.JWKS_RESOURCE_URL_ASID_REQUIRED_APP
 
 
-@scenario(
-    "features/application_restricted.feature",
-    "PDS FHIR API accepts request with valid access token",
-)
+@scenario("PDS FHIR API accepts request with valid access token")
 def test_valid():
     pass
 
 
-@scenario(
-    "features/application_restricted.feature",
-    "PDS FHIR API rejects request with invalid access token",
-)
+@scenario("PDS FHIR API rejects request with invalid access token")
 def test_invalid():
     pass
 
 
-@scenario(
-    "features/application_restricted.feature",
-    "PDS FHIR API rejects request with missing access token",
-)
+@scenario("PDS FHIR API rejects request with missing access token")
 def test_missing():
     pass
 
 
-@scenario(
-    "features/application_restricted.feature",
-    "PDS FHIR API rejects request with expired access token",
-)
+@scenario("PDS FHIR API rejects request with expired access token")
 def test_expired():
     pass
 
 
-@scenario(
-    "features/application_restricted.feature",
-    "PDS FHIR API accepts request without user role ID",
-)
+@scenario("PDS FHIR API accepts request without user role ID")
 def test_valid_when_without_user_id():
     pass
 
 
-@scenario(
-    "features/application_restricted.feature",
-    "PDS FHIR API rejects request for more than one result",
-)
+@scenario("PDS FHIR API rejects request for more than one result")
 def test_rejects_request_for_two_results():
     pass
 
 
-@scenario(
-    "features/application_restricted.feature",
-    "PDS FHIR API accepts request for one result",
-)
+@scenario("PDS FHIR API accepts request for one result")
 def test_accepts_request_for_one_result():
     pass
 
 
-@scenario(
-    "features/application_restricted.feature",
-    "PDS FHIR API rejects synchronous PATCH requests",
-)
+@scenario("PDS FHIR API rejects synchronous PATCH requests")
 def test_rejects_synchronous_patch_request():
     pass
 
@@ -112,10 +91,7 @@ def test_rejects_synchronous_patch_request():
 @pytest.mark.skipif(
     "personal-demographics" in config.PDS_BASE_PATH, reason="App-restricted update skip"
 )
-@scenario(
-    "features/application_restricted.feature",
-    "App with pds-app-restricted-update attribute set to TRUE accepts PATCH requests",
-)
+@scenario("App with pds-app-restricted-update attribute set to TRUE accepts PATCH requests")
 def test_app_restricted_update_attribute_set_to_true():
     pass
 
@@ -123,10 +99,7 @@ def test_app_restricted_update_attribute_set_to_true():
 @pytest.mark.skipif(
     "asid-required" in config.PDS_BASE_PATH, reason="App-restricted update skip"
 )
-@scenario(
-    "features/application_restricted.feature",
-    "App with pds-app-restricted-update attribute set to FALSE does not accept PATCH requests",
-)
+@scenario("App with pds-app-restricted-update attribute set to FALSE does not accept PATCH requests")
 def test_app_restricted_update_attribute_set_to_false():
     pass
 
@@ -134,18 +107,12 @@ def test_app_restricted_update_attribute_set_to_false():
 @pytest.mark.skipif(
     "asid-required" in config.PDS_BASE_PATH, reason="App-restricted update skip"
 )
-@scenario(
-    "features/application_restricted.feature",
-    "App with pds-app-restricted-update attribute set to TRUE and invalid app restricted scope does not allow a PATCH",
-)
+@scenario("App with pds-app-restricted-update attribute set to TRUE and invalid app restricted scope does not allow a PATCH")
 def test_app_restricted_update_attribute_invalid_scope():
     pass
 
 
-@scenario(
-    "features/application_restricted.feature",
-    "PDS FHIR API rejects app restricted update",
-)
+@scenario("PDS FHIR API rejects app restricted update")
 def test_app_restricted_update_returns_error_msg():
     pass
 
@@ -153,10 +120,7 @@ def test_app_restricted_update_returns_error_msg():
 @pytest.mark.skipif(
     "asid-required" not in config.PDS_BASE_PATH, reason="ASID required test only"
 )
-@scenario(
-    "features/application_restricted.feature",
-    "App without an ASID fails in an asid-required API Proxy",
-)
+@scenario("App without an ASID fails in an asid-required API Proxy")
 def test_app_without_asid_fails():
     pass
 
@@ -164,10 +128,7 @@ def test_app_without_asid_fails():
 @pytest.mark.skipif(
     "asid-required" not in config.PDS_BASE_PATH, reason="ASID required test only"
 )
-@scenario(
-    "features/application_restricted.feature",
-    "App WITH an ASID works in an asid-required API Proxy",
-)
+@scenario("App WITH an ASID works in an asid-required API Proxy")
 def test_app_with_asid_works():
     pass
 
