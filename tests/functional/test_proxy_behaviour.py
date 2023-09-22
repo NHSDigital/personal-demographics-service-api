@@ -17,6 +17,7 @@ LOGGER = logging.getLogger(__name__)
 
 scenario = partial(pytest_bdd.scenario, './features/proxy_behaviour.feature')
 
+
 class HTTPMethods(Enum):
     GET = "GET"
     PATCH = "PATCH"

@@ -11,6 +11,7 @@ import json
 
 scenario = partial(pytest_bdd.scenario, './features/sync_wrap.feature')
 
+
 @pytest.mark.apmspii_832
 @pytest.mark.skipif("asid-required" in PDS_BASE_PATH, reason="Don't run in asid-required environment")
 @scenario('The rate limit is tripped through a synchronous request')
