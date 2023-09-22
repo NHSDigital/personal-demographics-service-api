@@ -6,7 +6,7 @@ from polling2 import poll, TimeoutException
 from http import HTTPStatus
 from tests.scripts.pds_request import GenericPdsRequestor
 from pytest_bdd import scenario, given, when, then, parsers
-from .configuration.config import BASE_URL, PDS_BASE_PATH, TEST_PATIENT_ID, PROXY_NAME
+from .configuration.config import BASE_URL, PDS_BASE_PATH, TEST_PATIENT_ID
 import json
 from .utils.helpers import find_item_in_dict
 import logging
@@ -109,7 +109,7 @@ def test_app_spike_arrest():
 @pytest.mark.rate_limit
 @pytest.mark.apmspii_627
 @given("I have a proxy with a low rate limit set", target_fixture="context")
-def setup_rate_limit_proxy(setup_session):
+def setup_rate_limit_proxy(setup_session, nhsd_apim_proxy_name):
     product, app, token_response, developer_apps, api_products = setup_session
 
     context = {
@@ -122,7 +122,7 @@ def setup_rate_limit_proxy(setup_session):
     set_quota_and_rate_limit(
         context["product"],
         rate_limit="1pm",
-        proxy=PROXY_NAME,
+        proxy=nhsd_apim_proxy_name,
         developer_apps=context["developer_apps"],
         api_products=context["api_products"]
     )
@@ -144,7 +144,7 @@ def setup_rate_limit_proxy(setup_session):
 @pytest.mark.rate_limit
 @pytest.mark.apmspii_627
 @given("I have a proxy with a low quota set", target_fixture="context")
-def setup_quota_proxy(setup_session):
+def setup_quota_proxy(setup_session, nhsd_apim_proxy_name):
     product, app, token_response, developer_apps, api_products = setup_session
 
     context = {
@@ -157,7 +157,7 @@ def setup_quota_proxy(setup_session):
     set_quota_and_rate_limit(
         context["product"],
         quota=1,
-        proxy=PROXY_NAME,
+        proxy=nhsd_apim_proxy_name,
         developer_apps=context["developer_apps"],
         api_products=context["api_products"]
     )
@@ -179,7 +179,7 @@ def setup_quota_proxy(setup_session):
 @pytest.mark.quota
 @pytest.mark.apmspii_1139
 @given("I have an app with a low quota set", target_fixture="context")
-def setup_quota_app(setup_session):
+def setup_quota_app(setup_session, nhsd_apim_proxy_name):
     product, app, token_response, developer_apps, api_products = setup_session
 
     context = {
@@ -192,7 +192,7 @@ def setup_quota_app(setup_session):
     set_quota_and_rate_limit(
         context["app"],
         quota=1,
-        proxy=PROXY_NAME,
+        proxy=nhsd_apim_proxy_name,
         developer_apps=context["developer_apps"],
         api_products=context["api_products"]
     )
@@ -214,7 +214,7 @@ def setup_quota_app(setup_session):
 @pytest.mark.rate_limit
 @pytest.mark.apmspii_1139
 @given("I have an app with a low rate limit set", target_fixture="context")
-def setup_rate_limit_app(setup_session):
+def setup_rate_limit_app(setup_session, nhsd_apim_proxy_name):
     product, app, token_response, developer_apps, api_products = setup_session
 
     context = {
@@ -227,7 +227,7 @@ def setup_rate_limit_app(setup_session):
     set_quota_and_rate_limit(
         context["app"],
         rate_limit="1pm",
-        proxy=PROXY_NAME,
+        proxy=nhsd_apim_proxy_name,
         developer_apps=context["developer_apps"],
         api_products=context["api_products"]
     )

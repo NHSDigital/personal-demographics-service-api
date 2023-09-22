@@ -3,7 +3,7 @@ from tests.scripts.pds_request import PdsRecord
 import pytest
 from polling2 import poll, TimeoutException
 from pytest_bdd import scenario, given, when, then, parsers
-from .configuration.config import TEST_PATIENT_ID, PROXY_NAME, PDS_BASE_PATH
+from .configuration.config import TEST_PATIENT_ID, PDS_BASE_PATH
 from .utils.helpers import find_item_in_dict
 import json
 
@@ -38,7 +38,7 @@ def _setup(sync_wrap_low_wait_update: PdsRecord):
 
 
 @given("I have a proxy with a low rate limit set", target_fixture="context")
-def setup_rate_limit_proxy(setup_patch):
+def setup_rate_limit_proxy(setup_patch, nhsd_apim_proxy_name):
     context = {
         "pds": setup_patch["pds"],
         "product": setup_patch["product"],
@@ -50,7 +50,7 @@ def setup_rate_limit_proxy(setup_patch):
     set_quota_and_rate_limit(
         context["product"],
         rate_limit="1pm",
-        proxy=PROXY_NAME,
+        proxy=nhsd_apim_proxy_name,
         developer_apps=context["developer_apps"],
         api_products=context["api_products"]
     )

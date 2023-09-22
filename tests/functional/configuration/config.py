@@ -1,4 +1,3 @@
-from ..utils.helpers import get_proxy_name
 from ...scripts.environment import EnvVarWrapper
 
 ENV = EnvVarWrapper(
@@ -39,7 +38,6 @@ KEY_ID = ENV["key_id"]
 
 # PDS
 PDS_BASE_PATH = ENV["pds_base_path"]
-PROXY_NAME = get_proxy_name(PDS_BASE_PATH, ENVIRONMENT)
 
 # App details
 CLIENT_ID = ENV['client_id']

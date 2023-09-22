@@ -85,10 +85,10 @@ async def headers_with_token(
 
 
 @pytest.fixture()
-def add_proxies_to_products(api_products):
+def add_proxies_to_products(api_products, nhsd_apim_proxy_name):
 
     # Check if we need to add an extra proxy *-asid-required-* to the product used for testing
-    proxy_name = functional_config.PROXY_NAME
+    proxy_name = nhsd_apim_proxy_name
     LOGGER.info(f'proxy_name: {proxy_name}')
     product_name = proxy_name.replace("-asid-required", "")
     LOGGER.info(f'product_name: {product_name}')
