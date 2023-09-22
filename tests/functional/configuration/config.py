@@ -1,4 +1,4 @@
-from ..utils.helper import get_proxy_name
+from ..utils.helpers import get_proxy_name
 from ...scripts.environment import EnvVarWrapper
 
 ENV = EnvVarWrapper(

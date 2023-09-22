@@ -10,7 +10,7 @@ import requests
 from pytest_bdd import scenario, given, when, then, parsers
 
 from tests.functional.configuration import config
-from tests.functional.utils import helper
+from tests.functional.utils import helpers
 
 
 def teardown_function(function):
@@ -350,7 +350,7 @@ def wait_for_some_milliseconds(number_of: int):
 
 @when("I GET a patient")
 def get_patient(auth, context):
-    headers = helper.add_auth_header(
+    headers = helpers.add_auth_header(
         {
             "NHSD-SESSION-URID": "123",
             "X-Request-ID": str(uuid.uuid4()),
@@ -367,7 +367,7 @@ def get_patient(auth, context):
 @when("I GET a patient asking for two results")
 def get_patient_two_results(auth, context):
 
-    headers = helper.add_auth_header(
+    headers = helpers.add_auth_header(
         {
             "NHSD-SESSION-URID": "123",
             "X-Request-ID": str(uuid.uuid4()),
@@ -387,7 +387,7 @@ def get_patient_two_results(auth, context):
 @when("I PATCH a patient and ommit the prefer header")
 def patch_sync_patient(auth, context):
 
-    headers = helper.add_auth_header(
+    headers = helpers.add_auth_header(
         {
             "NHSD-SESSION-URID": "123",
             "X-Request-ID": str(uuid.uuid4()),
@@ -403,7 +403,7 @@ def patch_sync_patient(auth, context):
 @when("I PATCH a patient")
 def patch_patient(auth: dict, context: dict):
 
-    headers = helper.add_auth_header(
+    headers = helpers.add_auth_header(
         {
             "X-Request-ID": str(uuid.uuid4()),
         },

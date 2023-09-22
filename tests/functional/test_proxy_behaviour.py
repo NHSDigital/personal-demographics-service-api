@@ -8,7 +8,7 @@ from tests.scripts.pds_request import GenericPdsRequestor
 from pytest_bdd import scenario, given, when, then, parsers
 from .configuration.config import BASE_URL, PDS_BASE_PATH, TEST_PATIENT_ID, PROXY_NAME
 import json
-from .utils.helper import find_item_in_dict
+from .utils.helpers import find_item_in_dict
 import logging
 
 LOGGER = logging.getLogger(__name__)

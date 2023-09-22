@@ -4,7 +4,7 @@ import pytest
 from polling2 import poll, TimeoutException
 from pytest_bdd import scenario, given, when, then, parsers
 from .configuration.config import TEST_PATIENT_ID, PROXY_NAME, PDS_BASE_PATH
-from .utils.helper import find_item_in_dict
+from .utils.helpers import find_item_in_dict
 import json
 
 
