@@ -67,3 +67,6 @@ SPINE_HOSTNAME = (
     # internal-qa environment points to spine int environment.
     "https://veit07.api.service.nhs.uk" if ENVIRONMENT == "internal-dev" else "https://int.api.service.nhs.uk"
 )
+
+# Header values
+ROLE_ID = "555254242102"

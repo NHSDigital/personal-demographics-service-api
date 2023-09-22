@@ -3,8 +3,7 @@ import pytest
 from .utils import helpers
 import uuid
 import random
-from ..scripts import config
-from tests.functional.configuration import config as functional_config
+from tests.functional.configuration import config
 from pytest_nhsd_apim.apigee_apis import (
     ApigeeClient,
     ApigeeNonProdCredentials,
@@ -49,10 +48,10 @@ def add_asid_to_testapp(developer_apps, nhsd_apim_test_app):
         if attribute['name'] == 'asid':
             existing_asid_attribute = attribute['value']
 
-    if not existing_asid_attribute and functional_config.ENV.contains("internal_dev_asid"):
-        LOGGER.info(f'ASID attribute not found. Adding {functional_config.ENV["internal_dev_asid"]} to {app_name}')
+    if not existing_asid_attribute and config.ENV.contains("internal_dev_asid"):
+        LOGGER.info(f'ASID attribute not found. Adding {config.ENV["internal_dev_asid"]} to {app_name}')
         # Add ASID to the test app - To be refactored when we move to .feature files TODO
-        custom_attributes.append({"name": "asid", "value": functional_config.ENV["internal_dev_asid"]})
+        custom_attributes.append({"name": "asid", "value": config.ENV["internal_dev_asid"]})
         data = {"attribute": custom_attributes}
         response = developer_apps.post_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name, body=data)
         LOGGER.info(f'Test app updated with ASID attribute: {response}')
@@ -85,7 +84,7 @@ async def headers_with_token(
 
 
 @pytest.fixture()
-def add_proxies_to_products(api_products, nhsd_apim_proxy_name):
+def add_proxies_to_products_user_restricted(api_products, nhsd_apim_proxy_name):
 
     # Check if we need to add an extra proxy *-asid-required-* to the product used for testing
     proxy_name = nhsd_apim_proxy_name

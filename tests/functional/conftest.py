@@ -1,6 +1,8 @@
 from tests.scripts.pds_request import GenericPdsRequestor, PdsRecord
 import pytest
 
+from .utils import helpers
+import uuid
 from .utils.apigee_api_apps import ApigeeApiDeveloperApps
 from .utils.apigee_api_products import ApigeeApiProducts
 from .configuration import config
@@ -67,6 +69,32 @@ def add_asid_to_testapp(developer_apps, nhsd_apim_test_app):
 
 
 @pytest.fixture()
+async def headers_with_token(
+    _nhsd_apim_auth_token_data,
+    request,
+    identity_service_base_url,
+    nhsd_apim_test_app,
+    client,
+    api_products,
+    add_asid_to_testapp
+):
+    """Assign required headers with the Authorization header"""
+
+    LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
+    access_token = _nhsd_apim_auth_token_data.get("access_token", "")
+    role_id = await helpers.get_role_id_from_user_info_endpoint(access_token, identity_service_base_url)
+
+    headers = {"X-Request-ID": str(uuid.uuid1()),
+               "X-Correlation-ID": str(uuid.uuid1()),
+               "NHSD-Session-URID": role_id,
+               "Authorization": f'Bearer {access_token}'
+               }
+
+    setattr(request.cls, 'headers', headers)
+    LOGGER.info(f'headers: {headers}')
+
+
+@pytest.fixture()
 def add_proxies_to_products(api_products, nhsd_apim_proxy_name):
 
     # Check if we need to add an extra proxy *-asid-required-* to the product used for testing
@@ -96,6 +124,32 @@ def add_proxies_to_products(api_products, nhsd_apim_proxy_name):
         )
         LOGGER.info(f'patient_access_product_updated: {patient_access_product_updated}')
 
+@pytest.fixture()
+def add_proxies_to_products_user_restricted(api_products, nhsd_apim_proxy_name):
+
+    # Check if we need to add an extra proxy *-asid-required-* to the product used for testing
+    proxy_name = nhsd_apim_proxy_name
+    LOGGER.info(f'proxy_name: {proxy_name}')
+    product_name = proxy_name.replace("-asid-required", "")
+    LOGGER.info(f'product_name: {product_name}')
+
+    default_product = api_products.get_product_by_name(product_name=product_name)
+    LOGGER.info(f'default_product: {default_product}')
+
+    if(proxy_name not in default_product['proxies']):
+        default_product['proxies'].append(proxy_name)
+        product_updated = api_products.put_product_by_name(product_name=product_name, body=default_product)
+        LOGGER.info(f'product_updated: {product_updated}')
+
+
+@pytest.fixture()
+def headers():
+    """Assign required headers without the Authorization header"""
+    headers = {"X-Request-ID": str(uuid.uuid1()),
+               "X-Correlation-ID": str(uuid.uuid1()),
+               "NHSD-Session-URID": config.ROLE_ID
+               }
+    return headers
 
 def _set_default_rate_limit(product: ApigeeApiProducts, api_products):
     """Updates an Apigee Product with a default rate limit and quota.
