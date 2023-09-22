@@ -9,7 +9,7 @@ import time
 import requests
 from pytest_bdd import scenario, given, when, then, parsers
 
-from tests.functional.config_files import config
+from tests.functional.configuration import config
 from tests.functional.utils import helper
 
 

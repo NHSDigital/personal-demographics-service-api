@@ -4,7 +4,7 @@ from .utils import helpers
 import uuid
 import random
 from ..scripts import config
-from tests.functional.config_files import config as functional_config
+from tests.functional.configuration import config as functional_config
 from pytest_nhsd_apim.apigee_apis import (
     ApigeeClient,
     ApigeeNonProdCredentials,

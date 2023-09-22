@@ -3,7 +3,7 @@ import pytest
 
 from .utils.apigee_api_apps import ApigeeApiDeveloperApps
 from .utils.apigee_api_products import ApigeeApiProducts
-from .config_files import config
+from .configuration import config
 import random
 import json
 from typing import Union

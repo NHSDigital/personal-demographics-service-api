@@ -3,7 +3,7 @@ from tests.scripts.pds_request import PdsRecord
 import pytest
 from polling2 import poll, TimeoutException
 from pytest_bdd import scenario, given, when, then, parsers
-from .config_files.config import TEST_PATIENT_ID, PROXY_NAME, PDS_BASE_PATH
+from .configuration.config import TEST_PATIENT_ID, PROXY_NAME, PDS_BASE_PATH
 from .utils.helper import find_item_in_dict
 import json
 

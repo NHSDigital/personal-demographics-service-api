@@ -1,4 +1,4 @@
-from tests.functional.config_files import config
+from tests.functional.configuration import config
 import requests
 import uuid
 import pytest

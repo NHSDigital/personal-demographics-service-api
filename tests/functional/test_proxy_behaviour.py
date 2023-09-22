@@ -6,7 +6,7 @@ from polling2 import poll, TimeoutException
 from http import HTTPStatus
 from tests.scripts.pds_request import GenericPdsRequestor
 from pytest_bdd import scenario, given, when, then, parsers
-from .config_files.config import BASE_URL, PDS_BASE_PATH, TEST_PATIENT_ID, PROXY_NAME
+from .configuration.config import BASE_URL, PDS_BASE_PATH, TEST_PATIENT_ID, PROXY_NAME
 import json
 from .utils.helper import find_item_in_dict
 import logging
