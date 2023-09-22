@@ -124,6 +124,7 @@ def add_proxies_to_products(api_products, nhsd_apim_proxy_name):
         )
         LOGGER.info(f'patient_access_product_updated: {patient_access_product_updated}')
 
+
 @pytest.fixture()
 def add_proxies_to_products_user_restricted(api_products, nhsd_apim_proxy_name):
 
@@ -150,6 +151,7 @@ def headers():
                "NHSD-Session-URID": config.ROLE_ID
                }
     return headers
+
 
 def _set_default_rate_limit(product: ApigeeApiProducts, api_products):
     """Updates an Apigee Product with a default rate limit and quota.
