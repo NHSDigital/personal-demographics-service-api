@@ -63,3 +63,9 @@ AUTH_TOKEN_EXPIRY_MS = (
 
 # OAUTH
 OAUTH_PROXY = ENV['oauth_proxy']
+
+SPINE_HOSTNAME = (
+    # This value is the url returned in the patients response payload which reflects a spine environment.
+    # internal-qa environment points to spine int environment.
+    "https://veit07.api.service.nhs.uk" if ENVIRONMENT == "internal-dev" else "https://int.api.service.nhs.uk"
+)
