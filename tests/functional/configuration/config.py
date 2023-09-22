@@ -20,7 +20,7 @@ ENV = EnvVarWrapper(
         'redirect_uri': 'REDIRECT_URI',
         'apigee_api_token': 'APIGEE_API_TOKEN',
         'internal_dev_asid': 'INTERNAL_DEV_ASID',
-        'oauth-proxy': 'OAUTH_PROXY'
+        'oauth_proxy': 'OAUTH_PROXY'
     }
 )
 
@@ -62,4 +62,4 @@ AUTH_TOKEN_EXPIRY_MS = (
 )
 
 # OAUTH
-OAUTH_PROXY = ENV['oauth-proxy']
+OAUTH_PROXY = ENV['oauth_proxy']
