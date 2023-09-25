@@ -7,8 +7,9 @@ from .utils import helpers
 import pytest
 from pytest_check import check
 import logging
-from .configuration.config import ENVIRONMENT
-from requests import Response
+from .configuration.config import ENVIRONMENT, BASE_URL, PDS_BASE_PATH
+from requests import Response, get
+import re
 
 LOGGER = logging.getLogger(__name__)
 
@@ -30,27 +31,36 @@ def test_retrieve_patient():
     pass
 
 
+@scenario('Healthcare worker using deprecated url')
+def test_deprecated_url():
+    pass
+
+
+@pytest.fixture()
+def pds_url() -> str:
+    return f"{BASE_URL}/{PDS_BASE_PATH}"
+
+
+@pytest.fixture()
+def nhs_number() -> str:
+    return '9693632109'
+
+
 @given("I am a healthcare worker")
 def set_healthcare_worker_auth_details(request):
     request.node.add_marker(pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER))
 
 
-@pytest.fixture()
-def patient() -> dict:
-    return retrieve[0]
+@given('I am using the deprecated url', target_fixture='pds_url')
+def use_deprecated_url() -> str:
+    prNo = re.search("pr-[0-9]+", PDS_BASE_PATH)
+    prString = f"-{prNo.group()}" if prNo is not None else ""
+    return f"{BASE_URL}/personal-demographics{prString}"
 
 
-@pytest.fixture()
-def nhs_number(patient: dict) -> str:
-    return patient["patient"]
-
-
-@when('I retrieve a patient', target_fixture='retrieval_resposne')
-def retrieve_patient(headers_with_authorization, nhs_number) -> Response:
-    return helpers.retrieve_patient(
-            nhs_number,
-            headers_with_authorization
-        )
+@when('I retrieve a patient', target_fixture='retrieval_response')
+def retrieve_patient(headers_with_authorization, nhs_number, pds_url) -> Response:
+    return get(url=f"{pds_url}/Patient/{nhs_number}", headers=headers_with_authorization)
 
 
 @then(
@@ -59,13 +69,9 @@ def retrieve_patient(headers_with_authorization, nhs_number) -> Response:
         extra_types=dict(Number=int)
     )
 )
-def check_status(retrieval_resposne: Response, expected_status: int) -> None:
+def check_status(retrieval_response: Response, expected_status: int) -> None:
     with check:
-        assert retrieval_resposne.status_code == expected_status, (
-            f"UNEXPECTED RESPONSE: "
-            f"actual response_status is: {retrieval_resposne.status_code} "
-            f"expected response_status is: {expected_status}"
-        )
+        assert retrieval_response.status_code == expected_status
 
 
 @then(
@@ -74,44 +80,43 @@ def check_status(retrieval_resposne: Response, expected_status: int) -> None:
         extra_types=dict(String=str)
     )
 )
-def check_header_value(retrieval_resposne: Response,
+def check_header_value(retrieval_response: Response,
                        header_field: str,
                        headers_with_authorization: dict) -> None:
     with check:
-        assert retrieval_resposne.headers[header_field] == headers_with_authorization[header_field]
+        assert retrieval_response.headers[header_field] == headers_with_authorization[header_field]
 
 
-@then('the response body contains the patients demographic details')
-def check_response_body(retrieval_resposne: Response, patient: dict) -> None:
-    msg = '''
-        Response body is not as expected.
-        It is possible the test record has changed such that it no longer is
-        in line with the test's expectations: You may need to review the test
-        record in the Spine environment.
-    '''
-    response_body = json.loads(retrieval_resposne.text)
+@then('the response body contains the patient id')
+def check_response_body_id(retrieval_response: Response, nhs_number: dict) -> None:
+    response_body = json.loads(retrieval_response.text)
     with check:
-        assert response_body["id"] == patient["patient"], msg
-        assert response_body["resourceType"] == "Patient", msg
+        assert response_body["id"] == nhs_number
+        assert response_body["resourceType"] == "Patient"
 
-        assert response_body["address"] is not None, msg
-        assert isinstance(response_body["address"], list), msg
 
-        assert response_body["birthDate"] is not None, msg
-        assert isinstance(response_body["birthDate"], str), msg
-        assert len(response_body["birthDate"]) > 1, msg
+@then('the response body is the correct shape')
+def check_response_body_shape(retrieval_response: Response) -> None:
+    response_body = json.loads(retrieval_response.text)
+    with check:
+        assert response_body["address"] is not None
+        assert isinstance(response_body["address"], list)
 
-        assert response_body["gender"] is not None, msg
-        assert isinstance(response_body["gender"], str), msg
+        assert response_body["birthDate"] is not None
+        assert isinstance(response_body["birthDate"], str)
+        assert len(response_body["birthDate"]) > 1
 
-        assert response_body["name"] is not None, msg
-        assert isinstance(response_body["name"], list), msg
-        assert len(response_body["name"]) > 0, msg
+        assert response_body["gender"] is not None
+        assert isinstance(response_body["gender"], str)
 
-        assert len(response_body["identifier"]) > 0, msg
-        assert isinstance(response_body["identifier"], list), msg
+        assert response_body["name"] is not None
+        assert isinstance(response_body["name"], list)
+        assert len(response_body["name"]) > 0
 
-        assert response_body["meta"] is not None, msg
+        assert len(response_body["identifier"]) > 0
+        assert isinstance(response_body["identifier"], list)
+
+        assert response_body["meta"] is not None
 
 
 class TestUserRestrictedRetrievePatient:
@@ -119,14 +124,15 @@ class TestUserRestrictedRetrievePatient:
     def test_setup(self, add_proxies_to_products_user_restricted):
         LOGGER.info("Setting up the products and proxies for testing")
 
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_retrieve_deprecated_url(self, headers_with_token):
-        response = helpers.retrieve_patient_deprecated_url(
-            retrieve[0]["patient"],
-            self.headers
-        )
+    # test_deprecated_url
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_retrieve_deprecated_url(self, headers_with_token):
+    #     response = helpers.retrieve_patient_deprecated_url(
+    #         retrieve[0]["patient"],
+    #         self.headers
+    #     )
 
-        helpers.check_response_status_code(response, 404)
+    #     helpers.check_response_status_code(response, 404)
 
     @pytest.mark.smoke_test
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
