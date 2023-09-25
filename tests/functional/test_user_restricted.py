@@ -1,10 +1,14 @@
 import json
+import pytest_bdd
+from pytest_bdd import given, when, then, parsers
+from functools import partial
 from .data.pds_scenarios import retrieve, search, update
 from .utils import helpers
 import pytest
 from pytest_check import check
 import logging
 from .configuration.config import ENVIRONMENT
+from requests import Response
 
 LOGGER = logging.getLogger(__name__)
 
@@ -17,6 +21,97 @@ AUTH_HEALTHCARE_WORKER = {
 }
 
 IDENTITY_SERVICE_BASE_URL = "https://int.api.service.nhs.uk/oauth2-mock"
+
+scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_access.feature')
+
+
+@scenario('Healthcare worker can retrieve patient')
+def test_retrieve_patient():
+    pass
+
+
+@given("I am a healthcare worker")
+def set_healthcare_worker_auth_details(request):
+    request.node.add_marker(pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER))
+
+
+@pytest.fixture()
+def patient() -> dict:
+    return retrieve[0]
+
+
+@pytest.fixture()
+def nhs_number(patient: dict) -> str:
+    return patient["patient"]
+
+
+@when('I retrieve a patient', target_fixture='retrieval_resposne')
+def retrieve_patient(headers_with_authorization, nhs_number) -> Response:
+    return helpers.retrieve_patient(
+            nhs_number,
+            headers_with_authorization
+        )
+
+
+@then(
+    parsers.cfparse(
+        "I get a {expected_status:Number} HTTP response",
+        extra_types=dict(Number=int)
+    )
+)
+def check_status(retrieval_resposne: Response, expected_status: int) -> None:
+    with check:
+        assert retrieval_resposne.status_code == expected_status, (
+            f"UNEXPECTED RESPONSE: "
+            f"actual response_status is: {retrieval_resposne.status_code} "
+            f"expected response_status is: {expected_status}"
+        )
+
+
+@then(
+    parsers.cfparse(
+        'the {header_field:String} response header matches the request',
+        extra_types=dict(String=str)
+    )
+)
+def check_header_value(retrieval_resposne: Response,
+                       header_field: str,
+                       headers_with_authorization: dict) -> None:
+    with check:
+        assert retrieval_resposne.headers[header_field] == headers_with_authorization[header_field]
+
+
+@then('the response body contains the patients demographic details')
+def check_response_body(retrieval_resposne: Response, patient: dict) -> None:
+    msg = '''
+        Response body is not as expected.
+        It is possible the test record has changed such that it no longer is
+        in line with the test's expectations: You may need to review the test
+        record in the Spine environment.
+    '''
+    response_body = json.loads(retrieval_resposne.text)
+    with check:
+        assert response_body["id"] == patient["patient"], msg
+        assert response_body["resourceType"] == "Patient", msg
+
+        assert response_body["address"] is not None, msg
+        assert isinstance(response_body["address"], list), msg
+
+        assert response_body["birthDate"] is not None, msg
+        assert isinstance(response_body["birthDate"], str), msg
+        assert len(response_body["birthDate"]) > 1, msg
+
+        assert response_body["gender"] is not None, msg
+        assert isinstance(response_body["gender"], str), msg
+
+        assert response_body["name"] is not None, msg
+        assert isinstance(response_body["name"], list), msg
+        assert len(response_body["name"]) > 0, msg
+
+        assert len(response_body["identifier"]) > 0, msg
+        assert isinstance(response_body["identifier"], list), msg
+
+        assert response_body["meta"] is not None, msg
 
 
 class TestUserRestrictedRetrievePatient:
@@ -46,9 +141,10 @@ class TestUserRestrictedRetrievePatient:
                                       AUTH_HEALTHCARE_WORKER)
         self.retrieve_patient_and_assert(retrieve[0], headers)
 
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_retrieve_patient_for_non_int(self, headers_with_token):
-        self.retrieve_patient_and_assert(retrieve[0], self.headers)
+    # test_retrieve_patient
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_retrieve_patient_for_non_int(self, headers_with_token):
+    #     self.retrieve_patient_and_assert(retrieve[0], self.headers)
 
     def retrieve_patient_and_assert(self, patient: dict, headers):
         response = helpers.retrieve_patient(

@@ -68,6 +68,33 @@ def add_asid_to_testapp(developer_apps, nhsd_apim_test_app):
         LOGGER.info(f'Test app updated with ASID attribute: {response}')
 
 
+@pytest.fixture(scope='function')
+async def headers_with_authorization(
+    _nhsd_apim_auth_token_data,
+    request,
+    identity_service_base_url,
+    nhsd_apim_test_app,
+    client,
+    api_products,
+    add_asid_to_testapp
+):
+    """Assign required headers with the Authorization header"""
+
+    LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
+    access_token = _nhsd_apim_auth_token_data.get("access_token", "")
+    role_id = await helpers.get_role_id_from_user_info_endpoint(access_token, identity_service_base_url)
+
+    headers = {"X-Request-ID": str(uuid.uuid1()),
+               "X-Correlation-ID": str(uuid.uuid1()),
+               "NHSD-Session-URID": role_id,
+               "Authorization": f'Bearer {access_token}'
+               }
+
+    # setattr(request.cls, 'headers', headers)
+    LOGGER.info(f'headers: {headers}')
+    return headers
+
+
 @pytest.fixture()
 async def headers_with_token(
     _nhsd_apim_auth_token_data,
