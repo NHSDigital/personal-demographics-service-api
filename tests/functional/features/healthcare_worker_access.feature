@@ -20,3 +20,26 @@ Feature: Healthcare Worker Access
         And the response body contains the patient id
         And the response body is the correct shape
 
+    Scenario: Request with missing authorization header
+        Given I am a healthcare worker
+        And I don't have an authorization header
+
+        When I retrieve a patient
+
+        Then I get a 401 HTTP response
+        And the X-Request-ID response header matches the request
+        And the X-Correlation-ID response header matches the request
+        And the response body does not contain the patient id
+        And the response body is the Missing Authorization header reponse
+
+    Scenario: Request with an empty authorization header
+        Given I am a healthcare worker
+        And I have an empty authorization header
+
+        When I retrieve a patient
+
+        Then I get a 401 HTTP response
+        And the X-Request-ID response header matches the request
+        And the X-Correlation-ID response header matches the request
+        And the response body does not contain the patient id
+        And the response body is the Empty Authorization header reponse

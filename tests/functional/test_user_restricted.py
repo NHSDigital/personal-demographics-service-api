@@ -3,6 +3,7 @@ import pytest_bdd
 from pytest_bdd import given, when, then, parsers
 from functools import partial
 from .data.pds_scenarios import retrieve, search, update
+from .data.expected_errors import error_responses
 from .utils import helpers
 import pytest
 from pytest_check import check
@@ -36,6 +37,16 @@ def test_deprecated_url():
     pass
 
 
+@scenario('Request with missing authorization header')
+def test_missing_auth_header():
+    pass
+
+
+@scenario('Request with an empty authorization header')
+def test_empty_auth_header():
+    pass
+
+
 @pytest.fixture()
 def pds_url() -> str:
     return f"{BASE_URL}/{PDS_BASE_PATH}"
@@ -51,6 +62,18 @@ def set_healthcare_worker_auth_details(request):
     request.node.add_marker(pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER))
 
 
+@given("I don't have an authorization header", target_fixture='headers_with_authorization')
+def remove_authorization_header(headers_with_authorization):
+    headers_with_authorization.pop('Authorization')
+    return headers_with_authorization
+
+
+@given("I have an empty authorization header", target_fixture='headers_with_authorization')
+def empty_authorization_header(headers_with_authorization):
+    headers_with_authorization.update({'Authorization': ''})
+    return headers_with_authorization
+
+
 @given('I am using the deprecated url', target_fixture='pds_url')
 def use_deprecated_url() -> str:
     prNo = re.search("pr-[0-9]+", PDS_BASE_PATH)
@@ -61,6 +84,11 @@ def use_deprecated_url() -> str:
 @when('I retrieve a patient', target_fixture='retrieval_response')
 def retrieve_patient(headers_with_authorization, nhs_number, pds_url) -> Response:
     return get(url=f"{pds_url}/Patient/{nhs_number}", headers=headers_with_authorization)
+
+
+@pytest.fixture()
+def response_body(retrieval_response: Response) -> dict:
+    return json.loads(retrieval_response.text)
 
 
 @then(
@@ -88,15 +116,29 @@ def check_header_value(retrieval_response: Response,
 
 
 @then('the response body contains the patient id')
-def check_response_body_id(retrieval_response: Response, nhs_number: dict) -> None:
-    response_body = json.loads(retrieval_response.text)
+def response_body_contains_given_id(response_body: dict, nhs_number: dict) -> None:
     with check:
         assert response_body["id"] == nhs_number
         assert response_body["resourceType"] == "Patient"
 
 
+@then('the response body does not contain the patient id')
+def response_body_does_not_contain_id(response_body: dict) -> None:
+    assert "id" not in response_body
+
+
+@then(
+    parsers.cfparse(
+        'the response body is the {error:String} reponse',
+        extra_types=dict(String=str)
+    )
+)
+def resposne_body_as_expected(response_body: dict, error):
+    assert response_body == error_responses[error]
+
+
 @then('the response body is the correct shape')
-def check_response_body_shape(retrieval_response: Response) -> None:
+def response_body_shape(retrieval_response: Response) -> None:
     response_body = json.loads(retrieval_response.text)
     with check:
         assert response_body["address"] is not None
@@ -162,27 +204,29 @@ class TestUserRestrictedRetrievePatient:
         helpers.check_response_status_code(response, 200)
         helpers.check_retrieve_response_body_shape(response)
 
-    def test_retrieve_patient_with_missing_auth_header(self, headers):
-        response = helpers.retrieve_patient(
-            retrieve[1]["patient"],
-            headers
-        )
-        helpers.check_retrieve_response_body(response, retrieve[1]["response"])
-        helpers.check_response_status_code(response, 401)
-        helpers.check_response_headers(response, headers)
+    # test_missing_auth_header
+    # def test_retrieve_patient_with_missing_auth_header(self, headers):
+    #     response = helpers.retrieve_patient(
+    #         retrieve[1]["patient"],
+    #         headers
+    #     )
+    #     helpers.check_retrieve_response_body(response, retrieve[1]["response"])
+    #     helpers.check_response_status_code(response, 401)
+    #     helpers.check_response_headers(response, headers)
 
-    def test_retrieve_patient_with_blank_auth_header(self, headers):
-        headers['authorization'] = ''
-        response = helpers.retrieve_patient(
-            retrieve[2]["patient"],
-            headers
-        )
-        helpers.check_retrieve_response_body(
-            response,
-            retrieve[2]["response"]
-        )
-        helpers.check_response_status_code(response, 401)
-        helpers.check_response_headers(response, headers)
+    # test_empty_auth_header
+    # def test_retrieve_patient_with_blank_auth_header(self, headers):
+    #     headers['authorization'] = ''
+    #     response = helpers.retrieve_patient(
+    #         retrieve[2]["patient"],
+    #         headers
+    #     )
+    #     helpers.check_retrieve_response_body(
+    #         response,
+    #         retrieve[2]["response"]
+    #     )
+    #     helpers.check_response_status_code(response, 401)
+    #     helpers.check_response_headers(response, headers)
 
     def test_retrieve_patient_with_invalid_auth_header(self, headers):
         headers['authorization'] = 'Bearer abcdef123456789'
