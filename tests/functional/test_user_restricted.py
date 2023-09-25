@@ -37,13 +37,33 @@ def test_deprecated_url():
     pass
 
 
-@scenario('Request with missing authorization header')
-def test_missing_auth_header():
+@scenario('Attempt to retrieve a patient with missing authorization header')
+def test_missing_auth():
     pass
 
 
-@scenario('Request with an empty authorization header')
-def test_empty_auth_header():
+@scenario('Attempt to retrieve a patient with an empty authorization header')
+def test_empty_auth():
+    pass
+
+
+@scenario('Attempt to retrieve a patient with an invalid authorization header')
+def test_invalid_auth():
+    pass
+
+
+@scenario('Attempt to retrieve a patient without stating a role')
+def test_missing_role():
+    pass
+
+
+@scenario('Attempt to retrieve a patient with an invalid role')
+def test_invalid_role():
+    pass
+
+
+@scenario('Attempt to retrieve a patient without Request ID header')
+def test_empty_request_id():
     pass
 
 
@@ -62,15 +82,38 @@ def set_healthcare_worker_auth_details(request):
     request.node.add_marker(pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER))
 
 
-@given("I don't have an authorization header", target_fixture='headers_with_authorization')
-def remove_authorization_header(headers_with_authorization):
-    headers_with_authorization.pop('Authorization')
+@given(
+    parsers.cfparse(
+        "I don't have {_:String} {header_field:String} header",
+        extra_types=dict(String=str)
+    ),
+    target_fixture='headers_with_authorization'
+)
+def remove_header(headers_with_authorization, header_field):
+    headers_with_authorization.pop(header_field)
     return headers_with_authorization
 
 
-@given("I have an empty authorization header", target_fixture='headers_with_authorization')
-def empty_authorization_header(headers_with_authorization):
-    headers_with_authorization.update({'Authorization': ''})
+@given(
+    parsers.cfparse(
+        "I have an empty {field:String} header",
+        extra_types=dict(String=str)
+    ),
+    target_fixture='headers_with_authorization')
+def empty_header(headers_with_authorization: dict, field: str):
+    headers_with_authorization.update({field: ''})
+    return headers_with_authorization
+
+
+@given("I have an invalid Authorization header", target_fixture='headers_with_authorization')
+def invalid_authorization_header(headers_with_authorization):
+    headers_with_authorization.update({'Authorization': 'Bearer abcdef123456789'})
+    return headers_with_authorization
+
+
+@given("I have an invalid NHSD-Session-URID header", target_fixture='headers_with_authorization')
+def invalid_role_header(headers_with_authorization):
+    headers_with_authorization.update({'NHSD-Session-URID': 'invalid'})
     return headers_with_authorization
 
 
@@ -122,9 +165,24 @@ def response_body_contains_given_id(response_body: dict, nhs_number: dict) -> No
         assert response_body["resourceType"] == "Patient"
 
 
-@then('the response body does not contain the patient id')
-def response_body_does_not_contain_id(response_body: dict) -> None:
-    assert "id" not in response_body
+@then(
+    parsers.cfparse(
+        'the response body does not contain {field:String}',
+        extra_types=dict(String=str)
+    )
+)
+def response_body_does_not_contain(response_body: dict, field: str) -> None:
+    assert field not in response_body
+
+
+@then(
+    parsers.cfparse(
+        'the response header does not contain {field:String}',
+        extra_types=dict(String=str)
+    )
+)
+def response_header_does_not_contain(retrieval_response: dict, field: str) -> None:
+    assert field not in retrieval_response.headers
 
 
 @then(
@@ -228,49 +286,55 @@ class TestUserRestrictedRetrievePatient:
     #     helpers.check_response_status_code(response, 401)
     #     helpers.check_response_headers(response, headers)
 
-    def test_retrieve_patient_with_invalid_auth_header(self, headers):
-        headers['authorization'] = 'Bearer abcdef123456789'
-        response = helpers.retrieve_patient(
-            retrieve[3]["patient"],
-            headers
-        )
-        helpers.check_retrieve_response_body(response, retrieve[3]["response"])
-        helpers.check_response_status_code(response, 401)
-        helpers.check_response_headers(response, headers)
+    # test_invalid_auth_header
+    # def test_retrieve_patient_with_invalid_auth_header(self, headers):
+    #     headers['authorization'] = 'Bearer abcdef123456789'
+    #     response = helpers.retrieve_patient(
+    #         retrieve[3]["patient"],
+    #         headers
+    #     )
+    #     helpers.check_retrieve_response_body(response, retrieve[3]["response"])
+    #     helpers.check_response_status_code(response, 401)
+    #     helpers.check_response_headers(response, headers)
 
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_user_role_sharedflow_retrieve_patient_with_missing_urid_header(self, headers_with_token):
-        self.headers.pop("NHSD-Session-URID")
-        response = helpers.retrieve_patient(
-            retrieve[10]["patient"],
-            self.headers
-        )
-        helpers.check_retrieve_response_body(response, retrieve[10]["response"])
-        helpers.check_response_status_code(response, 400)
-        helpers.check_response_headers(response, self.headers)
+    # test_missing_role
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_user_role_sharedflow_retrieve_patient_with_missing_urid_header(self, headers_with_authorization):
+    #     headers = headers_with_authorization
+    #     headers.pop("NHSD-Session-URID")
+    #     LOGGER.info(f'headers: {headers}')
+    #     response = helpers.retrieve_patient(
+    #         retrieve[10]["patient"],
+    #         headers
+    #     )
+    #     helpers.check_retrieve_response_body(response, retrieve[10]["response"])
+    #     helpers.check_response_status_code(response, 400)
+    #     helpers.check_response_headers(response, headers)
 
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_user_role_sharedflow_invalid_role(self, headers_with_token):
-        self.headers["NHSD-Session-URID"] = "invalid"
-        response = helpers.retrieve_patient(
-            retrieve[9]["patient"],
-            self.headers
-        )
-        helpers.check_retrieve_response_body(response, retrieve[9]["response"])
-        helpers.check_response_status_code(response, 400)
-        helpers.check_response_headers(response, self.headers)
+    # test_invalid_role
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_user_role_sharedflow_invalid_role(self, headers_with_token):
+    #     self.headers["NHSD-Session-URID"] = "invalid"
+    #     response = helpers.retrieve_patient(
+    #         retrieve[9]["patient"],
+    #         self.headers
+    #     )
+    #     helpers.check_retrieve_response_body(response, retrieve[9]["response"])
+    #     helpers.check_response_status_code(response, 400)
+    #     helpers.check_response_headers(response, self.headers)
 
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_retrieve_patient_with_blank_x_request_header(self, headers_with_token):
-        self.headers["X-Request-ID"] = ''
-        response = helpers.retrieve_patient(
-            retrieve[5]["patient"],
-            self.headers
-        )
-        helpers.check_retrieve_response_body(response, retrieve[5]["response"])
-        helpers.check_response_status_code(response, 400)
-        self.headers.pop("X-Request-ID")
-        helpers.check_response_headers(response, self.headers)
+    # test_empty_request_id
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_retrieve_patient_with_blank_x_request_header(self, headers_with_token):
+    #     self.headers["X-Request-ID"] = ''
+    #     response = helpers.retrieve_patient(
+    #         retrieve[5]["patient"],
+    #         self.headers
+    #     )
+    #     helpers.check_retrieve_response_body(response, retrieve[5]["response"])
+    #     helpers.check_response_status_code(response, 400)
+    #     self.headers.pop("X-Request-ID")
+    #     helpers.check_response_headers(response, self.headers)
 
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_retrieve_patient_with_invalid_x_request_header(self, headers_with_token):

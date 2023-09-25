@@ -38,5 +38,85 @@ error_responses = {
                 "diagnostics": "Empty Authorization header"
             }
         ]
+    },
+    "Invalid Access Token": {
+        "resourceType": "OperationOutcome",
+        "issue": [
+            {
+                "severity": "error",
+                "code": "forbidden",
+                "details": {
+                    "coding": [
+                        {
+                            "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+                            "version": "1",
+                            "code": "ACCESS_DENIED",
+                            "display": "Access Denied - Unauthorised"
+                        }
+                    ]
+                },
+                "diagnostics": "Invalid Access Token"
+            }
+        ]
+    },
+    "Missing URID header": {
+        "resourceType": "OperationOutcome",
+        "issue": [
+            {
+                "severity": "error",
+                "code": "value",
+                "details": {
+                    "coding": [
+                        {
+                            "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+                            "version": "1",
+                            "code": "INVALID_VALUE",
+                            "display": "Provided value is invalid"
+                        }
+                    ]
+                },
+                "diagnostics": "Invalid value - '' in header 'NHSD-Session-URID'. Refer to the guidance for this header in our API Specification https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir"
+            }
+        ]
+    },
+    "Invalid URID header": {
+        "resourceType": "OperationOutcome",
+        "issue": [
+            {
+                "severity": "error",
+                "code": "value",
+                "details": {
+                    "coding": [
+                        {
+                            "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+                            "version": "1",
+                            "code": "INVALID_VALUE",
+                            "display": "Provided value is invalid"
+                        }
+                    ]
+                },
+                "diagnostics": "Invalid value - 'invalid' in header 'NHSD-Session-URID'. Refer to the guidance for this header in our API Specification https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir"
+            }
+        ]
+    },
+    "Empty X-Request ID": {
+        "resourceType": "OperationOutcome",
+        "issue": [
+            {
+                "severity": "error",
+                "code": "value",
+                "details": {
+                    "coding": [
+                        {
+                            "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+                            "version": "1",
+                            "code": "INVALID_VALUE",
+                            "display": "Provided value is invalid"
+                        }
+                    ]
+                },
+                "diagnostics": "Invalid value - '' in header 'X-Request-ID'"
+            }
+        ]
     }
 }
