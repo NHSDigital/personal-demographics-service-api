@@ -2,6 +2,7 @@ import requests
 import json
 import urllib.parse as urlparse
 from urllib.parse import parse_qs
+from ...functional.config_files import config
 
 
 class Auth:
@@ -20,7 +21,7 @@ class Auth:
         return self.get_access_token(code)
 
     def get_state(self):
-        url = f"{self.base_url}/oauth2/authorize"
+        url = f"{self.base_url}/{config.OAUTH_PROXY}/authorize"
         params = {
             "client_id": self.client_id,
             "redirect_uri": self.callback_url,
@@ -32,7 +33,7 @@ class Auth:
         return parse_qs(parsed.query)['state'][0]
 
     def get_redirect_callback(self, state):
-        url = f"{self.base_url}/oauth2/simulated_auth"
+        url = f"{self.base_url}/{config.OAUTH_PROXY}/simulated_auth"
         params = {
             "response_type": "code",
             "client_id": "some-client-id",
@@ -60,7 +61,7 @@ class Auth:
         return parse_qs(parsed.query)["code"][0]
 
     def get_access_token(self, code):
-        url = f"{self.base_url}/oauth2/token"
+        url = f"{self.base_url}/{config.OAUTH_PROXY}/token"
         headers = {
             "Accept": "*/*",
             "connection": "keep-alive",

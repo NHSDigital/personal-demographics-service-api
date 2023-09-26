@@ -1,5 +1,11 @@
 # Changelog
 
+## 2023-09-14
+* Increase rate limit for proxy in prod
+
+## 2023-09-11
+* Using pytest-nhsd-apim, ApiProductsAPI and DeveloperAppsAPI for testing the authentication and authorisation
+
 ## 2023-08-25
 * Begin move away from apim-test-utils package
 

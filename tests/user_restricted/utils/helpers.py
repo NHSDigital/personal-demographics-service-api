@@ -2,12 +2,18 @@ import json
 import urllib.parse
 from typing import Union
 import requests
-from api_test_utils.oauth_helper import OauthHelper
+import uuid
+
 from pytest_check import check
 import time
 from ..configuration import config
 import re
 from ..data.pds_scenarios import retrieve
+import logging
+from pytest_nhsd_apim.identity_service import AuthorizationCodeConfig, AuthorizationCodeAuthenticator
+
+LOGGER = logging.getLogger(__name__)
+IDENTITY_SERVICE_BASE_URL = "https://int.api.service.nhs.uk/oauth2-mock"
 
 
 def retrieve_patient_deprecated_url(patient: str, headers) -> requests.Response:
@@ -276,14 +282,72 @@ def assert_is_sensitive_patient(response: requests.Response) -> None:
         assert response_body["entry"][0]["resource"]["meta"]["security"][0]["display"] == "restricted"
 
 
-async def get_role_id_from_user_info_endpoint(token) -> str:
-    oauth = OauthHelper(config.CLIENT_ID, config.CLIENT_SECRET, config.REDIRECT_URI)
+async def get_role_id_from_user_info_endpoint(token, identity_service_base_url) -> str:
 
-    user_info_resp = await oauth.hit_oauth_endpoint(
-        method="GET",
-        endpoint="userinfo",
-        headers={"Authorization": f"Bearer {token}"}
+    url = f'{identity_service_base_url}/userinfo'
+    headers = {"Authorization": f"Bearer {token}"}
+
+    user_info_resp = requests.get(url, headers=headers)
+    user_info = json.loads(user_info_resp.text)
+
+    assert user_info_resp.status_code == 200
+    return user_info['nhsid_nrbac_roles'][0]['person_roleid']
+
+
+def get_access_token_for_int_test_app(apigee_environment: str,
+                                      nhsd_apim_config: dict,
+                                      _test_app_credentials: dict,
+                                      authorization_details: dict) -> str:
+    user_restricted_app_config = AuthorizationCodeConfig(
+        environment=apigee_environment,
+        org=nhsd_apim_config["APIGEE_ORGANIZATION"],
+        callback_url="https://example.org/callback",
+        identity_service_base_url=IDENTITY_SERVICE_BASE_URL,
+        client_id=_test_app_credentials["consumerKey"],
+        client_secret=_test_app_credentials["consumerSecret"],
+        scope="nhs-cis2",
+        login_form=authorization_details['login_form']
     )
 
-    assert user_info_resp['status_code'] == 200
-    return user_info_resp['body']['nhsid_nrbac_roles'][0]['person_roleid']
+    authenticator = AuthorizationCodeAuthenticator(config=user_restricted_app_config)
+
+    token_response = authenticator.get_token()
+    assert "access_token" in token_response
+    access_token = token_response["access_token"]
+
+    LOGGER.info(f'token: {access_token}')
+
+    return access_token
+
+
+def get_role_id(access_token: str, identity_base_url: str) -> str:
+    url = f'{identity_base_url}/userinfo'
+    headers = {"Authorization": f"Bearer {access_token}"}
+
+    user_info_resp = requests.get(url, headers=headers)
+    user_info = json.loads(user_info_resp.text)
+
+    assert user_info_resp.status_code == 200
+    role_id = user_info['nhsid_nrbac_roles'][0]['person_roleid']
+    return role_id
+
+
+def get_headers(apigee_environment: str,
+                nhsd_apim_config: dict,
+                _test_app_credentials: dict,
+                authorization_details: dict) -> dict:
+    access_token = get_access_token_for_int_test_app(apigee_environment,
+                                                     nhsd_apim_config,
+                                                     _test_app_credentials,
+                                                     authorization_details)
+
+    role_id = get_role_id(access_token, IDENTITY_SERVICE_BASE_URL)
+
+    headers = {
+        "X-Request-ID": str(uuid.uuid1()),
+        "X-Correlation-ID": str(uuid.uuid1()),
+        "NHSD-Session-URID": role_id,
+        "Authorization": f'Bearer {access_token}'
+    }
+
+    return headers
