@@ -4,6 +4,7 @@ from .utils import helpers
 import uuid
 import random
 from ..scripts import config
+from .configuration.config import DEVELOPER_EMAIL
 from tests.functional.config_files import config as functional_config
 from pytest_nhsd_apim.apigee_apis import (
     ApigeeClient,
@@ -14,7 +15,6 @@ from pytest_nhsd_apim.apigee_apis import (
 import logging
 
 LOGGER = logging.getLogger(__name__)
-DEVELOPER_EMAIL = "apm-testing-internal-dev@nhs.net"
 
 
 @pytest.fixture()
@@ -57,16 +57,26 @@ def add_asid_to_testapp(developer_apps, nhsd_apim_test_app):
         response = developer_apps.post_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name, body=data)
         LOGGER.info(f'Test app updated with ASID attribute: {response}')
 
+        _MAX_RETRY = 20
+        retry_count = 0
+
+        while retry_count < _MAX_RETRY:
+            LOGGER.info(f'Waiting for AISD to be applied to app. Retry: {retry_count}')
+            app_attributes = developer_apps.get_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name)
+            custom_attributes = app_attributes['attribute']
+            if 'asid' in [attribute['name'] for attribute in custom_attributes]:
+                break
+            retry_count += 1
+
 
 @pytest.fixture()
 async def headers_with_token(
+    add_asid_to_testapp,
     _nhsd_apim_auth_token_data,
     request,
     identity_service_base_url,
-    nhsd_apim_test_app,
     client,
-    api_products,
-    add_asid_to_testapp
+    api_products
 ):
     """Assign required headers with the Authorization header"""
 
