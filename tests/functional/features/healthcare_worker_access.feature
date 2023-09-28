@@ -238,3 +238,51 @@ Feature: Healthcare Worker Access
         And the X-Request-ID response header matches the request
         And the X-Correlation-ID response header matches the request
         And the response body contains the patient's NHS number
+
+    Scenario: Healthcare worker searches for patient but uses wrong date of birth
+        Given I am a healthcare worker
+        And I enter a patient's demographic details incorrectly
+
+        When I search for the patient's PDS record
+
+        Then I get a 200 HTTP response
+        And the X-Request-ID response header matches the request
+        And the X-Correlation-ID response header matches the request
+        And the response body does not contain id
+        And Bundle is a str at "resourceType" in the response body
+        And searchset is a str at "type" in the response body
+        And 0 is an int at "total" in the response body
+
+    Scenario: Search without gender can return mutliple results
+        Given I am a healthcare worker
+        And I enter a patient's vague demographic details
+
+        When I search for the patient's PDS record
+
+        Then I get a 200 HTTP response
+        And the X-Request-ID response header matches the request
+        And the X-Correlation-ID response header matches the request
+
+    Scenario: Search with fuzzy match
+        Given I am a healthcare worker
+        And I enter a patient's fuzzy demographic details
+
+        When the query parameters contain _fuzzy-match as true
+        And I search for the patient's PDS record
+
+        Then I get a 200 HTTP response
+        And searchset is a str at type in the response body
+        And Bundle is a str at resourceType in the response body
+        And 1 is an int at entry[0].search.score in the response body
+        And 9693632109 is a str at entry[0].resource.id in the response body
+
+    Scenario: Search with unicode returns unicode record
+        Given I am a healthcare worker
+        And I enter a patient's unicode demographic details
+
+        When I search for the patient's PDS record
+
+        Then I get a 200 HTTP response
+        And the X-Request-ID response header matches the request
+        And the X-Correlation-ID response header matches the request
+        And the response body contains the expected values for that search

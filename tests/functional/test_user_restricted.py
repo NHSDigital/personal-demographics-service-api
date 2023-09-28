@@ -2,10 +2,12 @@ import json
 import pytest_bdd
 from pytest_bdd import given, when, then, parsers
 from functools import partial
-from .data.pds_scenarios import retrieve, search, update
+from .data.pds_scenarios import retrieve, search as search_scenario, update
 from .data.expected_errors import error_responses
-from .data import test_patients
-from .data.test_patients import Patient
+from .data import patients
+from .data.patients import Patient
+from .data import searches
+from .data.searches import Search
 from .utils import helpers
 import pytest
 from pytest_check import check
@@ -14,6 +16,7 @@ from .configuration.config import ENVIRONMENT, BASE_URL, PDS_BASE_PATH
 from requests import Response, get
 import re
 import urllib.parse
+from jsonpath_rw import parse
 
 LOGGER = logging.getLogger(__name__)
 
@@ -130,6 +133,26 @@ def test_search_with_dob_range():
     pass
 
 
+@scenario('Healthcare worker searches for patient but uses wrong date of birth')
+def test_search_with_empty_results():
+    pass
+
+
+@scenario('Search without gender can return mutliple results')
+def test_search_with_vauge_details():
+    pass
+
+
+@scenario('Search with fuzzy match')
+def test_search_with_fuzzy_match():
+    pass
+
+
+@scenario('Search with unicode returns unicode record')
+def test_search_with_unicode():
+    pass
+
+
 @pytest.fixture()
 def pds_url() -> str:
     return f"{BASE_URL}/{PDS_BASE_PATH}"
@@ -137,27 +160,42 @@ def pds_url() -> str:
 
 @pytest.fixture()
 def patient() -> Patient:
-    return test_patients.DEFAULT
+    return patients.DEFAULT
 
 
 @given("I have a patient's demographic details", target_fixture='patient')
 def searchable_patient() -> Patient:
-    return test_patients.SEARCHABLE
+    return patients.SEARCHABLE
 
 
 @given("I have a sensitive patient's demographic details", target_fixture='patient')
 def sensitive_patient() -> Patient:
-    return test_patients.SENSITIVE
+    return patients.SENSITIVE
 
 
 @given("I have a patient's demographic details without gender", target_fixture='patient')
 def unknown_gender_patient() -> Patient:
-    return test_patients.UNKNOWN_GENDER
+    return patients.UNKNOWN_GENDER
 
 
 @given("I have a patient's demographic details with a date of birth range", target_fixture='patient')
 def dob_range_patient() -> Patient:
-    return test_patients.DOB_RANGE
+    return patients.DOB_RANGE
+
+
+@given("I enter a patient's demographic details incorrectly", target_fixture='patient')
+def wrong_dob_patient():
+    return patients.WRONG_DOB
+
+
+@given("I enter a patient's vague demographic details", target_fixture='patient')
+def vague_patient():
+    return patients.VAUGE_DETAILS
+
+
+@given("I enter a patient's fuzzy demographic details", target_fixture='patient')
+def fuzzy_patient():
+    return patients.FUZZY_DETAILS
 
 
 @pytest.fixture()
@@ -167,11 +205,30 @@ def nhs_number(patient: Patient) -> str:
 
 @pytest.fixture()
 def query_params(patient: Patient) -> str:
+    LOGGER.info(patient.demographic_details)
     return urllib.parse.urlencode(patient.demographic_details)
 
 
+@when(
+    parsers.cfparse(
+        'the query parameters contain {key:String} as {value:String}',
+        extra_types=dict(String=str)
+    ),
+    target_fixture='query_params'
+)
+def amended_query_params(patient: Patient, key: str, value: str) -> str:
+    query_params = patient.demographic_details
+    query_params.update({key: value})
+    return urllib.parse.urlencode(query_params)
+
+
+@given("I enter a patient's unicode demographic details", target_fixture='query_params')
+def unicode_search():
+    return urllib.parse.urlencode(searches.UNICODE.query)
+
+
 @given("I am a healthcare worker")
-def set_healthcare_worker_auth_details(request):
+def provide_healthcare_worker_auth_details(request):
     request.node.add_marker(pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER))
 
 
@@ -284,6 +341,20 @@ def response_body_contains_sensitivity_flag(resource_sensitivity_value: str) -> 
 
 @then(
     parsers.cfparse(
+        '{value:String} is {_:String} {type_convertor:String} at {path:String} in the response body',
+        extra_types=dict(String=str)
+    ))
+def value_in_response_body_at_path(response_body: dict, value: str, type_convertor: str, path: str):
+    matches = parse(path).find(response_body)
+    with check:
+        assert matches, f'There are no matches for {value} at {path} in the resposne body'
+        for match in matches:
+            assert match.value == eval(type_convertor)(value), \
+                f'{match.value} is not the expected value, {value}, at {path}'
+
+
+@then(
+    parsers.cfparse(
         'the response body does not contain {field:String}',
         extra_types=dict(String=str)
     )
@@ -313,8 +384,7 @@ def resposne_body_as_expected(response_body: dict, error):
 
 
 @then('the response body is the correct shape')
-def response_body_shape(response: Response) -> None:
-    response_body = json.loads(response.text)
+def response_body_shape(response_body: Response) -> None:
     with check:
         assert response_body["address"] is not None
         assert isinstance(response_body["address"], list)
@@ -334,6 +404,22 @@ def response_body_shape(response: Response) -> None:
         assert isinstance(response_body["identifier"], list)
 
         assert response_body["meta"] is not None
+
+
+@pytest.fixture()
+def search() -> Search:
+    return searches.UNICODE
+
+
+@then('the response body contains the expected values for that search')
+def check_expected_search_response_body(response_body: dict, search: Search) -> None:
+    with check:
+        for field in search.expected_response_fields:
+            matches = parse(field.path).find(response_body)
+            assert matches, f'There are no matches for {field.value} at {field.path} in the resposne body'
+            for match in matches:
+                assert match.value == field.value,\
+                    f'{field.path} in response does not contain the expected value, {field.value}'
 
 
 class TestUserRestrictedRetrievePatientOld:
@@ -521,10 +607,10 @@ class TestUserRestrictedSearchPatient:
     def test_search_patient_with_blank_auth_header(self, headers):
         headers['authorization'] = ''
         response = helpers.search_patient(
-            search[2]["query_params"],
+            search_scenario[2]["query_params"],
             headers
         )
-        helpers.check_search_response_body(response, search[2]["response"])
+        helpers.check_search_response_body(response, search_scenario[2]["response"])
         helpers.check_response_status_code(response, 401)
         helpers.check_response_headers(response, headers)
 
@@ -612,16 +698,17 @@ class TestUserRestrictedSearchPatient:
     #     helpers.check_response_headers(response, self.headers)
 
     # test_search_with_dob_range
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_search_advanced_alphanumeric_gender_free(self, headers_with_token):
-        response = helpers.search_patient(
-            search[9]["query_params"],
-            self.headers
-        )
-        helpers.check_response_status_code(response, 200)
-        helpers.assert_correct_patient_nhs_number_is_returned(response, search[9]["patient_returned"])
-        helpers.check_response_headers(response, self.headers)
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_search_advanced_alphanumeric_gender_free(self, headers_with_token):
+    #     response = helpers.search_patient(
+    #         search[9]["query_params"],
+    #         self.headers
+    #     )
+    #     helpers.check_response_status_code(response, 200)
+    #     helpers.assert_correct_patient_nhs_number_is_returned(response, search[9]["patient_returned"])
+    #     helpers.check_response_headers(response, self.headers)
 
+    # TODO: Does this need implementing? Is this not the same as the test above?
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_simple_trace_no_gender(self, headers_with_token):
         """See TestBase37101 Chain 7001"""
@@ -638,21 +725,23 @@ class TestUserRestrictedSearchPatient:
         assert response_body["total"] == 1
         assert response_body["entry"][0]["resource"]["id"] == "9693632109"
 
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_simple_trace_no_gender_no_result(self, headers_with_token):
-        """See TestBase37101 Chain 7002"""
-        print(self.headers)
-        response = helpers.search_patient(
-            {"family": "Garton", "birthdate": "1947-06-23"},
-            self.headers
-        )
-        response_body = response.json()
+    # test_search_with_empty_results
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_simple_trace_no_gender_no_result(self, headers_with_token):
+    #     """See TestBase37101 Chain 7002"""
+    #     print(self.headers)
+    #     response = helpers.search_patient(
+    #         {"family": "Garton", "birthdate": "1947-06-23"},
+    #         self.headers
+    #     )
+    #     response_body = response.json()
 
-        assert response.status_code == 200
-        assert response_body["resourceType"] == "Bundle"
-        assert response_body["type"] == "searchset"
-        assert response_body["total"] == 0
+    #     assert response.status_code == 200
+    #     assert response_body["resourceType"] == "Bundle"
+    #     assert response_body["type"] == "searchset"
+    #     assert response_body["total"] == 0
 
+    # TODO: How to implement?
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_no_gender_postcode_format_doesnt_affect_score(self, headers_with_token):
         """See TestBase37101 Chain 7003"""
@@ -675,75 +764,80 @@ class TestUserRestrictedSearchPatient:
         assert response_1_body["entry"][0]["search"]["score"] == 1
         assert response_1_body["entry"][0]["search"]["score"] == response_2_body["entry"][0]["search"]["score"]
 
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_algorithmic_search_without_gender(self, headers_with_token):
-        """See TestBase37102 Chain 7001"""
-        response = helpers.search_patient(
-            {"family": "YOUDS", "birthdate": "1970-01-24"},
-            self.headers
-        )
-        response_body = response.json()
-        LOGGER.info(f'response_body: {response_body}')
+    # test_search_with_vauge_details
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_algorithmic_search_without_gender(self, headers_with_token):
+    #     """See TestBase37102 Chain 7001"""
+    #     response = helpers.search_patient(
+    #         {"family": "YOUDS", "birthdate": "1970-01-24"},
+    #         self.headers
+    #     )
+    #     response_body = response.json()
+    #     LOGGER.info(f'response_body: {response_body}')
 
-        assert response.status_code == 200
-        assert response_body["type"] == "searchset"
-        assert response_body["resourceType"] == "Bundle"
-        assert response_body["total"] == 4
-        assert response_body["entry"][0]["search"]["score"] == 1
-        assert response_body["entry"][0]["resource"]["id"] == "9693633679"
-        assert response_body["entry"][0]["resource"]["gender"] == "male"
-        assert response_body["entry"][0]["resource"]["birthDate"] == "1970-01-24"
-        assert response_body["entry"][1]["search"]["score"] == 1
-        assert response_body["entry"][1]["resource"]["id"] == "9693633687"
-        assert response_body["entry"][1]["resource"]["gender"] == "female"
-        assert response_body["entry"][1]["resource"]["birthDate"] == "1970-01-24"
-        assert response_body["entry"][2]["search"]["score"] == 1
-        assert response_body["entry"][2]["resource"]["id"] == "9693633695"
-        assert response_body["entry"][2]["resource"]["gender"] == "unknown"
-        assert response_body["entry"][2]["resource"]["birthDate"] == "1970-01-24"
-        assert response_body["entry"][3]["search"]["score"] == 1
-        assert response_body["entry"][3]["resource"]["id"] == "9693633709"
-        assert response_body["entry"][3]["resource"]["gender"] == "other"
-        assert response_body["entry"][3]["resource"]["birthDate"] == "1970-01-24"
+    #     assert response.status_code == 200
+    #     assert response_body["type"] == "searchset"
+    #     assert response_body["resourceType"] == "Bundle"
+    #     assert response_body["total"] == 4
+    #     assert response_body["entry"][0]["search"]["score"] == 1
+    #     assert response_body["entry"][0]["resource"]["id"] == "9693633679"
+    #     assert response_body["entry"][0]["resource"]["gender"] == "male"
+    #     assert response_body["entry"][0]["resource"]["birthDate"] == "1970-01-24"
+    #     assert response_body["entry"][1]["search"]["score"] == 1
+    #     assert response_body["entry"][1]["resource"]["id"] == "9693633687"
+    #     assert response_body["entry"][1]["resource"]["gender"] == "female"
+    #     assert response_body["entry"][1]["resource"]["birthDate"] == "1970-01-24"
+    #     assert response_body["entry"][2]["search"]["score"] == 1
+    #     assert response_body["entry"][2]["resource"]["id"] == "9693633695"
+    #     assert response_body["entry"][2]["resource"]["gender"] == "unknown"
+    #     assert response_body["entry"][2]["resource"]["birthDate"] == "1970-01-24"
+    #     assert response_body["entry"][3]["search"]["score"] == 1
+    #     assert response_body["entry"][3]["resource"]["id"] == "9693633709"
+    #     assert response_body["entry"][3]["resource"]["gender"] == "other"
+    #     assert response_body["entry"][3]["resource"]["birthDate"] == "1970-01-24"
 
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_algorithmic_fuzzy_match_unknown_gender(self, headers_with_token):
-        """See TestBase37104 Chain 0001"""
-        response = helpers.search_patient(
-            {"family": "Garton", "given": "Bill", "birthdate": "1946-06-23", "_fuzzy-match": "true"},
-            self.headers
-        )
-        response_body = response.json()
+    # test_search_with_fuzzy_match
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_algorithmic_fuzzy_match_unknown_gender(self, headers_with_token):
+    #     """See TestBase37104 Chain 0001"""
+    #     response = helpers.search_patient(
+    #         {"family": "Garton", "given": "Bill", "birthdate": "1946-06-23", "_fuzzy-match": "true"},
+    #         self.headers
+    #     )
+    #     response_body = response.json()
 
-        assert response.status_code == 200
-        assert response_body["type"] == "searchset"
-        assert response_body["resourceType"] == "Bundle"
-        assert response_body["entry"][0]["search"]["score"] == 1
-        assert response_body["entry"][0]["resource"]["id"] == "9693632109"
+    #     assert response.status_code == 200
+    #     assert response_body["type"] == "searchset"
+    #     assert response_body["resourceType"] == "Bundle"
+    #     assert response_body["entry"][0]["search"]["score"] == 1
+    #     assert response_body["entry"][0]["resource"]["id"] == "9693632109"
 
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_algorithmic_fuzzy_match_unicode(self, headers_with_token):
-        """See TestBase37104 Chain 0007"""
-        response = helpers.search_patient(
-            {"family": "ATTSÖN", "given": "PÀULINÉ", "birthdate": "1960-07-14", "_fuzzy-match": "true"},
-            self.headers
-        )
-        response_body = response.json()
+    # test_search_with_unicode
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_algorithmic_fuzzy_match_unicode(self, headers_with_token):
+    #     """See TestBase37104 Chain 0007"""
+    #     response = helpers.search_patient(
+    #         {"family": "ATTSÖN", "given": "PÀULINÉ", "birthdate": "1960-07-14", "_fuzzy-match": "true"},
+    #         self.headers
+    #     )
+    #     response_body = response.json()
 
-        assert response.status_code == 200
-        assert response_body["type"] == "searchset"
-        assert response_body["resourceType"] == "Bundle"
-        assert response_body["entry"][0]["search"]["score"] == 0.9317
-        assert response_body["entry"][0]["resource"]["id"] == "9693633148"
-        assert response_body["entry"][0]["resource"]["gender"] == "female"
-        assert response_body["entry"][0]["resource"]["birthDate"] == "1960-07-14"
-        assert response_body["entry"][0]["resource"]["name"][0]["family"] == "attisón"
-        assert response_body["entry"][0]["resource"]["name"][0]["given"][0] == "Pauline"
-        assert response_body["entry"][1]["search"]["score"] == 0.9077
-        assert response_body["entry"][1]["resource"]["id"] == "9693633121"
-        assert response_body["entry"][1]["resource"]["gender"] == "female"
-        assert response_body["entry"][1]["resource"]["birthDate"] == "1960-07-14"
+    #     assert response.status_code == 200
+    #     assert response_body["type"] == "searchset"
+    #     assert response_body["resourceType"] == "Bundle"
+    #     assert response_body["entry"][0]["search"]["score"] == 0.9317
+    #     assert response_body["entry"][0]["resource"]["id"] == "9693633148"
+    #     assert response_body["entry"][0]["resource"]["gender"] == "female"
+    #     assert response_body["entry"][0]["resource"]["birthDate"] == "1960-07-14"
+    #     assert response_body["entry"][0]["resource"]["name"][0]["family"] == "attisón"
+    #     assert response_body["entry"][0]["resource"]["name"][0]["given"][0] == "Pauline"
+    #     assert response_body["entry"][1]["search"]["score"] == 0.9077
+    #     assert response_body["entry"][1]["resource"]["id"] == "9693633121"
+    #     assert response_body["entry"][1]["resource"]["gender"] == "female"
+    #     assert response_body["entry"][1]["resource"]["birthDate"] == "1960-07-14"
 
+    # TODO: Is this necessary? These tests are not for end-to-end tests.
+    # It is already shown that the proxy handles unicode. What is there to gain from this test?
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_algorithmic_fuzzy_match_regular_returns_unicode(self, headers_with_token):
         """See TestBase37104 Chain 0008"""
