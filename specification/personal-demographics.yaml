@@ -1811,7 +1811,9 @@ components:
       name: NHSD-End-User-Organisation-ODS
       required: false
       description: |
-        The ODS code of an End User Organisation (EUO). Currently optional but will be updated to be mandatory for client applications which service multiple End User organisations, in order to correctly attribute calls to each EUO. Date of change to a mandatory field to be defined.
+        The ODS code of the user.
+        
+        Mandatory for client applications which service multiple end user organisations (EUO). This will allow the calls to be attributed to the correct EUO.
       schema:
         type: string
         example: Y12345
