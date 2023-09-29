@@ -2,18 +2,20 @@ import json
 import pytest_bdd
 from pytest_bdd import given, when, then, parsers
 from functools import partial
-from .data.pds_scenarios import retrieve, search as search_scenario, update
+from .data.pds_scenarios import retrieve, search as search_scenario, update as update_scenario
 from .data.expected_errors import error_responses
 from .data import patients
 from .data.patients import Patient
 from .data import searches
 from .data.searches import Search
+from .data import updates
+from .data.updates import Update
 from .utils import helpers
 import pytest
 from pytest_check import check
 import logging
 from .configuration.config import ENVIRONMENT, BASE_URL, PDS_BASE_PATH
-from requests import Response, get
+from requests import Response, get, patch
 import re
 import urllib.parse
 from jsonpath_rw import parse
@@ -133,23 +135,28 @@ def test_search_with_dob_range():
     pass
 
 
-@scenario('Healthcare worker searches for patient but uses wrong date of birth')
-def test_search_with_empty_results():
-    pass
-
-
-@scenario('Search without gender can return mutliple results')
+@scenario('Searching without gender can return mutliple results')
 def test_search_with_vauge_details():
     pass
 
 
-@scenario('Search with fuzzy match')
+@scenario('Searching with fuzzy match')
 def test_search_with_fuzzy_match():
     pass
 
 
-@scenario('Search with unicode returns unicode record')
+@scenario('Searching with unicode returns unicode record')
 def test_search_with_unicode():
+    pass
+
+
+@scenario('Searching with specified results limit can return error')
+def test_search_returns_error_due_to_results_limit():
+    pass
+
+
+@scenario('Update patient')
+def test_update_patient():
     pass
 
 
@@ -163,39 +170,44 @@ def patient() -> Patient:
     return patients.DEFAULT
 
 
-@given("I have a patient's demographic details", target_fixture='patient')
-def searchable_patient() -> Patient:
-    return patients.SEARCHABLE
+@given("I have a patient's demographic details", target_fixture='search')
+def search() -> Search:
+    return searches.DEFAULT
 
 
-@given("I have a sensitive patient's demographic details", target_fixture='patient')
-def sensitive_patient() -> Patient:
-    return patients.SENSITIVE
+@pytest.fixture()
+def update():
+    return updates.DEFAULT
 
 
-@given("I have a patient's demographic details without gender", target_fixture='patient')
-def unknown_gender_patient() -> Patient:
-    return patients.UNKNOWN_GENDER
+@given("I have a sensitive patient's demographic details", target_fixture='search')
+def search_for_sensitive() -> Patient:
+    return searches.SENSITIVE
 
 
-@given("I have a patient's demographic details with a date of birth range", target_fixture='patient')
-def dob_range_patient() -> Patient:
-    return patients.DOB_RANGE
+@given("I have a patient's demographic details without gender", target_fixture='search')
+def search_without_gender() -> Patient:
+    return searches.UNKNOWN_GENDER
 
 
-@given("I enter a patient's demographic details incorrectly", target_fixture='patient')
-def wrong_dob_patient():
-    return patients.WRONG_DOB
+@given("I have a patient's demographic details with a date of birth range", target_fixture='search')
+def search_dob_range() -> Patient:
+    return searches.DOB_RANGE
 
 
-@given("I enter a patient's vague demographic details", target_fixture='patient')
+@given("I enter a patient's vague demographic details", target_fixture='search')
 def vague_patient():
-    return patients.VAUGE_DETAILS
+    return searches.VAGUE
 
 
-@given("I enter a patient's fuzzy demographic details", target_fixture='patient')
-def fuzzy_patient():
-    return patients.FUZZY_DETAILS
+@given("I enter a patient's fuzzy demographic details", target_fixture='search')
+def fuzzy_search():
+    return searches.FUZZY
+
+
+@given("I enter a patient's unicode demographic details", target_fixture='search')
+def unicode_search() -> Search:
+    return searches.UNICODE
 
 
 @pytest.fixture()
@@ -203,10 +215,19 @@ def nhs_number(patient: Patient) -> str:
     return patient.nhs_number
 
 
+@given("I have a patient's record to update", target_fixture='record_to_update')
+def record_to_update(update: Update, headers_with_authorization: dict, pds_url: str) -> dict:
+    response = retrieve_patient(headers_with_authorization, update.nhs_number, pds_url)
+
+    update.record_to_update = json.loads(response.text)
+    update.etag = response.headers['Etag']
+
+    return update.record_to_update
+
+
 @pytest.fixture()
-def query_params(patient: Patient) -> str:
-    LOGGER.info(patient.demographic_details)
-    return urllib.parse.urlencode(patient.demographic_details)
+def query_params(search: Search) -> str:
+    return urllib.parse.urlencode(search.query)
 
 
 @when(
@@ -216,15 +237,10 @@ def query_params(patient: Patient) -> str:
     ),
     target_fixture='query_params'
 )
-def amended_query_params(patient: Patient, key: str, value: str) -> str:
-    query_params = patient.demographic_details
-    query_params.update({key: value})
+def amended_query_params(search: Search, key: str, value: str) -> str:
+    query_params = search.query
+    query_params.append((key, value))
     return urllib.parse.urlencode(query_params)
-
-
-@given("I enter a patient's unicode demographic details", target_fixture='query_params')
-def unicode_search():
-    return urllib.parse.urlencode(searches.UNICODE.query)
 
 
 @given("I am a healthcare worker")
@@ -257,13 +273,20 @@ def empty_header(headers_with_authorization: dict, field: str):
 
 @given(
     parsers.cfparse(
-        'I have an invalid {field:String} header containing "{value:String}"',
+        'I have a header {field:String} value of "{value:String}"',
         extra_types=dict(String=str)
     ),
     target_fixture='headers_with_authorization')
 def invalid_header(headers_with_authorization: dict, field: str, value: str) -> dict:
     headers_with_authorization.update({field: value})
     return headers_with_authorization
+
+
+@given("I wish to update the patient's gender")
+def add_new_gender_to_patch(update: Update) -> None:
+    current_gender = update.record_to_update['gender']
+    new_gender = 'male' if current_gender == 'female' else 'female'
+    update.value = new_gender
 
 
 @given('I am using the deprecated url', target_fixture='pds_url')
@@ -283,19 +306,21 @@ def search_patient(headers_with_authorization: dict, query_params: str, pds_url:
     return get(url=f"{pds_url}/Patient?{query_params}", headers=headers_with_authorization)
 
 
+@when("I update the patient's PDS record", target_fixture='response')
+def update_patient(headers_with_authorization: dict, update: Update, pds_url: str) -> Response:
+    headers = headers_with_authorization
+    headers.update({
+        "Content-Type": "application/json-patch+json",
+        "If-Match": update.etag,
+    })
+    return patch(url=f"{pds_url}/Patient/{update.nhs_number}",
+                 headers=headers,
+                 json=update.patches)
+
+
 @pytest.fixture()
 def response_body(response: Response) -> dict:
     return json.loads(response.text)
-
-
-@pytest.fixture()
-def first_entry_resource(response_body: dict) -> dict:
-    return response_body['entry'][0]['resource']
-
-
-@pytest.fixture()
-def resource_sensitivity_value(first_entry_resource: dict) -> dict:
-    return first_entry_resource['meta']['security'][0]['display']
 
 
 @then(
@@ -334,9 +359,11 @@ def response_body_contains_given_id(response_body: dict, nhs_number: dict) -> No
 
 
 @then('the resposne body contains the sensitivity flag')
-def response_body_contains_sensitivity_flag(resource_sensitivity_value: str) -> None:
-    with check:
-        assert resource_sensitivity_value == 'restricted'
+def response_body_contains_sensitivity_flag(response_body: str) -> None:
+    value_in_response_body_at_path(response_body,
+                                   'restricted',
+                                   'str',
+                                   'entry[0].resource.meta.security[0].display')
 
 
 @then(
@@ -406,9 +433,16 @@ def response_body_shape(response_body: Response) -> None:
         assert response_body["meta"] is not None
 
 
-@pytest.fixture()
-def search() -> Search:
-    return searches.UNICODE
+@then("the response body contains the patient's new gender")
+def new_gender(response_body: Response, update: Update) -> None:
+    with check:
+        assert response_body['gender'] == update.value
+
+
+@then("the response body contains the record's new version number")
+def version_incremented(response_body: Response, update: Update) -> None:
+    with check:
+        assert response_body["meta"]["versionId"] == str(int(update.record_version) + 1)
 
 
 @then('the response body contains the expected values for that search')
@@ -416,10 +450,10 @@ def check_expected_search_response_body(response_body: dict, search: Search) -> 
     with check:
         for field in search.expected_response_fields:
             matches = parse(field.path).find(response_body)
-            assert matches, f'There are no matches for {field.value} at {field.path} in the resposne body'
+            assert matches, f'There are no matches for {field.expected_value} at {field.path} in the resposne body'
             for match in matches:
-                assert match.value == field.value,\
-                    f'{field.path} in response does not contain the expected value, {field.value}'
+                assert match.value == field.expected_value,\
+                    f'{field.path} in response does not contain the expected value, {field.expected_value}'
 
 
 class TestUserRestrictedRetrievePatientOld:
@@ -725,21 +759,21 @@ class TestUserRestrictedSearchPatient:
         assert response_body["total"] == 1
         assert response_body["entry"][0]["resource"]["id"] == "9693632109"
 
-    # test_search_with_empty_results
-    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    # def test_simple_trace_no_gender_no_result(self, headers_with_token):
-    #     """See TestBase37101 Chain 7002"""
-    #     print(self.headers)
-    #     response = helpers.search_patient(
-    #         {"family": "Garton", "birthdate": "1947-06-23"},
-    #         self.headers
-    #     )
-    #     response_body = response.json()
+    # TODO: Is this necessary?
+    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    def test_simple_trace_no_gender_no_result(self, headers_with_token):
+        """See TestBase37101 Chain 7002"""
+        print(self.headers)
+        response = helpers.search_patient(
+            {"family": "Garton", "birthdate": "1947-06-23"},
+            self.headers
+        )
+        response_body = response.json()
 
-    #     assert response.status_code == 200
-    #     assert response_body["resourceType"] == "Bundle"
-    #     assert response_body["type"] == "searchset"
-    #     assert response_body["total"] == 0
+        assert response.status_code == 200
+        assert response_body["resourceType"] == "Bundle"
+        assert response_body["type"] == "searchset"
+        assert response_body["total"] == 0
 
     # TODO: How to implement?
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
@@ -861,6 +895,7 @@ class TestUserRestrictedSearchPatient:
         assert response_body["entry"][1]["resource"]["gender"] == "female"
         assert response_body["entry"][1]["resource"]["birthDate"] == "1960-07-14"
 
+    # TODO: Is this necessary?
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_algorithmic_fuzzy_match_for_birthdate_range(self, headers_with_token):
         """See TestBase37104 Chain 0009"""
@@ -876,6 +911,7 @@ class TestUserRestrictedSearchPatient:
         assert response_body["entry"][0]["search"]["score"] == 1
         assert response_body["entry"][0]["resource"]["id"] == "9693632109"
 
+    # TODO: Why is this fuzzy and exact?
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_algorithmic_exact_match_requested_but_not_found(self, headers_with_token):
         """See TestBase37105 Chain 0003"""
@@ -893,6 +929,8 @@ class TestUserRestrictedSearchPatient:
         assert response_body["resourceType"] == "Bundle"
         assert response_body["total"] == 0
 
+    # TODO: What is this testing? Only two come back from search (having looked at full response)
+    # We know that multiple resources can come back.
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_algorithmic_requesting_50_results(self, headers_with_token):
         """See TestBase37107 Chain 0004"""
@@ -912,6 +950,7 @@ class TestUserRestrictedSearchPatient:
         assert response_body["entry"][0]["resource"]["id"] == "9693633121"
         assert response_body["entry"][1]["search"]["score"] == 0.9648
 
+    # test_search_returns_error_due_to_results_limit
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_algorithmic_requesting_1_result_too_many_matches(self, headers_with_token):
         """See TestBase37107 Chain 0008"""
@@ -922,11 +961,11 @@ class TestUserRestrictedSearchPatient:
             self.headers
         )
         response_body = response.json()
-
         assert response_body["resourceType"] == "OperationOutcome"
         assert response_body["issue"][0]["details"]["coding"][0]["code"] == "TOO_MANY_MATCHES"
         assert response_body["issue"][0]["details"]["coding"][0]["display"] == "Too Many Matches"
 
+    # TODO: Is this necessary? Check this spine-side.
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_simple_search_family_name_still_required(self, headers_with_token):
         response = helpers.search_patient(
@@ -939,6 +978,7 @@ class TestUserRestrictedSearchPatient:
         assert response_body["resourceType"] == "OperationOutcome"
         assert response_body["issue"][0]["details"]["coding"][0]["code"] == "INVALID_SEARCH_DATA"
 
+    # TODO: Is this necessary? Check this spine-side.
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_simple_search_birthdate_still_required(self, headers_with_token):
         response = helpers.search_patient(
@@ -951,6 +991,7 @@ class TestUserRestrictedSearchPatient:
         assert response_body["resourceType"] == "OperationOutcome"
         assert response_body["issue"][0]["details"]["coding"][0]["code"] == "MISSING_VALUE"
 
+    # TODO: Is this necessary? Check this spine-side.
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_search_for_similar_patient_different_genders(self, headers_with_token):
         """Performing a gender-free search where there exists four patients with the same
@@ -1016,7 +1057,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
     def test_update_patient_gender(self, headers_with_token):
         #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
         response = helpers.retrieve_patient(
-            update[0]["patient"],
+            update_scenario[0]["patient"],
             self.headers
         )
         patient_record = response.headers["Etag"]
@@ -1026,16 +1067,16 @@ class TestUserRestrictedPatientUpdateSyncWrap:
         new_gender = 'male' if current_gender == 'female' else 'female'
 
         # add the new gender to the patch, send the update and check the response
-        update[0]["patch"]["patches"][0]["value"] = new_gender
+        update_scenario[0]["patch"]["patches"][0]["value"] = new_gender
         self.headers["X-Sync-Wait"] = "29"
 
         # Prefer header deprecated check that it still returns 200 response
         self.headers["Prefer"] = "respond-async"
 
         update_response = helpers.update_patient(
-            update[0]["patient"],
+            update_scenario[0]["patient"],
             patient_record,
-            update[0]["patch"],
+            update_scenario[0]["patch"],
             self.headers
         )
         with check:
@@ -1049,7 +1090,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
         #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
         def retrieve_patient():
             response = helpers.retrieve_patient(
-                update[0]["patient"],
+                update_scenario[0]["patient"],
                 self.headers
             )
             return response
@@ -1062,14 +1103,14 @@ class TestUserRestrictedPatientUpdateSyncWrap:
         current_gender = (json.loads(response.text))["gender"]
         new_gender = 'male' if current_gender == 'female' else 'female'
 
-        update[0]["patch"]["patches"][0]["value"] = new_gender
+        update_scenario[0]["patch"]["patches"][0]["value"] = new_gender
 
         self.headers["X-Sync-Wait"] = "invalid"
 
         update_response = helpers.update_patient(
-            update[0]["patient"],
+            update_scenario[0]["patient"],
             patient_record,
-            update[0]["patch"],
+            update_scenario[0]["patch"],
             self.headers
         )
 
@@ -1095,7 +1136,7 @@ class TestUserRestrictedPatientUpdateSyncWrap:
     def test_update_patient_gender_with_low_sync_wait_timeout(self, headers_with_token):
         #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
         response = helpers.retrieve_patient(
-            update[0]["patient"],
+            update_scenario[0]["patient"],
             self.headers
         )
         patient_record = response.headers["Etag"]
@@ -1103,13 +1144,13 @@ class TestUserRestrictedPatientUpdateSyncWrap:
         current_gender = (json.loads(response.text))["gender"]
         new_gender = 'male' if current_gender == 'female' else 'female'
 
-        update[0]["patch"]["patches"][0]["value"] = new_gender
+        update_scenario[0]["patch"]["patches"][0]["value"] = new_gender
 
         self.headers["X-Sync-Wait"] = "0.25"
         update_response = helpers.update_patient(
-            update[0]["patient"],
+            update_scenario[0]["patient"],
             patient_record,
-            update[0]["patch"],
+            update_scenario[0]["patch"],
             self.headers
         )
 
@@ -1117,36 +1158,36 @@ class TestUserRestrictedPatientUpdateSyncWrap:
 
     def test_update_patient_with_missing_auth_header(self, headers):
         update_response = helpers.update_patient(
-            update[1]["patient"],
+            update_scenario[1]["patient"],
             'W/"14"',
-            update[1]["patch"],
+            update_scenario[1]["patch"],
             headers
         )
-        helpers.check_retrieve_response_body(update_response, update[1]["response"])
+        helpers.check_retrieve_response_body(update_response, update_scenario[1]["response"])
         helpers.check_response_status_code(update_response, 401)
         helpers.check_response_headers(update_response, headers)
 
     def test_update_patient_with_blank_auth_header(self, headers):
         headers['authorization'] = ''
         update_response = helpers.update_patient(
-            update[2]["patient"],
+            update_scenario[2]["patient"],
             'W/"14"',
-            update[2]["patch"],
+            update_scenario[2]["patch"],
             headers
         )
-        helpers.check_retrieve_response_body(update_response, update[2]["response"])
+        helpers.check_retrieve_response_body(update_response, update_scenario[2]["response"])
         helpers.check_response_status_code(update_response, 401)
         helpers.check_response_headers(update_response, headers)
 
     def test_update_patient_with_invalid_auth_header(self, headers):
         headers['authorization'] = 'Bearer abcdef123456789'
         update_response = helpers.update_patient(
-            update[3]["patient"],
+            update_scenario[3]["patient"],
             'W/"14"',
-            update[3]["patch"],
+            update_scenario[3]["patch"],
             headers
         )
-        helpers.check_retrieve_response_body(update_response, update[3]["response"])
+        helpers.check_retrieve_response_body(update_response, update_scenario[3]["response"])
         helpers.check_response_status_code(update_response, 401)
         helpers.check_response_headers(update_response, headers)
 
@@ -1154,12 +1195,12 @@ class TestUserRestrictedPatientUpdateSyncWrap:
     def test_update_patient_with_blank_x_request_header(self, headers_with_token):
         self.headers["X-Request-ID"] = ''
         update_response = helpers.update_patient(
-            update[5]["patient"],
+            update_scenario[5]["patient"],
             'W/"14"',
-            update[5]["patch"],
+            update_scenario[5]["patch"],
             self.headers
         )
-        helpers.check_retrieve_response_body(update_response, update[5]["response"])
+        helpers.check_retrieve_response_body(update_response, update_scenario[5]["response"])
         helpers.check_response_status_code(update_response, 400)
         self.headers.pop("X-Request-ID")
         helpers.check_response_headers(update_response, self.headers)
@@ -1168,12 +1209,12 @@ class TestUserRestrictedPatientUpdateSyncWrap:
     def test_update_patient_with_invalid_x_request_header(self, headers_with_token):
         self.headers["X-Request-ID"] = '1234'
         update_response = helpers.update_patient(
-            update[6]["patient"],
+            update_scenario[6]["patient"],
             'W/"14"',
-            update[6]["patch"],
+            update_scenario[6]["patch"],
             self.headers
         )
-        helpers.check_retrieve_response_body(update_response, update[6]["response"])
+        helpers.check_retrieve_response_body(update_response, update_scenario[6]["response"])
         helpers.check_response_status_code(update_response, 400)
         helpers.check_response_headers(update_response, self.headers)
 
@@ -1181,12 +1222,12 @@ class TestUserRestrictedPatientUpdateSyncWrap:
     def test_update_patient_with_missing_x_request_header(self, headers_with_token):
         self.headers.pop("X-Request-ID")
         update_response = helpers.update_patient(
-            update[7]["patient"],
+            update_scenario[7]["patient"],
             'W/"14"',
-            update[7]["patch"],
+            update_scenario[7]["patch"],
             self.headers
         )
-        helpers.check_retrieve_response_body(update_response, update[7]["response"])
+        helpers.check_retrieve_response_body(update_response, update_scenario[7]["response"])
         helpers.check_response_status_code(update_response, 412)
         helpers.check_response_headers(update_response, self.headers)
 

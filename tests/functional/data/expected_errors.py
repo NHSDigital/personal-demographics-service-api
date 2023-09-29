@@ -158,5 +158,24 @@ error_responses = {
                 "diagnostics": "Invalid request with error - X-Request-ID header must be supplied to access this resource"
             }
         ]
+    },
+    "Too Many Matches": {
+        "issue": [
+            {
+                "code": "multiple-matches",
+                "details": {
+                    "coding": [
+                        {
+                            "code": "TOO_MANY_MATCHES",
+                            "display": "Too Many Matches",
+                            "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+                            "version": "1"
+                        }
+                    ]
+                },
+                "severity": "information"
+            }
+        ],
+        "resourceType": "OperationOutcome"
     }
 }

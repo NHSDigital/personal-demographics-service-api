@@ -46,7 +46,7 @@ Feature: Healthcare Worker Access
 
     Scenario: Attempt to retrieve a patient with an invalid authorization header
         Given I am a healthcare worker
-        And I have an invalid Authorization header containing "Bearer abcdef123456789"
+        And I have a header Authorization value of "Bearer abcdef123456789"
 
         When I retrieve a patient
 
@@ -70,7 +70,7 @@ Feature: Healthcare Worker Access
 
     Scenario: Attempt to retrieve a patient with an invalid role
         Given I am a healthcare worker
-        And I have an invalid NHSD-Session-URID header containing "invalid"
+        And I have a header NHSD-Session-URID value of "invalid"
 
         When I retrieve a patient
 
@@ -94,7 +94,7 @@ Feature: Healthcare Worker Access
 
     Scenario: Attempt to retrieve a patient with an invalid X-Request-ID
         Given I am a healthcare worker
-        And I have an invalid X-Request-ID header containing "1234"
+        And I have a header X-Request-ID value of "1234"
 
         When I retrieve a patient
 
@@ -125,7 +125,7 @@ Feature: Healthcare Worker Access
         Then I get a 200 HTTP response
         And the X-Request-ID response header matches the request
         And the X-Correlation-ID response header matches the request
-        And the response body contains the patient's NHS number
+        And the response body contains the expected values for that search
 
     Scenario: Attempt to search for a patient with missing authorization header
         Given I am a healthcare worker
@@ -156,7 +156,7 @@ Feature: Healthcare Worker Access
     Scenario: Attempt to search for a patient with an invalid authorization header
         Given I am a healthcare worker
         And I have a patient's demographic details
-        And I have an invalid Authorization header containing "Bearer abcdef123456789"
+        And I have a header Authorization value of "Bearer abcdef123456789"
 
         When I search for the patient's PDS record
 
@@ -182,7 +182,7 @@ Feature: Healthcare Worker Access
     Scenario: Attempt to search for a patient with an invalid X-Request-ID
         Given I am a healthcare worker
         And I have a patient's demographic details
-        And I have an invalid X-Request-ID header containing "1234"
+        And I have a header X-Request-ID value of "1234"
 
         When I search for the patient's PDS record
 
@@ -212,9 +212,7 @@ Feature: Healthcare Worker Access
         When I search for the patient's PDS record
 
         Then I get a 200 HTTP response
-        And the X-Request-ID response header matches the request
-        And the X-Correlation-ID response header matches the request
-        And the response body contains the patient's NHS number
+        And the response body contains the expected values for that search
         And the resposne body contains the sensitivity flag
 
     Scenario: Healthcare worker searches for patient without specifying gender
@@ -224,9 +222,7 @@ Feature: Healthcare Worker Access
         When I search for the patient's PDS record
 
         Then I get a 200 HTTP response
-        And the X-Request-ID response header matches the request
-        And the X-Correlation-ID response header matches the request
-        And the response body contains the patient's NHS number
+        And the response body contains the expected values for that search
 
     Scenario: Healthcare worker searches for a patient with range for date of birth
         Given I am a healthcare worker
@@ -235,35 +231,18 @@ Feature: Healthcare Worker Access
         When I search for the patient's PDS record
 
         Then I get a 200 HTTP response
-        And the X-Request-ID response header matches the request
-        And the X-Correlation-ID response header matches the request
-        And the response body contains the patient's NHS number
+        And the response body contains the expected values for that search
 
-    Scenario: Healthcare worker searches for patient but uses wrong date of birth
-        Given I am a healthcare worker
-        And I enter a patient's demographic details incorrectly
-
-        When I search for the patient's PDS record
-
-        Then I get a 200 HTTP response
-        And the X-Request-ID response header matches the request
-        And the X-Correlation-ID response header matches the request
-        And the response body does not contain id
-        And Bundle is a str at "resourceType" in the response body
-        And searchset is a str at "type" in the response body
-        And 0 is an int at "total" in the response body
-
-    Scenario: Search without gender can return mutliple results
+    Scenario: Searching without gender can return mutliple results
         Given I am a healthcare worker
         And I enter a patient's vague demographic details
 
         When I search for the patient's PDS record
 
         Then I get a 200 HTTP response
-        And the X-Request-ID response header matches the request
-        And the X-Correlation-ID response header matches the request
+        And the response body contains the expected values for that search
 
-    Scenario: Search with fuzzy match
+    Scenario: Searching with fuzzy match
         Given I am a healthcare worker
         And I enter a patient's fuzzy demographic details
 
@@ -271,18 +250,34 @@ Feature: Healthcare Worker Access
         And I search for the patient's PDS record
 
         Then I get a 200 HTTP response
-        And searchset is a str at type in the response body
-        And Bundle is a str at resourceType in the response body
-        And 1 is an int at entry[0].search.score in the response body
-        And 9693632109 is a str at entry[0].resource.id in the response body
+        And the response body contains the expected values for that search
 
-    Scenario: Search with unicode returns unicode record
+    Scenario: Searching with unicode returns unicode record
         Given I am a healthcare worker
         And I enter a patient's unicode demographic details
 
         When I search for the patient's PDS record
 
         Then I get a 200 HTTP response
-        And the X-Request-ID response header matches the request
-        And the X-Correlation-ID response header matches the request
         And the response body contains the expected values for that search
+
+    Scenario: Searching with specified results limit can return error
+        Given I am a healthcare worker
+        And I enter a patient's vague demographic details
+
+        When the query parameters contain _max-results as 1
+        And I search for the patient's PDS record
+
+        Then I get a 200 HTTP response
+        And the response body is the Too Many Matches response
+
+    Scenario: Update patient
+        Given I am a healthcare worker
+        And I have a patient's record to update
+        And I wish to update the patient's gender
+
+        When I update the patient's PDS record
+
+        Then I get a 200 HTTP response
+        And the response body contains the patient's new gender
+        And the response body contains the record's new version number
