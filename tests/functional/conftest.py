@@ -24,6 +24,7 @@ from pytest_nhsd_apim.apigee_apis import (
 import logging
 
 LOGGER = logging.getLogger(__name__)
+DEVELOPER_EMAIL = "apm-testing-internal-dev@nhs.net"
 
 
 @pytest.fixture()
@@ -35,6 +36,65 @@ def client():
 @pytest.fixture()
 def api_products(client):
     return ApiProductsAPI(client=client)
+
+
+@pytest.fixture()
+def developer_apps(client):
+    return DeveloperAppsAPI(client=client)
+
+
+@pytest.fixture()
+def add_asid_to_testapp(developer_apps, nhsd_apim_test_app):
+    app = nhsd_apim_test_app()
+    LOGGER.info(f'app:{app}')
+    app_name = app["name"]
+
+    # Check if the ASID attribute is already available
+    app_attributes = developer_apps.get_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name)
+    custom_attributes = app_attributes['attribute']
+    existing_asid_attribute = None
+    for attribute in custom_attributes:
+        if attribute['name'] == 'asid':
+            existing_asid_attribute = attribute['value']
+
+    if not existing_asid_attribute and config.ENV.contains("internal_dev_asid"):
+        LOGGER.info(f'ASID attribute not found. Adding {config.ENV["internal_dev_asid"]} to {app_name}')
+        # Add ASID to the test app - To be refactored when we move to .feature files TODO SPINEDEM-1680
+        custom_attributes.append({"name": "asid", "value": config.ENV["internal_dev_asid"]})
+        data = {"attribute": custom_attributes}
+        response = developer_apps.post_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name, body=data)
+        LOGGER.info(f'Test app updated with ASID attribute: {response}')
+
+
+@pytest.fixture()
+def add_proxies_to_products(api_products):
+
+    # Check if we need to add an extra proxy *-asid-required-* to the product used for testing
+    proxy_name = config.PROXY_NAME
+    LOGGER.info(f'proxy_name: {proxy_name}')
+    product_name = proxy_name.replace("-asid-required", "")
+    LOGGER.info(f'product_name: {product_name}')
+
+    patient_access_product_name = f'{product_name}-patient-access'
+
+    default_product = api_products.get_product_by_name(product_name=product_name)
+    LOGGER.info(f'default_product: {default_product}')
+
+    if(proxy_name not in default_product['proxies']):
+        default_product['proxies'].append(proxy_name)
+        product_updated = api_products.put_product_by_name(product_name=product_name, body=default_product)
+        LOGGER.info(f'product_updated: {product_updated}')
+
+    patient_access_product = api_products.get_product_by_name(product_name=patient_access_product_name)
+    LOGGER.info(f'patient_access_product: {patient_access_product}')
+
+    if(proxy_name not in patient_access_product['proxies']):
+        patient_access_product['proxies'].append(proxy_name)
+        patient_access_product_updated = api_products.put_product_by_name(
+            product_name=patient_access_product_name,
+            body=patient_access_product
+        )
+        LOGGER.info(f'patient_access_product_updated: {patient_access_product_updated}')
 
 
 def _set_default_rate_limit(product: ApigeeApiProducts, api_products):
@@ -67,18 +127,21 @@ def _product_with_full_access(api_products):
     ], api_products)
     # Allows access to all proxy paths - so we don't have to specify the pr proxy explicitly
     product.update_paths(paths=["/", "/*"], api_products=api_products)
+    LOGGER.info(f'product.get_product_details(): {product.get_product_details(api_products)}')
 
     return product
 
 
 @pytest.fixture(scope="function")
-def setup_session(request, _test_app_credentials, _jwt_keys, apigee_environment, client, api_products):
+def setup_session(request, _jwt_keys, apigee_environment, client, api_products):
     """This fixture is called at a function level.
     The default app created here should be modified by your tests.
     """
 
     product = _product_with_full_access(api_products)
     product.update_environments([config.ENVIRONMENT], api_products=api_products)
+
+    LOGGER.info(f'product.proxies: {product.proxies}')
 
     print("\nCreating Default App..")
     # Create a new app
@@ -95,26 +158,12 @@ def setup_session(request, _test_app_credentials, _jwt_keys, apigee_environment,
 
     LOGGER.info(f'create_app_response: {create_app_response}')
 
-    # app.set_custom_attributes({'jwks-resource-url': config.JWKS_RESOURCE_URL}, developer_apps=developer_apps)
-    # product.update_environments([config.ENVIRONMENT], api_products=api_products)
-
-    # Assign the new product to the app
-    # app.add_api_product([product.name], developer_apps=developer_apps)
-
-    LOGGER.info(f'app.get_app_details(): {app.get_app_details(developer_apps=developer_apps)}')
-    # LOGGER.info(f'consumerKey: {_test_app_credentials["consumerKey"]}')
-    # LOGGER.info(f'_jwt_keys["private_key_pem"]: {_jwt_keys["private_key_pem"]}')
-
-    # LOGGER.info(f'JWT_PRIVATE_KEY_ABSOLUTE_PATH: {config.JWT_PRIVATE_KEY_ABSOLUTE_PATH}')
-
     # Set up app config
     client_credentials_config = ClientCredentialsConfig(
         environment=apigee_environment,
-        identity_service_base_url=f"https://{apigee_environment}.api.service.nhs.uk/oauth2-mock",
-        # client_id=_test_app_credentials["consumerKey"],
+        identity_service_base_url=f"https://{apigee_environment}.api.service.nhs.uk/{config.OAUTH_PROXY}",
         client_id=app.get_client_id(),
-        # jwt_private_key=_jwt_keys["private_key_pem"],
-        jwt_private_key=config.JWT_PRIVATE_KEY_ABSOLUTE_PATH,
+        jwt_private_key=config.SIGNING_KEY,
         jwt_kid="test-1",
     )
 
@@ -128,7 +177,7 @@ def setup_session(request, _test_app_credentials, _jwt_keys, apigee_environment,
 
     LOGGER.info(f'token: {token}')
 
-    yield product, app, token, developer_apps, api_products
+    yield product, app, token_response, developer_apps, api_products
 
     # Teardown
     print("\nDestroying Default App..")
@@ -143,12 +192,12 @@ def setup_patch(setup_session):
     GET /Patient -> PATCH /Patient
     """
 
-    [product, app, token, developer_apps, api_products] = setup_session
+    [product, app, token_response, developer_apps, api_products] = setup_session
 
     pds = GenericPdsRequestor(
         pds_base_path=config.PDS_BASE_PATH,
         base_url=config.BASE_URL,
-        token=token,
+        token=token_response["access_token"],
     )
 
     response = pds.get_patient_response(patient_id=config.TEST_PATIENT_ID)
@@ -162,7 +211,7 @@ def setup_patch(setup_session):
         "pds": pds,
         "product": product,
         "app": app,
-        "token": token,
+        "token": token_response["access_token"],
         "developer_apps": developer_apps,
         "api_products": api_products
     }

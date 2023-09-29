@@ -110,12 +110,12 @@ def test_app_spike_arrest():
 @pytest.mark.apmspii_627
 @given("I have a proxy with a low rate limit set", target_fixture="context")
 def setup_rate_limit_proxy(setup_session):
-    product, app, token, developer_apps, api_products = setup_session
+    product, app, token_response, developer_apps, api_products = setup_session
 
     context = {
         "product": product,
         "app": app,
-        "token": token,
+        "token": token_response["access_token"],
         "developer_apps": developer_apps,
         "api_products": api_products
     }
@@ -145,12 +145,14 @@ def setup_rate_limit_proxy(setup_session):
 @pytest.mark.apmspii_627
 @given("I have a proxy with a low quota set", target_fixture="context")
 def setup_quota_proxy(setup_session):
+    product, app, token_response, developer_apps, api_products = setup_session
+
     context = {
-        "product": setup_session[0],
-        "app": setup_session[1],
-        "token": setup_session[2],
-        "developer_apps": setup_session[3],
-        "api_products": setup_session[4],
+        "product": product,
+        "app": app,
+        "token": token_response["access_token"],
+        "developer_apps": developer_apps,
+        "api_products": api_products
     }
     set_quota_and_rate_limit(
         context["product"],
@@ -178,12 +180,14 @@ def setup_quota_proxy(setup_session):
 @pytest.mark.apmspii_1139
 @given("I have an app with a low quota set", target_fixture="context")
 def setup_quota_app(setup_session):
+    product, app, token_response, developer_apps, api_products = setup_session
+
     context = {
-        "product": setup_session[0],
-        "app": setup_session[1],
-        "token": setup_session[2],
-        "developer_apps": setup_session[3],
-        "api_products": setup_session[4],
+        "product": product,
+        "app": app,
+        "token": token_response["access_token"],
+        "developer_apps": developer_apps,
+        "api_products": api_products
     }
     set_quota_and_rate_limit(
         context["app"],
@@ -211,12 +215,14 @@ def setup_quota_app(setup_session):
 @pytest.mark.apmspii_1139
 @given("I have an app with a low rate limit set", target_fixture="context")
 def setup_rate_limit_app(setup_session):
+    product, app, token_response, developer_apps, api_products = setup_session
+
     context = {
-        "product": setup_session[0],
-        "app": setup_session[1],
-        "token": setup_session[2],
-        "developer_apps": setup_session[3],
-        "api_products": setup_session[4],
+        "product": product,
+        "app": app,
+        "token": token_response["access_token"],
+        "developer_apps": developer_apps,
+        "api_products": api_products
     }
     set_quota_and_rate_limit(
         context["app"],
