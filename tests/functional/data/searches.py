@@ -98,3 +98,9 @@ FUZZY = Search(query=[("family", "Garton"),
                                          Field("resourceType", "Bundle"),
                                          Field("entry[0].resource.id", "9693632109"),
                                          Field("entry[0].search.score", 1)])
+
+EMPTY_RESULTS = Search(query=[("family", "Garton"),
+                              ("birthdate", "1947-06-23")],
+                       expected_response_fields=[Field("resourceType", "Bundle"),
+                                                 Field("type", "searchset"),
+                                                 Field("total", 0)])

@@ -2,7 +2,7 @@ import json
 import pytest_bdd
 from pytest_bdd import given, when, then, parsers
 from functools import partial
-from .data.pds_scenarios import retrieve, search as search_scenario
+from .data.pds_scenarios import retrieve
 from .data.expected_errors import error_responses
 from .data import patients
 from .data.patients import Patient
@@ -33,177 +33,186 @@ AUTH_HEALTHCARE_WORKER = {
 
 IDENTITY_SERVICE_BASE_URL = "https://int.api.service.nhs.uk/oauth2-mock"
 
-scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_access.feature')
+retrieve_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_retrieve.feature')
+search_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_search.feature')
+update_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_update.feature')
+
 related_person_scenario = partial(pytest_bdd.scenario, './features/related_person.feature')
+
 status_scenario = partial(pytest_bdd.scenario, './features/status_endpoints.feature')
 
 
-@scenario('Healthcare worker can retrieve patient')
+@retrieve_scenario('Healthcare worker can retrieve patient')
 def test_retrieve_patient():
     pass
 
 
-@scenario('Healthcare worker using deprecated url')
+@retrieve_scenario('Healthcare worker using deprecated url')
 def test_retrieve_with_deprecated_url():
     pass
 
 
-@scenario('Attempt to retrieve a patient with missing authorization header')
+@retrieve_scenario('Attempt to retrieve a patient with missing authorization header')
 def test_retrieve_with_missing_auth():
     pass
 
 
-@scenario('Attempt to retrieve a patient with an empty authorization header')
+@retrieve_scenario('Attempt to retrieve a patient with an empty authorization header')
 def test_retrieve_using_empty_auth():
     pass
 
 
-@scenario('Attempt to retrieve a patient with an invalid authorization header')
+@retrieve_scenario('Attempt to retrieve a patient with an invalid authorization header')
 def test_retrieve_using_invalid_auth():
     pass
 
 
-@scenario('Attempt to retrieve a patient without stating a role')
+@retrieve_scenario('Attempt to retrieve a patient without stating a role')
 def test_retrieve_with_missing_role():
     pass
 
 
-@scenario('Attempt to retrieve a patient with an invalid role')
+@retrieve_scenario('Attempt to retrieve a patient with an invalid role')
 def test_retrieve_using_invalid_role():
     pass
 
 
-@scenario('Attempt to retrieve a patient without Request ID header')
+@retrieve_scenario('Attempt to retrieve a patient without Request ID header')
 def test_retrieve_using_empty_request_id():
     pass
 
 
-@scenario('Attempt to retrieve a patient with an invalid X-Request-ID')
+@retrieve_scenario('Attempt to retrieve a patient with an invalid X-Request-ID')
 def test_retrieve_using_invalid_request_id():
     pass
 
 
-@scenario('Attempt to retrieve a patient with a missing X-Request-ID')
+@retrieve_scenario('Attempt to retrieve a patient with a missing X-Request-ID')
 def test_retrieve_with_missing_request_id():
     pass
 
 
-@scenario('Healthcare worker can search for patient')
+@search_scenario('Healthcare worker can search for patient')
 def test_search_patient():
     pass
 
 
-@scenario('Attempt to search for a patient with missing authorization header')
+@search_scenario('Attempt to search for a patient with missing authorization header')
 def test_search_with_missing_auth():
     pass
 
 
-@scenario('Attempt to search for a patient with an empty authorization header')
+@search_scenario('Attempt to search for a patient with an empty authorization header')
 def test_search_using_empty_auth():
     pass
 
 
-@scenario('Attempt to search for a patient with an invalid authorization header')
+@search_scenario('Attempt to search for a patient with an invalid authorization header')
 def test_search_using_invalid_auth():
     pass
 
 
-@scenario('Attempt to search for a patient with an empty Request ID header')
+@search_scenario('Attempt to search for a patient with an empty Request ID header')
 def test_search_using_empty_request_id():
     pass
 
 
-@scenario('Attempt to search for a patient with an invalid X-Request-ID')
+@search_scenario('Attempt to search for a patient with an invalid X-Request-ID')
 def test_search_using_invalid_request_id():
     pass
 
 
-@scenario('Attempt to search for a patient with a missing X-Request-ID')
+@search_scenario('Attempt to search for a patient with a missing X-Request-ID')
 def test_search_with_missing_request_id():
     pass
 
 
-@scenario('Healthcare worker searches for sensitive patient')
+@search_scenario('Healthcare worker searches for sensitive patient')
 def test_search_sensitive_patient():
     pass
 
 
-@scenario('Healthcare worker searches for patient without specifying gender')
+@search_scenario('Healthcare worker searches for patient without specifying gender')
 def test_search_gender_free():
     pass
 
 
-@scenario('Healthcare worker searches for a patient with range for date of birth')
+@search_scenario('Healthcare worker searches for a patient with range for date of birth')
 def test_search_with_dob_range():
     pass
 
 
-@scenario('Searching without gender can return mutliple results')
+@search_scenario('Searching without gender can return mutliple results')
 def test_search_with_vauge_details():
     pass
 
 
-@scenario('Searching with fuzzy match')
+@search_scenario('Searching with fuzzy match')
 def test_search_with_fuzzy_match():
     pass
 
 
-@scenario('Searching with unicode returns unicode record')
+@search_scenario('Searching with unicode returns unicode record')
 def test_search_with_unicode():
     pass
 
 
-@scenario('Searching with specified results limit can return error')
+@search_scenario('Searching with specified results limit can return error')
 def test_search_returns_error_due_to_results_limit():
     pass
 
 
-@scenario('Update patient')
+@search_scenario('Search returns an empty bundle')
+def test_search_returns_empty():
+    pass
+
+
+@update_scenario('Update patient')
 def test_update_patient():
     pass
 
 
-@scenario('Update patient using deprecated respond-async still returns 200')
+@update_scenario('Update patient using deprecated respond-async still returns 200')
 def test_update_patient_with_deprecated_header():
     pass
 
 
-@scenario('Update patient with invalid wait header still updates')
+@update_scenario('Update patient with invalid wait header still updates')
 def test_update_with_invalid_wait():
     pass
 
 
-@scenario('Update patient with low wait header')
+@update_scenario('Update patient with low wait header')
 def test_update_with_low_wait():
     pass
 
 
-@scenario('Update patient with missing Authorization header')
+@update_scenario('Update patient with missing Authorization header')
 def test_update_with_missing_auth():
     pass
 
 
-@scenario('Update patient with an empty authorization header')
+@update_scenario('Update patient with an empty authorization header')
 def test_update_with_empty_auth():
     pass
 
 
-@scenario('Update patient with an invalid authorization header')
+@update_scenario('Update patient with an invalid authorization header')
 def test_update_using_invalid_auth():
     pass
 
 
-@scenario('Update patient with an empty Request ID header')
+@update_scenario('Update patient with an empty Request ID header')
 def test_update_using_empty_request_id():
     pass
 
 
-@scenario('Update patient with an invalid X-Request-ID')
+@update_scenario('Update patient with an invalid X-Request-ID')
 def test_update_using_invalid_request_id():
     pass
 
 
-@scenario('Update patient with a missing X-Request-ID')
+@update_scenario('Update patient with a missing X-Request-ID')
 def test_update_with_missing_request_id():
     pass
 
@@ -276,6 +285,11 @@ def fuzzy_search() -> Search:
 @given("I enter a patient's unicode demographic details", target_fixture='search')
 def unicode_search() -> Search:
     return searches.UNICODE
+
+
+@given("I enter a patient's demographic details incorrectly", target_fixture='search')
+def empty_search() -> Search:
+    return searches.EMPTY_RESULTS
 
 
 @pytest.fixture()
@@ -736,15 +750,16 @@ class TestUserRestrictedSearchPatient:
     #     helpers.check_response_headers(response, headers)
 
     # Duplicate of test below, test_search_using_empty_auth
-    def test_search_patient_with_blank_auth_header(self, headers):
-        headers['authorization'] = ''
-        response = helpers.search_patient(
-            search_scenario[2]["query_params"],
-            headers
-        )
-        helpers.check_search_response_body(response, search_scenario[2]["response"])
-        helpers.check_response_status_code(response, 401)
-        helpers.check_response_headers(response, headers)
+    # NOT MIGRATING
+    # def test_search_patient_with_blank_auth_header(self, headers):
+    #     headers['authorization'] = ''
+    #     response = helpers.search_patient(
+    #         search_scenarios[2]["query_params"],
+    #         headers
+    #     )
+    #     helpers.check_search_response_body(response, search_scenarios[2]["response"])
+    #     helpers.check_response_status_code(response, 401)
+    #     helpers.check_response_headers(response, headers)
 
     # test_search_using_empty_auth
     # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
@@ -841,60 +856,61 @@ class TestUserRestrictedSearchPatient:
     #     helpers.check_response_headers(response, self.headers)
 
     # TODO: Does this need implementing? Is this not the same as the test above?
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_simple_trace_no_gender(self, headers_with_token):
-        """See TestBase37101 Chain 7001"""
-        print(self.headers)
-        response = helpers.search_patient(
-            {"family": "Garton", "birthdate": "1946-06-23"},
-            self.headers
-        )
-        response_body = response.json()
+    # NOT MIGRATING
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_simple_trace_no_gender(self, headers_with_token):
+    #     """See TestBase37101 Chain 7001"""
+    #     print(self.headers)
+    #     response = helpers.search_patient(
+    #         {"family": "Garton", "birthdate": "1946-06-23"},
+    #         self.headers
+    #     )
+    #     response_body = response.json()
 
-        assert response.status_code == 200
-        assert response_body["resourceType"] == "Bundle"
-        assert response_body["type"] == "searchset"
-        assert response_body["total"] == 1
-        assert response_body["entry"][0]["resource"]["id"] == "9693632109"
+    #     assert response.status_code == 200
+    #     assert response_body["resourceType"] == "Bundle"
+    #     assert response_body["type"] == "searchset"
+    #     assert response_body["total"] == 1
+    #     assert response_body["entry"][0]["resource"]["id"] == "9693632109"
 
-    # TODO: Is this necessary?
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_simple_trace_no_gender_no_result(self, headers_with_token):
-        """See TestBase37101 Chain 7002"""
-        print(self.headers)
-        response = helpers.search_patient(
-            {"family": "Garton", "birthdate": "1947-06-23"},
-            self.headers
-        )
-        response_body = response.json()
+    # test_search_returns_empty
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_simple_trace_no_gender_no_result(self, headers_with_token):
+    #     """See TestBase37101 Chain 7002"""
+    #     print(self.headers)
+    #     response = helpers.search_patient(
+    #         {"family": "Garton", "birthdate": "1947-06-23"},
+    #         self.headers
+    #     )
+    #     response_body = response.json()
 
-        assert response.status_code == 200
-        assert response_body["resourceType"] == "Bundle"
-        assert response_body["type"] == "searchset"
-        assert response_body["total"] == 0
+    #     assert response.status_code == 200
+    #     assert response_body["resourceType"] == "Bundle"
+    #     assert response_body["type"] == "searchset"
+    #     assert response_body["total"] == 0
 
-    # TODO: How to implement?
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_no_gender_postcode_format_doesnt_affect_score(self, headers_with_token):
-        """See TestBase37101 Chain 7003"""
-        response_1 = helpers.search_patient(
-            {"family": "Garton", "birthdate": "1946-06-23", "address-postcode": "DN18 5DW"},
-            self.headers
-        )
-        response_1_body = response_1.json()
+    # NOT MIGRATING - this is testing Spine not the proxy. This test exist in the SpineII repo
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_no_gender_postcode_format_doesnt_affect_score(self, headers_with_token):
+    #     """See TestBase37101 Chain 7003"""
+    #     response_1 = helpers.search_patient(
+    #         {"family": "Garton", "birthdate": "1946-06-23", "address-postcode": "DN18 5DW"},
+    #         self.headers
+    #     )
+    #     response_1_body = response_1.json()
 
-        response_2 = helpers.search_patient(
-            {"family": "Garton", "birthdate": "1946-06-23", "address-postcode": "dn185dw"},
-            self.headers
-        )
-        response_2_body = response_2.json()
+    #     response_2 = helpers.search_patient(
+    #         {"family": "Garton", "birthdate": "1946-06-23", "address-postcode": "dn185dw"},
+    #         self.headers
+    #     )
+    #     response_2_body = response_2.json()
 
-        assert response_1.status_code == 200
-        assert response_2.status_code == response_1.status_code
-        assert response_1_body["entry"][0]["resource"]["id"] == "9693632109"
-        assert response_1_body["entry"][0]["resource"]["id"] == response_2_body["entry"][0]["resource"]["id"]
-        assert response_1_body["entry"][0]["search"]["score"] == 1
-        assert response_1_body["entry"][0]["search"]["score"] == response_2_body["entry"][0]["search"]["score"]
+    #     assert response_1.status_code == 200
+    #     assert response_2.status_code == response_1.status_code
+    #     assert response_1_body["entry"][0]["resource"]["id"] == "9693632109"
+    #     assert response_1_body["entry"][0]["resource"]["id"] == response_2_body["entry"][0]["resource"]["id"]
+    #     assert response_1_body["entry"][0]["search"]["score"] == 1
+    #     assert response_1_body["entry"][0]["search"]["score"] == response_2_body["entry"][0]["search"]["score"]
 
     # test_search_with_vauge_details
     # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
@@ -968,186 +984,184 @@ class TestUserRestrictedSearchPatient:
     #     assert response_body["entry"][1]["resource"]["gender"] == "female"
     #     assert response_body["entry"][1]["resource"]["birthDate"] == "1960-07-14"
 
-    # TODO: Is this necessary? These tests are not for end-to-end tests.
-    # It is already shown that the proxy handles unicode. What is there to gain from this test?
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_algorithmic_fuzzy_match_regular_returns_unicode(self, headers_with_token):
-        """See TestBase37104 Chain 0008"""
-        response = helpers.search_patient(
-            {"family": "ATTSON", "given": "PAULINE", "birthdate": "1960-07-14", "_fuzzy-match": "true"},
-            self.headers
-        )
-        response_body = response.json()
+    # NOT MIGRATING: It is already shown that the proxy handles unicode. What is there to gain from this test?
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_algorithmic_fuzzy_match_regular_returns_unicode(self, headers_with_token):
+    #     """See TestBase37104 Chain 0008"""
+    #     response = helpers.search_patient(
+    #         {"family": "ATTSON", "given": "PAULINE", "birthdate": "1960-07-14", "_fuzzy-match": "true"},
+    #         self.headers
+    #     )
+    #     response_body = response.json()
 
-        assert response.status_code == 200
-        assert response_body["type"] == "searchset"
-        assert response_body["resourceType"] == "Bundle"
-        assert response_body["entry"][0]["search"]["score"] == 0.9889
-        assert response_body["entry"][0]["resource"]["id"] == "9693633121"
-        assert response_body["entry"][0]["resource"]["gender"] == "female"
-        assert response_body["entry"][0]["resource"]["birthDate"] == "1960-07-14"
-        assert response_body["entry"][0]["resource"]["name"][0]["family"] == "attison"
-        assert response_body["entry"][0]["resource"]["name"][0]["given"][0] == "Pauline"
-        assert response_body["entry"][1]["search"]["score"] == 0.9648
-        assert response_body["entry"][1]["resource"]["id"] == "9693633148"
-        assert response_body["entry"][1]["resource"]["gender"] == "female"
-        assert response_body["entry"][1]["resource"]["birthDate"] == "1960-07-14"
+    #     assert response.status_code == 200
+    #     assert response_body["type"] == "searchset"
+    #     assert response_body["resourceType"] == "Bundle"
+    #     assert response_body["entry"][0]["search"]["score"] == 0.9889
+    #     assert response_body["entry"][0]["resource"]["id"] == "9693633121"
+    #     assert response_body["entry"][0]["resource"]["gender"] == "female"
+    #     assert response_body["entry"][0]["resource"]["birthDate"] == "1960-07-14"
+    #     assert response_body["entry"][0]["resource"]["name"][0]["family"] == "attison"
+    #     assert response_body["entry"][0]["resource"]["name"][0]["given"][0] == "Pauline"
+    #     assert response_body["entry"][1]["search"]["score"] == 0.9648
+    #     assert response_body["entry"][1]["resource"]["id"] == "9693633148"
+    #     assert response_body["entry"][1]["resource"]["gender"] == "female"
+    #     assert response_body["entry"][1]["resource"]["birthDate"] == "1960-07-14"
 
-    # TODO: Is this necessary?
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_algorithmic_fuzzy_match_for_birthdate_range(self, headers_with_token):
-        """See TestBase37104 Chain 0009"""
-        response = helpers.search_patient(
-            "family=Garton&given=Bill&birthdate=le1990-01-01&birthdate=ge1946-01-19&_fuzzy-match=true",
-            self.headers
-        )
-        response_body = response.json()
+    # NOT MIGRATING: Already tested fuzzy match header
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_algorithmic_fuzzy_match_for_birthdate_range(self, headers_with_token):
+    #     """See TestBase37104 Chain 0009"""
+    #     response = helpers.search_patient(
+    #         "family=Garton&given=Bill&birthdate=le1990-01-01&birthdate=ge1946-01-19&_fuzzy-match=true",
+    #         self.headers
+    #     )
+    #     response_body = response.json()
 
-        assert response.status_code == 200
-        assert response_body["type"] == "searchset"
-        assert response_body["resourceType"] == "Bundle"
-        assert response_body["entry"][0]["search"]["score"] == 1
-        assert response_body["entry"][0]["resource"]["id"] == "9693632109"
+    #     assert response.status_code == 200
+    #     assert response_body["type"] == "searchset"
+    #     assert response_body["resourceType"] == "Bundle"
+    #     assert response_body["entry"][0]["search"]["score"] == 1
+    #     assert response_body["entry"][0]["resource"]["id"] == "9693632109"
 
-    # TODO: Why is this fuzzy and exact?
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_algorithmic_exact_match_requested_but_not_found(self, headers_with_token):
-        """See TestBase37105 Chain 0003"""
-        response = helpers.search_patient(
-            {
-                "family": "PÀTSÖN", "given": "PÀULINÉ", "birthdate": "1979-07-27",
-                "_fuzzy-match": "true", "_exact-match": "true"
-            },
-            self.headers
-        )
-        response_body = response.json()
+    # NOT MIGRATING: This is not testing the proxy. This tests exists in the SpineII repo
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_algorithmic_exact_match_requested_but_not_found(self, headers_with_token):
+    #     """See TestBase37105 Chain 0003"""
+    #     response = helpers.search_patient(
+    #         {
+    #             "family": "PÀTSÖN", "given": "PÀULINÉ", "birthdate": "1979-07-27",
+    #             "_fuzzy-match": "true", "_exact-match": "true"
+    #         },
+    #         self.headers
+    #     )
+    #     response_body = response.json()
 
-        assert response.status_code == 200
-        assert response_body["type"] == "searchset"
-        assert response_body["resourceType"] == "Bundle"
-        assert response_body["total"] == 0
+    #     assert response.status_code == 200
+    #     assert response_body["type"] == "searchset"
+    #     assert response_body["resourceType"] == "Bundle"
+    #     assert response_body["total"] == 0
 
-    # TODO: What is this testing? Only two come back from search (having looked at full response)
-    # We know that multiple resources can come back.
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_algorithmic_requesting_50_results(self, headers_with_token):
-        """See TestBase37107 Chain 0004"""
-        response = helpers.search_patient(
-            {
-                "family": "ATTSON", "given": "PAULINE", "birthdate": "1960-07-14",
-                "_fuzzy-match": "true", "_max-results": "50"
-            },
-            self.headers
-        )
-        response_body = response.json()
+    # NOT MIGRATING: Previous test demonstrate an ability to return multiple matches
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_algorithmic_requesting_50_results(self, headers_with_token):
+    #     """See TestBase37107 Chain 0004"""
+    #     response = helpers.search_patient(
+    #         {
+    #             "family": "ATTSON", "given": "PAULINE", "birthdate": "1960-07-14",
+    #             "_fuzzy-match": "true", "_max-results": "50"
+    #         },
+    #         self.headers
+    #     )
+    #     response_body = response.json()
 
-        assert response.status_code == 200
-        assert response_body["type"] == "searchset"
-        assert response_body["resourceType"] == "Bundle"
-        assert response_body["entry"][0]["search"]["score"] == 0.9889
-        assert response_body["entry"][0]["resource"]["id"] == "9693633121"
-        assert response_body["entry"][1]["search"]["score"] == 0.9648
+    #     assert response.status_code == 200
+    #     assert response_body["type"] == "searchset"
+    #     assert response_body["resourceType"] == "Bundle"
+    #     assert response_body["entry"][0]["search"]["score"] == 0.9889
+    #     assert response_body["entry"][0]["resource"]["id"] == "9693633121"
+    #     assert response_body["entry"][1]["search"]["score"] == 0.9648
 
     # test_search_returns_error_due_to_results_limit
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_algorithmic_requesting_1_result_too_many_matches(self, headers_with_token):
-        """See TestBase37107 Chain 0008"""
-        response = helpers.search_patient(
-            {
-                "family": "Beever", "gender": "female", "birthdate": "ge1977-07-27", "_max-results": "1"
-            },
-            self.headers
-        )
-        response_body = response.json()
-        assert response_body["resourceType"] == "OperationOutcome"
-        assert response_body["issue"][0]["details"]["coding"][0]["code"] == "TOO_MANY_MATCHES"
-        assert response_body["issue"][0]["details"]["coding"][0]["display"] == "Too Many Matches"
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_algorithmic_requesting_1_result_too_many_matches(self, headers_with_token):
+    #     """See TestBase37107 Chain 0008"""
+    #     response = helpers.search_patient(
+    #         {
+    #             "family": "Beever", "gender": "female", "birthdate": "ge1977-07-27", "_max-results": "1"
+    #         },
+    #         self.headers
+    #     )
+    #     response_body = response.json()
+    #     assert response_body["resourceType"] == "OperationOutcome"
+    #     assert response_body["issue"][0]["details"]["coding"][0]["code"] == "TOO_MANY_MATCHES"
+    #     assert response_body["issue"][0]["details"]["coding"][0]["display"] == "Too Many Matches"
 
-    # TODO: Is this necessary? Check this spine-side.
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_simple_search_family_name_still_required(self, headers_with_token):
-        response = helpers.search_patient(
-            {"given": "PAULINE", "birthdate": "1979-07-27"},
-            self.headers
-        )
-        response_body = response.json()
+    # NOT MIGRATING: This is not testing the proxy. A ticket raised to add such a test to SpineII (SPINEDEM-1779)
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_simple_search_family_name_still_required(self, headers_with_token):
+    #     response = helpers.search_patient(
+    #         {"given": "PAULINE", "birthdate": "1979-07-27"},
+    #         self.headers
+    #     )
+    #     response_body = response.json()
 
-        assert response.status_code == 400
-        assert response_body["resourceType"] == "OperationOutcome"
-        assert response_body["issue"][0]["details"]["coding"][0]["code"] == "INVALID_SEARCH_DATA"
+    #     assert response.status_code == 400
+    #     assert response_body["resourceType"] == "OperationOutcome"
+    #     assert response_body["issue"][0]["details"]["coding"][0]["code"] == "INVALID_SEARCH_DATA"
 
-    # TODO: Is this necessary? Check this spine-side.
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_simple_search_birthdate_still_required(self, headers_with_token):
-        response = helpers.search_patient(
-            {"family": "PATSON", "given": "PAULINE"},
-            self.headers
-        )
-        response_body = response.json()
+    # NOT MIGRATING: This is not testing the proxy. A test exists, 37102_0003, in SpineII for this validation.
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_simple_search_birthdate_still_required(self, headers_with_token):
+    #     response = helpers.search_patient(
+    #         {"family": "PATSON", "given": "PAULINE"},
+    #         self.headers
+    #     )
+    #     response_body = response.json()
 
-        assert response.status_code == 400
-        assert response_body["resourceType"] == "OperationOutcome"
-        assert response_body["issue"][0]["details"]["coding"][0]["code"] == "MISSING_VALUE"
+    #     assert response.status_code == 400
+    #     assert response_body["resourceType"] == "OperationOutcome"
+    #     assert response_body["issue"][0]["details"]["coding"][0]["code"] == "MISSING_VALUE"
 
-    # TODO: Is this necessary? Check this spine-side.
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_search_for_similar_patient_different_genders(self, headers_with_token):
-        """Performing a gender-free search where there exists four patients with the same
-        name and date of birth, but differing gender values, should return multiple distinct results."""
+    # NOT MIGRATING: A gender-less search is already tested, as is gendered. This is not doing anything 'new'
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_search_for_similar_patient_different_genders(self, headers_with_token):
+    #     """Performing a gender-free search where there exists four patients with the same
+    #     name and date of birth, but differing gender values, should return multiple distinct results."""
 
-        family = "YOUDS"
-        given = "Luke"
-        birth_date = "1970-01-24"
+    #     family = "YOUDS"
+    #     given = "Luke"
+    #     birth_date = "1970-01-24"
 
-        genders = ['male', 'female', 'unknown', 'other']
-        patient_ids = ['9693633679', '9693633687', '9693633695', '9693633709']
+    #     genders = ['male', 'female', 'unknown', 'other']
+    #     patient_ids = ['9693633679', '9693633687', '9693633695', '9693633709']
 
-        # Do the individual items exist and can be retrieved with a gendered search?
-        for i, gender in enumerate(genders):
-            patient_id = patient_ids[i]
-            response = helpers.search_patient(
-                {"family": family, "given": given, "birthdate": birth_date, "gender": gender},
-                self.headers
-            )
-            response_body = response.json()
+    #     # Do the individual items exist and can be retrieved with a gendered search?
+    #     for i, gender in enumerate(genders):
+    #         patient_id = patient_ids[i]
+    #         response = helpers.search_patient(
+    #             {"family": family, "given": given, "birthdate": birth_date, "gender": gender},
+    #             self.headers
+    #         )
+    #         response_body = response.json()
 
-            assert response.status_code == 200
-            assert response_body["type"] == "searchset"
-            assert response_body["resourceType"] == "Bundle"
-            assert response_body["total"] == 1
-            assert response_body["entry"][0]["resource"]["id"] == patient_id
-            assert response_body["entry"][0]["resource"]["gender"] == gender
-            assert response_body["entry"][0]["resource"]["name"][0]["family"] == family
-            assert response_body["entry"][0]["resource"]["name"][0]["given"][0] == given
+    #         assert response.status_code == 200
+    #         assert response_body["type"] == "searchset"
+    #         assert response_body["resourceType"] == "Bundle"
+    #         assert response_body["total"] == 1
+    #         assert response_body["entry"][0]["resource"]["id"] == patient_id
+    #         assert response_body["entry"][0]["resource"]["gender"] == gender
+    #         assert response_body["entry"][0]["resource"]["name"][0]["family"] == family
+    #         assert response_body["entry"][0]["resource"]["name"][0]["given"][0] == given
 
-        # Then retrieve and check for all of them with a genderless search
-        response_all = helpers.search_patient(
-            {"family": family, "given": given, "birthdate": birth_date},
-            self.headers
-        )
-        response_all_body = response_all.json()
+    #     # Then retrieve and check for all of them with a genderless search
+    #     response_all = helpers.search_patient(
+    #         {"family": family, "given": given, "birthdate": birth_date},
+    #         self.headers
+    #     )
+    #     response_all_body = response_all.json()
 
-        assert response_all.status_code == 200
-        assert response_all_body["type"] == "searchset"
-        assert response_all_body["resourceType"] == "Bundle"
-        assert response_all_body["total"] == 4
+    #     assert response_all.status_code == 200
+    #     assert response_all_body["type"] == "searchset"
+    #     assert response_all_body["resourceType"] == "Bundle"
+    #     assert response_all_body["total"] == 4
 
-        # Order of search results is not guaranteed.
-        # We will enumerate each one and make sure
-        # it is unique and expected (ie from our genders,
-        # and patient_ids lists)
-        checked_results_count = 0
-        for result in response_all_body["entry"]:
-            i = genders.index(result["resource"]["gender"])
-            patient_id, gender = patient_ids.pop(i), genders.pop(i)
+    #     # Order of search results is not guaranteed.
+    #     # We will enumerate each one and make sure
+    #     # it is unique and expected (ie from our genders,
+    #     # and patient_ids lists)
+    #     checked_results_count = 0
+    #     for result in response_all_body["entry"]:
+    #         i = genders.index(result["resource"]["gender"])
+    #         patient_id, gender = patient_ids.pop(i), genders.pop(i)
 
-            assert result["resource"]["id"] == patient_id
-            assert result["resource"]["gender"] == gender
-            assert result["resource"]["name"][0]["family"] == family
-            assert result["resource"]["name"][0]["given"][0] == given
+    #         assert result["resource"]["id"] == patient_id
+    #         assert result["resource"]["gender"] == gender
+    #         assert result["resource"]["name"][0]["family"] == family
+    #         assert result["resource"]["name"][0]["given"][0] == given
 
-            checked_results_count += 1
-        assert checked_results_count == 4
+    #         checked_results_count += 1
+    #     assert checked_results_count == 4
 
 
 # class TestUserRestrictedPatientUpdateSyncWrap:
