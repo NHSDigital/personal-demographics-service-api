@@ -183,15 +183,6 @@ Feature: Healthcare Worker Access
         Given I am a healthcare worker
         And I have a patient's demographic details
         And I have a header X-Request-ID value of "1234"
-        Given I am a healthcare worker
-        And I have a patient's record to update
-        And I wish to update the patient's gender
-
-        When I update the patient's PDS record
-
-        Then I get a 200 HTTP response
-        And the response body contains the patient's new gender
-        And the response body contains the record's new version number
 
         When I search for the patient's PDS record
 
