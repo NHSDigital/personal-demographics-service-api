@@ -34,6 +34,8 @@ AUTH_HEALTHCARE_WORKER = {
 IDENTITY_SERVICE_BASE_URL = "https://int.api.service.nhs.uk/oauth2-mock"
 
 scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_access.feature')
+related_person_scenario = partial(pytest_bdd.scenario, './features/related_person.feature')
+status_scenario = partial(pytest_bdd.scenario, './features/status_endpoints.feature')
 
 
 @scenario('Healthcare worker can retrieve patient')
@@ -206,6 +208,21 @@ def test_update_with_missing_request_id():
     pass
 
 
+@related_person_scenario('Retrieve a related person')
+def test_retrieve_related_person():
+    pass
+
+
+@status_scenario('Ping endpoint')
+def test_ping():
+    pass
+
+
+@status_scenario('Healthcheck endpoint')
+def test_healthcheck():
+    pass
+
+
 @pytest.fixture()
 def pds_url() -> str:
     return f"{BASE_URL}/{PDS_BASE_PATH}"
@@ -214,6 +231,11 @@ def pds_url() -> str:
 @pytest.fixture()
 def patient() -> Patient:
     return patients.DEFAULT
+
+
+@given('I have a patient with a related person', target_fixture='patient')
+def patient_with_a_related_person() -> Patient:
+    return patients.WITH_RELATED_PERSON
 
 
 @given("I have a patient's demographic details", target_fixture='search')
@@ -294,6 +316,11 @@ def provide_healthcare_worker_auth_details(request) -> None:
     request.node.add_marker(pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER))
 
 
+@given("I am an unknown user", target_fixture='headers_with_authorization')
+def provide_headers_with_no_auth_details() -> None:
+    return {}
+
+
 @given(
     parsers.cfparse(
         "I don't have {_:String} {header_field:String} header",
@@ -347,6 +374,11 @@ def retrieve_patient(headers_with_authorization: dict, nhs_number: str, pds_url:
     return get(url=f"{pds_url}/Patient/{nhs_number}", headers=headers_with_authorization)
 
 
+@when('I retrieve their related person', target_fixture='response')
+def retrieve_related_person(headers_with_authorization: dict, nhs_number: str, pds_url: str) -> Response:
+    return get(url=f"{pds_url}/Patient/{nhs_number}/RelatedPerson", headers=headers_with_authorization)
+
+
 @when("I search for the patient's PDS record", target_fixture='response')
 def search_patient(headers_with_authorization: dict, query_params: str, pds_url: str) -> Response:
     return get(url=f"{pds_url}/Patient?{query_params}", headers=headers_with_authorization)
@@ -364,9 +396,23 @@ def update_patient(headers_with_authorization: dict, update: Update, pds_url: st
                  json=update.patches)
 
 
+@when(
+    parsers.cfparse(
+        "I hit the /{endpoint:String} endpoint",
+        extra_types=dict(String=str)
+    ),
+    target_fixture='response'
+)
+def hit_endpoint(headers_with_authorization: dict, pds_url: str, endpoint: str):
+    return get(url=f'{pds_url}/{endpoint}', headers=headers_with_authorization)
+
+
 @pytest.fixture()
 def response_body(response: Response) -> dict:
-    return json.loads(response.text)
+    response_body = json.loads(response.text)
+    if "timestamp" in response_body:
+        response_body.pop("timestamp")
+    return response_body
 
 
 @then(
@@ -376,6 +422,7 @@ def response_body(response: Response) -> dict:
     )
 )
 def check_status(response: Response, expected_status: int) -> None:
+    LOGGER.info(response.text)
     with check:
         assert response.status_code == expected_status
 
@@ -452,8 +499,13 @@ def response_header_does_not_contain(response: dict, field: str) -> None:
         extra_types=dict(String=str)
     )
 )
-def resposne_body_as_expected(response_body: dict, error) -> None:
+def resposne_body_contains_error(response_body: dict, error) -> None:
     assert response_body == error_responses[error]
+
+
+@then('the response body contains the expected response')
+def response_body_as_expected(response_body: dict, patient: Patient) -> None:
+    assert response_body == patient.expected_response
 
 
 @then('the response body is the correct shape')
@@ -491,7 +543,7 @@ def version_incremented(response_body: Response, update: Update) -> None:
         assert response_body["meta"]["versionId"] == str(int(update.record_version) + 1)
 
 
-@then('the response body contains the expected values for that search')
+@then('the response body contains the expected values')
 def check_expected_search_response_body(response_body: dict, search: Search) -> None:
     with check:
         for field in search.expected_response_fields:
@@ -1289,9 +1341,10 @@ class TestUserRestrictedSearchPatient:
 
 class TestUserRestrictedRetrieveRelatedPerson:
 
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_retrieve_related_person_for_non_int(self, headers_with_token):
-        self.retrieve_patient_and_assert(retrieve[8], self.headers)
+    # test_retrieve_related_person
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_retrieve_related_person_for_non_int(self, headers_with_token):
+    #     self.retrieve_patient_and_assert(retrieve[8], self.headers)
 
     @pytest.mark.smoke_test
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
@@ -1318,15 +1371,17 @@ class TestUserRestrictedRetrieveRelatedPerson:
 
 class TestStatusEndpoints:
 
-    @pytest.mark.smoke_test
-    def test_ping_endpoint(self):
-        response = helpers.ping_request()
-        helpers.check_response_status_code(response, 200)
+    # test_ping
+    # @pytest.mark.smoke_test
+    # def test_ping_endpoint(self):
+    #     response = helpers.ping_request()
+    #     helpers.check_response_status_code(response, 200)
 
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_health_check_endpoint_for_non_int(self, headers_with_token):
-        response = helpers.check_health_check_endpoint(self.headers)
-        helpers.check_response_status_code(response, 200)
+    # test_healthcheck
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_health_check_endpoint_for_non_int(self, headers_with_token):
+    #     response = helpers.check_health_check_endpoint(self.headers)
+    #     helpers.check_response_status_code(response, 200)
 
     @pytest.mark.smoke_test
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)

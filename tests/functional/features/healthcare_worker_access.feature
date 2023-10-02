@@ -125,7 +125,7 @@ Feature: Healthcare Worker Access
         Then I get a 200 HTTP response
         And the X-Request-ID response header matches the request
         And the X-Correlation-ID response header matches the request
-        And the response body contains the expected values for that search
+        And the response body contains the expected values
 
     Scenario: Attempt to search for a patient with missing authorization header
         Given I am a healthcare worker
@@ -212,7 +212,7 @@ Feature: Healthcare Worker Access
         When I search for the patient's PDS record
 
         Then I get a 200 HTTP response
-        And the response body contains the expected values for that search
+        And the response body contains the expected values
         And the resposne body contains the sensitivity flag
 
     Scenario: Healthcare worker searches for patient without specifying gender
@@ -222,7 +222,7 @@ Feature: Healthcare Worker Access
         When I search for the patient's PDS record
 
         Then I get a 200 HTTP response
-        And the response body contains the expected values for that search
+        And the response body contains the expected values
 
     Scenario: Healthcare worker searches for a patient with range for date of birth
         Given I am a healthcare worker
@@ -231,7 +231,7 @@ Feature: Healthcare Worker Access
         When I search for the patient's PDS record
 
         Then I get a 200 HTTP response
-        And the response body contains the expected values for that search
+        And the response body contains the expected values
 
     Scenario: Searching without gender can return mutliple results
         Given I am a healthcare worker
@@ -240,7 +240,7 @@ Feature: Healthcare Worker Access
         When I search for the patient's PDS record
 
         Then I get a 200 HTTP response
-        And the response body contains the expected values for that search
+        And the response body contains the expected values
 
     Scenario: Searching with fuzzy match
         Given I am a healthcare worker
@@ -250,7 +250,7 @@ Feature: Healthcare Worker Access
         And I search for the patient's PDS record
 
         Then I get a 200 HTTP response
-        And the response body contains the expected values for that search
+        And the response body contains the expected values
 
     Scenario: Searching with unicode returns unicode record
         Given I am a healthcare worker
@@ -259,7 +259,7 @@ Feature: Healthcare Worker Access
         When I search for the patient's PDS record
 
         Then I get a 200 HTTP response
-        And the response body contains the expected values for that search
+        And the response body contains the expected values
 
     Scenario: Searching with specified results limit can return error
         Given I am a healthcare worker
