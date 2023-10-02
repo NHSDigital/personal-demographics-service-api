@@ -2,7 +2,7 @@ import json
 import pytest_bdd
 from pytest_bdd import given, when, then, parsers
 from functools import partial
-from .data.pds_scenarios import retrieve, search as search_scenario, update as update_scenario
+from .data.pds_scenarios import retrieve, search as search_scenario
 from .data.expected_errors import error_responses
 from .data import patients
 from .data.patients import Patient
@@ -22,6 +22,7 @@ from jsonpath_rw import parse
 
 LOGGER = logging.getLogger(__name__)
 
+# TODO: Move this out?
 AUTH_HEALTHCARE_WORKER = {
     "api_name": "personal-demographics-service",
     "access": "healthcare_worker",
@@ -160,6 +161,51 @@ def test_update_patient():
     pass
 
 
+@scenario('Update patient using deprecated respond-async still returns 200')
+def test_update_patient_with_deprecated_header():
+    pass
+
+
+@scenario('Update patient with invalid wait header still updates')
+def test_update_with_invalid_wait():
+    pass
+
+
+@scenario('Update patient with low wait header')
+def test_update_with_low_wait():
+    pass
+
+
+@scenario('Update patient with missing Authorization header')
+def test_update_with_missing_auth():
+    pass
+
+
+@scenario('Update patient with an empty authorization header')
+def test_update_with_empty_auth():
+    pass
+
+
+@scenario('Update patient with an invalid authorization header')
+def test_update_using_invalid_auth():
+    pass
+
+
+@scenario('Update patient with an empty Request ID header')
+def test_update_using_empty_request_id():
+    pass
+
+
+@scenario('Update patient with an invalid X-Request-ID')
+def test_update_using_invalid_request_id():
+    pass
+
+
+@scenario('Update patient with a missing X-Request-ID')
+def test_update_with_missing_request_id():
+    pass
+
+
 @pytest.fixture()
 def pds_url() -> str:
     return f"{BASE_URL}/{PDS_BASE_PATH}"
@@ -176,7 +222,7 @@ def search() -> Search:
 
 
 @pytest.fixture()
-def update():
+def update() -> Update:
     return updates.DEFAULT
 
 
@@ -196,12 +242,12 @@ def search_dob_range() -> Patient:
 
 
 @given("I enter a patient's vague demographic details", target_fixture='search')
-def vague_patient():
+def vague_patient() -> Search:
     return searches.VAGUE
 
 
 @given("I enter a patient's fuzzy demographic details", target_fixture='search')
-def fuzzy_search():
+def fuzzy_search() -> Search:
     return searches.FUZZY
 
 
@@ -244,7 +290,7 @@ def amended_query_params(search: Search, key: str, value: str) -> str:
 
 
 @given("I am a healthcare worker")
-def provide_healthcare_worker_auth_details(request):
+def provide_healthcare_worker_auth_details(request) -> None:
     request.node.add_marker(pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER))
 
 
@@ -255,7 +301,7 @@ def provide_healthcare_worker_auth_details(request):
     ),
     target_fixture='headers_with_authorization'
 )
-def remove_header(headers_with_authorization, header_field):
+def remove_header(headers_with_authorization, header_field) -> dict:
     headers_with_authorization.pop(header_field)
     return headers_with_authorization
 
@@ -266,7 +312,7 @@ def remove_header(headers_with_authorization, header_field):
         extra_types=dict(String=str)
     ),
     target_fixture='headers_with_authorization')
-def empty_header(headers_with_authorization: dict, field: str):
+def empty_header(headers_with_authorization: dict, field: str) -> dict:
     headers_with_authorization.update({field: ''})
     return headers_with_authorization
 
@@ -406,7 +452,7 @@ def response_header_does_not_contain(response: dict, field: str) -> None:
         extra_types=dict(String=str)
     )
 )
-def resposne_body_as_expected(response_body: dict, error):
+def resposne_body_as_expected(response_body: dict, error) -> None:
     assert response_body == error_responses[error]
 
 
@@ -1052,184 +1098,193 @@ class TestUserRestrictedSearchPatient:
         assert checked_results_count == 4
 
 
-class TestUserRestrictedPatientUpdateSyncWrap:
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_update_patient_gender(self, headers_with_token):
-        #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
-        response = helpers.retrieve_patient(
-            update_scenario[0]["patient"],
-            self.headers
-        )
-        patient_record = response.headers["Etag"]
-        versionId = (json.loads(response.text))["meta"]["versionId"]
+# class TestUserRestrictedPatientUpdateSyncWrap:
+    # test_update_patient / test_update_patient_with_deprecated_header
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_update_patient_gender(self, headers_with_token):
+    #     #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
+    #     response = helpers.retrieve_patient(
+    #         update_scenario[0]["patient"],
+    #         self.headers
+    #     )
+    #     patient_record = response.headers["Etag"]
+    #     versionId = (json.loads(response.text))["meta"]["versionId"]
 
-        current_gender = (json.loads(response.text))["gender"]
-        new_gender = 'male' if current_gender == 'female' else 'female'
+    #     current_gender = (json.loads(response.text))["gender"]
+    #     new_gender = 'male' if current_gender == 'female' else 'female'
 
-        # add the new gender to the patch, send the update and check the response
-        update_scenario[0]["patch"]["patches"][0]["value"] = new_gender
-        self.headers["X-Sync-Wait"] = "29"
+    #     # add the new gender to the patch, send the update and check the response
+    #     update_scenario[0]["patch"]["patches"][0]["value"] = new_gender
+    #     self.headers["X-Sync-Wait"] = "29"
 
-        # Prefer header deprecated check that it still returns 200 response
-        self.headers["Prefer"] = "respond-async"
+    #     # Prefer header deprecated check that it still returns 200 response
+    #     self.headers["Prefer"] = "respond-async"
 
-        update_response = helpers.update_patient(
-            update_scenario[0]["patient"],
-            patient_record,
-            update_scenario[0]["patch"],
-            self.headers
-        )
-        with check:
-            assert (json.loads(update_response.text))["gender"] == new_gender
-        with check:
-            assert int((json.loads(update_response.text))["meta"]["versionId"]) == int(versionId) + 1
-        helpers.check_response_status_code(update_response, 200)
+    #     update_response = helpers.update_patient(
+    #         update_scenario[0]["patient"],
+    #         patient_record,
+    #         update_scenario[0]["patch"],
+    #         self.headers
+    #     )
+    #     with check:
+    #         assert (json.loads(update_response.text))["gender"] == new_gender
+    #     with check:
+    #         assert int((json.loads(update_response.text))["meta"]["versionId"]) == int(versionId) + 1
+    #     helpers.check_response_status_code(update_response, 200)
 
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_update_patient_gender_with_invalid_x_sync_wait_header(self, headers_with_token):
-        #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
-        def retrieve_patient():
-            response = helpers.retrieve_patient(
-                update_scenario[0]["patient"],
-                self.headers
-            )
-            return response
+    # test_update_with_invalid_wait
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_update_patient_gender_with_invalid_x_sync_wait_header(self, headers_with_token):
+    #     #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
+    #     def retrieve_patient():
+    #         response = helpers.retrieve_patient(
+    #             update_scenario[0]["patient"],
+    #             self.headers
+    #         )
+    #         return response
 
-        response = retrieve_patient()
+    #     response = retrieve_patient()
 
-        patient_record = response.headers["Etag"]
-        versionId = (json.loads(response.text))["meta"]["versionId"]
+    #     patient_record = response.headers["Etag"]
+    #     versionId = (json.loads(response.text))["meta"]["versionId"]
 
-        current_gender = (json.loads(response.text))["gender"]
-        new_gender = 'male' if current_gender == 'female' else 'female'
+    #     current_gender = (json.loads(response.text))["gender"]
+    #     new_gender = 'male' if current_gender == 'female' else 'female'
 
-        update_scenario[0]["patch"]["patches"][0]["value"] = new_gender
+    #     update_scenario[0]["patch"]["patches"][0]["value"] = new_gender
 
-        self.headers["X-Sync-Wait"] = "invalid"
+    #     self.headers["X-Sync-Wait"] = "invalid"
 
-        update_response = helpers.update_patient(
-            update_scenario[0]["patient"],
-            patient_record,
-            update_scenario[0]["patch"],
-            self.headers
-        )
+    #     update_response = helpers.update_patient(
+    #         update_scenario[0]["patient"],
+    #         patient_record,
+    #         update_scenario[0]["patch"],
+    #         self.headers
+    #     )
 
-        def assert_update_response(update_response):
-            with check:
-                assert (json.loads(update_response.text))["gender"] == new_gender
-            with check:
-                assert int((json.loads(update_response.text))["meta"]["versionId"]) == int(versionId) + 1
-            helpers.check_response_status_code(update_response, 200)
+    #     def assert_update_response(update_response):
+    #         with check:
+    #             assert (json.loads(update_response.text))["gender"] == new_gender
+    #         with check:
+    #             assert int((json.loads(update_response.text))["meta"]["versionId"]) == int(versionId) + 1
+    #         helpers.check_response_status_code(update_response, 200)
 
-        if update_response.status_code == 503 and json.loads(
-                update_response.text, strict=False)["issue"][0]["code"] == "timeout":
-            """
-                Temp fix due to slow VEIT07 env causing update to exceed default X-Sync-Wait timeout of 10s.
-                If the update times out retrieve the patient instead and check if the record has been updated.
-            """
-            retrieve_response = retrieve_patient()
-            assert_update_response(retrieve_response)
-        else:
-            assert_update_response(update_response)
+    #     if update_response.status_code == 503 and json.loads(
+    #             update_response.text, strict=False)["issue"][0]["code"] == "timeout":
+    #         """
+    #             Temp fix due to slow VEIT07 env causing update to exceed default X-Sync-Wait timeout of 10s.
+    #             If the update times out retrieve the patient instead and check if the record has been updated.
+    #         """
+    #         retrieve_response = retrieve_patient()
+    #         assert_update_response(retrieve_response)
+    #     else:
+    #         assert_update_response(update_response)
 
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_update_patient_gender_with_low_sync_wait_timeout(self, headers_with_token):
-        #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
-        response = helpers.retrieve_patient(
-            update_scenario[0]["patient"],
-            self.headers
-        )
-        patient_record = response.headers["Etag"]
+    # test_update_with_low_wait
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_update_patient_gender_with_low_sync_wait_timeout(self, headers_with_token):
+    #     #  send retrieve patient request to retrieve the patient record (Etag Header) & versionId
+    #     response = helpers.retrieve_patient(
+    #         update_scenario[0]["patient"],
+    #         self.headers
+    #     )
+    #     patient_record = response.headers["Etag"]
 
-        current_gender = (json.loads(response.text))["gender"]
-        new_gender = 'male' if current_gender == 'female' else 'female'
+    #     current_gender = (json.loads(response.text))["gender"]
+    #     new_gender = 'male' if current_gender == 'female' else 'female'
 
-        update_scenario[0]["patch"]["patches"][0]["value"] = new_gender
+    #     update_scenario[0]["patch"]["patches"][0]["value"] = new_gender
 
-        self.headers["X-Sync-Wait"] = "0.25"
-        update_response = helpers.update_patient(
-            update_scenario[0]["patient"],
-            patient_record,
-            update_scenario[0]["patch"],
-            self.headers
-        )
+    #     self.headers["X-Sync-Wait"] = "0.25"
+    #     update_response = helpers.update_patient(
+    #         update_scenario[0]["patient"],
+    #         patient_record,
+    #         update_scenario[0]["patch"],
+    #         self.headers
+    #     )
 
-        helpers.check_response_status_code(update_response, 503)
+    #     helpers.check_response_status_code(update_response, 503)
 
-    def test_update_patient_with_missing_auth_header(self, headers):
-        update_response = helpers.update_patient(
-            update_scenario[1]["patient"],
-            'W/"14"',
-            update_scenario[1]["patch"],
-            headers
-        )
-        helpers.check_retrieve_response_body(update_response, update_scenario[1]["response"])
-        helpers.check_response_status_code(update_response, 401)
-        helpers.check_response_headers(update_response, headers)
+    # test_update_with_missing_auth
+    # def test_update_patient_with_missing_auth_header(self, headers):
+    #     update_response = helpers.update_patient(
+    #         update_scenario[1]["patient"],
+    #         'W/"14"',
+    #         update_scenario[1]["patch"],
+    #         headers
+    #     )
+    #     helpers.check_retrieve_response_body(update_response, update_scenario[1]["response"])
+    #     helpers.check_response_status_code(update_response, 401)
+    #     helpers.check_response_headers(update_response, headers)
 
-    def test_update_patient_with_blank_auth_header(self, headers):
-        headers['authorization'] = ''
-        update_response = helpers.update_patient(
-            update_scenario[2]["patient"],
-            'W/"14"',
-            update_scenario[2]["patch"],
-            headers
-        )
-        helpers.check_retrieve_response_body(update_response, update_scenario[2]["response"])
-        helpers.check_response_status_code(update_response, 401)
-        helpers.check_response_headers(update_response, headers)
+    # test_update_with_empty_auth
+    # def test_update_patient_with_blank_auth_header(self, headers):
+    #     headers['authorization'] = ''
+    #     update_response = helpers.update_patient(
+    #         update_scenario[2]["patient"],
+    #         'W/"14"',
+    #         update_scenario[2]["patch"],
+    #         headers
+    #     )
+    #     helpers.check_retrieve_response_body(update_response, update_scenario[2]["response"])
+    #     helpers.check_response_status_code(update_response, 401)
+    #     helpers.check_response_headers(update_response, headers)
 
-    def test_update_patient_with_invalid_auth_header(self, headers):
-        headers['authorization'] = 'Bearer abcdef123456789'
-        update_response = helpers.update_patient(
-            update_scenario[3]["patient"],
-            'W/"14"',
-            update_scenario[3]["patch"],
-            headers
-        )
-        helpers.check_retrieve_response_body(update_response, update_scenario[3]["response"])
-        helpers.check_response_status_code(update_response, 401)
-        helpers.check_response_headers(update_response, headers)
+    # test_update_using_invalid_auth
+    # def test_update_patient_with_invalid_auth_header(self, headers):
+    #     headers['authorization'] = 'Bearer abcdef123456789'
+    #     update_response = helpers.update_patient(
+    #         update_scenario[3]["patient"],
+    #         'W/"14"',
+    #         update_scenario[3]["patch"],
+    #         headers
+    #     )
+    #     helpers.check_retrieve_response_body(update_response, update_scenario[3]["response"])
+    #     helpers.check_response_status_code(update_response, 401)
+    #     helpers.check_response_headers(update_response, headers)
 
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_update_patient_with_blank_x_request_header(self, headers_with_token):
-        self.headers["X-Request-ID"] = ''
-        update_response = helpers.update_patient(
-            update_scenario[5]["patient"],
-            'W/"14"',
-            update_scenario[5]["patch"],
-            self.headers
-        )
-        helpers.check_retrieve_response_body(update_response, update_scenario[5]["response"])
-        helpers.check_response_status_code(update_response, 400)
-        self.headers.pop("X-Request-ID")
-        helpers.check_response_headers(update_response, self.headers)
+    # test_update_using_empty_request_id
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_update_patient_with_blank_x_request_header(self, headers_with_token):
+    #     self.headers["X-Request-ID"] = ''
+    #     update_response = helpers.update_patient(
+    #         update_scenario[5]["patient"],
+    #         'W/"14"',
+    #         update_scenario[5]["patch"],
+    #         self.headers
+    #     )
+    #     helpers.check_retrieve_response_body(update_response, update_scenario[5]["response"])
+    #     helpers.check_response_status_code(update_response, 400)
+    #     self.headers.pop("X-Request-ID")
+    #     helpers.check_response_headers(update_response, self.headers)
 
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_update_patient_with_invalid_x_request_header(self, headers_with_token):
-        self.headers["X-Request-ID"] = '1234'
-        update_response = helpers.update_patient(
-            update_scenario[6]["patient"],
-            'W/"14"',
-            update_scenario[6]["patch"],
-            self.headers
-        )
-        helpers.check_retrieve_response_body(update_response, update_scenario[6]["response"])
-        helpers.check_response_status_code(update_response, 400)
-        helpers.check_response_headers(update_response, self.headers)
+    # test_update_using_invalid_request_id
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_update_patient_with_invalid_x_request_header(self, headers_with_token):
+    #     self.headers["X-Request-ID"] = '1234'
+    #     update_response = helpers.update_patient(
+    #         update_scenario[6]["patient"],
+    #         'W/"14"',
+    #         update_scenario[6]["patch"],
+    #         self.headers
+    #     )
+    #     helpers.check_retrieve_response_body(update_response, update_scenario[6]["response"])
+    #     helpers.check_response_status_code(update_response, 400)
+    #     helpers.check_response_headers(update_response, self.headers)
 
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_update_patient_with_missing_x_request_header(self, headers_with_token):
-        self.headers.pop("X-Request-ID")
-        update_response = helpers.update_patient(
-            update_scenario[7]["patient"],
-            'W/"14"',
-            update_scenario[7]["patch"],
-            self.headers
-        )
-        helpers.check_retrieve_response_body(update_response, update_scenario[7]["response"])
-        helpers.check_response_status_code(update_response, 412)
-        helpers.check_response_headers(update_response, self.headers)
+    # test_update_with_missing_request_id
+    # @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
+    # def test_update_patient_with_missing_x_request_header(self, headers_with_token):
+    #     self.headers.pop("X-Request-ID")
+    #     update_response = helpers.update_patient(
+    #         update_scenario[7]["patient"],
+    #         'W/"14"',
+    #         update_scenario[7]["patch"],
+    #         self.headers
+    #     )
+    #     helpers.check_retrieve_response_body(update_response, update_scenario[7]["response"])
+    #     helpers.check_response_status_code(update_response, 412)
+    #     helpers.check_response_headers(update_response, self.headers)
 
 
 class TestUserRestrictedRetrieveRelatedPerson:
