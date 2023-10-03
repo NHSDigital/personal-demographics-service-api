@@ -456,10 +456,6 @@ def check_header_value(response: Response,
 
 @then("the response body contains the patient's NHS number")
 def response_body_contains_given_id(response_body: dict, nhs_number: dict) -> None:
-    # TODO: this should probably be refactored
-    if 'entry' in response_body:
-        response_body = response_body['entry'][0]['resource']
-
     with check:
         assert response_body["id"] == nhs_number
         assert response_body["resourceType"] == "Patient"
