@@ -1,15 +1,22 @@
 from tests.scripts.pds_request import GenericPdsRequestor, PdsRecord
 import pytest
-
+from pytest_bdd import given, when, then
+from jsonpath_rw import parse
+from pytest_check import check
 from .utils import helpers
 import uuid
+import urllib
 from .utils.apigee_api_apps import ApigeeApiDeveloperApps
 from .utils.apigee_api_products import ApigeeApiProducts
 from .configuration import config
+from .configuration.config import BASE_URL, PDS_BASE_PATH
 import random
+from requests import Response, get
 import json
 from typing import Union
-
+from .data.searches import Search
+from .data import searches
+from .data.patients import Patient
 
 from pytest_nhsd_apim.identity_service import (
     ClientCredentialsConfig,
@@ -26,7 +33,13 @@ from pytest_nhsd_apim.apigee_apis import (
 import logging
 
 LOGGER = logging.getLogger(__name__)
+# TODO: move this out?
 DEVELOPER_EMAIL = "apm-testing-internal-dev@nhs.net"
+
+
+@pytest.fixture()
+def pds_url() -> str:
+    return f"{BASE_URL}/{PDS_BASE_PATH}"
 
 
 @pytest.fixture()
@@ -68,31 +81,48 @@ def add_asid_to_testapp(developer_apps, nhsd_apim_test_app):
         LOGGER.info(f'Test app updated with ASID attribute: {response}')
 
 
-@pytest.fixture(scope='function')
-async def headers_with_authorization(
-    _nhsd_apim_auth_token_data,
-    request,
-    identity_service_base_url,
-    nhsd_apim_test_app,
-    client,
-    api_products,
-    add_asid_to_testapp
-):
-    """Assign required headers with the Authorization header"""
+@given("I am an unknown user", target_fixture='headers_with_authorization')
+def provide_headers_with_no_auth_details() -> None:
+    return {}
 
-    LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
-    access_token = _nhsd_apim_auth_token_data.get("access_token", "")
-    role_id = await helpers.get_role_id_from_user_info_endpoint(access_token, identity_service_base_url)
 
-    headers = {"X-Request-ID": str(uuid.uuid1()),
-               "X-Correlation-ID": str(uuid.uuid1()),
-               "NHSD-Session-URID": role_id,
-               "Authorization": f'Bearer {access_token}'
-               }
+@given("I have a patient's demographic details", target_fixture='search')
+def search() -> Search:
+    return searches.DEFAULT
 
-    # setattr(request.cls, 'headers', headers)
-    LOGGER.info(f'headers: {headers}')
-    return headers
+
+@pytest.fixture()
+def query_params(search: Search) -> str:
+    return urllib.parse.urlencode(search.query)
+
+
+@when("I search for the patient's PDS record", target_fixture='response')
+def search_patient(headers_with_authorization: dict, query_params: str, pds_url: str) -> Response:
+    return get(url=f"{pds_url}/Patient?{query_params}", headers=headers_with_authorization)
+
+
+@then('the response body contains the expected response')
+def response_body_as_expected(response_body: dict, patient: Patient) -> None:
+    assert response_body == patient.expected_response
+
+
+@then('the response body contains the expected values')
+def check_expected_search_response_body(response_body: dict, search: Search) -> None:
+    with check:
+        for field in search.expected_response_fields:
+            matches = parse(field.path).find(response_body)
+            assert matches, f'There are no matches for {field.expected_value} at {field.path} in the resposne body'
+            for match in matches:
+                assert match.value == field.expected_value,\
+                    f'{field.path} in response does not contain the expected value, {field.expected_value}'
+
+
+@pytest.fixture()
+def response_body(response: Response) -> dict:
+    response_body = json.loads(response.text)
+    if "timestamp" in response_body:
+        response_body.pop("timestamp")
+    return response_body
 
 
 @pytest.fixture()

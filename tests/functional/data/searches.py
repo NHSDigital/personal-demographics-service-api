@@ -17,7 +17,9 @@ class Search:
 DEFAULT = Search(query=[("family", "Capon"),
                         ("gender", "male"),
                         ("birthdate", "eq1953-05-29")],
-                 expected_response_fields=[Field("entry[0].resource.id", "9693632117")])
+                 expected_response_fields=[Field("resourceType", "Bundle"),
+                                           Field("type", "searchset"),
+                                           Field("entry[0].resource.id", "9693632117")])
 
 SENSITIVE = Search(query=[("family", "Godsoe"),
                           ("gender", "male"),

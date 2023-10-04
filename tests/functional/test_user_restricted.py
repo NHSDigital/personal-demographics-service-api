@@ -2,7 +2,7 @@ import json
 import pytest_bdd
 from pytest_bdd import given, when, then, parsers
 from functools import partial
-from .data.pds_scenarios import retrieve
+from .data.pds_scenarios import retrieve, search
 from .data.expected_errors import error_responses
 from .data import patients
 from .data.patients import Patient
@@ -18,19 +18,19 @@ from .configuration.config import ENVIRONMENT, BASE_URL, PDS_BASE_PATH
 from requests import Response, get, patch
 import re
 import urllib.parse
+import uuid
 from jsonpath_rw import parse
 
+AUTH_HEALTHCARE_WORKER = {
+        "api_name": "personal-demographics-service",
+        "access": "healthcare_worker",
+        "level": "aal3",
+        "login_form": {"username": "656005750104"},
+        "force_new_token": True
+    }
 LOGGER = logging.getLogger(__name__)
 
-# TODO: Move this out?
-AUTH_HEALTHCARE_WORKER = {
-    "api_name": "personal-demographics-service",
-    "access": "healthcare_worker",
-    "level": "aal3",
-    "login_form": {"username": "656005750104"},
-    "force_new_token": True
-}
-
+# TODO: Is this avaiable in the pytest library?
 IDENTITY_SERVICE_BASE_URL = "https://int.api.service.nhs.uk/oauth2-mock"
 
 retrieve_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_retrieve.feature')
@@ -40,6 +40,46 @@ update_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_upd
 related_person_scenario = partial(pytest_bdd.scenario, './features/related_person.feature')
 
 status_scenario = partial(pytest_bdd.scenario, './features/status_endpoints.feature')
+
+
+@given("I am a healthcare worker")
+def provide_healthcare_worker_auth_details(request) -> None:
+    auth_details = {
+        "api_name": "personal-demographics-service",
+        "access": "healthcare_worker",
+        "level": "aal3",
+        "login_form": {"username": "656005750104"},
+        "force_new_token": True
+    }
+    request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
+
+
+@pytest.fixture(scope='function')
+async def headers_with_authorization(
+    _nhsd_apim_auth_token_data,
+    request,
+    identity_service_base_url,
+    nhsd_apim_test_app,
+    client,
+    api_products,
+    add_asid_to_testapp
+):
+    """Assign required headers with the Authorization header"""
+
+    LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
+    access_token = _nhsd_apim_auth_token_data.get("access_token", "")
+
+    headers = {"X-Request-ID": str(uuid.uuid1()),
+               "X-Correlation-ID": str(uuid.uuid1()),
+               "Authorization": f'Bearer {access_token}'
+               }
+
+    role_id = await helpers.get_role_id_from_user_info_endpoint(access_token, identity_service_base_url)
+    headers.update({"NHSD-Session-URID": role_id})
+
+    # setattr(request.cls, 'headers', headers)
+    LOGGER.info(f'headers: {headers}')
+    return headers
 
 
 @retrieve_scenario('Healthcare worker can retrieve patient')
@@ -233,11 +273,6 @@ def test_healthcheck():
 
 
 @pytest.fixture()
-def pds_url() -> str:
-    return f"{BASE_URL}/{PDS_BASE_PATH}"
-
-
-@pytest.fixture()
 def patient() -> Patient:
     return patients.DEFAULT
 
@@ -245,11 +280,6 @@ def patient() -> Patient:
 @given('I have a patient with a related person', target_fixture='patient')
 def patient_with_a_related_person() -> Patient:
     return patients.WITH_RELATED_PERSON
-
-
-@given("I have a patient's demographic details", target_fixture='search')
-def search() -> Search:
-    return searches.DEFAULT
 
 
 @pytest.fixture()
@@ -307,11 +337,6 @@ def record_to_update(update: Update, headers_with_authorization: dict, pds_url: 
     return update.record_to_update
 
 
-@pytest.fixture()
-def query_params(search: Search) -> str:
-    return urllib.parse.urlencode(search.query)
-
-
 @when(
     parsers.cfparse(
         'the query parameters contain {key:String} as {value:String}',
@@ -323,16 +348,6 @@ def amended_query_params(search: Search, key: str, value: str) -> str:
     query_params = search.query
     query_params.append((key, value))
     return urllib.parse.urlencode(query_params)
-
-
-@given("I am a healthcare worker")
-def provide_healthcare_worker_auth_details(request) -> None:
-    request.node.add_marker(pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER))
-
-
-@given("I am an unknown user", target_fixture='headers_with_authorization')
-def provide_headers_with_no_auth_details() -> None:
-    return {}
 
 
 @given(
@@ -393,11 +408,6 @@ def retrieve_related_person(headers_with_authorization: dict, nhs_number: str, p
     return get(url=f"{pds_url}/Patient/{nhs_number}/RelatedPerson", headers=headers_with_authorization)
 
 
-@when("I search for the patient's PDS record", target_fixture='response')
-def search_patient(headers_with_authorization: dict, query_params: str, pds_url: str) -> Response:
-    return get(url=f"{pds_url}/Patient?{query_params}", headers=headers_with_authorization)
-
-
 @when("I update the patient's PDS record", target_fixture='response')
 def update_patient(headers_with_authorization: dict, update: Update, pds_url: str) -> Response:
     headers = headers_with_authorization
@@ -419,14 +429,6 @@ def update_patient(headers_with_authorization: dict, update: Update, pds_url: st
 )
 def hit_endpoint(headers_with_authorization: dict, pds_url: str, endpoint: str):
     return get(url=f'{pds_url}/{endpoint}', headers=headers_with_authorization)
-
-
-@pytest.fixture()
-def response_body(response: Response) -> dict:
-    response_body = json.loads(response.text)
-    if "timestamp" in response_body:
-        response_body.pop("timestamp")
-    return response_body
 
 
 @then(
@@ -513,11 +515,6 @@ def resposne_body_contains_error(response_body: dict, error) -> None:
     assert response_body == error_responses[error]
 
 
-@then('the response body contains the expected response')
-def response_body_as_expected(response_body: dict, patient: Patient) -> None:
-    assert response_body == patient.expected_response
-
-
 @then('the response body is the correct shape')
 def response_body_shape(response_body: Response) -> None:
     with check:
@@ -551,17 +548,6 @@ def new_gender(response_body: Response, update: Update) -> None:
 def version_incremented(response_body: Response, update: Update) -> None:
     with check:
         assert response_body["meta"]["versionId"] == str(int(update.record_version) + 1)
-
-
-@then('the response body contains the expected values')
-def check_expected_search_response_body(response_body: dict, search: Search) -> None:
-    with check:
-        for field in search.expected_response_fields:
-            matches = parse(field.path).find(response_body)
-            assert matches, f'There are no matches for {field.expected_value} at {field.path} in the resposne body'
-            for match in matches:
-                assert match.value == field.expected_value,\
-                    f'{field.path} in response does not contain the expected value, {field.expected_value}'
 
 
 class TestUserRestrictedRetrievePatientOld:

@@ -1,12 +1,10 @@
 import json
 import pytest
 from functools import partial
-
-import dateutil.parser
 import jwt
 import uuid
 import time
-
+import logging
 import requests
 from pytest_bdd import given, when, then, parsers
 import pytest_bdd
@@ -15,6 +13,29 @@ from tests.functional.configuration import config
 from tests.functional.utils import helpers
 
 scenario = partial(pytest_bdd.scenario, "features/application_restricted.feature")
+
+LOGGER = logging.getLogger(__name__)
+
+
+@given("I am authenticating using unattended access")
+def provide_app_restricted_auth_details(request) -> None:
+    auth_details = {
+        "api_name": "personal-demographics-service",
+        "access": "application",
+        # TODO: Why is this level3?
+        "level": "level3",
+        "force_new_token": True
+    }
+    request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
+
+
+@pytest.fixture(scope='function')
+async def headers_with_authorization(nhsd_apim_auth_headers):
+    headers = {"X-Request-ID": str(uuid.uuid1()),
+               "X-Correlation-ID": str(uuid.uuid1())}
+    headers.update(nhsd_apim_auth_headers)
+    LOGGER.info(headers)
+    return headers
 
 
 def teardown_function(function):
@@ -134,11 +155,6 @@ def test_app_without_asid_fails():
 @scenario("App WITH an ASID works in an asid-required API Proxy")
 def test_app_with_asid_works():
     pass
-
-
-@given("I am authenticating using unattended access", target_fixture="auth")
-def auth():
-    return {}
 
 
 @given("I create a new app")
@@ -302,11 +318,6 @@ def set_expired_access_token(auth):
     auth["token_type"] = response_json["token_type"]
 
 
-@given("I have a request context", target_fixture="context")
-def context():
-    return {}
-
-
 @given(parsers.parse("I wait for {number_of:d} milliseconds"))
 def wait_for_some_milliseconds(number_of: int):
     time.sleep(number_of / 1000)
@@ -447,19 +458,9 @@ def get_patient_without_user_role_id(auth, context):
         "I get a {status:Number} HTTP response", extra_types=dict(Number=int)
     )
 )
-def check_status(status, context):
-    assert context["status"] == status
-
-
-@then("I get a Bundle resource in the response")
-def check_bundle_resource(context):
-    response = context["response"]
-    EXPECTED_KEYS = {"entry", "resourceType", "timestamp", "total", "type"}
-    assert response.keys() == EXPECTED_KEYS
-    assert response["resourceType"] == "Bundle"
-    assert response["type"] == "searchset"
-    assert response["total"] >= 0
-    assert dateutil.parser.parse(response["timestamp"])
+def check_status(status, response, response_body):
+    LOGGER.info(f'response body:{response_body}')
+    assert response.status_code == status
 
 
 @then("I get an error response")
