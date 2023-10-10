@@ -1,8 +1,6 @@
 import pytest_bdd
-from pytest_bdd import given, when, then, parsers
+from pytest_bdd import given, then, parsers
 from functools import partial
-from .data.pds_scenarios import retrieve, search
-from .data import patients
 from .data.patients import Patient
 from .data import searches
 from .data.searches import Search
@@ -11,13 +9,12 @@ from .utils import helpers
 import pytest
 from pytest_check import check
 import logging
-from .configuration.config import ENVIRONMENT, BASE_URL, PDS_BASE_PATH
-from requests import Response, get
+from .configuration.config import BASE_URL, PDS_BASE_PATH
+from requests import Response
 import re
 import uuid
 from jsonpath_rw import parse
 
-from pytest_nhsd_apim.auth_journey import AuthorizationCodeConfig, AuthorizationCodeAuthenticator
 
 AUTH_HEALTHCARE_WORKER = {
         "api_name": "personal-demographics-service",
@@ -35,18 +32,6 @@ update_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_upd
 related_person_scenario = partial(pytest_bdd.scenario, './features/related_person.feature')
 
 status_scenario = partial(pytest_bdd.scenario, './features/status_endpoints.feature')
-
-
-@given("I am a healthcare worker")
-def provide_healthcare_worker_auth_details(request) -> None:
-    auth_details = {
-        "api_name": "personal-demographics-service",
-        "access": "healthcare_worker",
-        "level": "aal3",
-        "login_form": {"username": "656005750104"},
-        "force_new_token": True
-    }
-    request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
 
 
 @pytest.fixture(scope='function')
@@ -267,16 +252,6 @@ def test_healthcheck():
     pass
 
 
-@pytest.fixture()
-def patient() -> Patient:
-    return patients.DEFAULT
-
-
-@given('I have a patient with a related person', target_fixture='patient')
-def patient_with_a_related_person() -> Patient:
-    return patients.WITH_RELATED_PERSON
-
-
 @given("I have a sensitive patient's demographic details", target_fixture='search')
 def search_for_sensitive() -> Patient:
     return searches.SENSITIVE
@@ -307,32 +282,11 @@ def empty_search() -> Search:
     return searches.EMPTY_RESULTS
 
 
-@pytest.fixture()
-def nhs_number(patient: Patient) -> str:
-    return patient.nhs_number
-
-
 @given('I am using the deprecated url', target_fixture='pds_url')
 def use_deprecated_url() -> str:
     prNo = re.search("pr-[0-9]+", PDS_BASE_PATH)
     prString = f"-{prNo.group()}" if prNo is not None else ""
     return f"{BASE_URL}/personal-demographics{prString}"
-
-
-@when('I retrieve their related person', target_fixture='response')
-def retrieve_related_person(headers_with_authorization: dict, nhs_number: str, pds_url: str) -> Response:
-    return get(url=f"{pds_url}/Patient/{nhs_number}/RelatedPerson", headers=headers_with_authorization)
-
-
-@when(
-    parsers.cfparse(
-        "I hit the /{endpoint:String} endpoint",
-        extra_types=dict(String=str)
-    ),
-    target_fixture='response'
-)
-def hit_endpoint(headers_with_authorization: dict, pds_url: str, endpoint: str):
-    return get(url=f'{pds_url}/{endpoint}', headers=headers_with_authorization)
 
 
 @then(
@@ -345,26 +299,6 @@ def check_status(response: Response, expected_status: int) -> None:
     LOGGER.info(response.text)
     with check:
         assert response.status_code == expected_status
-
-
-@then(
-    parsers.cfparse(
-        'the {header_field:String} response header matches the request',
-        extra_types=dict(String=str)
-    )
-)
-def check_header_value(response: Response,
-                       header_field: str,
-                       headers_with_authorization: dict) -> None:
-    with check:
-        assert response.headers[header_field] == headers_with_authorization[header_field]
-
-
-@then("the response body contains the patient's NHS number")
-def response_body_contains_given_id(response_body: dict, nhs_number: dict) -> None:
-    with check:
-        assert response_body["id"] == nhs_number
-        assert response_body["resourceType"] == "Patient"
 
 
 @then('the resposne body contains the sensitivity flag')
@@ -409,29 +343,6 @@ def response_header_does_not_contain(response: dict, field: str) -> None:
     assert field not in response.headers
 
 
-@then('the response body is the correct shape')
-def response_body_shape(response_body: Response) -> None:
-    with check:
-        assert response_body["address"] is not None
-        assert isinstance(response_body["address"], list)
-
-        assert response_body["birthDate"] is not None
-        assert isinstance(response_body["birthDate"], str)
-        assert len(response_body["birthDate"]) > 1
-
-        assert response_body["gender"] is not None
-        assert isinstance(response_body["gender"], str)
-
-        assert response_body["name"] is not None
-        assert isinstance(response_body["name"], list)
-        assert len(response_body["name"]) > 0
-
-        assert len(response_body["identifier"]) > 0
-        assert isinstance(response_body["identifier"], list)
-
-        assert response_body["meta"] is not None
-
-
 @then("the response body contains the patient's new gender")
 def new_gender(response_body: Response, update: Update) -> None:
     with check:
@@ -442,124 +353,3 @@ def new_gender(response_body: Response, update: Update) -> None:
 def version_incremented(response_body: Response, update: Update) -> None:
     with check:
         assert response_body["meta"]["versionId"] == str(int(update.record_version) + 1)
-
-
-@pytest.mark.smoke_test
-@pytest.mark.skipif(ENVIRONMENT != 'int', reason="INT can only use pre-built test app")
-@pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-class TestIntEnvironment:
-    IDENTITY_SERVICE_BASE_URL = "https://int.api.service.nhs.uk/oauth2-mock"
-
-    def test_retrieve_patient_for_int(self,
-                                      apigee_environment,
-                                      nhsd_apim_config,
-                                      _test_app_credentials):
-        headers = self.get_headers(apigee_environment,
-                                   nhsd_apim_config,
-                                   _test_app_credentials,
-                                   AUTH_HEALTHCARE_WORKER)
-        self.retrieve_patient_and_assert(retrieve[0], headers)
-
-    def retrieve_patient_and_assert(self, patient: dict, headers):
-        response = helpers.retrieve_patient(
-            retrieve[0]["patient"],
-            headers
-        )
-
-        helpers.check_response_headers(response, headers)
-        helpers.check_response_status_code(response, 200)
-        helpers.check_retrieve_response_body_shape(response)
-
-    @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
-    def test_search_patient_happy_path_for_int(self, apigee_environment, nhsd_apim_config, _test_app_credentials):
-        headers = self.get_headers(apigee_environment,
-                                   nhsd_apim_config,
-                                   _test_app_credentials,
-                                   AUTH_HEALTHCARE_WORKER)
-        self.search_patient_and_assert(headers)
-
-    def search_patient_and_assert(self, headers):
-        response = helpers.search_patient(
-            search[0]["query_params"],
-            headers
-        )
-        helpers.check_response_status_code(response, 200)
-        helpers.assert_correct_patient_nhs_number_is_returned(response, search[0]["patient_returned"])
-        helpers.check_response_headers(response, headers)
-
-    def test_retrieve_related_person_for_int(self,
-                                             apigee_environment,
-                                             nhsd_apim_config,
-                                             _test_app_credentials,):
-        headers = self.get_headers(apigee_environment,
-                                   nhsd_apim_config,
-                                   _test_app_credentials,
-                                   AUTH_HEALTHCARE_WORKER)
-        self.retrieve_patient_and_assert_v2(retrieve[8], headers)
-
-    def retrieve_patient_and_assert_v2(self, patient: dict, headers: dict):
-        response = helpers.retrieve_patient_related_person(
-            patient["patient"],
-            headers
-        )
-        helpers.check_retrieve_related_person_response_body(response, patient["response"])
-        helpers.check_response_status_code(response, 200)
-        helpers.check_response_headers(response, headers)
-
-    def test_health_check_endpoint_for_int(self,
-                                           apigee_environment,
-                                           nhsd_apim_config,
-                                           _test_app_credentials):
-        headers = self.get_headers(apigee_environment,
-                                   nhsd_apim_config,
-                                   _test_app_credentials,
-                                   AUTH_HEALTHCARE_WORKER)
-        response = helpers.check_health_check_endpoint(headers)
-        helpers.check_response_status_code(response, 200)
-
-    def get_headers(self,
-                    apigee_environment: str,
-                    nhsd_apim_config: dict,
-                    _test_app_credentials: dict,
-                    authorization_details: dict) -> dict:
-        access_token = self.get_access_token(apigee_environment,
-                                             nhsd_apim_config,
-                                             _test_app_credentials,
-                                             authorization_details)
-
-        role_id = helpers.get_role_id_from_user_info_endpoint(access_token, self.IDENTITY_SERVICE_BASE_URL)
-
-        headers = {
-            "X-Request-ID": str(uuid.uuid1()),
-            "X-Correlation-ID": str(uuid.uuid1()),
-            "NHSD-Session-URID": role_id,
-            "Authorization": f'Bearer {access_token}'
-        }
-
-        return headers
-
-    def get_access_token(self,
-                         apigee_environment: str,
-                         nhsd_apim_config: dict,
-                         _test_app_credentials: dict,
-                         authorization_details: dict) -> str:
-        user_restricted_app_config = AuthorizationCodeConfig(
-            environment=apigee_environment,
-            org=nhsd_apim_config["APIGEE_ORGANIZATION"],
-            callback_url="https://example.org/callback",
-            identity_service_base_url=self.IDENTITY_SERVICE_BASE_URL,
-            client_id=_test_app_credentials["consumerKey"],
-            client_secret=_test_app_credentials["consumerSecret"],
-            scope="nhs-cis2",
-            login_form=authorization_details['login_form']
-        )
-
-        authenticator = AuthorizationCodeAuthenticator(config=user_restricted_app_config)
-
-        token_response = authenticator.get_token()
-        assert "access_token" in token_response
-        access_token = token_response["access_token"]
-
-        LOGGER.info(f'token: {access_token}')
-
-        return access_token

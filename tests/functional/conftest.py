@@ -18,6 +18,7 @@ from .data.searches import Search
 from .data.updates import Update
 from .data import searches
 from .data import updates
+from .data import patients
 from .data.patients import Patient
 from .data.expected_errors import error_responses
 from copy import copy
@@ -89,6 +90,18 @@ def provide_headers_with_no_auth_details() -> None:
     return {}
 
 
+@given("I am a healthcare worker")
+def provide_healthcare_worker_auth_details(request) -> None:
+    auth_details = {
+        "api_name": "personal-demographics-service",
+        "access": "healthcare_worker",
+        "level": "aal3",
+        "login_form": {"username": "656005750104"},
+        "force_new_token": True
+    }
+    request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
+
+
 @pytest.fixture()
 def search() -> Search:
     return searches.DEFAULT
@@ -102,6 +115,21 @@ def update() -> Update:
 @given("I enter a patient's vague demographic details", target_fixture='search')
 def vague_patient() -> Search:
     return searches.VAGUE
+
+
+@pytest.fixture()
+def patient() -> Patient:
+    return patients.DEFAULT
+
+
+@given('I have a patient with a related person', target_fixture='patient')
+def patient_with_a_related_person() -> Patient:
+    return patients.WITH_RELATED_PERSON
+
+
+@pytest.fixture()
+def nhs_number(patient: Patient) -> str:
+    return patient.nhs_number
 
 
 @given("I have a patient's record to update", target_fixture='record_to_update')
@@ -165,6 +193,11 @@ def retrieve_patient(headers_with_authorization: dict, nhs_number: str, pds_url:
     return get(url=f"{pds_url}/Patient/{nhs_number}", headers=headers_with_authorization)
 
 
+@when('I retrieve their related person', target_fixture='response')
+def retrieve_related_person(headers_with_authorization: dict, nhs_number: str, pds_url: str) -> Response:
+    return get(url=f"{pds_url}/Patient/{nhs_number}/RelatedPerson", headers=headers_with_authorization)
+
+
 @when("I update the patient's PDS record", target_fixture='response')
 def update_patient(headers_with_authorization: dict, update: Update, pds_url: str) -> Response:
     headers = headers_with_authorization
@@ -176,6 +209,17 @@ def update_patient(headers_with_authorization: dict, update: Update, pds_url: st
     return patch(url=f"{pds_url}/Patient/{update.nhs_number}",
                  headers=headers,
                  json=update.patches)
+
+
+@when(
+    parsers.cfparse(
+        "I hit the /{endpoint:String} endpoint",
+        extra_types=dict(String=str)
+    ),
+    target_fixture='response'
+)
+def hit_endpoint(headers_with_authorization: dict, pds_url: str, endpoint: str):
+    return get(url=f'{pds_url}/{endpoint}', headers=headers_with_authorization)
 
 
 @when(
@@ -198,6 +242,18 @@ def search_patient(headers_with_authorization: dict, query_params: str, pds_url:
 
 @then(
     parsers.cfparse(
+        "I get a {expected_status:Number} HTTP response",
+        extra_types=dict(Number=int)
+    )
+)
+def check_status(response: Response, expected_status: int) -> None:
+    LOGGER.info(response.text)
+    with check:
+        assert response.status_code == expected_status
+
+
+@then(
+    parsers.cfparse(
         'the response body is the {error:String} response',
         extra_types=dict(String=str)
     )
@@ -209,6 +265,49 @@ def resposne_body_contains_error(response_body: dict, error) -> None:
 @then('the response body contains the expected response')
 def response_body_as_expected(response_body: dict, patient: Patient) -> None:
     assert response_body == patient.expected_response
+
+
+@then(
+    parsers.cfparse(
+        'the {header_field:String} response header matches the request',
+        extra_types=dict(String=str)
+    )
+)
+def check_header_value(response: Response,
+                       header_field: str,
+                       headers_with_authorization: dict) -> None:
+    with check:
+        assert response.headers[header_field] == headers_with_authorization[header_field]
+
+
+@then("the response body contains the patient's NHS number")
+def response_body_contains_given_id(response_body: dict, nhs_number: dict) -> None:
+    with check:
+        assert response_body["id"] == nhs_number
+        assert response_body["resourceType"] == "Patient"
+
+
+@then('the response body is the correct shape')
+def response_body_shape(response_body: Response) -> None:
+    with check:
+        assert response_body["address"] is not None
+        assert isinstance(response_body["address"], list)
+
+        assert response_body["birthDate"] is not None
+        assert isinstance(response_body["birthDate"], str)
+        assert len(response_body["birthDate"]) > 1
+
+        assert response_body["gender"] is not None
+        assert isinstance(response_body["gender"], str)
+
+        assert response_body["name"] is not None
+        assert isinstance(response_body["name"], list)
+        assert len(response_body["name"]) > 0
+
+        assert len(response_body["identifier"]) > 0
+        assert isinstance(response_body["identifier"], list)
+
+        assert response_body["meta"] is not None
 
 
 @then('the response body contains the expected values')
