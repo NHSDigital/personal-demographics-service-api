@@ -14,7 +14,6 @@ import logging
 from .configuration.config import ENVIRONMENT, BASE_URL, PDS_BASE_PATH
 from requests import Response, get
 import re
-import urllib.parse
 import uuid
 from jsonpath_rw import parse
 
@@ -316,9 +315,6 @@ def use_deprecated_url() -> str:
     prNo = re.search("pr-[0-9]+", PDS_BASE_PATH)
     prString = f"-{prNo.group()}" if prNo is not None else ""
     return f"{BASE_URL}/personal-demographics{prString}"
-
-
-
 
 
 @when('I retrieve their related person', target_fixture='response')

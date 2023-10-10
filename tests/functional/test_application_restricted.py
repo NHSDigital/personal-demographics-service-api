@@ -16,6 +16,7 @@ from tests.functional.utils import helpers
 
 scenario = partial(pytest_bdd.scenario, "features/application_restricted.feature")
 
+
 def teardown_function(function):
     time.sleep(0.01)
 
@@ -107,7 +108,9 @@ def test_app_restricted_update_attribute_set_to_false():
 @pytest.mark.skipif(
     "asid-required" in config.PDS_BASE_PATH, reason="App-restricted update skip"
 )
-@scenario("App with pds-app-restricted-update attribute set to TRUE and invalid app restricted scope does not allow a PATCH")
+@scenario(
+    "App with pds-app-restricted-update attribute set to TRUE and invalid app restricted scope does not allow a PATCH"
+)
 def test_app_restricted_update_attribute_invalid_scope():
     pass
 

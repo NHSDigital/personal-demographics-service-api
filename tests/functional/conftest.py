@@ -107,7 +107,7 @@ def vague_patient() -> Search:
 @given("I have a patient's record to update", target_fixture='record_to_update')
 def record_to_update(update: Update, headers_with_authorization: dict, pds_url: str) -> dict:
     response = retrieve_patient(headers_with_authorization, update.nhs_number, pds_url)
-    
+
     update.record_to_update = json.loads(response.text)
     update.etag = response.headers['Etag']
 
