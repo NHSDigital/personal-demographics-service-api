@@ -139,7 +139,7 @@ def remove_header(headers_with_authorization, header_field) -> dict:
         extra_types=dict(String=str)
     ),
     target_fixture='headers_with_authorization')
-def invalid_header(headers_with_authorization: dict, field: str, value: str) -> dict:
+def update_header(headers_with_authorization: dict, field: str, value: str) -> dict:
     headers_with_authorization.update({field: value})
     return headers_with_authorization
 
@@ -231,7 +231,7 @@ def response_body(response: Response) -> dict:
 
 
 @pytest.fixture()
-async def headers_with_token(
+def headers_with_token(
     _nhsd_apim_auth_token_data,
     request,
     identity_service_base_url,
@@ -244,7 +244,7 @@ async def headers_with_token(
 
     LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
     access_token = _nhsd_apim_auth_token_data.get("access_token", "")
-    role_id = await helpers.get_role_id_from_user_info_endpoint(access_token, identity_service_base_url)
+    role_id = helpers.get_role_id_from_user_info_endpoint(access_token, identity_service_base_url)
 
     headers = {"X-Request-ID": str(uuid.uuid1()),
                "X-Correlation-ID": str(uuid.uuid1()),
