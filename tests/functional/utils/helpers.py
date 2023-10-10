@@ -3,7 +3,6 @@ import urllib.parse
 from typing import Optional, Dict, Union
 from random import randint
 import requests
-import uuid
 
 from pytest_check import check
 import time
@@ -11,7 +10,6 @@ from ..configuration import config
 import re
 from ..data.pds_scenarios import retrieve
 import logging
-from pytest_nhsd_apim.identity_service import AuthorizationCodeConfig, AuthorizationCodeAuthenticator
 
 LOGGER = logging.getLogger(__name__)
 
@@ -357,8 +355,3 @@ def get_role_id_from_user_info_endpoint(token, identity_service_base_url) -> str
 
     assert user_info_resp.status_code == 200
     return user_info['nhsid_nrbac_roles'][0]['person_roleid']
-
-
-
-
-

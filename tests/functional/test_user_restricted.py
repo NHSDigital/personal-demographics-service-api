@@ -256,9 +256,11 @@ def test_update_with_missing_request_id():
 def test_retrieve_related_person():
     pass
 
+
 @status_scenario('Ping endpoint')
 def test_ping():
     pass
+
 
 @status_scenario('Healthcheck endpoint')
 def test_healthcheck():
@@ -441,6 +443,7 @@ def version_incremented(response_body: Response, update: Update) -> None:
     with check:
         assert response_body["meta"]["versionId"] == str(int(update.record_version) + 1)
 
+
 @pytest.mark.smoke_test
 @pytest.mark.skipif(ENVIRONMENT != 'int', reason="INT can only use pre-built test app")
 @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
@@ -452,11 +455,10 @@ class TestIntEnvironment:
                                       nhsd_apim_config,
                                       _test_app_credentials):
         headers = self.get_headers(apigee_environment,
-                                      nhsd_apim_config,
-                                      _test_app_credentials,
-                                      AUTH_HEALTHCARE_WORKER)
+                                   nhsd_apim_config,
+                                   _test_app_credentials,
+                                   AUTH_HEALTHCARE_WORKER)
         self.retrieve_patient_and_assert(retrieve[0], headers)
-
 
     def retrieve_patient_and_assert(self, patient: dict, headers):
         response = helpers.retrieve_patient(
@@ -468,15 +470,13 @@ class TestIntEnvironment:
         helpers.check_response_status_code(response, 200)
         helpers.check_retrieve_response_body_shape(response)
 
-
     @pytest.mark.nhsd_apim_authorization(AUTH_HEALTHCARE_WORKER)
     def test_search_patient_happy_path_for_int(self, apigee_environment, nhsd_apim_config, _test_app_credentials):
         headers = self.get_headers(apigee_environment,
-                                      nhsd_apim_config,
-                                      _test_app_credentials,
-                                      AUTH_HEALTHCARE_WORKER)
+                                   nhsd_apim_config,
+                                   _test_app_credentials,
+                                   AUTH_HEALTHCARE_WORKER)
         self.search_patient_and_assert(headers)
-
 
     def search_patient_and_assert(self, headers):
         response = helpers.search_patient(
@@ -487,15 +487,14 @@ class TestIntEnvironment:
         helpers.assert_correct_patient_nhs_number_is_returned(response, search[0]["patient_returned"])
         helpers.check_response_headers(response, headers)
 
-
     def test_retrieve_related_person_for_int(self,
                                              apigee_environment,
                                              nhsd_apim_config,
                                              _test_app_credentials,):
         headers = self.get_headers(apigee_environment,
-                                      nhsd_apim_config,
-                                      _test_app_credentials,
-                                      AUTH_HEALTHCARE_WORKER)
+                                   nhsd_apim_config,
+                                   _test_app_credentials,
+                                   AUTH_HEALTHCARE_WORKER)
         self.retrieve_patient_and_assert_v2(retrieve[8], headers)
 
     def retrieve_patient_and_assert_v2(self, patient: dict, headers: dict):
@@ -507,27 +506,26 @@ class TestIntEnvironment:
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, headers)
 
-
     def test_health_check_endpoint_for_int(self,
                                            apigee_environment,
                                            nhsd_apim_config,
                                            _test_app_credentials):
         headers = self.get_headers(apigee_environment,
-                                      nhsd_apim_config,
-                                      _test_app_credentials,
-                                      AUTH_HEALTHCARE_WORKER)
+                                   nhsd_apim_config,
+                                   _test_app_credentials,
+                                   AUTH_HEALTHCARE_WORKER)
         response = helpers.check_health_check_endpoint(headers)
         helpers.check_response_status_code(response, 200)
 
     def get_headers(self,
                     apigee_environment: str,
-                nhsd_apim_config: dict,
-                _test_app_credentials: dict,
-                authorization_details: dict) -> dict:
+                    nhsd_apim_config: dict,
+                    _test_app_credentials: dict,
+                    authorization_details: dict) -> dict:
         access_token = self.get_access_token(apigee_environment,
-                                                        nhsd_apim_config,
-                                                        _test_app_credentials,
-                                                        authorization_details)
+                                             nhsd_apim_config,
+                                             _test_app_credentials,
+                                             authorization_details)
 
         role_id = helpers.get_role_id_from_user_info_endpoint(access_token, self.IDENTITY_SERVICE_BASE_URL)
 
@@ -540,12 +538,11 @@ class TestIntEnvironment:
 
         return headers
 
-
     def get_access_token(self,
-                                          apigee_environment: str,
-                                        nhsd_apim_config: dict,
-                                        _test_app_credentials: dict,
-                                        authorization_details: dict) -> str:
+                         apigee_environment: str,
+                         nhsd_apim_config: dict,
+                         _test_app_credentials: dict,
+                         authorization_details: dict) -> str:
         user_restricted_app_config = AuthorizationCodeConfig(
             environment=apigee_environment,
             org=nhsd_apim_config["APIGEE_ORGANIZATION"],
