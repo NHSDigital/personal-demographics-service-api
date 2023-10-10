@@ -3,8 +3,7 @@ Feature: Healthcare Worker Access (Search)
 
     Scenario: Healthcare worker can search for patient
         Given I am a healthcare worker
-        And I have a patient's demographic details
-
+        
         When I search for the patient's PDS record
 
         Then I get a 200 HTTP response
@@ -14,7 +13,6 @@ Feature: Healthcare Worker Access (Search)
 
     Scenario: Attempt to search for a patient with missing authorization header
         Given I am a healthcare worker
-        And I have a patient's demographic details
         And I don't have an Authorization header
 
         When I search for the patient's PDS record
@@ -27,7 +25,6 @@ Feature: Healthcare Worker Access (Search)
 
     Scenario: Attempt to search for a patient with an empty authorization header
         Given I am a healthcare worker
-        And I have a patient's demographic details
         And I have an empty Authorization header
 
         When I search for the patient's PDS record
@@ -40,7 +37,6 @@ Feature: Healthcare Worker Access (Search)
 
     Scenario: Attempt to search for a patient with an invalid authorization header
         Given I am a healthcare worker
-        And I have a patient's demographic details
         And I have a header Authorization value of "Bearer abcdef123456789"
 
         When I search for the patient's PDS record
@@ -53,7 +49,6 @@ Feature: Healthcare Worker Access (Search)
 
     Scenario: Attempt to search for a patient with an empty Request ID header
         Given I am a healthcare worker
-        And I have a patient's demographic details
         And I have an empty X-Request-ID header
 
         When I search for the patient's PDS record
@@ -66,7 +61,6 @@ Feature: Healthcare Worker Access (Search)
 
     Scenario: Attempt to search for a patient with an invalid X-Request-ID
         Given I am a healthcare worker
-        And I have a patient's demographic details
         And I have a header X-Request-ID value of "1234"
 
         When I search for the patient's PDS record
@@ -79,7 +73,6 @@ Feature: Healthcare Worker Access (Search)
 
     Scenario: Attempt to search for a patient with a missing X-Request-ID
         Given I am a healthcare worker
-        And I have a patient's demographic details
         And I don't have a X-Request-ID header
 
         When I search for the patient's PDS record

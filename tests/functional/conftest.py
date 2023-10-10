@@ -1,6 +1,6 @@
 from tests.scripts.pds_request import GenericPdsRequestor, PdsRecord
 import pytest
-from pytest_bdd import given, when, then
+from pytest_bdd import given, when, then, parsers
 from jsonpath_rw import parse
 from pytest_check import check
 from .utils import helpers
@@ -11,12 +11,16 @@ from .utils.apigee_api_products import ApigeeApiProducts
 from .configuration import config
 from .configuration.config import BASE_URL, PDS_BASE_PATH
 import random
-from requests import Response, get
+from requests import Response, get, patch
 import json
 from typing import Union
 from .data.searches import Search
+from .data.updates import Update
 from .data import searches
+from .data import updates
 from .data.patients import Patient
+from .data.expected_errors import error_responses
+from copy import copy
 
 from pytest_nhsd_apim.identity_service import (
     ClientCredentialsConfig,
@@ -33,7 +37,6 @@ from pytest_nhsd_apim.apigee_apis import (
 import logging
 
 LOGGER = logging.getLogger(__name__)
-# TODO: move this out?
 DEVELOPER_EMAIL = "apm-testing-internal-dev@nhs.net"
 
 
@@ -86,19 +89,121 @@ def provide_headers_with_no_auth_details() -> None:
     return {}
 
 
-@given("I have a patient's demographic details", target_fixture='search')
+@pytest.fixture()
 def search() -> Search:
     return searches.DEFAULT
 
 
 @pytest.fixture()
+def update() -> Update:
+    return updates.DEFAULT
+
+
+@given("I enter a patient's vague demographic details", target_fixture='search')
+def vague_patient() -> Search:
+    return searches.VAGUE
+
+
+@given("I have a patient's record to update", target_fixture='record_to_update')
+def record_to_update(update: Update, headers_with_authorization: dict, pds_url: str) -> dict:
+    response = retrieve_patient(headers_with_authorization, update.nhs_number, pds_url)
+    
+    update.record_to_update = json.loads(response.text)
+    update.etag = response.headers['Etag']
+
+    return update.record_to_update
+
+
+@given("I wish to update the patient's gender")
+def add_new_gender_to_patch(update: Update) -> None:
+    current_gender = update.record_to_update['gender']
+    new_gender = 'male' if current_gender == 'female' else 'female'
+    update.value = new_gender
+
+
+@given(
+    parsers.cfparse(
+        "I don't have {_:String} {header_field:String} header",
+        extra_types=dict(String=str)
+    ),
+    target_fixture='headers_with_authorization'
+)
+def remove_header(headers_with_authorization, header_field) -> dict:
+    headers_with_authorization.pop(header_field)
+    return headers_with_authorization
+
+
+@given(
+    parsers.cfparse(
+        'I have a header {field:String} value of "{value:String}"',
+        extra_types=dict(String=str)
+    ),
+    target_fixture='headers_with_authorization')
+def invalid_header(headers_with_authorization: dict, field: str, value: str) -> dict:
+    headers_with_authorization.update({field: value})
+    return headers_with_authorization
+
+
+@given(
+    parsers.cfparse(
+        "I have an empty {field:String} header",
+        extra_types=dict(String=str)
+    ),
+    target_fixture='headers_with_authorization')
+def empty_header(headers_with_authorization: dict, field: str) -> dict:
+    headers_with_authorization.update({field: ''})
+    return headers_with_authorization
+
+
+@pytest.fixture
 def query_params(search: Search) -> str:
     return urllib.parse.urlencode(search.query)
+
+
+@when('I retrieve a patient', target_fixture='response')
+def retrieve_patient(headers_with_authorization: dict, nhs_number: str, pds_url: str) -> Response:
+    return get(url=f"{pds_url}/Patient/{nhs_number}", headers=headers_with_authorization)
+
+
+@when("I update the patient's PDS record", target_fixture='response')
+def update_patient(headers_with_authorization: dict, update: Update, pds_url: str) -> Response:
+    headers = headers_with_authorization
+    headers.update({
+        "Content-Type": "application/json-patch+json",
+        "If-Match": update.etag,
+    })
+
+    return patch(url=f"{pds_url}/Patient/{update.nhs_number}",
+                 headers=headers,
+                 json=update.patches)
+
+
+@when(
+    parsers.cfparse(
+        'the query parameters contain {key:String} as {value:String}',
+        extra_types=dict(String=str)
+    ),
+    target_fixture='query_params',
+)
+def amended_query_params(search: Search, key: str, value: str) -> str:
+    query_params = copy(search.query)
+    query_params.append((key, value))
+    return urllib.parse.urlencode(query_params)
 
 
 @when("I search for the patient's PDS record", target_fixture='response')
 def search_patient(headers_with_authorization: dict, query_params: str, pds_url: str) -> Response:
     return get(url=f"{pds_url}/Patient?{query_params}", headers=headers_with_authorization)
+
+
+@then(
+    parsers.cfparse(
+        'the response body is the {error:String} response',
+        extra_types=dict(String=str)
+    )
+)
+def resposne_body_contains_error(response_body: dict, error) -> None:
+    assert response_body == error_responses[error]
 
 
 @then('the response body contains the expected response')
@@ -153,7 +258,6 @@ async def headers_with_token(
 
 @pytest.fixture()
 def add_proxies_to_products(api_products, nhsd_apim_proxy_name):
-
     # Check if we need to add an extra proxy *-asid-required-* to the product used for testing
     proxy_name = nhsd_apim_proxy_name
     LOGGER.info(f'proxy_name: {proxy_name}')
@@ -289,7 +393,6 @@ def setup_session(request, _jwt_keys, apigee_environment, client, api_products):
     token = token_response["access_token"]
 
     LOGGER.info(f'token: {token}')
-
     yield product, app, token_response, developer_apps, api_products
 
     # Teardown

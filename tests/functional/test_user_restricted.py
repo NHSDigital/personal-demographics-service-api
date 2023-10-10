@@ -1,21 +1,18 @@
-import json
 import pytest_bdd
 from pytest_bdd import given, when, then, parsers
 from functools import partial
 from .data.pds_scenarios import retrieve, search
-from .data.expected_errors import error_responses
 from .data import patients
 from .data.patients import Patient
 from .data import searches
 from .data.searches import Search
-from .data import updates
 from .data.updates import Update
 from .utils import helpers
 import pytest
 from pytest_check import check
 import logging
 from .configuration.config import ENVIRONMENT, BASE_URL, PDS_BASE_PATH
-from requests import Response, get, patch
+from requests import Response, get
 import re
 import urllib.parse
 import uuid
@@ -29,9 +26,6 @@ AUTH_HEALTHCARE_WORKER = {
         "force_new_token": True
     }
 LOGGER = logging.getLogger(__name__)
-
-# TODO: Is this avaiable in the pytest library?
-IDENTITY_SERVICE_BASE_URL = "https://int.api.service.nhs.uk/oauth2-mock"
 
 retrieve_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_retrieve.feature')
 search_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_search.feature')
@@ -282,11 +276,6 @@ def patient_with_a_related_person() -> Patient:
     return patients.WITH_RELATED_PERSON
 
 
-@pytest.fixture()
-def update() -> Update:
-    return updates.DEFAULT
-
-
 @given("I have a sensitive patient's demographic details", target_fixture='search')
 def search_for_sensitive() -> Patient:
     return searches.SENSITIVE
@@ -300,11 +289,6 @@ def search_without_gender() -> Patient:
 @given("I have a patient's demographic details with a date of birth range", target_fixture='search')
 def search_dob_range() -> Patient:
     return searches.DOB_RANGE
-
-
-@given("I enter a patient's vague demographic details", target_fixture='search')
-def vague_patient() -> Search:
-    return searches.VAGUE
 
 
 @given("I enter a patient's fuzzy demographic details", target_fixture='search')
@@ -327,70 +311,6 @@ def nhs_number(patient: Patient) -> str:
     return patient.nhs_number
 
 
-@given("I have a patient's record to update", target_fixture='record_to_update')
-def record_to_update(update: Update, headers_with_authorization: dict, pds_url: str) -> dict:
-    response = retrieve_patient(headers_with_authorization, update.nhs_number, pds_url)
-
-    update.record_to_update = json.loads(response.text)
-    update.etag = response.headers['Etag']
-
-    return update.record_to_update
-
-
-@when(
-    parsers.cfparse(
-        'the query parameters contain {key:String} as {value:String}',
-        extra_types=dict(String=str)
-    ),
-    target_fixture='query_params'
-)
-def amended_query_params(search: Search, key: str, value: str) -> str:
-    query_params = search.query
-    query_params.append((key, value))
-    return urllib.parse.urlencode(query_params)
-
-
-@given(
-    parsers.cfparse(
-        "I don't have {_:String} {header_field:String} header",
-        extra_types=dict(String=str)
-    ),
-    target_fixture='headers_with_authorization'
-)
-def remove_header(headers_with_authorization, header_field) -> dict:
-    headers_with_authorization.pop(header_field)
-    return headers_with_authorization
-
-
-@given(
-    parsers.cfparse(
-        "I have an empty {field:String} header",
-        extra_types=dict(String=str)
-    ),
-    target_fixture='headers_with_authorization')
-def empty_header(headers_with_authorization: dict, field: str) -> dict:
-    headers_with_authorization.update({field: ''})
-    return headers_with_authorization
-
-
-@given(
-    parsers.cfparse(
-        'I have a header {field:String} value of "{value:String}"',
-        extra_types=dict(String=str)
-    ),
-    target_fixture='headers_with_authorization')
-def invalid_header(headers_with_authorization: dict, field: str, value: str) -> dict:
-    headers_with_authorization.update({field: value})
-    return headers_with_authorization
-
-
-@given("I wish to update the patient's gender")
-def add_new_gender_to_patch(update: Update) -> None:
-    current_gender = update.record_to_update['gender']
-    new_gender = 'male' if current_gender == 'female' else 'female'
-    update.value = new_gender
-
-
 @given('I am using the deprecated url', target_fixture='pds_url')
 def use_deprecated_url() -> str:
     prNo = re.search("pr-[0-9]+", PDS_BASE_PATH)
@@ -398,26 +318,12 @@ def use_deprecated_url() -> str:
     return f"{BASE_URL}/personal-demographics{prString}"
 
 
-@when('I retrieve a patient', target_fixture='response')
-def retrieve_patient(headers_with_authorization: dict, nhs_number: str, pds_url: str) -> Response:
-    return get(url=f"{pds_url}/Patient/{nhs_number}", headers=headers_with_authorization)
+
 
 
 @when('I retrieve their related person', target_fixture='response')
 def retrieve_related_person(headers_with_authorization: dict, nhs_number: str, pds_url: str) -> Response:
     return get(url=f"{pds_url}/Patient/{nhs_number}/RelatedPerson", headers=headers_with_authorization)
-
-
-@when("I update the patient's PDS record", target_fixture='response')
-def update_patient(headers_with_authorization: dict, update: Update, pds_url: str) -> Response:
-    headers = headers_with_authorization
-    headers.update({
-        "Content-Type": "application/json-patch+json",
-        "If-Match": update.etag,
-    })
-    return patch(url=f"{pds_url}/Patient/{update.nhs_number}",
-                 headers=headers,
-                 json=update.patches)
 
 
 @when(
@@ -503,16 +409,6 @@ def response_body_does_not_contain(response_body: dict, field: str) -> None:
 )
 def response_header_does_not_contain(response: dict, field: str) -> None:
     assert field not in response.headers
-
-
-@then(
-    parsers.cfparse(
-        'the response body is the {error:String} response',
-        extra_types=dict(String=str)
-    )
-)
-def resposne_body_contains_error(response_body: dict, error) -> None:
-    assert response_body == error_responses[error]
 
 
 @then('the response body is the correct shape')

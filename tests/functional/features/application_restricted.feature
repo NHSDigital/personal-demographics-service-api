@@ -6,12 +6,13 @@ Feature: Unattended Access
 
   Scenario: PDS FHIR API accepts request with valid access token
     Given I am authenticating using unattended access
-    And I have a patient's demographic details
+    And I have a request context
+    And I have a valid access token
 
-    When I search for the patient's PDS record
+    When I GET a patient
 
     Then I get a 200 HTTP response
-    And the response body contains the expected values
+    And I get a Bundle resource in the response
 
 
   Scenario: PDS FHIR API rejects request with missing authorization header
