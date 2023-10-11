@@ -29,9 +29,7 @@ from pytest_nhsd_apim.identity_service import (
 )
 
 from pytest_nhsd_apim.apigee_apis import (
-    ApigeeClient,
     ApiProductsAPI,
-    ApigeeNonProdCredentials,
     DeveloperAppsAPI,
 )
 
