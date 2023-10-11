@@ -6,11 +6,11 @@ Feature: Status endpoint
 
         When I hit the /_ping endpoint
 
-        Then I get a 200 HTTP response
+        Then I get a 200 HTTP response code
 
     Scenario: Healthcheck endpoint
         Given I am a healthcare worker
 
         When I hit the /healthcheck endpoint
 
-        Then I get a 200 HTTP response
+        Then I get a 200 HTTP response code

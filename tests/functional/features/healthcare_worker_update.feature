@@ -8,7 +8,7 @@ Feature: Healthcare Worker Access (Update)
 
         When I update the patient's PDS record
 
-        Then I get a 200 HTTP response
+        Then I get a 200 HTTP response code
         And the response body contains the patient's new gender
         And the response body contains the record's new version number
 
@@ -20,7 +20,7 @@ Feature: Healthcare Worker Access (Update)
 
         When I update the patient's PDS record
 
-        Then I get a 200 HTTP response
+        Then I get a 200 HTTP response code
         And the response body contains the patient's new gender
         And the response body contains the record's new version number
 
@@ -32,7 +32,7 @@ Feature: Healthcare Worker Access (Update)
 
         When I update the patient's PDS record
 
-        Then I get a 200 HTTP response
+        Then I get a 200 HTTP response code
         And the response body contains the patient's new gender
         And the response body contains the record's new version number
 
@@ -44,7 +44,7 @@ Feature: Healthcare Worker Access (Update)
 
         When I update the patient's PDS record
 
-        Then I get a 503 HTTP response
+        Then I get a 503 HTTP response code
 
     Scenario: Update patient with missing Authorization header
         Given I am a healthcare worker
@@ -54,7 +54,7 @@ Feature: Healthcare Worker Access (Update)
 
         When I update the patient's PDS record
 
-        Then I get a 401 HTTP response
+        Then I get a 401 HTTP response code
         And the X-Request-ID response header matches the request
         And the X-Correlation-ID response header matches the request
         And the response body is the Missing Authorization header response
@@ -67,7 +67,7 @@ Feature: Healthcare Worker Access (Update)
 
         When I update the patient's PDS record
 
-        Then I get a 401 HTTP response
+        Then I get a 401 HTTP response code
         And the X-Request-ID response header matches the request
         And the X-Correlation-ID response header matches the request
         And the response body is the Empty Authorization header response
@@ -80,7 +80,7 @@ Feature: Healthcare Worker Access (Update)
 
         When I update the patient's PDS record
 
-        Then I get a 401 HTTP response
+        Then I get a 401 HTTP response code
         And the X-Request-ID response header matches the request
         And the X-Correlation-ID response header matches the request
         And the response body is the Invalid Access Token response
@@ -93,7 +93,7 @@ Feature: Healthcare Worker Access (Update)
 
         When I update the patient's PDS record
 
-        Then I get a 400 HTTP response
+        Then I get a 400 HTTP response code
         And the response header does not contain X-Request-ID
         And the X-Correlation-ID response header matches the request
         And the response body is the Empty X-Request ID response
@@ -106,7 +106,7 @@ Feature: Healthcare Worker Access (Update)
 
         When I update the patient's PDS record
 
-        Then I get a 400 HTTP response
+        Then I get a 400 HTTP response code
         And the X-Request-ID response header matches the request
         And the X-Correlation-ID response header matches the request
         And the response body is the Invalid X-Request ID response
@@ -119,7 +119,7 @@ Feature: Healthcare Worker Access (Update)
 
         When I update the patient's PDS record
 
-        Then I get a 412 HTTP response
+        Then I get a 412 HTTP response code
         And the response header does not contain X-Request-ID
         And the X-Correlation-ID response header matches the request
         And the response body is the Missing X-Request ID response

@@ -242,7 +242,7 @@ def search_patient(headers_with_authorization: dict, query_params: str, pds_url:
 
 @then(
     parsers.cfparse(
-        "I get a {expected_status:Number} HTTP response",
+        "I get a {expected_status:Number} HTTP response code",
         extra_types=dict(Number=int)
     )
 )

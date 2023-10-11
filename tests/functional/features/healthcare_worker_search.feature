@@ -6,7 +6,7 @@ Feature: Healthcare Worker Access (Search)
         
         When I search for the patient's PDS record
 
-        Then I get a 200 HTTP response
+        Then I get a 200 HTTP response code
         And the X-Request-ID response header matches the request
         And the X-Correlation-ID response header matches the request
         And the response body contains the expected values
@@ -17,7 +17,7 @@ Feature: Healthcare Worker Access (Search)
 
         When I search for the patient's PDS record
 
-        Then I get a 401 HTTP response
+        Then I get a 401 HTTP response code
         And the X-Request-ID response header matches the request
         And the X-Correlation-ID response header matches the request
         And the response body is the Missing Authorization header response
@@ -29,7 +29,7 @@ Feature: Healthcare Worker Access (Search)
 
         When I search for the patient's PDS record
 
-        Then I get a 401 HTTP response
+        Then I get a 401 HTTP response code
         And the X-Request-ID response header matches the request
         And the X-Correlation-ID response header matches the request
         And the response body does not contain id
@@ -41,7 +41,7 @@ Feature: Healthcare Worker Access (Search)
 
         When I search for the patient's PDS record
 
-        Then I get a 401 HTTP response
+        Then I get a 401 HTTP response code
         And the X-Request-ID response header matches the request
         And the X-Correlation-ID response header matches the request
         And the response body does not contain id
@@ -53,7 +53,7 @@ Feature: Healthcare Worker Access (Search)
 
         When I search for the patient's PDS record
 
-        Then I get a 400 HTTP response
+        Then I get a 400 HTTP response code
         And the response header does not contain X-Request-ID
         And the X-Correlation-ID response header matches the request
         And the response body does not contain id
@@ -65,7 +65,7 @@ Feature: Healthcare Worker Access (Search)
 
         When I search for the patient's PDS record
 
-        Then I get a 400 HTTP response
+        Then I get a 400 HTTP response code
         And the X-Request-ID response header matches the request
         And the X-Correlation-ID response header matches the request
         And the response body does not contain id
@@ -77,7 +77,7 @@ Feature: Healthcare Worker Access (Search)
 
         When I search for the patient's PDS record
 
-        Then I get a 412 HTTP response
+        Then I get a 412 HTTP response code
         And the response header does not contain X-Request-ID
         And the X-Correlation-ID response header matches the request
         And the response body does not contain id
@@ -89,7 +89,7 @@ Feature: Healthcare Worker Access (Search)
 
         When I search for the patient's PDS record
 
-        Then I get a 200 HTTP response
+        Then I get a 200 HTTP response code
         And the response body contains the expected values
         And the resposne body contains the sensitivity flag
 
@@ -99,7 +99,7 @@ Feature: Healthcare Worker Access (Search)
 
         When I search for the patient's PDS record
 
-        Then I get a 200 HTTP response
+        Then I get a 200 HTTP response code
         And the response body contains the expected values
 
     Scenario: Healthcare worker searches for a patient with range for date of birth
@@ -108,7 +108,7 @@ Feature: Healthcare Worker Access (Search)
 
         When I search for the patient's PDS record
 
-        Then I get a 200 HTTP response
+        Then I get a 200 HTTP response code
         And the response body contains the expected values
 
     Scenario: Searching without gender can return mutliple results
@@ -117,7 +117,7 @@ Feature: Healthcare Worker Access (Search)
 
         When I search for the patient's PDS record
 
-        Then I get a 200 HTTP response
+        Then I get a 200 HTTP response code
         And the response body contains the expected values
 
     Scenario: Searching with fuzzy match
@@ -127,7 +127,7 @@ Feature: Healthcare Worker Access (Search)
         When the query parameters contain _fuzzy-match as true
         And I search for the patient's PDS record
 
-        Then I get a 200 HTTP response
+        Then I get a 200 HTTP response code
         And the response body contains the expected values
 
     Scenario: Searching with unicode returns unicode record
@@ -136,7 +136,7 @@ Feature: Healthcare Worker Access (Search)
 
         When I search for the patient's PDS record
 
-        Then I get a 200 HTTP response
+        Then I get a 200 HTTP response code
         And the response body contains the expected values
 
     Scenario: Searching with specified results limit can return error
@@ -146,7 +146,7 @@ Feature: Healthcare Worker Access (Search)
         When the query parameters contain _max-results as 1
         And I search for the patient's PDS record
 
-        Then I get a 200 HTTP response
+        Then I get a 200 HTTP response code
         And the response body is the Too Many Matches response
 
     Scenario: Search returns an empty bundle
@@ -155,5 +155,5 @@ Feature: Healthcare Worker Access (Search)
 
         When I search for the patient's PDS record
 
-        Then I get a 200 HTTP response
+        Then I get a 200 HTTP response code
         And the response body contains the expected values
