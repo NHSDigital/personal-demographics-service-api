@@ -47,17 +47,6 @@ def pds_url() -> str:
 
 
 @pytest.fixture()
-def client():
-    config = ApigeeNonProdCredentials()
-    return ApigeeClient(config=config)
-
-
-# @pytest.fixture()
-# def api_products(client):
-#     return ApiProductsAPI(client=client)
-
-
-@pytest.fixture()
 def add_asid_to_testapp(developer_apps_api, nhsd_apim_test_app):
     app = nhsd_apim_test_app()
     LOGGER.info(f'app:{app}')
@@ -330,7 +319,6 @@ def headers_with_token(
     request,
     identity_service_base_url,
     nhsd_apim_test_app,
-    client,
     products_api,
     add_asid_to_testapp
 ):
@@ -401,10 +389,11 @@ def add_proxies_to_products_user_restricted(products_api, nhsd_apim_proxy_name):
 @pytest.fixture()
 def headers():
     """Assign required headers without the Authorization header"""
-    headers = {"X-Request-ID": str(uuid.uuid1()),
-               "X-Correlation-ID": str(uuid.uuid1()),
-               "NHSD-Session-URID": config.ROLE_ID
-               }
+    headers = {
+        "X-Request-ID": str(uuid.uuid1()),
+        "X-Correlation-ID": str(uuid.uuid1()),
+        "NHSD-Session-URID": config.ROLE_ID
+    }
     return headers
 
 
@@ -444,7 +433,7 @@ def _product_with_full_access(api_products):
 
 
 @pytest.fixture(scope="function")
-def setup_session(request, _jwt_keys, apigee_environment, client, products_api):
+def setup_session(request, _jwt_keys, apigee_environment, developer_apps_api, products_api):
     """This fixture is called at a function level.
     The default app created here should be modified by your tests.
     """
@@ -456,15 +445,13 @@ def setup_session(request, _jwt_keys, apigee_environment, client, products_api):
 
     print("\nCreating Default App..")
     # Create a new app
-    developer_apps = DeveloperAppsAPI(client=client)
-
     app = ApigeeApiDeveloperApps()
     create_app_response = app.create_new_app(
         callback_url="https://example.org/callback",
         status="approved",
         jwks_resource_url=config.JWKS_RESOURCE_URL,
         products=[product.name],
-        developer_apps=developer_apps
+        developer_apps=developer_apps_api
     )
 
     LOGGER.info(f'create_app_response: {create_app_response}')
@@ -487,12 +474,12 @@ def setup_session(request, _jwt_keys, apigee_environment, client, products_api):
     token = token_response["access_token"]
 
     LOGGER.info(f'token: {token}')
-    yield product, app, token_response, developer_apps, products_api
+    yield product, app, token_response, developer_apps_api, products_api
 
     # Teardown
     print("\nDestroying Default App..")
 
-    app.destroy_app(developer_apps)
+    app.destroy_app(developer_apps_api)
     product.destroy_product(products_api)
 
 
