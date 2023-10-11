@@ -37,9 +37,7 @@ status_scenario = partial(pytest_bdd.scenario, './features/status_endpoints.feat
 @pytest.fixture(scope='function')
 def headers_with_authorization(
     _nhsd_apim_auth_token_data,
-    request,
     identity_service_base_url,
-    nhsd_apim_test_app,
     add_asid_to_testapp
 ):
     """Assign required headers with the Authorization header"""
