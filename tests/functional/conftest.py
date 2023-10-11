@@ -385,7 +385,7 @@ def add_proxies_to_products(api_products, nhsd_apim_proxy_name):
         LOGGER.info(f'patient_access_product_updated: {patient_access_product_updated}')
 
 
-@pytest.fixture()
+@pytest.fixture(autouse=True)
 def add_proxies_to_products_user_restricted(api_products, nhsd_apim_proxy_name):
 
     # Check if we need to add an extra proxy *-asid-required-* to the product used for testing
