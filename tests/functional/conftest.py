@@ -52,24 +52,19 @@ def client():
     return ApigeeClient(config=config)
 
 
-@pytest.fixture()
-def api_products(client):
-    return ApiProductsAPI(client=client)
+# @pytest.fixture()
+# def api_products(client):
+#     return ApiProductsAPI(client=client)
 
 
 @pytest.fixture()
-def developer_apps(client):
-    return DeveloperAppsAPI(client=client)
-
-
-@pytest.fixture()
-def add_asid_to_testapp(developer_apps, nhsd_apim_test_app):
+def add_asid_to_testapp(developer_apps_api, nhsd_apim_test_app):
     app = nhsd_apim_test_app()
     LOGGER.info(f'app:{app}')
     app_name = app["name"]
 
     # Check if the ASID attribute is already available
-    app_attributes = developer_apps.get_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name)
+    app_attributes = developer_apps_api.get_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name)
     custom_attributes = app_attributes['attribute']
     existing_asid_attribute = None
     for attribute in custom_attributes:
@@ -81,7 +76,7 @@ def add_asid_to_testapp(developer_apps, nhsd_apim_test_app):
         # Add ASID to the test app - To be refactored when we move to .feature files TODO SPINEDEM-1680
         custom_attributes.append({"name": "asid", "value": config.ENV["internal_dev_asid"]})
         data = {"attribute": custom_attributes}
-        response = developer_apps.post_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name, body=data)
+        response = developer_apps_api.post_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name, body=data)
         LOGGER.info(f'Test app updated with ASID attribute: {response}')
 
 
@@ -336,7 +331,7 @@ def headers_with_token(
     identity_service_base_url,
     nhsd_apim_test_app,
     client,
-    api_products,
+    products_api,
     add_asid_to_testapp
 ):
     """Assign required headers with the Authorization header"""
@@ -356,7 +351,7 @@ def headers_with_token(
 
 
 @pytest.fixture()
-def add_proxies_to_products(api_products, nhsd_apim_proxy_name):
+def add_proxies_to_products(products_api, nhsd_apim_proxy_name):
     # Check if we need to add an extra proxy *-asid-required-* to the product used for testing
     proxy_name = nhsd_apim_proxy_name
     LOGGER.info(f'proxy_name: {proxy_name}')
@@ -365,20 +360,20 @@ def add_proxies_to_products(api_products, nhsd_apim_proxy_name):
 
     patient_access_product_name = f'{product_name}-patient-access'
 
-    default_product = api_products.get_product_by_name(product_name=product_name)
+    default_product = products_api.get_product_by_name(product_name=product_name)
     LOGGER.info(f'default_product: {default_product}')
 
     if(proxy_name not in default_product['proxies']):
         default_product['proxies'].append(proxy_name)
-        product_updated = api_products.put_product_by_name(product_name=product_name, body=default_product)
+        product_updated = products_api.put_product_by_name(product_name=product_name, body=default_product)
         LOGGER.info(f'product_updated: {product_updated}')
 
-    patient_access_product = api_products.get_product_by_name(product_name=patient_access_product_name)
+    patient_access_product = products_api.get_product_by_name(product_name=patient_access_product_name)
     LOGGER.info(f'patient_access_product: {patient_access_product}')
 
     if(proxy_name not in patient_access_product['proxies']):
         patient_access_product['proxies'].append(proxy_name)
-        patient_access_product_updated = api_products.put_product_by_name(
+        patient_access_product_updated = products_api.put_product_by_name(
             product_name=patient_access_product_name,
             body=patient_access_product
         )
@@ -386,7 +381,7 @@ def add_proxies_to_products(api_products, nhsd_apim_proxy_name):
 
 
 @pytest.fixture(autouse=True)
-def add_proxies_to_products_user_restricted(api_products, nhsd_apim_proxy_name):
+def add_proxies_to_products_user_restricted(products_api, nhsd_apim_proxy_name):
 
     # Check if we need to add an extra proxy *-asid-required-* to the product used for testing
     proxy_name = nhsd_apim_proxy_name
@@ -394,12 +389,12 @@ def add_proxies_to_products_user_restricted(api_products, nhsd_apim_proxy_name):
     product_name = proxy_name.replace("-asid-required", "")
     LOGGER.info(f'product_name: {product_name}')
 
-    default_product = api_products.get_product_by_name(product_name=product_name)
+    default_product = products_api.get_product_by_name(product_name=product_name)
     LOGGER.info(f'default_product: {default_product}')
 
     if(proxy_name not in default_product['proxies']):
         default_product['proxies'].append(proxy_name)
-        product_updated = api_products.put_product_by_name(product_name=product_name, body=default_product)
+        product_updated = products_api.put_product_by_name(product_name=product_name, body=default_product)
         LOGGER.info(f'product_updated: {product_updated}')
 
 
@@ -449,13 +444,13 @@ def _product_with_full_access(api_products):
 
 
 @pytest.fixture(scope="function")
-def setup_session(request, _jwt_keys, apigee_environment, client, api_products):
+def setup_session(request, _jwt_keys, apigee_environment, client, products_api):
     """This fixture is called at a function level.
     The default app created here should be modified by your tests.
     """
 
-    product = _product_with_full_access(api_products)
-    product.update_environments([config.ENVIRONMENT], api_products=api_products)
+    product = _product_with_full_access(products_api)
+    product.update_environments([config.ENVIRONMENT], api_products=products_api)
 
     LOGGER.info(f'product.proxies: {product.proxies}')
 
@@ -492,13 +487,13 @@ def setup_session(request, _jwt_keys, apigee_environment, client, api_products):
     token = token_response["access_token"]
 
     LOGGER.info(f'token: {token}')
-    yield product, app, token_response, developer_apps, api_products
+    yield product, app, token_response, developer_apps, products_api
 
     # Teardown
     print("\nDestroying Default App..")
 
     app.destroy_app(developer_apps)
-    product.destroy_product(api_products)
+    product.destroy_product(products_api)
 
 
 @pytest.fixture()

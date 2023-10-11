@@ -41,7 +41,7 @@ def headers_with_authorization(
     identity_service_base_url,
     nhsd_apim_test_app,
     client,
-    api_products,
+    products_api,
     add_asid_to_testapp
 ):
     """Assign required headers with the Authorization header"""
