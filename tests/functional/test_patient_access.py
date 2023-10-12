@@ -2,7 +2,6 @@ from tests.functional.configuration import config
 import requests
 import uuid
 import pytest
-from pytest_nhsd_apim.apigee_edge import ApiProductsAPI
 
 # from tests.functional.utils.helper import (
 #     generate_random_phone_number,
@@ -43,31 +42,14 @@ AUTH_PATIENT_P0 = {
 
 TEST_PATIENT_ID = "9912003071"
 
-pytestmark = pytest.mark.usefixtures("add_asid_to_testapp")
-
-
-@pytest.fixture(autouse=True)
-def add_proxies_to_products(products_api: ApiProductsAPI,
-                            nhsd_apim_proxy_name: str) -> None:
-
-    product_name = nhsd_apim_proxy_name.replace("-asid-required", "")
-    patient_access_product_name = f'{product_name}-patient-access'
-
-    default_product = products_api.get_product_by_name(product_name=product_name)
-    if nhsd_apim_proxy_name not in default_product['proxies']:
-        default_product['proxies'].append(nhsd_apim_proxy_name)
-        products_api.put_product_by_name(product_name=product_name, body=default_product)
-
-    patient_access_product = products_api.get_product_by_name(product_name=patient_access_product_name)
-    if nhsd_apim_proxy_name not in patient_access_product['proxies']:
-        patient_access_product['proxies'].append(nhsd_apim_proxy_name)
-        products_api.put_product_by_name(product_name=patient_access_product_name,
-                                         body=patient_access_product)
-
 
 class TestUserRestrictedPatientAccess:
+
+    def test_setup(self, add_proxies_to_products):
+        LOGGER.info("Setting up the products and proxies for testing")
+
     @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
-    def test_patient_access_retrieve_happy_path(self, _nhsd_apim_auth_token_data):
+    def test_patient_access_retrieve_happy_path(self, _nhsd_apim_auth_token_data, add_asid_to_testapp):
 
         LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
 
@@ -86,7 +68,11 @@ class TestUserRestrictedPatientAccess:
         assert r.status_code == 200
 
     @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
-    def test_patient_access_retrieve_non_matching_nhs_number(self, _nhsd_apim_auth_token_data):
+    def test_patient_access_retrieve_non_matching_nhs_number(
+        self,
+        _nhsd_apim_auth_token_data,
+        add_asid_to_testapp
+    ):
 
         token = _nhsd_apim_auth_token_data.get("access_token", "")
 
@@ -109,7 +95,7 @@ class TestUserRestrictedPatientAccess:
         )
 
     @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
-    def test_patient_access_retrieve_incorrect_path(self, _nhsd_apim_auth_token_data):
+    def test_patient_access_retrieve_incorrect_path(self, _nhsd_apim_auth_token_data, add_asid_to_testapp):
 
         token = _nhsd_apim_auth_token_data.get("access_token", "")
 
@@ -284,6 +270,7 @@ class TestUserRestrictedPatientAccess:
     def test_patient_access_update_non_matching_nhs_number(
         self,
         _nhsd_apim_auth_token_data,
+        add_asid_to_testapp,
         create_random_date
     ):
         token = _nhsd_apim_auth_token_data.get("access_token", "")
@@ -331,6 +318,7 @@ class TestUserRestrictedPatientAccess:
     def test_patient_access_update_incorrect_path(
         self,
         _nhsd_apim_auth_token_data,
+        add_asid_to_testapp,
         create_random_date
     ):
         token = _nhsd_apim_auth_token_data.get("access_token", "")
@@ -351,7 +339,7 @@ class TestUserRestrictedPatientAccess:
             f"{config.BASE_URL}/{config.PDS_BASE_PATH}/Patient/{TEST_PATIENT_ID}",
             headers=headers,
         )
-        LOGGER.info(r.text)
+
         Etag = r.headers["Etag"]
 
         headers = {
