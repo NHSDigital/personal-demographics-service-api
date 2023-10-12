@@ -90,7 +90,7 @@ def test_rejects_synchronous_patch_request():
 
 
 @pytest.mark.skipif(
-    "personal-demographics" in config.PDS_BASE_PATH, reason="App-restricted update skip"
+    "asid-required" in config.PDS_BASE_PATH, reason="App-restricted update skip"
 )
 @scenario("App with pds-app-restricted-update attribute set to TRUE accepts PATCH requests")
 def test_app_restricted_update_attribute_set_to_true():
