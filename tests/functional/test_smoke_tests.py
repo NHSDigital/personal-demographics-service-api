@@ -14,6 +14,26 @@ from pytest_nhsd_apim.auth_journey import AuthorizationCodeConfig, Authorization
 pytestmark = pytest.mark.smoke_test
 
 
+@retrieve_scenario('Healthcare worker can retrieve patient')
+def test_retrieve_patient():
+    pass
+
+
+@search_scenario('Healthcare worker can search for patient')
+def test_search_patient():
+    pass
+
+
+@related_person_scenario('Retrieve a related person')
+def test_retrieve_related_person():
+    pass
+
+
+@status_scenario('Healthcheck endpoint')
+def test_healthcheck():
+    pass
+
+
 @pytest.fixture()
 def identity_service_base_url():
     return "https://int.api.service.nhs.uk/oauth2-mock"
@@ -53,23 +73,3 @@ def headers_with_authorization(apigee_environment,
     }
 
     return headers
-
-
-@retrieve_scenario('Healthcare worker can retrieve patient')
-def test_retrieve_patient():
-    pass
-
-
-@search_scenario('Healthcare worker can search for patient')
-def test_search_patient():
-    pass
-
-
-@related_person_scenario('Retrieve a related person')
-def test_retrieve_related_person():
-    pass
-
-
-@status_scenario('Healthcheck endpoint')
-def test_healthcheck():
-    pass

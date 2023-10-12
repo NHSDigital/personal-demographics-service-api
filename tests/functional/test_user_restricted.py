@@ -5,7 +5,7 @@ from .data.patients import Patient
 from .data import searches
 from .data.searches import Search
 from .data.updates import Update
-from .utils import helpers
+from .utils.helpers import get_role_id_from_user_info_endpoint
 import pytest
 from pytest_check import check
 import logging
@@ -32,30 +32,6 @@ update_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_upd
 related_person_scenario = partial(pytest_bdd.scenario, './features/related_person.feature')
 
 status_scenario = partial(pytest_bdd.scenario, './features/status_endpoints.feature')
-
-
-@pytest.fixture(scope='function')
-def headers_with_authorization(
-    _nhsd_apim_auth_token_data,
-    identity_service_base_url,
-    add_asid_to_testapp
-):
-    """Assign required headers with the Authorization header"""
-
-    LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
-    access_token = _nhsd_apim_auth_token_data.get("access_token", "")
-
-    headers = {"X-Request-ID": str(uuid.uuid1()),
-               "X-Correlation-ID": str(uuid.uuid1()),
-               "Authorization": f'Bearer {access_token}'
-               }
-
-    role_id = helpers.get_role_id_from_user_info_endpoint(access_token, identity_service_base_url)
-    headers.update({"NHSD-Session-URID": role_id})
-
-    # setattr(request.cls, 'headers', headers)
-    LOGGER.info(f'headers: {headers}')
-    return headers
 
 
 @retrieve_scenario('Healthcare worker can retrieve patient')
@@ -246,6 +222,30 @@ def test_ping():
 @status_scenario('Healthcheck endpoint')
 def test_healthcheck():
     pass
+
+
+@pytest.fixture(scope='function')
+def headers_with_authorization(
+    _nhsd_apim_auth_token_data,
+    identity_service_base_url,
+    add_asid_to_testapp
+):
+    """Assign required headers with the Authorization header"""
+
+    LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
+    access_token = _nhsd_apim_auth_token_data.get("access_token", "")
+
+    headers = {"X-Request-ID": str(uuid.uuid1()),
+               "X-Correlation-ID": str(uuid.uuid1()),
+               "Authorization": f'Bearer {access_token}'
+               }
+
+    role_id = get_role_id_from_user_info_endpoint(access_token, identity_service_base_url)
+    headers.update({"NHSD-Session-URID": role_id})
+
+    # setattr(request.cls, 'headers', headers)
+    LOGGER.info(f'headers: {headers}')
+    return headers
 
 
 @given("I have a sensitive patient's demographic details", target_fixture='search')
