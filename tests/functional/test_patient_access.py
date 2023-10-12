@@ -7,9 +7,6 @@ import pytest
 #     generate_random_phone_number,
 #     get_add_telecom_phone_patch_body,
 # )
-import logging
-
-LOGGER = logging.getLogger(__name__)
 
 AUTH_PATIENT = {
     "api_name": "personal-demographics-service",
@@ -46,12 +43,10 @@ TEST_PATIENT_ID = "9912003071"
 class TestUserRestrictedPatientAccess:
 
     def test_setup(self, add_proxies_to_products):
-        LOGGER.info("Setting up the products and proxies for testing")
+        pass
 
     @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
     def test_patient_access_retrieve_happy_path(self, _nhsd_apim_auth_token_data, add_asid_to_testapp):
-
-        LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
 
         token = _nhsd_apim_auth_token_data.get("access_token", "")
 

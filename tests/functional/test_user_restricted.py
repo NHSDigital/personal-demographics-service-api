@@ -230,7 +230,6 @@ def headers_with_authorization(_nhsd_apim_auth_token_data: dict,
                                add_asid_to_testapp: None) -> dict:
     """Assign required headers with the Authorization header"""
 
-    LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
     access_token = _nhsd_apim_auth_token_data.get("access_token", "")
 
     headers = {"X-Request-ID": str(uuid.uuid1()),
@@ -241,7 +240,6 @@ def headers_with_authorization(_nhsd_apim_auth_token_data: dict,
     role_id = get_role_id_from_user_info_endpoint(access_token, identity_service_base_url)
     headers.update({"NHSD-Session-URID": role_id})
 
-    LOGGER.info(f'headers: {headers}')
     return headers
 
 
@@ -289,7 +287,6 @@ def use_deprecated_url() -> str:
     )
 )
 def check_status(response: Response, expected_status: int) -> None:
-    LOGGER.info(response.text)
     with check:
         assert response.status_code == expected_status
 

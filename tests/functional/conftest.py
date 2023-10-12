@@ -32,10 +32,6 @@ from pytest_nhsd_apim.apigee_apis import (
     DeveloperAppsAPI,
 )
 
-import logging
-
-LOGGER = logging.getLogger(__name__)
-
 
 @pytest.fixture()
 def developer_email() -> str:
