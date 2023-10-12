@@ -52,10 +52,8 @@ def add_asid_to_testapp(developer_apps_api,
                         nhsd_apim_test_app,
                         developer_email):
     app = nhsd_apim_test_app()
-    LOGGER.info(f'app:{app}')
     app_name = app["name"]
 
-    # Check if the ASID attribute is already available
     app_attributes = developer_apps_api.get_app_attributes(email=developer_email, app_name=app_name)
     custom_attributes = app_attributes['attribute']
     existing_asid_attribute = None
@@ -64,12 +62,9 @@ def add_asid_to_testapp(developer_apps_api,
             existing_asid_attribute = attribute['value']
 
     if not existing_asid_attribute and config.ENV.contains("internal_dev_asid"):
-        LOGGER.info(f'ASID attribute not found. Adding {config.ENV["internal_dev_asid"]} to {app_name}')
-        # Add ASID to the test app - To be refactored when we move to .feature files TODO SPINEDEM-1680
         custom_attributes.append({"name": "asid", "value": config.ENV["internal_dev_asid"]})
         data = {"attribute": custom_attributes}
-        response = developer_apps_api.post_app_attributes(email=developer_email, app_name=app_name, body=data)
-        LOGGER.info(f'Test app updated with ASID attribute: {response}')
+        developer_apps_api.post_app_attributes(email=developer_email, app_name=app_name, body=data)
 
 
 @given("I am an unknown user", target_fixture='headers_with_authorization')
@@ -234,7 +229,6 @@ def search_patient(headers_with_authorization: dict, query_params: str, pds_url:
     )
 )
 def check_status(response: Response, expected_status: int) -> None:
-    LOGGER.info(response.text)
     with check:
         assert response.status_code == expected_status
 
@@ -317,51 +311,33 @@ def response_body(response: Response) -> dict:
 
 
 @pytest.fixture()
-def add_proxies_to_products(products_api, nhsd_apim_proxy_name):
-    # Check if we need to add an extra proxy *-asid-required-* to the product used for testing
-    proxy_name = nhsd_apim_proxy_name
-    LOGGER.info(f'proxy_name: {proxy_name}')
-    product_name = proxy_name.replace("-asid-required", "")
-    LOGGER.info(f'product_name: {product_name}')
+def add_proxies_to_products(products_api: ApiProductsAPI,
+                            nhsd_apim_proxy_name: str):
+    product_name = nhsd_apim_proxy_name.replace("-asid-required", "")
 
     patient_access_product_name = f'{product_name}-patient-access'
 
     default_product = products_api.get_product_by_name(product_name=product_name)
-    LOGGER.info(f'default_product: {default_product}')
-
-    if(proxy_name not in default_product['proxies']):
-        default_product['proxies'].append(proxy_name)
-        product_updated = products_api.put_product_by_name(product_name=product_name, body=default_product)
-        LOGGER.info(f'product_updated: {product_updated}')
+    if nhsd_apim_proxy_name not in default_product['proxies']:
+        default_product['proxies'].append(nhsd_apim_proxy_name)
+        products_api.put_product_by_name(product_name=product_name, body=default_product)
 
     patient_access_product = products_api.get_product_by_name(product_name=patient_access_product_name)
-    LOGGER.info(f'patient_access_product: {patient_access_product}')
-
-    if(proxy_name not in patient_access_product['proxies']):
-        patient_access_product['proxies'].append(proxy_name)
-        patient_access_product_updated = products_api.put_product_by_name(
-            product_name=patient_access_product_name,
-            body=patient_access_product
-        )
-        LOGGER.info(f'patient_access_product_updated: {patient_access_product_updated}')
+    if nhsd_apim_proxy_name not in patient_access_product['proxies']:
+        patient_access_product['proxies'].append(nhsd_apim_proxy_name)
+        products_api.put_product_by_name(product_name=patient_access_product_name,
+                                         body=patient_access_product)
 
 
 @pytest.fixture(autouse=True)
-def add_proxies_to_products_user_restricted(products_api, nhsd_apim_proxy_name):
-
-    # Check if we need to add an extra proxy *-asid-required-* to the product used for testing
-    proxy_name = nhsd_apim_proxy_name
-    LOGGER.info(f'proxy_name: {proxy_name}')
-    product_name = proxy_name.replace("-asid-required", "")
-    LOGGER.info(f'product_name: {product_name}')
+def add_proxies_to_products_user_restricted(products_api: ApiProductsAPI,
+                                            nhsd_apim_proxy_name: str):
+    product_name = nhsd_apim_proxy_name.replace("-asid-required", "")
 
     default_product = products_api.get_product_by_name(product_name=product_name)
-    LOGGER.info(f'default_product: {default_product}')
-
-    if(proxy_name not in default_product['proxies']):
-        default_product['proxies'].append(proxy_name)
-        product_updated = products_api.put_product_by_name(product_name=product_name, body=default_product)
-        LOGGER.info(f'product_updated: {product_updated}')
+    if nhsd_apim_proxy_name not in default_product['proxies']:
+        default_product['proxies'].append(nhsd_apim_proxy_name)
+        products_api.put_product_by_name(product_name=product_name, body=default_product)
 
 
 @pytest.fixture()
@@ -405,7 +381,6 @@ def _product_with_full_access(api_products):
     ], api_products)
     # Allows access to all proxy paths - so we don't have to specify the pr proxy explicitly
     product.update_paths(paths=["/", "/*"], api_products=api_products)
-    LOGGER.info(f'product.get_product_details(): {product.get_product_details(api_products)}')
 
     return product
 
@@ -419,12 +394,8 @@ def setup_session(request, _jwt_keys, apigee_environment, developer_apps_api, pr
     product = _product_with_full_access(products_api)
     product.update_environments([config.ENVIRONMENT], api_products=products_api)
 
-    LOGGER.info(f'product.proxies: {product.proxies}')
-
-    print("\nCreating Default App..")
-    # Create a new app
     app = ApigeeApiDeveloperApps()
-    create_app_response = app.create_new_app(
+    app.create_new_app(
         callback_url="https://example.org/callback",
         status="approved",
         jwks_resource_url=config.JWKS_RESOURCE_URL,
@@ -432,9 +403,6 @@ def setup_session(request, _jwt_keys, apigee_environment, developer_apps_api, pr
         developer_apps=developer_apps_api
     )
 
-    LOGGER.info(f'create_app_response: {create_app_response}')
-
-    # Set up app config
     client_credentials_config = ClientCredentialsConfig(
         environment=apigee_environment,
         identity_service_base_url=f"https://{apigee_environment}.api.service.nhs.uk/{config.OAUTH_PROXY}",
@@ -443,19 +411,12 @@ def setup_session(request, _jwt_keys, apigee_environment, developer_apps_api, pr
         jwt_kid="test-1",
     )
 
-    # Pass the config to the Authenticator
     authenticator = ClientCredentialsAuthenticator(config=client_credentials_config)
 
-    # Get token
     token_response = authenticator.get_token()
     assert "access_token" in token_response
-    token = token_response["access_token"]
 
-    LOGGER.info(f'token: {token}')
     yield product, app, token_response, developer_apps_api, products_api
-
-    # Teardown
-    print("\nDestroying Default App..")
 
     app.destroy_app(developer_apps_api)
     product.destroy_product(products_api)
