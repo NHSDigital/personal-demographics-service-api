@@ -243,7 +243,6 @@ def headers_with_authorization(
     role_id = get_role_id_from_user_info_endpoint(access_token, identity_service_base_url)
     headers.update({"NHSD-Session-URID": role_id})
 
-    # setattr(request.cls, 'headers', headers)
     LOGGER.info(f'headers: {headers}')
     return headers
 

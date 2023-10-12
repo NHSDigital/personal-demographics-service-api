@@ -36,8 +36,10 @@ from pytest_nhsd_apim.apigee_apis import (
 import logging
 
 LOGGER = logging.getLogger(__name__)
-DEVELOPER_EMAIL = "apm-testing-internal-dev@nhs.net"
-
+@pytest.fixture()
+def developer_email() -> str:
+    return "apm-testing-internal-dev@nhs.net"
+    
 
 @pytest.fixture()
 def pds_url() -> str:
@@ -45,13 +47,15 @@ def pds_url() -> str:
 
 
 @pytest.fixture()
-def add_asid_to_testapp(developer_apps_api, nhsd_apim_test_app):
+def add_asid_to_testapp(developer_apps_api,
+                        nhsd_apim_test_app,
+                        developer_email):
     app = nhsd_apim_test_app()
     LOGGER.info(f'app:{app}')
     app_name = app["name"]
 
     # Check if the ASID attribute is already available
-    app_attributes = developer_apps_api.get_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name)
+    app_attributes = developer_apps_api.get_app_attributes(email=developer_email, app_name=app_name)
     custom_attributes = app_attributes['attribute']
     existing_asid_attribute = None
     for attribute in custom_attributes:
@@ -63,7 +67,7 @@ def add_asid_to_testapp(developer_apps_api, nhsd_apim_test_app):
         # Add ASID to the test app - To be refactored when we move to .feature files TODO SPINEDEM-1680
         custom_attributes.append({"name": "asid", "value": config.ENV["internal_dev_asid"]})
         data = {"attribute": custom_attributes}
-        response = developer_apps_api.post_app_attributes(email=DEVELOPER_EMAIL, app_name=app_name, body=data)
+        response = developer_apps_api.post_app_attributes(email=developer_email, app_name=app_name, body=data)
         LOGGER.info(f'Test app updated with ASID attribute: {response}')
 
 
