@@ -33,6 +33,8 @@ related_person_scenario = partial(pytest_bdd.scenario, './features/related_perso
 
 status_scenario = partial(pytest_bdd.scenario, './features/status_endpoints.feature')
 
+pytestmark = pytest.mark.usefixtures('add_asid_to_testapp')
+
 
 @retrieve_scenario('Healthcare worker can retrieve patient')
 def test_retrieve_patient():
@@ -224,10 +226,20 @@ def test_healthcheck():
     pass
 
 
+@pytest.fixture(autouse=True)
+def add_proxies_to_products(products_api, nhsd_apim_proxy_name):
+    nhsd_apim_proxy_name = nhsd_apim_proxy_name
+    product_name = nhsd_apim_proxy_name.replace("-asid-required", "")
+
+    default_product = products_api.get_product_by_name(product_name=product_name)
+    if nhsd_apim_proxy_name not in default_product['proxies']:
+        default_product['proxies'].append(nhsd_apim_proxy_name)
+        products_api.put_product_by_name(product_name=product_name, body=default_product)
+
+
 @pytest.fixture(scope='function')
 def headers_with_authorization(_nhsd_apim_auth_token_data: dict,
-                               identity_service_base_url: str,
-                               add_asid_to_testapp: None) -> dict:
+                               identity_service_base_url: str) -> dict:
     """Assign required headers with the Authorization header"""
 
     LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
