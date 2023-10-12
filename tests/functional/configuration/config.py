@@ -19,7 +19,8 @@ ENV = EnvVarWrapper(
         'redirect_uri': 'REDIRECT_URI',
         'apigee_api_token': 'APIGEE_API_TOKEN',
         'internal_dev_asid': 'INTERNAL_DEV_ASID',
-        'oauth_proxy': 'OAUTH_PROXY'
+        'oauth_proxy': 'OAUTH_PROXY',
+        'spine_host': 'SPINE_HOST'
     }
 )
 
@@ -63,10 +64,8 @@ AUTH_TOKEN_EXPIRY_MS = (
 OAUTH_PROXY = ENV['oauth_proxy']
 
 SPINE_HOSTNAME = (
-    # This value is the url returned in the patients response payload which reflects a spine environment.
-    # internal-qa environment points to spine int environment.
-    # TODO: Move to env variables.
-    "https://veit07.api.service.nhs.uk" if ENVIRONMENT == "internal-dev" else "https://int.api.service.nhs.uk"
+    f"https://{ENV['spine_host']}.api.service.nhs.uk" if ENVIRONMENT == "internal-dev"
+    else "https://int.api.service.nhs.uk"
 )
 
 # Header values
