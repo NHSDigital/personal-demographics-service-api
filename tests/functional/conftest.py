@@ -1,5 +1,6 @@
 from tests.scripts.pds_request import GenericPdsRequestor, PdsRecord
 import pytest
+import os
 from pytest_bdd import given, when, then, parsers
 from jsonpath_rw import parse
 from pytest_check import check
@@ -18,7 +19,6 @@ from .data import searches
 from .data import updates
 from .data import patients
 from .data.patients import Patient
-from .data.responses import RESPONSES
 from copy import copy
 
 from pytest_nhsd_apim.identity_service import (
@@ -30,6 +30,9 @@ from pytest_nhsd_apim.apigee_apis import (
     ApiProductsAPI,
     DeveloperAppsAPI,
 )
+
+FILE_DIR = os.path.dirname(__file__)
+RESPONSES_DIR = os.path.join(FILE_DIR, 'data', 'responses')
 
 
 @pytest.fixture()
@@ -230,12 +233,15 @@ def check_status(response: Response, expected_status: int) -> None:
 
 @then(
     parsers.cfparse(
-        'the response body is the {error:String} response',
+        'the response body is the {expected_response:String} response',
         extra_types=dict(String=str)
     )
 )
-def response_body_contains_error(response_body: dict, error) -> None:
-    assert response_body == RESPONSES[error]
+def response_body_contains_error(response_body: dict, expected_response: str) -> None:
+    response_file = expected_response.replace(' ', '_').lower()
+    with open(os.path.join(RESPONSES_DIR, f'{response_file}.json'), 'r') as f:
+        expected_response_body = json.load(f)
+    assert response_body == expected_response_body
 
 
 @then('the response body contains the expected response')
