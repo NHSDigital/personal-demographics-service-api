@@ -1,5 +1,7 @@
 from typing import Optional, Dict
 from random import randint
+import json
+import requests
 
 
 def find_item_in_dict(obj={}, search_key=""):
@@ -58,3 +60,15 @@ def add_auth_header(headers: Dict[str, str], auth: Optional[Dict[str, str]]):
         headers["Authorization"] = f"{token_type} {access_token}"
 
     return headers
+
+
+def get_role_id_from_user_info_endpoint(token, identity_service_base_url) -> str:
+
+    url = f'{identity_service_base_url}/userinfo'
+    headers = {"Authorization": f"Bearer {token}"}
+
+    user_info_resp = requests.get(url, headers=headers)
+    user_info = json.loads(user_info_resp.text)
+
+    assert user_info_resp.status_code == 200
+    return user_info['nhsid_nrbac_roles'][0]['person_roleid']
