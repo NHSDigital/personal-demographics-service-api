@@ -8,7 +8,6 @@ from .data.updates import Update
 from .utils.helpers import get_role_id_from_user_info_endpoint
 import pytest
 from pytest_check import check
-import logging
 from .configuration.config import BASE_URL, PDS_BASE_PATH
 from requests import Response
 import re
@@ -23,7 +22,6 @@ AUTH_HEALTHCARE_WORKER = {
         "login_form": {"username": "656005750104"},
         "force_new_token": True
     }
-LOGGER = logging.getLogger(__name__)
 
 retrieve_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_retrieve.feature')
 search_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_search.feature')
@@ -304,7 +302,7 @@ def response_body_contains_sensitivity_flag(response_body: str) -> None:
         '{value:String} is {_:String} {type_convertor:String} at {path:String} in the response body',
         extra_types=dict(String=str)
     ))
-def value_in_response_body_at_path(response_body: dict, value: str, type_convertor: str, path: str):
+def value_in_response_body_at_path(response_body: dict, value: str, type_convertor: str, path: str) -> None:
     matches = parse(path).find(response_body)
     with check:
         assert matches, f'There are no matches for {value} at {path} in the response body'
