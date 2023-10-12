@@ -3,7 +3,6 @@ import pytest
 from pytest_bdd import given, when, then, parsers
 from jsonpath_rw import parse
 from pytest_check import check
-import uuid
 import urllib
 from .utils.apigee_api_apps import ApigeeApiDeveloperApps
 from .utils.apigee_api_products import ApigeeApiProducts
