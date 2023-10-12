@@ -336,17 +336,6 @@ def add_proxies_to_products_user_restricted(products_api: ApiProductsAPI,
         products_api.put_product_by_name(product_name=product_name, body=default_product)
 
 
-@pytest.fixture()
-def headers():
-    """Assign required headers without the Authorization header"""
-    headers = {
-        "X-Request-ID": str(uuid.uuid1()),
-        "X-Correlation-ID": str(uuid.uuid1()),
-        "NHSD-Session-URID": config.ROLE_ID
-    }
-    return headers
-
-
 def _set_default_rate_limit(product: ApigeeApiProducts, api_products):
     """Updates an Apigee Product with a default rate limit and quota.
 
