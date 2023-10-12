@@ -42,9 +42,6 @@ TEST_PATIENT_ID = "9912003071"
 
 class TestUserRestrictedPatientAccess:
 
-    def test_setup(self, add_proxies_to_products):
-        pass
-
     @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
     def test_patient_access_retrieve_happy_path(self, _nhsd_apim_auth_token_data, add_asid_to_testapp):
 
