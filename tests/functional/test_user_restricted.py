@@ -225,11 +225,9 @@ def test_healthcheck():
 
 
 @pytest.fixture(scope='function')
-def headers_with_authorization(
-    _nhsd_apim_auth_token_data,
-    identity_service_base_url,
-    add_asid_to_testapp
-):
+def headers_with_authorization(_nhsd_apim_auth_token_data: dict,
+                               identity_service_base_url: str,
+                               add_asid_to_testapp: None) -> dict:
     """Assign required headers with the Authorization header"""
 
     LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
@@ -296,7 +294,7 @@ def check_status(response: Response, expected_status: int) -> None:
         assert response.status_code == expected_status
 
 
-@then('the resposne body contains the sensitivity flag')
+@then('the response body contains the sensitivity flag')
 def response_body_contains_sensitivity_flag(response_body: str) -> None:
     value_in_response_body_at_path(response_body,
                                    'restricted',
@@ -312,7 +310,7 @@ def response_body_contains_sensitivity_flag(response_body: str) -> None:
 def value_in_response_body_at_path(response_body: dict, value: str, type_convertor: str, path: str):
     matches = parse(path).find(response_body)
     with check:
-        assert matches, f'There are no matches for {value} at {path} in the resposne body'
+        assert matches, f'There are no matches for {value} at {path} in the response body'
         for match in matches:
             assert match.value == eval(type_convertor)(value), \
                 f'{match.value} is not the expected value, {value}, at {path}'

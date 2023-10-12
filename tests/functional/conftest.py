@@ -20,7 +20,7 @@ from .data import searches
 from .data import updates
 from .data import patients
 from .data.patients import Patient
-from .data.expected_errors import error_responses
+from .data.responses import RESPONSES
 from copy import copy
 
 from pytest_nhsd_apim.identity_service import (
@@ -36,6 +36,8 @@ from pytest_nhsd_apim.apigee_apis import (
 import logging
 
 LOGGER = logging.getLogger(__name__)
+
+
 @pytest.fixture()
 def developer_email() -> str:
     return "apm-testing-internal-dev@nhs.net"
@@ -244,8 +246,8 @@ def check_status(response: Response, expected_status: int) -> None:
         extra_types=dict(String=str)
     )
 )
-def resposne_body_contains_error(response_body: dict, error) -> None:
-    assert response_body == error_responses[error]
+def response_body_contains_error(response_body: dict, error) -> None:
+    assert response_body == RESPONSES[error]
 
 
 @then('the response body contains the expected response')
@@ -301,7 +303,7 @@ def check_expected_search_response_body(response_body: dict, search: Search) -> 
     with check:
         for field in search.expected_response_fields:
             matches = parse(field.path).find(response_body)
-            assert matches, f'There are no matches for {field.expected_value} at {field.path} in the resposne body'
+            assert matches, f'There are no matches for {field.expected_value} at {field.path} in the response body'
             for match in matches:
                 assert match.value == field.expected_value,\
                     f'{field.path} in response does not contain the expected value, {field.expected_value}'
@@ -313,31 +315,6 @@ def response_body(response: Response) -> dict:
     if "timestamp" in response_body:
         response_body.pop("timestamp")
     return response_body
-
-
-@pytest.fixture()
-def headers_with_token(
-    _nhsd_apim_auth_token_data,
-    request,
-    identity_service_base_url,
-    nhsd_apim_test_app,
-    products_api,
-    add_asid_to_testapp
-):
-    """Assign required headers with the Authorization header"""
-
-    LOGGER.info(f'_nhsd_apim_auth_token_data: {_nhsd_apim_auth_token_data}')
-    access_token = _nhsd_apim_auth_token_data.get("access_token", "")
-    role_id = helpers.get_role_id_from_user_info_endpoint(access_token, identity_service_base_url)
-
-    headers = {"X-Request-ID": str(uuid.uuid1()),
-               "X-Correlation-ID": str(uuid.uuid1()),
-               "NHSD-Session-URID": role_id,
-               "Authorization": f'Bearer {access_token}'
-               }
-
-    setattr(request.cls, 'headers', headers)
-    LOGGER.info(f'headers: {headers}')
 
 
 @pytest.fixture()
