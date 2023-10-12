@@ -3,7 +3,6 @@ import pytest
 from pytest_bdd import given, when, then, parsers
 from jsonpath_rw import parse
 from pytest_check import check
-from .utils import helpers
 import uuid
 import urllib
 from .utils.apigee_api_apps import ApigeeApiDeveloperApps
@@ -41,7 +40,7 @@ LOGGER = logging.getLogger(__name__)
 @pytest.fixture()
 def developer_email() -> str:
     return "apm-testing-internal-dev@nhs.net"
-    
+
 
 @pytest.fixture()
 def pds_url() -> str:
