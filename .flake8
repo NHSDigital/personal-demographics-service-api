@@ -3,4 +3,3 @@ max-line-length=120
 exclude = .git,__pycache__,dist,node_modules/*,utils/*,tests/functional/test_env/*,sandbox/node_modules/*,.venv/*
 per-file-ignores =
     tests/sandbox/data/scenarios.py:E501,E231,W291
-    tests/functional/data/responses.py:E501

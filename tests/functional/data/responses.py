@@ -77,7 +77,9 @@ RESPONSES = {
                         }
                     ]
                 },
-                "diagnostics": "Invalid value - '' in header 'NHSD-Session-URID'. Refer to the guidance for this header in our API Specification https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir"
+                "diagnostics": ("Invalid value - '' in header 'NHSD-Session-URID'. Refer to the guidance "
+                                "for this header in our API Specification "
+                                "https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir")
             }
         ]
     },
@@ -97,7 +99,9 @@ RESPONSES = {
                         }
                     ]
                 },
-                "diagnostics": "Invalid value - 'invalid' in header 'NHSD-Session-URID'. Refer to the guidance for this header in our API Specification https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir"
+                "diagnostics": ("Invalid value - 'invalid' in header 'NHSD-Session-URID'. "
+                                "Refer to the guidance for this header in our API Specification "
+                                "https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir")
             }
         ]
     },
@@ -157,7 +161,8 @@ RESPONSES = {
                         }
                     ]
                 },
-                "diagnostics": "Invalid request with error - X-Request-ID header must be supplied to access this resource"
+                "diagnostics": ("Invalid request with error - "
+                                "X-Request-ID header must be supplied to access this resource")
             }
         ]
     },
