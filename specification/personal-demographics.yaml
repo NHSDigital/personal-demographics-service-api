@@ -1379,7 +1379,18 @@ paths:
         * the first character of each `suffix` item must be `A-Z`.
         * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
         * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
-        * supplied name data must be UTF-8 encodable.
+        * supplied name data can only contain characters from the following ranges:
+        | Character Code/Range | Examples |
+        | 65-90	| A-Z |
+        | 97-122	| a-z |
+        | 45	| Apostrophe |
+        | 39	| Hyphen |
+        | 32	| Space |
+        | 192-214 |	À, Æ, Ö, ... |
+        | 216-246	| Ø, ß, ö, ...
+        | 248-383	| ø, ü, ÿ, ...  |
+        | 46	| Full-stop |
+        | 48-57	| Numbers |
         * the `period` is optional, but if included the `end` date cannot be before the `start` date. They can however be in the past, present or future.
         * the full available range of generally recognised titles are permitted, however, if any of the following are used then the value input must conform to the following format:
             * Mr
