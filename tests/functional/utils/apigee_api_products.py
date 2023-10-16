@@ -1,7 +1,4 @@
 from .apigee_api import ApigeeApi
-import logging
-
-LOGGER = logging.getLogger(__name__)
 
 
 class ApigeeApiProducts(ApigeeApi):
