@@ -40,6 +40,7 @@ AUTH_PATIENT_P0 = {
 TEST_PATIENT_ID = "9912003071"
 
 
+@pytest.mark.usefixtures('add_proxies_to_products')
 class TestUserRestrictedPatientAccess:
 
     @pytest.mark.nhsd_apim_authorization(AUTH_PATIENT)
