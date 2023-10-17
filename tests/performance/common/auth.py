@@ -2,7 +2,7 @@ import requests
 import json
 import urllib.parse as urlparse
 from urllib.parse import parse_qs
-from ...functional.configuration import config
+from tests.functional.configuration import config
 
 
 class Auth:
