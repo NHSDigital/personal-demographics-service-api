@@ -22,19 +22,19 @@ class Update:
         return {"patches": [patch]}
 
     @property
-    def record(self):
+    def record(self) -> dict:
         return self._record
 
     @property
-    def value(self):
+    def value(self) -> str:
         return self._value
 
     @property
-    def record_version(self):
+    def record_version(self) -> str:
         return re.findall(r'\d+', self.etag)[0]
 
     @property
-    def etag(self):
+    def etag(self) -> str:
         return self._etag
 
     @record.setter
