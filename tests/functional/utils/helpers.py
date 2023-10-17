@@ -33,6 +33,7 @@ def find_items_in_dict(obj: dict, key: Any) -> Generator[Any, None, None]:
                     for value in find_items_in_dict(el, key):
                         yield value
 
+
 def generate_random_phone_number():
     return f"07784{randint(100000, 999999)}"
 
