@@ -2,7 +2,7 @@ from tests.scripts.generic_request import GenericRequest
 from json import loads, JSONDecodeError
 from uuid import uuid4
 from requests import Response
-from ..functional.configuration import config
+from tests.functional.configuration import config
 
 
 class PdsRecord:
