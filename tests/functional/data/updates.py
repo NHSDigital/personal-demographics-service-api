@@ -41,9 +41,6 @@ class Update:
     def record(self, value: dict) -> None:
         self._record = value
 
-    def add_gender_value(self, value: str) -> None:
-        self.patches[0].update({"value": value})
-
     @value.setter
     def value(self, v: str) -> None:
         self._value = v
