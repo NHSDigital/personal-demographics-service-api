@@ -291,10 +291,10 @@ def check_status(response: Response, expected_status: int) -> None:
 
 @then('the response body contains the sensitivity flag')
 def response_body_contains_sensitivity_flag(response_body: str) -> None:
-    value_in_response_body_at_path(response_body,
-                                   'restricted',
-                                   'str',
-                                   'entry[0].resource.meta.security[0].display')
+    check_value_in_response_body_at_path(response_body,
+                                         'restricted',
+                                         'str',
+                                         'entry[0].resource.meta.security[0].display')
 
 
 @then(
@@ -302,7 +302,7 @@ def response_body_contains_sensitivity_flag(response_body: str) -> None:
         '{value:String} is {_:String} {type_convertor:String} at {path:String} in the response body',
         extra_types=dict(String=str)
     ))
-def value_in_response_body_at_path(response_body: dict, value: str, type_convertor: str, path: str) -> None:
+def check_value_in_response_body_at_path(response_body: dict, value: str, type_convertor: str, path: str) -> None:
     matches = parse(path).find(response_body)
     with check:
         assert matches, f'There are no matches for {value} at {path} in the response body'
