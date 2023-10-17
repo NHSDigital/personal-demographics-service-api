@@ -256,9 +256,9 @@ def search_dob_range() -> Patient:
     return searches.DOB_RANGE
 
 
-@given("I enter a patient's fuzzy demographic details", target_fixture='search')
+@given("I enter a patient's demographic details that match the fuzzy search criteria", target_fixture='search')
 def fuzzy_search() -> Search:
-    return searches.FUZZY
+    return searches.FUZZY_CRITERIA
 
 
 @given("I enter a patient's unicode demographic details", target_fixture='search')

@@ -93,13 +93,13 @@ NO_GENDER_MULTIPLE_MATCHES = Search(query=[("family", "YOUDS"),
                                                               Field("entry[3].resource.id", "9693633709"),
                                                               Field("entry[3].resource.gender", "other")])
 
-FUZZY = Search(query=[("family", "Garton"),
-                      ("given", "Bill"),
-                      ("birthdate", "1946-06-23")],
-               expected_response_fields=[Field("type", "searchset"),
-                                         Field("resourceType", "Bundle"),
-                                         Field("entry[0].resource.id", "9693632109"),
-                                         Field("entry[0].search.score", 1)])
+FUZZY_CRITERIA = Search(query=[("family", "Garton"),
+                               ("given", "Bill"),
+                               ("birthdate", "1946-06-23")],
+                        expected_response_fields=[Field("type", "searchset"),
+                                                  Field("resourceType", "Bundle"),
+                                                  Field("entry[0].resource.id", "9693632109"),
+                                                  Field("entry[0].search.score", 1)])
 
 EMPTY_RESULTS = Search(query=[("family", "Garton"),
                               ("birthdate", "1947-06-23")],

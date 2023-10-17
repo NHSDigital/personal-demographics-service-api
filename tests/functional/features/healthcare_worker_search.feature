@@ -122,7 +122,7 @@ Feature: Healthcare Worker Access (Search)
 
     Scenario: Searching with fuzzy match
         Given I am a healthcare worker
-        And I enter a patient's fuzzy demographic details
+        And I enter a patient's demographic details that match the fuzzy search criteria
 
         When the query parameters contain _fuzzy-match as true
         And I search for the patient's PDS record
