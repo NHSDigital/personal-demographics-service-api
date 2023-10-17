@@ -92,6 +92,7 @@ Feature: Healthcare Worker Access (Search)
         Then I get a 200 HTTP response code
         And the response body contains the expected values
         And the response body contains the sensitivity flag
+        And the response body does not contain sensitive fields
 
     Scenario: Healthcare worker searches for patient without specifying gender
         Given I am a healthcare worker

@@ -20,6 +20,7 @@ from .data import updates
 from .data import patients
 from .data.patients import Patient
 from copy import copy
+from tests.functional.utils.helpers import is_key_in_dict
 
 from pytest_nhsd_apim.identity_service import (
     ClientCredentialsConfig,
@@ -301,6 +302,16 @@ def check_expected_search_response_body(response_body: dict, search: Search) -> 
             for match in matches:
                 assert match.value == field.expected_value,\
                     f'{field.path} in response does not contain the expected value, {field.expected_value}'
+
+
+@then('the response body does not contain sensitive fields')
+def check_sensitive_fields_are_absent(response_body: dict) -> None:
+    _sensitive_fields = ['address',
+                         'telecom',
+                         'generalPractitioner']
+    with check:
+        for field in _sensitive_fields:
+            assert not is_key_in_dict(response_body, field), f'Sensitive field, {field}, in response.'
 
 
 @pytest.fixture()

@@ -1,7 +1,12 @@
-from typing import Optional, Dict
+from typing import Optional, Dict, Any, Generator
 from random import randint
 import json
 import requests
+
+
+def is_key_in_dict(obj: dict, key: str) -> bool:
+    found_items = [item for item in find_items_in_dict(obj, key)]
+    return True if found_items else False
 
 
 def find_item_in_dict(obj={}, search_key=""):
@@ -11,15 +16,22 @@ def find_item_in_dict(obj={}, search_key=""):
         obj (dict): the object to search through
         key (string): the key to find
     """
-    if search_key in obj:
-        return obj[search_key]
+    found_items = [item for item in find_items_in_dict(obj, search_key)]
+    return found_items[0] if found_items else None
 
-    for key, val in obj.items():
-        if isinstance(val, dict):
-            item = find_item_in_dict(val, search_key)
-            if item is not None:
-                return item
 
+def find_items_in_dict(obj: dict, key: Any) -> Generator[Any, None, None]:
+    if hasattr(obj, 'items'):
+        for k, v in obj.items():
+            if k == key:
+                yield v
+            if isinstance(v, dict):
+                for value in find_items_in_dict(v, key):
+                    yield value
+            elif isinstance(v, list):
+                for el in v:
+                    for value in find_items_in_dict(el, key):
+                        yield value
 
 def generate_random_phone_number():
     return f"07784{randint(100000, 999999)}"
