@@ -1,5 +1,8 @@
 # Changelog
 
+## 2023-09-29
+* Change the description for NHSD-End-User-Organisation-ODS
+
 ## 2023-09-14
 * Increase rate limit for proxy in prod
 
