@@ -1,0 +1,19 @@
+{
+        "issue": [
+            {
+                "code": "multiple-matches",
+                "details": {
+                    "coding": [
+                        {
+                            "code": "TOO_MANY_MATCHES",
+                            "display": "Too Many Matches",
+                            "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+                            "version": "1"
+                        }
+                    ]
+                },
+                "severity": "information"
+            }
+        ],
+        "resourceType": "OperationOutcome"
+    }

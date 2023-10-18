@@ -1,7 +1,4 @@
 from .apigee_api import ApigeeApi
-import logging
-
-LOGGER = logging.getLogger(__name__)
 
 
 class ApigeeApiProducts(ApigeeApi):
@@ -89,15 +86,11 @@ class ApigeeApiProducts(ApigeeApi):
         """ Create a new developer product in apigee """
 
         resp = api_products.post_products(body=self._product())
-        LOGGER.info(f'Created product with name: {resp.get("name")}')
-
         return resp
 
     def _update_product(self, api_products) -> dict:
         """ Update product """
-        # LOGGER.info(f'New product value: {self._product()}')
         resp = api_products.put_product_by_name(product_name=self.name, body=self._product())
-        LOGGER.info(f'update response: {resp}')
         return resp
 
     def get_product_details(self, api_products) -> dict:

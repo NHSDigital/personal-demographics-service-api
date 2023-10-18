@@ -1,4 +1,3 @@
-from ..utils.helper import get_proxy_name
 from ...scripts.environment import EnvVarWrapper
 
 ENV = EnvVarWrapper(
@@ -20,7 +19,8 @@ ENV = EnvVarWrapper(
         'redirect_uri': 'REDIRECT_URI',
         'apigee_api_token': 'APIGEE_API_TOKEN',
         'internal_dev_asid': 'INTERNAL_DEV_ASID',
-        'oauth-proxy': 'OAUTH_PROXY'
+        'oauth_proxy': 'OAUTH_PROXY',
+        'spine_host': 'SPINE_HOST'
     }
 )
 
@@ -39,7 +39,6 @@ KEY_ID = ENV["key_id"]
 
 # PDS
 PDS_BASE_PATH = ENV["pds_base_path"]
-PROXY_NAME = get_proxy_name(PDS_BASE_PATH, ENVIRONMENT)
 
 # App details
 CLIENT_ID = ENV['client_id']
@@ -62,4 +61,12 @@ AUTH_TOKEN_EXPIRY_MS = (
 )
 
 # OAUTH
-OAUTH_PROXY = ENV['oauth-proxy']
+OAUTH_PROXY = ENV['oauth_proxy']
+
+SPINE_HOSTNAME = (
+    f"https://{ENV['spine_host']}.api.service.nhs.uk" if ENVIRONMENT == "internal-dev"
+    else "https://int.api.service.nhs.uk"
+)
+
+# Header values
+ROLE_ID = "555254242102"

@@ -1,27 +1,27 @@
 from tests.functional.conftest import set_quota_and_rate_limit
 from tests.scripts.pds_request import PdsRecord
 import pytest
+from functools import partial
 from polling2 import poll, TimeoutException
-from pytest_bdd import scenario, given, when, then, parsers
-from .config_files.config import TEST_PATIENT_ID, PROXY_NAME, PDS_BASE_PATH
-from .utils.helper import find_item_in_dict
+from pytest_bdd import given, when, then, parsers
+import pytest_bdd
+from .configuration.config import TEST_PATIENT_ID, PDS_BASE_PATH
+from .utils.helpers import find_item_in_dict
 import json
+
+scenario = partial(pytest_bdd.scenario, './features/sync_wrap.feature')
 
 
 @pytest.mark.apmspii_832
 @pytest.mark.skipif("asid-required" in PDS_BASE_PATH, reason="Don't run in asid-required environment")
-@scenario('./features/sync_wrap.feature',
-          'The rate limit is tripped through a synchronous request'
-          )
+@scenario('The rate limit is tripped through a synchronous request')
 def test_sync_wrap_rate_limit():
     pass
 
 
 @pytest.mark.apmspii_874
 @pytest.mark.skipif("asid-required" in PDS_BASE_PATH, reason="Don't run in asid-required environment")
-@scenario('./features/sync_wrap.feature',
-          'The rate limit is tripped during sync-wrap polling'
-          )
+@scenario('The rate limit is tripped during sync-wrap polling')
 def test_sync_polling_rate_limit():
     pass
 
@@ -38,7 +38,7 @@ def _setup(sync_wrap_low_wait_update: PdsRecord):
 
 
 @given("I have a proxy with a low rate limit set", target_fixture="context")
-def setup_rate_limit_proxy(setup_patch):
+def setup_rate_limit_proxy(setup_patch, nhsd_apim_proxy_name):
     context = {
         "pds": setup_patch["pds"],
         "product": setup_patch["product"],
@@ -50,7 +50,7 @@ def setup_rate_limit_proxy(setup_patch):
     set_quota_and_rate_limit(
         context["product"],
         rate_limit="1pm",
-        proxy=PROXY_NAME,
+        proxy=nhsd_apim_proxy_name,
         developer_apps=context["developer_apps"],
         api_products=context["api_products"]
     )
