@@ -53,7 +53,6 @@ JWKS_RESOURCE_URL_ASID_REQUIRED_APP = ('https://raw.githubusercontent.com/NHSDig
                                        'e143bb5f-ce9d-4adf-b5b2-2f25ae380c66.json')
 
 # JWT keys
-ID_TOKEN_NHS_LOGIN_PRIVATE_KEY = ENV['nhs_login_private_key']
 JWT_PRIVATE_KEY_ABSOLUTE_PATH = ENV['jwt_private_key']
 
 AUTH_TOKEN_EXPIRY_MS = (
