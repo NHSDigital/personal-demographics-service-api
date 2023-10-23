@@ -13,7 +13,7 @@ from requests import Response
 import re
 import uuid
 from jsonpath_rw import parse
-
+from pytest_nhsd_apim.apigee_apis import ApiProductsAPI
 
 AUTH_HEALTHCARE_WORKER = {
         "api_name": "personal-demographics-service",
@@ -220,6 +220,17 @@ def test_ping():
 @status_scenario('Healthcheck endpoint')
 def test_healthcheck():
     pass
+
+
+@pytest.fixture(autouse=True)
+def add_proxies_to_products_user_restricted(products_api: ApiProductsAPI,
+                                            nhsd_apim_proxy_name: str):
+    product_name = nhsd_apim_proxy_name.replace("-asid-required", "")
+
+    default_product = products_api.get_product_by_name(product_name=product_name)
+    if nhsd_apim_proxy_name not in default_product['proxies']:
+        default_product['proxies'].append(nhsd_apim_proxy_name)
+        products_api.put_product_by_name(product_name=product_name, body=default_product)
 
 
 @pytest.fixture(scope='function')

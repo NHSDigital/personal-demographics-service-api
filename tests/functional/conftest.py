@@ -341,17 +341,6 @@ def add_proxies_to_products(products_api: ApiProductsAPI,
                                          body=patient_access_product)
 
 
-@pytest.fixture(autouse=True)
-def add_proxies_to_products_user_restricted(products_api: ApiProductsAPI,
-                                            nhsd_apim_proxy_name: str):
-    product_name = nhsd_apim_proxy_name.replace("-asid-required", "")
-
-    default_product = products_api.get_product_by_name(product_name=product_name)
-    if nhsd_apim_proxy_name not in default_product['proxies']:
-        default_product['proxies'].append(nhsd_apim_proxy_name)
-        products_api.put_product_by_name(product_name=product_name, body=default_product)
-
-
 def _set_default_rate_limit(product: ApigeeApiProducts, api_products):
     """Updates an Apigee Product with a default rate limit and quota.
 

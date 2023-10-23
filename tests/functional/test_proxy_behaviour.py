@@ -11,9 +11,7 @@ import pytest_bdd
 from .configuration.config import BASE_URL, PDS_BASE_PATH, TEST_PATIENT_ID
 import json
 from .utils.helpers import find_item_in_dict
-import logging
 
-LOGGER = logging.getLogger(__name__)
 
 scenario = partial(pytest_bdd.scenario, './features/proxy_behaviour.feature')
 
