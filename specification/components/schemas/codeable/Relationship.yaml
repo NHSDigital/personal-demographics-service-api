@@ -12,7 +12,7 @@ properties:
 
       The codes used can be found at:
       * http://hl7.org/fhir/ValueSet/relatedperson-relationshiptype
-      * https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole
+      * INVALID URL - https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole
 
       The allowed values for `Role` are:
       * Agent - Agent of patient
