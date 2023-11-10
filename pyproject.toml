@@ -18,7 +18,7 @@ authors = [
 readme = 'README.md'
 
 repository = "https://github.com/NHSDigital/personal-demographics-service-api"
-homepage = ""
+homepage = "https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir"
 
 keywords = ["healthcare", "uk", "nhs", "demographics"]
 
