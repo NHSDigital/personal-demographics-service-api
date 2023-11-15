@@ -3,7 +3,7 @@ SHELL=/bin/bash -euo pipefail
 install: install-node install-python install-fhir-validator install-hooks
 
 install-python:
-	poetry install
+	poetry install --no-root
 
 install-node:
 	npm install
