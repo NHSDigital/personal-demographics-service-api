@@ -6,7 +6,7 @@ info:
   version: "{VERSION}"
   title: Personal Demographics Service (FHIR) API
   description: |
-    ## Overview
+    ## Overview 
     Use this API to access the [Personal Demographics Service (PDS)](https://digital.nhs.uk/services/demographics) - the national electronic database of NHS patient details such as name, address, date of birth, related people, registered GP and NHS number.
 
     You can:
@@ -204,12 +204,13 @@ info:
     Errors specific to each API are shown in the Endpoints section, under Response. See our [reference guide](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#http-status-codes) for more on errors.
     
     ## Open source
-    You might find the following open source resources useful:
+    You might find the following [open source](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#open-source) resources useful:
 
     | Resource                  | Description                                                          | Links                                                                          |
     |---------------------------|----------------------------------------------------------------------|--------------------------------------------------------------------------------|
     | PDS FHIR API              | Source code for the API proxy, sandbox and specification.            | [GitHub repo](https://github.com/NHSDigital/personal-demographics-service-api) |
     | FHIR libraries and SDKs   | Various open source libraries for integrating with FHIR APIs.        | [FHIR libraries and SDKs](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#fhir-libraries-and-sdks) |
+    | nhs-number                | Python package containing utilities for NHS numbers including validity checks, normalisation and generation. | [GitHub repo](https://github.com/uk-fci/nhs-number) \| [Python Package index](https://pypi.org/project/nhs-number/) \| [Docs](https://nhs-number.uk-fci.tech/) |
 
     We currently don't have any open source client libraries or sample code for this API. If you think this would be useful, you can [upvote the suggestion on our Interactive Product Backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/107439/client-libraries-and-reference-implementations).
 
