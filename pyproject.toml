@@ -3,9 +3,9 @@ python = "^3.8"
 
 
 [tool.poetry]
-name = "apim-definitions"
+name = "sandbox"
 version = "0.0.1-alpha"
-description = "FHIR PDS API Definitions"
+description = "PDS API Sandbox"
 
 license = "MIT"
 
