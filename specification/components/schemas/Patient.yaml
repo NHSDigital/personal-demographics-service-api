@@ -64,7 +64,7 @@ properties:
     items:
       $ref: "GeneralPractitionerReference.yaml"
   managingOrganization:
-    $ref: "ManagingOrganization.yaml"
+    $ref: "ManagingOrganizationReference.yaml"
   extension:
     type: array
     description: |
