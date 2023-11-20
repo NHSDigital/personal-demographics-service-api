@@ -1673,9 +1673,9 @@ paths:
           content:
             application/fhir+json:
               schema:
-                $ref: '#/components/schemas/RelatedPerson'
+                $ref: '#/components/schemas/RelatedPersonBundle'
               example:
-                $ref: components/examples/RelatedPerson.json
+                $ref: components/examples/RelatedPersonBundle.json
         '4XX':
           description: |
             An error occurred as follows:
@@ -2105,8 +2105,8 @@ components:
       $ref: components/schemas/Patient.yaml
     PatientSearch:
       $ref: components/schemas/PatientSearch.yaml
-    RelatedPerson:
-      $ref: components/schemas/RelatedPerson.yaml
+    RelatedPersonBundle:
+      $ref: components/schemas/RelatedPersonBundle.yaml
     OperationOutcome:
       $ref: components/schemas/OperationOutcome.yaml
   examples:
