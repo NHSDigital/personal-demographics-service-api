@@ -38,7 +38,7 @@ properties:
                 code:
                   type: string
                   description: Address Key system. Always 'PAF'.
-                  default: "PAF"
+                  enum: ["PAF"]
                   example: "PAF"
         - type: object
           description: Value of the address key.
