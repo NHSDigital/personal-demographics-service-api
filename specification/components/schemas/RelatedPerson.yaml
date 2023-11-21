@@ -25,7 +25,7 @@ properties:
       List containing zero or one name associated with the related person.
       This is an optional field as there may be a `patient` reference which can be used to retrieve any details about the related person.
       If no `patient` reference is available `name` and `address` must be provided at the minimum.
-      maxItems: 1
+    maxItems: 1
     items:
         "$ref": HumanName.yaml
   address:
