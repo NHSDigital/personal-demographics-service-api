@@ -9,6 +9,6 @@ jq -rM . <build/examples/resources/Sensitive_PatientSearch.json >specification/c
 jq -rM . <build/examples/resources/Minimal_Patient.json >specification/components/examples/Minimal_Patient.json
 jq -rM . <build/examples/resources/Minimal_PatientSearch.json >specification/components/examples/Minimal_PatientSearch.json
 jq -rM . <build/examples/resources/RelatedPerson.json >specification/components/examples/RelatedPerson.json
-jq -rM . <build/examples/resources/Referenced_RelatedPerson.json >specification/components/examples/Referenced_RelatedPerson.json
+jq -rM . <build/examples/resources/Referenced_RelatedPersonBundle.json >specification/components/examples/Referenced_RelatedPersonBundle.json
 jq -rM . <build/examples/resources/Personal_Details_RelatedPerson.json >specification/components/examples/Personal_Details_RelatedPerson.json
 jq -rM . <build/examples/resources/PatientSearch-CompoundName.json >specification/components/examples/PatientCompoundName.json

@@ -39,7 +39,7 @@ EXAMPLE_TYPES = {
         ]},
         {"type": "minimal", "file_prefix": "Minimal_", "slim_func": [slim_patient, minimal_bundle]}
     ],
-    "RelatedPerson": [
+    "RelatedPersonBundle": [
         {"type": "retrieval", "file_prefix": "", "slim_func": [remove_list_id]},
         {"type": "nhs_number", "file_prefix": "Referenced_", "slim_func": [
             remove_list_id,
