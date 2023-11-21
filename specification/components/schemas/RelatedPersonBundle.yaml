@@ -22,4 +22,11 @@ properties:
     description: |
       A list of related people details attached to the patient. 
     items:
-      "$ref": RelatedPerson.yaml
+      type: object
+      properties:
+        fullUrl:
+          type: string
+          description: Absolute URL of the resource described in this item.
+          example: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000009/RelatedPerson/507B7621'
+        resource:      
+          "$ref": RelatedPerson.yaml
