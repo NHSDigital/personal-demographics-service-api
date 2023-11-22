@@ -419,7 +419,7 @@ paths:
           * we always search all given names
           * we search across all types of name - usual, nickname and temporary
           * a fuzzy search matches homophones, transposed names and previous names
-          * for a non fuzzy search, you can optionally use wildcards and search previous names
+          * for a non fuzzy search, you can optionally search previous names and use wildcards. Wildcards will match against the start of the name string, for example the start of a compound name.
 
         ### Gender
         PDS has four options for gender - `male`, `female`, `other` and `unknown`.
@@ -1903,6 +1903,7 @@ components:
 
         Not case sensitive.
         Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
+        Wildcard searches will match the start of the first given name and not subsequent given names, for example the given names "Alan Michael" can be searched with "Ala*" but not "Mic*"
         Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
 
         A patient may have more than one given name. Subsequent given names are commonly referred to as 'middle names'.
