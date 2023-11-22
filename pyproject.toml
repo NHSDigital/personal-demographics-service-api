@@ -3,9 +3,9 @@ python = "^3.8"
 
 
 [tool.poetry]
-name = "apim-definitions"
+name = "sandbox"
 version = "0.0.1-alpha"
-description = "FHIR PDS API Definitions"
+description = "PDS API Sandbox"
 
 license = "MIT"
 
@@ -18,7 +18,7 @@ authors = [
 readme = 'README.md'
 
 repository = "https://github.com/NHSDigital/personal-demographics-service-api"
-homepage = ""
+homepage = "https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir"
 
 keywords = ["healthcare", "uk", "nhs", "demographics"]
 
@@ -56,7 +56,7 @@ pytest-docker = "^0.10.3"
 [tool.poetry.group.dev.dependencies]
 pytest-asyncio = "^0.14.0"
 selenium = "^4.0.0"
-aiohttp = "^3.7.3"
+aiohttp = "^3.8.6"
 
 [tool.pytest.ini_options]
 markers = [
