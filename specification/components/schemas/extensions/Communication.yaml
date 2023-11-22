@@ -12,7 +12,10 @@ properties:
       - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication
   extension:
     type: array
-    description: Definition of communication extension, The array must have two items, a valueCodeableConcept for the language and a valueBoolean for if an interpreter is required.
+    description: Definition of communication extension.
+
+
+    The array must have one item, a valueCodeableConcept for the language and can optionally include a valueBoolean for if an interpreter is required.
     minItems: 1
     maxItems: 2
     items:
