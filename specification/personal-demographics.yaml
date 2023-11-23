@@ -283,7 +283,7 @@ info:
   contact:
     name: Personal Demographics Service FHIR API Support
     url: 'https://digital.nhs.uk/developer/help-and-support'
-    email: api.management@nhs.net
+    email: ssd.nationalservicedesk@nhs.net
 servers:
   - url: 'https://sandbox.api.service.nhs.uk/personal-demographics/FHIR/R4'
     description: Sandbox environment.
