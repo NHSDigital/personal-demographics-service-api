@@ -1,5 +1,10 @@
 # Changelog
 
+## 2023-11-17
+* Added sandbox/init.py
+* Updated tool.poetry
+* Removed poetry<1.7.0 limit
+
 ## 2023-11-13
 * Added links to open source libraries
 
