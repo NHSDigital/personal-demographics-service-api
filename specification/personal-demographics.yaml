@@ -1903,7 +1903,7 @@ components:
 
         Not case sensitive.
         Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
-        Wildcard searches will match the start of the first given name and not subsequent given names, for example the given names "Alan Michael" can be searched with "Ala*" but not "Mic*"
+        Wildcard searches will match the start of the first given name and not subsequent given names, for example the given names "Alan Michael" can be searched with "Ala*" but not "Mic*".
         Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
 
         A patient may have more than one given name. Subsequent given names are commonly referred to as 'middle names'.
