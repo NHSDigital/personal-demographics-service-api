@@ -38,7 +38,7 @@ properties:
                 code:
                   type: string
                   description: Address Key system. Always 'UPRN'.
-                  default: "UPRN"
+                  enum: ["UPRN"]
                   example: "UPRN"
         - type: object
           description: Value of the address key.
@@ -56,5 +56,5 @@ properties:
               description: Address key in UPRN format. A number containing from 1 up to 12 digits.
               minLength: 1
               maxLength: 12
-              pattern: '^[0-9]{1-12}$'
+              pattern: '^[0-9]{1,12}$'
               example: '123456789012'

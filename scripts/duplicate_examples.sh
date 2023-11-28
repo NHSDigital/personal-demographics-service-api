@@ -13,5 +13,5 @@ sed -i -e 's/9000000009/9000000033/g; s/Jane/John/g; s/Smith/Jones/g; s/jane.smi
 sed -i -e 's/9000000009/9000000033/g; s/Jane/John/g; s/Smith/Jones/g; s/jane.smith@example.com/john.jones@example.com/g;' build/examples/resources/Minimal_PatientSearch.json
 
 # Related Person
-sed -i -e 's/507B7621/B3380E98/g' build/examples/resources/Referenced_RelatedPerson.json
-sed -i -e 's/507B7621/F4CF8B96/g; s/9000000009/9000000017/g' build/examples/resources/Personal_Details_RelatedPerson.json
+sed -i -e 's/507B7621/B3380E98/g' build/examples/resources/Referenced_RelatedPersonBundle.json
+sed -i -e 's/507B7621/F4CF8B96/g; s/9000000009/9000000017/g' build/examples/resources/Personal_Details_RelatedPersonBundle.json
