@@ -1,0 +1,32 @@
+type: object
+properties:
+  resourceType:
+    type: string
+    description: FHIR Resource Type.
+    default: Bundle
+  type:
+    type: string
+    description: FHIR Bundle Type.
+    default: searchset
+  timestamp:
+    type: string
+    description: Time the search was performed.
+    format: datetime
+    example: '2019-12-25T12:00:00+00:00'
+  total:
+    type: integer
+    description: Number of resources returned in search.
+    example: 1
+  entry:
+    type: array
+    description: |
+      A list of related people details attached to the patient. 
+    items:
+      type: object
+      properties:
+        fullUrl:
+          type: string
+          description: Absolute URL of the resource described in this item.
+          example: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000009/RelatedPerson/507B7621'
+        resource:      
+          "$ref": RelatedPerson.yaml
