@@ -10,6 +10,7 @@ class Patient:
 
 
 DEFAULT = Patient(nhs_number='9693632109')
+SELF = Patient(nhs_number='9912003071')
 
 related_person_response = {
         "entry": [

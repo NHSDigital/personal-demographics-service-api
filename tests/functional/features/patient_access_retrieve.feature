@@ -14,6 +14,8 @@ Feature: Patient Access (Retrieve)
 		When I retrieve a patient
 
 		Then I get a 403 HTTP response code
+		And ACCESS_DENIED is at issue[0].details.coding[0].code in the response body
+		And Patient cannot perform this action is at issue[0].details.coding[0].display in the response body
 
 	Scenario: Patient retrieve uses incorrect path
 		Given I am a P9 user
@@ -21,3 +23,5 @@ Feature: Patient Access (Retrieve)
 		When I retrieve my details using an incorrect path
 
 		Then I get a 403 HTTP response code
+		And ACCESS_DENIED is at issue[0].details.coding[0].code in the response body
+		And Patient cannot perform this action is at issue[0].details.coding[0].display in the response body
