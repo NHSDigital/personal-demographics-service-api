@@ -82,6 +82,7 @@ def provide_healthcare_worker_auth_details(request) -> None:
     }
     request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
 
+
 @given("I am a P9 user")
 def provide_p9_auth_details(request) -> None:
     auth_details = {
@@ -92,6 +93,7 @@ def provide_p9_auth_details(request) -> None:
         "force_new_token": True
     }
     request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
+
 
 @given("I am a P5 user")
 def provide_p5_auth_details(request) -> None:
@@ -104,6 +106,7 @@ def provide_p5_auth_details(request) -> None:
     }
     request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
 
+
 @given("I am a p5 user")
 def provide_p5_lower_case_auth_details(request) -> None:
     auth_details = {
@@ -115,6 +118,7 @@ def provide_p5_lower_case_auth_details(request) -> None:
     }
     request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
 
+
 @given("I am a P0 user")
 def provide_p0_auth_details(request) -> None:
     auth_details = {
@@ -125,6 +129,7 @@ def provide_p0_auth_details(request) -> None:
         "force_new_token": True
     }
     request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
+
 
 @pytest.fixture()
 def search() -> Search:
@@ -145,6 +150,7 @@ def vague_patient() -> Search:
 def patient() -> Patient:
     return patients.DEFAULT
 
+
 @pytest.fixture()
 def self_patient() -> Patient:
     return patients.SELF
@@ -159,9 +165,11 @@ def patient_with_a_related_person() -> Patient:
 def nhs_number(patient: Patient) -> str:
     return patient.nhs_number
 
+
 @pytest.fixture()
 def self_nhs_number(self_patient: Patient) -> str:
     return self_patient.nhs_number
+
 
 @given("I have a patient's record to update", target_fixture='record_to_update')
 def record_to_update(update: Update, headers_with_authorization: dict, pds_url: str) -> dict:
@@ -172,11 +180,13 @@ def record_to_update(update: Update, headers_with_authorization: dict, pds_url: 
 
     return update.record_to_update
 
+
 @given("I wish to update the patient's gender")
 def add_new_gender_to_patch(update: Update) -> None:
     current_gender = update.record_to_update['gender']
     new_gender = 'male' if current_gender == 'female' else 'female'
     update.value = new_gender
+
 
 @given(
     parsers.cfparse(
@@ -199,6 +209,7 @@ def remove_header(headers_with_authorization, header_field) -> dict:
 def update_header(headers_with_authorization: dict, field: str, value: str) -> dict:
     headers_with_authorization.update({field: value})
     return headers_with_authorization
+
 
 @given(
     parsers.cfparse(
@@ -238,8 +249,9 @@ def update_patient(headers_with_authorization: dict, update: Update, pds_url: st
                  headers=headers,
                  json=update.patches)
 
+
 @when("I update another patient's PDS record", target_fixture='response')
-def update_patient(headers_with_authorization: dict, update: Update, pds_url: str) -> Response:
+def update_another_patient(headers_with_authorization: dict, update: Update, pds_url: str) -> Response:
     headers = headers_with_authorization
     headers.update({
         "Content-Type": "application/json-patch+json",
@@ -252,7 +264,7 @@ def update_patient(headers_with_authorization: dict, update: Update, pds_url: st
 
 
 @when("I update another patient's PDS record using an incorrect path", target_fixture='response')
-def update_patient(headers_with_authorization: dict, update: Update, pds_url: str) -> Response:
+def update_patient_incorrect_path(headers_with_authorization: dict, update: Update, pds_url: str) -> Response:
     headers = headers_with_authorization
     headers.update({
         "Content-Type": "application/json-patch+json",
@@ -263,8 +275,9 @@ def update_patient(headers_with_authorization: dict, update: Update, pds_url: st
                  headers=headers,
                  json=update.patches)
 
+
 @when("I update my own PDS record", target_fixture='response')
-def update_patient(headers_with_authorization: dict, update_self: Update, pds_url: str) -> Response:
+def update_patient_self(headers_with_authorization: dict, update_self: Update, pds_url: str) -> Response:
     headers = headers_with_authorization
     headers.update({
         "Content-Type": "application/json-patch+json",
@@ -275,13 +288,17 @@ def update_patient(headers_with_authorization: dict, update_self: Update, pds_ur
                  headers=headers,
                  json=update_self.patches)
 
+
 @when('I retrieve my details', target_fixture='response')
 def retrieve_my_details(headers_with_authorization: dict, self_nhs_number: str, pds_url: str) -> Response:
     return get(url=f"{pds_url}/Patient/{self_nhs_number}", headers=headers_with_authorization)
 
+
 @when('I retrieve my details using an incorrect path', target_fixture='response')
-def retrieve_my_details(headers_with_authorization: dict, pds_url: str) -> Response:
-    return get(url=f"{pds_url}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22", headers=headers_with_authorization)
+def retrieve_my_details_incorrect_path(headers_with_authorization: dict, pds_url: str) -> Response:
+    return get(url=f"{pds_url}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22",
+               headers=headers_with_authorization)
+
 
 @when(
     parsers.cfparse(
@@ -335,6 +352,7 @@ def response_body_contains_error(response_body: dict, expected_response: str) ->
         expected_response_body = json.load(f)
     assert response_body == expected_response_body
 
+
 @then(
     parsers.cfparse(
         '{value:String} is at {path:String} in the response body',
@@ -345,7 +363,7 @@ def check_value_in_response_body_at_path(response_body: dict, value: str, path: 
     with check:
         assert matches, f'There are no matches for {value} at {path} in the response body'
         for match in matches:
-                f'{match.value} is not the expected value, {value}, at {path}'
+            f'{match.value} is not the expected value, {value}, at {path}'
 
 
 @then('the response body contains the expected response')
