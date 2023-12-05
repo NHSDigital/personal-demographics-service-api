@@ -3,7 +3,7 @@ Feature: Patient Access (Update)
 
 	Scenario: Patient cannot update another patient
 		Given I am a P9 user
-		And Scope added to product
+		And scope added to product
 
 		When I update another patient's PDS record
 
@@ -12,7 +12,7 @@ Feature: Patient Access (Update)
  
 	Scenario: Patient update uses incorrect path
 		Given I am a P9 user
-		And Scope added to product
+		And scope added to product
 
 		When I update another patient's PDS record using an incorrect path
 

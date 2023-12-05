@@ -3,42 +3,6 @@ from functools import partial
 import uuid
 import pytest
 
-# from tests.functional.utils.helper import (
-#     generate_random_phone_number,
-#     get_add_telecom_phone_patch_body,
-# )
-
-AUTH_PATIENT = {
-    "api_name": "personal-demographics-service",
-    "access": "patient",
-    "level": "P9",
-    "login_form": {"username": "9912003071"},
-    "force_new_token": True
-}
-
-AUTH_PATIENT_P5 = {
-    "api_name": "personal-demographics-service",
-    "access": "patient",
-    "level": "P5",
-    "login_form": {"username": "9912003071"},
-}
-
-AUTH_PATIENT_p5 = {
-    "api_name": "personal-demographics-service",
-    "access": "patient",
-    "level": "p5",
-    "login_form": {"username": "9912003071"},
-}
-
-AUTH_PATIENT_P0 = {
-    "api_name": "personal-demographics-service",
-    "access": "patient",
-    "level": "P0",
-    "login_form": {"username": "9912003071"},
-}
-
-TEST_PATIENT_ID = "9912003071"
-
 
 @pytest.fixture(scope='function')
 def headers_with_authorization(_nhsd_apim_auth_token_data: dict,

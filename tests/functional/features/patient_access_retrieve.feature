@@ -3,7 +3,7 @@ Feature: Patient Access (Retrieve)
 
 	Scenario: Patient can retrieve self
 		Given I am a P9 user
-		And Scope added to product
+		And scope added to product
 		
 		When I retrieve my details
 
@@ -11,7 +11,7 @@ Feature: Patient Access (Retrieve)
 
 	Scenario: Patient cannot retrieve another patient
 		Given I am a P9 user
-		And Scope added to product
+		And scope added to product
 		
 		When I retrieve a patient
 
@@ -21,7 +21,7 @@ Feature: Patient Access (Retrieve)
 
 	Scenario: Patient retrieve uses incorrect path
 		Given I am a P9 user
-		And Scope added to product
+		And scope added to product
 		
 		When I retrieve my details using an incorrect path
 

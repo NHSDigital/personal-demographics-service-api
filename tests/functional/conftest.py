@@ -96,7 +96,7 @@ def provide_p9_auth_details(request) -> None:
     request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
 
 
-@given('Scope added to product')
+@given('scope added to product')
 def add_scope_to_products_patient_access(products_api: ApiProductsAPI,
                                          nhsd_apim_proxy_name: str,
                                          nhsd_apim_authorization: dict):
@@ -377,7 +377,7 @@ def check_value_in_response_body_at_path(response_body: dict, value: str, path: 
     with check:
         assert matches, f'There are no matches for {value} at {path} in the response body'
         for match in matches:
-            f'{match.value} is not the expected value, {value}, at {path}'
+            assert f'{match.value} is not the expected value, {value}, at {path}'
 
 
 @then('the response body contains the expected response')
