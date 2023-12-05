@@ -358,7 +358,7 @@ def check_value_in_response_body_at_path(response_body: dict, value: str, path: 
     with check:
         assert matches, f'There are no matches for {value} at {path} in the response body'
         for match in matches:
-            assert f'{match.value} is not the expected value, {value}, at {path}'
+            assert match.value == value, f'{match.value} is not the expected value, {value}, at {path}'
 
 
 @then('the response body contains the expected response')
