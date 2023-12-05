@@ -165,11 +165,6 @@ def patient() -> Patient:
     return patients.DEFAULT
 
 
-@pytest.fixture()
-def self_patient() -> Patient:
-    return patients.SELF
-
-
 @given('I have a patient with a related person', target_fixture='patient')
 def patient_with_a_related_person() -> Patient:
     return patients.WITH_RELATED_PERSON
@@ -178,11 +173,6 @@ def patient_with_a_related_person() -> Patient:
 @pytest.fixture()
 def nhs_number(patient: Patient) -> str:
     return patient.nhs_number
-
-
-@pytest.fixture()
-def self_nhs_number(self_patient: Patient) -> str:
-    return self_patient.nhs_number
 
 
 @given("I have a patient's record to update", target_fixture='record_to_update')
@@ -241,6 +231,7 @@ def query_params(search: Search) -> str:
     return urllib.parse.urlencode(search.query)
 
 
+@when('I retrieve my details', target_fixture='response')
 @when('I retrieve a patient', target_fixture='response')
 def retrieve_patient(headers_with_authorization: dict, nhs_number: str, pds_url: str) -> Response:
     return get(url=f"{pds_url}/Patient/{nhs_number}", headers=headers_with_authorization)
@@ -303,17 +294,6 @@ def update_patient_self(headers_with_authorization: dict, update_self: Update, p
                  json=update_self.patches)
 
 
-@when('I retrieve my details', target_fixture='response')
-def retrieve_my_details(headers_with_authorization: dict, self_nhs_number: str, pds_url: str) -> Response:
-    return get(url=f"{pds_url}/Patient/{self_nhs_number}", headers=headers_with_authorization)
-
-
-@when('I retrieve my details using an incorrect path', target_fixture='response')
-def retrieve_my_details_incorrect_path(headers_with_authorization: dict, pds_url: str) -> Response:
-    return get(url=f"{pds_url}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22",
-               headers=headers_with_authorization)
-
-
 @when(
     parsers.cfparse(
         "I hit the /{endpoint:String} endpoint",
@@ -338,6 +318,7 @@ def amended_query_params(search: Search, key: str, value: str) -> str:
     return urllib.parse.urlencode(query_params)
 
 
+@when("I search for a patient's PDS record", target_fixture='response')
 @when("I search for the patient's PDS record", target_fixture='response')
 def search_patient(headers_with_authorization: dict, query_params: str, pds_url: str) -> Response:
     return get(url=f"{pds_url}/Patient?{query_params}", headers=headers_with_authorization)
@@ -455,25 +436,6 @@ def response_body(response: Response) -> dict:
     if "timestamp" in response_body:
         response_body.pop("timestamp")
     return response_body
-
-
-@pytest.fixture()
-def add_proxies_to_products(products_api: ApiProductsAPI,
-                            nhsd_apim_proxy_name: str):
-    product_name = nhsd_apim_proxy_name.replace("-asid-required", "")
-
-    patient_access_product_name = f'{product_name}-patient-access'
-
-    default_product = products_api.get_product_by_name(product_name=product_name)
-    if nhsd_apim_proxy_name not in default_product['proxies']:
-        default_product['proxies'].append(nhsd_apim_proxy_name)
-        products_api.put_product_by_name(product_name=product_name, body=default_product)
-
-    patient_access_product = products_api.get_product_by_name(product_name=patient_access_product_name)
-    if nhsd_apim_proxy_name not in patient_access_product['proxies']:
-        patient_access_product['proxies'].append(nhsd_apim_proxy_name)
-        products_api.put_product_by_name(product_name=patient_access_product_name,
-                                         body=patient_access_product)
 
 
 def _set_default_rate_limit(product: ApigeeApiProducts, api_products):

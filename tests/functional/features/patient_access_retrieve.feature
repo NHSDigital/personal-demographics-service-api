@@ -11,6 +11,7 @@ Feature: Patient Access (Retrieve)
 
 	Scenario: Patient cannot retrieve another patient
 		Given I am a P9 user
+		And I have another patient's NHS number
 		And scope added to product
 		
 		When I retrieve a patient
@@ -23,7 +24,7 @@ Feature: Patient Access (Retrieve)
 		Given I am a P9 user
 		And scope added to product
 		
-		When I retrieve my details using an incorrect path
+		When I search for a patient's PDS record
 
 		Then I get a 403 HTTP response code
 		And ACCESS_DENIED is at issue[0].details.coding[0].code in the response body

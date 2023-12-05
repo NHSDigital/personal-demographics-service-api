@@ -2,6 +2,9 @@ import pytest_bdd
 from functools import partial
 import uuid
 import pytest
+from tests.functional.data import patients
+from tests.functional.data.patients import Patient
+from pytest_bdd import given
 
 
 @pytest.fixture(scope='function')
@@ -18,6 +21,16 @@ def headers_with_authorization(_nhsd_apim_auth_token_data: dict,
                }
 
     return headers
+
+
+@pytest.fixture()
+def patient() -> Patient:
+    return patients.SELF
+
+
+@given("I have another patient's NHS number", target_fixture="patient")
+def patient_other() -> Patient:
+    return patients.DEFAULT
 
 
 retrieve_scenario = partial(pytest_bdd.scenario, './features/patient_access_retrieve.feature')
