@@ -21,6 +21,7 @@ from .data import patients
 from .data.patients import Patient
 from copy import copy
 from tests.functional.utils.helpers import is_key_in_dict
+import time
 
 from pytest_nhsd_apim.identity_service import (
     ClientCredentialsConfig,
@@ -78,6 +79,67 @@ def provide_healthcare_worker_auth_details(request) -> None:
         "access": "healthcare_worker",
         "level": "aal3",
         "login_form": {"username": "656005750104"},
+        "force_new_token": True
+    }
+    request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
+
+
+@given("I am a P9 user")
+def provide_p9_auth_details(request) -> None:
+    auth_details = {
+        "api_name": "personal-demographics-service",
+        "access": "patient",
+        "level": "P9",
+        "login_form": {"username": "9912003071"},
+        "force_new_token": True
+    }
+    request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
+
+
+@given('scope added to product')
+def add_scope_to_products_patient_access(products_api: ApiProductsAPI,
+                                         nhsd_apim_proxy_name: str,
+                                         nhsd_apim_authorization: dict):
+    product_name = nhsd_apim_proxy_name.replace("-asid-required", "")
+
+    default_product = products_api.get_product_by_name(product_name=product_name)
+    if nhsd_apim_authorization['scope'] not in default_product['scopes']:
+        default_product['scopes'].append(nhsd_apim_authorization['scope'])
+        products_api.put_product_by_name(product_name=product_name, body=default_product)
+        time.sleep(2)
+
+
+@given("I am a P5 user")
+def provide_p5_auth_details(request) -> None:
+    auth_details = {
+        "api_name": "personal-demographics-service",
+        "access": "patient",
+        "level": "P5",
+        "login_form": {"username": "9912003071"},
+        "force_new_token": True
+    }
+    request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
+
+
+@given("I am a p5 user")
+def provide_p5_lower_case_auth_details(request) -> None:
+    auth_details = {
+        "api_name": "personal-demographics-service",
+        "access": "patient",
+        "level": "p5",
+        "login_form": {"username": "9912003071"},
+        "force_new_token": True
+    }
+    request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
+
+
+@given("I am a P0 user")
+def provide_p0_auth_details(request) -> None:
+    auth_details = {
+        "api_name": "personal-demographics-service",
+        "access": "patient",
+        "level": "P0",
+        "login_form": {"username": "9912003071"},
         "force_new_token": True
     }
     request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
@@ -169,6 +231,7 @@ def query_params(search: Search) -> str:
     return urllib.parse.urlencode(search.query)
 
 
+@when('I retrieve my details', target_fixture='response')
 @when('I retrieve a patient', target_fixture='response')
 def retrieve_patient(headers_with_authorization: dict, nhs_number: str, pds_url: str) -> Response:
     return get(url=f"{pds_url}/Patient/{nhs_number}", headers=headers_with_authorization)
@@ -190,6 +253,45 @@ def update_patient(headers_with_authorization: dict, update: Update, pds_url: st
     return patch(url=f"{pds_url}/Patient/{update.nhs_number}",
                  headers=headers,
                  json=update.patches)
+
+
+@when("I update another patient's PDS record", target_fixture='response')
+def update_another_patient(headers_with_authorization: dict, update: Update, pds_url: str) -> Response:
+    headers = headers_with_authorization
+    headers.update({
+        "Content-Type": "application/json-patch+json",
+        "If-Match": update.etag,
+    })
+
+    return patch(url=f"{pds_url}/Patient/{update.nhs_number}",
+                 headers=headers,
+                 json=update.patches)
+
+
+@when("I update another patient's PDS record using an incorrect path", target_fixture='response')
+def update_patient_incorrect_path(headers_with_authorization: dict, update: Update, pds_url: str) -> Response:
+    headers = headers_with_authorization
+    headers.update({
+        "Content-Type": "application/json-patch+json",
+        "If-Match": update.etag,
+    })
+
+    return patch(url=f"{pds_url}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22",
+                 headers=headers,
+                 json=update.patches)
+
+
+@when("I update my own PDS record", target_fixture='response')
+def update_patient_self(headers_with_authorization: dict, update_self: Update, pds_url: str) -> Response:
+    headers = headers_with_authorization
+    headers.update({
+        "Content-Type": "application/json-patch+json",
+        "If-Match": update_self.etag,
+    })
+
+    return patch(url=f"{pds_url}/Patient/{update_self.nhs_number}",
+                 headers=headers,
+                 json=update_self.patches)
 
 
 @when(
@@ -216,6 +318,7 @@ def amended_query_params(search: Search, key: str, value: str) -> str:
     return urllib.parse.urlencode(query_params)
 
 
+@when("I search for a patient's PDS record", target_fixture='response')
 @when("I search for the patient's PDS record", target_fixture='response')
 def search_patient(headers_with_authorization: dict, query_params: str, pds_url: str) -> Response:
     return get(url=f"{pds_url}/Patient?{query_params}", headers=headers_with_authorization)
@@ -243,6 +346,19 @@ def response_body_contains_error(response_body: dict, expected_response: str) ->
     with open(os.path.join(RESPONSES_DIR, f'{response_file}.json'), 'r') as f:
         expected_response_body = json.load(f)
     assert response_body == expected_response_body
+
+
+@then(
+    parsers.cfparse(
+        '{value:String} is at {path:String} in the response body',
+        extra_types=dict(String=str)
+    ))
+def check_value_in_response_body_at_path(response_body: dict, value: str, path: str) -> None:
+    matches = parse(path).find(response_body)
+    with check:
+        assert matches, f'There are no matches for {value} at {path} in the response body'
+        for match in matches:
+            assert match.value == value, f'{match.value} is not the expected value, {value}, at {path}'
 
 
 @then('the response body contains the expected response')
@@ -320,25 +436,6 @@ def response_body(response: Response) -> dict:
     if "timestamp" in response_body:
         response_body.pop("timestamp")
     return response_body
-
-
-@pytest.fixture()
-def add_proxies_to_products(products_api: ApiProductsAPI,
-                            nhsd_apim_proxy_name: str):
-    product_name = nhsd_apim_proxy_name.replace("-asid-required", "")
-
-    patient_access_product_name = f'{product_name}-patient-access'
-
-    default_product = products_api.get_product_by_name(product_name=product_name)
-    if nhsd_apim_proxy_name not in default_product['proxies']:
-        default_product['proxies'].append(nhsd_apim_proxy_name)
-        products_api.put_product_by_name(product_name=product_name, body=default_product)
-
-    patient_access_product = products_api.get_product_by_name(product_name=patient_access_product_name)
-    if nhsd_apim_proxy_name not in patient_access_product['proxies']:
-        patient_access_product['proxies'].append(nhsd_apim_proxy_name)
-        products_api.put_product_by_name(product_name=patient_access_product_name,
-                                         body=patient_access_product)
 
 
 def _set_default_rate_limit(product: ApigeeApiProducts, api_products):
