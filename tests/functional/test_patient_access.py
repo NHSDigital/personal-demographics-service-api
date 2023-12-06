@@ -9,7 +9,6 @@ from pytest_bdd import given
 
 @pytest.fixture(scope='function')
 def headers_with_authorization(_nhsd_apim_auth_token_data: dict,
-                               identity_service_base_url: str,
                                add_asid_to_testapp: None) -> dict:
     """Assign required headers with the Authorization header"""
 
