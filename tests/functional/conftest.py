@@ -5,13 +5,15 @@ from pytest_bdd import given, when, then, parsers
 from jsonpath_rw import parse
 from pytest_check import check
 import urllib
+import uuid
 from .utils.apigee_api_apps import ApigeeApiDeveloperApps
 from .utils.apigee_api_products import ApigeeApiProducts
 from .configuration import config
 from .configuration.config import BASE_URL, PDS_BASE_PATH
 import random
-from requests import Response, get, patch
+from requests import Response, get, patch, post
 import json
+import jwt
 from typing import Union
 from .data.searches import Search
 from .data.updates import Update
@@ -223,6 +225,42 @@ def update_header(headers_with_authorization: dict, field: str, value: str) -> d
     target_fixture='headers_with_authorization')
 def empty_header(headers_with_authorization: dict, field: str) -> dict:
     headers_with_authorization.update({field: ''})
+    return headers_with_authorization
+
+
+@given("I have an expired access token", target_fixture='headers_with_authorization')
+def add_expired_token_to_auth_header(headers_with_authorization: dict) -> dict:
+    claims = {
+        "sub": config.APPLICATION_RESTRICTED_API_KEY,
+        "iss": config.APPLICATION_RESTRICTED_API_KEY,
+        "jti": str(uuid.uuid4()),
+        "aud": f"{config.BASE_URL}/{config.OAUTH_PROXY}/token",
+        "exp": int(time.time()) + 300,
+    }
+
+    encoded_jwt = jwt.encode(
+        claims, config.SIGNING_KEY, algorithm="RS512", headers={"kid": config.KEY_ID}
+    )
+
+    response = post(
+        f"{config.BASE_URL}/{config.OAUTH_PROXY}/token",
+        data={
+            "_access_token_expiry_ms": "1",
+            "grant_type": "client_credentials",
+            "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+            "client_assertion": encoded_jwt,
+        },
+    )
+
+    assert response.status_code == 200, f'POST /token failed. Response:\n {response.text}'
+
+    response_json = response.json()
+    assert response_json["expires_in"] and int(response_json["expires_in"]) == 0
+
+    token_value = response_json['access_token']
+    headers_with_authorization.update({
+        'Authorization': f'Bearer {token_value}'
+    })
     return headers_with_authorization
 
 

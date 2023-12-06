@@ -52,6 +52,11 @@ def test_cannot_retrieve_incorrect_path():
     pass
 
 
+@retrieve_scenario('Patient cannot retrieve their record with an expired token')
+def test_cannot_retrieve_with_expired_token():
+    pass
+
+
 @update_scenario('Patient cannot update another patient')
 def test_cannot_update_another_patient():
     pass
