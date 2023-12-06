@@ -416,7 +416,6 @@ paths:
           * spelling mistakes, either in the search criteria or in PDS
 
         To deal with some of these issues:
-          * we always search all given names
           * we search across all types of name - usual, nickname and temporary
           * a fuzzy search matches homophones, transposed names and previous names
           * for a non fuzzy search, you can optionally search previous names and use wildcards. Wildcards will match against the start of the name string, for example the start of a compound name.
