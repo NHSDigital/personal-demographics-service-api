@@ -98,19 +98,6 @@ def provide_p9_auth_details(request) -> None:
     request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
 
 
-@given('scope added to product')
-def add_scope_to_products_patient_access(products_api: ApiProductsAPI,
-                                         nhsd_apim_proxy_name: str,
-                                         nhsd_apim_authorization: dict):
-    product_name = nhsd_apim_proxy_name.replace("-asid-required", "")
-
-    default_product = products_api.get_product_by_name(product_name=product_name)
-    if nhsd_apim_authorization['scope'] not in default_product['scopes']:
-        default_product['scopes'].append(nhsd_apim_authorization['scope'])
-        products_api.put_product_by_name(product_name=product_name, body=default_product)
-        time.sleep(2)
-
-
 @given("I am a P5 user")
 def provide_p5_auth_details(request) -> None:
     auth_details = {
