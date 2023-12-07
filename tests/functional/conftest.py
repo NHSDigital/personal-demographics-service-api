@@ -231,7 +231,7 @@ def empty_header(headers_with_authorization: dict, field: str) -> dict:
 @given("I have an expired access token", target_fixture='headers_with_authorization')
 def add_expired_token_to_auth_header(headers_with_authorization: dict,
                                      encoded_jwt: dict,
-                                     identity_service_base_url:str) -> dict:
+                                     identity_service_base_url: str) -> dict:
     response = post(
         f"{identity_service_base_url}/token",
         data={
@@ -271,20 +271,8 @@ def retrieve_related_person(headers_with_authorization: dict, nhs_number: str, p
 
 
 @when("I update the patient's PDS record", target_fixture='response')
-def update_patient(headers_with_authorization: dict, update: Update, pds_url: str) -> Response:
-    headers = headers_with_authorization
-    headers.update({
-        "Content-Type": "application/json-patch+json",
-        "If-Match": update.etag,
-    })
-
-    return patch(url=f"{pds_url}/Patient/{update.nhs_number}",
-                 headers=headers,
-                 json=update.patches)
-
-
 @when("I update another patient's PDS record", target_fixture='response')
-def update_another_patient(headers_with_authorization: dict, update: Update, pds_url: str) -> Response:
+def update_patient(headers_with_authorization: dict, update: Update, pds_url: str) -> Response:
     headers = headers_with_authorization
     headers.update({
         "Content-Type": "application/json-patch+json",
@@ -307,19 +295,6 @@ def update_patient_incorrect_path(headers_with_authorization: dict, update: Upda
     return patch(url=f"{pds_url}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22",
                  headers=headers,
                  json=update.patches)
-
-
-@when("I update my own PDS record", target_fixture='response')
-def update_patient_self(headers_with_authorization: dict, update_self: Update, pds_url: str) -> Response:
-    headers = headers_with_authorization
-    headers.update({
-        "Content-Type": "application/json-patch+json",
-        "If-Match": update_self.etag,
-    })
-
-    return patch(url=f"{pds_url}/Patient/{update_self.nhs_number}",
-                 headers=headers,
-                 json=update_self.patches)
 
 
 @when(

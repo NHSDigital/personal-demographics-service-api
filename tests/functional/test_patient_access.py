@@ -14,11 +14,11 @@ def headers_with_authorization(_nhsd_apim_auth_token_data: dict,
 
     access_token = _nhsd_apim_auth_token_data.get("access_token", "")
 
-    headers = {"X-Request-ID": str(uuid.uuid1()),
-               "X-Correlation-ID": str(uuid.uuid1()),
-               "Authorization": f'Bearer {access_token}'
-               }
-
+    headers = {
+        "X-Request-ID": str(uuid.uuid1()),
+        "X-Correlation-ID": str(uuid.uuid1()),
+        "Authorization": f'Bearer {access_token}'
+    }
     return headers
 
 
