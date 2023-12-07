@@ -35,6 +35,10 @@ from pytest_nhsd_apim.apigee_apis import (
     DeveloperAppsAPI,
 )
 
+import logging
+
+
+LOGGER = logging.getLogger(__name__)
 FILE_DIR = os.path.dirname(__file__)
 RESPONSES_DIR = os.path.join(FILE_DIR, 'data', 'responses')
 
@@ -102,13 +106,16 @@ def provide_p9_auth_details(request) -> None:
 def add_scope_to_products_patient_access(products_api: ApiProductsAPI,
                                          nhsd_apim_proxy_name: str,
                                          nhsd_apim_authorization: dict):
+    LOGGER.info(nhsd_apim_authorization['scope'])
     product_name = nhsd_apim_proxy_name.replace("-asid-required", "")
 
     default_product = products_api.get_product_by_name(product_name=product_name)
-    if nhsd_apim_authorization['scope'] not in default_product['scopes']:
-        default_product['scopes'].append(nhsd_apim_authorization['scope'])
-        products_api.put_product_by_name(product_name=product_name, body=default_product)
-        time.sleep(2)
+    LOGGER.info(default_product)
+    LOGGER.info(default_product['scopes'])
+    # if nhsd_apim_authorization['scope'] not in default_product['scopes']:
+    #     default_product['scopes'].append(nhsd_apim_authorization['scope'])
+    #     products_api.put_product_by_name(product_name=product_name, body=default_product)
+    #     time.sleep(2)
 
 
 @given("I am a P5 user")
