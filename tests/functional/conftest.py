@@ -5,13 +5,15 @@ from pytest_bdd import given, when, then, parsers
 from jsonpath_rw import parse
 from pytest_check import check
 import urllib
+import uuid
 from .utils.apigee_api_apps import ApigeeApiDeveloperApps
 from .utils.apigee_api_products import ApigeeApiProducts
 from .configuration import config
 from .configuration.config import BASE_URL, PDS_BASE_PATH
 import random
-from requests import Response, get, patch
+from requests import Response, get, patch, post
 import json
+import jwt
 from typing import Union
 from .data.searches import Search
 from .data.updates import Update
@@ -33,6 +35,10 @@ from pytest_nhsd_apim.apigee_apis import (
     DeveloperAppsAPI,
 )
 
+import logging
+
+
+LOGGER = logging.getLogger(__name__)
 FILE_DIR = os.path.dirname(__file__)
 RESPONSES_DIR = os.path.join(FILE_DIR, 'data', 'responses')
 
@@ -100,13 +106,16 @@ def provide_p9_auth_details(request) -> None:
 def add_scope_to_products_patient_access(products_api: ApiProductsAPI,
                                          nhsd_apim_proxy_name: str,
                                          nhsd_apim_authorization: dict):
+    LOGGER.info(nhsd_apim_authorization['scope'])
     product_name = nhsd_apim_proxy_name.replace("-asid-required", "")
 
     default_product = products_api.get_product_by_name(product_name=product_name)
-    if nhsd_apim_authorization['scope'] not in default_product['scopes']:
-        default_product['scopes'].append(nhsd_apim_authorization['scope'])
-        products_api.put_product_by_name(product_name=product_name, body=default_product)
-        time.sleep(2)
+    LOGGER.info(default_product)
+    LOGGER.info(default_product['scopes'])
+    # if nhsd_apim_authorization['scope'] not in default_product['scopes']:
+    #     default_product['scopes'].append(nhsd_apim_authorization['scope'])
+    #     products_api.put_product_by_name(product_name=product_name, body=default_product)
+    #     time.sleep(2)
 
 
 @given("I am a P5 user")
@@ -226,6 +235,32 @@ def empty_header(headers_with_authorization: dict, field: str) -> dict:
     return headers_with_authorization
 
 
+@given("I have an expired access token", target_fixture='headers_with_authorization')
+def add_expired_token_to_auth_header(headers_with_authorization: dict,
+                                     encoded_jwt: dict,
+                                     identity_service_base_url: str) -> dict:
+    response = post(
+        f"{identity_service_base_url}/token",
+        data={
+            "_access_token_expiry_ms": "1",
+            "grant_type": "client_credentials",
+            "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+            "client_assertion": encoded_jwt,
+        },
+    )
+
+    assert response.status_code == 200, f'POST /token failed. Response:\n {response.text}'
+
+    response_json = response.json()
+    assert response_json["expires_in"] and int(response_json["expires_in"]) == 0
+
+    token_value = response_json['access_token']
+    headers_with_authorization.update({
+        'Authorization': f'Bearer {token_value}'
+    })
+    return headers_with_authorization
+
+
 @pytest.fixture
 def query_params(search: Search) -> str:
     return urllib.parse.urlencode(search.query)
@@ -243,20 +278,8 @@ def retrieve_related_person(headers_with_authorization: dict, nhs_number: str, p
 
 
 @when("I update the patient's PDS record", target_fixture='response')
-def update_patient(headers_with_authorization: dict, update: Update, pds_url: str) -> Response:
-    headers = headers_with_authorization
-    headers.update({
-        "Content-Type": "application/json-patch+json",
-        "If-Match": update.etag,
-    })
-
-    return patch(url=f"{pds_url}/Patient/{update.nhs_number}",
-                 headers=headers,
-                 json=update.patches)
-
-
 @when("I update another patient's PDS record", target_fixture='response')
-def update_another_patient(headers_with_authorization: dict, update: Update, pds_url: str) -> Response:
+def update_patient(headers_with_authorization: dict, update: Update, pds_url: str) -> Response:
     headers = headers_with_authorization
     headers.update({
         "Content-Type": "application/json-patch+json",
@@ -279,19 +302,6 @@ def update_patient_incorrect_path(headers_with_authorization: dict, update: Upda
     return patch(url=f"{pds_url}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22",
                  headers=headers,
                  json=update.patches)
-
-
-@when("I update my own PDS record", target_fixture='response')
-def update_patient_self(headers_with_authorization: dict, update_self: Update, pds_url: str) -> Response:
-    headers = headers_with_authorization
-    headers.update({
-        "Content-Type": "application/json-patch+json",
-        "If-Match": update_self.etag,
-    })
-
-    return patch(url=f"{pds_url}/Patient/{update_self.nhs_number}",
-                 headers=headers,
-                 json=update_self.patches)
 
 
 @when(
@@ -610,6 +620,24 @@ def create_random_date():
     year = random.randrange(1940, 2020)
     new_date = f"{year}-{month}-{day}"
     return new_date
+
+
+@pytest.fixture()
+def encoded_jwt(identity_service_base_url: str):
+    claims = {
+        "sub": config.APPLICATION_RESTRICTED_API_KEY,
+        "iss": config.APPLICATION_RESTRICTED_API_KEY,
+        "jti": str(uuid.uuid4()),
+        "aud": f"{identity_service_base_url}/token",
+        "exp": int(time.time()) + 300,
+    }
+
+    encoded_jwt = jwt.encode(claims,
+                             config.SIGNING_KEY,
+                             algorithm="RS512",
+                             headers={"kid": config.KEY_ID})
+
+    return encoded_jwt
 
 
 @pytest.fixture()
