@@ -229,9 +229,11 @@ def empty_header(headers_with_authorization: dict, field: str) -> dict:
 
 
 @given("I have an expired access token", target_fixture='headers_with_authorization')
-def add_expired_token_to_auth_header(headers_with_authorization: dict, encoded_jwt: dict) -> dict:
+def add_expired_token_to_auth_header(headers_with_authorization: dict,
+                                     encoded_jwt: dict,
+                                     identity_service_base_url:str) -> dict:
     response = post(
-        f"{config.BASE_URL}/{config.OAUTH_PROXY}/token",
+        f"{identity_service_base_url}/token",
         data={
             "_access_token_expiry_ms": "1",
             "grant_type": "client_credentials",
@@ -639,12 +641,12 @@ def create_random_date():
 
 
 @pytest.fixture()
-def encoded_jwt():
+def encoded_jwt(identity_service_base_url: str):
     claims = {
         "sub": config.APPLICATION_RESTRICTED_API_KEY,
         "iss": config.APPLICATION_RESTRICTED_API_KEY,
         "jti": str(uuid.uuid4()),
-        "aud": f"{config.BASE_URL}/{config.OAUTH_PROXY}/token",
+        "aud": f"{identity_service_base_url}/token",
         "exp": int(time.time()) + 300,
     }
 
