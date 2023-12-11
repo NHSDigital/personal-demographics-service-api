@@ -7,7 +7,22 @@ from tests.functional.data.patients import Patient
 from tests.functional.data.searches import Search
 from tests.functional.data.updates import Update
 from tests.functional.steps.when import retrieve_patient
+from pytest_nhsd_apim.apigee_apis import ApiProductsAPI
 import json
+import time
+
+
+@given('scope added to product')
+def add_scope_to_products_patient_access(products_api: ApiProductsAPI,
+                                         nhsd_apim_proxy_name: str,
+                                         nhsd_apim_authorization: dict):
+    product_name = nhsd_apim_proxy_name.replace("-asid-required", "")
+
+    default_product = products_api.get_product_by_name(product_name=product_name)
+    if nhsd_apim_authorization['scope'] not in default_product['scopes']:
+        default_product['scopes'].append(nhsd_apim_authorization['scope'])
+        products_api.put_product_by_name(product_name=product_name, body=default_product)
+        time.sleep(2)
 
 
 @given('I have a patient with a related person', target_fixture='patient')

@@ -3,6 +3,7 @@ Feature: Patient Access (Retrieve)
 
 	Scenario: Patient can retrieve self
 		Given I am a P9 user
+		And scope added to product
 		
 		When I retrieve my details
 
@@ -10,6 +11,7 @@ Feature: Patient Access (Retrieve)
 
 	Scenario: Patient cannot retrieve another patient
 		Given I am a P9 user
+		And scope added to product
 		And I have another patient's NHS number
 		
 		When I retrieve a patient
@@ -20,6 +22,7 @@ Feature: Patient Access (Retrieve)
 
 	Scenario: Patient retrieve uses incorrect path
 		Given I am a P9 user
+		And scope added to product
 		
 		When I search for a patient's PDS record
 
@@ -29,6 +32,7 @@ Feature: Patient Access (Retrieve)
 
 	Scenario: Patient cannot retrieve their record with an expired token
 		Given I am a P9 user
+		And scope added to product
 		And I have an expired access token
 
 		When I retrieve my details
