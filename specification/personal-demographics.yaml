@@ -1450,6 +1450,34 @@ paths:
         * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
         * if the telecom system is email, the value must be a valid email format, for example john.smith@example.com; and must be more than 6 characters and less than 90 characters
 
+        ## Access Mode
+
+        ### Healthcare worker access
+
+        A user with Healthcare worker access will be able to update the following fields:
+        * Address
+        * Communication
+        * Contact preferences
+        * Date of birth
+        * Date of death
+        * Death notification
+        * Emergency contact
+        * Gender
+        * General practice
+        * Managing Organisation (internal use only)
+        * Multiple birth order
+        * Name
+        * Pharmacy
+        * Place of birth
+        * Telecom
+
+        ### Patient access
+
+        A user with Patient access will be able to update the following fields:
+        * Address
+        * Pharmacy
+        * Telecom
+
         ## Sandbox test scenarios
 
         You can test the following scenarios in our sandbox environment.
