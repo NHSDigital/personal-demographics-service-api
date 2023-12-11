@@ -40,3 +40,12 @@ Feature: Patient Access (Retrieve)
 		Then I get a 401 HTTP response code
 		And ACCESS_DENIED is at issue[0].details.coding[0].code in the response body
 		And Access Token expired is at issue[0].diagnostics in the response body
+
+	Scenario: Patient can retrieve their record with a refreshed token
+		Given I am a P9 user
+		And scope added to product
+		And I have an refreshed access token
+
+		When I retrieve my details
+
+		Then I get a 200 HTTP response code
