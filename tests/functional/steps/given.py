@@ -177,7 +177,7 @@ def add_expired_token_to_auth_header(headers_with_authorization: dict,
     return headers_with_authorization
 
 
-@given("I have an refreshed access token", target_fixture='headers_with_authorization')
+@given("I have a refreshed access token", target_fixture='headers_with_authorization')
 def add_refresh_token_to_auth_header(headers_with_authorization: dict,
                                      identity_service_base_url: str,
                                      _nhsd_apim_auth_token_data: dict,
