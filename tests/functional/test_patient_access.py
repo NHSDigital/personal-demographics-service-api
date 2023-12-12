@@ -9,17 +9,16 @@ from pytest_bdd import given
 
 @pytest.fixture(scope='function')
 def headers_with_authorization(_nhsd_apim_auth_token_data: dict,
-                               identity_service_base_url: str,
                                add_asid_to_testapp: None) -> dict:
     """Assign required headers with the Authorization header"""
 
     access_token = _nhsd_apim_auth_token_data.get("access_token", "")
 
-    headers = {"X-Request-ID": str(uuid.uuid1()),
-               "X-Correlation-ID": str(uuid.uuid1()),
-               "Authorization": f'Bearer {access_token}'
-               }
-
+    headers = {
+        "X-Request-ID": str(uuid.uuid1()),
+        "X-Correlation-ID": str(uuid.uuid1()),
+        "Authorization": f'Bearer {access_token}'
+    }
     return headers
 
 
@@ -49,6 +48,11 @@ def test_cannot_retrieve_another_patient():
 
 @retrieve_scenario('Patient retrieve uses incorrect path')
 def test_cannot_retrieve_incorrect_path():
+    pass
+
+
+@retrieve_scenario('Patient cannot retrieve their record with an expired token')
+def test_cannot_retrieve_with_expired_token():
     pass
 
 

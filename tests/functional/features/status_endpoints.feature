@@ -9,7 +9,7 @@ Feature: Status endpoint
         Then I get a 200 HTTP response code
 
     Scenario: Healthcheck endpoint
-        Given I am a healthcare worker
+        Given I am a healthcare worker user
 
         When I hit the /healthcheck endpoint
 
