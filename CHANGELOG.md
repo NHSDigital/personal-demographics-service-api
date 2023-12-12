@@ -1,5 +1,8 @@
 # Changelog
 
+## 2023-12-12
+* Added max characters for names in documentation
+
 ## 2023-11-17
 * Added sandbox/init.py
 * Updated tool.poetry
