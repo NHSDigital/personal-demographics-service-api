@@ -1,4 +1,5 @@
 import os
+from warnings import warn
 
 
 class EnvVarWrapper(object):
@@ -12,8 +13,13 @@ class EnvVarWrapper(object):
         self._env = kwargs
 
     def __getitem__(self, key):
-        environment_variable = self._env[key]
-        value = os.environ[environment_variable]
+        try:
+            environment_variable = self._env[key]
+            value = os.environ[environment_variable]
+        except KeyError:
+            warn(f'KeyError occured when attempting to retrieve {key} from environment variables.')
+            value = None
+
         if os.path.isfile(value):
             with open(value) as f:
                 file_content = f.read()
