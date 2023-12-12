@@ -2,7 +2,7 @@ Feature: Related Person endpoint
     Access a patient's related person
 
     Scenario: Retrieve a related person
-        Given I am a healthcare worker
+        Given I am a healthcare worker user
         And I have a patient with a related person
 
         When I retrieve their related person

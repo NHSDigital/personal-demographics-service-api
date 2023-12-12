@@ -30,12 +30,6 @@ from pytest_nhsd_apim.apigee_apis import (
     DeveloperAppsAPI,
 )
 
-pytest_plugins = [
-    "tests.functional.steps.given",
-    "tests.functional.steps.when",
-    "tests.functional.steps.then",
-]
-
 FILE_DIR = os.path.dirname(__file__)
 RESPONSES_DIR = os.path.join(FILE_DIR, 'data', 'responses')
 
