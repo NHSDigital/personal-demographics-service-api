@@ -44,7 +44,7 @@ Feature: Patient Access (Retrieve)
 	Scenario: Patient can retrieve their record with a refreshed token
 		Given I am a P9 user
 		And scope added to product
-		And I have an refreshed access token
+		And I have a refreshed access token
 
 		When I retrieve my details
 
