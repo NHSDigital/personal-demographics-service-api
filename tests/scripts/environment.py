@@ -18,7 +18,7 @@ class EnvVarWrapper(object):
             value = os.environ[environment_variable]
         except KeyError:
             warn(f'KeyError occured when attempting to retrieve {key} from environment variables.')
-            value = None
+            return None
 
         if os.path.isfile(value):
             with open(value) as f:
