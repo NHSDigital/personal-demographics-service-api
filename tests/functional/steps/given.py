@@ -16,13 +16,26 @@ import time
 def add_scope_to_products_patient_access(products_api: ApiProductsAPI,
                                          nhsd_apim_proxy_name: str,
                                          nhsd_apim_authorization: dict):
+    scope = nhsd_apim_authorization['scope']
     product_name = nhsd_apim_proxy_name.replace("-asid-required", "")
 
-    default_product = products_api.get_product_by_name(product_name=product_name)
-    if nhsd_apim_authorization['scope'] not in default_product['scopes']:
-        default_product['scopes'].append(nhsd_apim_authorization['scope'])
-        products_api.put_product_by_name(product_name=product_name, body=default_product)
-        time.sleep(2)
+    def is_scope_in_product() -> bool:
+        return scope in products_api.get_product_by_name(product_name)['scopes']
+
+    if is_scope_in_product():
+        return
+
+    product = products_api.get_product_by_name(product_name=product_name)
+    product['scopes'].append(scope)
+    products_api.put_product_by_name(product_name=product_name, body=product)
+
+    max_wait, time_waited, wait_period = 10, 0, 1
+    while not is_scope_in_product():
+        if time_waited > max_wait:
+            raise TimeoutError(f'Scope {scope} did not get added to'
+                               f'product {product_name}')
+        time.sleep(wait_period)
+        time_waited += wait_period
 
 
 @given('I have a patient with a related person', target_fixture='patient')
