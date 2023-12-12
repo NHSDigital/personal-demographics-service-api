@@ -15,14 +15,6 @@ import uuid
 from jsonpath_rw import parse
 from pytest_nhsd_apim.apigee_apis import ApiProductsAPI
 
-AUTH_HEALTHCARE_WORKER = {
-        "api_name": "personal-demographics-service",
-        "access": "healthcare_worker",
-        "level": "aal3",
-        "login_form": {"username": "656005750104"},
-        "force_new_token": True
-    }
-
 retrieve_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_retrieve.feature')
 search_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_search.feature')
 update_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_update.feature')

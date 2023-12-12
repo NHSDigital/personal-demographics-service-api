@@ -1,8 +1,10 @@
 import pytest
+from pytest import FixtureRequest
 from pytest_bdd import given, parsers
 from requests import post
 from tests.functional.data import searches
 from tests.functional.data import patients
+from tests.functional.data.users import UserDirectory
 from tests.functional.data.patients import Patient
 from tests.functional.data.searches import Search
 from tests.functional.data.updates import Update
@@ -53,63 +55,18 @@ def provide_headers_with_no_auth_details() -> None:
     return {}
 
 
-@given("I am a healthcare worker")
-def provide_healthcare_worker_auth_details(request) -> None:
-    auth_details = {
-        "api_name": "personal-demographics-service",
-        "access": "healthcare_worker",
-        "level": "aal3",
-        "login_form": {"username": "656005750104"},
-        "force_new_token": True
-    }
-    request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
+@pytest.fixture(scope='session')
+def user_directory() -> UserDirectory:
+    return UserDirectory()
 
 
-@given("I am a P9 user")
-def provide_p9_auth_details(request) -> None:
-    auth_details = {
-        "api_name": "personal-demographics-service",
-        "access": "patient",
-        "level": "P9",
-        "login_form": {"username": "9912003071"},
-        "force_new_token": True
-    }
-    request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
-
-
-@given("I am a P5 user")
-def provide_p5_auth_details(request) -> None:
-    auth_details = {
-        "api_name": "personal-demographics-service",
-        "access": "patient",
-        "level": "P5",
-        "login_form": {"username": "9912003071"},
-        "force_new_token": True
-    }
-    request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
-
-
-@given("I am a p5 user")
-def provide_p5_lower_case_auth_details(request) -> None:
-    auth_details = {
-        "api_name": "personal-demographics-service",
-        "access": "patient",
-        "level": "p5",
-        "login_form": {"username": "9912003071"},
-        "force_new_token": True
-    }
-    request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
-
-
-@given("I am a P0 user")
-def provide_p0_auth_details(request) -> None:
-    auth_details = {
-        "api_name": "personal-demographics-service",
-        "access": "patient",
-        "level": "P0",
-        "login_form": {"username": "9912003071"},
-        "force_new_token": True
-    }
+@given(
+    parsers.cfparse(
+        "I am a {user_name:String} user",
+        extra_types=dict(String=str)
+    ))
+def add_auth_marker(request: FixtureRequest, user_name: str, user_directory: UserDirectory) -> None:
+    auth_details = user_directory[user_name.replace(' ', '_')]
     request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
 
 
