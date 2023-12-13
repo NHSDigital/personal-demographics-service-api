@@ -72,20 +72,20 @@ def add_auth_marker(request: FixtureRequest, user_name: str, user_directory: Use
     request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
 
 
-@given("I have a patient's record to update", target_fixture='record_to_update')
-@given("I have my record to update", target_fixture='record_to_update')
+@given("I have a patient's record to update")
+@given("I have my record to update")
 def record_to_update(update: Update, headers_with_authorization: dict, pds_url: str) -> dict:
     response = retrieve_patient(headers_with_authorization, update.nhs_number, pds_url)
 
-    update.record_to_update = json.loads(response.text)
+    update.record = json.loads(response.text)
     update.etag = response.headers['Etag']
 
-    return update.record_to_update
+    return update.record
 
 
 @given("I wish to update the patient's gender")
 def add_new_gender_to_patch(update: Update) -> None:
-    current_gender = update.record_to_update['gender']
+    current_gender = update.record['gender']
     new_gender = 'male' if current_gender == 'female' else 'female'
     update.value = new_gender
 
@@ -94,7 +94,7 @@ def add_new_gender_to_patch(update: Update) -> None:
 def replace_last_digit_in_telecom(update: Update) -> None:
     today = datetime.now().strftime("%Y-%m-%d")
     new_telecom_value = '07' + str(randint(000000000, 999999999))
-    id_ = update.record_to_update['telecom'][0]['id']
+    id_ = update.record['telecom'][0]['id']
 
     value = {
         'id': id_,
