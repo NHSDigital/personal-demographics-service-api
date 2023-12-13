@@ -2,7 +2,7 @@ Feature: Healthcare Worker Access (Update)
     Update a PDS record as a healthcare worker
     
     Scenario: Update patient
-        Given I am a healthcare worker
+        Given I am a healthcare worker user
         And I have a patient's record to update
         And I wish to update the patient's gender
 
@@ -13,7 +13,7 @@ Feature: Healthcare Worker Access (Update)
         And the response body contains the record's new version number
 
     Scenario: Update patient using deprecated respond-async still returns 200
-        Given I am a healthcare worker
+        Given I am a healthcare worker user
         And I have a patient's record to update
         And I wish to update the patient's gender
         And I have a header Prefer value of "respond-async"
@@ -25,7 +25,7 @@ Feature: Healthcare Worker Access (Update)
         And the response body contains the record's new version number
 
     Scenario: Update patient with invalid wait header still updates
-        Given I am a healthcare worker
+        Given I am a healthcare worker user
         And I have a patient's record to update
         And I wish to update the patient's gender
         And I have a header X-Sync-Wait value of "invalid"
@@ -37,7 +37,7 @@ Feature: Healthcare Worker Access (Update)
         And the response body contains the record's new version number
 
     Scenario: Update patient with low wait header
-        Given I am a healthcare worker
+        Given I am a healthcare worker user
         And I have a patient's record to update
         And I wish to update the patient's gender
         And I have a header X-Sync-Wait value of "0.25"
@@ -47,7 +47,7 @@ Feature: Healthcare Worker Access (Update)
         Then I get a 503 HTTP response code
 
     Scenario: Update patient with missing Authorization header
-        Given I am a healthcare worker
+        Given I am a healthcare worker user
         And I have a patient's record to update
         And I wish to update the patient's gender
         And I don't have a Authorization header
@@ -60,7 +60,7 @@ Feature: Healthcare Worker Access (Update)
         And the response body is the Missing Authorization header response
 
     Scenario: Update patient with an empty authorization header
-        Given I am a healthcare worker
+        Given I am a healthcare worker user
         And I have a patient's record to update
         And I wish to update the patient's gender
         And I have an empty Authorization header
@@ -73,7 +73,7 @@ Feature: Healthcare Worker Access (Update)
         And the response body is the Empty Authorization header response
 
     Scenario: Update patient with an invalid authorization header
-        Given I am a healthcare worker
+        Given I am a healthcare worker user
         And I have a patient's record to update
         And I wish to update the patient's gender
         And I have a header Authorization value of "Bearer abcdef123456789"
@@ -86,7 +86,7 @@ Feature: Healthcare Worker Access (Update)
         And the response body is the Invalid Access Token response
 
     Scenario: Update patient with an empty Request ID header
-        Given I am a healthcare worker
+        Given I am a healthcare worker user
         And I have a patient's record to update
         And I wish to update the patient's gender
         And I have an empty X-Request-ID header
@@ -99,7 +99,7 @@ Feature: Healthcare Worker Access (Update)
         And the response body is the Empty X-Request ID response
 
     Scenario: Update patient with an invalid X-Request-ID
-        Given I am a healthcare worker
+        Given I am a healthcare worker user
         And I have a patient's record to update
         And I wish to update the patient's gender
         And I have a header X-Request-ID value of "1234"
@@ -112,7 +112,7 @@ Feature: Healthcare Worker Access (Update)
         And the response body is the Invalid X-Request ID response
 
     Scenario: Update patient with a missing X-Request-ID
-        Given I am a healthcare worker
+        Given I am a healthcare worker user
         And I have a patient's record to update
         And I wish to update the patient's gender
         And I don't have a X-Request-ID header
