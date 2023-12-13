@@ -145,3 +145,31 @@ def add_expired_token_to_auth_header(headers_with_authorization: dict,
         'Authorization': f'Bearer {token_value}'
     })
     return headers_with_authorization
+
+
+@given("I have a refreshed access token", target_fixture='headers_with_authorization')
+def add_refresh_token_to_auth_header(headers_with_authorization: dict,
+                                     identity_service_base_url: str,
+                                     _nhsd_apim_auth_token_data: dict,
+                                     _test_app_credentials: dict) -> dict:
+    old_token = _nhsd_apim_auth_token_data.get('access_token')
+    refresh_token = _nhsd_apim_auth_token_data.get('refresh_token')
+
+    response = post(
+        f"{identity_service_base_url}/token",
+        data={
+            "client_id": _test_app_credentials["consumerKey"],
+            "client_secret": _test_app_credentials["consumerSecret"],
+            "grant_type": "refresh_token",
+            "refresh_token": refresh_token
+        },
+    )
+
+    assert response.status_code == 200, f'POST /token failed. Response:\n {response.text}'
+
+    new_token = response.json()['access_token']
+    assert new_token != old_token
+    headers_with_authorization.update({
+        'Authorization': f'Bearer {new_token}'
+    })
+    return headers_with_authorization

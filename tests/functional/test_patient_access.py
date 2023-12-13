@@ -56,6 +56,11 @@ def test_cannot_retrieve_with_expired_token():
     pass
 
 
+@retrieve_scenario("Patient can retrieve their record with a refreshed token")
+def test_can_retrieve_with_refreshed_token():
+    pass
+
+
 @update_scenario('Patient cannot update another patient')
 def test_cannot_update_another_patient():
     pass
