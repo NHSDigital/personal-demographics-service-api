@@ -1,6 +1,17 @@
 Feature: Patient Access (Update)
 	Update a PDS record as a patient
 
+	Scenario: Patient can update their record
+		Given I am a P9 user
+		And scope added to product
+		And I have my record to update
+		And I wish to update my telephone number
+
+		When I update my PDS record
+
+		Then I get a 200 HTTP response code
+		And the response body contains the record's new version number
+
 	Scenario: Patient cannot update another patient
 		Given I am a P9 user
 		And scope added to product

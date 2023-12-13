@@ -11,6 +11,8 @@ from tests.functional.data.updates import Update
 from tests.functional.steps.when import retrieve_patient
 from pytest_nhsd_apim.apigee_apis import ApiProductsAPI
 import json
+from random import randint
+from datetime import datetime
 import time
 
 
@@ -71,6 +73,7 @@ def add_auth_marker(request: FixtureRequest, user_name: str, user_directory: Use
 
 
 @given("I have a patient's record to update", target_fixture='record_to_update')
+@given("I have my record to update", target_fixture='record_to_update')
 def record_to_update(update: Update, headers_with_authorization: dict, pds_url: str) -> dict:
     response = retrieve_patient(headers_with_authorization, update.nhs_number, pds_url)
 
@@ -85,6 +88,24 @@ def add_new_gender_to_patch(update: Update) -> None:
     current_gender = update.record_to_update['gender']
     new_gender = 'male' if current_gender == 'female' else 'female'
     update.value = new_gender
+
+
+@given("I wish to update my telephone number")
+def replace_last_digit_in_telecom(update: Update) -> None:
+    today = datetime.now().strftime("%Y-%m-%d")
+    new_telecom_value = '07' + str(randint(000000000, 999999999))
+    id_ = update.record_to_update['telecom'][0]['id']
+
+    value = {
+        'id': id_,
+        'value': new_telecom_value,
+        'system': 'phone',
+        'use': 'mobile',
+        'period': {
+            'start': today
+        }
+    }
+    update.value = value
 
 
 @given(

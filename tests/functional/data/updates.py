@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from ..configuration.config import TEST_PATIENT_ID
 import re
+from typing import Union
 
 
 @dataclass
@@ -15,9 +16,9 @@ class Update:
     @property
     def patches(self) -> dict:
         patch = {
-            "op": f"{self.operation}",
-            "path": f"/{self.path}",
-            "value": f"{self.value}"
+            "op": self.operation,
+            "path": f'/{self.path}',
+            "value": self.value
         }
         return {"patches": [patch]}
 
@@ -26,7 +27,7 @@ class Update:
         return self._record
 
     @property
-    def value(self) -> str:
+    def value(self) -> Union[str, dict]:
         return self._value
 
     @property
@@ -42,7 +43,7 @@ class Update:
         self._record = value
 
     @value.setter
-    def value(self, v: str) -> None:
+    def value(self, v: Union[str, dict]) -> None:
         self._value = v
 
     @etag.setter
@@ -51,3 +52,6 @@ class Update:
 
 
 DEFAULT = Update(nhs_number=TEST_PATIENT_ID)
+SELF = Update(nhs_number='9912003071',
+              operation='replace',
+              path='telecom/0')

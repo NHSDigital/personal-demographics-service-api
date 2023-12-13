@@ -2,8 +2,9 @@ import pytest_bdd
 from functools import partial
 import uuid
 import pytest
-from tests.functional.data import patients
+from tests.functional.data import patients, updates
 from tests.functional.data.patients import Patient
+from tests.functional.data.updates import Update
 from pytest_bdd import given
 
 
@@ -25,6 +26,11 @@ def headers_with_authorization(_nhsd_apim_auth_token_data: dict,
 @pytest.fixture()
 def patient() -> Patient:
     return patients.SELF
+
+
+@pytest.fixture()
+def update() -> Update:
+    return updates.SELF
 
 
 @given("I have another patient's NHS number", target_fixture="patient")
@@ -58,6 +64,11 @@ def test_cannot_retrieve_with_expired_token():
 
 @retrieve_scenario("Patient can retrieve their record with a refreshed token")
 def test_can_retrieve_with_refreshed_token():
+    pass
+
+
+@update_scenario('Patient can update their record')
+def test_can_update_their_record():
     pass
 
 
