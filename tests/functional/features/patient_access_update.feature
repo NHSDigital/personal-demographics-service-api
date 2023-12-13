@@ -15,6 +15,7 @@ Feature: Patient Access (Update)
 	Scenario: Patient cannot update another patient
 		Given I am a P9 user
 		And scope added to product
+		And I have another patient's NHS number
 
 		When I update another patient's PDS record
 

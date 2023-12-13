@@ -2,7 +2,7 @@ import pytest_bdd
 from functools import partial
 import uuid
 import pytest
-from tests.functional.data import patients, updates
+from tests.functional.data import patients
 from tests.functional.data.patients import Patient
 from tests.functional.data.updates import Update
 from pytest_bdd import given
@@ -28,14 +28,16 @@ def patient() -> Patient:
     return patients.SELF
 
 
-@pytest.fixture()
-def update() -> Update:
-    return updates.SELF
-
-
 @given("I have another patient's NHS number", target_fixture="patient")
 def patient_other() -> Patient:
-    return patients.DEFAULT
+    patient = patients.DEFAULT
+    patient.update = Update(nhs_number=patient.nhs_number)
+    return patient
+
+
+@pytest.fixture()
+def update(patient: Patient) -> Update:
+    return patient.update
 
 
 retrieve_scenario = partial(pytest_bdd.scenario, './features/patient_access_retrieve.feature')

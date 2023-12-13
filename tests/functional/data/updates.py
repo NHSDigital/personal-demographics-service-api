@@ -28,5 +28,3 @@ class Update:
 
 
 DEFAULT = Update(nhs_number=TEST_PATIENT_ID)
-SELF = Update(nhs_number='9912003071',
-              path='telecom/0')
