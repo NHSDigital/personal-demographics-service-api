@@ -1475,7 +1475,7 @@ paths:
         A user with Patient access will be able to update the following fields:
         * Address
         * Pharmacy
-        * Telecom (phone, mobile and email only)
+        * Telecom (mobile and email only)
 
         ## Sandbox test scenarios
 
