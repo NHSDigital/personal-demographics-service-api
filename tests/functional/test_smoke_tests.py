@@ -1,8 +1,8 @@
 from .utils import helpers
 import pytest
 import uuid
+from typing import Dict
 from tests.functional.test_user_restricted import (
-    AUTH_HEALTHCARE_WORKER,
     retrieve_scenario,
     search_scenario,
     related_person_scenario,
@@ -40,10 +40,12 @@ def identity_service_base_url():
 
 
 @pytest.fixture()
-def headers_with_authorization(apigee_environment,
-                               nhsd_apim_config,
-                               _test_app_credentials,
-                               identity_service_base_url):
+def headers_with_authorization(apigee_environment: str,
+                               nhsd_apim_config: dict,
+                               _test_app_credentials: dict,
+                               identity_service_base_url: str,
+                               user_directory: dict) -> Dict[str, str]:
+    healthcare_worker_auth = user_directory['healthcare_worker']
 
     user_restricted_app_config = AuthorizationCodeConfig(
             environment=apigee_environment,
@@ -53,7 +55,7 @@ def headers_with_authorization(apigee_environment,
             client_id=_test_app_credentials["consumerKey"],
             client_secret=_test_app_credentials["consumerSecret"],
             scope="nhs-cis2",
-            login_form=AUTH_HEALTHCARE_WORKER['login_form']
+            login_form=healthcare_worker_auth['login_form']
         )
 
     authenticator = AuthorizationCodeAuthenticator(config=user_restricted_app_config)
