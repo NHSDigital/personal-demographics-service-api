@@ -52,8 +52,8 @@ def test_cannot_retrieve_another_patient():
     pass
 
 
-@retrieve_scenario('Patient retrieve uses incorrect path')
-def test_cannot_retrieve_incorrect_path():
+@retrieve_scenario('Patient attempts to search for a patient')
+def test_cannot_search_for_a_patient():
     pass
 
 
