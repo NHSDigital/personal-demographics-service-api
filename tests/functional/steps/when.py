@@ -19,6 +19,7 @@ def retrieve_related_person(headers_with_authorization: dict, nhs_number: str, p
 
 @when("I update the patient's PDS record", target_fixture='response')
 @when("I update another patient's PDS record", target_fixture='response')
+@when("I update my PDS record", target_fixture='response')
 def update_patient(headers_with_authorization: dict, update: Update, pds_url: str) -> Response:
     headers = headers_with_authorization
     headers.update({

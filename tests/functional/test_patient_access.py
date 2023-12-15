@@ -4,6 +4,7 @@ import uuid
 import pytest
 from tests.functional.data import patients
 from tests.functional.data.patients import Patient
+from tests.functional.data.updates import Update
 from pytest_bdd import given
 
 
@@ -29,7 +30,14 @@ def patient() -> Patient:
 
 @given("I have another patient's NHS number", target_fixture="patient")
 def patient_other() -> Patient:
-    return patients.DEFAULT
+    patient = patients.DEFAULT
+    patient.update = Update(nhs_number=patient.nhs_number)
+    return patient
+
+
+@pytest.fixture()
+def update(patient: Patient) -> Update:
+    return patient.update
 
 
 retrieve_scenario = partial(pytest_bdd.scenario, './features/patient_access_retrieve.feature')
@@ -46,8 +54,8 @@ def test_cannot_retrieve_another_patient():
     pass
 
 
-@retrieve_scenario('Patient retrieve uses incorrect path')
-def test_cannot_retrieve_incorrect_path():
+@retrieve_scenario('Patient attempts to search for a patient')
+def test_cannot_search_for_a_patient():
     pass
 
 
@@ -58,6 +66,11 @@ def test_cannot_retrieve_with_expired_token():
 
 @retrieve_scenario("Patient can retrieve their record with a refreshed token")
 def test_can_retrieve_with_refreshed_token():
+    pass
+
+
+@update_scenario('Patient can update their record')
+def test_can_update_their_record():
     pass
 
 

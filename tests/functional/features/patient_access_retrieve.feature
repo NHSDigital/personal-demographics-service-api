@@ -20,7 +20,7 @@ Feature: Patient Access (Retrieve)
 		And ACCESS_DENIED is at issue[0].details.coding[0].code in the response body
 		And Patient cannot perform this action is at issue[0].details.coding[0].display in the response body
 
-	Scenario: Patient retrieve uses incorrect path
+	Scenario: Patient attempts to search for a patient
 		Given I am a P9 user
 		And scope added to product
 		

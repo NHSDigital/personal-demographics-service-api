@@ -6,6 +6,7 @@ import os
 import json
 from tests.functional.data.patients import Patient
 from tests.functional.data.searches import Search
+from tests.functional.data.updates import Update
 from tests.functional.utils.helpers import is_key_in_dict
 from tests.functional.conftest import RESPONSES_DIR
 
@@ -114,3 +115,9 @@ def check_sensitive_fields_are_absent(response_body: dict) -> None:
     with check:
         for field in _sensitive_fields:
             assert not is_key_in_dict(response_body, field), f'Sensitive field, {field}, in response.'
+
+
+@then("the response body contains the record's new version number")
+def version_incremented(response_body: Response, update: Update) -> None:
+    with check:
+        assert response_body["meta"]["versionId"] == str(int(update.record_version) + 1)
