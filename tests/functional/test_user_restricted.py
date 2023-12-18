@@ -15,14 +15,6 @@ import uuid
 from jsonpath_rw import parse
 from pytest_nhsd_apim.apigee_apis import ApiProductsAPI
 
-AUTH_HEALTHCARE_WORKER = {
-        "api_name": "personal-demographics-service",
-        "access": "healthcare_worker",
-        "level": "aal3",
-        "login_form": {"username": "656005750104"},
-        "force_new_token": True
-    }
-
 retrieve_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_retrieve.feature')
 search_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_search.feature')
 update_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_update.feature')
@@ -346,9 +338,3 @@ def response_header_does_not_contain(response: dict, field: str) -> None:
 def new_gender(response_body: Response, update: Update) -> None:
     with check:
         assert response_body['gender'] == update.value
-
-
-@then("the response body contains the record's new version number")
-def version_incremented(response_body: Response, update: Update) -> None:
-    with check:
-        assert response_body["meta"]["versionId"] == str(int(update.record_version) + 1)

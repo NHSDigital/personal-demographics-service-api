@@ -1,27 +1,24 @@
 from tests.scripts.pds_request import GenericPdsRequestor, PdsRecord
 import pytest
-import os
-from pytest_bdd import given, when, then, parsers
-from jsonpath_rw import parse
-from pytest_check import check
 import urllib
+import uuid
 from .utils.apigee_api_apps import ApigeeApiDeveloperApps
 from .utils.apigee_api_products import ApigeeApiProducts
 from .configuration import config
 from .configuration.config import BASE_URL, PDS_BASE_PATH
 import random
-from requests import Response, get, patch
+from requests import Response
 import json
+import jwt
 from typing import Union
-from .data.searches import Search
-from .data.updates import Update
-from .data import searches
-from .data import updates
-from .data import patients
-from .data.patients import Patient
-from copy import copy
-from tests.functional.utils.helpers import is_key_in_dict
+from tests.functional.data.searches import Search
+from tests.functional.data.updates import Update
+from tests.functional.data import searches
+from tests.functional.data import updates
+from tests.functional.data import patients
+from tests.functional.data.patients import Patient
 import time
+import os
 
 from pytest_nhsd_apim.identity_service import (
     ClientCredentialsConfig,
@@ -67,84 +64,6 @@ def add_asid_to_testapp(developer_apps_api,
         developer_apps_api.post_app_attributes(email=developer_email, app_name=app_name, body=data)
 
 
-@given("I am an unknown user", target_fixture='headers_with_authorization')
-def provide_headers_with_no_auth_details() -> None:
-    return {}
-
-
-@given("I am a healthcare worker")
-def provide_healthcare_worker_auth_details(request) -> None:
-    auth_details = {
-        "api_name": "personal-demographics-service",
-        "access": "healthcare_worker",
-        "level": "aal3",
-        "login_form": {"username": "656005750104"},
-        "force_new_token": True
-    }
-    request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
-
-
-@given("I am a P9 user")
-def provide_p9_auth_details(request) -> None:
-    auth_details = {
-        "api_name": "personal-demographics-service",
-        "access": "patient",
-        "level": "P9",
-        "login_form": {"username": "9912003071"},
-        "force_new_token": True
-    }
-    request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
-
-
-@given('scope added to product')
-def add_scope_to_products_patient_access(products_api: ApiProductsAPI,
-                                         nhsd_apim_proxy_name: str,
-                                         nhsd_apim_authorization: dict):
-    product_name = nhsd_apim_proxy_name.replace("-asid-required", "")
-
-    default_product = products_api.get_product_by_name(product_name=product_name)
-    if nhsd_apim_authorization['scope'] not in default_product['scopes']:
-        default_product['scopes'].append(nhsd_apim_authorization['scope'])
-        products_api.put_product_by_name(product_name=product_name, body=default_product)
-        time.sleep(2)
-
-
-@given("I am a P5 user")
-def provide_p5_auth_details(request) -> None:
-    auth_details = {
-        "api_name": "personal-demographics-service",
-        "access": "patient",
-        "level": "P5",
-        "login_form": {"username": "9912003071"},
-        "force_new_token": True
-    }
-    request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
-
-
-@given("I am a p5 user")
-def provide_p5_lower_case_auth_details(request) -> None:
-    auth_details = {
-        "api_name": "personal-demographics-service",
-        "access": "patient",
-        "level": "p5",
-        "login_form": {"username": "9912003071"},
-        "force_new_token": True
-    }
-    request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
-
-
-@given("I am a P0 user")
-def provide_p0_auth_details(request) -> None:
-    auth_details = {
-        "api_name": "personal-demographics-service",
-        "access": "patient",
-        "level": "P0",
-        "login_form": {"username": "9912003071"},
-        "force_new_token": True
-    }
-    request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
-
-
 @pytest.fixture()
 def search() -> Search:
     return searches.DEFAULT
@@ -155,19 +74,9 @@ def update() -> Update:
     return updates.DEFAULT
 
 
-@given("I enter a patient's vague demographic details", target_fixture='search')
-def vague_patient() -> Search:
-    return searches.VAGUE
-
-
 @pytest.fixture()
 def patient() -> Patient:
     return patients.DEFAULT
-
-
-@given('I have a patient with a related person', target_fixture='patient')
-def patient_with_a_related_person() -> Patient:
-    return patients.WITH_RELATED_PERSON
 
 
 @pytest.fixture()
@@ -175,259 +84,9 @@ def nhs_number(patient: Patient) -> str:
     return patient.nhs_number
 
 
-@given("I have a patient's record to update", target_fixture='record_to_update')
-def record_to_update(update: Update, headers_with_authorization: dict, pds_url: str) -> dict:
-    response = retrieve_patient(headers_with_authorization, update.nhs_number, pds_url)
-
-    update.record_to_update = json.loads(response.text)
-    update.etag = response.headers['Etag']
-
-    return update.record_to_update
-
-
-@given("I wish to update the patient's gender")
-def add_new_gender_to_patch(update: Update) -> None:
-    current_gender = update.record_to_update['gender']
-    new_gender = 'male' if current_gender == 'female' else 'female'
-    update.value = new_gender
-
-
-@given(
-    parsers.cfparse(
-        "I don't have {_:String} {header_field:String} header",
-        extra_types=dict(String=str)
-    ),
-    target_fixture='headers_with_authorization'
-)
-def remove_header(headers_with_authorization, header_field) -> dict:
-    headers_with_authorization.pop(header_field)
-    return headers_with_authorization
-
-
-@given(
-    parsers.cfparse(
-        'I have a header {field:String} value of "{value:String}"',
-        extra_types=dict(String=str)
-    ),
-    target_fixture='headers_with_authorization')
-def update_header(headers_with_authorization: dict, field: str, value: str) -> dict:
-    headers_with_authorization.update({field: value})
-    return headers_with_authorization
-
-
-@given(
-    parsers.cfparse(
-        "I have an empty {field:String} header",
-        extra_types=dict(String=str)
-    ),
-    target_fixture='headers_with_authorization')
-def empty_header(headers_with_authorization: dict, field: str) -> dict:
-    headers_with_authorization.update({field: ''})
-    return headers_with_authorization
-
-
 @pytest.fixture
 def query_params(search: Search) -> str:
     return urllib.parse.urlencode(search.query)
-
-
-@when('I retrieve my details', target_fixture='response')
-@when('I retrieve a patient', target_fixture='response')
-def retrieve_patient(headers_with_authorization: dict, nhs_number: str, pds_url: str) -> Response:
-    return get(url=f"{pds_url}/Patient/{nhs_number}", headers=headers_with_authorization)
-
-
-@when('I retrieve their related person', target_fixture='response')
-def retrieve_related_person(headers_with_authorization: dict, nhs_number: str, pds_url: str) -> Response:
-    return get(url=f"{pds_url}/Patient/{nhs_number}/RelatedPerson", headers=headers_with_authorization)
-
-
-@when("I update the patient's PDS record", target_fixture='response')
-def update_patient(headers_with_authorization: dict, update: Update, pds_url: str) -> Response:
-    headers = headers_with_authorization
-    headers.update({
-        "Content-Type": "application/json-patch+json",
-        "If-Match": update.etag,
-    })
-
-    return patch(url=f"{pds_url}/Patient/{update.nhs_number}",
-                 headers=headers,
-                 json=update.patches)
-
-
-@when("I update another patient's PDS record", target_fixture='response')
-def update_another_patient(headers_with_authorization: dict, update: Update, pds_url: str) -> Response:
-    headers = headers_with_authorization
-    headers.update({
-        "Content-Type": "application/json-patch+json",
-        "If-Match": update.etag,
-    })
-
-    return patch(url=f"{pds_url}/Patient/{update.nhs_number}",
-                 headers=headers,
-                 json=update.patches)
-
-
-@when("I update another patient's PDS record using an incorrect path", target_fixture='response')
-def update_patient_incorrect_path(headers_with_authorization: dict, update: Update, pds_url: str) -> Response:
-    headers = headers_with_authorization
-    headers.update({
-        "Content-Type": "application/json-patch+json",
-        "If-Match": update.etag,
-    })
-
-    return patch(url=f"{pds_url}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22",
-                 headers=headers,
-                 json=update.patches)
-
-
-@when("I update my own PDS record", target_fixture='response')
-def update_patient_self(headers_with_authorization: dict, update_self: Update, pds_url: str) -> Response:
-    headers = headers_with_authorization
-    headers.update({
-        "Content-Type": "application/json-patch+json",
-        "If-Match": update_self.etag,
-    })
-
-    return patch(url=f"{pds_url}/Patient/{update_self.nhs_number}",
-                 headers=headers,
-                 json=update_self.patches)
-
-
-@when(
-    parsers.cfparse(
-        "I hit the /{endpoint:String} endpoint",
-        extra_types=dict(String=str)
-    ),
-    target_fixture='response'
-)
-def hit_endpoint(headers_with_authorization: dict, pds_url: str, endpoint: str):
-    return get(url=f'{pds_url}/{endpoint}', headers=headers_with_authorization)
-
-
-@when(
-    parsers.cfparse(
-        'the query parameters contain {key:String} as {value:String}',
-        extra_types=dict(String=str)
-    ),
-    target_fixture='query_params',
-)
-def amended_query_params(search: Search, key: str, value: str) -> str:
-    query_params = copy(search.query)
-    query_params.append((key, value))
-    return urllib.parse.urlencode(query_params)
-
-
-@when("I search for a patient's PDS record", target_fixture='response')
-@when("I search for the patient's PDS record", target_fixture='response')
-def search_patient(headers_with_authorization: dict, query_params: str, pds_url: str) -> Response:
-    return get(url=f"{pds_url}/Patient?{query_params}", headers=headers_with_authorization)
-
-
-@then(
-    parsers.cfparse(
-        "I get a {expected_status:Number} HTTP response code",
-        extra_types=dict(Number=int)
-    )
-)
-def check_status(response: Response, expected_status: int) -> None:
-    with check:
-        assert response.status_code == expected_status
-
-
-@then(
-    parsers.cfparse(
-        'the response body is the {expected_response:String} response',
-        extra_types=dict(String=str)
-    )
-)
-def response_body_contains_error(response_body: dict, expected_response: str) -> None:
-    response_file = expected_response.replace(' ', '_').lower()
-    with open(os.path.join(RESPONSES_DIR, f'{response_file}.json'), 'r') as f:
-        expected_response_body = json.load(f)
-    assert response_body == expected_response_body
-
-
-@then(
-    parsers.cfparse(
-        '{value:String} is at {path:String} in the response body',
-        extra_types=dict(String=str)
-    ))
-def check_value_in_response_body_at_path(response_body: dict, value: str, path: str) -> None:
-    matches = parse(path).find(response_body)
-    with check:
-        assert matches, f'There are no matches for {value} at {path} in the response body'
-        for match in matches:
-            assert match.value == value, f'{match.value} is not the expected value, {value}, at {path}'
-
-
-@then('the response body contains the expected response')
-def response_body_as_expected(response_body: dict, patient: Patient) -> None:
-    assert response_body == patient.expected_response
-
-
-@then(
-    parsers.cfparse(
-        'the {header_field:String} response header matches the request',
-        extra_types=dict(String=str)
-    )
-)
-def check_header_value(response: Response,
-                       header_field: str,
-                       headers_with_authorization: dict) -> None:
-    with check:
-        assert response.headers[header_field] == headers_with_authorization[header_field]
-
-
-@then("the response body contains the patient's NHS number")
-def response_body_contains_given_id(response_body: dict, nhs_number: dict) -> None:
-    with check:
-        assert response_body["id"] == nhs_number
-        assert response_body["resourceType"] == "Patient"
-
-
-@then('the response body is the correct shape')
-def response_body_shape(response_body: Response) -> None:
-    with check:
-        assert response_body["address"] is not None
-        assert isinstance(response_body["address"], list)
-
-        assert response_body["birthDate"] is not None
-        assert isinstance(response_body["birthDate"], str)
-        assert len(response_body["birthDate"]) > 1
-
-        assert response_body["gender"] is not None
-        assert isinstance(response_body["gender"], str)
-
-        assert response_body["name"] is not None
-        assert isinstance(response_body["name"], list)
-        assert len(response_body["name"]) > 0
-
-        assert len(response_body["identifier"]) > 0
-        assert isinstance(response_body["identifier"], list)
-
-        assert response_body["meta"] is not None
-
-
-@then('the response body contains the expected values')
-def check_expected_search_response_body(response_body: dict, search: Search) -> None:
-    with check:
-        for field in search.expected_response_fields:
-            matches = parse(field.path).find(response_body)
-            assert matches, f'There are no matches for {field.expected_value} at {field.path} in the response body'
-            for match in matches:
-                assert match.value == field.expected_value,\
-                    f'{field.path} in response does not contain the expected value, {field.expected_value}'
-
-
-@then('the response body does not contain sensitive fields')
-def check_sensitive_fields_are_absent(response_body: dict) -> None:
-    _sensitive_fields = ['address',
-                         'telecom',
-                         'generalPractitioner']
-    with check:
-        for field in _sensitive_fields:
-            assert not is_key_in_dict(response_body, field), f'Sensitive field, {field}, in response.'
 
 
 @pytest.fixture()
@@ -610,6 +269,24 @@ def create_random_date():
     year = random.randrange(1940, 2020)
     new_date = f"{year}-{month}-{day}"
     return new_date
+
+
+@pytest.fixture()
+def encoded_jwt(identity_service_base_url: str):
+    claims = {
+        "sub": config.APPLICATION_RESTRICTED_API_KEY,
+        "iss": config.APPLICATION_RESTRICTED_API_KEY,
+        "jti": str(uuid.uuid4()),
+        "aud": f"{identity_service_base_url}/token",
+        "exp": int(time.time()) + 300,
+    }
+
+    encoded_jwt = jwt.encode(claims,
+                             config.SIGNING_KEY,
+                             algorithm="RS512",
+                             headers={"kid": config.KEY_ID})
+
+    return encoded_jwt
 
 
 @pytest.fixture()
