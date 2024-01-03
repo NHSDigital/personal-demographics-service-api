@@ -60,7 +60,7 @@ class ApigeeApiProducts(ApigeeApi):
 
     def update_environments(self, environments: list, api_products):
         """ Update the product environments """
-        permitted_environments = ["internal-dev", "internal-dev-sandbox", "internal-qa", "internal-qa-sandbox", "ref"]
+        permitted_environments = ["internal-dev", "internal-dev-sandbox", "internal-qa-sandbox", "ref"]
         if not set(environments) <= set(permitted_environments):
             raise RuntimeError(f"Failed updating environments! specified environments not permitted: {environments}"
                                f"\n Please specify valid environments: {permitted_environments}")

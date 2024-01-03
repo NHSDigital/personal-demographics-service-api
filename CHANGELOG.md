@@ -1,7 +1,10 @@
 # Changelog
 
-## 2023-12-12
+## 2024-01-03
 * Added max characters for names in documentation
+
+## 2024-01-02
+* Deleted internal-qa stage of deployment pipeline to avoid test data mismatch issues against VEIT and INT
 
 ## 2023-11-17
 * Added sandbox/init.py

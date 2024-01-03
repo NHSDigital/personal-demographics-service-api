@@ -39,11 +39,6 @@ extends:
       - environment: internal-dev
         post_deploy:
           - template: templates/pds-tests.yml
-      - environment: internal-qa
-        post_deploy:
-          - template: templates/pds-tests.yml
-        depends_on:
-            - internal_dev
       - environment: internal-qa-sandbox
         enable_status_monitoring: false
         proxy_path: sandbox
@@ -53,12 +48,12 @@ extends:
         post_deploy:
            - template: templates/pds-tests-int.yml
         depends_on:
-          - internal_qa
+          - internal_dev
           - internal_qa_sandbox
       - environment: ref
         enable_status_monitoring: false # revert when /_status implemented or endpoint updated
         depends_on:
-          - internal_qa
+          - internal_dev
           - internal_qa_sandbox
       - environment: sandbox
         proxy_path: sandbox
@@ -66,11 +61,11 @@ extends:
         post_deploy:
           - template: templates/sandbox-tests.yml
         depends_on:
-          - internal_qa
+          - internal_dev
           - internal_qa_sandbox
       - environment: prod
         depends_on:
-          - internal_qa
+          - internal_dev
           - internal_qa_sandbox
         jinja_templates:
           REQUIRE_ASID: true
