@@ -32,23 +32,6 @@ APIGEE_ENVIRONMENTS:
           enabled: false
         spikeArrest:
           enabled: false
-  - name: internal-qa
-    display_name_suffix: Internal QA
-    ratelimiting:
-      personal-demographics-internal-qa:
-        quota:
-          enabled: true
-          limit: 300
-          interval: 1
-          timeunit: minute
-        spikeArrest:
-          enabled: true
-          ratelimit: 600pm # 10 requests per second
-      app:
-        quota:
-          enabled: false
-        spikeArrest:
-          enabled: false
   - name: internal-qa-sandbox
     display_name_suffix: Internal QA Sandbox
     # Ratelimiting is currently disabled for sandbox environments

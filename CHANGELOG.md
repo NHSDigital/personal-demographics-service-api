@@ -1,5 +1,8 @@
 # Changelog
 
+## 2024-01-02
+* Deleted internal-qa stage of deployment pipeline to avoid test data mismatch issues against VEIT and INT
+
 ## 2023-11-17
 * Added sandbox/init.py
 * Updated tool.poetry
