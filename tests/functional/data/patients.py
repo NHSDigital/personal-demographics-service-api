@@ -12,6 +12,8 @@ class Patient:
 
 
 DEFAULT = Patient(nhs_number='9693632109')
+P5_PATIENT = Patient(nhs_number='9912003072')
+P0_PATIENT = Patient(nhs_number='9912003073')
 SELF = Patient(nhs_number='9912003071',
                update=Update(nhs_number='9912003071',
                              path='telecom/0'))

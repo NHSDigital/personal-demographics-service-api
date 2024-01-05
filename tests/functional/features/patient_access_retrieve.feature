@@ -12,6 +12,7 @@ Feature: Patient Access (Retrieve)
 	Scenario: Patient cannot retrieve self with P5 authorisation level
 		Given I am a P5 user
 		And scope added to product
+		And I have the NHS number linked to a P5 account
 		
 		When I retrieve my details
 
@@ -22,6 +23,7 @@ Feature: Patient Access (Retrieve)
 	Scenario: Patient cannot retrieve self with P0 authorisation level
 		Given I am a P0 user
 		And scope added to product
+		And I have the NHS number linked to a P0 account
 		
 		When I retrieve my details
 

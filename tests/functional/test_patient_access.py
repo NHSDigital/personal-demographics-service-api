@@ -35,6 +35,18 @@ def patient_other() -> Patient:
     return patient
 
 
+@given("I have the NHS number linked to a P5 account", target_fixture="patient")
+def patient_p5() -> Patient:
+    patient = patients.P5_PATIENT
+    return patient
+
+
+@given("I have the NHS number linked to a P0 account", target_fixture="patient")
+def patient_p0() -> Patient:
+    patient = patients.P0_PATIENT
+    return patient
+
+
 @pytest.fixture()
 def update(patient: Patient) -> Update:
     return patient.update
