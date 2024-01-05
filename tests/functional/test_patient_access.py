@@ -48,13 +48,16 @@ update_scenario = partial(pytest_bdd.scenario, './features/patient_access_update
 def test_retrieve_self():
     pass
 
+
 @retrieve_scenario('Patient cannot retrieve self with P5 authorisation level')
 def test_retrieve_self_P5():
     pass
 
+
 @retrieve_scenario('Patient cannot retrieve self with P0 authorisation level')
 def test_retrieve_self_P0():
     pass
+
 
 @retrieve_scenario('Patient cannot retrieve another patient')
 def test_cannot_retrieve_another_patient():

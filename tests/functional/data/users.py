@@ -12,7 +12,7 @@ class UserDirectory:
         }
 
     P5 = {
-        "login_form": {"username": " 9912003072"},
+        "login_form": {"username": "9912003072"},
     }
 
     p5 = {
