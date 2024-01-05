@@ -9,6 +9,26 @@ Feature: Patient Access (Retrieve)
 
 		Then I get a 200 HTTP response code
 
+	Scenario: Patient cannot retrieve self with P5 authorisation level
+		Given I am a P5 user
+		And scope added to product
+		
+		When I retrieve my details
+
+		Then I get a 403 HTTP response code
+		And ACCESS_DENIED is at issue[0].details.coding[0].code in the response body
+		And Patient cannot perform this action is at issue[0].details.coding[0].display in the response body
+	
+	Scenario: Patient cannot retrieve self with P0 authorisation level
+		Given I am a P0 user
+		And scope added to product
+		
+		When I retrieve my details
+
+		Then I get a 403 HTTP response code
+		And ACCESS_DENIED is at issue[0].details.coding[0].code in the response body
+		And Patient cannot perform this action is at issue[0].details.coding[0].display in the response body
+
 	Scenario: Patient cannot retrieve another patient
 		Given I am a P9 user
 		And scope added to product
