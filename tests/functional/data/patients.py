@@ -25,11 +25,9 @@ related_person_response = {
                     "id": "qWyGt",
                     "patient": {
                         "identifier": {
-                            "system": "https://beta.api.digital.nhs.uk",
+                            "system": "https://fhir.nhs.uk/Id/nhs-number",
                             "value": "9693633687"
-                        },
-                        "reference": "https://beta.api.digital.nhs.uk/Patient/9693633687",
-                        "type": "Patient"
+                        }
                     },
                     "relationship": [
                         {
