@@ -12,7 +12,7 @@
         "patient": {
           "type": "Patient",
           "identifier": {
-            "system": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient",
+            "system": "https://fhir.nhs.uk/Id/nhs-number",
             "value": "90000000009"
           },
           "reference": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/90000000009"

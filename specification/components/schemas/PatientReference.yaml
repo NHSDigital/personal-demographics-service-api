@@ -18,7 +18,7 @@ properties:
         type: string
         description: URL for the Patient retrieval API.
         format: url
-        example: https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient
+        example: https://fhir.nhs.uk/Id/nhs-number
       value:
         type: string
         description: NHS number for the related person
