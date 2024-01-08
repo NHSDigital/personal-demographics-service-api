@@ -2,11 +2,6 @@ type: object
 required:
   - type
 properties:
-  type:
-    type: string
-    default: Patient
-    enum:
-      - Patient
   identifier:
     type: object
     description: |
@@ -26,8 +21,3 @@ properties:
         description: NHS number for the related person
         example: "90000000009"
         pattern: "^\\d{10}$"
-  reference:
-    type: string
-    description: URL for the FHIR Patient resource.
-    format: url
-    example: https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/90000000009
