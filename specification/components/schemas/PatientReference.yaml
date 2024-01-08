@@ -1,6 +1,4 @@
 type: object
-required:
-  - type
 properties:
   identifier:
     type: object
