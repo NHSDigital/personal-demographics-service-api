@@ -11,3 +11,20 @@ Feature: Related Person endpoint
         And the X-Request-ID response header matches the request
         And the X-Correlation-ID response header matches the request
         And the response body contains the expected response
+
+    Scenario: Patient can retrieve a single related person
+        Given I am a P9_1 user
+        And scope added to product
+        And I am a patient with a related person
+
+		When I retrieve my related person
+
+		Then I get a 200 HTTP response code
+
+	Scenario: Patient can't retrieve a related person for another patient
+		Given I am a P9_1 user
+		And scope added to product
+
+		When I retrieve my related person
+
+		Then I get a 403 HTTP response code

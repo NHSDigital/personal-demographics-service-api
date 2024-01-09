@@ -8,8 +8,13 @@ class UserDirectory:
     }
 
     P9 = {
-            "login_form": {"username": "9912003071"},
-        }
+        "login_form": {"username": "9912003071"},
+    }
+
+    P9_1 = {
+            "level": "P9",
+            "login_form": {"username": "9472063845"},
+    }
 
     P5 = {
         "login_form": {"username": "9912003071"},

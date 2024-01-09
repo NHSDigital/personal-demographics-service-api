@@ -42,6 +42,11 @@ def add_scope_to_products_patient_access(products_api: ApiProductsAPI,
         time_waited += wait_period
 
 
+@given('I am a patient with a related person', target_fixture='patient')
+def self_patient_with_a_related_person() -> Patient:
+    return patients.SELF_1
+
+
 @given('I have a patient with a related person', target_fixture='patient')
 def patient_with_a_related_person() -> Patient:
     return patients.WITH_RELATED_PERSON
