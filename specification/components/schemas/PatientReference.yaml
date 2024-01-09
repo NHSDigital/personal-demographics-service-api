@@ -9,11 +9,11 @@ properties:
     properties:
       system:
         type: string
-        default: https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient
+        default: https://fhir.nhs.uk/Id/nhs-number
         description: URL for the Patient retrieval API.
         format: url
         enum:
-          - https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient
+          - https://fhir.nhs.uk/Id/nhs-number
       value:
         type: string
         description: NHS number for the related person
