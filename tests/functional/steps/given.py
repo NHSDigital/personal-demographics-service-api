@@ -63,38 +63,19 @@ def user_directory() -> UserDirectory:
     return UserDirectory()
 
 
-# @given("I am a P5 user")
-# def get_auth_token(user_directory: UserDirectory, token_through_authenticator_explicit) -> None:
-#     user_name = "P5"
-#     auth_details = user_directory[user_name.replace(' ', '_')]
-#     print(f"Getting a token for a {user_name} user")
-
-# @given("I am a P5 user", target_fixture='headers_with_authorization')
-# def get_auth_token(headers_with_authorization: dict, user_directory: UserDirectory, token_through_authenticator_explicit) -> None:
-#     user_name = "P5"
-#     auth_details = user_directory[user_name.replace(' ', '_')]
-#     print(f"Getting a token for a {user_name} user: {token_through_authenticator_explicit}")
-
-#     headers_with_authorization.update({
-#         'Authorization': f'Bearer {token_through_authenticator_explicit}'
-#     })
-#     return headers_with_authorization 
-
-
 @given("I am a P5 user")
-def get_auth_token(request: FixtureRequest)-> None:
-    
+def get_auth_token(request: FixtureRequest) -> None:
+
     auth_details = {
         'api_name': 'personal-demographics-service',
         "access": "patient",
         "level": "P5",
         "login_form": {"username": "9912003072"},
-        "authentication":"separate",
+        "authentication": "separate",
         'force_new_token': True,
     }
 
     request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
-       
 
 
 @given(
