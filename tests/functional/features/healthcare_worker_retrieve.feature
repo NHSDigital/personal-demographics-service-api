@@ -110,7 +110,7 @@ Feature: Healthcare Worker Access (Retrieve)
 
         When I retrieve a patient
 
-        Then I get a 412 HTTP response code
+        Then I get a 400 HTTP response code
         And the response header does not contain X-Request-ID
         And the X-Correlation-ID response header matches the request
         And the response body does not contain id
