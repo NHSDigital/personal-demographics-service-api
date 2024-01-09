@@ -10,6 +10,7 @@ from tests.functional.data.searches import Search
 from tests.functional.data.updates import Update
 from tests.functional.steps.when import retrieve_patient
 from pytest_nhsd_apim.apigee_apis import ApiProductsAPI
+
 import json
 from random import randint
 from datetime import datetime
@@ -60,6 +61,40 @@ def provide_headers_with_no_auth_details() -> None:
 @pytest.fixture(scope='session')
 def user_directory() -> UserDirectory:
     return UserDirectory()
+
+
+# @given("I am a P5 user")
+# def get_auth_token(user_directory: UserDirectory, token_through_authenticator_explicit) -> None:
+#     user_name = "P5"
+#     auth_details = user_directory[user_name.replace(' ', '_')]
+#     print(f"Getting a token for a {user_name} user")
+
+# @given("I am a P5 user", target_fixture='headers_with_authorization')
+# def get_auth_token(headers_with_authorization: dict, user_directory: UserDirectory, token_through_authenticator_explicit) -> None:
+#     user_name = "P5"
+#     auth_details = user_directory[user_name.replace(' ', '_')]
+#     print(f"Getting a token for a {user_name} user: {token_through_authenticator_explicit}")
+
+#     headers_with_authorization.update({
+#         'Authorization': f'Bearer {token_through_authenticator_explicit}'
+#     })
+#     return headers_with_authorization 
+
+
+@given("I am a P5 user")
+def get_auth_token(request: FixtureRequest)-> None:
+    
+    auth_details = {
+        'api_name': 'personal-demographics-service',
+        "access": "patient",
+        "level": "P5",
+        "login_form": {"username": "9912003072"},
+        "authentication":"separate",
+        'force_new_token': True,
+    }
+
+    request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
+       
 
 
 @given(

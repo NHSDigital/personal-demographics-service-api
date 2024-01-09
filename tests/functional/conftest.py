@@ -1,5 +1,6 @@
 from tests.scripts.pds_request import GenericPdsRequestor, PdsRecord
 import pytest
+from pytest import FixtureRequest
 import urllib
 import uuid
 from .utils.apigee_api_apps import ApigeeApiDeveloperApps
@@ -8,6 +9,7 @@ from .configuration import config
 from .configuration.config import BASE_URL, PDS_BASE_PATH
 import random
 from requests import Response
+import requests
 import json
 import jwt
 from typing import Union
@@ -23,6 +25,8 @@ import os
 from pytest_nhsd_apim.identity_service import (
     ClientCredentialsConfig,
     ClientCredentialsAuthenticator,
+    AuthorizationCodeAuthenticator,
+    AuthorizationCodeConfig,
 )
 
 from pytest_nhsd_apim.apigee_apis import (
@@ -314,3 +318,138 @@ def product():
             - Update custom ratelimits
     """
     return ApigeeApiProducts()
+
+@pytest.fixture()
+def token_through_authenticator(_test_app_credentials, apigee_environment):
+    """
+    Getting a token using the AuthorizationCodeAuthenticator class
+    """
+    print("Called token_through_authenticator")
+    
+    # 1. Set your app config
+    authorizationCodeConfig = AuthorizationCodeConfig(
+        environment=apigee_environment,
+        identity_service_base_url=f"https://{apigee_environment}.api.service.nhs.uk/{config.OAUTH_PROXY}",
+        callback_url="https://example.org/callback",
+        client_id=_test_app_credentials["consumerKey"],
+        client_secret=_test_app_credentials["consumerSecret"],
+        scope="nhs-login",
+        login_form={"username": "9912003071"},
+    )
+ 
+    # 2. Pass the config to the Authenticator
+    authenticator = AuthorizationCodeAuthenticator(config=authorizationCodeConfig)
+ 
+    # 3. Get your token
+    token_response = authenticator.get_token()
+
+    print(f"token_response: {token_response}")
+    assert "access_token" in token_response
+    token = token_response["access_token"]
+    print(f"Token: {token}")
+    return token
+
+@pytest.fixture()
+def token_through_authenticator_explicit(_test_app_credentials, apigee_environment):
+    """
+    Getting a token using the AuthorizationCodeAuthenticator class
+    """
+    print("Called token_through_authenticator_explicit")
+
+     
+    # 1. Set your app config
+    authorizationCodeConfig = AuthorizationCodeConfig(
+        environment=apigee_environment,
+        identity_service_base_url=f"https://{apigee_environment}.api.service.nhs.uk/{config.OAUTH_PROXY}",
+        callback_url="https://example.org/callback",
+        client_id=_test_app_credentials["consumerKey"],
+        client_secret=_test_app_credentials["consumerSecret"],
+        scope="nhs-login",
+        login_form={"username": "9912003071"},
+    )
+ 
+    # 2. Pass the config to the Authenticator
+    authenticator = AuthorizationCodeAuthenticator(config=authorizationCodeConfig)
+
+
+    login_session = requests.session()
+
+    # 1. Hit `authorize` endpoint w/ required query params --> we
+    # are redirected to the simulated_auth page. The requests package
+    # follows those redirects.
+    authorize_response = authenticator._get_authorize_endpoint_response(
+        login_session,
+        f"{authenticator.config.identity_service_base_url}/authorize",
+        authenticator.config.client_id,
+        authenticator.config.callback_url,
+        authenticator.config.scope,
+    )
+
+    authorize_form = authenticator._get_authorization_form(
+            authorize_response.content.decode()
+    )
+    # 2. Parse the login page.  For keycloak this presents an
+    # HTML form, which must be filled in with valid data.  The tester
+    # can submits their login data with the `login_form` field.
+
+    form_submission_data = authenticator._get_authorize_form_submission_data(
+        authorize_form, authenticator.config.login_form
+    )
+
+    print(f"form_submission_data: {form_submission_data}")
+
+    # 3. POST the filled in form. This is equivalent to clicking the
+    # "Login" button if we were a human.
+
+    response_identity_service_login = authenticator._log_in_identity_service_provider(
+        login_session, authorize_response, authorize_form, form_submission_data
+    )
+
+    # print(f"response_identity_service_login: {response_identity_service_login}")
+    print(f"response_identity_service_login: {response_identity_service_login.json()}")
+
+    # 4. The mock auth redirected us back to the
+    # identity-service, which redirected us to whatever our app's
+    # callback-url was set to.  We don't actually care about the
+    # content our callback-url page, we just need the auth_code that
+    # was provided in the redirect.
+    auth_code = authenticator._get_auth_code_from_mock_auth(response_identity_service_login)
+
+    print(f"auth_code: {auth_code}")
+
+    # 5. Finally, get an access token.
+    resp = login_session.post(
+        f"{authenticator.config.identity_service_base_url}/token",
+        data={
+            "grant_type": "authorization_code",
+            "code": auth_code,
+            "redirect_uri": authenticator.config.callback_url,
+            "client_id": authenticator.config.client_id,
+            "client_secret": authenticator.config.client_secret,
+        },
+    )
+    print(f"resp: {resp.json()}")
+    resp.raise_for_status()
+
+    return resp.json()['access_token']
+
+@pytest.fixture()
+def token_separate_auth(request: FixtureRequest, nhsd_apim_proxy_url, headers_with_authorization):
+    """
+    Getting a token using the separate auth pattern
+    """
+    auth_details = {
+        "access": "patient",
+        "level": "P9",
+        "login_form": {"username": "9912003071"},
+        "authentication":"separate",
+    }
+
+    request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
+
+    print(f"auth_details: {auth_details}")
+    print(f"headers_with_authorization: {headers_with_authorization}")
+    
+    # resp = requests.get(f"{nhsd_apim_proxy_url}/test-auth/nhs-login/P9", headers=nhsd_apim_auth_headers)
+    # assert resp.status_code == 200
+
