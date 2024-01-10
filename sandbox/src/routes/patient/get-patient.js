@@ -27,9 +27,9 @@ module.exports = [
 
             // check X-Request-ID exists
             if(!("x-request-id" in request.headers)){
-                throw Boom.preconditionFailed(
+                throw Boom.badRequest(
                     "Invalid request with error - X-Request-ID header must be supplied to access this resource",
-                    {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED", display: "Required condition was not fulfilled"})
+                    {operationOutcomeCode: "required", apiErrorCode: "MISSING_VALUE", display: "Required value is missing"})
             }
 
             if (resource == null) {
@@ -62,9 +62,9 @@ module.exports = [
 
             // check X-Request-ID exists
             if(!("x-request-id" in request.headers)){
-                throw Boom.preconditionFailed(
+                throw Boom.badRequest(
                     "Invalid request with error - X-Request-ID header must be supplied to access this resource",
-                    {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED", display: "Required condition was not fulfilled"})
+                    {operationOutcomeCode: "required", apiErrorCode: "MISSING_VALUE", display: "Required value is missing"})
             }
 
             function dateFormat(date) {
