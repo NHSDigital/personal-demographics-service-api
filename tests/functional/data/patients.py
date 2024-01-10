@@ -5,7 +5,6 @@ from tests.functional.data.updates import Update
 @dataclass
 class Patient:
     nhs_number: str = ''
-    demographic_details: dict = None
     update: Update = None
 
 
