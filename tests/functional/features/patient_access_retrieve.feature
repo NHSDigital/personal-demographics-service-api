@@ -10,7 +10,7 @@ Feature: Patient Access (Retrieve)
 		Then I get a 200 HTTP response code
 
 	Scenario: Patient cannot retrieve self with P5 authorisation level
-		Given I am a P5 user with the NHS number linked to a P5 account
+		Given I am a P5 user with the NHS number linked to an account
 		
 		When I sign in using NHS login
 
@@ -19,7 +19,7 @@ Feature: Patient Access (Retrieve)
 		And you have tried to request authorization but your application is not configured to use this authorization grant type is at error_description in the response body
 	
 	Scenario: Patient cannot retrieve self with P0 authorisation level
-		Given I am a P0 user with the NHS number linked to a P0 account
+		Given I am a P0 user with the NHS number linked to an account
 		
 		When I sign in using NHS login
 

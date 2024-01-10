@@ -70,11 +70,11 @@ def user_directory() -> UserDirectory:
 
 @given(
     parsers.cfparse(
-        "I am a {user_name:String} user with the NHS number linked to a {user_name:String} account",
+        "I am a {access_level:String} user with the NHS number linked to an account",
         extra_types=dict(String=str)
     ), target_fixture='patient')
-def set_user(user_name: str) -> Patient:
-    patient = patients.OTHER_PATIENTS[user_name]
+def set_user(access_level: str) -> Patient:
+    patient = patients.OTHER_PATIENTS[access_level]
     return patient
 
 
