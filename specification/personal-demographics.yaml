@@ -1832,6 +1832,8 @@ components:
 
         Mirrored back in a response header.
 
+        This is a mandatory header.
+
         If you re-send a failed request, use the same value in this header.
       schema:
         type: string
