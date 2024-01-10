@@ -4,7 +4,6 @@ from jsonpath_rw import parse
 from requests import Response
 import os
 import json
-from tests.functional.data.patients import Patient
 from tests.functional.data.searches import Search
 from tests.functional.data.updates import Update
 from tests.functional.utils.helpers import is_key_in_dict
@@ -46,11 +45,6 @@ def check_value_in_response_body_at_path(response_body: dict, value: str, path: 
         assert matches, f'There are no matches for {value} at {path} in the response body'
         for match in matches:
             assert match.value == value, f'{match.value} is not the expected value, {value}, at {path}'
-
-
-@then('the response body contains the expected response')
-def response_body_as_expected(response_body: dict, patient: Patient) -> None:
-    assert response_body == patient.expected_response
 
 
 @then(
