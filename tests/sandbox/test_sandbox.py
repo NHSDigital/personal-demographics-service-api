@@ -299,7 +299,7 @@ class TestPDSSandboxSearchSuite:
     def test_search_missing_x_request_id(self, set_delay, parameterized_headers):
         response = helpers.search_patient(search[30]["query_params"], parameterized_headers)
         helpers.check_search_response_body(response, search[30]["response"])
-        helpers.check_response_status_code(response, 400)   
+        helpers.check_response_status_code(response, 400)
 
 
 @pytest.mark.update_scenarios
