@@ -6,6 +6,8 @@ ENVIRONMENT = ENV["environment"]
 
 if ENVIRONMENT.lower() == "local":
     SANDBOX_BASE_URL = "http://0.0.0.0:9000"
+    SKIP_DEPLOYMENT_TESTS = True
 else:
     SERVICE_BASE_PATH = ENV["service_base_path"]
     SANDBOX_BASE_URL = f"https://{ENVIRONMENT}.api.service.nhs.uk/{SERVICE_BASE_PATH}"
+    SKIP_DEPLOYMENT_TESTS = False
