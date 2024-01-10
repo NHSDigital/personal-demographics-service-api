@@ -10,26 +10,22 @@ Feature: Patient Access (Retrieve)
 		Then I get a 200 HTTP response code
 
 	Scenario: Patient cannot retrieve self with P5 authorisation level
-		Given I am a P5 user
-		And scope added to product
-		And I have the NHS number linked to a P5 account
+		Given I am a P5 user with the NHS number linked to a P5 account
 		
-		When I retrieve my details
+		When I sign in using NHS login
 
-		Then I get a 403 HTTP response code
-		And ACCESS_DENIED is at issue[0].details.coding[0].code in the response body
-		And Patient cannot perform this action is at issue[0].details.coding[0].display in the response body
+		Then I get a 401 HTTP response code
+		And unauthorized_client is at error in the response body
+		And you have tried to request authorization but your application is not configured to use this authorization grant type is at error_description in the response body
 	
 	Scenario: Patient cannot retrieve self with P0 authorisation level
-		Given I am a P0 user
-		And scope added to product
-		And I have the NHS number linked to a P0 account
+		Given I am a P0 user with the NHS number linked to a P0 account
 		
-		When I retrieve my details
+		When I sign in using NHS login
 
-		Then I get a 403 HTTP response code
-		And ACCESS_DENIED is at issue[0].details.coding[0].code in the response body
-		And Patient cannot perform this action is at issue[0].details.coding[0].display in the response body
+		Then I get a 401 HTTP response code
+		And unauthorized_client is at error in the response body
+		And you have tried to request authorization but your application is not configured to use this authorization grant type is at error_description in the response body
 
 	Scenario: Patient cannot retrieve another patient
 		Given I am a P9 user

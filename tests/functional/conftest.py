@@ -8,6 +8,7 @@ from .configuration import config
 from .configuration.config import BASE_URL, PDS_BASE_PATH
 import random
 from requests import Response
+import requests
 import json
 import jwt
 from typing import Union
@@ -23,6 +24,8 @@ import os
 from pytest_nhsd_apim.identity_service import (
     ClientCredentialsConfig,
     ClientCredentialsAuthenticator,
+    AuthorizationCodeAuthenticator,
+    AuthorizationCodeConfig,
 )
 
 from pytest_nhsd_apim.apigee_apis import (
@@ -314,3 +317,57 @@ def product():
             - Update custom ratelimits
     """
     return ApigeeApiProducts()
+
+
+@pytest.fixture()
+def nhs_login_sign_in(_test_app_credentials, apigee_environment, nhs_number):
+    """
+    Authenticating a user through NHS login
+    """
+
+    # Set your app config
+    authorizationCodeConfig = AuthorizationCodeConfig(
+        environment=apigee_environment,
+        identity_service_base_url=f"https://{apigee_environment}.api.service.nhs.uk/{config.OAUTH_PROXY}",
+        callback_url="https://example.org/callback",
+        client_id=_test_app_credentials["consumerKey"],
+        client_secret=_test_app_credentials["consumerSecret"],
+        scope="nhs-login",
+        login_form={"username": nhs_number},
+    )
+
+    # Pass the config to the Authenticator
+    authenticator = AuthorizationCodeAuthenticator(config=authorizationCodeConfig)
+
+    login_session = requests.session()
+
+    # Hit `authorize` endpoint w/ required query params --> we
+    # are redirected to the simulated_auth page. The requests package
+    # follows those redirects.
+    authorize_response = authenticator._get_authorize_endpoint_response(
+        login_session,
+        f"{authenticator.config.identity_service_base_url}/authorize",
+        authenticator.config.client_id,
+        authenticator.config.callback_url,
+        authenticator.config.scope,
+    )
+
+    authorize_form = authenticator._get_authorization_form(
+            authorize_response.content.decode()
+    )
+    # Parse the login page.  For keycloak this presents an
+    # HTML form, which must be filled in with valid data.  The tester
+    # can submits their login data with the `login_form` field.
+
+    form_submission_data = authenticator._get_authorize_form_submission_data(
+        authorize_form, authenticator.config.login_form
+    )
+
+    # POST the filled in form. This is equivalent to clicking the
+    # "Login" button if we were a human.
+
+    response_identity_service_login = authenticator._log_in_identity_service_provider(
+        login_session, authorize_response, authorize_form, form_submission_data
+    )
+
+    return response_identity_service_login

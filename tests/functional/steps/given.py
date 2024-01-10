@@ -63,19 +63,14 @@ def user_directory() -> UserDirectory:
     return UserDirectory()
 
 
-@given("I am a P5 user")
-def get_auth_token(request: FixtureRequest) -> None:
-
-    auth_details = {
-        'api_name': 'personal-demographics-service',
-        "access": "patient",
-        "level": "P5",
-        "login_form": {"username": "9912003072"},
-        "authentication": "separate",
-        'force_new_token': True,
-    }
-
-    request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
+@given(
+    parsers.cfparse(
+        "I am a {user_name:String} user with the NHS number linked to a {user_name:String} account",
+        extra_types=dict(String=str)
+    ), target_fixture='patient')
+def set_user(user_name: str) -> Patient:
+    patient = patients.OTHER_PATIENTS[user_name]
+    return patient
 
 
 @given(

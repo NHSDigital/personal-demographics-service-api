@@ -73,3 +73,8 @@ def amended_query_params(search: Search, key: str, value: str) -> str:
 @when("I search for the patient's PDS record", target_fixture='response')
 def search_patient(headers_with_authorization: dict, query_params: str, pds_url: str) -> Response:
     return get(url=f"{pds_url}/Patient?{query_params}", headers=headers_with_authorization)
+
+
+@when("I sign in using NHS login", target_fixture="response")
+def nhs_login(nhs_login_sign_in) -> Response:
+    return nhs_login_sign_in
