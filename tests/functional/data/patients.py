@@ -62,4 +62,3 @@ related_person_response = {
         "type": "searchset"
     }
 WITH_RELATED_PERSON = Patient(nhs_number='9693633679', expected_response=related_person_response)
-SELF_WITH_RELATED_PERSON = Patient(nhs_number='9472063845')
