@@ -12,8 +12,6 @@ class TestPDSSandboxDeploymentSuite:
     """Sandbox PDS Deployment Scenarios. Checks performed: status_codes and version deployed"""
 
     @pytest.mark.asyncio
-    @pytest.mark.skipif(config.SKIP_DEPLOYMENT_TESTS, reason="Cannot deploy apigee locally so deployment \
-                                                                tests not viable")
     async def test_wait_for_ping(self,
                                  commit_id: str):
         async def apigee_deployed(response: ClientResponse):
@@ -27,15 +25,11 @@ class TestPDSSandboxDeploymentSuite:
                                  timeout=30)
 
     @pytest.mark.asyncio
-    @pytest.mark.skipif(config.SKIP_DEPLOYMENT_TESTS, reason="Cannot deploy apigee locally so deployment \
-                                                                tests not viable")
     async def test_check_status_is_secured(self):
         response = requests.get(f"{config.SANDBOX_BASE_URL}/_status")
         assert response.status_code == 401
 
     @pytest.mark.asyncio
-    @pytest.mark.skipif(config.SKIP_DEPLOYMENT_TESTS,  reason="Cannot deploy apigee locally so deployment \
-                                                                tests not viable")
     async def test_wait_for_status(self,
                                    commit_id: str,
                                    status_endpoint_header: Dict[str, str]):
