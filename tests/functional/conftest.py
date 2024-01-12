@@ -87,7 +87,7 @@ def nhs_number(patient: Patient) -> str:
     return patient.nhs_number
 
 
-@pytest.fixture
+@pytest.fixture()
 def query_params(search: Search) -> str:
     return urllib.parse.urlencode(search.query)
 
@@ -319,7 +319,7 @@ def product():
     return ApigeeApiProducts()
 
 
-@pytest.fixture
+@pytest.fixture()
 def nhs_login_sign_in(_test_app_credentials, apigee_environment, nhs_number, developer_apps_api, products_api):
     """
     Authenticating a user through NHS login
