@@ -319,7 +319,7 @@ def product():
     return ApigeeApiProducts()
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def nhs_login_sign_in(_test_app_credentials, apigee_environment, nhs_number, developer_apps_api, products_api):
     """
     Authenticating a user through NHS login
