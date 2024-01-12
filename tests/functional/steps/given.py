@@ -10,6 +10,7 @@ from tests.functional.data.searches import Search
 from tests.functional.data.updates import Update
 from tests.functional.steps.when import retrieve_patient
 from pytest_nhsd_apim.apigee_apis import ApiProductsAPI
+
 import json
 from random import randint
 from datetime import datetime
@@ -42,6 +43,11 @@ def add_scope_to_products_patient_access(products_api: ApiProductsAPI,
         time_waited += wait_period
 
 
+@given('I am a patient with a related person', target_fixture='patient')
+def self_patient_with_a_related_person() -> Patient:
+    return patients.SELF_WITH_RELATED_PERSON
+
+
 @given('I have a patient with a related person', target_fixture='patient')
 def patient_with_a_related_person() -> Patient:
     return patients.WITH_RELATED_PERSON
@@ -60,6 +66,16 @@ def provide_headers_with_no_auth_details() -> None:
 @pytest.fixture(scope='session')
 def user_directory() -> UserDirectory:
     return UserDirectory()
+
+
+@given(
+    parsers.cfparse(
+        "I am a {access_level:String} user with the NHS number linked to an account",
+        extra_types=dict(String=str)
+    ), target_fixture='patient')
+def set_user(access_level: str) -> Patient:
+    patient = patients.OTHER_PATIENTS[access_level]
+    return patient
 
 
 @given(

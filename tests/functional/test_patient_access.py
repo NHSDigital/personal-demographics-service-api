@@ -42,10 +42,21 @@ def update(patient: Patient) -> Update:
 
 retrieve_scenario = partial(pytest_bdd.scenario, './features/patient_access_retrieve.feature')
 update_scenario = partial(pytest_bdd.scenario, './features/patient_access_update.feature')
+related_person_scenario = partial(pytest_bdd.scenario, './features/related_person.feature')
 
 
 @retrieve_scenario('Patient can retrieve self')
 def test_retrieve_self():
+    pass
+
+
+@retrieve_scenario('Patient cannot retrieve self with P5 authorisation level')
+def test_retrieve_self_P5():
+    pass
+
+
+@retrieve_scenario('Patient cannot retrieve self with P0 authorisation level')
+def test_retrieve_self_P0():
     pass
 
 
@@ -66,6 +77,16 @@ def test_cannot_retrieve_with_expired_token():
 
 @retrieve_scenario("Patient can retrieve their record with a refreshed token")
 def test_can_retrieve_with_refreshed_token():
+    pass
+
+
+@related_person_scenario("Patient can retrieve a single related person")
+def test_can_retrieve_single_related_person():
+    pass
+
+
+@related_person_scenario("Patient can't retrieve a related person for another patient")
+def test_cant_retrieve_single_related_person_for_another_patient():
     pass
 
 
