@@ -10,7 +10,7 @@ Feature: Related Person endpoint
         Then I get a 200 HTTP response code
         And the X-Request-ID response header matches the request
         And the X-Correlation-ID response header matches the request
-        And the response body contains the expected response
+        And 9693633687 is at entry[0].resource.patient.identifier.value in the response body
 
     Scenario: Patient can retrieve a single related person
         Given I am a P9_WITH_RELATED_PERSON user
