@@ -15,7 +15,7 @@ module.exports = [
             * Non-existant patient: 404 
             * Invalid NHS Number: 400 
             * Unset/invalid Content-Type: 415 Unsupported Media Type
-            * No x-request-id header: 412
+            * No x-request-id header: 400
         */
         method: 'PATCH',
         path: '/Patient/{nhsNumber}',
