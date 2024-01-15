@@ -191,7 +191,9 @@ The Apigee portal will not automatically pull examples from schemas, you must sp
 Procedure:
  * Import the collection into Postman
  * Update requests and export the collection back into the repo
- * Re-generate the [Run in Postman button](https://learning.getpostman.com/docs/postman-for-publishers/run-in-postman/creating-run-button/) Markdown button link and update the OAS
+ * Make sure you have a version of the collection in a public workspace
+ * In the OAS replace the ID used for the https://app.getpostman.com/run-collection/<collection-id> with the one you just created (you can get this in the Collection details section)
+ * Make sure you don't edit or delete this collection until the link has been replaced. Any changes will persist when a user imports using the link.
 
 ## Deployment
 
