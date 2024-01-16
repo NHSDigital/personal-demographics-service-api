@@ -1,10 +1,11 @@
 {
 	"info": {
-		"_postman_id": "b4b1906d-a5a0-4f4e-81cf-f86e2610a53e",
+		"_postman_id": "1b695afb-7239-4b44-ad27-1124cfc6c00c",
 		"name": "Patient Demographics Sandbox",
 		"description": "Sandbox example requests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "20522194"
+		"_exporter_id": "32116132",
+		"_collection_link": "https://www.postman.com/peter-gallagher-nhs/workspace/personal-demographics-service-api-collection/collection/32116132-1b695afb-7239-4b44-ad27-1124cfc6c00c?action=share&source=collection_link&creator=32116132"
 	},
 	"item": [
 		{
@@ -56,9 +57,15 @@
 					"name": "Basic search",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{base_url}}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22&X-Request-ID={{$guid}}",
+							"raw": "{{base_url}}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22",
 							"host": [
 								"{{base_url}}"
 							],
@@ -77,10 +84,6 @@
 								{
 									"key": "birthdate",
 									"value": "eq2010-10-22"
-								},
-								{
-									"key": "X-Request-ID",
-									"value": "{{$guid}}"
 								}
 							]
 						},
@@ -92,9 +95,15 @@
 					"name": "Basic search including phone",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{base_url}}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22&phone=01632960587&X-Request-ID={{$guid}}",
+							"raw": "{{base_url}}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22&phone=01632960587",
 							"host": [
 								"{{base_url}}"
 							],
@@ -117,10 +126,6 @@
 								{
 									"key": "phone",
 									"value": "01632960587"
-								},
-								{
-									"key": "X-Request-ID",
-									"value": "{{$guid}}"
 								}
 							]
 						},
@@ -132,9 +137,15 @@
 					"name": "Basic search including email",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{base_url}}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22&email=jane.smith@example.com&X-Request-ID={{$guid}}",
+							"raw": "{{base_url}}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22&email=jane.smith@example.com",
 							"host": [
 								"{{base_url}}"
 							],
@@ -157,10 +168,6 @@
 								{
 									"key": "email",
 									"value": "jane.smith@example.com"
-								},
-								{
-									"key": "X-Request-ID",
-									"value": "{{$guid}}"
 								}
 							]
 						},
@@ -172,9 +179,15 @@
 					"name": "Basic search including email and phone",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{base_url}}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22&phone=01632960587&email=jane.smith@example.com&X-Request-ID={{$guid}}",
+							"raw": "{{base_url}}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22&phone=01632960587&email=jane.smith@example.com",
 							"host": [
 								"{{base_url}}"
 							],
@@ -201,10 +214,6 @@
 								{
 									"key": "email",
 									"value": "jane.smith@example.com"
-								},
-								{
-									"key": "X-Request-ID",
-									"value": "{{$guid}}"
 								}
 							]
 						},
@@ -216,9 +225,15 @@
 					"name": "Basic search including email and phone negative match",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{base_url}}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22&phone=01632960587&email=jane.smith@example.com&X-Request-ID={{$guid}}",
+							"raw": "{{base_url}}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22&phone=0121111111&email=deb.trotter@example.com",
 							"host": [
 								"{{base_url}}"
 							],
@@ -245,10 +260,6 @@
 								{
 									"key": "email",
 									"value": "deb.trotter@example.com"
-								},
-								{
-									"key": "X-Request-ID",
-									"value": "{{$guid}}"
 								}
 							]
 						},
@@ -260,9 +271,15 @@
 					"name": "Multi parameter search including phone",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{base_url}}/Patient?_fuzzy-match=false&_exact_match=false&history=true&_max-results=1&family=Smith&gender=female&birthdate=eq2010-10-22&given=Jane&death-date=eq2010-10-22&address-postcode=LS1 6AE&general-practitioner=Y12345&phone=01632960587&X-Request-ID={{$guid}}",
+							"raw": "{{base_url}}/Patient?_fuzzy-match=false&_exact-match=false&history=true&_max-results=1&family=Smith&gender=female&birthdate=eq2010-10-22&given=Jane&death-date=eq2010-10-22&address-postcode=LS1 6AE&general-practitioner=Y12345&phone=01632960587",
 							"host": [
 								"{{base_url}}"
 							],
@@ -317,10 +334,6 @@
 								{
 									"key": "phone",
 									"value": "01632960587"
-								},
-								{
-									"key": "X-Request-ID",
-									"value": "{{$guid}}"
 								}
 							]
 						},
@@ -332,9 +345,15 @@
 					"name": "Multi parameter search including email",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{base_url}}/Patient?_fuzzy-match=false&_exact_match=false&history=true&_max-results=1&family=Smith&gender=female&birthdate=eq2010-10-22&given=Jane&death-date=eq2010-10-22&address-postcode=LS1 6AE&general-practitioner=Y12345&email=jane.smith@example.com&X-Request-ID={{$guid}}",
+							"raw": "{{base_url}}/Patient?_fuzzy-match=false&_exact-match=false&history=true&_max-results=1&family=Smith&gender=female&birthdate=eq2010-10-22&given=Jane&death-date=eq2010-10-22&address-postcode=LS1 6AE&general-practitioner=Y12345&email=jane.smith@example.com",
 							"host": [
 								"{{base_url}}"
 							],
@@ -389,10 +408,6 @@
 								{
 									"key": "email",
 									"value": "jane.smith@example.com"
-								},
-								{
-									"key": "X-Request-ID",
-									"value": "{{$guid}}"
 								}
 							]
 						},
@@ -404,9 +419,15 @@
 					"name": "Multi parameter search including phone and email",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{base_url}}/Patient?_fuzzy-match=false&_exact_match=false&history=true&_max-results=1&family=Smith&gender=female&birthdate=eq2010-10-22&given=Jane&death-date=eq2010-10-22&address-postcode=LS1 6AE&general-practitioner=Y12345&phone=01632960587&email=jane.smith@example.com&X-Request-ID={{$guid}}",
+							"raw": "{{base_url}}/Patient?_fuzzy-match=false&_exact-match=false&_history=true&_max-results=1&family=Smith&gender=female&birthdate=eq2010-10-22&given=Jane&death-date=eq2010-10-22&address-postcode=LS1 6AE&general-practitioner=Y12345&phone=01632960587&email=jane.smith@example.com",
 							"host": [
 								"{{base_url}}"
 							],
@@ -423,7 +444,7 @@
 									"value": "false"
 								},
 								{
-									"key": "history",
+									"key": "_history",
 									"value": "true"
 								},
 								{
@@ -465,10 +486,6 @@
 								{
 									"key": "email",
 									"value": "jane.smith@example.com"
-								},
-								{
-									"key": "X-Request-ID",
-									"value": "{{$guid}}"
 								}
 							]
 						},
@@ -2234,7 +2251,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"patches\": [\n   \t    {\n      \"op\": \"test\",\n      \"path\": \"/extension/5/url\",\n      \"value\": \"https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference\"\n    },\n    {\n      \"op\": \"remove\",\n      \"path\": \"/extension/5\"\n    }\n  ]\n}"
+													"raw": "{\n  \"patches\": [\n    {\n      \"op\": \"remove\",\n      \"path\": \"/extension/5\"\n    }\n  ]\n}"
 												},
 												"url": {
 													"raw": "{{base_url}}/Patient/9000000009",
