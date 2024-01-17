@@ -9,6 +9,7 @@
       "resource": {
         "id": "F4CF8B96",
         "resourceType": "RelatedPerson",
+        "patient": {},
         "active": true,
         "period": {
           "start": "2020-01-01",

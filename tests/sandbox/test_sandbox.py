@@ -1,4 +1,5 @@
 import pytest
+from pytest_check import check
 from aiohttp import ClientResponse
 from .data.scenarios import relatedPerson, retrieve, search, update
 import requests
@@ -630,3 +631,11 @@ class TestSandboxRelatedPersonSuite:
         helpers.check_search_response_body(response, relatedPerson[2]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
+
+    def test_related_person_can_contain_empty_patient_object(self, additional_headers):
+        response = helpers.retrieve_related_person(
+            "9000000017", additional_headers
+        )
+        with check:
+            assert response.status_code == 200, response.text
+            assert response.json()['entry'][0]['resource']['patient'] == {}
