@@ -261,9 +261,7 @@ def _related_person_no_reference(resource):
     Returning a related person resource with no reference details
     """
     new_resource = deepcopy(resource)
-    new_resource["patient"] = {
-        "type": "Patient"
-    }
+    new_resource["patient"] = {}
     return new_resource
 
 
@@ -302,9 +300,12 @@ def remove_empty_elements(obj):
     """
     Recursively traverse the dictionary removing any empty elements (eg. [] or {}).
     """
+    allowed_empty_fields = ['patient']
     new_obj = deepcopy(obj)
     if isinstance(obj, dict):
         for key, value in obj.items():
+            if key in allowed_empty_fields:
+                continue
             sub_value = remove_empty_elements(value)
             if not sub_value and sub_value is not False:
                 del new_obj[key]
