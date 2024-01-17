@@ -261,9 +261,7 @@ def _related_person_no_reference(resource):
     Returning a related person resource with no reference details
     """
     new_resource = deepcopy(resource)
-    new_resource["patient"] = {
-        "type": "Patient"
-    }
+    new_resource["patient"] = {}
     return new_resource
 
 
