@@ -9,7 +9,7 @@ module.exports = [
     /* Patient retrieve
         Behaviour Implemented:
         * Provide ?9000000009: 200 + recieve example patient record as search result
-        * No x-request-id header: 412
+        * No x-request-id header: 400
     */
     {
         method: 'GET',
@@ -27,9 +27,9 @@ module.exports = [
 
             // check X-Request-ID exists
             if(!("x-request-id" in request.headers)){
-                throw Boom.preconditionFailed(
+                throw Boom.badRequest(
                     "Invalid request with error - X-Request-ID header must be supplied to access this resource",
-                    {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED", display: "Required condition was not fulfilled"})
+                    {operationOutcomeCode: "required", apiErrorCode: "MISSING_VALUE", display: "Required value is missing"})
             }
 
             if (resource == null) {
@@ -53,7 +53,7 @@ module.exports = [
          * Provide ?birthdate=eq2010-10-22&family=Sm*&gender=female: 200 + receive search result of two example patients
          * Provide ?birthdate=eq2010-10-22&family=Sm*&gender=female&_max-results=2: 200 + receive search result of two example patients
          * Provide ?birthdate=le2010-10-23&birthdate=ge2010-10-21&family=Smith&gender=female: 200 + receive example patient as search result
-         * No x-request-id header: 412
+         * No x-request-id header: 400
     */
     {
         method: 'GET',
@@ -62,9 +62,9 @@ module.exports = [
 
             // check X-Request-ID exists
             if(!("x-request-id" in request.headers)){
-                throw Boom.preconditionFailed(
+                throw Boom.badRequest(
                     "Invalid request with error - X-Request-ID header must be supplied to access this resource",
-                    {operationOutcomeCode: "structure", apiErrorCode: "PRECONDITION_FAILED", display: "Required condition was not fulfilled"})
+                    {operationOutcomeCode: "required", apiErrorCode: "MISSING_VALUE", display: "Required value is missing"})
             }
 
             function dateFormat(date) {
