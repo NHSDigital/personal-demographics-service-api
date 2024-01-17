@@ -87,7 +87,7 @@ def nhs_number(patient: Patient) -> str:
     return patient.nhs_number
 
 
-@pytest.fixture
+@pytest.fixture()
 def query_params(search: Search) -> str:
     return urllib.parse.urlencode(search.query)
 
@@ -320,18 +320,31 @@ def product():
 
 
 @pytest.fixture()
-def nhs_login_sign_in(_test_app_credentials, apigee_environment, nhs_number):
+def nhs_login_sign_in(_test_app_credentials, apigee_environment, nhs_number, developer_apps_api, products_api):
     """
     Authenticating a user through NHS login
     """
+
+    # Creating a new test app
+    product = _product_with_full_access(products_api)
+    product.update_environments([config.ENVIRONMENT], api_products=products_api)
+
+    test_app = ApigeeApiDeveloperApps()
+    test_app.create_new_app(
+        callback_url="https://example.org/callback",
+        status="approved",
+        jwks_resource_url=config.JWKS_RESOURCE_URL,
+        products=[product.name],
+        developer_apps=developer_apps_api
+    )
 
     # Set your app config
     authorizationCodeConfig = AuthorizationCodeConfig(
         environment=apigee_environment,
         identity_service_base_url=f"https://{apigee_environment}.api.service.nhs.uk/{config.OAUTH_PROXY}",
         callback_url="https://example.org/callback",
-        client_id=_test_app_credentials["consumerKey"],
-        client_secret=_test_app_credentials["consumerSecret"],
+        client_id=test_app.get_client_id(),
+        client_secret=test_app.get_client_secret(),
         scope="nhs-login",
         login_form={"username": nhs_number},
     )
@@ -369,5 +382,9 @@ def nhs_login_sign_in(_test_app_credentials, apigee_environment, nhs_number):
     response_identity_service_login = authenticator._log_in_identity_service_provider(
         login_session, authorize_response, authorize_form, form_submission_data
     )
+
+    # Clean up
+    test_app.destroy_app(developer_apps_api)
+    product.destroy_product(products_api)
 
     return response_identity_service_login
