@@ -119,7 +119,7 @@ Feature: Healthcare Worker Access (Update)
 
         When I update the patient's PDS record
 
-        Then I get a 412 HTTP response code
+        Then I get a 400 HTTP response code
         And the response header does not contain X-Request-ID
         And the X-Correlation-ID response header matches the request
         And the response body is the Missing X-Request ID response
