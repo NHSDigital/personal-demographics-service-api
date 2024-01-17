@@ -1,5 +1,11 @@
 # Changelog
 
+## 2021-01-12
+Updated log given for missing X-Request-ID to 400 from 412 and associated tests,documentation,sandbox.
+
+## 2024-01-12
+Update Patient Identifier System URI
+
 ## 2024-01-03
 * Added max characters for names in documentation
 

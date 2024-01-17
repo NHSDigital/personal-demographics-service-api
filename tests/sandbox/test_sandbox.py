@@ -90,6 +90,15 @@ class TestPDSSandboxRetrieveSuite:
         helpers.check_response_status_code(response, 400)
         helpers.check_response_headers(response, {"X-Request-ID": "1234"})
 
+    @pytest.mark.parametrize('parameterized_headers', [
+        {},
+        {"Prefer": "respond-async"}
+    ])
+    def test_missing_x_request_id(self, set_delay, parameterized_headers):
+        response = helpers.retrieve_patient(retrieve[5]["patient"], parameterized_headers)
+        helpers.check_retrieve_response_body(response, retrieve[5]["response"])
+        helpers.check_response_status_code(response, 400)
+
 
 @pytest.mark.search_scenarios
 class TestPDSSandboxSearchSuite:
@@ -284,6 +293,15 @@ class TestPDSSandboxSearchSuite:
         helpers.check_response_status_code(response, 400)
         helpers.check_response_headers(response, additional_headers)
 
+    @pytest.mark.parametrize("parameterized_headers", [
+        {},
+        {"Prefer": "response-async"}
+    ])
+    def test_search_missing_x_request_id(self, set_delay, parameterized_headers):
+        response = helpers.search_patient(search[30]["query_params"], parameterized_headers)
+        helpers.check_search_response_body(response, search[30]["response"])
+        helpers.check_response_status_code(response, 400)
+
 
 @pytest.mark.update_scenarios
 class TestPDSSandboxUpdateSyncWrapSuite:
@@ -407,7 +425,7 @@ class TestSandboxUpdateFailureSuite:
         )
 
         helpers.check_update_response_body(update_response, update[11]["response"])
-        helpers.check_response_status_code(update_response, 412)
+        helpers.check_response_status_code(update_response, 400)
 
     @pytest.mark.parametrize('parameterized_headers', [
         {"Content-Type": "application/json-patch+json"},

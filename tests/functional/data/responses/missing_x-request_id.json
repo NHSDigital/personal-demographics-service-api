@@ -3,14 +3,14 @@
     "issue": [
         {
             "severity": "error",
-            "code": "structure",
+            "code": "required",
             "details": {
                 "coding": [
                     {
                         "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
                         "version": "1",
-                        "code": "PRECONDITION_FAILED",
-                        "display": "Required condition was not fulfilled"
+                        "code": "MISSING_VALUE",
+                        "display": "Required value is missing"
                     }
                 ]
             },
