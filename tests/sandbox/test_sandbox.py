@@ -651,9 +651,7 @@ class TestSandboxRelatedPersonSuite:
         helpers.check_response_headers(response, additional_headers)
 
     def test_related_person_can_contain_empty_patient_object(self, additional_headers):
-        response = helpers.retrieve_related_person(
-            "9000000017", additional_headers
-        )
+        response = helpers.retrieve_related_person("9000000017", additional_headers)
         with check:
-            assert response.status_code == 200, response.text
+            assert response.status_code == 200
             assert response.json()['entry'][0]['resource']['patient'] == {}
