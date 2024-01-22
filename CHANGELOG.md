@@ -1,5 +1,8 @@
 # Changelog
 
+## 2024-01-18
+* Minor documentation update to ensure X-Request-ID is marked as mandatory with a *
+
 ## 2024-01-17
 * Update sandbox responses to no longer return reference and type fields in patient related people bundle resources.
 
