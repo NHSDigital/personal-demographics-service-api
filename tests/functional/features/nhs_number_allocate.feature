@@ -15,6 +15,7 @@ Feature: Allocate an NHS Number
 	Scenario: An application-restricted app cannot allocate an NHS number
 		Given I am an application-restricted user
 		And scope added to product
+		And product grants access to proxy
 
 		When I request an NHS number
 

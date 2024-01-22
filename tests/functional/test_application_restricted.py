@@ -12,6 +12,7 @@ import pytest_bdd
 
 from tests.functional.configuration import config
 from tests.functional.utils import helpers
+from pytest_nhsd_apim.apigee_apis import ApiProductsAPI
 
 scenario = partial(pytest_bdd.scenario, "features/application_restricted.feature")
 allocate_scenario = partial(pytest_bdd.scenario, './features/nhs_number_allocate.feature')
@@ -47,6 +48,17 @@ def check_which_test_app_to_use():
         )
         config.SIGNING_KEY = config.APPLICATION_RESTRICTED_WITH_ASID_SIGNING_KEY
         config.JWKS_RESOURCE_URL = config.JWKS_RESOURCE_URL_ASID_REQUIRED_APP
+
+
+@given("product grants access to proxy")
+def add_proxies_to_products(products_api: ApiProductsAPI,
+                            nhsd_apim_proxy_name: str):
+    product_name = nhsd_apim_proxy_name.replace("-asid-required", "")
+
+    default_product = products_api.get_product_by_name(product_name=product_name)
+    if nhsd_apim_proxy_name not in default_product['proxies']:
+        default_product['proxies'].append(nhsd_apim_proxy_name)
+        products_api.put_product_by_name(product_name=product_name, body=default_product)
 
 
 @scenario("PDS FHIR API accepts request with valid access token")
