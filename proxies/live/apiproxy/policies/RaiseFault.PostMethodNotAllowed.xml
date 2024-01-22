@@ -16,7 +16,7 @@
     </AssignVariable>
     <AssignVariable>
       <Name>pds.error.coding.display</Name>
-      <Value>Cannot update resource without Healthcare Worker access token</Value>
+      <Template>Cannot create resource with {access-mode} access token</Template>
     </AssignVariable>
     <AssignVariable>
       <Name>pds.error.diagnostics</Name>
