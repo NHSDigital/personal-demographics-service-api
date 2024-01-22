@@ -81,8 +81,8 @@ def search_patient(headers_with_authorization: dict, query_params: str, pds_url:
     return get(url=f"{pds_url}/Patient?{query_params}", headers=headers_with_authorization)
 
 
-@when('I request an NHS number', target_fixture='response')
-def request_nhs_number(headers_with_authorization: dict, pds_url: str) -> Response:
+@when('I request an NHS number allocation', target_fixture='response')
+def request_nhs_number_allocation(headers_with_authorization: dict, pds_url: str) -> Response:
     return post(url=f"{pds_url}/Patient", headers=headers_with_authorization)
 
 

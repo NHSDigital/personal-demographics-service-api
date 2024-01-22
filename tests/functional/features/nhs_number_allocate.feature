@@ -5,7 +5,7 @@ Feature: Allocate an NHS Number
 		Given I am a P9 user
 		And scope added to product
 		
-		When I request an NHS number
+		When I request an NHS number allocation
 
 		Then I get a 403 HTTP response code
 		And INVALID_METHOD is at issue[0].details.coding[0].code in the response body
@@ -17,7 +17,7 @@ Feature: Allocate an NHS Number
 		And scope added to product
 		And product grants access to proxy
 
-		When I request an NHS number
+		When I request an NHS number allocation
 
 		Then I get a 403 HTTP response code
 		And INVALID_METHOD is at issue[0].details.coding[0].code in the response body
@@ -27,7 +27,7 @@ Feature: Allocate an NHS Number
 	Scenario: A healthcare worker can allocate an NHS number
 		Given I am a healthcare worker user
 		
-		When I request an NHS number
+		When I request an NHS number allocation
 
 		Then I get a 400 HTTP response code
 		And UNSUPPORTED_SERVICE is at issue[0].details.coding[0].code in the response body
