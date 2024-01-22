@@ -1,5 +1,5 @@
 from pytest_bdd import when, parsers
-from requests import Response, get, patch
+from requests import Response, get, patch, post
 from tests.functional.data.updates import Update
 from tests.functional.data.searches import Search
 from copy import copy
@@ -79,6 +79,11 @@ def amended_query_params(search: Search, key: str, value: str) -> str:
 @when("I search for the patient's PDS record", target_fixture='response')
 def search_patient(headers_with_authorization: dict, query_params: str, pds_url: str) -> Response:
     return get(url=f"{pds_url}/Patient?{query_params}", headers=headers_with_authorization)
+
+
+@when('I request an NHS number', target_fixture='response')
+def request_nhs_number(headers_with_authorization: dict, pds_url: str) -> Response:
+    return post(url=f"{pds_url}/Patient", headers=headers_with_authorization)
 
 
 @when("I sign in using NHS login", target_fixture="response")

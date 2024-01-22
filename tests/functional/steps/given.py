@@ -80,11 +80,12 @@ def set_user(access_level: str) -> Patient:
 
 @given(
     parsers.cfparse(
-        "I am a {user_name:String} user",
+        "I am {_:String} {user_name:String} user",
         extra_types=dict(String=str)
     ))
 def add_auth_marker(request: FixtureRequest, user_name: str, user_directory: UserDirectory) -> None:
-    auth_details = user_directory[user_name.replace(' ', '_')]
+    auth_details = user_directory[user_name.replace(' ', '_')
+                                           .replace('-', '_')]
     request.node.add_marker(pytest.mark.nhsd_apim_authorization(auth_details))
 
 

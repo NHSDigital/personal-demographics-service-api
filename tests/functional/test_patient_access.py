@@ -1,26 +1,10 @@
 import pytest_bdd
 from functools import partial
-import uuid
 import pytest
 from tests.functional.data import patients
 from tests.functional.data.patients import Patient
 from tests.functional.data.updates import Update
 from pytest_bdd import given
-
-
-@pytest.fixture(scope='function')
-def headers_with_authorization(_nhsd_apim_auth_token_data: dict,
-                               add_asid_to_testapp: None) -> dict:
-    """Assign required headers with the Authorization header"""
-
-    access_token = _nhsd_apim_auth_token_data.get("access_token", "")
-
-    headers = {
-        "X-Request-ID": str(uuid.uuid1()),
-        "X-Correlation-ID": str(uuid.uuid1()),
-        "Authorization": f'Bearer {access_token}'
-    }
-    return headers
 
 
 @pytest.fixture()
@@ -43,6 +27,7 @@ def update(patient: Patient) -> Update:
 retrieve_scenario = partial(pytest_bdd.scenario, './features/patient_access_retrieve.feature')
 update_scenario = partial(pytest_bdd.scenario, './features/patient_access_update.feature')
 related_person_scenario = partial(pytest_bdd.scenario, './features/related_person.feature')
+allocate_scenario = partial(pytest_bdd.scenario, './features/nhs_number_allocate.feature')
 
 
 @retrieve_scenario('Patient can retrieve self')
@@ -102,4 +87,9 @@ def test_cannot_update_another_patient():
 
 @update_scenario('Patient update uses incorrect path')
 def test_cannot_update_incorrect_path():
+    pass
+
+
+@allocate_scenario('A patient cannot allocate an NHS number')
+def test_cannot_allocate_nhs_number():
     pass

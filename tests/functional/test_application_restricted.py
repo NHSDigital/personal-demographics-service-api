@@ -13,8 +13,8 @@ import pytest_bdd
 from tests.functional.configuration import config
 from tests.functional.utils import helpers
 
-
 scenario = partial(pytest_bdd.scenario, "features/application_restricted.feature")
+allocate_scenario = partial(pytest_bdd.scenario, './features/nhs_number_allocate.feature')
 
 
 def teardown_function(function):
@@ -133,6 +133,11 @@ def test_app_without_asid_fails():
 )
 @scenario("App WITH an ASID works in an asid-required API Proxy")
 def test_app_with_asid_works():
+    pass
+
+
+@allocate_scenario('An application-restricted app cannot allocate an NHS number')
+def test_app_cannot_allocate_nhs_number():
     pass
 
 

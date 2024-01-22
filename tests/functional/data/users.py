@@ -29,6 +29,11 @@ class UserDirectory:
         "login_form": {"username": "9912003073"},
     }
 
+    application_restricted = {
+        "access": "application",
+        "level": "level3"
+    }
+
     def __getitem__(self, key: str) -> Dict[str, str]:
         user = getattr(self, key)
 

@@ -18,6 +18,7 @@ from pytest_nhsd_apim.apigee_apis import ApiProductsAPI
 retrieve_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_retrieve.feature')
 search_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_search.feature')
 update_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_update.feature')
+allocate_scenario = partial(pytest_bdd.scenario, './features/nhs_number_allocate.feature')
 
 related_person_scenario = partial(pytest_bdd.scenario, './features/related_person.feature')
 
@@ -201,6 +202,11 @@ def test_update_with_missing_request_id():
 
 @related_person_scenario('Retrieve a related person')
 def test_retrieve_related_person():
+    pass
+
+
+@allocate_scenario('A healthcare worker can allocate an NHS number')
+def test_cannot_allocate_nhs_number():
     pass
 
 
