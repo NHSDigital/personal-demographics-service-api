@@ -1824,7 +1824,7 @@ components:
     RequestID:
       in: header
       name: X-Request-ID
-      required: false
+      required: true
       description: |
         A globally unique identifier (GUID) for the request, which we use to de-duplicate repeated requests and to trace the request if you contact our helpdesk.
         
