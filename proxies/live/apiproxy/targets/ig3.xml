@@ -112,6 +112,15 @@
         </Step>
       </Request>
     </Flow>
+    <Flow name="allocate">
+      <Condition>(access-mode NotEquals "user-restricted")</Condition>
+      <Request>
+        <Step>
+          <Name>RaiseFault.PostMethodNotAllowed</Name>
+          <Condition>(proxy.pathsuffix MatchesPath "/Patient" AND request.verb Equals "POST")</Condition>
+        </Step>
+      </Request>
+    </Flow>
     <Flow name="patient_access">
       <Condition>(access-mode Equals "patient-access")</Condition>
       <Request>
@@ -127,15 +136,6 @@
         </Step>
         <Step>
           <Name>AssignMessage.AddPatientAccessHeader</Name>
-        </Step>
-      </Request>
-    </Flow>
-    <Flow name="allocate">
-      <Condition>(access-mode NotEquals "user-restricted")</Condition>
-      <Request>
-        <Step>
-          <Name>RaiseFault.PostMethodNotAllowed</Name>
-          <Condition>(proxy.pathsuffix MatchesPath "/Patient" AND request.verb Equals "POST")</Condition>
         </Step>
       </Request>
     </Flow>
