@@ -189,11 +189,11 @@ The Apigee portal will not automatically pull examples from schemas, you must sp
 `Patient Demographics Sandbox.postman_collection` must be kept in sync with the OAS and Sandbox manually.
 
 Procedure:
- * Import the collection into Postman
- * Update requests and export the collection back into the repo
- * Make sure you have a version of the collection in a public workspace
- * In the OAS replace the ID used for the https://app.getpostman.com/run-collection/<collection-id> with the one you just created (you can get this in the Collection details section)
- * Make sure you don't edit or delete this collection until the link has been replaced. Any changes will persist when a user imports using the link.
+ * Log in to the Postman account
+ * Update requests
+ * Export the collection back into the repo
+
+ The link in `personal-demogrpahics.yaml` will get the most recent version of the collection.
 
 ## Deployment
 
