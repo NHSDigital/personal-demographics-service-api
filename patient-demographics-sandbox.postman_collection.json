@@ -1,11 +1,11 @@
 {
 	"info": {
-		"_postman_id": "1b695afb-7239-4b44-ad27-1124cfc6c00c",
+		"_postman_id": "005ebee4-7510-44c3-bb0e-58f26b2ba747",
 		"name": "Patient Demographics Sandbox",
 		"description": "Sandbox example requests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "32116132",
-		"_collection_link": "https://www.postman.com/peter-gallagher-nhs/workspace/personal-demographics-service-api-collection/collection/32116132-1b695afb-7239-4b44-ad27-1124cfc6c00c?action=share&source=collection_link&creator=32116132"
+		"_exporter_id": "32547823",
+		"_collection_link": "https://www.postman.com/demographics101/workspace/public/collection/32547823-005ebee4-7510-44c3-bb0e-58f26b2ba747?action=share&source=collection_link&creator=32547823"
 	},
 	"item": [
 		{
