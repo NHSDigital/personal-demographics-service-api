@@ -1,10 +1,16 @@
 # Changelog
 
-## 2021-01-12
-Updated log given for missing X-Request-ID to 400 from 412 and associated tests,documentation,sandbox.
+## 2024-01-18
+* Minor documentation update to ensure X-Request-ID is marked as mandatory with a *
+
+## 2024-01-17
+* Update sandbox responses to no longer return reference and type fields in patient related people bundle resources.
 
 ## 2024-01-12
-Update Patient Identifier System URI
+* Updated log given for missing X-Request-ID to 400 from 412 and associated tests,documentation,sandbox.
+
+## 2024-01-12
+* Update Patient Identifier System URI
 
 ## 2024-01-03
 * Added max characters for names in documentation

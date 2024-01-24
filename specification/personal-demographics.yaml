@@ -1824,7 +1824,7 @@ components:
     RequestID:
       in: header
       name: X-Request-ID
-      required: false
+      required: true
       description: |
         A globally unique identifier (GUID) for the request, which we use to de-duplicate repeated requests and to trace the request if you contact our helpdesk.
         
@@ -2097,7 +2097,8 @@ components:
       description: |
         The X-Correlation-ID from the request header, if supplied, mirrored back.
     XRequestID:
-      name: x-request-id
+      name: X-Request-ID
+      required: true
       schema:
         type: string
         pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
