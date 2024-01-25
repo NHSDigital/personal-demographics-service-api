@@ -193,7 +193,7 @@ Procedure:
  * Update requests
  * Export the collection back into the repo
 
- The link in `personal-demogrpahics.yaml` will get the most recent version of the collection.
+ The link in `personal-demographics.yaml` will get the most recent version of the collection.
 
 ## Deployment
 
