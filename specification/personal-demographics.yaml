@@ -235,7 +235,7 @@ info:
 
     Alternatively, you can try out the sandbox using our Postman collection:
     
-    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/14719036-953f067f-30b9-4552-8252-7cc10b21dad3)
+    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/32547823-005ebee4-7510-44c3-bb0e-58f26b2ba747)
 
     ### Integration testing
     Our [integration test environment](https://digital.nhs.uk/developer/guides-and-documentation/testing#integration-testing):
@@ -533,7 +533,7 @@ paths:
         Alternatively, you can try out the sandbox using our Postman collection:
         
         
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/a1ce1b055839caa384a8?action=collection%2Fimport)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/32547823-005ebee4-7510-44c3-bb0e-58f26b2ba747)
 
       parameters:
         - $ref: '#/components/parameters/FuzzyMatch'
@@ -641,7 +641,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/14719036-953f067f-30b9-4552-8252-7cc10b21dad3)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/32547823-005ebee4-7510-44c3-bb0e-58f26b2ba747)
               
          
       summary: "Get patient details"
@@ -1502,7 +1502,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/14719036-953f067f-30b9-4552-8252-7cc10b21dad3)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/32547823-005ebee4-7510-44c3-bb0e-58f26b2ba747)
 
         
       summary: Update patient details
@@ -1683,7 +1683,7 @@ paths:
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
-        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/14719036-953f067f-30b9-4552-8252-7cc10b21dad3)
+        [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/32547823-005ebee4-7510-44c3-bb0e-58f26b2ba747)
        
       summary: "Get a patient's related people"
       operationId: get-related-people
