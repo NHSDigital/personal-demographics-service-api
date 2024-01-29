@@ -23,6 +23,17 @@ def check_status(response: Response, expected_status: int) -> None:
 
 @then(
     parsers.cfparse(
+        "I do not get a {unwanted_status_code:Number} HTTP response code",
+        extra_types=dict(Number=int)
+    )
+)
+def check_status_is_not(response: Response, unwanted_status_code: int) -> None:
+    with check:
+        assert response.status_code != unwanted_status_code
+
+
+@then(
+    parsers.cfparse(
         'the response body is the {expected_response:String} response',
         extra_types=dict(String=str)
     )

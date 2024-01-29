@@ -205,7 +205,7 @@ def test_retrieve_related_person():
     pass
 
 
-@allocate_scenario('A healthcare worker can allocate an NHS number')
+@allocate_scenario('A healthcare worker is allowed to allocate an NHS number')
 def test_allocate_nhs_number():
     pass
 

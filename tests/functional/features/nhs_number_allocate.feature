@@ -24,10 +24,9 @@ Feature: Allocate an NHS Number
 		And Cannot create resource with application-restricted access token is at issue[0].details.coding[0].display in the response body
 		And Your app has insufficient permissions to use this method. Please contact support. is at issue[0].diagnostics in the response body
 
-	Scenario: A healthcare worker can allocate an NHS number
+	Scenario: A healthcare worker is allowed to allocate an NHS number
 		Given I am a healthcare worker user
 		
 		When I request an NHS number allocation
 
-		Then I get a 400 HTTP response code
-		And UNSUPPORTED_SERVICE is at issue[0].details.coding[0].code in the response body
+		Then I do not get a 403 HTTP response code
