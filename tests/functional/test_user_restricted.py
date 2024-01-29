@@ -287,17 +287,6 @@ def use_deprecated_url() -> str:
     return f"{BASE_URL}/personal-demographics{prString}"
 
 
-@then(
-    parsers.cfparse(
-        "I get a {expected_status:Number} HTTP response",
-        extra_types=dict(Number=int)
-    )
-)
-def check_status(response: Response, expected_status: int) -> None:
-    with check:
-        assert response.status_code == expected_status
-
-
 @then('the response body contains the sensitivity flag')
 def response_body_contains_sensitivity_flag(response_body: str) -> None:
     check_value_in_response_body_at_path(response_body,
