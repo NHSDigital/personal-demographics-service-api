@@ -18,6 +18,7 @@ from pytest_nhsd_apim.apigee_apis import ApiProductsAPI
 retrieve_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_retrieve.feature')
 search_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_search.feature')
 update_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_update.feature')
+allocate_scenario = partial(pytest_bdd.scenario, './features/nhs_number_allocate.feature')
 
 related_person_scenario = partial(pytest_bdd.scenario, './features/related_person.feature')
 
@@ -204,6 +205,11 @@ def test_retrieve_related_person():
     pass
 
 
+@allocate_scenario('A healthcare worker is allowed to allocate an NHS number')
+def test_allocate_nhs_number():
+    pass
+
+
 @status_scenario('Ping endpoint')
 def test_ping():
     pass
@@ -279,17 +285,6 @@ def use_deprecated_url() -> str:
     prNo = re.search("pr-[0-9]+", PDS_BASE_PATH)
     prString = f"-{prNo.group()}" if prNo is not None else ""
     return f"{BASE_URL}/personal-demographics{prString}"
-
-
-@then(
-    parsers.cfparse(
-        "I get a {expected_status:Number} HTTP response",
-        extra_types=dict(Number=int)
-    )
-)
-def check_status(response: Response, expected_status: int) -> None:
-    with check:
-        assert response.status_code == expected_status
 
 
 @then('the response body contains the sensitivity flag')

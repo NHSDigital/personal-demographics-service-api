@@ -67,6 +67,19 @@ def add_asid_to_testapp(developer_apps_api,
         developer_apps_api.post_app_attributes(email=developer_email, app_name=app_name, body=data)
 
 
+@pytest.fixture(scope='function')
+def headers_with_authorization(_nhsd_apim_auth_token_data: dict,
+                               add_asid_to_testapp: None) -> dict:
+    access_token = _nhsd_apim_auth_token_data.get("access_token", "")
+
+    headers = {
+        "X-Request-ID": str(uuid.uuid1()),
+        "X-Correlation-ID": str(uuid.uuid1()),
+        "Authorization": f'Bearer {access_token}'
+    }
+    return headers
+
+
 @pytest.fixture()
 def search() -> Search:
     return searches.DEFAULT
