@@ -92,7 +92,7 @@
   </RouteRule>
   <RouteRule name="sync-wrap">
     <Condition>
-       request.header.x-sync-wrapped NotEquals "true" AND (request.verb = "PATCH" AND (proxy.pathsuffix MatchesPath "/Patient/{id}")) OR (request.verb = "POST" AND (proxy.pathsuffix MatchesPath "/Patient"))
+       request.header.x-sync-wrapped NotEquals "true" AND ((request.verb = "PATCH" AND (proxy.pathsuffix MatchesPath "/Patient/{id}")) OR (request.verb = "POST" AND (proxy.pathsuffix MatchesPath "/Patient")))
     </Condition>
   <TargetEndpoint>sync-wrap</TargetEndpoint>
 </RouteRule>
