@@ -10,7 +10,7 @@
 * Update sandbox responses to no longer return reference and type fields in patient related people bundle resources.
 
 ## 2024-01-12
-* Updated log given for missing X-Request-ID to 400 from 412 and associated tests,documentation,sandbox.
+* Updated log given for missing X-Request-ID to 400 from 412 and associated tests, documentation, sandbox.
 
 ## 2024-01-12
 * Update Patient Identifier System URI
