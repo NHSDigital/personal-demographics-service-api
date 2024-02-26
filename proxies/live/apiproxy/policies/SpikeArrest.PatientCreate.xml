@@ -2,7 +2,6 @@
 <SpikeArrest async="false" continueOnError="false" enabled="true" name="SpikeArrest.PatientCreate">
     <DisplayName>SpikeArrest.PatientCreate</DisplayName>
     <Properties/>
-    <MessageWeight ref="request.header.weight"/>
     <Rate>1pm</Rate>
     <UseEffectiveCount>true</UseEffectiveCount>
 </SpikeArrest>
