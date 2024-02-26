@@ -14,6 +14,10 @@
         <Name>FlowCallout.ApplyRateLimiting</Name>
       </Step>
       <Step>
+        <Name>SpikeArrest.PatientCreate</Name>
+        <Condition>request.verb == "POST" AND (proxy.pathsuffix MatchesPath "/Patient")</Condition>
+      </Step>
+      <Step>
         <Name>AssignMessage.AddSyncWaitHeader</Name>
         <Condition>(request.header.X-Sync-Wait LesserThan 0.25) OR (request.header.X-Sync-Wait GreaterThan 29) OR (request.header.X-Sync-Wait Is null)</Condition>
       </Step>
