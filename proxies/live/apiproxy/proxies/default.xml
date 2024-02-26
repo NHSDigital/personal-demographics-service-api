@@ -16,10 +16,6 @@
           <Name>AssignMessage.RemovePreferHeader</Name>
           <Condition>request.header.prefer IsNot null</Condition>
       </Step>
-      <Step>
-          <Name>SpikeArrest.PatientCreate</Name>
-          <Condition>request.verb == "POST" AND (proxy.pathsuffix MatchesPath "/Patient")</Condition>
-      </Step>
     </Request>
   </PreFlow>
   <PostFlow>
