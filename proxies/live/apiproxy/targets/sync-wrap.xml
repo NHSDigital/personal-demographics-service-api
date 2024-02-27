@@ -128,7 +128,7 @@
       </Step>
     </FaultRule>
     <FaultRule name="patient_create_rate_limit_exceeded">
-      <Condition>(ratelimit.SpikeArrest.PatientCreate.failed = true)</Condition>
+      <Condition>(ratelimit.SpikeArrest.PatientCreate.failed Equals true)</Condition>
       <Step>
         <Name>AssignMessage.Errors.TooManyPatientCreateRequests</Name>
       </Step>
