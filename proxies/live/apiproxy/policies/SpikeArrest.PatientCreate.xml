@@ -2,6 +2,6 @@
 <SpikeArrest async="false" continueOnError="false" enabled="true" name="SpikeArrest.PatientCreate">
     <DisplayName>SpikeArrest.PatientCreate</DisplayName>
     <Properties/>
-    <Rate>1pm</Rate>
+    <Rate>300pm</Rate>
     <UseEffectiveCount>true</UseEffectiveCount>
 </SpikeArrest>
