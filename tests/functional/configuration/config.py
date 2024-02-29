@@ -19,7 +19,8 @@ ENV = EnvVarWrapper(
         'redirect_uri': 'REDIRECT_URI',
         'apigee_api_token': 'APIGEE_API_TOKEN',
         'internal_dev_asid': 'INTERNAL_DEV_ASID',
-        'oauth_proxy': 'OAUTH_PROXY'
+        'oauth_proxy': 'OAUTH_PROXY',
+        'oauth_base_uri': 'OAUTH_BASE_URI'
     }
 )
 
@@ -60,6 +61,7 @@ AUTH_TOKEN_EXPIRY_MS = (
 
 # OAUTH
 OAUTH_PROXY = ENV['oauth_proxy']
+OAUTH_BASE_URI = ENV['oauth_base_uri']
 
 # Header values
 ROLE_ID = "555254242102"
