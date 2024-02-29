@@ -7,23 +7,19 @@ import aiohttp
 import asyncio
 import requests
 import pytest
-
-
-from lxml import html
-
-from functools import partial
-from polling2 import poll, TimeoutException
-from pytest_bdd import given, when, then, parsers
 import pytest_bdd
 
-from tests.functional.conftest import set_quota_and_rate_limit
-from tests.scripts.pds_request import PdsRecord
+from dateutil import parser
+from functools import partial
+from lxml import html
+from pytest_bdd import when, then
 
-from .configuration.config import (PDS_BASE_PATH, CLIENT_ID, CLIENT_SECRET, OAUTH_PROXY)
+from .configuration.config import (PDS_BASE_PATH, CLIENT_ID, CLIENT_SECRET)
 from .utils.helpers import get_role_id_from_user_info_endpoint
 
 
 scenario = partial(pytest_bdd.scenario, './features/post_patient_spike_arrest.feature')
+
 
 @pytest.mark.skipif("asid-required" in PDS_BASE_PATH, reason="Don't run in asid-required environment")
 @scenario('The rate limit is tripped when POSTing new Patients (>5tps)')
@@ -31,7 +27,7 @@ def test_post_patient_rate_limit():
     pass
 
 
-#-FIXTURES------------------------------------------------------------------------------------------------------
+# FIXTURES------------------------------------------------------------------------------------------------------
 @pytest.fixture(scope='function')
 def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
     """Authenticates as a healthcare worker and returns valid request headers"""
@@ -49,7 +45,7 @@ def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
 
     tree = html.fromstring(form_request.text)
     form = tree.forms[0]
-    
+
     login_request = sesh.post(
         url=form.action,
         data={
@@ -58,9 +54,9 @@ def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
         }
     )
     login_location = login_request.history[-1].headers['Location']
-    
+
     code = re.findall('.*code=(.*)&', login_location)[0]
-    
+
     token_request = sesh.post(
         url=f"{identity_service_base_url}/token",
         data={
@@ -82,75 +78,74 @@ def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
 
     role_id = get_role_id_from_user_info_endpoint(access_token, identity_service_base_url)
     headers.update({"NHSD-Session-URID": role_id})
-    
+
     return headers
 
 
-#-SUPPORTING FUNCTIONS-------------------------------------------------------------------------------------------
-async def make_async_calls(headers: dict, url: str, body: str):
-    # set the request limit to be pretty fast
-    aiohttp.TCPConnector(limit=50)
+# SUPPORTING FUNCTIONS-------------------------------------------------------------------------------------------
+async def _create_patient(session, headers, url, body):
+    details = {'request_time': datetime.datetime.now(datetime.timezone.utc)}
 
-    request_details = []
-    
-    async def _make_call(headers, url, body):
-        details = {'request_time': datetime.datetime.now(datetime.timezone.utc)}
-        async with session.post(
-            url=url,
-            headers=headers,
-            data=body) as resp:
-                status = resp.status
-                headers = resp.headers
-                text = await resp.text()
-                response_dict = json.loads(text)
-                details['status'] = status
-                details['response'] = response_dict
-                request_details.append(details)
-
-    async with aiohttp.ClientSession() as session:
-        for _ in range(6):
-            await _make_call(headers,url,body)
-
-    return request_details
+    async with session.post(url=url, headers=headers, data=body) as resp:
+        status = resp.status
+        headers = resp.headers
+        text = await resp.text()
+        response_dict = json.loads(text)
+        details['status'] = status
+        details['response'] = response_dict
+        details['response_time'] = parser.parse(headers['Date'])
+        return details
 
 
-#-STEPS----------------------------------------------------------------------------------------------------------
+async def _create_all_patients(headers, url, body, loop, num_patients):
+    conn = aiohttp.TCPConnector(limit=5)
+    async with aiohttp.ClientSession(connector=conn, loop=loop) as session:
+        results = await asyncio.gather(
+            *[_create_patient(session, headers, url, body) for _ in range(num_patients)],
+            return_exceptions=True
+        )
+        return results
+
+
+# STEPS----------------------------------------------------------------------------------------------------------
 @pytest.mark.asyncio
-@when("I post to the Patient endpoint more than 5 times per second", target_fixture='response')
-def post_patient_multiple_times(healthcare_worker_auth_headers: dict, pds_url: str) -> requests.Response:
+@when("I post to the Patient endpoint more than 5 times per second", target_fixture='post_results')
+def post_patient_multiple_times(healthcare_worker_auth_headers: dict, pds_url: str) -> list:
+    patients_to_create = 40
     url = f'{pds_url}/Patient'
     body = json.dumps({"nhsNumberAllocation": "Done"})
-    results = asyncio.run(make_async_calls(healthcare_worker_auth_headers, url, body))
-    times = [x['request_time'] for x in results]
-    times.sort()
-    elapsed_time = times[-1] - times[0]
-    total_requests = len(results)
-    tps = total_requests / elapsed_time.seconds
-    assert tps > 5 
-    spike_arrest_results = [x for x in results if x['status'] == 429]
-    
-    # # dubious approach
-    # def _create_patient():
-    #     response = requests.post(
-    #         data=json.dumps({"nhsNumberAllocation": "Done"}),
-    #         headers=healthcare_worker_auth_headers,
-    #         url=f'{pds_url}/Patient'
-    #     )
-    #     return response
 
-    # def _is_rate_limited_polling(response):
-    #     return response.status_code == 429
+    loop = asyncio.new_event_loop()
+    results = loop.run_until_complete(
+         _create_all_patients(healthcare_worker_auth_headers, url, body, loop, patients_to_create)
+    )
+    request_times = [x['request_time'] for x in results]
+    request_times.sort()
+    elapsed_time_req = request_times[-1] - request_times[0]
+    # look how fast we sent those requests
+    assert elapsed_time_req.seconds == 0
 
-    # try:
-    #     response = poll(lambda: _create_patient(), timeout=5, step=0.01, check_success=_is_rate_limited_polling)
-    #     return response
-    # except TimeoutException:
-    #     assert False, "Timeout Error: Rate limit with sync wrap request wasn't tripped within set timeout"
+    response_times = [x['response_time'] for x in results]
+    response_times.sort()
+    elapsed_time_res = response_times[-1] - response_times[0]
+    # the responses came back in under 5 seconds
+    assert elapsed_time_res.seconds <= 5
+
+    return results
 
 
-@then("returns a rate limit error message")
-def rate_limit_error_message(response: requests.Response):
-    # improve this when we get there
-    import pytest; pytest.set_trace()
-    code = response.json()["issue"][0]["details"]["coding"][0]["code"]
-    assert code == "TOO_MANY_REQUESTS"
+@then("I get a mix of 404 and 429 HTTP response codes")
+def assert_expected_spike_arrest_response_codes(post_results):
+    successful_requests = [x for x in post_results if x['status'] == 404]
+    spike_arrests = [x for x in post_results if x['status'] == 429]
+    assert len(spike_arrests) > 0
+    assert len(successful_requests) + len(spike_arrests) == len(post_results)
+
+
+@then("the 429 response bodies alert me that there have been too many Create Patient requests")
+def assert_expected_429_diagnostics(post_results):
+    spike_arrests = [x for x in post_results if x['status'] == 429]
+    diagnostics = [x['response']['issue'][0]['diagnostics'] for x in spike_arrests]
+    expected_diagnostics = 'There have been too many Create Patient requests. Please try again later.'
+    correct_diagnostics = [x for x in diagnostics if x == expected_diagnostics]
+    assert len(correct_diagnostics) == len(spike_arrests), "Some of the diagnostics messages were not as expected"
