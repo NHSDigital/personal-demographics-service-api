@@ -7,6 +7,12 @@ class UserDirectory:
         "login_form": {"username": "656005750107"},
     }
 
+    healthcare_worker_with_multiple_roles = {
+        "level": "aal3",
+        "login_form": {"username": "656005750104"},
+        "access": "healthcare_worker"
+    }
+
     P9 = {
         "login_form": {"username": "9912003071"},
     }

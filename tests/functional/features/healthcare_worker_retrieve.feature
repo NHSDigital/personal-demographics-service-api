@@ -57,7 +57,7 @@ Feature: Healthcare Worker Access (Retrieve)
         And the response body is the Invalid Access Token response
 
     Scenario: Attempt to retrieve a patient without stating a role
-        Given I am a healthcare worker user
+        Given I am a healthcare worker with multiple roles user
         And I don't have a NHSD-Session-URID header
 
         When I retrieve a patient
