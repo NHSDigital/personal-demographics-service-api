@@ -113,10 +113,22 @@ async def _create_all_patients(headers, url, body, loop, num_patients):
 def post_patient_multiple_times(healthcare_worker_auth_headers: dict, pds_url: str) -> list:
     patients_to_create = 27
     url = f'{pds_url}/Patient'
-    body = json.dumps({'type': 'object', 'properties': {'nhsNumberAllocation':
-                            {'type': 'string', 'description': 'FHIR resource type.',
-                             'enum': ['Done'], 'example': 'Done'}},
-                             'required': ['nhsNumberAllocation']})
+    body = json.dumps({
+                        "type": "object",
+                        "properties": {
+                            "nhsNumberAllocation": {
+                                "type": "string",
+                                "description": "FHIR resource type.",
+                                "enum": [
+                                    "Done"
+                                ],
+                                "example": "Done"
+                            }
+                        },
+                        "required": [
+                            "nhsNumberAllocation"
+                        ]
+                    })
 
     loop = asyncio.new_event_loop()
     results = loop.run_until_complete(
