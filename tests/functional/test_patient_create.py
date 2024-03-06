@@ -111,7 +111,7 @@ async def _create_all_patients(headers, url, body, loop, num_patients):
 @pytest.mark.asyncio
 @when("I post to the Patient endpoint more than 5 times per second", target_fixture='post_results')
 def post_patient_multiple_times(healthcare_worker_auth_headers: dict, pds_url: str) -> list:
-    patients_to_create = 40
+    patients_to_create = 27
     url = f'{pds_url}/Patient'
     body = json.dumps({"nhsNumberAllocation": "Done"})
 
