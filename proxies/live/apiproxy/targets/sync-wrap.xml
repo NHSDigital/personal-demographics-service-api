@@ -14,6 +14,10 @@
         <Name>FlowCallout.ApplyRateLimiting</Name>
       </Step>
       <Step>
+        <Name>SpikeArrest.PatientCreate</Name>
+        <Condition>request.verb == "POST" AND (proxy.pathsuffix MatchesPath "/Patient")</Condition>
+      </Step>
+      <Step>
         <Name>AssignMessage.AddSyncWaitHeader</Name>
         <Condition>(request.header.X-Sync-Wait LesserThan 0.25) OR (request.header.X-Sync-Wait GreaterThan 29) OR (request.header.X-Sync-Wait Is null)</Condition>
       </Step>
@@ -118,6 +122,15 @@
       <Step>
         <Name>AssignMessage.Mirror.RequestID</Name>
         <Condition>(original-request-details.header.X-Request-ID ~~ ".+")</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.Errors.CatchAllMessage</Name>
+      </Step>
+    </FaultRule>
+    <FaultRule name="patient_create_rate_limit_exceeded">
+      <Condition>(ratelimit.SpikeArrest.PatientCreate.failed Equals true)</Condition>
+      <Step>
+        <Name>AssignMessage.Errors.TooManyPatientCreateRequests</Name>
       </Step>
       <Step>
         <Name>AssignMessage.Errors.CatchAllMessage</Name>

@@ -4,7 +4,13 @@ from typing import Dict
 class UserDirectory:
     healthcare_worker = {
         "level": "aal3",
+        "login_form": {"username": "656005750107"},
+    }
+
+    healthcare_worker_with_multiple_roles = {
+        "level": "aal3",
         "login_form": {"username": "656005750104"},
+        "access": "healthcare_worker"
     }
 
     P9 = {

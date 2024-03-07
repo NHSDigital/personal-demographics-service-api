@@ -170,5 +170,9 @@ def error_message(context):
 
 
 @then("returns a rate limit error message")
-def rate_limit_error_message(status, context: dict):
-    assert context["pds"].response is not None
+def rate_limit_error_message(context: dict):
+    try:
+        assert context["pds"].response is not None
+    except AttributeError:
+        code = json.loads(context["pds"].text)["issue"][0]["details"]["coding"][0]["code"]
+        assert code == "TOO_MANY_REQUESTS"
