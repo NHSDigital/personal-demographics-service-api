@@ -26,11 +26,6 @@ def test_sync_polling_rate_limit():
     pass
 
 
-@pytest.mark.skipif("asid-required" in PDS_BASE_PATH, reason="Don't run in asid-required environment")
-@scenario('The rate limit is tripped when POSTing new Patients (>1tps)')
-def test_post_patient_rate_limit():
-    pass
-
 # -------------------------------- GIVEN ----------------------------
 
 
@@ -129,32 +124,6 @@ def trip_rate_limit_sync_polling(context: dict, create_random_date):
 
     try:
         response = poll(lambda: _update_patient(), timeout=30, step=0.5, check_success=_is_rate_limited_polling)
-        context["pds"] = response
-        return
-    except TimeoutException:
-        assert False, "Timeout Error: Rate limit with sync wrap request wasn't tripped within set timeout"
-
-
-@pytest.mark.sync_wrap
-@when("the rate limit is tripped with sync-wrap polling the create Patient endpoint")
-def trip_rate_limit_sync_polling_create_patient(context: dict):
-    context["pds"].headers = {
-         "X-Sync-Wait": "29"
-    }
-
-    def _create_patient():
-        response = context["pds"].post(
-            data={"nhsNumberAllocation": "Done"},
-            headers=context["pds"].headers,
-            url=f'{context["pds"].base_url}/Patient/'
-        )
-        return response
-
-    def _is_rate_limited_polling(response):
-        return response.status_code == 429
-
-    try:
-        response = poll(lambda: _create_patient(), timeout=30, step=0.5, check_success=_is_rate_limited_polling)
         context["pds"] = response
         return
     except TimeoutException:

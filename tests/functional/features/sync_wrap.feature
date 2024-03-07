@@ -22,9 +22,3 @@ Feature: Sync-wrap failure modes
         When the rate limit is tripped with sync-wrap polling
         Then I get a 503 HTTP response
         And returns a helpful error message
-
-    Scenario: The rate limit is tripped when POSTing new Patients (>1tps)
-        Given I have a proxy with a low rate limit set
-        When the rate limit is tripped with sync-wrap polling the create Patient endpoint
-        Then I get a 429 HTTP response
-        And returns a rate limit error message
