@@ -6,11 +6,30 @@ Background:
 Scenario: Negative test - invalid request payload
     Given path "Patient"
     And request body: 
-        {"nhsNumberAllocation": "Done"}
+        {"blahblahblah":"blah"}
     When method POST
     Then status 400
-    And response body == read(invalid_patient_create_data)
-
+    And response body:
+        {
+            "issue": [
+                {
+                "code": "required",
+                "details": {
+                    "coding": [
+                    {
+                        "code": "MISSING_VALUE",
+                        "display": "Required value is missing",
+                        "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+                        "version": "1"
+                    }
+                    ]
+                },
+                "diagnostics": "Missing value - 'nhsNumberAllocation'",
+                "severity": "error"
+                }
+            ],
+            "resourceType": "OperationOutcome"
+        }
 
 Scenario: Valid request, basic payload
     Given path "Patient"

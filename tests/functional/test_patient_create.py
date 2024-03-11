@@ -97,7 +97,7 @@ def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
 async def _create_patient(session, headers, url, body):
     details = {'request_time': datetime.datetime.now(datetime.timezone.utc)}
 
-    async with session.post(url=url, headers=headers, data=body) as resp:
+    async with session.post(url=url, headers=headers, json=body) as resp:
         status = resp.status
         headers = resp.headers
         text = await resp.text()
@@ -192,6 +192,11 @@ def post_patient_multiple_times(healthcare_worker_auth_headers: dict, pds_url: s
 @then(parsers.parse("status {expected_status:d}"))
 def assert_expected_status(expected_status: int, response: requests.Response):
     assert response.status_code == expected_status
+
+
+@then(parsers.parse("response body:\n{expected_response:json}", extra_types=dict(json=json.loads)))
+def assert_expected_response_body(expected_response: dict, response: requests.Response):
+    assert expected_response == response.json()
 
 
 @then(parsers.parse("response body == read({response_file})"))
