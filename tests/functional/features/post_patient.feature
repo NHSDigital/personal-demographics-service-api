@@ -61,7 +61,6 @@ Scenario: Valid request, basic payload
     And response body == expected_response
 
 
-@ignore
 Scenario: The rate limit is tripped when POSTing new Patients (>5tps)
     When I post to the Patient endpoint more than 5 times per second
     Then I get a mix of 400 and 429 HTTP response codes
