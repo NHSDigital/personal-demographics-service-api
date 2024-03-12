@@ -12,6 +12,11 @@ jobs:
         with:
           fetch-depth: 0  # This causes all history to be fetched, which is required for calculate-version to function
 
+      - name: check what's checked out
+        run: |
+          echo `pwd`
+          echo `dir $pwd`
+
       - name: Install Python 3.8
         uses: actions/setup-python@v1
         with:
@@ -20,8 +25,16 @@ jobs:
       - name: Update apt repositories
         run: sudo apt update
 
-      - name: Install Java
-        run: sudo apt-get install --yes default-jre default-jdk
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v5
+        with:
+          maven-version: 3.8.2
 
       - name: Install node
         run: |

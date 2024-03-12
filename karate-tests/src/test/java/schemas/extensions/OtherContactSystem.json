@@ -1,0 +1,8 @@
+{
+    "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-OtherContactSystem",
+    "valueCoding": {
+        "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-OtherContactSystem",
+        "code": "##string",
+        "display": "##string"
+    }
+}

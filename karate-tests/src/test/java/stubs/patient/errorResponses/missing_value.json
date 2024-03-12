@@ -1,0 +1,20 @@
+{
+  "issue": [
+      {
+      "code": "required",
+      "details": {
+          "coding": [
+          {
+              "code": "MISSING_VALUE",
+              "display": "Required value is missing",
+              "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+              "version": "1"
+          }
+          ]
+      },
+      "diagnostics": "#(diagnostics)",
+      "severity": "error"
+      }
+  ],
+  "resourceType": "OperationOutcome"
+}

@@ -1,0 +1,7 @@
+{
+    "entry": "#[] (patientSearchResultEntry)",
+    "resourceType": "Bundle",
+    "timestamp": "#? isValidTimestamp(_)",
+    "total": "#number",
+    "type": "searchset"
+}

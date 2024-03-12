@@ -38,8 +38,13 @@ extends:
       REQUIRE_ASID: false
     apigee_deployments:
         - environment: internal-dev
+          stage_name: pytest-bdd_tests
           post_deploy:
             - template: templates/pds-tests.yml
+        - environment: internal-dev
+          stage_name: karate_tests
+          post_deploy:
+            - template: templates/pds-tests-karate.yml          
         - environment: internal-dev
           service_name: ${{ variables.service_name }}-asid-required
           short_service_name: ${{ variables.short_service_name }}-asid
@@ -51,7 +56,7 @@ extends:
           post_deploy:
             - template: templates/pds-tests.yml
           depends_on:
-            - internal_dev
+            - pytest-bdd_tests
         - environment: internal-dev-sandbox
           proxy_path: sandbox
           post_deploy:
