@@ -131,11 +131,11 @@ steps:
       export INTERNAL_DEV_ASID="$(INTERNAL_DEV_ASID)"
 
       poetry run pytest -v tests/functional/test_patient_create.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/patient-create-test-report.xml --reruns 20 --reruns-delay 1
-    displayName: Run post patient (create NHS number) tests
+    displayName: Run post patient tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
 
-  # - task: PublishTestResults@2
-  #   displayName: "Publish post patient (create NHS number) test results"
-  #   inputs:
-  #     testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/patient-create-test-report.xml
-  #     failTaskOnFailedTests: true
+  - task: PublishTestResults@2
+    displayName: "Publish post patient test results"
+    inputs:
+      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/patient-create-test-report.xml
+      failTaskOnFailedTests: true
