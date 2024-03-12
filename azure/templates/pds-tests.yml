@@ -120,3 +120,16 @@ steps:
       poetry run pytest -v tests/functional/test_patient_access.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/patient-access-test-report.xml --reruns 20 --reruns-delay 1
     displayName: Run patient access tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+
+
+  - bash: |
+      export APIGEE_API_TOKEN="$(secret.AccessToken)"
+      export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
+      export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
+      export OAUTH_PROXY="oauth2-mock"
+      export TEST_PATIENT_ID="$(TEST_PATIENT_ID)"
+      export INTERNAL_DEV_ASID="$(INTERNAL_DEV_ASID)"
+
+      poetry run pytest -v tests/functional/test_patient_create.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/patient-access-test-report.xml --reruns 20 --reruns-delay 1
+    displayName: Run post patient (create NHS number) tests
+    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
