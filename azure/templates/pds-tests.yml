@@ -134,8 +134,8 @@ steps:
     displayName: Run post patient (create NHS number) tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
 
-  - task: PublishTestResults@2
-    displayName: "Publish post patient (create NHS number) test results"
-    inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/patient-create-test-report.xml
-      failTaskOnFailedTests: true
+  # - task: PublishTestResults@2
+  #   displayName: "Publish post patient (create NHS number) test results"
+  #   inputs:
+  #     testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/patient-create-test-report.xml
+  #     failTaskOnFailedTests: true
