@@ -1,5 +1,6 @@
 import datetime
 import json
+import os
 import re
 import uuid
 
@@ -12,16 +13,26 @@ import pytest_bdd
 from dateutil import parser
 from functools import partial
 from lxml import html
-from pytest_bdd import when, then
+from pytest_bdd import given, when, then, parsers
 
-from .configuration.config import (PDS_BASE_PATH, CLIENT_ID, CLIENT_SECRET)
-from .utils.helpers import get_role_id_from_user_info_endpoint
-
-
-scenario = partial(pytest_bdd.scenario, './features/post_patient_spike_arrest.feature')
+from tests.functional.conftest import RESPONSES_DIR
+from tests.functional.configuration.config import (CLIENT_ID, CLIENT_SECRET)
+from tests.functional.utils.helpers import get_role_id_from_user_info_endpoint
 
 
-@pytest.mark.skipif("asid-required" in PDS_BASE_PATH, reason="Don't run in asid-required environment")
+scenario = partial(pytest_bdd.scenario, './features/post_patient.feature')
+
+
+@scenario('Negative test - invalid request payload')
+def test_post_patient_invalid():
+    pass
+
+
+@scenario('Valid request, basic payload')
+def test_post_patient_basic():
+    pass
+
+
 @scenario('The rate limit is tripped when POSTing new Patients (>5tps)')
 def test_post_patient_rate_limit():
     pass
@@ -86,7 +97,7 @@ def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
 async def _create_patient(session, headers, url, body):
     details = {'request_time': datetime.datetime.now(datetime.timezone.utc)}
 
-    async with session.post(url=url, headers=headers, data=body) as resp:
+    async with session.post(url=url, headers=headers, json=body) as resp:
         status = resp.status
         headers = resp.headers
         text = await resp.text()
@@ -112,6 +123,41 @@ async def _create_all_patients(headers, url, body, loop, num_patients):
 
 
 # STEPS----------------------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------
+# GIVEN----------------------------------------------------------------------------------------------------------
+@given(parsers.parse('path "{path}"'), target_fixture="full_url")
+def set_url_path(path: str, pds_url: str) -> str:
+    if path[0] != "/":
+        path = f"/{path}"
+    return f"{pds_url}{path}"
+
+
+@given(parsers.parse("request body:\n{request_body:json}", extra_types=dict(json=json.loads)),
+       target_fixture="request_body")
+def set_request_body(request_body: dict) -> dict:
+    return request_body
+
+
+@given(parsers.parse("headers:\n{headers:json}", extra_types=dict(json=json.loads)), target_fixture="headers")
+def set_additional_headers(headers: dict, healthcare_worker_auth_headers: dict) -> dict:
+    for key, value in headers.items():
+        if value == "#(uuid)":
+            headers[key] = str(uuid.uuid4())
+    healthcare_worker_auth_headers.update(headers)
+    return healthcare_worker_auth_headers
+
+
+# WHEN------------------------------------------------------------------------------------------------------------
+@when("method POST", target_fixture="response")
+def make_post_request(full_url: str, healthcare_worker_auth_headers: dict, request_body: dict) -> requests.Response:
+    response = requests.post(
+        full_url,
+        headers=healthcare_worker_auth_headers,
+        json=request_body,
+    )
+    return response
+
+
 @pytest.mark.asyncio
 @when("I post to the Patient endpoint more than 5 times per second", target_fixture='post_results')
 def post_patient_multiple_times(healthcare_worker_auth_headers: dict, pds_url: str) -> list:
@@ -142,6 +188,24 @@ def post_patient_multiple_times(healthcare_worker_auth_headers: dict, pds_url: s
     return results
 
 
+# THEN------------------------------------------------------------------------------------------------------------
+@then(parsers.parse("status {expected_status:d}"))
+def assert_expected_status(expected_status: int, response: requests.Response):
+    assert response.status_code == expected_status
+
+
+@then(parsers.parse("response body:\n{expected_response:json}", extra_types=dict(json=json.loads)))
+def assert_expected_response_body(expected_response: dict, response: requests.Response):
+    assert expected_response == response.json()
+
+
+@then(parsers.parse("response body == read({response_file})"))
+def assert_against_example_response_file(response_file, response: requests.Response):
+    with open(os.path.join(RESPONSES_DIR, f'{response_file}.json'), 'r') as f:
+        expected_response_body = json.load(f)
+    assert response.json() == expected_response_body
+
+
 @then("I get a mix of 400 and 429 HTTP response codes")
 def assert_expected_spike_arrest_response_codes(post_results):
     successful_requests = [x for x in post_results if x['status'] == 400]
@@ -157,3 +221,41 @@ def assert_expected_429_diagnostics(post_results):
     expected_diagnostics = 'There have been too many Create Patient requests. Please try again later.'
     correct_diagnostics = [x for x in diagnostics if x == expected_diagnostics]
     assert len(correct_diagnostics) == len(spike_arrests), "Some of the diagnostics messages were not as expected"
+
+
+@then(parsers.parse("expected_response template == read({response_file})"), target_fixture='expected_response_json')
+def set_expected_response_json_string(response_file):
+    today_date = datetime.datetime.now().strftime("%Y-%m-%d")
+
+    with open(os.path.join(RESPONSES_DIR, f'{response_file}.json'), 'r') as f:
+        json_string = f.read()
+
+    # swap out any pre-defined dynamic values
+    new_string = json_string.replace("#todayDate", today_date)
+    return new_string
+
+
+@then(parsers.parse("set expected_response['{placeholder}'] = '{value}'"), target_fixture='expected_response_json')
+def set_expected_response_json_value(placeholder, value, expected_response_json):
+    new_string = expected_response_json.replace(placeholder, value)
+    return new_string
+
+
+@then(parsers.parse("set expected_response['{placeholder}'] = response['{value}']"),
+      target_fixture='expected_response_json')
+def set_expected_response_json_with_response_value(placeholder, value, response, expected_response_json):
+    new_string = expected_response_json.replace(placeholder, response.json()[value])
+    return new_string
+
+
+@then(parsers.parse("ignore in response comparison the family name Id"), target_fixture='response_json')
+def set_ignore_path(response):
+    response_json = response.json()
+    del response_json['name'][0]['id']
+    return response_json
+
+
+@then("response body == expected_response")
+def assert_response_is_expected_response(response_json, expected_response_json):
+    expected_response = json.loads(expected_response_json)
+    assert response_json == expected_response
