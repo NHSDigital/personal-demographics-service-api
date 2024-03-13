@@ -48,7 +48,7 @@ steps:
       export OAUTH_PROXY="oauth2-mock"
       export INTERNAL_DEV_ASID="$(INTERNAL_DEV_ASID)"
 
-      mvn test -Dtest=healthcareWorkerTests#testGetPatient -Dkarate.env=dev
+      make karate
 
-    displayName: Run the get patient test
+    displayName: Run the tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"

@@ -17,6 +17,10 @@ install-fhir-validator:
 	mkdir -p bin
 	test -f bin/org.hl7.fhir.validator.jar || curl -L https://github.com/hapifhir/org.hl7.fhir.core/releases/latest/download/validator_cli.jar > bin/org.hl7.fhir.validator.jar
 
+karate:
+	cd karate-tests && mvn clean test
+
+
 lint:
 	npm run lint
 	cd sandbox && npm run lint && cd ..
