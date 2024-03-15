@@ -12,11 +12,6 @@ jobs:
         with:
           fetch-depth: 0  # This causes all history to be fetched, which is required for calculate-version to function
 
-      - name: check what's checked out
-        run: |
-          echo `pwd`
-          echo `dir $pwd`
-
       - name: Install Python 3.8
         uses: actions/setup-python@v1
         with:
