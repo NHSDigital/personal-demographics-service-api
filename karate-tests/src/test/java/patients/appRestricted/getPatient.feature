@@ -4,14 +4,7 @@ Feature: get /Patient - Application-restricted access mode
     * def utils = karate.callSingle('classpath:helpers/utils.feature')
     * def accessToken = karate.callSingle('classpath:patients/appRestricted/authRestricted.feature').accessToken
     * def requestHeaders = call read('classpath:patients/appRestricted/app-restricted-headers.js')
-    * def noAuthHeaders = 
-    """
-    {
-        "NHSD-SESSION-URID": "123", 
-        "x-request-id": "#(utils.randomUUID())",
-        "x-correlation-id": "#(utils.randomUUID())",
-    }
-    """
+    * def noAuthHeaders = call read('classpath:patients/appRestricted/no-auth-headers.js')
     * url baseURL
     * param family = "Smith" 
     * param gender = "female"

@@ -5,7 +5,6 @@ Feature: Patch patient - Healthcare worker access mode
     * def accessToken = karate.callSingle('classpath:patients/healthcareWorker/auth-redirect.feature').accessToken
     * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
     * configure headers = requestHeaders 
-    * configure headers = requestHeaders 
     * url baseURL
     * def nhsNumber = karate.get('nhsNumber', '9912002725')
     * path 'Patient', nhsNumber
