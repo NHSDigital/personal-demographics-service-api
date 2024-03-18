@@ -1,4 +1,7 @@
 {
+    "address": "##[] addressSchema",
+    "birthDate": "##? utils.isValidDateString(_)",
+    "gender": "##regex(male|female)",
     "id": "#(nhsNumber)",
     "identifier": [
         {
@@ -33,7 +36,7 @@
     },
     "name": [
         {
-            "id":"#string",
+            "id": "#string",
             "family": "#(familyName)",
             "period": {
                 "start": "#? utils.isTodaysDate(_)"

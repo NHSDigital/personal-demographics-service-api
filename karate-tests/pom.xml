@@ -14,7 +14,8 @@
         <maven.surefire.version>3.0.0</maven.surefire.version>
         <karate.version>1.4.1</karate.version>
         <gatling.plugin.version>4.8.2</gatling.plugin.version>
-        <slf4j.version>1.6.1</slf4j.version>
+        <slf4j.version>1.7.36</slf4j.version>
+        <javafaker.version>1.0.2</javafaker.version>
     </properties>    
 
     <dependencies>         
@@ -51,6 +52,12 @@
             <version>1.77</version>
         </dependency>
         <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>${javafaker.version}</version>
+        </dependency>
+        <!-- why does activating these mean I lose request details in the html report? -->
+        <dependency>
             <groupId>net.masterthought</groupId>
             <artifactId>cucumber-reporting</artifactId>
             <version>5.3.1</version>
@@ -66,6 +73,7 @@
             <artifactId>slf4j-simple</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
+        <!-- why does activating these mean I lose request details in the html report? -->
     </dependencies>
 
     <build>
