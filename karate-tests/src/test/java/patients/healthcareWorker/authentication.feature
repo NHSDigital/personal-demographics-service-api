@@ -83,15 +83,3 @@ Scenario: Call the real oauth2 authentication mock service
     * status 200
 
     * def accessToken = response.access_token
-
-    # # now we set all the other required requestHeaders for the user to 
-    # # make their requests with
-    # * def  = 
-    #     """
-    #     {
-    #       "Client_ID": "#(clientID)",
-    #       "x-request-id": "#(utils.randomUUID())",
-    #       "x-correlation-id": "#(utils.randomUUID())",
-    #       "Authorization": "#('Bearer ' + response.access_token)"
-    #     }
-    #     """

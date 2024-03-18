@@ -58,12 +58,3 @@ Feature: Get a patient - Healthcare worker access mode
     * method get
     * match response == read('classpath:schemas/patientSearchBundle.json')
     * status 200
-
-    # valid nhs numbers for tests - these patients exist in the db
-    # 9912002725
-    # 9735843536
-    # 9728545584
-    # 9200000061
-    # 9200000010
-    # 9911002705
-    # 5900035697
