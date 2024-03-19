@@ -4,6 +4,6 @@
     "use": "##regex(home|work|temp|billing)",
     "text": "##regex(Second Home|Student Accommodation|Respite Care Address|Temporary Residence Address|Convalescence Home|Mobile Home|Holiday Home)",
     "line": "#[_ < 6] #string",
-    "postalCode": "##regex([A-Z]{1,2}\\d[A-Z\\d]? \\d[A-Z]{2})",
+    "postalCode": "##? utils.isValidPostalCode(_)",
     "extension": "##[]"
 }

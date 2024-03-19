@@ -32,11 +32,11 @@ Background:
     "period": {
         "start": "#? utils.isTodaysDate(_)"
     },
-    "postalCode": "#? utils.isValidPostCode(_)",
+    "postalCode": "#? utils.isValidPostalCode(_)",
     "use": "#regex(home)"
   }
   """
-
+  
   * def accessToken = karate.callSingle('classpath:patients/healthcareWorker/auth-redirect.feature').accessToken
   * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
   * configure headers = requestHeaders  
@@ -45,78 +45,89 @@ Background:
   # we have to chill out a bit between requests in case we trigger the spike alert policy :-(
   * eval utils.sleep(4)
 
-Scenario: Post patient, required request data only
-  * def familyName = 'Karate-test-' + utils.randomInt()
-  * def body =
-  """
-  {
-    "nhsNumberAllocation": "Done",
-    "name": {
-        "use": "L",
-        "name.familyName": "#(familyName)"
-    },
-    "registeringAuthority": "#(registeringAuthority)"
-  }
-  """
-  * path "Patient"
-  * request body
-  * method post
-  * status 201
-  * def nhsNumber = response.id
-  * def expectedResponse = read('classpath:stubs/patient/new-nhs-number-response-template.json')
-  * match response == expectedResponse
-
-Scenario: Create a record for a new patient, demographics match found
-  * def address = faker.streetAddress()
-  * def postCode = faker.postCode()
   
-  * def familyName = 'Karate-test-' + utils.randomInt()
-  * def birthTime = utils.getRandomBirthDate().replaceAll("-","")
-  * def body = 
-  """
-  {
-    "nhsNumberAllocation": "Done",
-    "name": {
-        "use": "L",
-        "name.familyName": "#(familyName)",
-        "name.givenName": ["Zebedee"]
-    },
-    "gender": {
-        "gender.code": "1"
-    },
-    "birthTime": {
-        "birthTime.value": "#(birthTime)"},
-    "address": {
-        "use": "H",
-        "address.postalCode": "#(postCode)",
-        "address.AddressKey": "205",
-        "address.addr.line1" : "#(address)"
-    },
-    "registeringAuthority": "#(registeringAuthority)"
-  }
-  """
-
-  # first request works because the demographics are unique
+Scenario: Post patient - new patient
+  * def familyName = "Karate-test-" + utils.randomString(7)
+  * def givenName = "Zebedee"
+  * def prefix = "Mr"
+  * def gender = "male"
+  * def genderCode = "1"
+  * def birthDate = utils.randomBirthDate()
+  * def birthTime = birthDate.replaceAll("-","")
+  * def postalCode = faker.postalCode()
+  * def address = faker.streetAddress()
+  
   * path "Patient"
-  * request body
+  * request read('classpath:patients/healthcareWorker/post-patient-request.json')
   * method post
   * status 201
   * def nhsNumber = response.id
   * def expectedResponse = read('classpath:stubs/patient/new-nhs-number-response-template.json')
   * match response == expectedResponse
   * match response.address[0].line[0] == address
-  * match response.address[0].postalCode == postCode
+  * match response.address[0].postalCode == postalCode
 
-  * eval utils.sleep(4)
 
-  # second request fails because the same demographics are used, and a match is found
+Scenario: Fail to create a record for a new patient, single demographics match found
+  # we rely on data that's already in the database for our existing record
+  * def nhsNumber = "5900027104"
+  * def familyName = "Karate-test-somwzqz"
+  * def givenName = "Zebedee"
+  * def prefix = "Mr"
+  * def gender = "male"
+  * def genderCode = "1"
+  * def birthDate = "1954-10-26"
+  * def birthTime = birthDate.replaceAll("-","")
+  * def postalCode = "BAP4WG"
+  * def address = "317 Stuart Streets"
+
+  # we get one match in the database for these demographics
+  * def demographics = ({ family: familyName, birthdate: birthDate, gender: gender, "address-postalcode": postalCode })
+  * def patientSearchResults = karate.call('classpath:patients/healthcareWorker/getPatientByDemographics.feature', demographics)
+  * assert patientSearchResults.response.total == 1
+
+  # so when we try to create a new patient using the same demographics, we get the single_match_found error
   * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
   * configure headers = requestHeaders
   * path "Patient"
-  * request body
+  * request read('classpath:patients/healthcareWorker/post-patient-request.json')
   * method post
   * status 200
   * match response == read('classpath:stubs/patient/errorResponses/single_match_found.json')
+
+
+Scenario: Fail to create a record for a new patient, multiple demographics matches found
+  # we rely on data that's already in the database for our existing records
+  * def nhsNumber = "5900036502"
+  * def familyName = "McCOAG"
+  * def gender = "male"
+  * def genderCode = "1"
+  * def birthDate = "1997-08-20"
+  * def birthTime = birthDate.replaceAll("-","")
+  * def postalCode = "DN19 7UD"
+  * def address = "1 Jasmine Court"
+
+  # we get two matches in the database for these demographics
+  # (NB the matching for post patient doesn't seem to ignore the space in the postalCode value,
+  # so for this functionality there are only actually 2 matches, not 3)
+  * def demographics = ({ family: familyName, birthdate: birthDate, gender: gender, "address-postalcode": postalCode })
+  * def patientSearchResults = karate.call('classpath:patients/healthcareWorker/getPatientByDemographics.feature', demographics)
+  * assert patientSearchResults.response.total == 3
+
+  # so when we try to create a new patient using the same demographics, we get the multiple_matches_found error
+  * def requestBody = read('classpath:patients/healthcareWorker/post-patient-request.json')
+  # there are a couple of things we don't need in this body
+  * eval delete requestBody["name"]["name.givenName.name1"]
+  * eval delete requestBody["name"]["name.prefix"]
+  
+  * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+  * configure headers = requestHeaders
+  * path "Patient"
+  * request requestBody
+  * method post
+  * status 200
+  * match response == read('classpath:stubs/patient/errorResponses/multiple_matches_found.json')
+
 
 Scenario: Negative path: invalid request body
   * path "Patient"

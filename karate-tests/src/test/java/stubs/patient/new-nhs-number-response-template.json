@@ -38,6 +38,8 @@
         {
             "id": "#string",
             "family": "#(familyName)",
+            "given": "##[] #(givenName)",
+            "prefix": "##[] #(prefix)",
             "period": {
                 "start": "#? utils.isTodaysDate(_)"
             },

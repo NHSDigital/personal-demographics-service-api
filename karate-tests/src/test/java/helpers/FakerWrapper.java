@@ -12,9 +12,9 @@ public class FakerWrapper {
         return faker.address().streetAddress(); 
     }
      
-    public static String postCode() {
+    public static String postalCode() {
         // return e.g. Y96 6ND
-        // we use our own method, since the faker method can build invalid post codes
+        // we use our own method, since the faker method can build invalid postal codes
         String regexString = 
             "([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|"
             + "(([AZa-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))[0-9][A-Za-z]{2})";

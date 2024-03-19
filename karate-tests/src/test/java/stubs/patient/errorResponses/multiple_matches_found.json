@@ -5,14 +5,14 @@
       "details": {
         "coding": [
           {
-            "code": "SINGLE_MATCH",
-            "display": "Single match found",
+            "code": "MULTIPLE_MATCHES",
+            "display": "Multiple matches found",
             "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
             "version": "1"
           }
         ]
       },
-      "diagnostics": "#('Unable to create new patient. NHS number ' + nhsNumber + ' found for supplied demographic data.')",
+      "diagnostics": "Unable to create new patient. Multiple matches found for supplied demographic data.",
       "severity": "error"
     }
   ],

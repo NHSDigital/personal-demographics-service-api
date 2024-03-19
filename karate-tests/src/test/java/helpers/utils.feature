@@ -7,7 +7,21 @@ Scenario:
   # data generators
   * def randomUUID = function(){ return java.util.UUID.randomUUID() + '' }
   * def randomInt = function() { return Math.random() * (10000 - 1) + 1 }
-  * def getRandomBirthDate = 
+  * def randomString = 
+  """
+  function(length) {
+    let result = '';
+    const characters = 'abcdefghijklmnopqrstuvwxyz';
+    const charactersLength = characters.length;
+
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    return result;
+  }
+  """
+  * def randomBirthDate = 
   """
   function() {
     var min = new Date(Date.parse('1930-01-01')).getTime();
@@ -42,17 +56,26 @@ Scenario:
   }
   """
 
-  * def isValidPostCode = 
+  * def isValidPostalCode = 
   """
-  function(postCode) {
-    postCode = postCode.replaceAll(" ", "")
+  function(postalCode) {
+    postalCode = postalCode.replaceAll(" ", "")
     var regex = new RegExp("^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([AZa-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))[0-9][A-Za-z]{2})$")
-    return regex.test(postCode)
+    return regex.test(postalCode)
   }
   """
 
   * def isValidNHSNumber = read('classpath:helpers/nhs-number-validator.js')
-
+  * def isValidPatientURL = 
+  """
+  function(url) {
+    var baseURL = "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/"
+    var nhsNumber = url.split('/')[url.split('/').length -1]
+    var validNHSNumber = karate.call('classpath:helpers/nhs-number-validator.js', nhsNumber)
+    return validNHSNumber
+  }
+  """
+  
   # other utility functions
   * def sleep = function(seconds){ java.lang.Thread.sleep(seconds * 1000) }
   
