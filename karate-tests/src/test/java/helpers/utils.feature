@@ -30,9 +30,16 @@ Scenario:
 
     * def sleep = function(pause){ java.lang.Thread.sleep(pause) }
     
-    # pick an item at random from an array
-    * def pickRandom = function(optionsArray) { Math.floor(Math.random() * optionsArray.length) }
-
+    # pick an item at random from an array, ignoring one of the items
+    * def pickDifferentOption = 
+    """
+    function(optionsArray, itemToIgnore) {
+      const index = optionsArray.indexOf(itemToIgnore);
+      optionsArray.splice(index, 1)
+      return optionsArray[Math.floor(Math.random() * optionsArray.length)]
+    }
+    """
+    
     # validators
     * def isValidTimestamp = function(timestamp) { return !isNaN(Date.parse(timestamp)) }
     * def isValidNHSNumber = read('classpath:helpers/nhs-number-validator.js')
