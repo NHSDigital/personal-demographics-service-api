@@ -11,11 +11,6 @@ Feature: Authentication for Healthcare Worker
     - 656005750106 	riley.jones@nhs.net
     - 656005750107 	shirley.bryne@nhs.net
 
-  Some valid nhs-login mock usernames are:
-    - 9912003071    for High - P9
-    - 9912003072    for Medium - P5
-    - 9912003073    for Low - P0
-
 Background:
     * def userID = karate.get('userID', '656005750107')
     * def javaUtils = Java.type('helpers.Utils')
