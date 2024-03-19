@@ -7,16 +7,16 @@ import scala.concurrent.duration._
 
 class PatientsSimulation extends Simulation {
   
-  val protocol = karateProtocol(
-      "/Patient" -> pauseFor("patch" -> 0)
-    )
+  val protocol = karateProtocol()
   
     protocol.runner.karateEnv("perf")
   
-    val post = scenario("post").exec(karateFeature("classpath:patients/healthcareWorker/postPatient.feature"))
+    val getSpecific = scenario("getSpecific").exec(karateFeature("classpath:patients/healthcareWorker/getPatient.feature"))
+    val search = scenario("search").exec(karateFeature("classpath:patients/healthcareWorker/getPatient.feature"))
     
     setUp(
-      post.inject(rampUsers(60) during (10 seconds)).protocols(protocol),
+      getSpecific.inject(rampUsers(60) during (10 seconds)).protocols(protocol),
+      search.inject(rampUsers(60) during (10 seconds)).protocols(protocol),
     )
   
 }

@@ -2,7 +2,7 @@ package patients.appRestricted;
 
 import com.intuit.karate.junit5.Karate;
 
-class appRestrictedTests {
+class AppRestrictedTests {
     
     @Karate.Test
     Karate testGetPatient() {

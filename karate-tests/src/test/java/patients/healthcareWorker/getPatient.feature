@@ -49,6 +49,7 @@ Feature: Get a patient - Healthcare worker access mode
     * match response.id == nhsNumber
     * match response == read('patient.json')
 
+  @search
   Scenario:Search for a patient using parameters
     * path "Patient"
     * param family = "Jones"

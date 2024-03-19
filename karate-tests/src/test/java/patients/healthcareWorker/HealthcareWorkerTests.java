@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 
 import com.intuit.karate.http.HttpServer;
 
-class healthcareWorkerTests {
+class HealthcareWorkerTests {
 
-    static final Logger logger = LoggerFactory.getLogger(healthcareWorkerTests.class);
+    static final Logger logger = LoggerFactory.getLogger(HealthcareWorkerTests.class);
     
     static HttpServer server;
 
