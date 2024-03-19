@@ -20,7 +20,7 @@ Scenario:
     """
     function() {
       var min = new Date(Date.parse('1930-01-01')).getTime();
-      var max = new Date(Date.parse('2020-12-31')).getTime();
+      var max = new Date().getTime();
       var randomValue = Math.random() * (max - min) + min;
 
       var randomDate = new Date(randomValue)
