@@ -84,8 +84,6 @@ Scenario:
     """
   
   # other utility functions
-  * def sleep = function(seconds){ java.lang.Thread.sleep(seconds * 1000) }
-  
   * def pickDifferentOption = 
     """
     function(optionsArray, itemToIgnore) {

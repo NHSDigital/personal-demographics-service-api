@@ -1,8 +1,14 @@
 Feature: Create a patient - Healthcare worker access mode
 
+Note the use of the Karate retry functionality in this feature: we're
+using it because the post patient functionality is subject to a spike
+arrest policy, whereby requests can be rejected with a 429 response.
+
 Background:
   * def utils = call read('classpath:helpers/utils.feature')
   * def faker = Java.type('helpers.FakerWrapper')
+  * json periodSchema = karate.readAsString('classpath:schemas/Period.json')
+  * json addressSchema = karate.readAsString('classpath:schemas/Address.json') 
   
   # the same registeringAuthority object is included in every request
   * def registeringAuthority = 
@@ -19,33 +25,11 @@ Background:
     "overallUpdateMode": "create"
   }
   """
-
-  # the addressSchema used for the create responses is not the same as what's defined elsewhere, so 
-  # we'll use this schema until the schemas are harmonised...
-  * json periodSchema = karate.readAsString('classpath:schemas/Period.json')
-  * json addressSchema = karate.readAsString('classpath:schemas/Address.json') 
-  # """
-  # {
-  #   "id": "#regex([0-9A-Z]+)",
-  #   "line": [
-  #       "#string"
-  #   ],
-  #   "period": {
-  #       "start": "#? utils.isTodaysDate(_)"
-  #   },
-  #   "postalCode": "#? utils.isValidPostalCode(_)",
-  #   "use": "#regex(home)"
-  # }
-  # """
   
   * def accessToken = karate.callSingle('classpath:patients/healthcareWorker/auth-redirect.feature').accessToken
   * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
   * configure headers = requestHeaders  
   * url baseURL
-
-  # we have to chill out a bit between requests in case we trigger the spike alert policy :-(
-  # replace this with
-  * eval utils.sleep(4)
 
   
 Scenario: Post patient - new patient
@@ -61,6 +45,8 @@ Scenario: Post patient - new patient
   
   * path "Patient"
   * request read('classpath:patients/healthcareWorker/post-patient-request.json')
+  * configure retry = { count: 5, interval: 1 }
+  * retry until responseStatus != 429
   * method post
   * status 201
   * def nhsNumber = response.id
@@ -94,6 +80,8 @@ Scenario: Fail to create a record for a new patient, single demographics match f
   * path "Patient"
   * request read('classpath:patients/healthcareWorker/post-patient-request.json')
   * method post
+  * configure retry = { count: 5, interval: 1 }
+  * retry until responseStatus != 429
   * status 200
   * match response == read('classpath:stubs/patient/errorResponses/single_match_found.json')
 
@@ -126,6 +114,8 @@ Scenario: Fail to create a record for a new patient, multiple demographics match
   * configure headers = requestHeaders
   * path "Patient"
   * request requestBody
+  * configure retry = { count: 5, interval: 1 }
+  * retry until responseStatus != 429
   * method post
   * status 200
   * match response == read('classpath:stubs/patient/errorResponses/multiple_matches_found.json')
@@ -134,6 +124,8 @@ Scenario: Fail to create a record for a new patient, multiple demographics match
 Scenario: Negative path: invalid request body
   * path "Patient"
   * request { bananas: "in pyjamas" }
+  * configure retry = { count: 5, interval: 1 }
+  * retry until responseStatus != 429
   * method post
   * status 400
   * def diagnostics = response.issue[0].diagnostics
