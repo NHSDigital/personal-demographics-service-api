@@ -22,20 +22,21 @@ Background:
 
   # the addressSchema used for the create responses is not the same as what's defined elsewhere, so 
   # we'll use this schema until the schemas are harmonised...
-  * def addressSchema = 
-  """
-  {
-    "id": "#regex([0-9A-Z]+)",
-    "line": [
-        "#string"
-    ],
-    "period": {
-        "start": "#? utils.isTodaysDate(_)"
-    },
-    "postalCode": "#? utils.isValidPostalCode(_)",
-    "use": "#regex(home)"
-  }
-  """
+  * json periodSchema = karate.readAsString('classpath:schemas/Period.json')
+  * json addressSchema = karate.readAsString('classpath:schemas/Address.json') 
+  # """
+  # {
+  #   "id": "#regex([0-9A-Z]+)",
+  #   "line": [
+  #       "#string"
+  #   ],
+  #   "period": {
+  #       "start": "#? utils.isTodaysDate(_)"
+  #   },
+  #   "postalCode": "#? utils.isValidPostalCode(_)",
+  #   "use": "#regex(home)"
+  # }
+  # """
   
   * def accessToken = karate.callSingle('classpath:patients/healthcareWorker/auth-redirect.feature').accessToken
   * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
@@ -43,6 +44,7 @@ Background:
   * url baseURL
 
   # we have to chill out a bit between requests in case we trigger the spike alert policy :-(
+  # replace this with
   * eval utils.sleep(4)
 
   

@@ -25,6 +25,7 @@ function fn() {
       signingKey: java.lang.System.getenv('APPLICATION_RESTRICTED_SIGNING_KEY_PATH'),
       apiKey: java.lang.System.getenv('APPLICATION_RESTRICTED_API_KEY'),
       keyID: java.lang.System.getenv('KEY_ID'),
+      internalServerURL: `${java.lang.System.getenv('INTERNAL_SERVER_BASE_URI')}/${java.lang.System.getenv('PDS_BASE_PATH')}`
     };
   } 
   return config;

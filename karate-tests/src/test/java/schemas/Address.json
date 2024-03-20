@@ -1,5 +1,5 @@
 {
-    "id": "##string",
+    "id": "#regex([0-9A-Z]+)",
     "period": "##(periodSchema)",
     "use": "##regex(home|work|temp|billing)",
     "text": "##regex(Second Home|Student Accommodation|Respite Care Address|Temporary Residence Address|Convalescence Home|Mobile Home|Holiday Home)",
