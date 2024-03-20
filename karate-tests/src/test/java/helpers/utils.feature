@@ -21,20 +21,17 @@ Scenario:
     return result;
   }
   """
-  * def randomBirthDate = 
+  * def getRandomBirthDate = 
   """
   function() {
     var min = new Date(Date.parse('1930-01-01')).getTime();
-    var max = new Date(Date.parse('2020-12-31')).getTime();
+    var max = new Date().getTime();
     var randomValue = Math.random() * (max - min) + min;
 
     var randomDate = new Date(randomValue)
     return randomDate.toISOString().split('T')[0]
   }
   """
-    
-  # pick an item at random from an array
-  * def pickRandom = function(optionsArray) { Math.floor(Math.random() * optionsArray.length) }
 
   # data validators
   * def isTodaysDate = 
@@ -47,7 +44,6 @@ Scenario:
   """
 
   * def isValidTimestamp = function(timestamp) { return !isNaN(Date.parse(timestamp)) }
-  
   * def isValidDateString = 
   """
   function (dateString) {
@@ -79,3 +75,15 @@ Scenario:
   # other utility functions
   * def sleep = function(seconds){ java.lang.Thread.sleep(seconds * 1000) }
   
+  # pick an item at random from an array, ignoring one of the items
+  * def pickDifferentOption = 
+  """
+  function(optionsArray, itemToIgnore) {
+    const index = optionsArray.indexOf(itemToIgnore);
+    optionsArray.splice(index, 1)
+    return optionsArray[Math.floor(Math.random() * optionsArray.length)]
+  }
+  """
+  
+    
+    

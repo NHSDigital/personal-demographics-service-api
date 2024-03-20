@@ -17,19 +17,8 @@ Feature: Patch patient - Healthcare worker access mode
 
   @gender
   Scenario: Change the gender of a patient
-    * def currentGender = patientObject.gender
-    * def pickNewGender = 
-      """
-        function(currentGender) {
-          const genderOptions = ['male', 'female', 'unknown'];
-          var newGender = 'female'; 
-          while (currentGender == newGender) {
-            newGender = genderOptions[Math.floor(Math.random() * genderOptions.length)];
-          }
-          return newGender;
-        }
-      """
-    * def targetGender = pickNewGender(currentGender)
+    * def genderOptions = ['male', 'female', 'unknown']
+    * def targetGender = utils.pickDifferentOption(genderOptions, patientObject.gender)
     * header Content-Type = "application/json-patch+json"
     * header If-Match = etag
     * path 'Patient', nhsNumber

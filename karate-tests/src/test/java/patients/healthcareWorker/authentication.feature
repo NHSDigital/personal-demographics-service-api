@@ -11,11 +11,6 @@ Feature: Authentication for Healthcare Worker
     - 656005750106 	riley.jones@nhs.net
     - 656005750107 	shirley.bryne@nhs.net
 
-  Some valid nhs-login mock usernames are:
-    - 9912003071    for High - P9
-    - 9912003072    for Medium - P5
-    - 9912003073    for Low - P0
-
 Background:
     * def userID = karate.get('userID', '656005750107')
     * def javaUtils = Java.type('helpers.Utils')
@@ -83,15 +78,3 @@ Scenario: Call the real oauth2 authentication mock service
     * status 200
 
     * def accessToken = response.access_token
-
-    # # now we set all the other required requestHeaders for the user to 
-    # # make their requests with
-    # * def  = 
-    #     """
-    #     {
-    #       "Client_ID": "#(clientID)",
-    #       "x-request-id": "#(utils.randomUUID())",
-    #       "x-correlation-id": "#(utils.randomUUID())",
-    #       "Authorization": "#('Bearer ' + response.access_token)"
-    #     }
-    #     """

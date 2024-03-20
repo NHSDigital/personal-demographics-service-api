@@ -11,13 +11,11 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.time.Instant;
 import java.util.Base64;
-import java.util.Locale;
 import java.util.Map;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.github.javafaker.Faker;
 
 import org.json.JSONObject;
 

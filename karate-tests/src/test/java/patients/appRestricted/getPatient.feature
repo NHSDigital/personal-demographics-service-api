@@ -2,7 +2,7 @@ Feature: get /Patient - Application-restricted access mode
 
   Background:
     * def utils = karate.callSingle('classpath:helpers/utils.feature')
-    * def accessToken = karate.callSingle('classpath:patients/appRestricted/authRestricted.feature').accessToken
+    * def accessToken = karate.callSingle('classpath:patients/appRestricted/authentication.feature').accessToken
     * def requestHeaders = call read('classpath:patients/appRestricted/app-restricted-headers.js')
     * def noAuthHeaders = call read('classpath:patients/appRestricted/no-auth-headers.js')
     * url baseURL
@@ -95,14 +95,3 @@ Feature: get /Patient - Application-restricted access mode
         "type": "searchset"
       }  
       """
-
-  # Scenario: PDS FHIR API rejects synchronous PATCH requests
-  #   Given I am authenticating using unattended access
-  #   And I have a request context
-  #   And I have a valid access token
-
-  #   When I PATCH a patient and ommit the prefer header
-
-  #   Then I get a 403 HTTP response
-  #   And I get an error response
-  #   And the error issue.diagnostics value is Your app has insufficient permissions to use this method. Please contact support.
