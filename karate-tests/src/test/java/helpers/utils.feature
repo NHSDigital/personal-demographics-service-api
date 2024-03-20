@@ -24,11 +24,10 @@ Scenario:
   * def randomBirthDate = 
     """
     function() {
-      var min = new Date(Date.parse('1930-01-01')).getTime()
-      var max = new Date(Date.parse('2023-09-01')).getTime()
-      var randomValue = Math.random() * (max - min) + min;
-
-      var randomDate = new Date(randomValue)
+      const min = new Date(Date.parse('1930-01-01')).getTime()
+      const max = new Date(Date.parse('2023-09-01')).getTime()
+      const randomValue = Math.random() * (max - min) + min
+      const randomDate = new Date(randomValue)
       return randomDate.toISOString().split('T')[0]
     }
     """
@@ -37,9 +36,9 @@ Scenario:
   * def isTodaysDate = 
     """
     function(inputDate) {
-      var input = (new Date(Date.parse(inputDate)).toDateString())
-      var today = (new Date()).toDateString()
-      return input == today;
+      const input = (new Date(Date.parse(inputDate)).toDateString())
+      const today = (new Date()).toDateString()
+      return input == today
     }
     """
 
@@ -52,7 +51,7 @@ Scenario:
         validates the date string based on how we format dates in FIHR, 
         e.g. 2010-10-25 is valid
       */
-      var regex=new RegExp("([0-9]{4}[-](0[1-9]|1[0-2])[-]([0-2]{1}[0-9]{1}|3[0-1]{1})|([0-2]{1}[0-9]{1}|3[0-1]{1})[-](0[1-9]|1[0-2])[-][0-9]{4})")
+      const regex=new RegExp("([0-9]{4}[-](0[1-9]|1[0-2])[-]([0-2]{1}[0-9]{1}|3[0-1]{1})|([0-2]{1}[0-9]{1}|3[0-1]{1})[-](0[1-9]|1[0-2])[-][0-9]{4})")
       return regex.test(dateString)
     }
     """
@@ -65,9 +64,9 @@ Scenario:
         (it's not so straightforward to get a working regex for this)
       */
       postalCode = postalCode.replaceAll(" ", "")
-      var pattern = "((([A-Z][0-9]{1,2})|(([A-Z][A-HJ-Y][0-9]{1,2})|"
+      let pattern = "((([A-Z][0-9]{1,2})|(([A-Z][A-HJ-Y][0-9]{1,2})|"
       pattern += "(([AZ][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z]))))[0-9][A-Z]{2})"
-      var regex = new RegExp(pattern)
+      const regex = new RegExp(pattern)
       return regex.test(postalCode)
     }
     """
@@ -76,9 +75,9 @@ Scenario:
   * def isValidPatientURL = 
     """
     function(url) {
-      var baseURL = karate.get('internalServerURL') + "Patient/"
-      var nhsNumber = url.split('/')[url.split('/').length -1]
-      var validNHSNumber = karate.call('classpath:helpers/nhs-number-validator.js', nhsNumber)
+      const baseURL = karate.get('internalServerURL') + "Patient/"
+      const nhsNumber = url.split('/')[url.split('/').length -1]
+      const validNHSNumber = karate.call('classpath:helpers/nhs-number-validator.js', nhsNumber)
       return validNHSNumber
     }
     """
@@ -98,6 +97,3 @@ Scenario:
       return optionsArray[Math.floor(Math.random() * optionsArray.length)]
     }
     """
-  
-    
-    
