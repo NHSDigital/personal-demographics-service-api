@@ -21,7 +21,7 @@ Scenario:
     return result;
   }
   """
-  * def getRandomBirthDate = 
+  * def randomBirthDate = 
   """
   function() {
     var min = new Date(Date.parse('1930-01-01')).getTime();
