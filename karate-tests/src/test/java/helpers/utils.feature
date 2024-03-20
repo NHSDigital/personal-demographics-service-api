@@ -6,7 +6,7 @@ A collection of utility functions for generating, validating and manipulating da
 Scenario:
   # data generators
   * def randomUUID = function(){ return java.util.UUID.randomUUID() + '' }
-  * def randomInt = function() { return Math.random() * (10000 - 1) + 1 }
+  * def randomInt = function() { return Math.floor(Math.random() * (999)) + 1 }
   * def randomString = 
   """
   function(length) {
