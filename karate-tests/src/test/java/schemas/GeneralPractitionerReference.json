@@ -1,0 +1,9 @@
+{
+    "id": "##string",
+    "type": "##string",
+    "identifier": {
+        "system": "##string",
+        "value": "#regex([0-9A-Z]+)",
+        "period": "##(periodSchema)"
+    }
+}

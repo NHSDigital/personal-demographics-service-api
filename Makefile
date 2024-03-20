@@ -17,6 +17,10 @@ install-fhir-validator:
 	mkdir -p bin
 	test -f bin/org.hl7.fhir.validator.jar || curl -L https://github.com/hapifhir/org.hl7.fhir.core/releases/latest/download/validator_cli.jar > bin/org.hl7.fhir.validator.jar
 
+karate:
+	cd karate-tests && mvn clean test
+
+
 lint:
 	npm run lint
 	cd sandbox && npm run lint && cd ..
@@ -76,6 +80,7 @@ release: clean publish build-proxy
 	cp -R build/. dist/
 	cp -R terraform dist
 	cp -R tests dist
+	cp -R karate-tests dist
 
 	cp ecs-proxies-deploy.yml dist/ecs-deploy-sandbox.yml
 	cp ecs-proxies-deploy.yml dist/ecs-deploy-internal-qa-sandbox.yml

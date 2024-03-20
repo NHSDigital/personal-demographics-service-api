@@ -1,0 +1,19 @@
+{
+  "resourceType": "OperationOutcome",
+  "issue": [
+    {
+      "severity": "error",
+      "code": "not-found",
+      "details": {
+        "coding": [
+          {
+            "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+            "version": "1",
+            "code": "RESOURCE_NOT_FOUND",
+            "display": "Resource not found"
+          }
+        ]
+      }
+    }
+  ]
+}

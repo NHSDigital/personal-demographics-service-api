@@ -1,0 +1,45 @@
+{
+    "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/5900035697",
+    "resource": {
+        "address": "#[] (addressSchema)",
+        "birthDate": "#regex([0-9]{4}-[0-9]{2}-[0-9]{2})",
+        "gender": "#regex(male|female|other|unknown)",
+        "id": "#? isValidNhsNumber(_)",
+        "identifier": [
+            {
+                "extension": [
+                    {
+                        "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                        "valueCodeableConcept": {
+                            "coding": [
+                                {
+                                    "code": "01",
+                                    "display": "Number present and verified",
+                                    "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                    "version": "1.0.0"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "system": "https://fhir.nhs.uk/Id/nhs-number",
+                "value": "#? isValidNhsNumber(_)"
+            }
+        ],
+        "meta": {
+            "security": [
+                {
+                    "code": "U",
+                    "display": "unrestricted",
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                }
+            ],
+            "versionId": "#regex([0-9]+)"
+        },
+        "name": "#[] (humanNameSchema)",
+        "resourceType": "Patient"
+    },
+    "search": {
+        "score": "#number"
+    }
+}

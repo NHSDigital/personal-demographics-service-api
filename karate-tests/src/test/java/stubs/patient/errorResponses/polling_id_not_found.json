@@ -1,0 +1,19 @@
+{
+  "issue": [
+    {
+      "code": "not-found",
+      "details": {
+        "coding": [
+          {
+            "code": "POLLING_ID_NOT_FOUND",
+            "display": "The polling id was not found",
+            "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+            "version": "1"
+          }
+        ]
+      },
+      "severity": "information"
+    }
+  ],
+  "resourceType": "OperationOutcome"
+}
