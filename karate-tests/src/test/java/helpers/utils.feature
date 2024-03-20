@@ -6,7 +6,7 @@ A collection of utility functions for generating, validating and manipulating da
 Scenario:
   # data generators
   * def randomUUID = function(){ return java.util.UUID.randomUUID() + '' }
-  * def randomInt = function() { return Math.floor(Math.random() * (999)) + 1 }
+  * def randomInt = function() { return Math.floor(Math.random() * 999) + 1 }
   * def randomString = 
   """
   function(length) {
@@ -25,7 +25,7 @@ Scenario:
   """
   function() {
     var min = new Date(Date.parse('1930-01-01')).getTime();
-    var max = new Date().getTime();
+    var max = new Date(Date.parse('2023-09-01')).getTime();
     var randomValue = Math.random() * (max - min) + min;
 
     var randomDate = new Date(randomValue)
