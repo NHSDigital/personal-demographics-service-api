@@ -1,7 +1,7 @@
 {
     "address": "##[] addressSchema",
     "birthDate": "##? utils.isValidDateString(_)",
-    "gender": "##regex(male|female)",
+    "gender": "##regex(male|female|other|unknown)",
     "id": "#(nhsNumber)",
     "identifier": [
         {
