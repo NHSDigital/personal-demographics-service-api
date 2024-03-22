@@ -75,7 +75,8 @@ Scenario:
   * def isValidPatientURL = 
     """
     function(url) {
-      const baseURL = karate.get('internalServerURL') + "Patient/"
+      const baseURL = karate.get('internalServerURL') + "/Patient/"
+      if (!url.startsWith(baseURL)) return false
       const nhsNumber = url.split('/')[url.split('/').length -1]
       const validNHSNumber = karate.call('classpath:helpers/nhs-number-validator.js', nhsNumber)
       return validNHSNumber
