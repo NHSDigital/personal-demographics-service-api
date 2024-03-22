@@ -56,8 +56,7 @@
             <artifactId>javafaker</artifactId>
             <version>${javafaker.version}</version>
         </dependency>
-        <!-- why does activating these mean I lose request details in the html report? -->
-        <!-- <dependency>
+        <dependency>
             <groupId>net.masterthought</groupId>
             <artifactId>cucumber-reporting</artifactId>
             <version>5.3.1</version>
@@ -72,8 +71,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>${slf4j.version}</version>
-        </dependency> -->
-        <!-- why does activating these mean I lose request details in the html report? -->
+        </dependency>
     </dependencies>
 
     <build>
