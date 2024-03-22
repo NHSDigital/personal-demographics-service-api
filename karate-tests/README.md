@@ -49,4 +49,4 @@ To see an example of how Karate can repurpose functional tests as a load test, w
 Run the load tests:
     - `mvn clean test-compile gatling:test`
 
-Woosh!
+Whoosh!

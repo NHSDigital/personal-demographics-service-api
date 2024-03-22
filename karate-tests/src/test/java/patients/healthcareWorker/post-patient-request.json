@@ -1,0 +1,20 @@
+{
+  "nhsNumberAllocation": "Done",
+  "name": {
+    "use": "L",
+    "name.givenName.name1": "#(givenName)",
+    "name.familyName": "#(familyName)",
+    "name.prefix": "#(prefix)"
+  },
+  "gender": {
+    "gender.code": "#(genderCode)"
+  },
+  "birthTime": {
+    "birthTime.value": "#(birthTime)"},
+  "address": {
+    "use": "H",
+    "address.postalCode": "#(postalCode)",
+    "address.addr.line1" : "#(address)"
+  },
+  "registeringAuthority": "#(registeringAuthority)"
+}  

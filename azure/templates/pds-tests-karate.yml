@@ -14,7 +14,7 @@ steps:
      config_ids:
       - /ptl/azure-devops/env-internal-dev/test-app/internal-testing-internal-dev/CLIENT_ID
       - /ptl/azure-devops/env-internal-dev/test-app/internal-testing-internal-dev/CLIENT_SECRET
-      - /ptl/azure-devops/personal-demographics/TEST_PATIENT_ID
+      - /ptl/azure-devops/personal-demographics/INTERNAL_SERVER_BASE_URI
       - /ptl/azure-devops/personal-demographics/AUTH_TOKEN_EXPIRY_MS
       - /ptl/azure-devops/personal-demographics/AUTH_TOKEN_EXPIRY_MS_INT
      secret_ids:
@@ -23,6 +23,14 @@ steps:
       - ptl/backends/ig3/INTERNAL_DEV_ASID
   
   - bash: |
+      echo '##vso[task.setvariable variable=APIGEE_ENVIRONMENT]$(ENVIRONMENT)'
+      echo '##vso[task.setvariable variable=PDS_BASE_PATH]$(SERVICE_BASE_PATH)'
+      echo '##vso[task.setvariable variable=CLIENT_ID]$(CLIENT_ID)'
+      echo '##vso[task.setvariable variable=CLIENT_SECRET]$(CLIENT_SECRET)'
+      echo '##vso[task.setvariable variable=KEY_ID]test-1'
+    displayName: Expose common variables
+
+  - bash: |
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2-mock"
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
@@ -30,7 +38,8 @@ steps:
       export CLIENT_SECRET="$(CLIENT_SECRET)"
       export APPLICATION_RESTRICTED_API_KEY="$(JWT_TESTING_API_KEY)"
       export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
-      export KEY_ID="test-1"
+      export INTERNAL_SERVER_BASE_URI="$(INTERNAL_SERVER_BASE_URI)"
+      export KEY_ID="$(KEY_ID)"
       mvn clean test -Dtest=TestParallel 
     displayName: 'Run Karate Tests'
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests"
