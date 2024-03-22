@@ -55,12 +55,12 @@ steps:
     displayName: 'Publish Karate HTML test report as an artifact'
     condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
     inputs:
-      pathToPublish: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/cucumber-html-reports
+      pathToPublish: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports
       artifactName: KarateHTMLReports
 
   - task: publishhtmlreport@1
-    displayName: 'Publish HTML test report'
+    displayName: 'Publish HTML Summary report'
     condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
     inputs:
       htmlType: 'genericHTML'
-      htmlPath: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/cucumber-html-reports/*.*
+      htmlPath: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports/karate-summary.html
