@@ -39,10 +39,6 @@ steps:
       export APPLICATION_RESTRICTED_API_KEY="$(JWT_TESTING_API_KEY)"
       export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
       export INTERNAL_SERVER_BASE_URI="$(INTERNAL_SERVER_BASE_URI)"
-      echo "************************"
-      echo $INTERNAL_SERVER_BASE_URI
-      echo $PDS_BASE_PATH
-      echo "************************"
       export KEY_ID="$(KEY_ID)"
       mvn clean test -Dtest=TestParallel 
     displayName: 'Run Karate Tests'
