@@ -100,8 +100,8 @@ class TestPDSSandboxRetrieveSuite:
         helpers.check_response_status_code(response, 400)
 
 
-@pytest.mark.search_scenarios
-class TestPDSSandboxSearchSuite:
+@pytest.mark.search_scenarios_success
+class TestPDSSandboxSearchSuiteSuccess:
     """Sandbox PDS Search Scenarios. Checks performed: canned Response_Bodies, Status_Codes and Headers"""
 
     def test_sandbox_simple_search(self, additional_headers):
@@ -153,20 +153,6 @@ class TestPDSSandboxSearchSuite:
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
-    def test_invalid_date_format_search(self, additional_headers):
-        scenario = "Invalid Date Format Search"
-        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[scenario]["response"])
-        helpers.check_response_status_code(response, 400)
-        helpers.check_response_headers(response, additional_headers)
-
-    def test_too_few_parameters_search(self, additional_headers):
-        scenario = "Too Few Parameters Search"
-        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[scenario]["response"])
-        helpers.check_response_status_code(response, 400)
-        helpers.check_response_headers(response, additional_headers)
-
     def test_default_parameters_search(self, additional_headers):
         scenario = "Default Parameters Search"
         response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
@@ -179,13 +165,6 @@ class TestPDSSandboxSearchSuite:
         response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
         helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
-        helpers.check_response_headers(response, additional_headers)
-
-    def test_unsupported_operation_with_invalid_param_and_family_birthdate(self, additional_headers):
-        scenario = "Unsupported Operation with Invalid Param and Family Birthdate"
-        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[scenario]["response"])
-        helpers.check_response_status_code(response, 400)
         helpers.check_response_headers(response, additional_headers)
 
     def test_sandbox_multi_phone_search_returns_hit(self, additional_headers):
@@ -251,13 +230,6 @@ class TestPDSSandboxSearchSuite:
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
-    def test_unsupported_operation_with_completely_invalid_params(self, additional_headers):
-        scenario = "Unsupported Operation with Completely Invalid Params"
-        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[scenario]["response"])
-        helpers.check_response_status_code(response, 400)
-        helpers.check_response_headers(response, additional_headers)
-
     def test_sandbox_simple_search_including_phone(self, additional_headers):
         scenario = "Simple Search including Phone"
         response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
@@ -314,6 +286,9 @@ class TestPDSSandboxSearchSuite:
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
+
+@pytest.mark.search_scenarios_error
+class TestPDSSandboxSearchSuiteError:
     @pytest.mark.parametrize("parameterized_headers", [
         {},
         {"Prefer": "response-async"}
@@ -323,6 +298,35 @@ class TestPDSSandboxSearchSuite:
         response = helpers.search_patient(search[scenario]["query_params"], parameterized_headers)
         helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 400)
+
+    def test_unsupported_operation_with_completely_invalid_params(self, additional_headers):
+        scenario = "Unsupported Operation with Completely Invalid Params"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
+        helpers.check_response_status_code(response, 400)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_unsupported_operation_with_invalid_param_and_family_birthdate(self, additional_headers):
+        scenario = "Unsupported Operation with Invalid Param and Family Birthdate"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
+        helpers.check_response_status_code(response, 400)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_invalid_date_format_search(self, additional_headers):
+        scenario = "Invalid Date Format Search"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
+        helpers.check_response_status_code(response, 400)
+        helpers.check_response_headers(response, additional_headers)
+
+    def test_too_few_parameters_search(self, additional_headers):
+        scenario = "Too Few Parameters Search"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
+        helpers.check_response_status_code(response, 400)
+        helpers.check_response_headers(response, additional_headers)
+
 
 
 @pytest.mark.update_scenarios
