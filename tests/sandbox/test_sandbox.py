@@ -1,7 +1,9 @@
 import pytest
 from pytest_check import check
 from aiohttp import ClientResponse
-from .data.scenarios import relatedPerson, retrieve, search, update, patient_09_a, patient_09_b, patient_09_c, patient_09_d
+from .data.scenarios import (relatedPerson, retrieve, search, update, 
+                             patient_09_a, patient_09_b, patient_09_c, patient_09_d, 
+                             patient_17_a, patient_17_b)
 import requests
 from typing import Dict
 from .utils import helpers
@@ -9,10 +11,13 @@ from .configuration import config
 
 
 class TestPatients:
-    def test_patient_objects_are_the_same(self):
+    def test_patient_09_objects_are_the_same(self):
         assert patient_09_a == patient_09_b
         assert patient_09_a == patient_09_c
         assert patient_09_a == patient_09_d
+
+    def test_patient_17_objects_are_the_same(self):
+        assert patient_17_a == patient_17_b
 
 # @pytest.mark.deployment_scenarios
 # class TestPDSSandboxDeploymentSuite:
