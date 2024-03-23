@@ -105,182 +105,212 @@ class TestPDSSandboxSearchSuite:
     """Sandbox PDS Search Scenarios. Checks performed: canned Response_Bodies, Status_Codes and Headers"""
 
     def test_sandbox_simple_search(self, additional_headers):
-        response = helpers.search_patient(search[0]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[0]["response"])
+        scenario = "Simple Search"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_wildcard_search(self, additional_headers):
-        response = helpers.search_patient(search[1]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[1]["response"])
+        scenario = "Wildcard Search"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_limited_results_search(self, additional_headers):
-        response = helpers.search_patient(search[2]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[2]["response"])
+        scenario = "Limited Results Search"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_sandbox_date_range_search(self, additional_headers):
-        response = helpers.search_patient(search[3]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[3]["response"])
+        scenario = "Date Range Search"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_fuzzy_search(self, additional_headers):
-        response = helpers.search_patient(search[4]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[4]["response"])
+        scenario = "Fuzzy Search"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_restricted_patient_search(self, additional_headers):
-        response = helpers.search_patient(search[5]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[5]["response"])
+        scenario = "Restricted Patient Search"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_unsuccessful_search_returns_empty_bundle(self, additional_headers):
-        response = helpers.search_patient(search[6]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[6]["response"])
+        scenario = "Unsuccessful Search"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_invalid_date_format_search(self, additional_headers):
-        response = helpers.search_patient(search[7]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[7]["response"])
+        scenario = "Invalid Date Format Search"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 400)
         helpers.check_response_headers(response, additional_headers)
 
     def test_too_few_parameters_search(self, additional_headers):
-        response = helpers.search_patient("", additional_headers)
-        helpers.check_search_response_body(response, search[8]["response"])
+        scenario = "Too Few Parameters Search"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 400)
         helpers.check_response_headers(response, additional_headers)
 
     def test_default_parameters_search(self, additional_headers):
-        response = helpers.search_patient(search[9]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[9]["response"])
+        scenario = "Default Parameters Search"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
-    def test_sandbox_multi_given_name_search(self, additional_headers):
-        response = helpers.search_patient(search[10]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[10]["response"])
+    def test_sandbox_compound_given_name_search(self, additional_headers):
+        scenario = "Compound Given Name Search"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_unsupported_operation_with_invalid_param_and_family_birthdate(self, additional_headers):
-        response = helpers.search_patient(search[11]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[11]["response"])
+        scenario = "Unsupported Operation with Invalid Param and Family Birthdate"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 400)
         helpers.check_response_headers(response, additional_headers)
 
     def test_sandbox_multi_phone_search_returns_hit(self, additional_headers):
-        response = helpers.search_patient(search[12]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[12]["response"])
+        scenario = "Default Parameters Search with Phone"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_sandbox_multi_phone_search_returns_empty_bundle(self, additional_headers):
-        response = helpers.search_patient(search[13]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[13]["response"])
+        scenario = "Unsuccessful Search including Phone"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_sandbox_multi_email_search_returns_hit(self, additional_headers):
-        response = helpers.search_patient(search[14]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[14]["response"])
+        scenario = "Default Parameters Search with Email"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_sandbox_multi_email_search_returns_empty_bundle(self, additional_headers):
-        response = helpers.search_patient(search[15]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[15]["response"])
+        scenario = "Unsuccessful Search including Email"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_wildcard_search_with_phone(self, additional_headers):
-        response = helpers.search_patient(search[16]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[16]["response"])
+        scenario = "Wildcard Search with Phone"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_wildcard_search_with_email(self, additional_headers):
-        response = helpers.search_patient(search[17]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[17]["response"])
+        scenario = "Wildcard Search with Email"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_fuzzy_search_with_email(self, additional_headers):
-        response = helpers.search_patient(search[18]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[18]["response"])
+        scenario = "Fuzzy Search with Email"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_fuzzy_search_with_phone(self, additional_headers):
-        response = helpers.search_patient(search[19]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[19]["response"])
+        scenario = "Fuzzy Search with Phone"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_fuzzy_search_with_phone_email(self, additional_headers):
-        response = helpers.search_patient(search[20]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[20]["response"])
+        scenario = "Fuzzy Search with Phone and Email"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_unsupported_operation_with_completely_invalid_params(self, additional_headers):
-        response = helpers.search_patient(search[21]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[21]["response"])
+        scenario = "Unsupported Operation with Completely Invalid Params"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 400)
         helpers.check_response_headers(response, additional_headers)
 
     def test_sandbox_simple_search_including_phone(self, additional_headers):
-        response = helpers.search_patient(search[22]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[22]["response"])
+        scenario = "Simple Search including Phone"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_sandbox_simple_search_including_email(self, additional_headers):
-        response = helpers.search_patient(search[23]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[23]["response"])
+        scenario = "Simple Search including Email"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_sandbox_simple_search_including_phone_and_email(self, additional_headers):
-        response = helpers.search_patient(search[24]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[24]["response"])
+        scenario = "Simple Search including Phone and Email"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_sandbox_date_range_search_inc_phone(self, additional_headers):
-        response = helpers.search_patient(search[25]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[25]["response"])
+        scenario = "Date Range Search including Phone"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_sandbox_date_range_search_inc_email(self, additional_headers):
-        response = helpers.search_patient(search[26]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[26]["response"])
+        scenario = "Date Range Search including Email"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_sandbox_simple_search_including_phone_and_email_non_match(self, additional_headers):
-        response = helpers.search_patient(search[27]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[27]["response"])
+        scenario = "Simple Search including Phone and Email Non-Match"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_restricted_patient_search_inc_phone_and_email(self, additional_headers):
-        response = helpers.search_patient(search[28]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[28]["response"])
+        scenario = "Restricted Patient Search including Phone and Email"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_sandbox_multi_given_name_search_inc_phone_and_email(self, additional_headers):
-        response = helpers.search_patient(search[29]["query_params"], additional_headers)
-        helpers.check_search_response_body(response, search[29]["response"])
+        scenario = "Multi Given Name Search including Phone and Email"
+        response = helpers.search_patient(search[scenario]["query_params"], additional_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
@@ -289,8 +319,9 @@ class TestPDSSandboxSearchSuite:
         {"Prefer": "response-async"}
     ])
     def test_search_missing_x_request_id(self, parameterized_headers):
-        response = helpers.search_patient(search[30]["query_params"], parameterized_headers)
-        helpers.check_search_response_body(response, search[30]["response"])
+        scenario = "Missing X-Request-ID"
+        response = helpers.search_patient(search[scenario]["query_params"], parameterized_headers)
+        helpers.check_search_response_body(response, search[scenario]["response"])
         helpers.check_response_status_code(response, 400)
 
 

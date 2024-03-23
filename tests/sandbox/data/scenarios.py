@@ -65,100 +65,101 @@ retrieve = [
     {"scenario": "Missing X-Request-ID", "patient": "9000000009", "response": missing_x_request_id}
 ]
 
-search = [
-    {"scenario":"Simple Search",
+search = {
+    "Simple Search": {
         "query_params":{"family":"Smith","gender":"female","birthdate":"eq2010-10-22"},
         "response":simple_search},  
-    {"scenario":"Wildcard Search",
+    "Wildcard Search": {
         "query_params":{"family":"Sm*","gender":"female","birthdate":"eq2010-10-22"},
         "response": wildcard_search},
-    {"scenario":"Limited results Search",
+    "Limited Results Search": {
         "query_params":{"family":"Sm*","gender":"female","birthdate":"eq2010-10-22","_max-results":"2"},
         "response":wildcard_search},
-    {"scenario":"Date Range Search",
+    "Date Range Search": {
         "query_params": {"family":"Smith","gender":"female","birthdate":["ge2010-10-21","le2010-10-23"]},
         "response":simple_search},  
-    {"scenario":"Fuzzy Search",
+    "Fuzzy Search": {
         "query_params":{"family":"Smith","given":"jane","gender":"female","birthdate":"2010-10-22","_fuzzy-match":True},
         "response":fuzzy_search_patient_17},  
-    {"scenario":"Restricted Patient Search",
+    "Restricted Patient Search": {
         "query_params": {"family": "Smythe", "given": "janet", "gender": "female", "birthdate": "eq2005-06-16"}, 
         "response": restricted_patient_search},  
-    {"scenario":"Unsuccessful Search",
+    "Unsuccessful Search": {
         "query_params":{"family":"Bingham","given":"john","gender":"male","birthdate":"1934-12-18"},
         "response":empty_searchset},  
-    {"scenario":"Invalid Date Format Search",
+    "Invalid Date Format Search": {
         "query_params": {"family": "Smith", "given": "jane", "gender": "female", "birthdate": "20101022"}, 
         "response":invalid_birthdate},  
-    {"scenario":"Too Few Search Parameters",
+    "Too Few Parameters Search": {
+        "query_params": {},
         "response":not_enough_search_params},  
-    {"scenario":"Default Parameters Search",
+    "Default Parameters Search": {
         "query_params": {"_fuzzy-match": False,"_exact-match": False,"_history": True,"_max-results": "1","family": "Smith","given": "Jane","gender": "female","birthdate": "eq2010-10-22","death-date": "eq2010-10-22","address-postcode": "LS1 6AE","general-practitioner": "Y12345"},
         "response": simple_search},
-    {"scenario":"Compound Given Name Search",
+    "Compound Given Name Search": {
         "query_params":{"_fuzzy-match": False,"_exact-match": False,"_history": True,"family":"Smith","given":["John Paul","James"],"gender":"male","birthdate":"eq2010-10-22"},
         "response":compound_name_search},
-    {"scenario":"Unsupported operation family and birthdate present",
+    "Unsupported Operation with Invalid Param and Family Birthdate": {
         "query_params": {"family": "Smith","birthdate": "eq2010-10-22", "year": "2003"},
         "response": not_enough_search_params},
-    {"scenario":"Default Parameters Search with phone",
+    "Default Parameters Search with Phone": {
         "query_params": {"_fuzzy-match": False,"_exact-match": False,"_history": True,"_max-results": "1","family": "Smith","given": "Jane","gender": "female","birthdate": "eq2010-10-22","death-date": "eq2010-10-22","address-postcode": "LS1 6AE","general-practitioner": "Y12345", "phone": "01632960587"}, 
         "response": simple_search},
-    {"scenario":"Unsuccessful Search including phone",
+    "Unsuccessful Search including Phone": {
         "query_params":{"family":"Bingham","given":"john","gender":"male","birthdate":"1934-12-18","phone": "0112789456"},
         "response":empty_searchset},
-    {"scenario":"Default Parameters Search with email",
+    "Default Parameters Search with Email": {
         "query_params": {"_fuzzy-match": False,"_exact-match": False,"_history": True,"_max-results": "1","family": "Smith","given": "Jane","gender": "female","birthdate": "eq2010-10-22","death-date": "eq2010-10-22","address-postcode": "LS1 6AE","general-practitioner": "Y12345", "email": "jane.smith@example.com"},
         "response": simple_search},
-    {"scenario":"Unsuccessful Search including email",
+    "Unsuccessful Search including Email": {
         "query_params":{"family":"Bingham","given":"john","gender":"male","birthdate":"1934-12-18", "email": "john.bingham@example.com"},
         "response":empty_searchset},
-    {"scenario":"Wildcard Search with phone",
+    "Wildcard Search with Phone": {
         "query_params":{"family":"Sm*","gender":"female","birthdate":"eq2010-10-22","phone": "01632960587"},
         "response":patient_09_searchset_with_score(1.0)},
-    {"scenario":"Wildcard Search with email",
+    "Wildcard Search with Email": {
         "query_params":{"family":"Sm*","gender":"female","birthdate":"eq2010-10-22", "email": "jane.smith@example.com"},
         "response":patient_09_searchset_with_score(1.0)},
-    {"scenario":"Fuzzy Search with email",
+    "Fuzzy Search with Email": {
         "query_params":{"family":"Smith","given":"jane","gender":"female","birthdate":"2010-10-22","phone": "01632960587","_fuzzy-match":True},
         "response":patient_09_searchset_with_score(0.9124)},
-    {"scenario":"Fuzzy Search with phone",
+    "Fuzzy Search with Phone": {
         "query_params":{"family":"Smith","given":"jane","gender":"female","birthdate":"2010-10-22","email": "jane.smith@example.com","_fuzzy-match":True},
         "response":patient_09_searchset_with_score(0.9124)},
-    {"scenario":"Fuzzy Search with email and phone",
+    "Fuzzy Search with Phone and Email": {
         "query_params":{"family":"Smith","given":"jane","gender":"female","birthdate":"2010-10-22","phone": "01632960587","email": "jane.smith@example.com","_fuzzy-match":True},
         "response":patient_09_searchset_with_score(0.9542)},
-    {"scenario":"Unsupported operation family and birthdate present", 
+    "Unsupported Operation with Completely Invalid Params": {
         "query_params": {"manufacturer": "Ford","model": "focus", "year": "2003"},
         "response": not_enough_search_params},
-    {"scenario":"Simple Search including phone",
+    "Simple Search including Phone": {
         "query_params":{"family":"Smith","gender":"female","birthdate":"eq2010-10-22", "phone":"01632960587"},
         "response":simple_search},
-    {"scenario":"Simple Search including email",
+    "Simple Search including Email": {
         "query_params":{"family":"Smith","gender":"female","birthdate":"eq2010-10-22","email":"jane.smith@example.com"},
         "response":simple_search},  
-    {"scenario":"Simple Search including phone and email",
+    "Simple Search including Phone and Email": {
         "query_params":{"family":"Smith","gender":"female","birthdate":"eq2010-10-22","phone":"01632960587","email":"jane.smith@example.com"},
         "response":simple_search},  
-    {"scenario":"Date Range Search in phone",
+    "Date Range Search including Phone": {
         "query_params":{"family":"Smith","gender":"female","birthdate":["ge2010-10-21","le2010-10-23"],"phone":"01632960587"},
         "response":simple_search},
-    {"scenario":"Date Range Search in email",
+    "Date Range Search including Email": {
         "query_params":{"family":"Smith","gender":"female","birthdate":["ge2010-10-21","le2010-10-23"],"email":"jane.smith@example.com"},
         "response":simple_search},
-    {"scenario":"Simple Search including phone and email non match",
+    "Simple Search including Phone and Email Non-Match": {
         "query_params":{"family":"Smith","gender":"female","birthdate":"eq2010-10-22","phone":"0121111111","email":"deb.trotter@example.com"},
         "response":empty_searchset},
-    {"scenario":"Restricted Patient Search with phone and email",
+    "Restricted Patient Search including Phone and Email": {
         "query_params": {"family": "Smythe", "given": "janet", "gender": "female", "birthdate": "eq2005-06-16", "phone":"01632960587","email":"janet.smythe@example.com"},
         "response": restricted_patient_search},
-    {"scenario":"Compound Given Name Search with phone and email",
+    "Multi Given Name Search including Phone and Email": {
         "query_params":{"_fuzzy-match": False,"_exact-match": False,"_history": True,"family":"Smith","given":["John Paul","James"],"gender":"male","birthdate":"eq2010-10-22","phone":"01632960587","email":"johnp.smith@example.com"},
         "response":compound_name_search},
-    {"scenario":"Simple Search including phone but missing X-Request-ID",
+    "Missing X-Request-ID": {
         "query_params":{"family":"Smith","gender":"female","birthdate":"eq2010-10-22", "phone":"01632960587"},
         "response":missing_x_request_id}
-]
+}
 
 
 update = [
