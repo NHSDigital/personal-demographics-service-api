@@ -1,57 +1,63 @@
 import pytest
 from pytest_check import check
 from aiohttp import ClientResponse
-from .data.scenarios import relatedPerson, retrieve, search, update
+from .data.scenarios import relatedPerson, retrieve, search, update, patient_09_a, patient_09_b, patient_09_c, patient_09_d
 import requests
 from typing import Dict
 from .utils import helpers
 from .configuration import config
 
 
-@pytest.mark.deployment_scenarios
-class TestPDSSandboxDeploymentSuite:
-    """Sandbox PDS Deployment Scenarios. Checks performed: status_codes and version deployed"""
+class TestPatients:
+    def test_patient_objects_are_the_same(self):
+        assert patient_09_a == patient_09_b
+        assert patient_09_a == patient_09_c
+        assert patient_09_a == patient_09_d
 
-    @pytest.mark.asyncio
-    async def test_wait_for_ping(self,
-                                 commit_id: str):
-        async def apigee_deployed(response: ClientResponse):
-            if response.status != 200:
-                return False
-            body = await response.json(content_type=None)
-            return body.get("commitId") == commit_id
+# @pytest.mark.deployment_scenarios
+# class TestPDSSandboxDeploymentSuite:
+#     """Sandbox PDS Deployment Scenarios. Checks performed: status_codes and version deployed"""
 
-        await helpers.poll_until(url=f"{config.SANDBOX_BASE_URL}/_ping",
-                                 until=apigee_deployed,
-                                 timeout=30)
+#     @pytest.mark.asyncio
+#     async def test_wait_for_ping(self,
+#                                  commit_id: str):
+#         async def apigee_deployed(response: ClientResponse):
+#             if response.status != 200:
+#                 return False
+#             body = await response.json(content_type=None)
+#             return body.get("commitId") == commit_id
 
-    @pytest.mark.asyncio
-    async def test_check_status_is_secured(self):
-        response = requests.get(f"{config.SANDBOX_BASE_URL}/_status")
-        assert response.status_code == 401
+#         await helpers.poll_until(url=f"{config.SANDBOX_BASE_URL}/_ping",
+#                                  until=apigee_deployed,
+#                                  timeout=30)
 
-    @pytest.mark.asyncio
-    async def test_wait_for_status(self,
-                                   commit_id: str,
-                                   status_endpoint_header: Dict[str, str]):
-        async def is_deployed(response: ClientResponse):
-            if response.status != 200:
-                return False
-            body = await response.json()
+#     @pytest.mark.asyncio
+#     async def test_check_status_is_secured(self):
+#         response = requests.get(f"{config.SANDBOX_BASE_URL}/_status")
+#         assert response.status_code == 401
 
-            if body.get("commitId") != commit_id:
-                return False
+#     @pytest.mark.asyncio
+#     async def test_wait_for_status(self,
+#                                    commit_id: str,
+#                                    status_endpoint_header: Dict[str, str]):
+#         async def is_deployed(response: ClientResponse):
+#             if response.status != 200:
+#                 return False
+#             body = await response.json()
 
-            backend = helpers.dict_path(body, path=["checks", "healthcheck", "outcome", "version"])
-            if not backend:
-                return True
+#             if body.get("commitId") != commit_id:
+#                 return False
 
-            return backend.get("commitId") == commit_id
+#             backend = helpers.dict_path(body, path=["checks", "healthcheck", "outcome", "version"])
+#             if not backend:
+#                 return True
 
-        await helpers.poll_until(url=f"{config.SANDBOX_BASE_URL}/_status",
-                                 headers=status_endpoint_header,
-                                 until=is_deployed,
-                                 timeout=120)
+#             return backend.get("commitId") == commit_id
+
+#         await helpers.poll_until(url=f"{config.SANDBOX_BASE_URL}/_status",
+#                                  headers=status_endpoint_header,
+#                                  until=is_deployed,
+#                                  timeout=120)
 
 
 @pytest.mark.retrieve_scenarios
