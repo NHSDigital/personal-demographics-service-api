@@ -147,28 +147,19 @@ class TestPDSSandboxSearchSuite:
         helpers.check_response_headers(response, additional_headers)
 
     def test_sandbox_date_range_search(self, additional_headers):
-        response = helpers.search_patient(
-            "family=Smith&gender=female&birthdate=ge2010-10-21&birthdate=le2010-10-23",
-            additional_headers,
-        )
+        response = helpers.search_patient(search[3]["query_params"], additional_headers)
         helpers.check_search_response_body(response, search[3]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_sandbox_date_range_search_inc_phone(self, additional_headers):
-        response = helpers.search_patient(
-            "family=Smith&gender=female&birthdate=ge2010-10-21&birthdate=le2010-10-23&phone=01632960587",
-            additional_headers,
-        )
+        response = helpers.search_patient(search[25]["query_params"], additional_headers)
         helpers.check_search_response_body(response, search[25]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)
 
     def test_sandbox_date_range_search_inc_email(self, additional_headers):
-        response = helpers.search_patient(
-            "family=Smith&gender=female&birthdate=ge2010-10-21&birthdate=le2010-10-23&email=jane.smith@example.com",
-            additional_headers,
-        )
+        response = helpers.search_patient(search[26]["query_params"], additional_headers)
         helpers.check_search_response_body(response, search[26]["response"])
         helpers.check_response_status_code(response, 200)
         helpers.check_response_headers(response, additional_headers)

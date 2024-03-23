@@ -60,7 +60,8 @@ search = [
     {"scenario":"Limited results Search",
         "query_params":{"family":"Sm*","gender":"female","birthdate":"eq2010-10-22","_max-results":"2"},
         "response":wildcard_search},
-    {"scenario":"Date Range Search",  # inconsistent - query params are defined in test case
+    {"scenario":"Date Range Search",
+        "query_params": {"family":"Smith","gender":"female","birthdate":["ge2010-10-21","le2010-10-23"]},
         "response":simple_search},  
     {"scenario":"Fuzzy Search",
         "query_params":{"family":"Smith","given":"jane","gender":"female","birthdate":"2010-10-22","_fuzzy-match":True},
@@ -124,9 +125,11 @@ search = [
     {"scenario":"Simple Search including phone and email",
         "query_params":{"family":"Smith","gender":"female","birthdate":"eq2010-10-22","phone":"01632960587","email":"jane.smith@example.com"},
         "response":simple_search},  
-    {"scenario":"Date Range Search in phone",  # inconsistent - query params are defined in test case
+    {"scenario":"Date Range Search in phone",
+        "query_params":{"family":"Smith","gender":"female","birthdate":["ge2010-10-21","le2010-10-23"],"phone":"01632960587"},
         "response":simple_search},
-    {"scenario":"Date Range Search in email",  # inconsistent - query params are defined in test case
+    {"scenario":"Date Range Search in email",
+        "query_params":{"family":"Smith","gender":"female","birthdate":["ge2010-10-21","le2010-10-23"],"email":"jane.smith@example.com"},
         "response":simple_search},
     {"scenario":"Simple Search including phone and email non match",
         "query_params":{"family":"Smith","gender":"female","birthdate":"eq2010-10-22","phone":"0121111111","email":"deb.trotter@example.com"},
@@ -191,7 +194,7 @@ update = [
     {"scenario":"Missing Request ID",
         "patient":"9000000009","patient_record":2,
         "patch":{"patches":[{"op":"test","path":"/name/0/id","value":"123"},{"op":"remove","path":"/name/0/suffix/0"}]},
-        "response":missing_value},  # FIND OUT - which value is missing?
+        "response":missing_value},  # missing x-request-id
     {"scenario":"Invalid patch - No address ID","patient":"9000000009",
         "patient_record":2,
         "patch":{"patches":[{"op":"replace","path":"/address/0/line/0","value":"2 Whitehall Quay"},{"op":"replace","path":"/address/0/postalCode","value":"LS1 4BU"}]},
