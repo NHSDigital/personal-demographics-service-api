@@ -56,16 +56,14 @@ invalid_birthdate = {
     "resourceType": "OperationOutcome", "issue": [{"severity": "error", "code": "value", "details": {"coding": [{"system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode", "version": "1", "code": "INVALID_SEARCH_DATA", "display": "Search data is invalid"}]}, "diagnostics": "Invalid value - '20101022' in field 'birthdate'"}]}
 
 # test scenario data
-retrieve = [
-    {"scenario":"Patient Exists","patient":"9000000009", "response":full_patient_09},  
-    {"scenario":"Patient Does Not Exist","patient":"9111231130", "response":resource_not_found},  
-    {"scenario":"Sensitive Patient Exists","patient":"9000000025", "response":full_patient_25},  
-    {"scenario": "Invalid NHS number", "patient": "9000000001", "response": invalid_resource_id},  
-    {"scenario": "Invalid X-Request-ID", "patient": "9000000001", "response": invalid_x_request_id},
-    {"scenario": "Missing X-Request-ID", "patient": "9000000009", "response": missing_x_request_id}
-]
+retrieve = {
+    "Patient Exists": {"patient":"9000000009", "status": 200, "response":full_patient_09},  
+    "Patient Does Not Exist": {"patient":"9111231130", "status": 404, "response":resource_not_found},  
+    "Sensitive Patient Exists": {"patient":"9000000025", "status": 200, "response":full_patient_25},  
+    "Invalid NHS number": {"patient": "9000000001", "status": 400, "response": invalid_resource_id}
+}
 
-search = {
+search_success = {
     "Simple Search": {
         "query_params":{"family":"Smith","gender":"female","birthdate":"eq2010-10-22"},
         "response":simple_search},  
@@ -87,21 +85,12 @@ search = {
     "Unsuccessful Search": {
         "query_params":{"family":"Bingham","given":"john","gender":"male","birthdate":"1934-12-18"},
         "response":empty_searchset},  
-    "Invalid Date Format Search": {
-        "query_params": {"family": "Smith", "given": "jane", "gender": "female", "birthdate": "20101022"}, 
-        "response":invalid_birthdate},  
-    "Too Few Parameters Search": {
-        "query_params": {},
-        "response":not_enough_search_params},  
     "Default Parameters Search": {
         "query_params": {"_fuzzy-match": False,"_exact-match": False,"_history": True,"_max-results": "1","family": "Smith","given": "Jane","gender": "female","birthdate": "eq2010-10-22","death-date": "eq2010-10-22","address-postcode": "LS1 6AE","general-practitioner": "Y12345"},
         "response": simple_search},
     "Compound Given Name Search": {
         "query_params":{"_fuzzy-match": False,"_exact-match": False,"_history": True,"family":"Smith","given":["John Paul","James"],"gender":"male","birthdate":"eq2010-10-22"},
         "response":compound_name_search},
-    "Unsupported Operation with Invalid Param and Family Birthdate": {
-        "query_params": {"family": "Smith","birthdate": "eq2010-10-22", "year": "2003"},
-        "response": not_enough_search_params},
     "Default Parameters Search with Phone": {
         "query_params": {"_fuzzy-match": False,"_exact-match": False,"_history": True,"_max-results": "1","family": "Smith","given": "Jane","gender": "female","birthdate": "eq2010-10-22","death-date": "eq2010-10-22","address-postcode": "LS1 6AE","general-practitioner": "Y12345", "phone": "01632960587"}, 
         "response": simple_search},
@@ -129,9 +118,6 @@ search = {
     "Fuzzy Search with Phone and Email": {
         "query_params":{"family":"Smith","given":"jane","gender":"female","birthdate":"2010-10-22","phone": "01632960587","email": "jane.smith@example.com","_fuzzy-match":True},
         "response":patient_09_searchset_with_score(0.9542)},
-    "Unsupported Operation with Completely Invalid Params": {
-        "query_params": {"manufacturer": "Ford","model": "focus", "year": "2003"},
-        "response": not_enough_search_params},
     "Simple Search including Phone": {
         "query_params":{"family":"Smith","gender":"female","birthdate":"eq2010-10-22", "phone":"01632960587"},
         "response":simple_search},
@@ -155,12 +141,31 @@ search = {
         "response": restricted_patient_search},
     "Multi Given Name Search including Phone and Email": {
         "query_params":{"_fuzzy-match": False,"_exact-match": False,"_history": True,"family":"Smith","given":["John Paul","James"],"gender":"male","birthdate":"eq2010-10-22","phone":"01632960587","email":"johnp.smith@example.com"},
-        "response":compound_name_search},
-    "Missing X-Request-ID": {
-        "query_params":{"family":"Smith","gender":"female","birthdate":"eq2010-10-22", "phone":"01632960587"},
-        "response":missing_x_request_id}
+        "response":compound_name_search}
 }
 
+search_error = {
+    "Unsupported Operation with Completely Invalid Params": {
+        "query_params": {"manufacturer": "Ford","model": "focus", "year": "2003"},
+        "response": not_enough_search_params},
+    "Unsupported Operation with Invalid Param and Family Birthdate": {
+        "query_params": {"family": "Smith","birthdate": "eq2010-10-22", "year": "2003"},
+        "response": not_enough_search_params},
+    "Invalid Date Format Search": {
+        "query_params": {"family": "Smith", "given": "jane", "gender": "female", "birthdate": "20101022"}, 
+        "response":invalid_birthdate},  
+    "Too Few Parameters Search": {
+        "query_params": {},
+        "response":not_enough_search_params}
+}
+
+invalid_headers = {
+    "Missing X-Request-ID (search)": {
+        "query_params":{"family":"Smith","gender":"female","birthdate":"eq2010-10-22", "phone":"01632960587"},
+        "response":missing_x_request_id},
+    "Invalid X-Request-ID (retrieve)": {"patient": "9000000001", "response": invalid_x_request_id},
+    "Missing X-Request-ID (retrieve)": {"patient": "9000000009", "response": missing_x_request_id}
+}
 
 update = [
     {"scenario":"Add New Name", 
