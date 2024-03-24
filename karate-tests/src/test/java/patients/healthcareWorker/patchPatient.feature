@@ -1,5 +1,9 @@
+@sandbox
 Feature: Patch patient - Healthcare worker access mode
 
+  # These tests are only run against the sandbox at the moment - until we have a better 
+  # way of managing test data in the integration environment
+  
   Background:
     * def utils = call read('classpath:helpers/utils.feature')
     

@@ -1,4 +1,9 @@
 /*
+    Common constants
+*/
+const X_REQUEST_ID = "X-Request-ID";
+
+/*
     Supporting functions
 */
 context.read('classpath:helpers/nhs-number-validator.js');
@@ -10,6 +15,9 @@ function getTimestampedBody(pathToBody) {
 }
 
 function isValidUUID(uuid) {
+    console.log("****************************")
+    console.log(`Checking UUID: ${uuid}`)
+    console.log("****************************")
     const regex = new RegExp("[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}")
     return regex.test(uuid)
 }
@@ -25,6 +33,18 @@ function getParam(request, paramName) {
         return value.toLowerCase()
     }
 }
+
+/*
+    Common error response handlers
+*/
+function invalidValueError(field, value) {
+    let body = context.read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json');
+    body.issue[0].diagnostics = `Invalid value - '${value}' in header '${field}'`;
+    response.body = body;
+    response.status = 400;
+    return true
+}
+
 
 /*
     Response definitions

@@ -7,11 +7,48 @@ function buildResponseHeaders(request, patient) {
     };
 }
 
+/*
+    Diagnostics strings for error messages
+*/
+const NO_PATCHES_PROVIDED = "Invalid update with error - No patches found";
+const INVALID_RESOURCE_ID = "Invalid update with error - This resource has changed since you last read. Please re-read and try again with the new version number.";
 
-function patchPatient(originalPatient, requestBody) {
+/*
+    Functions to handle error responses
+*/
+function invalidUpdateError(diagnostics) {
+    let body = context.read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json');
+    body.issue[0].diagnostics = diagnostics;
+    response.body = body;
+    response.status = 400;
+    return false
+}
+
+function preconditionFailedError(diagnostics) {
+    let body = context.read('classpath:mocks/stubs/errorResponses/PRECONDITION_FAILED.json');
+    body.issue[0].diagnostics = diagnostics;
+    response.body = body;
+    response.status = 412;
+    return false
+}
+
+/*
+    The main logic for patching a patient
+*/
+function patchPatient(originalPatient, request) {
     let newPatient = JSON.parse(JSON.stringify(originalPatient));
-    for(let i = 0; i < requestBody.patches.length; i++) {
-        let patch = requestBody.patches[i];
+
+    if (!request.body.patches) {
+        return invalidUpdateError(NO_PATCHES_PROVIDED);
+    }
+
+    if (request.header('If-Match') != `W/"${originalPatient.meta.versionId}`) {
+        return preconditionFailedError(INVALID_RESOURCE_ID);
+    }
+
+
+    for(let i = 0; i < request.body.patches.length; i++) {
+        let patch = request.body.patches[i];
         if (patch.op == 'add' && patch.path === '/name/-') {
             newPatient.name.push(patch.value);
         }
@@ -37,29 +74,33 @@ if (request.pathMatches('/Patient/{nhsNumber}') && request.patch) {
     const nhsNumber = request.pathParams.nhsNumber;
     let validNHSNumber = validate(nhsNumber)
     const requestID = request.header('x-request-id')
-    
+    let errors = false;
+
     if (!requestID) {
+        errors = true
         response.body = context.read('classpath:mocks/stubs/errorResponses/MISSING_VALUE_x-request-id.json')
         response.status = 400
     } else if (!isValidUUID(requestID)) {
-        let body = context.read('classpath:mocks/stubs/errorResponses/INVALID_VALUE_x-request-id.json')
-        body['issue'][0]['diagnostics'] = `Invalid value - '${request.header('x-request-id')}' in header 'X-Request-ID'`
-        response.body = body
-        response.status = 400
+        errors = true
+        invalidValueError(X_REQUEST_ID, requestID)
     } else if (!validNHSNumber) {
+        errors = true
         response.body = context.read('classpath:stubs/oldSandbox/errors/INVALID_RESOURCE_ID.json');
         response.status = 400
-    } else {
-        if (typeof session.patients[nhsNumber] == 'undefined') {
-            response.body = context.read('classpath:stubs/oldSandbox/errors/RESOURCE_NOT_FOUND.json');
-            response.status = 404
-        } else {
-            originalPatient = session.patients[nhsNumber]
-            newPatient = patchPatient(originalPatient, request.body);
+    } else if (typeof session.patients[nhsNumber] == 'undefined') {
+        errors = true
+        response.body = context.read('classpath:stubs/oldSandbox/errors/RESOURCE_NOT_FOUND.json');
+        response.status = 404
+    } 
+ 
+    if (!errors) {
+        originalPatient = session.patients[nhsNumber]
+        newPatient = patchPatient(originalPatient, request);
+        if (newPatient) {
             session.patients[nhsNumber] = newPatient;
             response.headers = buildResponseHeaders(request, newPatient);
             response.body = newPatient;
             response.status = 200;
-        }    
+        }
     }
 }

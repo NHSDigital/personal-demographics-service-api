@@ -21,4 +21,9 @@ public class MockPatchPatientTests {
         return Karate.run("patchPatient").relativeTo(getClass());
     }
 
+    @Karate.Test
+    Karate testPatchErrors() {
+        return Karate.run("patchPatientErrors").relativeTo(getClass());
+    }
+
 }

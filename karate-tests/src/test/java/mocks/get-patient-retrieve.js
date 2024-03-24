@@ -37,19 +37,21 @@ if (request.pathMatches('/Patient/{nhsNumber}') && request.get) {
     const nhsNumber = request.pathParams.nhsNumber;
     let validNHSNumber = validate(nhsNumber)
     const requestID = request.header('x-request-id')
+    let errors = false;
     
     if (!requestID) {
+        errors = true
         response.body = context.read('classpath:mocks/stubs/errorResponses/MISSING_VALUE_x-request-id.json')
         response.status = 400
     } else if (!isValidUUID(requestID)) {
-        let body = context.read('classpath:mocks/stubs/errorResponses/INVALID_VALUE_x-request-id.json')
-        body['issue'][0]['diagnostics'] = `Invalid value - '${request.header('x-request-id')}' in header 'X-Request-ID'`
-        response.body = body
-        response.status = 400
+        errors = true
+        invalidValueError(X_REQUEST_ID, requestID)
     } else if (!validNHSNumber) {
+        errors = true
         response.body = context.read('classpath:stubs/oldSandbox/errors/INVALID_RESOURCE_ID.json');
         response.status = 400
-    } else {
+    }
+    if (!errors) {
         if (typeof session.patients[nhsNumber] == 'undefined') {
             response.body = context.read('classpath:stubs/oldSandbox/errors/RESOURCE_NOT_FOUND.json');
             response.status = 404
