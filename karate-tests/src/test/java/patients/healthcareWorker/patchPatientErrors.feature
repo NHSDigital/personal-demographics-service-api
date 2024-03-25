@@ -48,7 +48,6 @@ Feature: Patch patient errors - Healthcare worker access mode
     * method patch
     * status 412
     * match response == expectedBody
-
   Scenario: Invalid x-request-id header
     * header Content-Type = "application/json-patch+json"
     * header If-Match = etag

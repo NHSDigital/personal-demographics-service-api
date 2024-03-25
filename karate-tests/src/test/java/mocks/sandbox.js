@@ -32,10 +32,12 @@ function getParam(request, paramName) {
 }
 
 function basicResponseHeaders(request) {
+    context.log("basicResponseHeaders sandbox.js")
+    context.log(request.headers)
     return {
         'content-type': 'application/fhir+json',
-        'x-request-id': request.header('x-request-id'),
-        'x-correlation-id': request.header('x-correlation-id')    
+        'x-request-id': request.headers['x-request-id'],
+        'x-correlation-id': request.headers['x-correlation-id']    
     } 
 };
 
@@ -48,7 +50,8 @@ function validateHeaders(request) {
     const requestID = request.header('x-request-id')
     if (!requestID) {
         response.body = context.read('classpath:mocks/stubs/errorResponses/MISSING_VALUE_x-request-id.json')
-        response.headers = basicResponseHeaders(request)
+        const headers = basicResponseHeaders(request)
+        response.headers = headers
         response.status = 400
         valid = false
     } else if (!isValidUUID(requestID)) {
@@ -60,17 +63,16 @@ function validateHeaders(request) {
 
 function validateNHSNumber(request) {
     const nhsNumber = request.pathParams.nhsNumber;
-    const headers = basicResponseHeaders(request)
     let valid = true;
     let validNHSNumber = validate(nhsNumber)
     if (!validNHSNumber) {
         valid = false
-        response.headers = headers
+        response.headers = basicResponseHeaders(request)
         response.body = context.read('classpath:mocks/stubs/errorResponses/INVALID_RESOURCE_ID.json');
         response.status = 400
     } else if (typeof session.patients[nhsNumber] == 'undefined') {
         valid = false
-        response.headers = headers
+        response.headers = basicResponseHeaders(request)
         response.body = context.read('classpath:mocks/stubs/errorResponses/RESOURCE_NOT_FOUND.json');
         response.status = 404
     }
