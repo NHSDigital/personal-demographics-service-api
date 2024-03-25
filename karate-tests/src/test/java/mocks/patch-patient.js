@@ -84,6 +84,9 @@ function patchPatient(originalPatient, request) {
         if (patch.op == 'replace' && patch.path === '/gender') {
             updatedPatient.gender = patch.value;
         }
+        if (patch.op == 'replace' && patch.path === "/address/0/id" && patch.value === "123456") {
+            return invalidUpdateError("Invalid update with error - no 'address' resources with object id 123456");
+        }
         if (patch.op == 'replace' && patch.path.startsWith('/address/0')) {
             return invalidUpdateError("Invalid update with error - no id or url found for path with root /address/0");
         }

@@ -157,4 +157,15 @@ Feature: Patch patient errors - Healthcare worker access mode
     * status 400
     * match response == expectedBody
 
-    
+  Scenario: Invalid patch - invalid address ID
+    * def diagnostics = "Invalid update with error - no 'address' resources with object id 123456"
+    * def expectedBody = read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
+
+    * configure headers = requestHeaders
+    * header Content-Type = "application/json-patch+json"
+    * header If-Match = etag    
+    * path 'Patient', nhsNumber
+    * request {"patches":[{"op":"replace","path":"/address/0/id","value":"123456"},{"op":"replace","path":"/address/0/line/0","value":"2 Whitehall Quay"},{"op":"replace","path":"/address/0/postalCode","value":"LS1 4BU"}]}
+    * method patch
+    * status 400
+    * match response == expectedBody
