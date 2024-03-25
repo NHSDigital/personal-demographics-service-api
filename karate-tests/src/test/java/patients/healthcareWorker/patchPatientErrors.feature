@@ -19,7 +19,6 @@ Feature: Patch patient errors - Healthcare worker access mode
     
     * def patientObject = response
     * def etag = karate.response.header('etag')
-    * def originalVersion = parseInt(response.meta.versionId)
 
   Scenario: No patch operations
     * header Content-Type = "application/json-patch+json"
@@ -169,3 +168,57 @@ Feature: Patch patient errors - Healthcare worker access mode
     * method patch
     * status 400
     * match response == expectedBody
+
+  Scenario: Invalid patch - invalid address ID only
+    # why the need for this test, given the previous one?
+    * def diagnostics = "Invalid update with error - no 'address' resources with object id 123456"
+    * def expectedBody = read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
+
+    * configure headers = requestHeaders
+    * header Content-Type = "application/json-patch+json"
+    * header If-Match = etag    
+    * path 'Patient', nhsNumber
+    * request {"patches":[{"op":"replace","path":"/address/0/id","value":"123456"}]}
+    * method patch
+    * status 400
+    * match response == expectedBody
+
+  Scenario: Invalid patch - patient with no address
+    # we use a different patient for this test
+    * def nhsNumber = "9000000033"
+    * path 'Patient', nhsNumber
+    * method get
+    * status 200
+    * def etag = karate.response.header('etag')
+    
+    * configure headers = requestHeaders
+    * header Content-Type = "application/json-patch+json"
+    * header If-Match = etag    
+    * path 'Patient', nhsNumber
+    * request {"patches":[{"op":"replace","path":"/address/0/id","value":"456"},{"op":"replace","path":"/address/0/line/0","value":"2 Whitehall Quay"},{"op":"replace","path":"/address/0/postalCode","value":"LS1 4BU"}]}
+    * method patch
+    * status 400
+    * def diagnostics = "Invalid update with error - no 'address' resources with object id 123456"
+    * def expectedBody = read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
+    * match response == expectedBody
+ 
+  # Scenario: Invalid patch - Patient with no address / Request without address ID
+  #   # we use a different patient for this test
+  #   * def nhsNumber = "9000000033"
+  #   * path 'Patient', nhsNumber
+  #   * method get
+  #   * status 200
+  #   * def etag = karate.response.header('etag')
+    
+  #   * def diagnostics = "Invalid update with error - no id or url found for path with root /address/0"
+  #   * def expectedBody = read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
+
+  #   * configure headers = requestHeaders
+  #   * header Content-Type = "application/json-patch+json"
+  #   * header If-Match = etag    
+ 
+  #   * path 'Patient', nhsNumber
+  #   * request {"patches":[{"op":"replace","path":"/address/0/line/0","value":"2 Whitehall Quay"},{"op":"replace","path":"/address/0/postalCode","value":"LS1 4BU"}]}
+  #   * method patch
+  #   * status 400
+  #   * match response == expectedBody

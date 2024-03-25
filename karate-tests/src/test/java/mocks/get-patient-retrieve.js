@@ -1,25 +1,11 @@
 /*
-    Stubs
-*/
-session.stubs = session.stubs || {
-    examplePatientSmith: context.read('classpath:mocks/stubs/patientResponses/Patient.json'),
-    examplePatientSmyth: context.read('classpath:mocks/stubs/patientResponses/Patient-Jayne-Smyth.json'),
-    examplePatientSmythe: context.read('classpath:mocks/stubs/patientResponses/Sensitive_Patient.json'),
-    examplePatientMinimal: context.read('classpath:mocks/stubs/patientResponses/Minimal_Patient.json'),
-    exampleSearchPatientSmith: context.read('classpath:mocks/stubs/patientResponses/PatientSearch.json').entry[0].resource,
-    exampleSearchPatientSmyth: context.read('classpath:mocks/stubs/patientResponses/PatientSearch-Jayne-Smyth.json').entry[0].resource,
-    exampleSearchPatientSmythe: context.read('classpath:mocks/stubs/patientResponses/Sensitive_PatientSearch.json').entry[0].resource,
-    exampleSearchPatientMinimal: context.read('classpath:mocks/stubs/patientResponses/Minimal_PatientSearch.json').entry[0].resource,
-    exampleSearchPatientCompoundName: context.read('classpath:mocks/stubs/patientResponses/PatientCompoundName.json')
-}
-
-/*
-    Patient objects used in pytest tests
+    Our patients "database" for the get by NHS Number requests :-)
 */
 session.patients = session.patients || {
-    '9000000009': context.read('classpath:stubs/patient/sandbox-patient.json'),
-    '9000000025': context.read('classpath:stubs/oldSandbox/sensitive-patient.json'),
-    '9693632109': context.read('classpath:stubs/patient/patient_9693632109.json')
+    '9000000009': context.read('classpath:mocks/stubs/patientResponses/patient_9000000009.json'),
+    '9000000025': context.read('classpath:mocks/stubs/patientResponses/patient_9000000025.json'),
+    '9000000033': context.read('classpath:mocks/stubs/patientResponses/patient_9000000033.json'),
+    '9693632109': context.read('classpath:mocks/stubs/patientResponses/patient_9693632109.json')
 }
 
 /*

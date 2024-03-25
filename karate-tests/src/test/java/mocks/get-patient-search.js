@@ -1,4 +1,20 @@
 /*
+    Stubs
+*/
+session.stubs = session.stubs || {
+    examplePatientSmith: context.read('classpath:mocks/stubs/searchResponses/Patient.json'),
+    examplePatientSmyth: context.read('classpath:mocks/stubs/searchResponses/Patient-Jayne-Smyth.json'),
+    examplePatientSmythe: context.read('classpath:mocks/stubs/searchResponses/Sensitive_Patient.json'),
+    examplePatientMinimal: context.read('classpath:mocks/stubs/searchResponses/Minimal_Patient.json'),
+    exampleSearchPatientSmith: context.read('classpath:mocks/stubs/searchResponses/PatientSearch.json').entry[0].resource,
+    exampleSearchPatientSmyth: context.read('classpath:mocks/stubs/searchResponses/PatientSearch-Jayne-Smyth.json').entry[0].resource,
+    exampleSearchPatientSmythe: context.read('classpath:mocks/stubs/searchResponses/Sensitive_PatientSearch.json').entry[0].resource,
+    exampleSearchPatientMinimal: context.read('classpath:mocks/stubs/searchResponses/Minimal_PatientSearch.json').entry[0].resource,
+    exampleSearchPatientCompoundName: context.read('classpath:mocks/stubs/searchResponses/PatientCompoundName.json')
+}
+
+
+/*
     Handler for search Patient functionality
 */
 if (request.pathMatches('/Patient') && request.get) {
