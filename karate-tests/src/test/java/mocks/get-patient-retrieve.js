@@ -26,38 +26,20 @@ session.patients = session.patients || {
     Handler for get patient by NHS Number
 */
 if (request.pathMatches('/Patient/{nhsNumber}') && request.get) {
-    response.headers = {
-        'content-type': 'application/fhir+json',
-        'etag': 'W/"1"',
-        'x-request-id': request.header('x-request-id'),
-        'x-correlation-id': request.header('x-correlation-id')
+    let valid = validateHeaders(request) && validateNHSNumber(request) ;
 
-    };
-
-    const nhsNumber = request.pathParams.nhsNumber;
-    let validNHSNumber = validate(nhsNumber)
-    const requestID = request.header('x-request-id')
-    let errors = false;
-    
-    if (!requestID) {
-        errors = true
-        response.body = context.read('classpath:mocks/stubs/errorResponses/MISSING_VALUE_x-request-id.json')
-        response.status = 400
-    } else if (!isValidUUID(requestID)) {
-        errors = true
-        invalidValueError(X_REQUEST_ID, requestID)
-    } else if (!validNHSNumber) {
-        errors = true
-        response.body = context.read('classpath:stubs/oldSandbox/errors/INVALID_RESOURCE_ID.json');
-        response.status = 400
-    }
-    if (!errors) {
+    if (valid) {
+        const nhsNumber = request.pathParams.nhsNumber;
         if (typeof session.patients[nhsNumber] == 'undefined') {
-            response.body = context.read('classpath:stubs/oldSandbox/errors/RESOURCE_NOT_FOUND.json');
+            response.body = context.read('classpath:mocks/stubs/errorResponses/RESOURCE_NOT_FOUND.json');
+            response.headers = basicResponseHeaders(request)
             response.status = 404
         } else {
             patient = session.patients[nhsNumber]
+            let responseHeaders = basicResponseHeaders(request)
+            responseHeaders['etag'] = `W/"${patient.meta.versionId}"`
             response.body = patient;
+            response.headers = responseHeaders;
             response.status = 200;
         }    
     }

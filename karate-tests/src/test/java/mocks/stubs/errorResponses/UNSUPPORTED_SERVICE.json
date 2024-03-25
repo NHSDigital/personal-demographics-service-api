@@ -3,18 +3,17 @@
   "issue": [
     {
       "severity": "error",
-      "code": "structure",
+      "code": "processing",
       "details": {
         "coding": [
           {
             "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
             "version": "1",
-            "code": "PRECONDITION_FAILED",
-            "display": "Required condition was not fulfilled"
+            "code": "UNSUPPORTED_SERVICE",
+            "display": "Unsupported Service"
           }
         ]
-      },
-      "diagnostics": "#(diagnostics)"
+      }
     }
   ]
 }
