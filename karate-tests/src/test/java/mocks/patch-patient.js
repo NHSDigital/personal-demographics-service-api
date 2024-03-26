@@ -58,8 +58,6 @@ function validatePatchHeaders(request) {
     return valid
 }
 
-
-
 /*
     The main logic for patching a patient
 */
@@ -115,7 +113,7 @@ function patchPatient(originalPatient, request) {
         "Invalid update with error - Invalid patch - can't replace non-existent object 'line'"
     ]
 
-    if (updateErrors) {
+    if (updateErrors.length > 0) {
         if (updateErrors.every(item => rogueErrors.includes(item)) && rogueErrors.every(item => updateErrors.includes(item))) {
             return invalidUpdateError(request, updateErrors[1])
         } else {
@@ -137,7 +135,8 @@ if (request.pathMatches('/Patient/{nhsNumber}') && request.patch) {
         const originalPatient = session.patients[nhsNumber];
         let updatedPatient = patchPatient(originalPatient, request);
         if (updatedPatient) {
-            session.patients[nhsNumber] = updatedPatient;
+            // this line is commented out because the existing tests assume a stateless mock
+            // session.patients[nhsNumber] = updatedPatient;
             response.headers = buildResponseHeaders(request, updatedPatient);
             response.body = updatedPatient;
             response.status = 200;

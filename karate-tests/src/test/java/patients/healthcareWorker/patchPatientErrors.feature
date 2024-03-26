@@ -210,7 +210,6 @@ Feature: Patch patient errors - Healthcare worker access mode
     * status 400
     * match response == expectedBody
 
-  @this
   Scenario: Invalid patch - patient with no address
     # we use a different patient for this test
     # why are we doing this test given we've done the above scenario?

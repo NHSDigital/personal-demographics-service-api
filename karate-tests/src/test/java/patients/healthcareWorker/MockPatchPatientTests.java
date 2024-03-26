@@ -9,7 +9,7 @@ import mocks.MockRunner;
 
 public class MockPatchPatientTests {
 
-        static HttpServer server;
+    static HttpServer server;
 
     @BeforeAll
     static void beforeAll() {
@@ -24,11 +24,6 @@ public class MockPatchPatientTests {
     @Karate.Test
     Karate testPatchErrors() {
         return Karate.run("patchPatientErrors").relativeTo(getClass());
-    }
-
-    @Karate.Test
-    Karate testThis() {
-        return Karate.run("patchPatientErrors").tags("@this").relativeTo(getClass());
     }
 
 }
