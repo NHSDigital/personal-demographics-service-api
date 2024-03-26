@@ -156,6 +156,26 @@ Feature: Patch patient errors - Healthcare worker access mode
     * status 400
     * match response == expectedBody
 
+  Scenario: Invalid patch - attempt to replace non-existent object
+    * def diagnostics = "Invalid update with error - Invalid patch - can't replace non-existent object 'line'"
+    * def expectedBody = read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
+
+    * configure headers = requestHeaders
+    * header Content-Type = "application/json-patch+json"
+    * header If-Match = etag    
+    * path 'Patient', nhsNumber
+    * request
+      """
+      {"patches":[
+        {"op":"replace","path":"/address/0/id","value":"456"},
+        {"op":"replace","path":"/address/0/line","value":["2 Trevelyan Square","Boar Lane","Leeds"]},
+        {"op":"replace","path":"/address/0/postalCode","value":"LS1 4BU"}
+      ]}
+      """
+    * method patch
+    * status 400
+    * match response == expectedBody
+
   Scenario: Invalid patch - invalid address ID
     * def diagnostics = "Invalid update with error - no 'address' resources with object id 123456"
     * def expectedBody = read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
@@ -164,7 +184,14 @@ Feature: Patch patient errors - Healthcare worker access mode
     * header Content-Type = "application/json-patch+json"
     * header If-Match = etag    
     * path 'Patient', nhsNumber
-    * request {"patches":[{"op":"replace","path":"/address/0/id","value":"123456"},{"op":"replace","path":"/address/0/line/0","value":"2 Whitehall Quay"},{"op":"replace","path":"/address/0/postalCode","value":"LS1 4BU"}]}
+    * request
+      """
+      {"patches":[
+        {"op":"replace","path":"/address/0/id","value":"123456"},
+        {"op":"replace","path":"/address/0/line/0","value":"2 Whitehall Quay"},
+        {"op":"replace","path":"/address/0/postalCode","value":"LS1 4BU"}
+      ]}
+      """  
     * method patch
     * status 400
     * match response == expectedBody
@@ -183,6 +210,7 @@ Feature: Patch patient errors - Healthcare worker access mode
     * status 400
     * match response == expectedBody
 
+  @this
   Scenario: Invalid patch - patient with no address
     # we use a different patient for this test
     # why are we doing this test given we've done the above scenario?
@@ -196,10 +224,19 @@ Feature: Patch patient errors - Healthcare worker access mode
     * header Content-Type = "application/json-patch+json"
     * header If-Match = etag    
     * path 'Patient', nhsNumber
-    * request {"patches":[{"op":"replace","path":"/address/0/id","value":"123456"},{"op":"replace","path":"/address/0/line/0","value":"2 Whitehall Quay"},{"op":"replace","path":"/address/0/postalCode","value":"LS1 4BU"}]}
+    * request 
+    """
+    {
+      "patches":[
+        {"op":"replace","path":"/address/0/id","value":"456"},
+        {"op":"replace","path":"/address/0/line/0","value":"2 Whitehall Quay"},
+        {"op":"replace","path":"/address/0/postalCode","value":"LS1 4BU"}
+      ]
+    }
+    """
     * method patch
     * status 400
-    * def diagnostics = "Invalid update with error - no 'address' resources with object id 123456"
+    * def diagnostics = "Invalid update with error - Invalid patch - index '0' is out of bounds"
     * def expectedBody = read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
     * match response == expectedBody
  

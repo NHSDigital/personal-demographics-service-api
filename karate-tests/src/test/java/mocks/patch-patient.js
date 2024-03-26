@@ -73,6 +73,8 @@ function patchPatient(originalPatient, request) {
     }
 
     let updatedPatient = JSON.parse(JSON.stringify(originalPatient));
+    let updateErrors = [];
+
     const validOperations = ['add', 'replace', 'remove', 'test']
     for(let i = 0; i < request.body.patches.length; i++) {
         let patch = request.body.patches[i];    
@@ -88,18 +90,41 @@ function patchPatient(originalPatient, request) {
         if (patch.op == 'replace' && patch.path === '/gender') {
             updatedPatient.gender = patch.value;
         }
-        if (patch.op == 'replace' && patch.path === "/address/0/id" && patch.value === "123456") {
-            return invalidUpdateError(request, "Invalid update with error - no 'address' resources with object id 123456");
-        }
-        if (patch.op == 'replace' && patch.path.startsWith('/address/0')) {
-            return invalidUpdateError(request, "Invalid update with error - no id or url found for path with root /address/0");
-        }
         if (patch.op == 'remove' && patch.path === '/name/0/suffix/0') {
             updatedPatient.name[0].suffix.splice(0, 1);
         }
+
+        // these specific error scenarios for update errors should be reviewed
+        if (patch.op == 'replace' && patch.path === "/address/0/line/0" && patch.value === "2 Whitehall Quay") {
+            updateErrors.push("Invalid update with error - no id or url found for path with root /address/0");
+        } else if (patch.op == 'replace' && patch.path.startsWith("/address/0/") && !originalPatient.hasOwnProperty('address')) {
+            updateErrors.push("Invalid update with error - Invalid patch - index '0' is out of bounds");
+        } else if (patch.op == 'replace' && patch.path === "/address/0/id" && patch.value === "456") {
+            updateErrors.push("Invalid update with error - no 'address' resources with object id 456");
+        } else if (patch.op == 'replace' && patch.path === "/address/0/line") {
+            updateErrors.push("Invalid update with error - Invalid patch - can't replace non-existent object 'line'");
+        } else if (patch.op == 'replace' && patch.path === "/address/0/id" && patch.value === "123456") {
+            updateErrors.push("Invalid update with error - no 'address' resources with object id 123456");
+        }
     }
-    updatedPatient.meta.versionId = (parseInt(updatedPatient.meta.versionId) + 1);
-    return updatedPatient;
+
+    // why is it that for this specific scenario (Invalid patch - attempt to replace non-existent object), 
+    // we have to pick the last error message, when for all the others we pick the first error message?
+    const rogueErrors = [
+        "Invalid update with error - no 'address' resources with object id 456",
+        "Invalid update with error - Invalid patch - can't replace non-existent object 'line'"
+    ]
+
+    if (updateErrors) {
+        if (updateErrors.every(item => rogueErrors.includes(item)) && rogueErrors.every(item => updateErrors.includes(item))) {
+            return invalidUpdateError(request, updateErrors[1])
+        } else {
+            return invalidUpdateError(request, updateErrors[0])
+        }
+    } else {
+        updatedPatient.meta.versionId = (parseInt(updatedPatient.meta.versionId) + 1);
+        return updatedPatient;
+    }
 }
 
 /*

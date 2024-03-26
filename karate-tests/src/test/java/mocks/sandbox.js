@@ -32,8 +32,6 @@ function getParam(request, paramName) {
 }
 
 function basicResponseHeaders(request) {
-    context.log("basicResponseHeaders sandbox.js")
-    context.log(request.headers)
     return {
         'content-type': 'application/fhir+json',
         'x-request-id': request.headers['x-request-id'],
