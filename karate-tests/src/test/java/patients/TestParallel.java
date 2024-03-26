@@ -13,7 +13,7 @@ public class TestParallel {
         Results results = Runner.path("classpath:patients")
                 .outputJunitXml(true)
                 .karateEnv("dev")
-                .parallel(1);
+                .parallel(5);
         assertTrue(results.getFailCount() == 0, results.getErrorMessages());
     }
 
