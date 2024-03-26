@@ -11,6 +11,7 @@ public class TestParallel {
     @Test
     void testDevParallel() {
         Results results = Runner.path("classpath:patients")
+                .tags("~@sandbox")
                 .outputJunitXml(true)
                 .karateEnv("dev")
                 .parallel(5);
