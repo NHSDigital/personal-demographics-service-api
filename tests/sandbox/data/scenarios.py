@@ -100,10 +100,10 @@ search_success = {
     "Fuzzy Search": {
         "query_params":{"family":"Smith","given":"jane","gender":"female","birthdate":"2010-10-22","_fuzzy-match":True},
         "response":fuzzy_search_patient_17},  
-    "Fuzzy Search with Email": {
+    "Fuzzy Search with Phone": {
         "query_params":{"family":"Smith","given":"jane","gender":"female","birthdate":"2010-10-22","phone": "01632960587","_fuzzy-match":True},
         "response":patient_09_searchset_with_score(0.9124)},
-    "Fuzzy Search with Phone": {
+    "Fuzzy Search with Email": {
         "query_params":{"family":"Smith","given":"jane","gender":"female","birthdate":"2010-10-22","email": "jane.smith@example.com","_fuzzy-match":True},
         "response":patient_09_searchset_with_score(0.9124)},
     "Fuzzy Search with Phone and Email": {
