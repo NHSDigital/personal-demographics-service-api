@@ -32,3 +32,4 @@ keys/
 
 
 karate-tests/target/
+karate-tests/src/test/java/target/
