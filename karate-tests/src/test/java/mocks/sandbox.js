@@ -20,17 +20,6 @@ function isValidUUID(uuid) {
     return regex.test(uuid)
 }
 
-
-function getParam(request, paramName) {
-    // Get the value of the parameter, and convert it to lowercase if it's a string
-    value = request.params[paramName]
-    if (typeof value !== 'string') {
-        return value
-    } else {
-        return value.toLowerCase()
-    }
-}
-
 function basicResponseHeaders(request) {
     return {
         'content-type': 'application/fhir+json',
@@ -135,4 +124,5 @@ function validateDate(dateString, field) {
 
 
 context.read('classpath:mocks/get-patient-retrieve.js');
+context.read('classpath:mocks/get-patient-search.js');
 context.read('classpath:mocks/patch-patient.js');
