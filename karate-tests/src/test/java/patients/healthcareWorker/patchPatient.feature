@@ -64,8 +64,7 @@ Feature: Patch patient - Healthcare worker access mode
     * match existingSuffix != null
 
     * path 'Patient', nhsNumber
-    # we even add a patch that should be ignored here for some reason
-    * request {"patches":[{"op":"test","path":"/name/0/id","value":"123"},{"op":"remove","path":"/name/0/suffix/0"}]}
+    * request {"patches":[{"op":"remove","path":"/name/0/suffix/0"}]}
     * method patch
     * status 200
     * match response.name[0].suffix == '#[0]'

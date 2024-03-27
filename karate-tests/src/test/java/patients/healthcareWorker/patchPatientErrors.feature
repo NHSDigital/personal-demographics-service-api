@@ -48,6 +48,7 @@ Feature: Patch patient errors - Healthcare worker access mode
     * method patch
     * status 412
     * match response == expectedBody
+
   Scenario: Invalid x-request-id header
     * header Content-Type = "application/json-patch+json"
     * header If-Match = etag
@@ -197,7 +198,6 @@ Feature: Patch patient errors - Healthcare worker access mode
     * match response == expectedBody
 
   Scenario: Invalid patch - invalid address ID only
-    # why the need for this test, given the previous one?
     * def diagnostics = "Invalid update with error - no 'address' resources with object id 123456"
     * def expectedBody = read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
 
@@ -211,8 +211,6 @@ Feature: Patch patient errors - Healthcare worker access mode
     * match response == expectedBody
 
   Scenario: Invalid patch - patient with no address
-    # we use a different patient for this test
-    # why are we doing this test given we've done the above scenario?
     * def nhsNumber = "9000000033"
     * path 'Patient', nhsNumber
     * method get
@@ -240,7 +238,6 @@ Feature: Patch patient errors - Healthcare worker access mode
     * match response == expectedBody
  
   Scenario: Invalid patch - Patient with no address / Request without address ID
-    # we use a different patient for this test
     * def nhsNumber = "9000000033"
     * path 'Patient', nhsNumber
     * method get

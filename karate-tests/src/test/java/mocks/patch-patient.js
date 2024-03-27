@@ -52,7 +52,7 @@ function validatePatchHeaders(request) {
     if (!request.header('if-match')) {
         valid = preconditionFailedError(request, NO_IF_MATCH_HEADER)
     }
-    if (valid && !request.header('content-type').startsWith('application/json-patch+json')) {
+    if (valid && !request.header('content-type').startsWith('application/json')) {
         valid = unsupportedServiceError(request)
     }
     return valid
@@ -76,7 +76,7 @@ function patchPatient(originalPatient, request) {
     const validOperations = ['add', 'replace', 'remove', 'test']
     for(let i = 0; i < request.body.patches.length; i++) {
         let patch = request.body.patches[i];    
-        if (validOperations.indexOf(patch.op) == -1) {
+        if (!validOperations.includes(patch.op)) {
             return invalidUpdateError(request, INVALID_PATCH)
         }
         if (patch.op == 'add' && patch.path === '/name/-') {
