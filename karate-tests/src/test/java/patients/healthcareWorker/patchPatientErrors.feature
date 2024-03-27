@@ -80,7 +80,7 @@ Feature: Patch patient errors - Healthcare worker access mode
     * match response == expectedBody
     
   Scenario: Invalid content-type header
-    * header Content-Type = "application/json"
+    * header Content-Type = "application/bananas"
     * header If-Match = etag
 
     * def expectedBody = read('classpath:mocks/stubs/errorResponses/UNSUPPORTED_SERVICE.json')
