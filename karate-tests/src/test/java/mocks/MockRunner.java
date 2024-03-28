@@ -14,7 +14,7 @@ public class MockRunner {
         config.contextFactory(request -> {
             ServerContext context = new ServerContext(config, request);
             context.setApi(true);
-            request.setResourcePath("sandbox.js");
+            request.setResourcePath("sandbox/sandbox.js");
             return context;
         });
         return HttpServer.config(config)

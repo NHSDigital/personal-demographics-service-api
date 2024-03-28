@@ -132,7 +132,8 @@ Feature: Patch patient errors - Healthcare worker access mode
     * header Content-Type = "application/json-patch+json"
     * header If-Match = etag
 
-    * def expectedBody = read('classpath:mocks/stubs/errorResponses/MISSING_VALUE_x-request-id.json')
+    * def diagnostics = "Invalid request with error - X-Request-ID header must be supplied to access this resource"
+    * def expectedBody = read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')
     
     * def badHeaders = requestHeaders
     * remove badHeaders.x-request-id

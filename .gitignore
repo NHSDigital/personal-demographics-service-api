@@ -31,5 +31,6 @@ JWT_TESTING_WITH_ASID_PRIVATE_KEY
 keys/
 
 
+target/
 karate-tests/target/
 karate-tests/src/test/java/target/
