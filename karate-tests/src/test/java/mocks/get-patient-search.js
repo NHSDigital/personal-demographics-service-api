@@ -1,26 +1,4 @@
 /*
-    Stub search responses
-*/
-const SEARCH_PATIENT_9000000009 = context.read('classpath:mocks/stubs/searchResponses/search_patient_9000000009.json');
-const SEARCH_PATIENT_9000000017 = context.read('classpath:mocks/stubs/searchResponses/search_patient_9000000017.json');
-const RESTRICTED_PATIENT_SEARCH = context.read('classpath:mocks/stubs/searchResponses/search_patient_9000000025.json');
-const COMPOUND_NAME_SEARCH = context.read('classpath:mocks/stubs/searchResponses/compound_name_search.json');
-
-const EMPTY_SEARCHSET = { "resourceType":"Bundle","type":"searchset","total":0}
-const SIMPLE_SEARCH = {
-    "resourceType": "Bundle", "type": "searchset", "total": 1, "entry": [{ "fullUrl": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000009", "search": { "score": 1 }, "resource": SEARCH_PATIENT_9000000009 }]
-}
-const WILDCARD_SEARCH = {
-    "resourceType": "Bundle", "type": "searchset", "total": 2, "entry": [
-        { "fullUrl": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000009", "search": { "score": 0.8343 }, "resource": SEARCH_PATIENT_9000000009 },
-        { "fullUrl": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000017", "search": { "score": 0.8343 }, "resource": SEARCH_PATIENT_9000000017 }
-    ]
-}
-const FUZZY_SEARCH_PATIENT_17 = {
-    "resourceType": "Bundle", "type": "searchset", "total": 1, "entry": [{ "fullUrl": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000017", "search": { "score": 0.8976 }, "resource": SEARCH_PATIENT_9000000017 }]
-}
-
-/*
     Supporting functions for building responses
 */
 function janeSmithSearchsetWithScore(score) {
@@ -36,18 +14,6 @@ function janeSmithSearchsetWithScore(score) {
             }
         ]
     }
-}
-
-/*
-    Functions to handle error responses
-*/
-function invalidUpdateError(request, diagnostics) {
-    let body = context.read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json');
-    body.issue[0].diagnostics = diagnostics;
-    response.headers = basicResponseHeaders(request);
-    response.body = body;
-    response.status = 400;
-    return false
 }
 
 /*

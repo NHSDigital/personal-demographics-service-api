@@ -1,0 +1,31 @@
+/*
+    Stubbed responses used by the different mocks
+*/
+const SEARCH_PATIENT_9000000009 = context.read('classpath:mocks/stubs/searchResponses/search_patient_9000000009.json')
+const SEARCH_PATIENT_9000000017 = context.read('classpath:mocks/stubs/searchResponses/search_patient_9000000017.json')
+const RESTRICTED_PATIENT_SEARCH = context.read('classpath:mocks/stubs/searchResponses/search_patient_9000000025.json')
+const COMPOUND_NAME_SEARCH = context.read('classpath:mocks/stubs/searchResponses/compound_name_search.json')
+const EMPTY_SEARCHSET = { "resourceType":"Bundle","type":"searchset","total":0}
+
+const SIMPLE_SEARCH = {
+    "resourceType": "Bundle", "type": "searchset", "total": 1, "entry": [{ "fullUrl": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000009", "search": { "score": 1 }, "resource": SEARCH_PATIENT_9000000009 }]
+}
+const WILDCARD_SEARCH = {
+    "resourceType": "Bundle", "type": "searchset", "total": 2, "entry": [
+        { "fullUrl": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000009", "search": { "score": 0.8343 }, "resource": SEARCH_PATIENT_9000000009 },
+        { "fullUrl": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000017", "search": { "score": 0.8343 }, "resource": SEARCH_PATIENT_9000000017 }
+    ]
+}
+const FUZZY_SEARCH_PATIENT_17 = {
+    "resourceType": "Bundle", "type": "searchset", "total": 1, "entry": [{ "fullUrl": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9000000017", "search": { "score": 0.8976 }, "resource": SEARCH_PATIENT_9000000017 }]
+}
+
+/*
+    Our patients "database"
+*/
+session.patients = session.patients || {
+    '9000000009': context.read('classpath:mocks/stubs/patientResponses/patient_9000000009.json'),
+    '9000000025': context.read('classpath:mocks/stubs/patientResponses/patient_9000000025.json'),
+    '9000000033': context.read('classpath:mocks/stubs/patientResponses/patient_9000000033.json'),
+    '9693632109': context.read('classpath:mocks/stubs/patientResponses/patient_9693632109.json')
+}
