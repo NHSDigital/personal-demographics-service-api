@@ -58,11 +58,6 @@ jobs:
       - name: Install repo
         run: make install
 
-      - name: Start local sandbox server
-        run: |
-          cd sandbox
-          npm run start &
-
       - name: Check licenses
         run: make check-licenses
 
