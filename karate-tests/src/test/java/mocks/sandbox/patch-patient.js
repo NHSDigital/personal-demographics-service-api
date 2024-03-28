@@ -33,7 +33,6 @@ function setPreconditionFailedError(request, diagnostics) {
     response.headers = basicResponseHeaders(request)
     response.body = body
     response.status = 412
-    return false
 }
 
 function setUnsupportedServiceError(request) {
@@ -41,7 +40,6 @@ function setUnsupportedServiceError(request) {
     response.headers = basicResponseHeaders(request)
     response.body = body
     response.status = 400
-    return false
 }
 
 /*
@@ -50,10 +48,12 @@ function setUnsupportedServiceError(request) {
 function validatePatchHeaders(request) {
     var valid = true
     if (!request.header('if-match')) {
-        valid = setPreconditionFailedError(request, NO_IF_MATCH_HEADER)
+        setPreconditionFailedError(request, NO_IF_MATCH_HEADER)
+        valid = false
     }
     if (valid && !request.header('content-type').startsWith('application/json')) {
-        valid = setUnsupportedServiceError(request)
+        setUnsupportedServiceError(request)
+        valid = false
     }
     return valid
 }

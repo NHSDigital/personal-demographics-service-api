@@ -3,7 +3,6 @@
 */
 if (request.pathMatches('/Patient/{nhsNumber}') && request.get) {  
     let valid = validateHeaders(request) && validateNHSNumber(request) && validatePatientExists(request)
-
     if (valid) {
         patient = session.patients[request.pathParams.nhsNumber]
         let responseHeaders = basicResponseHeaders(request)

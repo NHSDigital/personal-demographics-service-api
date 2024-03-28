@@ -34,9 +34,9 @@ function validateQueryParams(request) {
     // check the validity of certain params first
     const birthDateArray = request.params['birthdate']
     if (birthDateArray) {
-        for (let i = 0; i < birthDateArray.length; i++) {
-            const birthDate = birthDateArray[i]
-            if (!birthDate || !birthDate.match(/^(eq|ne|gt|lt|ge|le)?[0-9]{4}-[0-9]{2}-[0-9]{2}$/)) {
+        for (let index in birthDateArray) {
+            const birthDate = birthDateArray[index]
+            if (!birthDate || !birthDate.match(/^(eq|ge|le)?[0-9]{4}-[0-9]{2}-[0-9]{2}$/)) {
                 const diagnostics = `Invalid value - '${birthDate}' in field 'birthdate'`;
                 return setInvalidSearchDataError(diagnostics)
             }
@@ -50,13 +50,11 @@ function validateQueryParams(request) {
             validParams.push(paramName)
         }
     }
-    // then return an error if any of the required params are missing
-    for (let i = 0; i < REQUIRED_PARAMS.length; i++) {
-        if (!validParams.includes(REQUIRED_PARAMS[i])) {
+    for (let index in REQUIRED_PARAMS) {
+        if (!validParams.includes(REQUIRED_PARAMS[index])) {
             return setMissingValueError(NOT_ENOUGH_SEARCH_PARAMS)
         }
     }
-
     return true
 }
 
@@ -111,7 +109,7 @@ if (request.pathMatches('/Patient') && request.get) {
         else if (["Smith", "smith"].includes(family) && ["Female", "female"].includes(gender) && (birthDate == "eq2010-10-22" || birthDate == "ge2010-10-21,le2010-10-23") && (otherJaneSmithParamsAreValid(request))) {
             response.body = SIMPLE_SEARCH
         }
-        else if (["Smith", "smith"].includes(family) && ["Male", "male"].includes(gender) && given.length == 2) {
+        else if (["Smith", "smith"].includes(family) && ["Male", "male"].includes(gender) && given[0] == "John Paul" &&  given[1] == "James") {
             response.body = COMPOUND_NAME_SEARCH
         }    
         else {

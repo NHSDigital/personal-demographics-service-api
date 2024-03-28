@@ -19,7 +19,6 @@ function setInvalidValueError(field, value, request) {
     response.body = body
     response.headers = basicResponseHeaders(request);
     response.status = 400
-    return false
 }
 
 function setMissingValueError(diagnostics) {
@@ -27,7 +26,6 @@ function setMissingValueError(diagnostics) {
     body["issue"][0]["diagnostics"] = diagnostics
     response.body = body
     response.status = 400
-    return false
 }
 
 function setInvalidSearchDataError(diagnostics) {
@@ -35,7 +33,6 @@ function setInvalidSearchDataError(diagnostics) {
     body["issue"][0]["diagnostics"] = diagnostics
     response.body = body
     response.status = 400
-    return false
 }
 
 function setInvalidUpdateError(request, diagnostics) {
@@ -43,7 +40,6 @@ function setInvalidUpdateError(request, diagnostics) {
     body.issue[0].diagnostics = diagnostics
     response.body = body
     response.status = 400
-    return false
 }
 
 /*  
@@ -71,9 +67,11 @@ function validateHeaders(request) {
     const requestID = request.header('x-request-id')
     if (!requestID) {
         const diagnostics = "Invalid request with error - X-Request-ID header must be supplied to access this resource"
-        valid = setMissingValueError(diagnostics)
+        setMissingValueError(diagnostics)
+        valid = false
     } else if (!isValidUUID(requestID)) {
-        valid = setInvalidValueError(X_REQUEST_ID, requestID, request)
+        setInvalidValueError(X_REQUEST_ID, requestID, request)
+        valid = false
     }
     return valid
 }

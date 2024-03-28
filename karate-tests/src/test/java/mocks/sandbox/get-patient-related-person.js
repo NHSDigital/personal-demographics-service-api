@@ -16,7 +16,6 @@ if (request.pathMatches('/Patient/{nhsNumber}/RelatedPerson') && request.get) {
             response.status = 404
         }
         else if (nhsNumber == "9000000017") {
-            console.log("Returning related person 9000000017")
             response.body = context.read('classpath:mocks/stubs/relatedPersonResponses/related_person_9000000017.json')
             response.status = 200
         }
