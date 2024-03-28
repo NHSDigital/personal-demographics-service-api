@@ -13,8 +13,7 @@ function basicResponseHeaders(request) {
 /*
     Error responses
 */
-function returnInvalidValueError(field, value, request) {
-
+function setInvalidValueError(field, value, request) {
     let body = context.read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')
     body.issue[0].diagnostics = `Invalid value - '${value}' in header '${field}'`
     response.body = body
@@ -23,7 +22,7 @@ function returnInvalidValueError(field, value, request) {
     return false
 }
 
-function returnMissingValueError(diagnostics) {
+function setMissingValueError(diagnostics) {
     let body = context.read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')
     body["issue"][0]["diagnostics"] = diagnostics
     response.body = body
@@ -31,7 +30,7 @@ function returnMissingValueError(diagnostics) {
     return false
 }
 
-function returnInvalidSearchDataError(diagnostics) {
+function setInvalidSearchDataError(diagnostics) {
     let body = context.read('classpath:mocks/stubs/errorResponses/INVALID_SEARCH_DATA.json')
     body["issue"][0]["diagnostics"] = diagnostics
     response.body = body
@@ -39,7 +38,7 @@ function returnInvalidSearchDataError(diagnostics) {
     return false
 }
 
-function returnInvalidUpdateError(request, diagnostics) {
+function setInvalidUpdateError(request, diagnostics) {
     let body = context.read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
     body.issue[0].diagnostics = diagnostics
     response.body = body
@@ -72,9 +71,9 @@ function validateHeaders(request) {
     const requestID = request.header('x-request-id')
     if (!requestID) {
         const diagnostics = "Invalid request with error - X-Request-ID header must be supplied to access this resource"
-        valid = returnMissingValueError(diagnostics)
+        valid = setMissingValueError(diagnostics)
     } else if (!isValidUUID(requestID)) {
-        valid = returnInvalidValueError(X_REQUEST_ID, requestID, request)
+        valid = setInvalidValueError(X_REQUEST_ID, requestID, request)
     }
     return valid
 }

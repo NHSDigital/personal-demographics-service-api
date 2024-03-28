@@ -28,18 +28,17 @@ function validateQueryParams(request) {
     const VALID_PARAMS = [
         "_fuzzy-match", "_exact-match", "_history", "_max-results", 
         "family", "given", "gender", "birthdate", "death-date", 
-        "address-postcode", "general-practitioner", "email", "phone"
+        "address-postcode", "address-postalcode", "general-practitioner", "email", "phone"
     ]
     
     // check the validity of certain params first
     const birthDateArray = request.params['birthdate']
-    context.log("birthDateArray: " + birthDateArray)
     if (birthDateArray) {
         for (let i = 0; i < birthDateArray.length; i++) {
             const birthDate = birthDateArray[i]
             if (!birthDate || !birthDate.match(/^(eq|ne|gt|lt|ge|le)?[0-9]{4}-[0-9]{2}-[0-9]{2}$/)) {
                 const diagnostics = `Invalid value - '${birthDate}' in field 'birthdate'`;
-                return returnInvalidSearchDataError(diagnostics)
+                return setInvalidSearchDataError(diagnostics)
             }
         }
     }
@@ -47,7 +46,6 @@ function validateQueryParams(request) {
     // ignore any params that we don't handle
     let validParams = [];
     for (let paramName in request.params) {
-        context.log("paramName: " + paramName)
         if (VALID_PARAMS.includes(paramName)) {
             validParams.push(paramName)
         }
@@ -55,7 +53,7 @@ function validateQueryParams(request) {
     // then return an error if any of the required params are missing
     for (let i = 0; i < REQUIRED_PARAMS.length; i++) {
         if (!validParams.includes(REQUIRED_PARAMS[i])) {
-            return returnMissingValueError(NOT_ENOUGH_SEARCH_PARAMS)
+            return setMissingValueError(NOT_ENOUGH_SEARCH_PARAMS)
         }
     }
 

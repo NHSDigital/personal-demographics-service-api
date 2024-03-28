@@ -18,7 +18,7 @@ const INVALID_PATCH = "Invalid patch: Operation `op` property is not one of oper
 /*
     Functions to handle error responses
 */
-function returnInvalidUpdateError(request, diagnostics) {
+function setInvalidUpdateError(request, diagnostics) {
     let body = context.read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
     body.issue[0].diagnostics = diagnostics
     response.headers = basicResponseHeaders(request)
@@ -27,7 +27,7 @@ function returnInvalidUpdateError(request, diagnostics) {
     return false
 }
 
-function preconditionFailedError(request, diagnostics) {
+function setPreconditionFailedError(request, diagnostics) {
     let body = context.read('classpath:mocks/stubs/errorResponses/PRECONDITION_FAILED.json')
     body.issue[0].diagnostics = diagnostics
     response.headers = basicResponseHeaders(request)
@@ -36,7 +36,7 @@ function preconditionFailedError(request, diagnostics) {
     return false
 }
 
-function unsupportedServiceError(request) {
+function setUnsupportedServiceError(request) {
     let body = context.read('classpath:mocks/stubs/errorResponses/UNSUPPORTED_SERVICE.json')
     response.headers = basicResponseHeaders(request)
     response.body = body
@@ -50,10 +50,10 @@ function unsupportedServiceError(request) {
 function validatePatchHeaders(request) {
     var valid = true
     if (!request.header('if-match')) {
-        valid = preconditionFailedError(request, NO_IF_MATCH_HEADER)
+        valid = setPreconditionFailedError(request, NO_IF_MATCH_HEADER)
     }
     if (valid && !request.header('content-type').startsWith('application/json')) {
-        valid = unsupportedServiceError(request)
+        valid = setUnsupportedServiceError(request)
     }
     return valid
 }
@@ -64,11 +64,10 @@ function validatePatchHeaders(request) {
 function patchPatient(originalPatient, request) {
 
     if (!request.body.patches) {
-        return returnInvalidUpdateError(request, NO_PATCHES_PROVIDED)
+        return setInvalidUpdateError(request, NO_PATCHES_PROVIDED)
     }
-    context.log("META HERE")
     if (request.header('if-match') != `W/"${originalPatient.meta.versionId}"`) {
-        return preconditionFailedError(request, INVALID_RESOURCE_ID)
+        return setPreconditionFailedError(request, INVALID_RESOURCE_ID)
     }
 
     let updatedPatient = JSON.parse(JSON.stringify(originalPatient))
@@ -78,7 +77,7 @@ function patchPatient(originalPatient, request) {
     for(let i = 0; i < request.body.patches.length; i++) {
         let patch = request.body.patches[i]
         if (!validOperations.includes(patch.op)) {
-            return returnInvalidUpdateError(request, INVALID_PATCH)
+            return setInvalidUpdateError(request, INVALID_PATCH)
         }
         if (patch.op == 'add' && patch.path === '/name/-') {
             updatedPatient.name.push(patch.value)
@@ -116,9 +115,9 @@ function patchPatient(originalPatient, request) {
 
     if (updateErrors.length > 0) {
         if (updateErrors.every(item => rogueErrors.includes(item)) && rogueErrors.every(item => updateErrors.includes(item))) {
-            return returnInvalidUpdateError(request, updateErrors[1])
+            return setInvalidUpdateError(request, updateErrors[1])
         } else {
-            return returnInvalidUpdateError(request, updateErrors[0])
+            return setInvalidUpdateError(request, updateErrors[0])
         }
     } else {
         updatedPatient.meta.versionId = (parseInt(updatedPatient.meta.versionId) + 1)

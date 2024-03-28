@@ -2,16 +2,12 @@
     Handler for get related person
 */
 if (request.pathMatches('/Patient/{nhsNumber}/RelatedPerson') && request.get) {
-    context.log("Related person handler")
-    context.log("validateHeaders(request): " + validateHeaders(request))
-    context.log("validateNHSNumber(request): " + validateNHSNumber(request))
     let valid = validateHeaders(request) && validateNHSNumber(request)
 
     if (valid) {
         response.headers = basicResponseHeaders(request)
         const nhsNumber = request.pathParams.nhsNumber
-        context.log("nhsNumber: " + nhsNumber)
-
+    
         if (nhsNumber == "9000000009") {
             response.body = context.read('classpath:mocks/stubs/relatedPersonResponses/related_person_90000000009.json')
         } 
