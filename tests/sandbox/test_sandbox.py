@@ -78,6 +78,7 @@ class TestPDSSandboxSearchSuite:
     @pytest.mark.parametrize("scenario", search_error.keys())
     def test_error_scenarios(self, scenario, additional_headers):
         response = helpers.search_patient(search_error[scenario]["query_params"], additional_headers)
+        assert response.json() == search_error[scenario]["response"]
         helpers.check_search_response_body(response, search_error[scenario]["response"])
         helpers.check_response_status_code(response, 400)
         helpers.check_response_headers(response, additional_headers)
@@ -143,7 +144,7 @@ class TestPDSSandboxUpdateSyncWrapSuite:
             additional_headers,
         )
 
-        # helpers.check_response_headers(update_response, additional_headers)
+        helpers.check_response_headers(update_response, additional_headers)
         helpers.check_retrieve_response_body(
             update_response, update[1]["response"]
         )

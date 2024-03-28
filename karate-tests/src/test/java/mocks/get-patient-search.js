@@ -39,12 +39,6 @@ function janeSmithSearchsetWithScore(score) {
 }
 
 /*
-    Diagnostics strings
-*/
-const NOT_ENOUGH_SEARCH_PARAMS = "Not enough search parameters were provided for a valid search, you must supply family and birthDate as a minimum and only use recognised parameters from the api catalogue."
-
-
-/*
     Functions to handle error responses
 */
 function invalidUpdateError(request, diagnostics) {
@@ -59,6 +53,49 @@ function invalidUpdateError(request, diagnostics) {
 /*
     Specific query param validation to support main handler
 */
+function validateQueryParams(request) {
+    const NOT_ENOUGH_SEARCH_PARAMS = "Not enough search parameters were provided for a valid search, you must supply family and birthdate as a minimum and only use recognised parameters from the api catalogue."
+
+    const REQUIRED_PARAMS = [
+        "family", "gender", "birthdate"
+    ]
+    const VALID_PARAMS = [
+        "_fuzzy-match", "_exact-match", "_history", "_max-results", 
+        "family", "given", "gender", "birthdate", "death-date", 
+        "address-postcode", "general-practitioner", "email", "phone"
+    ]
+    
+    // check the validity of certain params first
+    const birthDateArray = request.params['birthdate']
+    context.log("birthDateArray: " + birthDateArray)
+    if (birthDateArray) {
+        for (let i = 0; i < birthDateArray.length; i++) {
+            const birthDate = birthDateArray[i]
+            if (!birthDate || !birthDate.match(/^(eq|ne|gt|lt|ge|le)?[0-9]{4}-[0-9]{2}-[0-9]{2}$/)) {
+                const diagnostics = `Invalid value - '${birthDate}' in field 'birthdate'`;
+                return returnInvalidSearchDataError(diagnostics)
+            }
+        }
+    }
+
+    // ignore any params that we don't handle
+    let validParams = [];
+    for (let paramName in request.params) {
+        context.log("paramName: " + paramName)
+        if (VALID_PARAMS.includes(paramName)) {
+            validParams.push(paramName)
+        }
+    }
+    // then return an error if any of the required params are missing
+    for (let i = 0; i < REQUIRED_PARAMS.length; i++) {
+        if (!validParams.includes(REQUIRED_PARAMS[i])) {
+            return returnMissingValueError(NOT_ENOUGH_SEARCH_PARAMS)
+        }
+    }
+
+    return true
+}
+
 function otherJaneSmithParamsAreValid(request) {    
     if (request.param('phone') && request.param('phone') != "01632960587") return false
     if (request.param('email') && request.param('email') != "jane.smith@example.com") return false
@@ -70,14 +107,10 @@ function otherJaneSmithParamsAreValid(request) {
     Handler for search Patient functionality
 */
 if (request.pathMatches('/Patient') && request.get) {
-
-    let valid = validateHeaders(request);
     response.headers = basicResponseHeaders(request)
 
-    const paramsCount = Object.keys(request.params).length
-    if (paramsCount == 0) {
-        valid = returnMissingValueError(NOT_ENOUGH_SEARCH_PARAMS, request)
-    }
+    let valid = validateHeaders(request);
+    if (valid) { valid = validateQueryParams(request) }
 
     const family = request.param('family')
     const given = request.params['given']

@@ -1,9 +1,4 @@
 /*
-    Common constants
-*/
-const X_REQUEST_ID = "X-Request-ID";
-
-/*
     Supporting functions
 */
 // reading this file gives us the `validate` function for validating NHS numbers
@@ -28,25 +23,6 @@ function basicResponseHeaders(request) {
     } 
 };
 
-/*
-    Validate the headers
-*/
-function validateHeaders(request) {
-    var valid = true;
-
-    const requestID = request.header('x-request-id')
-    if (!requestID) {
-        response.body = context.read('classpath:mocks/stubs/errorResponses/MISSING_VALUE_x-request-id.json')
-        const headers = basicResponseHeaders(request)
-        response.headers = headers
-        response.status = 400
-        valid = false
-    } else if (!isValidUUID(requestID)) {
-        valid = invalidValueError(X_REQUEST_ID, requestID, request)
-    }
-    return valid
-}
-
 
 function validateNHSNumber(request) {
     const nhsNumber = request.pathParams.nhsNumber;
@@ -68,9 +44,9 @@ function validateNHSNumber(request) {
 
 
 /*
-    Common error response handlers
+    Error responses
 */
-function invalidValueError(field, value, request) {
+function returnInvalidValueError(field, value, request) {
 
     let body = context.read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json');
     body.issue[0].diagnostics = `Invalid value - '${value}' in header '${field}'`;
@@ -80,49 +56,46 @@ function invalidValueError(field, value, request) {
     return false
 }
 
-
-/*
-    Response definitions
-*/
-function returnBundle(filename) {
-    response.body = getTimestampedBody(`classpath:mocks/stubs/patientResponses/${filename}`)
-    response.status = 200
-}
-
-
-function returnEmptyBundle() {
-    response.body = getTimestampedBody('classpath:mocks/stubs/patientResponses/empty_bundle.json')
-    response.status = 200
-}
-
-
 function returnMissingValueError(diagnostics) {
-    let body = context.read('classpath:mocks/stubs/patient/errorResponses/missing_value.json')
+    let body = context.read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')
     body["issue"][0]["diagnostics"] = diagnostics
     response.body = body
     response.status = 400
+    return false
 }
 
 
-function returnTooManyMatchesError() {
-    response.body = context.read('classpath:mocks/stubs/patient/errorResponses/too_many_matches.json')
+function returnInvalidSearchDataError(diagnostics) {
+    let body = context.read('classpath:mocks/stubs/errorResponses/INVALID_SEARCH_DATA.json')
+    body["issue"][0]["diagnostics"] = diagnostics
+    response.body = body
     response.status = 400
+    return false
 }
 
 
-function validateDate(dateString, field) {
-    const regex=new RegExp("([0-9]{4}[-](0[1-9]|1[0-2])[-]([0-2]{1}[0-9]{1}|3[0-1]{1})|([0-2]{1}[0-9]{1}|3[0-1]{1})[-](0[1-9]|1[0-2])[-][0-9]{4})")
-    const valid = regex.test(dateString)
-    if (!valid) {
-        const diagnostics = `Invalid value - '${dateString}' in field '${field}'`
-        const body = context.read('classpath:stubs/patient/errorResponses/invalid_search_data.json')
-        body['issue'][0]['diagnostics'] = diagnostics
-        response.body = body
-        response.status = 400
+/*
+    Validate the headers
+*/
+function validateHeaders(request) {
+    const X_REQUEST_ID = "X-Request-ID";
+
+    var valid = true;
+
+    const requestID = request.header('x-request-id')
+    if (!requestID) {
+        const diagnostics = "Invalid request with error - X-Request-ID header must be supplied to access this resource"
+        valid = returnMissingValueError(diagnostics)
+    } else if (!isValidUUID(requestID)) {
+        valid = returnInvalidValueError(X_REQUEST_ID, requestID, request)
     }
+    return valid
 }
 
 
+/*
+    Load all the specific mocks
+*/
 context.read('classpath:mocks/get-patient-retrieve.js');
 context.read('classpath:mocks/get-patient-search.js');
 context.read('classpath:mocks/patch-patient.js');
