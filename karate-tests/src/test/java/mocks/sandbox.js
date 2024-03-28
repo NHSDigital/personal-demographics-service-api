@@ -98,4 +98,5 @@ function validateHeaders(request) {
 */
 context.read('classpath:mocks/get-patient-retrieve.js');
 context.read('classpath:mocks/get-patient-search.js');
+context.read('classpath:mocks/get-patient-related-person.js');
 context.read('classpath:mocks/patch-patient.js');
