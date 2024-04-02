@@ -19,6 +19,7 @@ function buildResponseHeaders (request, patient) {
 const NO_IF_MATCH_HEADER = 'Invalid update with error - If-Match header must be supplied to update this resource'
 const NO_PATCHES_PROVIDED = 'Invalid update with error - No patches found'
 const INVALID_RESOURCE_ID = 'Invalid update with error - This resource has changed since you last read. Please re-read and try again with the new version number.'
+const INVALID_PATCH = "Invalid patch: Operation `op` property is not one of operations defined in RFC-6902"
 
 /*
     Functions to handle error responses
@@ -73,7 +74,13 @@ function patchPatient (originalPatient, request) {
   if (request.header('if-match') !== `W/"${originalPatient.meta.versionId}"`) {
     return setPreconditionFailedError(request, INVALID_RESOURCE_ID)
   }
-
+  const validOperations = ['add', 'replace', 'remove', 'test']
+  for (let i = 0; i < request.body.patches.length; i++) {
+    const patch = request.body.patches[i]
+    if (!validOperations.includes(patch.op)) {
+      return setInvalidUpdateError(request, INVALID_PATCH)
+    }
+  }
   const updatedPatient = JSON.parse(JSON.stringify(originalPatient))
   const updateErrors = []
 

@@ -80,9 +80,6 @@ function otherJaneSmithParamsAreValid (request) {
 if (request.pathMatches('/Patient') && request.get) {
   response.headers = basicResponseHeaders(request)
 
-  let valid = validateHeaders(request)
-  if (valid) { valid = validateQueryParams(request) }
-
   const family = request.param('family')
   const given = request.params.given
   const gender = request.param('gender')
@@ -91,7 +88,7 @@ if (request.pathMatches('/Patient') && request.get) {
   const phone = request.param('phone')
   const email = request.param('email')
 
-  if (valid) {
+  if (validateHeaders(request) && validateQueryParams(request)) {
     if (fuzzyMatch) {
       if (!phone && !email) {
         response.body = FUZZY_SEARCH_PATIENT_17
@@ -112,7 +109,9 @@ if (request.pathMatches('/Patient') && request.get) {
       }
     } else if (['Smythe', 'smythe'].includes(family)) {
       response.body = RESTRICTED_PATIENT_SEARCH
-    } else if (['Smith', 'smith'].includes(family) && ['Female', 'female'].includes(gender) && (birthDate === 'eq2010-10-22' || birthDate === 'ge2010-10-21,le2010-10-23') && (otherJaneSmithParamsAreValid(request))) {
+    // using eqeqeq to compare birthDates doesn't work here
+    // eslint-disable-next-line eqeqeq
+    } else if (['Smith', 'smith'].includes(family) && ['Female', 'female'].includes(gender) && (birthDate == 'eq2010-10-22' || birthDate == 'ge2010-10-21,le2010-10-23') && otherJaneSmithParamsAreValid(request)) {
       response.body = SIMPLE_SEARCH
     } else if (['Smith', 'smith'].includes(family) && ['Male', 'male'].includes(gender) && given[0] === 'John Paul' && given[1] === 'James') {
       response.body = COMPOUND_NAME_SEARCH
