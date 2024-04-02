@@ -1,6 +1,9 @@
 /*
     Load all the specific mocks
 */
+/* Karate objects */
+/* global context */
+
 context.read('classpath:mocks/sandbox/stubs.js')
 context.read('classpath:mocks/sandbox/supporting-functions.js')
 context.read('classpath:mocks/sandbox/get-patient-retrieve.js')
