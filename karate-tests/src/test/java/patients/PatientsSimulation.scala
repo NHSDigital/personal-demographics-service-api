@@ -15,8 +15,8 @@ class PatientsSimulation extends Simulation {
     val search = scenario("search").exec(karateFeature("classpath:patients/healthcareWorker/getPatient.feature"))
     
     setUp(
-      getSpecific.inject(rampUsers(60) during (10 seconds)).protocols(protocol),
-      search.inject(rampUsers(60) during (10 seconds)).protocols(protocol),
+      getSpecific.inject(rampUsers(100) during (10 seconds)).protocols(protocol),
+      search.inject(rampUsers(100) during (10 seconds)).protocols(protocol),
     )
   
 }
