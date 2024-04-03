@@ -47,7 +47,7 @@ clean:
 	rm -rf dist
 	rm -rf short-version
 
-generate-examples: publish clean
+generate-examples: clean publish
 	mkdir -p build/examples
 	poetry run python scripts/generate_examples.py build/personal-demographics.json build/examples
 	scripts/duplicate_examples.sh
