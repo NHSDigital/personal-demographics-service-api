@@ -133,6 +133,8 @@ def main(arguments):
 
     # Generate resources
     for component_name, component_spec in spec["components"]["schemas"].items():
+        if component_name not in EXAMPLE_TYPES:
+            continue
         resource_example = generate_resource_example(
             component_spec["properties"], [component_name]
         )

@@ -162,13 +162,13 @@ you may not be using the correct version of node. Check the version being used b
 
  * [**openapi-yaml-mode**](https://github.com/esc-emacs/openapi-yaml-mode) provides syntax highlighting, completion, and path help
 
-### Speccy
+### Redocly
 
-> [Speccy](http://speccy.io/) *A handy toolkit for OpenAPI, with a linter to enforce quality rules, documentation rendering, and resolution.*
+> [Redocly](https://redocly.com/) *Beautiful API documentation loved by teams and API consumers. Brought to you by the open-source extraordinaires behind Redoc*
 
-Speccy does the lifting for the following npm scripts:
+Redocly does the lifting for the following npm scripts:
 
- * `test` -- Lints the definition
+ * `lint` -- Lints the definition
  * `publish` -- Outputs the specification as a **single file** into the `dist/` directory
  * `serve` -- Serves a preview of the specification in human-readable format
 
