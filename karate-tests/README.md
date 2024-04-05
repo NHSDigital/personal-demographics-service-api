@@ -34,6 +34,14 @@ tar xzvf apache-maven-3.9.6-bin.tar.gz
 mvn --version
 ```
 
+## Developer productivity
+
+- Karate:
+    - You may want to install a VS Code extension to help with formatting, running tests etc. The free extension is [Karate Runner by Kirk Slota](https://marketplace.visualstudio.com/items?itemName=kirkslota.karate-runner)
+- Java:
+    - If you find yourself writing Java code, there are lots of options, a good one being [Language Support for Java by Red Hat](https://marketplace.visualstudio.com/items?itemName=redhat.java)
+- JavaScript:
+    - The Karate mocks are linted using eslint - you'll find the .eslintrc.json file in `src/test/java/mocks/sandbox`. [You can add an extension to help with linting in VSC](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) 
 
 ## Running the tests
 
