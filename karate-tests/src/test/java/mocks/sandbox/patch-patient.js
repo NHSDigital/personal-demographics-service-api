@@ -19,7 +19,7 @@ function buildResponseHeaders (request, patient) {
 const NO_IF_MATCH_HEADER = 'Invalid update with error - If-Match header must be supplied to update this resource'
 const NO_PATCHES_PROVIDED = 'Invalid update with error - No patches found'
 const INVALID_RESOURCE_ID = 'Invalid update with error - This resource has changed since you last read. Please re-read and try again with the new version number.'
-const INVALID_PATCH = "Invalid patch: Operation `op` property is not one of operations defined in RFC-6902"
+const INVALID_PATCH = 'Invalid patch: Operation `op` property is not one of operations defined in RFC-6902'
 
 /*
     Functions to handle error responses
@@ -99,7 +99,7 @@ function patchPatient (originalPatient, request) {
       updatedPatient.name[0].suffix.splice(0, 1)
     }
 
-    // these specific error scenarios for update errors should be reviewed
+    // these specific error scenarios for update errors should be reviewed in SPINEDEM-2695
     if (patch.op === 'replace' && patch.path === '/address/0/line/0' && patch.value === '2 Whitehall Quay') {
       updateErrors.push('Invalid update with error - no id or url found for path with root /address/0')
     } else if (patch.op === 'replace' && patch.path.startsWith('/address/0/') && !Object.prototype.hasOwnProperty.call(originalPatient, 'address')) {
@@ -115,6 +115,7 @@ function patchPatient (originalPatient, request) {
 
   // why is it that for this specific scenario (Invalid patch - attempt to replace non-existent object),
   // we have to pick the last error message, when for all the others we pick the first error message?
+  // review this logic in SPINEDEM-2695
   const rogueErrors = [
     "Invalid update with error - no 'address' resources with object id 456",
     "Invalid update with error - Invalid patch - can't replace non-existent object 'line'"
