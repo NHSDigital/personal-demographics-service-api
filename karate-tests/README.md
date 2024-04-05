@@ -94,6 +94,16 @@ The sandbox is a fake FHIR API with functionality that allows us to use it in a 
 
 If you want to run the sandbox locally to explore using Postman, for example, you can spin up an instance of the sandbox by using Java to run a Karate jarfile.
 
+#### Option 1: Using Docker
+We have a Dockerfile set up for the sandbox
+
+```bash
+cd karate-tests/src/test/java/mocks
+docker build -t nhs/pds-sandbox .
+```
+
+
+#### Option 2: Building your own
 We're using JavaScript mocks on Windows, and there's a [known issue with sharing the port between WSL2 and Windows](https://stackoverflow.com/questions/78120386/why-cant-windows-make-requests-to-my-karate-mock-if-i-use-javascript-mocks), for which there is an unreleased fix. Because of this, for the time being we build our own jarfile from the latest Karate source (alternatively, ask a friend who's already built a jarfile you can use...).
 
 The instructions for building a Karate jarfile from source [are all here](https://github.com/karatelabs/karate/wiki/Developer-Guide).

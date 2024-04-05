@@ -30,4 +30,5 @@ def get_env_file(variable_name: str) -> str:
 ENV = {
     "service_base_path": get_env("SERVICE_BASE_PATH"),
     "environment": get_env("APIGEE_ENVIRONMENT"),
+    "container_ip": get_env("CONTAINER_IP"),
 }
