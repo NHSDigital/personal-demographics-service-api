@@ -18,6 +18,8 @@ __pycache__/
 .vscode
 .mypy_cache
 
+sandbox/package-lock.json
+
 tests/test-report.xml
 tests/functional-test-report.xml
 .orig
