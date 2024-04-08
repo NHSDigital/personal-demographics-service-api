@@ -35,6 +35,12 @@ tar xzvf apache-maven-3.9.6-bin.tar.gz
 mvn --version
 ```
 
+## Important env variables
+
+Typically we rely on the same env variables that were already defined in your .envrc file.
+
+The newer variable you may not have defined is `INTERNAL_SERVER_BASE_URI` - ask for a value for this variable from someone with a working test build. Or, if in doubt, ask for their whole `.envrc` file...
+
 ## Developer productivity
 
 - Karate:
