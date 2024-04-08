@@ -5,6 +5,7 @@
 This is a RESTful HL7® FHIR® API for the *Personal Demographics Service*.
 
 It includes:
+* `karate-tests/` - our functional e2e API tests implemented using the Karate framework. [There is a separate readme for these tests at the moment](karate-tests/README.md)
 * `specification/` - an [Open API Specification](https://swagger.io/docs/specification/about/) describing the endpoints, methods and messages exchanged by the API. Use it to generate interactive documentation; the contract between the API and its consumers.
 * `sandbox/` - a NodeJS application that implements a mock implementation of the service. Use it as a back-end service to the interactive documentation to illustrate interactions and concepts. It is not intended to provide an exhaustive/faithful environment suitable for full development and testing.
 * `scripts/` - utilities helpful to developers of this specification.
@@ -31,77 +32,81 @@ Windows users should install [Windows Subsystem for Linux (WSL)](https://learn.m
 
 ## Installing requirements
 Install build requirements. This will make sure you don't hit any weird python issues later.
-```
-$ sudo apt update
-$ sudo apt install make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev git net-tools python-openssl
+```bash
+sudo apt update
+sudo apt install make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev git net-tools python-openssl
 ```
 If you get the error "Unable to locate package python-openssl", try
-```
-$ sudo apt install python3-openssl
+```bash
+sudo apt install python3-openssl
 ```
 
 Install [pyenv](https://github.com/pyenv/pyenv) using the code below and then follow their [guide](https://github.com/pyenv/pyenv#set-up-your-shell-environment-for-pyenv) to integrate it with your terminal
-```
-$ curl https://pyenv.run | bash
-$ exec $SHELL
+```bash
+curl https://pyenv.run | bash
+exec $SHELL
 ```
 If the command isn't working you can also [try the instructions here.](https://www.liquidweb.com/kb/how-to-install-pyenv-on-ubuntu-18-04/)
 
 Install python 3.8.2
-```
-$ pyenv install 3.8.2
+```bash
+pyenv install 3.8.2
 ```
 Either set this as your global python (if this is not incompatible with your other projects),
-```
-$ pyenv global 3.8.2
+```bash
+pyenv global 3.8.2
 ```
 or local to repository, if there is not a python-version file installed (you might have to raise a PR to add the file that's created).
-```
-$ pyenv local 3.8.2
-$ python --version
+```bash
+pyenv local 3.8.2
+python --version
 ```
 
 Install poetry, then run 'poetry install' to install dependencies. Makes sure you change directory to this repo.
-```
-$ curl -sSL https://install.python-poetry.org | python3
-$ poetry install
+```bash
+curl -sSL https://install.python-poetry.org | python3
+poetry install
 ```
 
 Install nvm & npn
-```
-$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
-  # Close and reopen your terminal window, or use 'exec $SHELL'
-$ nvm install lts/fermium
-$ nvm use lts/fermium
-$ npm --version
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
+# Close and reopen your terminal window, or use 'exec $SHELL'
+nvm install lts/iron
+nvm use lts/iron
+npm --version
 ```
 
 Install Java
-```
-$ sudo apt install default-jre default-jdk
-$ java -version
+```bash
+sudo apt install default-jre default-jdk
+java -version
 ```
 
 Install pytest
-```
-$ pip install -U pytest
-$ sudo apt-get update
-$ sudo apt-get install jq
+```bash
+pip install -U pytest
+sudo apt-get update
+sudo apt-get install jq
 ```
 
+Install shellcheck (we use this for linting .sh files)
+```bash
+sudo apt install shellcheck
+```
 
 Next open powershell and get the wsl ip (make sure wsl is running)
 The purpose of the following instructions is to enable you to use postman if you wish against the sandbox.
-```
-$ wsl hostname -i
+```bash
+wsl hostname -i
 ```
 Add a proxy and open the windows fire wall, replace [PORT] with the port you want to connect to.
 connected address is the ip wsl is operating on (from `wsl hostname -i`)
-```
-$ netsh interface portproxy add v4tov4 listenport=9000 listenaddress=0.0.0.0 connectport=[PORT] connectaddress=127.0.1.1
-  # Check it's been added
-$ netsh interface portproxy show v4tov4
-$ firewall -add port 9000 
+```bash
+netsh interface portproxy add v4tov4 listenport=9000 listenaddress=0.0.0.0 connectport=[PORT] connectaddress=127.0.1.1
+# Check it's been added
+netsh interface portproxy show v4tov4
+firewall -add port 9000 
 ```
 
 ## Development
@@ -111,8 +116,8 @@ $ firewall -add port 9000
 You can install some pre-commit hooks to ensure you can't commit invalid spec changes by accident. These are also run
 in CI, but it's useful to run them locally too.
 
-```
-$ make install-hooks
+```bash
+make install-hooks
 ```
 
 ### Environment Variables
@@ -132,31 +137,27 @@ There are `make` commands that alias some of this functionality:
 #### Sandbox Tests
 
 Run the install command if not ran already
-```
+```bash
 make install
 ```
 
 Then start the sandbox locally
-```
+```bash
 make sandbox
 ```
 
 To run local tests, use:
-```
+```bash
 make test-sandbox
 ```
-If a lot of the tests fail and the sandbox crashes with 
-```
-Cannot read properties of null (reading 'statusCode')
-```  
-you may not be using the correct version of node. Check the version being used by that instance of the terminal and run re-run '`nvm use lts/fermium`' if required.
+If a lot of the tests fail and the sandbox crashes with the error `Cannot read properties of null (reading 'statusCode')`, you may not be using the correct version of node. Check the version being used by that instance of the terminal and run re-run '`nvm use lts/iron`' if required.
 
 
 ### VS Code Plugins
 
  * [openapi-lint](https://marketplace.visualstudio.com/items?itemName=mermade.openapi-lint) resolves links and validates entire spec with the 'OpenAPI Resolve and Validate' command
  * [OpenAPI (Swagger) Editor](https://marketplace.visualstudio.com/items?itemName=42Crunch.vscode-openapi) provides sidebar navigation
-
+ * [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) useful helper when you're working with JavaScript files
 
 ### Emacs Plugins
 

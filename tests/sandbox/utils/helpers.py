@@ -7,6 +7,7 @@ import requests
 from pytest_check import check
 from pytest import fail
 from ..configuration import config
+from typing import List
 
 
 def retrieve_patient(patient: str, headers={}) -> requests.Response:
@@ -27,7 +28,7 @@ def retrieve_patient(patient: str, headers={}) -> requests.Response:
 
 # A function to send a PDS Retrieve request. Arguments accepted are the Query Parameters & Header.
 def search_patient(query_params: Union[dict, str], headers={}) -> requests.Response:
-    if type(query_params) != str:
+    if isinstance(query_params, dict):
         query_params = urllib.parse.urlencode(query_params, doseq=True)  # converts list to mutliple query params
     response = requests.get(
         f"{config.SANDBOX_BASE_URL}/Patient?{query_params}", headers=headers
@@ -188,7 +189,7 @@ def remove_time_stamp_on_search_response(response_body: dict) -> dict:
     return response_body
 
 
-def dict_path(raw, path: [str]):
+def dict_path(raw, path: List[str]):
     if not raw:
         return raw
 
@@ -196,7 +197,7 @@ def dict_path(raw, path: [str]):
         return raw
 
     res = raw.get(path[0])
-    if not res or len(path) == 1 or type(res) != dict:
+    if not res or len(path) == 1 or not isinstance(res, dict):
         return res
 
     return dict_path(res, path[1:])

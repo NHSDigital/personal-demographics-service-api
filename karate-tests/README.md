@@ -12,7 +12,8 @@ You probably have Java installed as it's part of the main codebase build.
 To avoid having to install a newer version of Java later when Karate demands it, you may want to install openjdk 17. This is what we run on CI too. It shouldn't break any of the existing `make` commands we have that use Java.
 
 ```bash
-sudo apt update sudo apt install openjdk-17-jdk
+sudo apt update 
+sudo apt install openjdk-17-jdk
 ```
 
 ### Maven
@@ -34,6 +35,20 @@ tar xzvf apache-maven-3.9.6-bin.tar.gz
 mvn --version
 ```
 
+## Important env variables
+
+Typically we rely on the same env variables that were already defined in your .envrc file.
+
+The newer variable you may not have defined is `INTERNAL_SERVER_BASE_URI` - ask for a value for this variable from someone with a working test build. Or, if in doubt, ask for their whole `.envrc` file...
+
+## Developer productivity
+
+- Karate:
+    - You may want to install a VS Code extension to help with formatting, running tests etc. The free extension is [Karate Runner by Kirk Slota](https://marketplace.visualstudio.com/items?itemName=kirkslota.karate-runner)
+- Java:
+    - If you find yourself writing Java code, there are lots of options, a good one being [Language Support for Java by Red Hat](https://marketplace.visualstudio.com/items?itemName=redhat.java)
+- JavaScript:
+    - The Karate mocks are linted using eslint - you'll find the .eslintrc.json file in `src/test/java/mocks/sandbox`. [You can add an extension to help with linting in VSC](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) 
 
 ## Running the tests
 
@@ -56,8 +71,8 @@ mvn test -Dtest=HealthcareWorkerTests
 ```
 
 Run only one of the tests in a given test file:
-```
-bash mvn test -Dtest=HealthcareWorkerTests#testGetPatient
+```bash 
+mvn test -Dtest=HealthcareWorkerTests#testGetPatient
 ```
 
 ### Load tests
@@ -70,7 +85,7 @@ mvn clean test-compile gatling:test
 
 ## The sandbox (aka Karate mocks)
 
-The sandbox is a fake FIHR API with functionality that allows us to use it in a few key scenarios:
+The sandbox is a fake FHIR API with functionality that allows us to use it in a few key scenarios:
 1. As an API prototyping tool that allows us to rapidly build a working API that can illustrate new endpoint functionality.
 1. As a versioning aid - different iterations of the sandbox and their related tests can be tagged to represent different versions of the API.
 1. As documentation for the API. This was the sole use of the legacy sandbox. [Our public documentation page](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir) invites people to use the sandbox to explore some of our API functionality, and there is a collection of Postman requests to download too. The new Karate-based sandbox has been developed in a way so that the existing documentation and Postman collection are still valid.

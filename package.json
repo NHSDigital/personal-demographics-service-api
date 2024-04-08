@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "OAS (Swagger v3) API Definition for Patient Information",
   "scripts": {
-    "lint": "node_modules/.bin/redocly lint specification/personal-demographics.yaml  --skip-rule openapi-tags --skip-rule operation-tags --skip-rule default-and-example-are-redundant --skip-rule no-unused-components --skip-rule no-invalid-media-type-examples --skip-rule info-license --skip-rule security-defined",
+    "lint-node-sandbox": "node_modules/.bin/eslint --ext .js sandbox",
+    "lint-karate-js": "node_modules/.bin/eslint --ext .js karate-tests/src/test/java/mocks/sandbox/",
+    "lint-oas": "node_modules/.bin/redocly lint specification/personal-demographics.yaml  --skip-rule openapi-tags --skip-rule operation-tags --skip-rule default-and-example-are-redundant --skip-rule no-unused-components --skip-rule no-invalid-media-type-examples --skip-rule info-license --skip-rule security-defined",
     "publish": "mkdir -p build && node_modules/.bin/redocly bundle --dereferenced specification/personal-demographics.yaml | poetry run python scripts/yaml2json.py | poetry run python scripts/set_version.py > build/personal-demographics.json",
     "serve": "node_modules/.bin/redocly preview-docs build/personal-demographics.json",
     "check-licenses": "node_modules/.bin/license-checker --failOn GPL --failOn AGPL"
@@ -17,6 +19,11 @@
   },
   "devDependencies": {
     "apigeetool": "^0.16.4",
+    "eslint": "^8.57.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.1.1",
     "license-checker": "^25.0.1",
     "puppeteer": "^5.3.1"
   }
