@@ -12,7 +12,8 @@ You probably have Java installed as it's part of the main codebase build.
 To avoid having to install a newer version of Java later when Karate demands it, you may want to install openjdk 17. This is what we run on CI too. It shouldn't break any of the existing `make` commands we have that use Java.
 
 ```bash
-sudo apt update sudo apt install openjdk-17-jdk
+sudo apt update 
+sudo apt install openjdk-17-jdk
 ```
 
 ### Maven

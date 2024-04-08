@@ -150,7 +150,7 @@ To run local tests, use:
 ```bash
 make test-sandbox
 ```
-If a lot of the tests fail and the sandbox crashes with  the error `Cannot read properties of null (reading 'statusCode')`, you may not be using the correct version of node. Check the version being used by that instance of the terminal and run re-run '`nvm use lts/iron`' if required.
+If a lot of the tests fail and the sandbox crashes with the error `Cannot read properties of null (reading 'statusCode')`, you may not be using the correct version of node. Check the version being used by that instance of the terminal and run re-run '`nvm use lts/iron`' if required.
 
 
 ### VS Code Plugins
