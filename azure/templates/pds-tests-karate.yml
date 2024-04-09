@@ -40,6 +40,7 @@ steps:
       export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
       export INTERNAL_SERVER_BASE_URI="$(INTERNAL_SERVER_BASE_URI)"
       export KEY_ID="$(KEY_ID)"
+      echo "$(karate_jarfile_url)" > /tmp/karate_jarfile_url
       mvn clean test -Dtest=TestParallel 
     displayName: 'Run Karate Tests'
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests"

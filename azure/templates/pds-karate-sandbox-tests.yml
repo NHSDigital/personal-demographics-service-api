@@ -1,0 +1,24 @@
+steps:
+  - bash: poetry install
+    workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
+    displayName: Install poetry dependencies
+
+- template: "azure/components/get-aws-secrets-and-ssm-params.yml@common"
+    parameters:
+     secret_ids:
+      - ptl/personal-demographics/KARATE_JARFILE_URL
+  - bash: |
+      export SERVICE_BASE_PATH="$(SERVICE_BASE_PATH)"
+      export APIGEE_ENVIRONMENT="docker"
+      export SOURCE_COMMIT_ID=$(Build.SourceVersion)
+      export STATUS_ENDPOINT_API_KEY="$(status-endpoint-api-key)"
+
+      poetry run pytest -v tests/sandbox/test_sandbox.py --junitxml=tests/sandbox-test-report.xml --reruns 3 --reruns-delay 1
+    displayName: Run pytest sandbox tests against Karate sandbox
+    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+
+  - task: PublishTestResults@2
+    displayName: 'Publish sandbox test results'
+    inputs:
+      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/sandbox-test-report.xml
+      failTaskOnFailedTests: true
