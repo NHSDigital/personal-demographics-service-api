@@ -44,6 +44,11 @@ extends:
         proxy_path: sandbox
         post_deploy:
           - template: templates/sandbox-tests.yml
+      - environment: internal-qa-sandbox-karate
+        enable_status_monitoring: false
+        proxy_path: karate-sandbox
+        post_deploy:
+          - template: templates/pds-karate-sandbox-tests.yml
       - environment: int
         post_deploy:
            - template: templates/pds-tests-int.yml

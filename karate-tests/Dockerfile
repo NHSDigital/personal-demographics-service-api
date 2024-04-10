@@ -13,4 +13,5 @@ RUN --mount=type=secret,id=jarfile_url \
 # Copy the source code to the container and start the sandbox
 COPY ./ /app/
 WORKDIR /app/src/test/java
-CMD ["java", "-cp", "/source/karate.jar:.", "com.intuit.karate.Main", "-m", "mocks/sandbox/sandbox.js", "-p", "9000"]
+CMD ["java", "-cp", "/source/karate.jar:.", "com.intuit.karate.Main", "-m", "mocks/sandbox/sandbox.js", "-p", "9090"]
+EXPOSE 9090

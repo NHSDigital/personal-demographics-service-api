@@ -25,7 +25,9 @@ variables:
 extends:
   template: azure/common/apigee-build.yml@common
   parameters:
-    service_name: ${{ variables.service_name }}
+     secret_ids:
+      - ptl/personal-demographics/KARATE_JARFILE_URL
+  service_name: ${{ variables.service_name }}
     short_service_name: ${{ variables.short_service_name }}
     variables:
       PIP_CACHE_DIR: ".poetry"
@@ -37,5 +39,5 @@ extends:
         displayName: Validate FHIR
         workingDirectory: "${{ variables.service_name }}"
       - displayName: Start Karate Sandbox
-        bash: "make karate-sandbox &"
+        bash: "export KARATE_JARFILE_URL='$(KARATE_JARFILE_URL)' && make karate-sandbox &"
         workingDirectory: "${{ variables.service_name }}"

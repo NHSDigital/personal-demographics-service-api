@@ -106,13 +106,13 @@ We have a Dockerfile set up for the sandbox. Building the image involves downloa
     cd karate-tests/src/test/java/mocks
     docker build -t nhs/pds-sandbox . --secret id=jarfile_url,src=/tmp/jarfile_url .
     ```
-1. If you run he container you'll see the Karate mockserver logs
+1. If you run the container you'll see the Karate mockserver logs
     ```bash
     docker run nhs/pds-sandbox
     ```
 1. Inspect the running container to discover its IP address:
     ```bash
-    docker inspect <CONTAINER ID> | grep '"IPAddress":'
+    docker inspect <CONTAINER ID> | grep '"IPAddress":' | grep -oE '[0-9]+(\.[0-9]+){3}' | head -n 1
     ```
 1. You should now be able to run the sandbox tests against this container to show things are working, e.g. :
     ```bash

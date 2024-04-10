@@ -21,7 +21,7 @@ karate:
 	cd karate-tests && mvn clean test
 
 karate-sandbox:
-	cd karate-tests && ./build-sandbox.sh
+	cd karate-tests && bash build-sandbox-ado.sh && docker run -d --name karate-sandbox nhs/pds-sandbox:latest
 
 lint:
 	npm run lint-oas
