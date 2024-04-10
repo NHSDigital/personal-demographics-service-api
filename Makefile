@@ -20,6 +20,8 @@ install-fhir-validator:
 karate:
 	cd karate-tests && mvn clean test
 
+karate-sandbox:
+	cd karate-tests && ./build-sandbox.sh
 
 lint:
 	npm run lint-oas
