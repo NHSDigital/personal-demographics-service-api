@@ -38,6 +38,6 @@ extends:
       - bash: "make validate"
         displayName: Validate FHIR
         workingDirectory: "${{ variables.service_name }}"
-      - displayName: Start Karate Sandbox
-        bash: "export KARATE_JARFILE_URL='$(KARATE_JARFILE_URL)' && make karate-sandbox &"
+      - bash: "export KARATE_JARFILE_URL='$(KARATE_JARFILE_URL)' && make karate-sandbox &"
+        displayName: Start Karate Sandbox
         workingDirectory: "${{ variables.service_name }}"
