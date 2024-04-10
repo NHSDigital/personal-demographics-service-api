@@ -25,9 +25,9 @@ variables:
 extends:
   template: azure/common/apigee-build.yml@common
   parameters:
-     secret_ids:
+    secret_ids:
       - ptl/personal-demographics/KARATE_JARFILE_URL
-  service_name: ${{ variables.service_name }}
+    service_name: ${{ variables.service_name }}
     short_service_name: ${{ variables.short_service_name }}
     variables:
       PIP_CACHE_DIR: ".poetry"
