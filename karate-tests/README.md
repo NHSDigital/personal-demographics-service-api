@@ -104,7 +104,7 @@ We have a Dockerfile set up for the sandbox. Building the image involves downloa
 1. Build the image and pass the path to the secret:
     ```bash
     cd karate-tests/src/test/java/mocks
-    docker build -t nhs/pds-sandbox . --secret id=jarfile_url,src=/tmp/jarfile_url .
+    docker build -t nhs/pds-sandbox --secret id=jarfile_url,src=/tmp/jarfile_url .
     ```
 1. If you run the container you'll see the Karate mockserver logs
     ```bash
