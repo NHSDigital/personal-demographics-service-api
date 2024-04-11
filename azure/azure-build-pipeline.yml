@@ -41,3 +41,4 @@ extends:
       - bash: "export KARATE_JARFILE_URL='$(KARATE_JARFILE_URL)' && make karate-sandbox &"
         displayName: Build and start Karate Sandbox container
         workingDirectory: "${{ variables.service_name }}"
+        timeoutInMinutes: 5
