@@ -20,31 +20,17 @@ Feature: Get a patient - Healthcare worker access mode
 
   @get
   Scenario: Get a patient, validate the schema
-    # useful for more dynamic testing, where we can get any patient
     * def nhsNumber = karate.get('nhsNumber', '9693632109')
     * path 'Patient', nhsNumber
     * method get
     * status 200
-    * match karate.response.header('x-request-id') == requestHeaders['x-request-id']
-    * match karate.response.header('x-correlation-id') == requestHeaders['x-correlation-id']
+    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
     * match response.id == nhsNumber
     * def gender = response.gender
     * def birthDate = response.birthDate
     * def address = response.address
     * def name = response.name
     * match response == read('classpath:stubs/patient/patient-response-template.json')
-
-  @getSpecific
-  Scenario: Get a specific patient
-    # useful for checking the data is what we expect... maybe?
-    * def nhsNumber = '9693632109'
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
-    * match karate.response.header('x-request-id') == requestHeaders['x-request-id']
-    * match karate.response.header('x-correlation-id') == requestHeaders['x-correlation-id']
-    * match response.id == nhsNumber
-    * match response == read('patient.json')
 
   @search
   Scenario:Search for a patient using parameters
@@ -54,5 +40,6 @@ Feature: Get a patient - Healthcare worker access mode
     * param birthdate = "ge1992-01-01"
     * param _max-results = "6"
     * method get
+    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
     * match response == read('classpath:schemas/patientSearchBundle.json')
     * status 200
