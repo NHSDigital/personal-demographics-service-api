@@ -27,7 +27,7 @@ Scenario: Attempt to retrieve a patient with missing authorization header
   * status 401
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders) 
   * def diagnostics = "Missing Authorization header"
-  * def expectedResponse = read('classpath:stubs/patient/errorResponses/access_denied.json')
+  * def expectedResponse = read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
   * match response == expectedResponse
 
 Scenario: Attempt to retrieve a patient with an empty authorization header
@@ -38,7 +38,7 @@ Scenario: Attempt to retrieve a patient with an empty authorization header
   * status 401
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
   * def diagnostics = "Empty Authorization header"
-  * def expectedResponse = read('classpath:stubs/patient/errorResponses/access_denied.json')
+  * def expectedResponse = read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
   * match response == expectedResponse
 
 Scenario: Attempt to retrieve a patient with an invalid authorization header
@@ -49,7 +49,7 @@ Scenario: Attempt to retrieve a patient with an invalid authorization header
   * status 401 
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
   * def diagnostics = "Invalid Access Token"
-  * def expectedResponse = read('classpath:stubs/patient/errorResponses/access_denied.json')
+  * def expectedResponse = read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
   * match response == expectedResponse
   
 Scenario: Attempt to retrieve a patient without stating a role
@@ -62,7 +62,7 @@ Scenario: Attempt to retrieve a patient without stating a role
   * status 400
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
   * def diagnostics = "Invalid value - '' in header 'NHSD-Session-URID'. Refer to the guidance for this header in our API Specification https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir"
-  * def expectedResponse = read('classpath:stubs/patient/errorResponses/invalid_value.json')
+  * def expectedResponse = read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')
 
 Scenario: Attempt to retrieve a patient with an invalid role
   * set requestHeaders.NHSD-Session-URID = "invalid"
@@ -72,7 +72,7 @@ Scenario: Attempt to retrieve a patient with an invalid role
   * status 400
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
   * def diagnostics = "Invalid value - 'invalid' in header 'NHSD-Session-URID'. Refer to the guidance for this header in our API Specification https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir"
-  * def expectedResponse = read('classpath:stubs/patient/errorResponses/invalid_value.json')
+  * def expectedResponse = read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')
 
 Scenario: Attempt to retrieve a patient without Request ID header
   * remove requestHeaders.x-request-id
@@ -82,7 +82,7 @@ Scenario: Attempt to retrieve a patient without Request ID header
   * status 400
   * assert requestHeaders['x-correlation-id'] == karate.response.header('x-correlation-id')
   * def diagnostics = "Invalid request with error - X-Request-ID header must be supplied to access this resource"
-  * def expectedResponse = read('classpath:stubs/patient/errorResponses/missing_value.json')
+  * def expectedResponse = read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')
 
 Scenario: Attempt to retrieve a patient with an invalid X-Request-ID
   * set requestHeaders.x-request-id = "1234"
@@ -92,4 +92,4 @@ Scenario: Attempt to retrieve a patient with an invalid X-Request-ID
   * status 400
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
   * def diagnostics = "Invalid value - '1234' in header 'X-Request-ID'"
-  * def expectedResponse = read('classpath:stubs/patient/errorResponses/invalid_value.json')
+  * def expectedResponse = read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')

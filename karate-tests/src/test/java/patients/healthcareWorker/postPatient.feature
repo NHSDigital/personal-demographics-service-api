@@ -45,12 +45,12 @@ Scenario: Post patient - new patient
   
   * path "Patient"
   * request read('classpath:patients/healthcareWorker/post-patient-request.json')
-  * configure retry = { count: 5, interval: 3 }
+  * configure retry = { count: 5, interval: 4 }
   * retry until responseStatus != 429
   * method post
   * status 201
   * def nhsNumber = response.id
-  * def expectedResponse = read('classpath:stubs/patient/new-nhs-number-response-template.json')
+  * def expectedResponse = read('classpath:patients/healthcareWorker/new-nhs-number-response-template.json')
   * match response == expectedResponse
   * match response.address[0].line[0] == address
   * match response.address[0].postalCode == postalCode
@@ -80,10 +80,10 @@ Scenario: Fail to create a record for a new patient, single demographics match f
   * path "Patient"
   * request read('classpath:patients/healthcareWorker/post-patient-request.json')
   * method post
-  * configure retry = { count: 5, interval: 3 }
+  * configure retry = { count: 5, interval: 4 }
   * retry until responseStatus != 429
   * status 200
-  * match response == read('classpath:stubs/patient/errorResponses/single_match_found.json')
+  * match response == read('classpath:mocks/stubs/errorResponses/SINGLE_MATCH_FOUND.json')
 
 
 Scenario: Fail to create a record for a new patient, multiple demographics matches found
@@ -114,19 +114,19 @@ Scenario: Fail to create a record for a new patient, multiple demographics match
   * configure headers = requestHeaders
   * path "Patient"
   * request requestBody
-  * configure retry = { count: 5, interval: 3 }
+  * configure retry = { count: 5, interval: 4 }
   * retry until responseStatus != 429
   * method post
   * status 200
-  * match response == read('classpath:stubs/patient/errorResponses/multiple_matches_found.json')
+  * match response == read('classpath:mocks/stubs/errorResponses/MULTIPLE_MATCHES_FOUND.json')
 
 
 Scenario: Negative path: invalid request body
   * path "Patient"
   * request { bananas: "in pyjamas" }
-  * configure retry = { count: 5, interval: 3 }
+  * configure retry = { count: 5, interval: 4 }
   * retry until responseStatus != 429
   * method post
   * status 400
   * def diagnostics = response.issue[0].diagnostics
-  * match response == read('classpath:stubs/patient/errorResponses/missing_value.json')
+  * match response == read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')
