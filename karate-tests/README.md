@@ -108,7 +108,7 @@ We have a Dockerfile set up for the sandbox. Building the image involves downloa
     ```
 1. If you run the container you'll see the Karate mockserver logs
     ```bash
-    docker run nhs/pds-sandbox
+    docker run --name karate-sandbox nhs/pds-sandbox 
     ```
 1. Inspect the running container to discover its IP address:
     ```bash
