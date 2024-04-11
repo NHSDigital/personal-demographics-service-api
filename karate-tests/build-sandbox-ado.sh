@@ -1,5 +1,5 @@
 #!/bin/bash
 set -x -e
-echo "$KARATE_JARFILE_URL" > /tmp/karate_jarfile_url
-docker build -t nhs/pds-sandbox:latest --secret id=jarfile_url,src=/tmp/karate_jarfile_url .
+wget "$KARATE_JARFILE_URL" > /tmp/karate.jar
+docker build -t nhs/pds-sandbox:latest .
 docker run -d --name karate-sandbox nhs/pds-sandbox
