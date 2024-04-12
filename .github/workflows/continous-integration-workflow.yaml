@@ -62,7 +62,13 @@ jobs:
           git checkout c0597e5b7fcd61be47f916854e8473da11b37956
           mvn clean install -P pre-release -pl -karate-robot -DskipTests
           mvn package -B -ntp -P fatjar -DskipTests -f karate-core/pom.xml
+          echo "github.workspace: ${{ github.workspace }}"
+          ls ${{ github.workspace }}
+          echo "going to copy"
           cp /tmp/karate/karate-core/target/karate-core-1.6.0-SNAPSHOT.jar ${{ github.workspace }}/karate-tests/karate.jar
+          echo "now karate-tests folder looks like:"
+          ls ${{ github.workspace }}/karate-tests
+
         working-directory: /tmp
 
       - name: Cache Karate jarfile
