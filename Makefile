@@ -83,6 +83,7 @@ release: clean publish build-proxy
 	cp -R build/. dist/
 	cp -R terraform dist
 	cp -R tests dist
+	cp /tmp/karate.jar karate-tests
 	cp -R karate-tests dist
 
 	cp ecs-proxies-deploy.yml dist/ecs-deploy-sandbox.yml
