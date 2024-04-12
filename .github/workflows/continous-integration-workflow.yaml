@@ -63,7 +63,8 @@ jobs:
           mvn clean install -P pre-release -pl -karate-robot -DskipTests
           mvn package -B -ntp -P fatjar -DskipTests -f karate-core/pom.xml
           echo $GITHUB_WORKSPACE
-          cp /tmp/karate/karate-core/target/karate-core-1.6.0-SNAPSHOT-shaded.jar /tmp/karate.jar
+          ls -l /tmp/karate/karate-core/target/*.jar
+          cp /tmp/karate/karate-core/target/karate-core-1.6.0-SNAPSHOT.jar $GITHUB_WORKSPACE/karate-tests/karate.jar
         working-directory: /tmp
 
       - name: Cache Karate jarfile
