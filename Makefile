@@ -83,6 +83,9 @@ release: clean publish build-proxy
 	cp -R build/. dist/
 	cp -R terraform dist
 	cp -R tests dist
+	pwd
+	ls -la
+	ls /tmp -la
 	cp /tmp/karate.jar karate-tests/karate.jar
 	cp -R karate-tests dist
 
