@@ -71,7 +71,7 @@ extends:
           post_deploy:
             - template: templates/sandbox-tests.yml
         - environment: internal-dev-sandbox
-          stage_name: pytest_tests_v_karate_sandbox
+          stage_name: pytest_tests_v_karate_sandbox_other
           post_deploy:
             - template: templates/pds-pytest-karate-sandbox.yml
           depends_on:
