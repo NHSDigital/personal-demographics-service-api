@@ -1,11 +1,10 @@
 steps:
 
-  - task: UseJavaVersion@1
+  - task: JavaToolInstaller@0
     inputs:
       versionSpec: '17'
       jdkArchitectureOption: 'x64'
       jdkSourceOption: 'PreInstalled'
-    displayName: 'Install Java JDK 17'
 
   - bash: |
       git clone https://github.com/karatelabs/karate.git karate
