@@ -1,6 +1,6 @@
 #!/bin/bash
 set -x -e
-#docker build -t nhs/pds-sandbox:latest .
+docker build -t nhs/pds-sandbox:latest .
 
 # Check if the container exists
 if docker container inspect karate-sandbox >/dev/null 2>&1; then
