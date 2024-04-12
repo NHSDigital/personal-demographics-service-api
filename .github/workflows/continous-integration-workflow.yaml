@@ -55,10 +55,7 @@ jobs:
           key: ${{ runner.os }}-build-cache-npm-packages-${{ hashFiles('**/package-lock.json') }}
 
       - name: Build and cache Karate jarfile version we need for Karate sandbox
-        uses: actions/cache@v1
-        with:
-          path: /tmp/karate/karate-core/target/*.jar
-          key: ${{ runner.os }}-build-cache-jarfile
+        if: steps.cache-karate-jarfile.outputs.cache-hit != 'true'
         run: |
           git clone https://github.com/karatelabs/karate.git karate
           cd karate
@@ -68,6 +65,13 @@ jobs:
           mvn package -P fatjar
         working-directory: /tmp
 
+      - name: Cache Karate jarfile
+        uses: actions/cache@v1
+        id: cache-karate-jarfile
+        with:
+          path: /tmp/karate/karate-core/target/*.jar
+          key: ${{ runner.os }}-build-cache-jarfile
+        
       - name: Install repo
         run: make install
 
