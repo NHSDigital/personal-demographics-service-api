@@ -1,6 +1,5 @@
-jobs:
-- job: Build
-  steps:
+steps:
+
   - task: UseJavaVersion@1
     inputs:
       versionSpec: '17'
