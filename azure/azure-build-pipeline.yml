@@ -36,8 +36,3 @@ extends:
       - bash: "make validate"
         displayName: Validate FHIR
         workingDirectory: "${{ variables.service_name }}"
-      - bash: "make karate-sandbox &"
-        displayName: Build and start Karate Sandbox container
-        workingDirectory: "${{ variables.service_name }}"
-        timeoutInMinutes: 5
-        continueOnError: false
