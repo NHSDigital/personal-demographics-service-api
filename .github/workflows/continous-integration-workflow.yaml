@@ -54,6 +54,16 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-build-cache-npm-packages-${{ hashFiles('**/package-lock.json') }}
 
+      - name: Build Karate 1.6.0 jarfile
+        run: |
+          git clone https://github.com/karatelabs/karate.git karate
+          cd karate
+          git checkout c0597e5b7fcd61be47f916854e8473da11b37956
+          mvn clean install -P pre-release -pl -karate-robot,-karate-playwright,-karate-e2e-tests
+          cd karate-core
+          mvn package -P fatjar
+        working-directory: /tmp
+
       - name: Install repo
         run: make install
 
