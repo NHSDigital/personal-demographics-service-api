@@ -62,8 +62,6 @@ jobs:
           git checkout c0597e5b7fcd61be47f916854e8473da11b37956
           mvn clean install -P pre-release -pl -karate-robot -DskipTests
           mvn package -B -ntp -P fatjar -DskipTests -f karate-core/pom.xml
-          echo $GITHUB_WORKSPACE
-          ls -l /tmp/karate/karate-core/target/*.jar
           cp /tmp/karate/karate-core/target/karate-core-1.6.0-SNAPSHOT.jar $GITHUB_WORKSPACE/karate-tests/karate.jar
         working-directory: /tmp
 
