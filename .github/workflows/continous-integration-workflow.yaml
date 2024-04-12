@@ -66,6 +66,7 @@ jobs:
           ls ${{ github.workspace }}
           echo "going to copy"
           cp /tmp/karate/karate-core/target/karate-core-1.6.0-SNAPSHOT.jar ${{ github.workspace }}/karate-tests/karate.jar
+          cp /tmp/karate/karate-core/target/karate-core-1.6.0-SNAPSHOT.jar /tmp/karate.jar
           echo "now karate-tests folder looks like:"
           ls ${{ github.workspace }}/karate-tests
 
@@ -94,8 +95,7 @@ jobs:
         run: make publish
 
       - name: Generate release
-        run: |
-          make release
+        run: make release
           
       - name: Set SPEC_VERSION env var
         run: echo ::set-env name=SPEC_VERSION::$(poetry run python scripts/calculate_version.py)
