@@ -54,7 +54,11 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-build-cache-npm-packages-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Build Karate 1.6.0 jarfile
+      - name: Build and cache Karate jarfile version we need for Karate sandbox
+        uses: actions/cache@v1
+        with:
+          path: /tmp/karate/karate-core/target/*.jar
+          key: ${{ runner.os }}-build-cache-jarfile
         run: |
           git clone https://github.com/karatelabs/karate.git karate
           cd karate
