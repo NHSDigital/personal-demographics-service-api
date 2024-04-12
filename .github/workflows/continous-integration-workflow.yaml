@@ -54,7 +54,7 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-build-cache-npm-packages-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Build and cache Karate jarfile version we need for Karate sandbox
+      - name: Build Karate jarfile version we need for Karate sandbox
         if: steps.cache-karate-jarfile.outputs.cache-hit != 'true'
         run: |
           git clone https://github.com/karatelabs/karate.git karate
@@ -69,7 +69,7 @@ jobs:
         uses: actions/cache@v1
         id: cache-karate-jarfile
         with:
-          path: ${{ github.workspace }}/karate-tests/karate.jar
+          path: ${{ github.workspace }}/karate-tests/*.jar
           key: ${{ runner.os }}-build-cache-jarfile
         
       - name: Install repo

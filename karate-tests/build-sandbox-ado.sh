@@ -1,6 +1,6 @@
 #!/bin/bash
 set -x -e
-docker build -t nhs/pds-sandbox:latest .
+#docker build -t nhs/pds-sandbox:latest .
 
 # Check if the container exists
 if docker container inspect karate-sandbox >/dev/null 2>&1; then
@@ -12,8 +12,9 @@ if docker container inspect karate-sandbox >/dev/null 2>&1; then
     fi
     # Remove the container
     docker container rm karate-sandbox >/dev/null
-    docker wait karate-sandbox >/dev/null
 fi
 
 # Run the container
 docker run -d --name karate-sandbox -p 9090:9090 nhs/pds-sandbox:latest
+
+
