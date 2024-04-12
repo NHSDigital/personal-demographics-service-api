@@ -5,8 +5,6 @@ RUN apk add --no-cache maven
 
 LABEL version="0.0.1"
 
-# We store our karate jarfile in a secret location, so we need to mount the secret to access it
-WORKDIR /source
 COPY /tmp/karate.jar /source/karate.jar
 
 # Copy the source code to the container and start the sandbox
