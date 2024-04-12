@@ -83,7 +83,6 @@ release: clean publish build-proxy
 	cp -R build/. dist/
 	cp -R terraform dist
 	cp -R tests dist
-	cp /tmp/karate/karate-core/target/karate-core-1.6.0-SNAPSHOT-shaded.jar karate-tests/karate.jar
 	cp -R karate-tests dist
 
 	cp ecs-proxies-deploy.yml dist/ecs-deploy-sandbox.yml

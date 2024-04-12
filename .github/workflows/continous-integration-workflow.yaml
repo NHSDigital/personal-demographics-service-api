@@ -62,13 +62,14 @@ jobs:
           git checkout c0597e5b7fcd61be47f916854e8473da11b37956
           mvn clean install -P pre-release -pl -karate-robot -DskipTests
           mvn package -B -ntp -P fatjar -DskipTests -f karate-core/pom.xml
+          cp /tmp/karate/karate-core/target/karate-core-1.6.0-SNAPSHOT-shaded.jar ${{ github.workspace }}/karate-tests/karate.jar
         working-directory: /tmp
 
       - name: Cache Karate jarfile
         uses: actions/cache@v1
         id: cache-karate-jarfile
         with:
-          path: /tmp/karate/karate-core/target/*.jar
+            path: ${{ github.workspace }}/karate-tests/karate.jar
           key: ${{ runner.os }}-build-cache-jarfile
         
       - name: Install repo
