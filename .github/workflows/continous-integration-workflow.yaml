@@ -58,7 +58,7 @@ jobs:
         if: steps.cache-karate-jarfile.outputs.cache-hit != 'true'
         run: |
           git clone https://github.com/karatelabs/karate.git karate
-          mvn clean install -P pre-release -pl -karate-robot,-karate-playwright,-karate-e2e-tests -DskipTests -f karate/pom.xml
+          mvn clean install -P pre-release -pl -karate-robot,-karate-playwright,-karate-e2e-tests -f karate/pom.xml
           mvn package -B -ntp -P fatjar -DskipTests -f karate/karate-core/pom.xml
         working-directory: /tmp
 
