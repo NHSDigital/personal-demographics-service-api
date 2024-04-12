@@ -26,11 +26,6 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
 
-      - name: Set up Maven
-        uses: stCarolas/setup-maven@v5
-        with:
-          maven-version: 3.8.2
-
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
@@ -53,31 +48,6 @@ jobs:
         with:
           path: ~/.npm
           key: ${{ runner.os }}-build-cache-npm-packages-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Build Karate jarfile version we need for Karate sandbox
-        if: steps.cache-karate-jarfile.outputs.cache-hit != 'true'
-        run: |
-          git clone https://github.com/karatelabs/karate.git karate
-          cd karate
-          git checkout c0597e5b7fcd61be47f916854e8473da11b37956
-          mvn clean install -P pre-release -pl -karate-robot -DskipTests
-          mvn package -B -ntp -P fatjar -DskipTests -f karate-core/pom.xml
-          echo "github.workspace: ${{ github.workspace }}"
-          ls ${{ github.workspace }}
-          echo "going to copy"
-          cp /tmp/karate/karate-core/target/karate-core-1.6.0-SNAPSHOT.jar ${{ github.workspace }}/karate-tests/karate.jar
-          cp /tmp/karate/karate-core/target/karate-core-1.6.0-SNAPSHOT.jar /tmp/karate.jar
-          echo "now karate-tests folder looks like:"
-          ls ${{ github.workspace }}/karate-tests
-
-        working-directory: /tmp
-
-      - name: Cache Karate jarfile
-        uses: actions/cache@v1
-        id: cache-karate-jarfile
-        with:
-          path: ${{ github.workspace }}/karate-tests/*.jar
-          key: ${{ runner.os }}-build-cache-jarfile
         
       - name: Install repo
         run: make install
@@ -95,9 +65,7 @@ jobs:
         run: make publish
 
       - name: Generate release
-        run: |
-          pwd
-          make release
+        run: make release
           
       - name: Set SPEC_VERSION env var
         run: echo ::set-env name=SPEC_VERSION::$(poetry run python scripts/calculate_version.py)

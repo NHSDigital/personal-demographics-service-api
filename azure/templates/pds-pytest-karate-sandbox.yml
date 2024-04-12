@@ -1,4 +1,31 @@
-steps:
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+jobs:
+- job: Build
+  steps:
+  - task: UseJavaVersion@1
+    inputs:
+      versionSpec: '17'
+      jdkArchitectureOption: 'x64'
+      jdkSourceOption: 'PreInstalled'
+    displayName: 'Install Java JDK 17'
+
+  - bash: |
+      git clone https://github.com/karatelabs/karate.git karate
+      cd karate
+      git checkout c0597e5b7fcd61be47f916854e8473da11b37956
+      mvn clean install -P pre-release -pl -karate-robot -DskipTests
+      mvn package -B -ntp -P fatjar -DskipTests -f karate-core/pom.xml
+      cp /tmp/karate/karate-core/target/karate-core-1.6.0-SNAPSHOT.jar $(Pipeline.Workspace)/karate-tests/karate.jar
+      echo "now karate-tests folder looks like:"
+      ls $(Pipeline.Workspace)/karate-tests
+    displayName: 'Build Karate jarfile'
+    workingDirectory: /tmp
+
   - bash: poetry install
     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
     displayName: Install poetry dependencies
