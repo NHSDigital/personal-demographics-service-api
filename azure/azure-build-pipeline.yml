@@ -25,8 +25,6 @@ variables:
 extends:
   template: azure/common/apigee-build.yml@common
   parameters:
-    secret_ids:
-      - ptl/personal-demographics/KARATE_JARFILE_URL
     service_name: ${{ variables.service_name }}
     short_service_name: ${{ variables.short_service_name }}
     variables:
@@ -38,7 +36,7 @@ extends:
       - bash: "make validate"
         displayName: Validate FHIR
         workingDirectory: "${{ variables.service_name }}"
-      - bash: "export KARATE_JARFILE_URL='$(KARATE_JARFILE_URL)' && make karate-sandbox"
+      - bash: "make karate-sandbox &"
         displayName: Build and start Karate Sandbox container
         workingDirectory: "${{ variables.service_name }}"
         timeoutInMinutes: 5
