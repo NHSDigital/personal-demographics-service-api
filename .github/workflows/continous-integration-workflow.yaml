@@ -58,9 +58,10 @@ jobs:
         if: steps.cache-karate-jarfile.outputs.cache-hit != 'true'
         run: |
           git clone https://github.com/karatelabs/karate.git karate
+          cd karate
           git checkout c0597e5b7fcd61be47f916854e8473da11b37956
-          mvn clean install -P pre-release -pl -karate-robot -DskipTests -f karate/pom.xml
-          mvn package -B -ntp -P fatjar -DskipTests -f karate/karate-core/pom.xml
+          mvn clean install -P pre-release -pl -karate-robot -DskipTests
+          mvn package -B -ntp -P fatjar -DskipTests -f karate-core/pom.xml
         working-directory: /tmp
 
       - name: Cache Karate jarfile
