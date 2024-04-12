@@ -4,6 +4,8 @@ steps:
     displayName: Install poetry dependencies
 
   - bash: |
+      ls
+      ls karate-tests
       cd karate-tests && bash build-sandbox-ado.sh && docker run --name karate-sandbox nhs/pds-sandbox:latest
       # export APIGEE_ENVIRONMENT="docker"
       # export CONTAINER_IP=$(docker inspect karate-sandbox | grep -oE '[0-9]+(\.[0-9]+){3}' | head -n 1)
