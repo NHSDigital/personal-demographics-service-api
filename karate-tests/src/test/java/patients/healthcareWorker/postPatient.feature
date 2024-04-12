@@ -1,8 +1,14 @@
 Feature: Create a patient - Healthcare worker access mode
 
-Note the use of the Karate retry functionality in this feature: we're
-using it because the post patient functionality is subject to a spike
+Note the use of the Karate retry functionality in this feature:
+
+  - `retry until responseStatus != 429`
+
+We're using it because the post patient functionality is subject to a spike
 arrest policy, whereby requests can be rejected with a 429 response.
+
+The intervals between retries are set to be different for each scenario,
+to try to stagger the requests and avoid the spike arrest policy.
 
 Background:
   * def utils = call read('classpath:helpers/utils.feature')
@@ -45,7 +51,7 @@ Scenario: Post patient - new patient
   
   * path "Patient"
   * request read('classpath:patients/healthcareWorker/post-patient-request.json')
-  * configure retry = { count: 5, interval: 4 }
+  * configure retry = { count: 5, interval: 1 }
   * retry until responseStatus != 429
   * method post
   * status 201
@@ -80,7 +86,7 @@ Scenario: Fail to create a record for a new patient, single demographics match f
   * path "Patient"
   * request read('classpath:patients/healthcareWorker/post-patient-request.json')
   * method post
-  * configure retry = { count: 5, interval: 4 }
+  * configure retry = { count: 5, interval: 2 }
   * retry until responseStatus != 429
   * status 200
   * match response == read('classpath:mocks/stubs/errorResponses/SINGLE_MATCH_FOUND.json')
@@ -114,7 +120,7 @@ Scenario: Fail to create a record for a new patient, multiple demographics match
   * configure headers = requestHeaders
   * path "Patient"
   * request requestBody
-  * configure retry = { count: 5, interval: 4 }
+  * configure retry = { count: 5, interval: 3 }
   * retry until responseStatus != 429
   * method post
   * status 200
