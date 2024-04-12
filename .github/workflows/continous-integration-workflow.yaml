@@ -59,7 +59,7 @@ jobs:
         run: |
           git clone https://github.com/karatelabs/karate.git karate
           cd karate
-          mvn clean install -P pre-release -pl -karate-robot,-karate-playwright,-karate-e2e-tests -dskipTests
+          mvn clean install -P pre-release -pl -karate-robot,-karate-playwright,-karate-e2e-tests -DskipTests
           cd karate-core
           mvn package -P fatjar
         working-directory: /tmp
