@@ -8,9 +8,11 @@ if docker container inspect karate-sandbox >/dev/null 2>&1; then
     if docker container inspect -f '{{.State.Running}}' karate-sandbox >/dev/null 2>&1; then
         # Stop the container
         docker container stop karate-sandbox >/dev/null
+        docker wait karate-sandbox >/dev/null
     fi
     # Remove the container
     docker container rm karate-sandbox >/dev/null
+    docker wait karate-sandbox >/dev/null
 fi
 
 # Run the container
