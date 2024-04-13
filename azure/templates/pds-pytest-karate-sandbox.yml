@@ -1,5 +1,13 @@
 
 steps:
+
+  - bash: |
+      poetry install
+      pwd
+      ls
+    workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
+    displayName: Install poetry dependencies
+
   # all the steps for installing java and building the jarfile...
   - task: Bash@3
     displayName: 'Download jdk 22'
@@ -43,13 +51,7 @@ steps:
         ls $(Pipeline.Workspace)
         # cp karate/karate-core/target/karate-core-1.6.0-SNAPSHOT.jar karate-tests/karate.jar
         
-
-  - bash: poetry install
-    workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
-    displayName: Install poetry dependencies
-
   - bash: |
-
       pwd
       ls
       ls karate-tests
