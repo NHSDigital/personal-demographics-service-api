@@ -7,10 +7,6 @@ steps:
       targetType: 'inline'
       script: |
         wget https://download.java.net/java/GA/jdk22/830ec9fcccef480bb3e73fb7ecafe059/36/GPL/openjdk-22_linux-x64_bin.tar.gz
-        echo $(Agent.WorkFolder)
-        ls $(Agent.WorkFolder)
-        pwd
-        ls
         cp openjdk-22_linux-x64_bin.tar.gz /tmp/openjdk-22_linux-x64_bin.tar.gz
 
   - task: JavaToolInstaller@0
@@ -31,9 +27,9 @@ steps:
         git checkout c0597e5b7fcd61be47f916854e8473da11b37956
         mvn clean install -P pre-release -pl -karate-robot -DskipTests
         mvn package -B -ntp -P fatjar -DskipTests -f karate-core/pom.xml
-        cp /tmp/karate/karate-core/target/karate-core-1.6.0-SNAPSHOT.jar $(Pipeline.Workspace)/karate-tests/karate.jar
+        cp karate-core/target/karate-core-1.6.0-SNAPSHOT.jar $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/karate.jar
         echo "now karate-tests folder looks like:"
-        ls $(Pipeline.Workspace)/karate-tests
+        ls $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests
 
   - bash: poetry install
     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
