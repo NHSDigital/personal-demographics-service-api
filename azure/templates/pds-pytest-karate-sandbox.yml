@@ -22,11 +22,20 @@ steps:
     inputs:
       targetType: 'inline'
       script: |
+        pwd
         git clone https://github.com/karatelabs/karate.git karate
         cd karate
+        pwd
+        ls
         git checkout c0597e5b7fcd61be47f916854e8473da11b37956
         mvn clean install -P pre-release -pl -karate-robot -DskipTests
         mvn package -B -ntp -P fatjar -DskipTests -f karate-core/pom.xml
+        pwd
+        ls
+        echo "Pipeline workspace: "
+        echo $(Pipeline.Workspace)
+        ls $(Pipeline.Workspace)
+
         cp karate-core/target/karate-core-1.6.0-SNAPSHOT.jar karate-tests/karate.jar
         echo "now karate-tests folder looks like:"
         ls karate-tests
