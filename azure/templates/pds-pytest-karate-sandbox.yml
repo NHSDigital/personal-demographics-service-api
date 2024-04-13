@@ -1,21 +1,35 @@
 steps:
+  # all the steps for installing java and building the jarfile...
+  - task: Bash@3
+    displayName: 'Download jdk 22'
+    inputs:
+      targetType: 'inline'
+      script: |
+        wget https://download.java.net/java/GA/jdk22/830ec9fcccef480bb3e73fb7ecafe059/36/GPL/openjdk-22_linux-x64_bin.tar.gz
+        tar -xzf openjdk-22_linux-x64_bin.tar.gz -C $(Agent.ToolsDirectory)/jdk-22
+    workingDirectory: /tmp
 
   - task: JavaToolInstaller@0
+    displayName: 'Install jdk 22'
     inputs:
-      versionSpec: '17'
+      versionSpec: '22'
       jdkArchitectureOption: 'x64'
-      jdkSourceOption: 'PreInstalled'
+      jdkSourceOption: 'LocalDirectory'
+      jdkFile: '$(Agent.ToolsDirectory)/jdk-22'
 
-  - bash: |
-      git clone https://github.com/karatelabs/karate.git karate
-      cd karate
-      git checkout c0597e5b7fcd61be47f916854e8473da11b37956
-      mvn clean install -P pre-release -pl -karate-robot -DskipTests
-      mvn package -B -ntp -P fatjar -DskipTests -f karate-core/pom.xml
-      cp /tmp/karate/karate-core/target/karate-core-1.6.0-SNAPSHOT.jar $(Pipeline.Workspace)/karate-tests/karate.jar
-      echo "now karate-tests folder looks like:"
-      ls $(Pipeline.Workspace)/karate-tests
+  - task: Bash@3
     displayName: 'Build Karate jarfile'
+    inputs:
+      targetType: 'inline'
+      script: |
+        git clone https://github.com/karatelabs/karate.git karate
+        cd karate
+        git checkout c0597e5b7fcd61be47f916854e8473da11b37956
+        mvn clean install -P pre-release -pl -karate-robot -DskipTests
+        mvn package -B -ntp -P fatjar -DskipTests -f karate-core/pom.xml
+        cp /tmp/karate/karate-core/target/karate-core-1.6.0-SNAPSHOT.jar $(Pipeline.Workspace)/karate-tests/karate.jar
+        echo "now karate-tests folder looks like:"
+        ls $(Pipeline.Workspace)/karate-tests
     workingDirectory: /tmp
 
   - bash: poetry install
