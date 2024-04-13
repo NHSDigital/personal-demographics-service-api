@@ -10,14 +10,14 @@ steps:
         ls $(Agent.WorkFolder)
         pwd
         ls
-        
+
   - task: JavaToolInstaller@0
     displayName: 'Install jdk 22'
     inputs:
       versionSpec: 22
       jdkArchitectureOption: x64
       jdkSourceOption: LocalDirectory
-      jdkFile: $(Agent.WorkFolder)/openjdk-22_linux-x64_bin.tar.gz
+      jdkFile: $(Agent.WorkFolder)/1/s/openjdk-22_linux-x64_bin.tar.gz
 
   - task: Bash@3
     displayName: 'Build Karate jarfile'
