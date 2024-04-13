@@ -5,8 +5,10 @@ RUN apk add --no-cache maven
 
 LABEL version="0.0.1"
 
-# Copy the source code (including jarfile) to the container and start the sandbox
+WORKDIR /source
+RUN git clone https://github.com/NHSDigital/karate-jar 
+
 COPY ./ /app/
 WORKDIR /app/src/test/java
-CMD ["java", "-cp", "/app/karate.jar:.", "com.intuit.karate.Main", "-m", "mocks/sandbox/sandbox.js", "-p", "9090"]
+CMD ["java", "-cp", "/source/karate-jar/karate.jar:.", "com.intuit.karate.Main", "-m", "mocks/sandbox/sandbox.js", "-p", "9090"]
 EXPOSE 9090

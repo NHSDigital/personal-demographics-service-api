@@ -1,75 +1,15 @@
 steps:
 
-  - bash: |
-      poetry install
-      # now we export the variables we need in other bash steps, since the JavaToolInstaller task gets rid of them...
-      echo export SERVICE_NAME=$SERVICE_NAME >> $(Pipeline.Workspace)/.vars
-      echo export SERVICE_ARTIFACT_NAME=$SERVICE_ARTIFACT_NAME >> $(Pipeline.Workspace)/.vars
+  - bash: poetry install
     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
     displayName: Install poetry dependencies
 
   - bash: |
-      wget https://download.java.net/java/GA/jdk22/830ec9fcccef480bb3e73fb7ecafe059/36/GPL/openjdk-22_linux-x64_bin.tar.gz
-      pwd
-      ls
-      echo $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
-    workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
-    displayName: 'Download jdk 22'
-    
-  - task: JavaToolInstaller@0
-    displayName: 'Install jdk 22'
-    inputs:
-      versionSpec: 22
-      jdkArchitectureOption: x64
-      jdkSourceOption: LocalDirectory
-      jdkDestinationDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/.jdk
-      jdkFile: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/openjdk-22_linux-x64_bin.tar.gz
-      createExtractDirectory: false
-
-  - bash: |
-      source $(Pipeline.Workspace)/.vars
-      echo SERVICE_NAME: $SERVICE_NAME
-      echo SERVICE_ARTIFACT_NAME: $SERVICE_ARTIFACT_NAME
-      echo "start of task"
-      java --version
-      mvn --version
-      pwd
-      ls
-      git clone https://github.com/karatelabs/karate.git karate
-      cd karate
-      echo "in the karate folder"
-      pwd
-      ls
-      git checkout c0597e5b7fcd61be47f916854e8473da11b37956
-      mvn clean install -P pre-release -pl -karate-robot -DskipTests
-      mvn package -B -ntp -P fatjar -DskipTests -f karate-core/pom.xml
-      echo "cd back a level"
-      cd ..
-      pwd
-      echo "Pipeline workspace: "
-      echo $(Pipeline.Workspace)
-      echo "ls the /s folder:"
-      ls $(Pipeline.Workspace)/s
-      ls $(Pipeline.Workspace)
-      echo "the karate-tests folder before copy"
-      ls $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests
-      cp karate/karate-core/target/karate-core-1.6.0-SNAPSHOT.jar $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/karate.jar
-      echo "the karate-tests folder after copy"
-      ls $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests
-    displayName: 'Build Karate jarfile'
-    workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
-
-  - bash: |
-      pwd
-      ls
-      ls karate-tests
-      cd karate-tests && bash build-sandbox-ado.sh && docker run --name karate-sandbox nhs/pds-sandbox:latest
-      # export APIGEE_ENVIRONMENT="docker"
-      # export CONTAINER_IP=$(docker inspect karate-sandbox | grep -oE '[0-9]+(\.[0-9]+){3}' | head -n 1)
-      # echo "container ip: " $CONTAINER_IP
-      # docker inspect karate-sandbox
-      
-      # poetry run pytest -v tests/sandbox/test_sandbox.py --junitxml=tests/sandbox-test-report.xml --reruns 3 --reruns-delay 1
+      cd karate-tests && bash build-sandbox-ado.sh && docker run -d --name karate-sandbox nhs/pds-sandbox:latest
+      export APIGEE_ENVIRONMENT="docker"
+      export CONTAINER_IP=$(docker inspect karate-sandbox | grep -oE '[0-9]+(\.[0-9]+){3}' | head -n 1)
+      echo "container ip: " $CONTAINER_IP
+      poetry run pytest -v tests/sandbox/test_sandbox.py --junitxml=tests/sandbox-test-report.xml --reruns 3 --reruns-delay 1
     displayName: Run pytest sandbox tests against Karate sandbox
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
 
