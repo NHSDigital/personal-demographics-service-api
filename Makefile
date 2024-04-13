@@ -18,8 +18,7 @@ install-fhir-validator:
 	test -f bin/org.hl7.fhir.validator.jar || curl -L https://github.com/hapifhir/org.hl7.fhir.core/releases/latest/download/validator_cli.jar > bin/org.hl7.fhir.validator.jar
 
 karate:
-	cd karate-tests && mvn clean test
-
+	cd karate-tests && mvn clean test -Dtest=TestParallel
 
 lint:
 	npm run lint-oas
@@ -89,10 +88,11 @@ release: clean publish build-proxy
 
 	cp pyproject.toml dist/pyproject.toml
 
-test-sandbox: export APIGEE_ENVIRONMENT = local
-test-sandbox: export PDS_BASE_PATH = local
-test-sandbox:
-	poetry run pytest -v tests/sandbox/test_sandbox.py
+test-sandbox: 
+	export APIGEE_ENVIRONMENT=node && poetry run pytest -v tests/sandbox/test_sandbox.py
+
+test-karate-sandbox: 
+	export APIGEE_ENVIRONMENT=karate && poetry run pytest -v tests/sandbox/test_sandbox.py
 
 validate-xml:
 	poetry run python scripts/xml_validator.py

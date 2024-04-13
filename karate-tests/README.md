@@ -94,19 +94,53 @@ The sandbox is a fake FHIR API with functionality that allows us to use it in a 
 
 If you want to run the sandbox locally to explore using Postman, for example, you can spin up an instance of the sandbox by using Java to run a Karate jarfile.
 
-We're using JavaScript mocks on Windows, and there's a [known issue with sharing the port between WSL2 and Windows](https://stackoverflow.com/questions/78120386/why-cant-windows-make-requests-to-my-karate-mock-if-i-use-javascript-mocks), for which there is an unreleased fix. Because of this, for the time being we build our own jarfile from the latest Karate source (alternatively, ask a friend who's already built a jarfile you can use...).
+#### Option 1: Using Docker
+We have a Dockerfile set up for the sandbox. You can build the image from this Dockerfile.
+
+1. Build the image:
+    ```bash
+    cd karate-tests/src/test/java/mocks
+    docker build -t nhs/pds-sandbox .
+    ```
+1. If you run the container you'll see the Karate mockserver logs
+    ```bash
+    docker run --name karate-sandbox -p 9090:9090 nhs/pds-sandbox 
+    ```
+1. Inspect the running container to discover its IP address:
+    ```bash
+    docker inspect <CONTAINER ID> | grep '"IPAddress":' | grep -oE '[0-9]+(\.[0-9]+){3}' | head -n 1
+    ```
+1. You should now be able to run the sandbox tests against this container to show things are working, e.g. :
+    ```bash
+    export APIGEE_ENVIRONMENT=docker && poetry run -vv pytest tests/sandbox/test_sandbox.py::TestSandboxRelatedPersonSuite
+    ```
+
+- If you want a shortcut to set the environment variable and run all tests, there is the make command:
+    ```bash
+    make test-karate-sandbox
+    ```
+
+#### Option 2: Building your own jarfile and running the sandbox locally
+##### Building a jarfile
+We're using JavaScript mocks on Windows, and there's a [known issue with sharing the port between WSL2 and Windows](https://stackoverflow.com/questions/78120386/why-cant-windows-make-requests-to-my-karate-mock-if-i-use-javascript-mocks), for which there is an unreleased fix (it will be included in the Karate 1.6 release). Because of this, for the time being we build our own jarfile from the latest Karate source (alternatively, ask a friend who's already built a jarfile you can use...).
 
 The instructions for building a Karate jarfile from source [are all here](https://github.com/karatelabs/karate/wiki/Developer-Guide).
 
 To make it easier to write the command for running the jarfile, you may well choose to create an environment variable that points to the jarfile, e.g.
-    `export KARATE_JAR="/path/to/your/jarfile/karate-1.6.0-SNAPSHOT.jar"`
+```bash
+export KARATE_JAR="/path/to/your/jarfile/karate-1.6.0-SNAPSHOT.jar"
+```
 
+##### Running the sandbox
 To run the sandbox, go to your `src/test/java` folder and run the following command (in this command we have the `-p` switch to specify a port; if you omit this switch, a free port will be chosen at random, which may be what you want sometimes):
-    - `java -cp $KARATE_JAR:. com.intuit.karate.Main -m mocks/sandbox/sandbox.js -p 8080`
+```bash
+java -cp $KARATE_JAR:. com.intuit.karate.Main -m mocks/sandbox/sandbox.js -p 9090
+```
 
-You'll see output in your terminal to suggest the sandbox is running properly (or not), and you can test things from the Windows side now, e.g. using a browser or postman to make a simple get patient request:
-    - `http://localhost:8080/Patient/9000000009`
-
+You'll see output in your terminal to suggest the sandbox is running properly (or not). Again, you can test things by running the sandbox tests:  
+  ```bash
+  export APIGEE_ENVIRONMENT=karate && poetry run -vv pytest tests/sandbox/test_sandbox.py::TestSandboxRelatedPersonSuite
+  ```
 
 ## CI Setup
 
