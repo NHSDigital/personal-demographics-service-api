@@ -10,7 +10,9 @@ steps:
 
   - bash: |
       wget https://download.java.net/java/GA/jdk22/830ec9fcccef480bb3e73fb7ecafe059/36/GPL/openjdk-22_linux-x64_bin.tar.gz
-      cp openjdk-22_linux-x64_bin.tar.gz /tmp/openjdk-22_linux-x64_bin.tar.gz
+      pwd
+      ls
+      echo $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
     displayName: 'Download jdk 22'
     
@@ -20,7 +22,9 @@ steps:
       versionSpec: 22
       jdkArchitectureOption: x64
       jdkSourceOption: LocalDirectory
-      jdkFile: /tmp/openjdk-22_linux-x64_bin.tar.gz
+      jdkDestinationDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/.jdk
+      jdkFile: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/openjdk-22_linux-x64_bin.tar.gz
+      createExtractDirectory: false
 
   - bash: |
       source $(Pipeline.Workspace)/.vars
