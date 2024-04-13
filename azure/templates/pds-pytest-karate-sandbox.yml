@@ -6,6 +6,7 @@ steps:
       targetType: 'inline'
       script: |
         wget https://download.java.net/java/GA/jdk22/830ec9fcccef480bb3e73fb7ecafe059/36/GPL/openjdk-22_linux-x64_bin.tar.gz
+        mkdir -p $(Agent.ToolsDirectory)/jdk-22
         tar -xzf openjdk-22_linux-x64_bin.tar.gz -C $(Agent.ToolsDirectory)/jdk-22
 
   - task: JavaToolInstaller@0
