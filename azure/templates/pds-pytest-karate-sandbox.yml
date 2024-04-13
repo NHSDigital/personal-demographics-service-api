@@ -2,29 +2,30 @@ steps:
 
   - bash: |
       poetry install
-      pwd
-      ls
+      # now we export the variables we need in other bash steps, since the JavaToolInstaller task gets rid of them...
+      echo export SERVICE_NAME=$SERVICE_NAME >> $(Pipeline.Workspace)/.vars
+      echo export SERVICE_ARTIFACT_NAME=$SERVICE_ARTIFACT_NAME >> $(Pipeline.Workspace)/.vars
     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
     displayName: Install poetry dependencies
 
-  # all the steps for installing java and building the jarfile...
   - bash: |
       wget https://download.java.net/java/GA/jdk22/830ec9fcccef480bb3e73fb7ecafe059/36/GPL/openjdk-22_linux-x64_bin.tar.gz
       cp openjdk-22_linux-x64_bin.tar.gz /tmp/openjdk-22_linux-x64_bin.tar.gz
     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
     displayName: 'Download jdk 22'
     
-  # - task: JavaToolInstaller@0
-  #   displayName: 'Install jdk 22'
-  #   inputs:
-  #     versionSpec: 22
-  #     jdkArchitectureOption: x64
-  #     jdkSourceOption: LocalDirectory
-  #     jdkFile: /tmp/openjdk-22_linux-x64_bin.tar.gz
+  - task: JavaToolInstaller@0
+    displayName: 'Install jdk 22'
+    inputs:
+      versionSpec: 22
+      jdkArchitectureOption: x64
+      jdkSourceOption: LocalDirectory
+      jdkFile: /tmp/openjdk-22_linux-x64_bin.tar.gz
 
   - bash: |
-      sudo apt update -y
-      sudo apt install openjdk-17-jdk -y
+      source $(Pipeline.Workspace)/.vars
+      echo SERVICE_NAME: $SERVICE_NAME
+      echo SERVICE_ARTIFACT_NAME: $SERVICE_ARTIFACT_NAME
       echo "start of task"
       java --version
       mvn --version
