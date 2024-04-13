@@ -23,8 +23,8 @@ steps:
   #     jdkFile: /tmp/openjdk-22_linux-x64_bin.tar.gz
 
   - bash: |
-      apt update -y
-      apt install openjdk-17-jdk -y
+      sudo apt update -y
+      sudo apt install openjdk-17-jdk -y
       echo "start of task"
       java --version
       mvn --version
