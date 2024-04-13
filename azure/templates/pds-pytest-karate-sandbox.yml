@@ -1,3 +1,4 @@
+
 steps:
   # all the steps for installing java and building the jarfile...
   - task: Bash@3
@@ -10,6 +11,7 @@ steps:
         ls $(Agent.WorkFolder)
         pwd
         ls
+        cp openjdk-22_linux-x64_bin.tar.gz /tmp/openjdk-22_linux-x64_bin.tar.gz
 
   - task: JavaToolInstaller@0
     displayName: 'Install jdk 22'
@@ -17,7 +19,7 @@ steps:
       versionSpec: 22
       jdkArchitectureOption: x64
       jdkSourceOption: LocalDirectory
-      jdkFile: $(Agent.WorkFolder)/1/s/openjdk-22_linux-x64_bin.tar.gz
+      jdkFile: /tmp/openjdk-22_linux-x64_bin.tar.gz
 
   - task: Bash@3
     displayName: 'Build Karate jarfile'
