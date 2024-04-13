@@ -33,9 +33,9 @@ steps:
       echo "in the karate folder"
       pwd
       ls
-      # git checkout c0597e5b7fcd61be47f916854e8473da11b37956
-      # mvn clean install -P pre-release -pl -karate-robot -DskipTests
-      # mvn package -B -ntp -P fatjar -DskipTests -f karate-core/pom.xml
+      git checkout c0597e5b7fcd61be47f916854e8473da11b37956
+      mvn clean install -P pre-release -pl -karate-robot -DskipTests
+      mvn package -B -ntp -P fatjar -DskipTests -f karate-core/pom.xml
       echo "cd back a level"
       cd ..
       pwd
