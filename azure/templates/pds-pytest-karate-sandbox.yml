@@ -51,7 +51,11 @@ steps:
       echo "ls the /s folder:"
       ls $(Pipeline.Workspace)/s
       ls $(Pipeline.Workspace)
-      # cp karate/karate-core/target/karate-core-1.6.0-SNAPSHOT.jar karate-tests/karate.jar
+      echo "the karate-tests folder before copy"
+      ls $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests
+      cp karate/karate-core/target/karate-core-1.6.0-SNAPSHOT.jar $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/karate.jar
+      echo "the karate-tests folder after copy"
+      ls $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests
     displayName: 'Build Karate jarfile'
     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
 
