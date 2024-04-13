@@ -7,7 +7,6 @@ steps:
       script: |
         wget https://download.java.net/java/GA/jdk22/830ec9fcccef480bb3e73fb7ecafe059/36/GPL/openjdk-22_linux-x64_bin.tar.gz
         tar -xzf openjdk-22_linux-x64_bin.tar.gz -C $(Agent.ToolsDirectory)/jdk-22
-    workingDirectory: /tmp
 
   - task: JavaToolInstaller@0
     displayName: 'Install jdk 22'
@@ -30,7 +29,6 @@ steps:
         cp /tmp/karate/karate-core/target/karate-core-1.6.0-SNAPSHOT.jar $(Pipeline.Workspace)/karate-tests/karate.jar
         echo "now karate-tests folder looks like:"
         ls $(Pipeline.Workspace)/karate-tests
-    workingDirectory: /tmp
 
   - bash: poetry install
     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
