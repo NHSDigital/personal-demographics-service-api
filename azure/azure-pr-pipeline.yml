@@ -66,18 +66,12 @@ extends:
         #   depends_on:
         #     - pytest_tests_v_karate_sandbox
         
-        - environment: internal-dev-sandbox
-          stage_name: pytest_v_node_sandbox
-          proxy_path: sandbox
-          post_deploy:
-            - template: templates/sandbox-tests.yml
-        - environment: internal-dev-sandbox
-          stage_name: pytest_v_karate_sandbox_2
-          post_deploy:
-            - template: templates/pds-pytest-karate-sandbox.yml
-          depends_on:
-            - pytest_v_node_sandbox
-
+        # - environment: internal-dev-sandbox
+        #   stage_name: pytest_v_node_sandbox
+        #   proxy_path: sandbox
+        #   post_deploy:
+        #     - template: templates/sandbox-tests.yml
+        
         # - environment: internal-dev
         #   service_name: ${{ variables.service_name }}-int
         #   short_service_name: ${{ variables.short_service_name }}-int
