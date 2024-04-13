@@ -51,6 +51,8 @@ extends:
           stage_name: pytest_tests_v_karate_sandbox
           post_deploy:
             - template: templates/pds-pytest-karate-sandbox.yml
+          depends_on:
+            - karate_tests
         - environment: internal-dev
           service_name: ${{ variables.service_name }}-asid-required
           short_service_name: ${{ variables.short_service_name }}-asid
