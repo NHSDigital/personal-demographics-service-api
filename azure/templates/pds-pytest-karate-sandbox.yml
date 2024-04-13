@@ -1,4 +1,3 @@
-
 steps:
 
   - bash: |
@@ -9,48 +8,46 @@ steps:
     displayName: Install poetry dependencies
 
   # all the steps for installing java and building the jarfile...
-  - task: Bash@3
+  - bash: |
+      wget https://download.java.net/java/GA/jdk22/830ec9fcccef480bb3e73fb7ecafe059/36/GPL/openjdk-22_linux-x64_bin.tar.gz
+      cp openjdk-22_linux-x64_bin.tar.gz /tmp/openjdk-22_linux-x64_bin.tar.gz
+    workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
     displayName: 'Download jdk 22'
-    inputs:
-      targetType: 'inline'
-      script: |
-        wget https://download.java.net/java/GA/jdk22/830ec9fcccef480bb3e73fb7ecafe059/36/GPL/openjdk-22_linux-x64_bin.tar.gz
-        cp openjdk-22_linux-x64_bin.tar.gz /tmp/openjdk-22_linux-x64_bin.tar.gz
+    
+  # - task: JavaToolInstaller@0
+  #   displayName: 'Install jdk 22'
+  #   inputs:
+  #     versionSpec: 22
+  #     jdkArchitectureOption: x64
+  #     jdkSourceOption: LocalDirectory
+  #     jdkFile: /tmp/openjdk-22_linux-x64_bin.tar.gz
 
-  - task: JavaToolInstaller@0
-    displayName: 'Install jdk 22'
-    inputs:
-      versionSpec: 22
-      jdkArchitectureOption: x64
-      jdkSourceOption: LocalDirectory
-      jdkFile: /tmp/openjdk-22_linux-x64_bin.tar.gz
-
-  - task: Bash@3
+  - bash: |
+      echo "start of task"
+      java --version
+      mvn --version
+      pwd
+      ls
+      git clone https://github.com/karatelabs/karate.git karate
+      cd karate
+      echo "in the karate folder"
+      pwd
+      ls
+      # git checkout c0597e5b7fcd61be47f916854e8473da11b37956
+      # mvn clean install -P pre-release -pl -karate-robot -DskipTests
+      # mvn package -B -ntp -P fatjar -DskipTests -f karate-core/pom.xml
+      echo "cd back a level"
+      cd ..
+      pwd
+      echo "Pipeline workspace: "
+      echo $(Pipeline.Workspace)
+      echo "ls the /s folder:"
+      ls $(Pipeline.Workspace)/s
+      ls $(Pipeline.Workspace)
+      # cp karate/karate-core/target/karate-core-1.6.0-SNAPSHOT.jar karate-tests/karate.jar
     displayName: 'Build Karate jarfile'
-    inputs:
-      targetType: 'inline'
-      script: |
-        echo "start of task"
-        pwd
-        ls
-        git clone https://github.com/karatelabs/karate.git karate
-        cd karate
-        echo "in the karate folder"
-        pwd
-        ls
-        # git checkout c0597e5b7fcd61be47f916854e8473da11b37956
-        # mvn clean install -P pre-release -pl -karate-robot -DskipTests
-        # mvn package -B -ntp -P fatjar -DskipTests -f karate-core/pom.xml
-        echo "cd back a level"
-        cd ..
-        pwd
-        echo "Pipeline workspace: "
-        echo $(Pipeline.Workspace)
-        echo "ls the /s folder:"
-        ls $(Pipeline.Workspace)/s
-        ls $(Pipeline.Workspace)
-        # cp karate/karate-core/target/karate-core-1.6.0-SNAPSHOT.jar karate-tests/karate.jar
-        
+    workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
+
   - bash: |
       pwd
       ls
