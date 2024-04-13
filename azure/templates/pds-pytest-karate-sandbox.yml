@@ -22,16 +22,17 @@ steps:
     inputs:
       targetType: 'inline'
       script: |
+        echo "start of task"
         pwd
         ls
         git clone https://github.com/karatelabs/karate.git karate
         cd karate
+        echo "in the karate folder"
         pwd
         ls
-        git checkout c0597e5b7fcd61be47f916854e8473da11b37956
-        mvn clean install -P pre-release -pl -karate-robot -DskipTests
-        mvn package -B -ntp -P fatjar -DskipTests -f karate-core/pom.xml
-        pwd
+        # git checkout c0597e5b7fcd61be47f916854e8473da11b37956
+        # mvn clean install -P pre-release -pl -karate-robot -DskipTests
+        # mvn package -B -ntp -P fatjar -DskipTests -f karate-core/pom.xml
         echo "cd back a level"
         cd ..
         pwd
@@ -39,10 +40,12 @@ steps:
         echo $(Pipeline.Workspace)
         echo "ls the /s folder:"
         ls $(Pipeline.Workspace)/s
+        tree -d $(Pipeline.Workspace)
 
         cp karate/karate-core/target/karate-core-1.6.0-SNAPSHOT.jar karate-tests/karate.jar
         echo "now karate-tests folder looks like:"
         ls karate-tests
+
 
   - bash: poetry install
     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
