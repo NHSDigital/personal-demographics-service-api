@@ -8,11 +8,8 @@ steps:
       cd karate-tests && bash build-sandbox-ado.sh && docker run -d --name karate-sandbox -p 9090:9090 nhs/pds-sandbox:latest 
       export APIGEE_ENVIRONMENT=docker
       export CONTAINER_IP=$(docker inspect karate-sandbox | grep -oE '[0-9]+(\.[0-9]+){3}' | head -n 1)
-      echo "apigee environment: " $APIGEE_ENVIRONMENT
-      echo "container ip: " $CONTAINER_IP
-      docker ps
       cd ..
-      poetry run pytest -v tests/sandbox/test_sandbox.py::TestPDSSandboxRetrieveSuite --junitxml=tests/sandbox-test-report.xml
+      poetry run pytest -v tests/sandbox/test_sandbox.py --junitxml=tests/sandbox-test-report.xml
     displayName: Run pytest sandbox tests against Karate sandbox
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
 
