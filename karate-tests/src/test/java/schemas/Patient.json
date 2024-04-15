@@ -27,12 +27,12 @@
       "security": [
         {
           "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality",
-          "code": "#string",
-          "display": "#string"
+          "code": "#regex(U|R|V|REDACTED)",
+          "display": "#regex(unrestricted|restricted|very restricted|redacted)"
         }
       ]
     },
-    "gender": "##regex(male|female|unknown)",
+    "gender": "##regex(male|female|other|unknown)",
     "birthDate": "##? utils.isValidDateString(_)",
     "deceasedDateTime": "##regex(([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2})$|^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T\\d{2}:\\d{2}:\\d{2})$|^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2})$|^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])))",
     "address": "##[] (Address)",
