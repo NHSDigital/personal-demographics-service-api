@@ -9,7 +9,9 @@ from .configuration import config
 
 
 @pytest.mark.deployment_scenarios
-@pytest.mark.skipif(config.SANDBOX_BASE_URL.startswith("http://0.0.0.0"), reason="Only run these these tests in CI")
+@pytest.mark.skipif(
+    config.SANDBOX_BASE_URL.startswith("http://0.0.0.0"),
+    reason="Only run these these tests against a deployed sandbox")
 class TestPDSSandboxDeploymentSuite:
     """Sandbox PDS Deployment Scenarios. Checks performed: status_codes and version deployed"""
 

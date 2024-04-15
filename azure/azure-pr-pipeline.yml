@@ -48,9 +48,9 @@ extends:
           depends_on:
             - pytest_bdd_tests
         - environment: internal-dev
-          stage_name: karate_sandbox_tests
+          stage_name: pytest_tests_v_karate_sandbox
           post_deploy:
-            - template: templates/pds-tests-karate-sandbox.yml
+            - template: templates/pds-pytest-karate-sandbox.yml
           depends_on:
             - karate_tests
         - environment: internal-dev
@@ -64,7 +64,7 @@ extends:
           post_deploy:
             - template: templates/pds-tests.yml
           depends_on:
-            - karate_sandbox_tests
+            - pytest_tests_v_karate_sandbox
         
         - environment: internal-dev-sandbox
           proxy_path: sandbox
