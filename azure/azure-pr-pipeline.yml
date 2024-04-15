@@ -65,18 +65,20 @@ extends:
             - template: templates/pds-tests.yml
           depends_on:
             - karate_sandbox_tests
-        
-        - environment: internal-dev-sandbox
-          proxy_path: sandbox
-          stage_name: pytest_v_node_sandbox
-          post_deploy:
-            - template: templates/sandbox-tests.yml
+
         - environment: internal-dev-sandbox
           proxy_path: sandbox
           stage_name: postman_collection_v_node_sandbox
           post_deploy:
             - template: templates/sandbox-tests-postman-collection.yml
-
+        - environment: internal-dev-sandbox
+          proxy_path: sandbox
+          stage_name: pytest_v_node_sandbox
+          post_deploy:
+            - template: templates/sandbox-tests.yml
+          depends_on:
+            - postman_collection_v_node_sandbox
+            
         - environment: internal-dev
           service_name: ${{ variables.service_name }}-int
           short_service_name: ${{ variables.short_service_name }}-int
