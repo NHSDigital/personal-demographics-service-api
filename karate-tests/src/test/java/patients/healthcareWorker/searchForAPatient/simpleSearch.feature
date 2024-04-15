@@ -7,7 +7,7 @@ Background:
   # schemas and validators that are required by the main schema checks
   * def utils = call read('classpath:helpers/utils.feature')
   * json generalPractitionerReference = karate.readAsString('classpath:schemas/GeneralPractitionerReference.json')
-  * json periodSchema = karate.readAsString('classpath:schemas/Period.json')
+  * json Period = karate.readAsString('classpath:schemas/Period.json')
   * json addressSchema = karate.readAsString('classpath:schemas/Address.json')
   * json humanNameSchema = karate.readAsString('classpath:schemas/HumanName.json')
   * json patientSearchResultEntry = karate.readAsString('classpath:schemas/patientSearchResultEntry.json')

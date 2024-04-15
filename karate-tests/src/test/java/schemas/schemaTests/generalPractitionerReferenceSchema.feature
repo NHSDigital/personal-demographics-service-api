@@ -1,7 +1,7 @@
 Feature: Validator for the General Practitioner Reference Schema
 
 Background:
-* json periodSchema = karate.readAsString('classpath:schemas/Period.json')
+* json Period = karate.readAsString('classpath:schemas/Period.json')
 * json gpRefSchema = karate.readAsString('classpath:schemas/GeneralPractitionerReference.json')
 
 Scenario: Required fields only

@@ -1,74 +1,46 @@
 {
-
     "resourceType": "Patient",
-    "id": "#? isValidNhsNumber(_)",
-    "identifier": { "$ref": "Identifier.json" },
-        "meta": {
-            "$ref": "Meta.json"
-        },
-        "gender": { "$ref": "Gender.json" },
-        "birthDate": { "$ref": "BirthDate.json" },
-        "deceasedDateTime": { "$ref": "DeceasedDateTime.json" },
-        "address": {
-            "description": "List of addresses associated with the patient.\n\nThese are fully populated on a retrieval or a successful update, only the `home` address is returned on a search.\n\nWhen a patient tagged as `restricted` or `very restricted` is retrieved, all addresses are removed from the response.\n",
-            "type": "array",
-            "items": { "$ref": "Address.json" }
-        },
-        "name": {
-            "description": "List of names associated with the patient.\n\nWhen a patient tagged as `very restricted` is retrieved, all names are removed from the response.\n",
-            "type": "array",
-            "minItems": 1,
-            "items": { "$ref": "HumanName.json" }
-        },
-        "contact": {
-            "description": "A list of patient contacts. Only emergency contacts are returned and only emergency contacts should be added. Any other contacts should be added to the patients `Related Person`.\n\nPatients designate here any contact number they desire to be used in case of an emergency.\nNote, while a patient may also desire to record various related persons telecom details, these do not separately allow for a concept of emergency contact; only ranking. See RelatedPerson endpoint.\n\nWhen a patient tagged as `restricted` or `very restricted` is retrieved, all contacts are removed from the response.\n",
-            "type": "array",
-            "items": { "$ref": "Contact.json" }
-        },
-        "telecom": {
-            "description": "List of contact points for the patient; for example, phone numbers or email addresses.\n\nWhen a patient tagged as `restricted` or `very restricted` is retrieved, all contact points are removed from the response.\n",
-            "type": "array",
-            "items": { "$ref": "ContactPoint.json" }
-        },
-        "generalPractitioner": {
-            "description": "General Practice (not practitioner) with which the patient is, or was, registered. Always contains zero or one general practitioner object.\n\nWhen a patient tagged as `restricted` or `very restricted` is retrieved, the General Practice is removed from the response.\n",
-            "type": "array",
-            "items": { "$ref": "GeneralPractitionerReference.json" },
-            "maxItems": 1
-        },
-        "managingOrganization": { "$ref": "ManagingOrganizationReference.json" },
-        "multipleBirthInteger": { "$ref": "MultipleBirthOrder.json" },
-        "extension": {
-            "description": "Wrapper array for the patient's pharmacies, death notification status, communication details, contact preferences, place of birth and removal from registration exit code; these are all FHIR extensions.\nAlways contains zero or one of each pharmacy object, zero or one death notification status object, zero or one communication details object, zero or one contact preference, zero or one place of birth object and zero or one removal from registration object.\n\nWhen a patient tagged as `restricted` or `very restricted` is retrieved, the pharmacy and birth place extensions are removed from the response.\n",
-            "type": "array",
-            "items": {
-                "anyOf": [
-                    {
-                        "$ref": "extensions/NominatedPharmacy.json"
-                    },
-                    {
-                        "$ref": "extensions/DispensingDoctor.json"
-                    },
-                    {
-                        "$ref": "extensions/MedicalApplianceSupplier.json"
-                    },
-                    {
-                        "$ref": "extensions/DeathNotificationStatus.json"
-                    },
-                    {
-                        "$ref": "extensions/Communication.json"
-                    },
-                    {
-                        "$ref": "extensions/ContactPreference.json"
-                    },
-                    {
-                        "$ref": "extensions/BirthPlace.json"
-                    },
-                    {
-                        "$ref": "extensions/RemovalFromRegistration.json"
-                    }
-                ]
+    "id": "#? utils.isValidNHSNumber(_)",
+    "identifier": [
+      {
+        "system": "https://fhir.nhs.uk/Id/nhs-number",
+        "value": "#? utils.isValidNHSNumber(_)",
+        "extension": [
+          {
+            "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                  "version": "1.0.0",
+                  "code": "01",
+                  "display": "Number present and verified"
+                }
+              ]
             }
+          }
+        ]
+      }
+    ],
+    "meta": {
+      "versionId": "#string",
+      "security": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality",
+          "code": "#string",
+          "display": "#string"
         }
-    }
+      ]
+    },
+    "gender": "##regex(male|female|unknown)",
+    "birthDate": "##? utils.isValidDateString(_)",
+    "deceasedDateTime": "##regex(([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2})$|^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T\\d{2}:\\d{2}:\\d{2})$|^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2})$|^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])))",
+    "address": "##[] (Address)",
+    "name": "##[] (HumanName)",
+    "contact": "##[] (Contact)",
+    "telecom": "##[] (ContactPoint)",
+    "generalPractitioner": "##[] (GeneralPractitionerReference)",
+    "managingOrganization": "##(ManagingOrganizationReference)",
+    "multipleBirthInteger": "##? _ >= 1 && _ <= 9",
+    "extension": "##[]"
 }

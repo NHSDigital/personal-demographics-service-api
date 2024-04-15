@@ -13,7 +13,7 @@ to try to stagger the requests and avoid the spike arrest policy.
 Background:
   * def utils = call read('classpath:helpers/utils.feature')
   * def faker = Java.type('helpers.FakerWrapper')
-  * json periodSchema = karate.readAsString('classpath:schemas/Period.json')
+  * json Period = karate.readAsString('classpath:schemas/Period.json')
   * json addressSchema = karate.readAsString('classpath:schemas/Address.json') 
   
   # the same registeringAuthority object is included in every request

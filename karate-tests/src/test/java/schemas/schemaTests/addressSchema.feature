@@ -1,7 +1,7 @@
 Feature: Validator for the Address Schema
 
 Background:
-    * json periodSchema = karate.readAsString('classpath:schemas/Period.json')
+    * json Period = karate.readAsString('classpath:schemas/Period.json')
     * json addressSchema = karate.readAsString('classpath:schemas/Address.json')
 
 

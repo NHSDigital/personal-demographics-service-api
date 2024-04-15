@@ -2,7 +2,13 @@ package patients.healthcareWorker.getPatientDetails;
 
 import com.intuit.karate.junit5.Karate;
 
-public class GetPatientDetailsTests {
+
+public class TestGetPatientDetailsSingles {
+
+    @Karate.Test
+    Karate testGetPatientByNHSNumber() {
+        return Karate.run("getPatientByNHSNumber").relativeTo(getClass());
+    }    
     
     @Karate.Test
     Karate testGetPatientErrorScenarios() {

@@ -1,0 +1,6 @@
+{
+  "id": "##string",
+  "period": "##(Period)",
+  "relationship": "#[] (ContactRelationship)",
+  "telecom": "##[] (ContactPoint)"
+}
