@@ -1,7 +1,7 @@
 Feature: Validator for the Human Name Schema
 
 Background:
-* json periodSchema = karate.readAsString('classpath:schemas/Period.json')
+* json Period = karate.readAsString('classpath:schemas/Period.json')
 * json humanNameSchema = karate.readAsString('classpath:schemas/HumanName.json')
 
 

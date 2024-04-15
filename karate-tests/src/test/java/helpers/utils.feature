@@ -31,6 +31,15 @@ Scenario:
       return randomDate.toISOString().split('T')[0]
     }
     """
+  * def buildDeprecatedURL = 
+    """
+    function(nhsNumber) {
+      const prNumber = karate.get('pdsBasePath').match(/pr-[0-9]+/)
+      const prString = prNumber ? `-${prNumber[0]}` : ''
+      const url = `${karate.get('baseURL')}/personal-demographics${prString}`
+      return url
+    }
+    """
 
   # data validators
   * def isTodaysDate = 
@@ -80,6 +89,18 @@ Scenario:
       const nhsNumber = url.split('/')[url.split('/').length -1]
       const validNHSNumber = karate.call('classpath:helpers/nhs-number-validator.js', nhsNumber)
       return validNHSNumber
+    }
+    """
+
+  * def validateResponseHeaders = 
+    """
+    function(requestHeaders) {
+      /*
+        validate the values of the x-correlation-id and x-correlation-id response headers match those
+        of the request
+      */
+      return requestHeaders['x-correlation-id'] == karate.response.header('x-correlation-id') &&
+             requestHeaders['x-request-id'] == karate.response.header('x-request-id')
     }
     """
   
