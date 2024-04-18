@@ -78,13 +78,6 @@ extends:
             - template: templates/sandbox-tests-postman-collection.yml
           depends_on: 
             - pytest_v_node_sandbox
-        - environment: internal-dev-sandbox  
-          proxy_path: sandbox
-          stage_name: pytest_v_node_sandbox
-          post_deploy:
-            - template: templates/sandbox-tests.yml
-          depends_on:
-            - postman_collection_v_node_sandbox
             
         - environment: internal-dev
           service_name: ${{ variables.service_name }}-int
