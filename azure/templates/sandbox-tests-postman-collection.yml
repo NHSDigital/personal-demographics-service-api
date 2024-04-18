@@ -5,7 +5,8 @@ steps:
 
   - task: Npm@1
     inputs:
-      command: 'install -g newman'      
+      command: 'custom'
+      customCommand: 'install newman -g'
 
   - bash: newman run patient-demographics-sandbox.postman_collection.json -r cli,junit --reporter-junit-export newman-test-report.xml
     workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
