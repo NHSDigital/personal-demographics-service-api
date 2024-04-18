@@ -76,7 +76,6 @@ extends:
           stage_name: postman_collection_v_node_sandbox
           post_deploy:
             - template: templates/sandbox-tests-postman-collection.yml
-            - environment: internal-dev-sandbox
           # depends_on: 
           #   - pytest_v_node_sandbox
         # - environment: internal-dev-sandbox  
