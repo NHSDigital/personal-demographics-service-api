@@ -15,5 +15,5 @@ steps:
   - task: PublishTestResults@2
     displayName: 'Publish Postman collection test results'
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/newman-test-report.xml
+      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/postman/newman-test-report.xml
       failTaskOnFailedTests: true
