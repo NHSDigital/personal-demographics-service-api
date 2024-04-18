@@ -10,15 +10,6 @@ Background:
   * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
   * url baseURL
 
-Scenario: Healthcare worker using deprecated url
-  # Ask David what this scenario is all about
-  * configure headers = requestHeaders 
-  * url utils.buildDeprecatedURL()
-  * path 'Patient', nhsNumber
-  * method get
-  * status 404
-  * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
-
 Scenario: Attempt to retrieve a patient with missing authorization header
   * remove requestHeaders.authorization
   * configure headers = requestHeaders

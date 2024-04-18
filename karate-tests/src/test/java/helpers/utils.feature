@@ -31,15 +31,6 @@ Scenario:
       return randomDate.toISOString().split('T')[0]
     }
     """
-  * def buildDeprecatedURL = 
-    """
-    function(nhsNumber) {
-      const prNumber = karate.get('pdsBasePath').match(/pr-[0-9]+/)
-      const prString = prNumber ? `-${prNumber[0]}` : ''
-      const url = `${karate.get('baseURL')}/personal-demographics${prString}`
-      return url
-    }
-    """
 
   # data validators
   * def isTodaysDate = 
