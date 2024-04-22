@@ -1,13 +1,19 @@
 Feature: Create a patient - Healthcare worker access mode
 
-Note the use of the Karate retry functionality in this feature: we're
-using it because the post patient functionality is subject to a spike
+Note the use of the Karate retry functionality in this feature:
+
+  - `retry until responseStatus != 429`
+
+We're using it because the post patient functionality is subject to a spike
 arrest policy, whereby requests can be rejected with a 429 response.
+
+The intervals between retries are set to be different for each scenario,
+to try to stagger the requests and avoid the spike arrest policy.
 
 Background:
   * def utils = call read('classpath:helpers/utils.feature')
   * def faker = Java.type('helpers.FakerWrapper')
-  * json periodSchema = karate.readAsString('classpath:schemas/Period.json')
+  * json Period = karate.readAsString('classpath:schemas/Period.json')
   * json addressSchema = karate.readAsString('classpath:schemas/Address.json') 
   
   # the same registeringAuthority object is included in every request
@@ -45,12 +51,12 @@ Scenario: Post patient - new patient
   
   * path "Patient"
   * request read('classpath:patients/healthcareWorker/post-patient-request.json')
-  * configure retry = { count: 5, interval: 2 }
+  * configure retry = { count: 5, interval: 5 }
   * retry until responseStatus != 429
   * method post
   * status 201
   * def nhsNumber = response.id
-  * def expectedResponse = read('classpath:stubs/patient/new-nhs-number-response-template.json')
+  * def expectedResponse = read('classpath:patients/healthcareWorker/new-nhs-number-response-template.json')
   * match response == expectedResponse
   * match response.address[0].line[0] == address
   * match response.address[0].postalCode == postalCode
@@ -80,10 +86,10 @@ Scenario: Fail to create a record for a new patient, single demographics match f
   * path "Patient"
   * request read('classpath:patients/healthcareWorker/post-patient-request.json')
   * method post
-  * configure retry = { count: 5, interval: 2 }
+  * configure retry = { count: 5, interval: 10 }
   * retry until responseStatus != 429
   * status 200
-  * match response == read('classpath:stubs/patient/errorResponses/single_match_found.json')
+  * match response == read('classpath:mocks/stubs/errorResponses/SINGLE_MATCH_FOUND.json')
 
 
 Scenario: Fail to create a record for a new patient, multiple demographics matches found
@@ -114,19 +120,19 @@ Scenario: Fail to create a record for a new patient, multiple demographics match
   * configure headers = requestHeaders
   * path "Patient"
   * request requestBody
-  * configure retry = { count: 5, interval: 2 }
+  * configure retry = { count: 5, interval: 15 }
   * retry until responseStatus != 429
   * method post
   * status 200
-  * match response == read('classpath:stubs/patient/errorResponses/multiple_matches_found.json')
+  * match response == read('classpath:mocks/stubs/errorResponses/MULTIPLE_MATCHES_FOUND.json')
 
 
 Scenario: Negative path: invalid request body
   * path "Patient"
   * request { bananas: "in pyjamas" }
-  * configure retry = { count: 5, interval: 2 }
+  * configure retry = { count: 5, interval: 20 }
   * retry until responseStatus != 429
   * method post
   * status 400
   * def diagnostics = response.issue[0].diagnostics
-  * match response == read('classpath:stubs/patient/errorResponses/missing_value.json')
+  * match response == read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')

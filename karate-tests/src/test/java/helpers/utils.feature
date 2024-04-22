@@ -82,6 +82,18 @@ Scenario:
       return validNHSNumber
     }
     """
+
+  * def validateResponseHeaders = 
+    """
+    function(requestHeaders) {
+      /*
+        validate the values of the x-correlation-id and x-correlation-id response headers match those
+        of the request
+      */
+      return requestHeaders['x-correlation-id'] == karate.response.header('x-correlation-id') &&
+             requestHeaders['x-request-id'] == karate.response.header('x-request-id')
+    }
+    """
   
   # other utility functions
   * def pickDifferentOption = 

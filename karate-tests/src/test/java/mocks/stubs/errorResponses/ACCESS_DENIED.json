@@ -3,17 +3,18 @@
   "issue": [
     {
       "severity": "error",
-      "code": "value",
+      "code": "forbidden",
       "details": {
         "coding": [
           {
             "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
             "version": "1",
-            "code": "INVALID_RESOURCE_ID",
-            "display": "Resource Id is invalid"
+            "code": "ACCESS_DENIED",
+            "display": "Access Denied - Unauthorised"
           }
         ]
-      }
+      },
+      "diagnostics": "#(diagnostics)"
     }
   ]
 }

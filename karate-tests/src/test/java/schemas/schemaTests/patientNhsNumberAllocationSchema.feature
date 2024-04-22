@@ -1,7 +1,7 @@
 Feature: Validator for the Patient NHS Number Allocation Schema
 
 Background:
-* json periodSchema = karate.readAsString('classpath:schemas/Period.json')
+* json Period = karate.readAsString('classpath:schemas/Period.json')
 * json addressSchema = karate.readAsString('classpath:schemas/Address.json')
 * json humanNameSchema = karate.readAsString('classpath:schemas/HumanName.json')
 * json contactPointSchema = karate.readAsString('classpath:schemas/ContactPoint.json')

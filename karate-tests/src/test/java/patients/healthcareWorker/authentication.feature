@@ -6,7 +6,7 @@ Feature: Authentication for Healthcare Worker
   test user. Otherwise, we default to shirley.bryne@nhs.net (656005750107)
 
   For reference some valid cis2 mock usernames are:
-    - 656005750104 	surekha.kommareddy@nhs.net
+    - 656005750104 	surekha.kommareddy@nhs.net (requires a role to be specified using the NHSD-Session-URID header)
     - 656005750105 	darren.mcdrew@nhs.net
     - 656005750106 	riley.jones@nhs.net
     - 656005750107 	shirley.bryne@nhs.net

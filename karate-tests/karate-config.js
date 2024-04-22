@@ -19,6 +19,7 @@ function fn() {
   } else {
     var config = { 
       oauth2MockURL: `${java.lang.System.getenv('OAUTH_BASE_URI')}/${java.lang.System.getenv('OAUTH_PROXY')}`,
+      pdsBasePath: `${java.lang.System.getenv('PDS_BASE_PATH')}`,
       baseURL: `${java.lang.System.getenv('OAUTH_BASE_URI')}/${java.lang.System.getenv('PDS_BASE_PATH')}`,
       clientID: java.lang.System.getenv('CLIENT_ID'),
       clientSecret: java.lang.System.getenv('CLIENT_SECRET'),

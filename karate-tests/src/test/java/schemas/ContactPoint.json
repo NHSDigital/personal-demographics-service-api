@@ -1,8 +1,8 @@
 {
     "id": "##string",
-    "period": "##(periodSchema)",
+    "period": "##(Period)",
     "system": "#regex(phone|fax|email|other)",
     "value": "#string",
     "use": "##regex(home|work|temp|mobile)",
-    "extension": "##[] otherContactSystemSchema"
+    "extension": "##[] OtherContactSystem"
 }
