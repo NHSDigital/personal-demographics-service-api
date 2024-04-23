@@ -504,7 +504,6 @@
                                                                                     "enum": [
                                                                                         "U",
                                                                                         "R",
-                                                                                        "V",
                                                                                         "REDACTED"
                                                                                     ],
                                                                                     "example": "U"
@@ -2026,7 +2025,6 @@
                                                                 "enum": [
                                                                     "U",
                                                                     "R",
-                                                                    "V",
                                                                     "REDACTED"
                                                                 ],
                                                                 "example": "U"
@@ -4622,7 +4620,6 @@
                                                                 "enum": [
                                                                     "U",
                                                                     "R",
-                                                                    "V",
                                                                     "REDACTED"
                                                                 ],
                                                                 "example": "U"
@@ -8792,7 +8789,6 @@
                                             "enum": [
                                                 "U",
                                                 "R",
-                                                "V",
                                                 "REDACTED"
                                             ],
                                             "example": "U"
@@ -10520,7 +10516,6 @@
                                                                 "enum": [
                                                                     "U",
                                                                     "R",
-                                                                    "V",
                                                                     "REDACTED"
                                                                 ],
                                                                 "example": "U"
