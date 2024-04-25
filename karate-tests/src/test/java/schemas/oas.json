@@ -917,9 +917,9 @@
                                                             },
                                                             "telecom": {
                                                                 "type": "array",
-                                                                "description": "List of contact points for the patient; for example, phone numbers or email addresses.\nWhen a patient tagged as `restricted` is retrieved, all contact points are removed from the response.\n",
+                                                                "description": "List of contact points for the patient; for example, phone numbers or email addresses.\nWhen a patient tagged as `restricted` is retrieved, all contact points are removed from the response (a contact point, such as a phone number or email address). \n",
                                                                 "items": {
-                                                                    "description": "A contact point, such as a phone number or email address",
+                                                                    
                                                                     "type": "object",
                                                                     "required": [
                                                                         "system",
@@ -9202,9 +9202,9 @@
                     },
                     "telecom": {
                         "type": "array",
-                        "description": "List of contact points for the patient; for example, phone numbers or email addresses.\nWhen a patient tagged as `restricted` is retrieved, all contact points are removed from the response.\n",
+                        "description": "List of contact points for the patient; for example, phone numbers or email addresses.\nWhen a patient tagged as `restricted` is retrieved, all contact points are removed from the response (a contact point, such as a phone number or email address). \n",
                         "items": {
-                            "description": "A contact point, such as a phone number or email address",
+                            
                             "type": "object",
                             "required": [
                                 "system",
@@ -10929,9 +10929,9 @@
                                         },
                                         "telecom": {
                                             "type": "array",
-                                            "description": "List of contact points for the patient; for example, phone numbers or email addresses.\nWhen a patient tagged as `restricted` is retrieved, all contact points are removed from the response.\n",
+                                            "description": "List of contact points for the patient; for example, phone numbers or email addresses.\nWhen a patient tagged as `restricted` is retrieved, all contact points are removed from the response (a contact point, such as a phone number or email address). \n",
                                             "items": {
-                                                "description": "A contact point, such as a phone number or email address",
+                                               
                                                 "type": "object",
                                                 "required": [
                                                     "system",
