@@ -3511,7 +3511,7 @@
                                                                                                             "DEA - Death",
                                                                                                             "EMB - Embarkation",
                                                                                                             "SCT - Transferred to Scotland",
-                                                                                                            "NIT - Transferred to Northern Island",
+                                                                                                            "NIT - Transferred to Northern Ireland",
                                                                                                             "TRA - Temporary resident not returned",
                                                                                                             "ORR - Other Reason"
                                                                                                         ]
@@ -6106,7 +6106,7 @@
                                                                                                             "DEA - Death",
                                                                                                             "EMB - Embarkation",
                                                                                                             "SCT - Transferred to Scotland",
-                                                                                                            "NIT - Transferred to Northern Island",
+                                                                                                            "NIT - Transferred to Northern Ireland",
                                                                                                             "TRA - Temporary resident not returned",
                                                                                                             "ORR - Other Reason"
                                                                                                         ]
@@ -10275,7 +10275,7 @@
                                                                                         "DEA - Death",
                                                                                         "EMB - Embarkation",
                                                                                         "SCT - Transferred to Scotland",
-                                                                                        "NIT - Transferred to Northern Island",
+                                                                                        "NIT - Transferred to Northern Ireland",
                                                                                         "TRA - Temporary resident not returned",
                                                                                         "ORR - Other Reason"
                                                                                     ]
