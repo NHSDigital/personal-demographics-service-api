@@ -28,5 +28,5 @@ Feature: Get (search for) patients based on demographics data
     * param address-postalcode = karate.get('address-postalcode')
     * param _max-results = "6"
     * method get
-    * match response == read('classpath:schemas/patientSearchBundle.json')
+    * match response == read('classpath:patients/healthcareWorker/searchForAPatient/patientSearchBundle.json')
     * status 200

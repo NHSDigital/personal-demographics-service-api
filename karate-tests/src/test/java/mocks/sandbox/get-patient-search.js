@@ -27,6 +27,15 @@ function janeSmithSearchsetWithScore (score) {
 }
 
 /*
+  Add a timestamp to the body of the response
+*/
+function timestampBody (body) {
+  // timestamp format is '2019-12-25T12:00:00+00:00'
+  body.timestamp = new Date().toISOString()
+  return body
+}
+
+/*
     Specific query param validation to support main handler
 */
 function validateQueryParams (request) {
@@ -91,32 +100,32 @@ if (request.pathMatches('/Patient') && request.get) {
   if (validateHeaders(request) && validateQueryParams(request)) {
     if (fuzzyMatch) {
       if (!phone && !email) {
-        response.body = FUZZY_SEARCH_PATIENT_17
+        response.body = timestampBody(FUZZY_SEARCH_PATIENT_17)
       } else if (phone === '01632960587' && !email) {
-        response.body = janeSmithSearchsetWithScore(0.9124)
+        response.body = timestampBody(janeSmithSearchsetWithScore(0.9124))
       } else if (email === 'jane.smith@example.com' && !phone) {
-        response.body = janeSmithSearchsetWithScore(0.9124)
+        response.body = timestampBody(janeSmithSearchsetWithScore(0.9124))
       } else if (phone === '01632960587' && email === 'jane.smith@example.com') {
-        response.body = janeSmithSearchsetWithScore(0.9542)
+        response.body = timestampBody(janeSmithSearchsetWithScore(0.9542))
       }
     } else if (['Sm*', 'sm*'].includes(family)) {
       if (!phone && !email) {
-        response.body = WILDCARD_SEARCH
+        response.body = timestampBody(WILDCARD_SEARCH)
       } else if (phone === '01632960587' && !email) {
-        response.body = janeSmithSearchsetWithScore(1)
+        response.body = timestampBody(janeSmithSearchsetWithScore(1))
       } else if (email === 'jane.smith@example.com' && !phone) {
-        response.body = janeSmithSearchsetWithScore(1)
+        response.body = timestampBody(janeSmithSearchsetWithScore(1))
       }
     } else if (['Smythe', 'smythe'].includes(family)) {
-      response.body = RESTRICTED_PATIENT_SEARCH
+      response.body = timestampBody(RESTRICTED_PATIENT_SEARCH)
     // using eqeqeq to compare birthDates doesn't work here
     // eslint-disable-next-line eqeqeq
     } else if (['Smith', 'smith'].includes(family) && ['Female', 'female'].includes(gender) && (birthDate == 'eq2010-10-22' || birthDate == 'ge2010-10-21,le2010-10-23') && otherJaneSmithParamsAreValid(request)) {
-      response.body = SIMPLE_SEARCH
+      response.body = timestampBody(SIMPLE_SEARCH)
     } else if (['Smith', 'smith'].includes(family) && ['Male', 'male'].includes(gender) && given[0] === 'John Paul' && given[1] === 'James') {
-      response.body = COMPOUND_NAME_SEARCH
+      response.body = timestampBody(COMPOUND_NAME_SEARCH)
     } else {
-      response.body = EMPTY_SEARCHSET
+      response.body = timestampBody(EMPTY_SEARCHSET)
     }
   }
 }

@@ -19,7 +19,7 @@ Background:
 @mock
 Scenario: Mock authentication
     We don't authenticate. Just return some headers
-    * def accessToken = '123456'
+    * def accessToken = utils.randomUUID()
 
     
 @real

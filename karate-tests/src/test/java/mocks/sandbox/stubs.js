@@ -31,6 +31,14 @@ const FUZZY_SEARCH_PATIENT_17 = {
     Our patients "database"
 */
 session.patients = session.patients || {
+  5900043320: context.read('classpath:mocks/stubs/patientResponses/patient_5900043320.json'),
+  5900046192: context.read('classpath:mocks/stubs/patientResponses/patient_5900046192.json'),
+  5900056449: context.read('classpath:mocks/stubs/patientResponses/patient_5900056449.json'),
+  5900056597: context.read('classpath:mocks/stubs/patientResponses/patient_5900056597.json'),
+  5900057208: context.read('classpath:mocks/stubs/patientResponses/patient_5900057208.json'),
+  5900059073: context.read('classpath:mocks/stubs/patientResponses/patient_5900059073.json'),
+  5900059243: context.read('classpath:mocks/stubs/patientResponses/patient_5900059243.json'),
+  5900059332: context.read('classpath:mocks/stubs/patientResponses/patient_5900059332.json'),
   9000000009: context.read('classpath:mocks/stubs/patientResponses/patient_9000000009.json'),
   9000000025: context.read('classpath:mocks/stubs/patientResponses/patient_9000000025.json'),
   9000000033: context.read('classpath:mocks/stubs/patientResponses/patient_9000000033.json'),

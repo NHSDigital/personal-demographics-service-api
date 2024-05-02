@@ -1,5 +1,5 @@
 {
-    "entry": "#[] (patientSearchResultEntry)",
+    "entry": "##[] (patientSearchResultEntry)",
     "resourceType": "Bundle",
     "timestamp": "#? utils.isValidTimestamp(_)",
     "total": "#number",

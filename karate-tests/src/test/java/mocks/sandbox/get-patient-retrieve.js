@@ -9,6 +9,7 @@
 /* global validateHeaders, validateNHSNumber, validatePatientExists, basicResponseHeaders */
 
 if (request.pathMatches('/Patient/{nhsNumber}') && request.get) {
+  response.headers = basicResponseHeaders(request)
   if (validateHeaders(request) && validateNHSNumber(request) && validatePatientExists(request)) {
     const patient = session.patients[request.pathParams.nhsNumber]
     const responseHeaders = basicResponseHeaders(request)

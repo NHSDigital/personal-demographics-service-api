@@ -1,19 +1,19 @@
 {
   "issue": [
     {
-      "code": "value",
+      "code": "forbidden",
       "details": {
         "coding": [
           {
-            "code": "INVALID_VALUE",
-            "display": "Provided value is invalid",
+            "code": "FORBIDDEN_UPDATE",
+            "display": "Update is forbidden",
             "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
             "version": "1"
           }
         ]
       },
       "diagnostics": "#(diagnostics)",
-      "severity": "error"
+      "severity": "information"
     }
   ],
   "resourceType": "OperationOutcome"

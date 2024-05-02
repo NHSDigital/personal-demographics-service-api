@@ -1,3 +1,4 @@
+@sandbox
 Feature: Search for a patient - Healthcare worker access mode - "Simple search"
 
 These tests authenticate as one of the available test healthcare workers,
@@ -18,7 +19,6 @@ Background:
   * configure headers = requestHeaders 
   * url baseURL
 
-@search
 Scenario:Search for a patient using parameters
   * path "Patient"
   * param family = "Jones"
@@ -27,5 +27,5 @@ Scenario:Search for a patient using parameters
   * param _max-results = "6"
   * method get
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
-  * match response == read('classpath:schemas/patientSearchBundle.json')
+  * match response == read('classpath:patients/healthcareWorker/searchForAPatient/patientSearchBundle.json')
   * status 200
