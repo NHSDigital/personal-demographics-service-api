@@ -88,7 +88,7 @@ function isValidUUID (uuid) {
 /*
    * validate the oauth2 bearer token
     */
-function isValidBearerToken(token) {
+function isValidBearerToken (token) {
   const tokenParts = token.split(' ')
   if (tokenParts.length !== 2) {
     return false
@@ -106,7 +106,7 @@ function isValidBearerToken(token) {
  * @param {Request} request - The request object.
  * @returns {boolean} - Returns true if the headers are valid, false otherwise.
  */
-function validateAuthHeader(request) {
+function validateAuthHeader (request) {
   let valid = true
   let diagnostics = ''
   // Check if the Authorization header is present and correct
@@ -127,7 +127,7 @@ function validateAuthHeader(request) {
   return valid
 }
 
-function validateRequestIDHeader(request) {
+function validateRequestIDHeader (request) {
   // Check if the X-Request-ID header is present and correct
   let valid = true
   const requestID = request.header('x-request-id')
