@@ -74,6 +74,7 @@
                     "in": "header",
                     "name": "NHSD-End-User-Organisation-ODS",
                     "required": false,
+                    "pattern": "^[0-9a-zA-Z]{5}$"
                     "description": "The ODS code of the user.\n\nMandatory for client applications which service multiple end user organisations (EUO). This will allow the calls to be attributed to the correct EUO.\n",
                     "schema": {
                         "type": "string",
@@ -1854,6 +1855,7 @@
                     "in": "header",
                     "name": "NHSD-End-User-Organisation-ODS",
                     "required": false,
+                    "pattern": "^[0-9a-zA-Z]{5}$"
                     "description": "The ODS code of the user.\n\nMandatory for client applications which service multiple end user organisations (EUO). This will allow the calls to be attributed to the correct EUO.\n",
                     "schema": {
                         "type": "string",
@@ -6930,6 +6932,7 @@
                     "in": "header",
                     "name": "NHSD-End-User-Organisation-ODS",
                     "required": false,
+                    "pattern": "^[0-9a-zA-Z]{5}$"
                     "description": "The ODS code of the user.\n\nMandatory for client applications which service multiple end user organisations (EUO). This will allow the calls to be attributed to the correct EUO.\n",
                     "schema": {
                         "type": "string",
@@ -8396,6 +8399,7 @@
                 "in": "header",
                 "name": "NHSD-End-User-Organisation-ODS",
                 "required": false,
+                "pattern": "^[0-9a-zA-Z]{5}$"
                 "description": "The ODS code of the user.\n\nMandatory for client applications which service multiple end user organisations (EUO). This will allow the calls to be attributed to the correct EUO.\n",
                 "schema": {
                     "type": "string",
