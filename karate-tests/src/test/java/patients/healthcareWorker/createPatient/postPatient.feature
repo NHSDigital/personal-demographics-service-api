@@ -84,9 +84,9 @@ Scenario: Fail to create a record for a new patient, single demographics match f
   * configure headers = requestHeaders
   * path "Patient"
   * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
-  * method post
   * configure retry = { count: 5, interval: 6000 }
   * retry until responseStatus != 429
+  * method post
   * status 200
   * match response == read('classpath:mocks/stubs/errorResponses/SINGLE_MATCH_FOUND.json')
 
@@ -129,7 +129,7 @@ Scenario: Fail to create a record for a new patient, multiple demographics match
 Scenario: Negative path: invalid request body
   * path "Patient"
   * request { bananas: "in pyjamas" }
-  * configure retry = { count: 5, interval: 2000 }
+  * configure retry = { count: 5, interval: 10000 }
   * retry until responseStatus != 429
   * method post
   * status 400
