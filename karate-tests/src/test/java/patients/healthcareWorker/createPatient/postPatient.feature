@@ -2,10 +2,15 @@ Feature: Create a patient - Healthcare worker access mode
 
 Note the use of the Karate retry functionality in this feature:
 
-  - `retry until responseStatus != 429`
+  - `* retry until responseStatus != 429 && responseStatus != 503`
 
-We're using it because the post patient functionality is subject to a spike
-arrest policy, whereby requests can be rejected with a 429 response.
+We're using it because:
+- the post patient functionality is subject to a spik arrest policy, 
+    whereby requests can be rejected with a 429 response.
+- the system may also throw a SERVICE_UNAVAILABLE error - "The downstream 
+  domain processing has not completed within the configured timeout period. 
+  Using the same 'X-Request-ID' header, retry your request after the time 
+  specified by the 'Retry-After' response header."
 
 The intervals between retries are set to be different for each scenario,
 to try to stagger the requests and avoid the spike arrest policy.
@@ -51,7 +56,7 @@ Scenario: Post patient - new patient
   * path "Patient"
   * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
   * configure retry = { count: 5, interval: 5000 }
-  * retry until responseStatus != 429
+  * retry until responseStatus != 429 && responseStatus != 503
   * method post
   * status 201
   * def nhsNumber = response.id
@@ -85,7 +90,7 @@ Scenario: Fail to create a record for a new patient, single demographics match f
   * path "Patient"
   * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
   * configure retry = { count: 5, interval: 6000 }
-  * retry until responseStatus != 429
+  * retry until responseStatus != 429 && responseStatus != 503
   * method post
   * status 200
   * match response == read('classpath:mocks/stubs/errorResponses/SINGLE_MATCH_FOUND.json')
@@ -120,7 +125,7 @@ Scenario: Fail to create a record for a new patient, multiple demographics match
   * path "Patient"
   * request requestBody
   * configure retry = { count: 5, interval: 7000 }
-  * retry until responseStatus != 429
+  * retry until responseStatus != 429 && responseStatus != 503
   * method post
   * status 200
   * match response == read('classpath:mocks/stubs/errorResponses/MULTIPLE_MATCHES_FOUND.json')
@@ -130,7 +135,7 @@ Scenario: Negative path: invalid request body
   * path "Patient"
   * request { bananas: "in pyjamas" }
   * configure retry = { count: 5, interval: 10000 }
-  * retry until responseStatus != 429
+  * retry until responseStatus != 429 && responseStatus != 503
   * method post
   * status 400
   * def diagnostics = response.issue[0].diagnostics

@@ -13,7 +13,7 @@ public class TestCreatePatient {
 
     @BeforeAll
     static void beforeAll() {
-        String env = System.getProperty("karate.env");
+        String env = System.getProperty("karate.env", "veit07");
         if (env.equals("mock")) {
             server = MockRunner.start("src/test/java/mocks", 8080);
         }
@@ -21,7 +21,7 @@ public class TestCreatePatient {
     
     @Karate.Test
     Karate testCreate() {
-        return Karate.run("postPatient").tags("@this").relativeTo(getClass());
+        return Karate.run("postPatient").relativeTo(getClass());
     }
 
 }
