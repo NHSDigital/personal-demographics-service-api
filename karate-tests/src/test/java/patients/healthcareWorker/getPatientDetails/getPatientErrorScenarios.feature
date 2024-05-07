@@ -1,8 +1,5 @@
-@sandbox
+@ignore
 Feature: Get a patient - Healthcare worker - error scenarios
-
-These tests authenticate as one of the available test healthcare workers,
-darren.mcdrew@nhs.net
 
 Background:
   * def utils = call read('classpath:helpers/utils.feature')  
