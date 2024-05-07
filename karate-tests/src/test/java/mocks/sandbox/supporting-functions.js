@@ -111,7 +111,7 @@ function validateAuthHeader (request) {
   let diagnostics = ''
   // Check if the Authorization header is present and correct
   const authorization = request.header('Authorization')
-  if (!('authorization' in request.headers)) {
+  if (authorization === null) {
     diagnostics = 'Missing Authorization header'
     valid = false
   } else if (authorization === '') {
