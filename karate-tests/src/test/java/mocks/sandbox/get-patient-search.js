@@ -3,13 +3,16 @@
 */
 
 /* Karate objects */
-/* global request, response */
+/* global context, request, response */
 
 /* Functions defined in supporting-functions.js */
 /* global validateHeaders, setInvalidSearchDataError, setMissingValueError, basicResponseHeaders */
 
 /* Constants defined in stubs.js */
 /* global EMPTY_SEARCHSET, SEARCH_PATIENT_9000000009, FUZZY_SEARCH_PATIENT_17, WILDCARD_SEARCH, RESTRICTED_PATIENT_SEARCH, SIMPLE_SEARCH, COMPOUND_NAME_SEARCH */
+
+const MOCK_SINGLE_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/search_patient_5900027104.json')
+const MOCK_MULTIPLE_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/mock_multiple_searchset.json')
 
 function janeSmithSearchsetWithScore (score) {
   return {
@@ -93,10 +96,17 @@ if (request.pathMatches('/Patient') && request.get) {
   const given = request.params.given
   const gender = request.param('gender')
   const birthDate = request.params.birthdate
+  const postalCode = request.param('address-postalcode')
   const fuzzyMatch = request.paramBool('_fuzzy-match')
   const phone = request.param('phone')
   const email = request.param('email')
 
+  context.log('*************************')
+  context.log('family:', family)
+  context.log('postalCode:', postalCode)
+  context.log('birthDate:', birthDate)
+  context.log('gender', gender)
+  context.log('*************************')
   if (validateHeaders(request) && validateQueryParams(request)) {
     if (fuzzyMatch) {
       if (!phone && !email) {
@@ -126,6 +136,14 @@ if (request.pathMatches('/Patient') && request.get) {
       response.body = timestampBody(COMPOUND_NAME_SEARCH)
     } else {
       response.body = timestampBody(EMPTY_SEARCHSET)
+    }
+    // stubs used for the post patient tests
+    if (family === 'Karate-test-somwzqz' && postalCode === 'BAP4WG' && birthDate[0] === '1954-10-26' && gender === 'male') {
+      response.body = timestampBody(MOCK_SINGLE_SEARCHSET)
+    }
+    if (family === 'McCOAG' && postalCode === 'DN19 7UD' && birthDate[0] === '1997-08-20') {
+      context.log('we are here ***************************************')
+      response.body = timestampBody(MOCK_MULTIPLE_SEARCHSET)
     }
   }
 }

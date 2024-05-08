@@ -33,31 +33,55 @@ function getTodaysDate () {
 }
 
 const NEW_PATIENT = context.read('classpath:mocks/stubs/postPatientResponses/new_patient.json')
+const SINGLE_MATCH = context.read('classpath:mocks/stubs/postPatientResponses/SINGLE_MATCH_FOUND.json')
+const MULTIPLE_MATCHES = context.read('classpath:mocks/stubs/postPatientResponses/MULTIPLE_MATCHES_FOUND.json')
+
+function requestMatchesErrorScenario (request) {
+  // the mocks are programmed to demonstrate error scenarios where we already have matching patients
+  // and we don't create a patient. There is no complex logic here where we try to mimic the matching
+  // logic of the real system, just a simple check that will demonstrate the behaviour when specific
+  // data is sent in the request.
+  let match = false
+  const family = request.body.name['name.familyName']
+  const postalCode = request.body.address['address.postalCode']
+  if (family === 'Karate-test-somwzqz' && postalCode === 'BAP4WG') {
+    const body = JSON.parse(JSON.stringify(SINGLE_MATCH))
+    body.issue[0].diagnostics = 'Unable to create new patient. NHS number 5900027104 found for supplied demographic data.'
+    response.body = body
+    match = true
+  } else if (family === 'McCOAG' && postalCode === 'DN19 7UD') {
+    response.body = MULTIPLE_MATCHES
+    match = true
+  }
+  return match
+}
 
 if (request.pathMatches('/Patient') && request.post) {
   response.headers = basicResponseHeaders(request)
   response.contentType = 'application/fhir+json'
 
-  // clone the NEW_PATIENT object, then set properties based on the contents of the request body
-  const patient = JSON.parse(JSON.stringify(NEW_PATIENT))
-  
-  // set a new NHS number for the patient
-  patient.id = VALID_NHS_NUMBERS[context.nhsNumberIndex]
-  patient.identifier[0].value = VALID_NHS_NUMBERS[context.nhsNumberIndex]
-  context.nhsNumberIndex += 1
+  if (!requestMatchesErrorScenario(request)) {
+    // clone the NEW_PATIENT object, then set properties based on the contents of the request body
+    const patient = JSON.parse(JSON.stringify(NEW_PATIENT))
 
-  // set the name properties
-  patient.name[0].family = request.body.name['name.familyName']
-  patient.name[0].given = [request.body.name['name.givenName.name1']]
-  patient.name[0].id = generateObjectId()
-  patient.name[0].period.start = getTodaysDate()
-  patient.name[0].prefix = [request.body.name['name.prefix']]
+    // set a new NHS number for the patient
+    patient.id = VALID_NHS_NUMBERS[context.nhsNumberIndex]
+    patient.identifier[0].value = VALID_NHS_NUMBERS[context.nhsNumberIndex]
+    context.nhsNumberIndex += 1
 
-  // set the address properties
-  patient.address[0].id = generateObjectId()
-  patient.address[0].line = [request.body.address['address.addr.line1']]
-  patient.address[0].period.start = getTodaysDate()
-  patient.address[0].postalCode = request.body.address['address.postalCode']
-  response.body = patient
-  response.status = 201
+    // set the name properties
+    patient.name[0].family = request.body.name['name.familyName']
+    patient.name[0].given = [request.body.name['name.givenName.name1']]
+    patient.name[0].id = generateObjectId()
+    patient.name[0].period.start = getTodaysDate()
+    patient.name[0].prefix = [request.body.name['name.prefix']]
+
+    // set the address properties
+    patient.address[0].id = generateObjectId()
+    patient.address[0].line = [request.body.address['address.addr.line1']]
+    patient.address[0].period.start = getTodaysDate()
+    patient.address[0].postalCode = request.body.address['address.postalCode']
+    response.body = patient
+    response.status = 201
+  }
 }

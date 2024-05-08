@@ -43,8 +43,6 @@ Background:
   * configure headers = requestHeaders  
   * url baseURL
 
-
-@this
 Scenario: Post patient - new patient
   * def familyName = "Karate-test-" + utils.randomString(7)
   * def givenName = "Zebedee"
@@ -67,7 +65,6 @@ Scenario: Post patient - new patient
   * match response == expectedResponse
   * match response.address[0].line[0] == address
   * match response.address[0].postalCode == postalCode
-
 
 Scenario: Fail to create a record for a new patient, single demographics match found
   # we rely on data that's already in the database for our existing record
@@ -96,9 +93,9 @@ Scenario: Fail to create a record for a new patient, single demographics match f
   * retry until responseStatus != 429 && responseStatus != 503
   * method post
   * status 200
-  * match response == read('classpath:mocks/stubs/errorResponses/SINGLE_MATCH_FOUND.json')
+  * match response == read('classpath:mocks/stubs/postPatientResponses/SINGLE_MATCH_FOUND.json')
 
-
+@this
 Scenario: Fail to create a record for a new patient, multiple demographics matches found
   # we rely on data that's already in the database for our existing records
   * def nhsNumber = "5900036502"
@@ -131,7 +128,7 @@ Scenario: Fail to create a record for a new patient, multiple demographics match
   * retry until responseStatus != 429 && responseStatus != 503
   * method post
   * status 200
-  * match response == read('classpath:mocks/stubs/errorResponses/MULTIPLE_MATCHES_FOUND.json')
+  * match response == read('classpath:mocks/stubs/postPatientResponses/MULTIPLE_MATCHES_FOUND.json')
 
 
 Scenario: Negative path: invalid request body
