@@ -18,7 +18,12 @@ public class TestCreatePatient {
             server = MockRunner.start("src/test/java/mocks", 8080);
         }
     }
-    
+
+    @Karate.Test
+    Karate testSpecific() {
+        return Karate.run("postPatient").tags("this").relativeTo(getClass());
+    }
+
     @Karate.Test
     Karate testCreate() {
         return Karate.run("postPatient").relativeTo(getClass());

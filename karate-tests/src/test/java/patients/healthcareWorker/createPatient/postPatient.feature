@@ -1,3 +1,4 @@
+@sandbox
 Feature: Create a patient - Healthcare worker access mode
 
 Note the use of the Karate retry functionality in this feature:
@@ -42,6 +43,8 @@ Background:
   * configure headers = requestHeaders  
   * url baseURL
 
+
+@this
 Scenario: Post patient - new patient
   * def familyName = "Karate-test-" + utils.randomString(7)
   * def givenName = "Zebedee"
