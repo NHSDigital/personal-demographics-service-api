@@ -95,7 +95,6 @@ Scenario: Fail to create a record for a new patient, single demographics match f
   * status 200
   * match response == read('classpath:mocks/stubs/postPatientResponses/SINGLE_MATCH_FOUND.json')
 
-@this
 Scenario: Fail to create a record for a new patient, multiple demographics matches found
   # we rely on data that's already in the database for our existing records
   * def nhsNumber = "5900036502"
@@ -130,7 +129,6 @@ Scenario: Fail to create a record for a new patient, multiple demographics match
   * status 200
   * match response == read('classpath:mocks/stubs/postPatientResponses/MULTIPLE_MATCHES_FOUND.json')
 
-
 Scenario: Negative path: invalid request body
   * path "Patient"
   * request { bananas: "in pyjamas" }
@@ -138,5 +136,5 @@ Scenario: Negative path: invalid request body
   * retry until responseStatus != 429 && responseStatus != 503
   * method post
   * status 400
-  * def diagnostics = response.issue[0].diagnostics
+  * def diagnostics = "Missing value - 'nhsNumberAllocation'"
   * match response == read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')

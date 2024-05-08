@@ -56,32 +56,46 @@ function requestMatchesErrorScenario (request) {
   return match
 }
 
+function postPatientRequestIsValid (request) {
+  // check the request body has the expected structure
+  let valid = true
+  if (!request.body.nhsNumberAllocation) {
+    const body = context.read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')
+    body.issue[0].diagnostics = "Missing value - 'nhsNumberAllocation'"
+    response.body = body
+    response.status = 400
+    valid = false
+  }
+  return valid
+}
+
 if (request.pathMatches('/Patient') && request.post) {
   response.headers = basicResponseHeaders(request)
   response.contentType = 'application/fhir+json'
+  if (postPatientRequestIsValid(request)) {
+    if (!requestMatchesErrorScenario(request)) {
+      // clone the NEW_PATIENT object, then set properties based on the contents of the request body
+      const patient = JSON.parse(JSON.stringify(NEW_PATIENT))
 
-  if (!requestMatchesErrorScenario(request)) {
-    // clone the NEW_PATIENT object, then set properties based on the contents of the request body
-    const patient = JSON.parse(JSON.stringify(NEW_PATIENT))
+      // set a new NHS number for the patient
+      patient.id = VALID_NHS_NUMBERS[context.nhsNumberIndex]
+      patient.identifier[0].value = VALID_NHS_NUMBERS[context.nhsNumberIndex]
+      context.nhsNumberIndex += 1
 
-    // set a new NHS number for the patient
-    patient.id = VALID_NHS_NUMBERS[context.nhsNumberIndex]
-    patient.identifier[0].value = VALID_NHS_NUMBERS[context.nhsNumberIndex]
-    context.nhsNumberIndex += 1
+      // set the name properties
+      patient.name[0].family = request.body.name['name.familyName']
+      patient.name[0].given = [request.body.name['name.givenName.name1']]
+      patient.name[0].id = generateObjectId()
+      patient.name[0].period.start = getTodaysDate()
+      patient.name[0].prefix = [request.body.name['name.prefix']]
 
-    // set the name properties
-    patient.name[0].family = request.body.name['name.familyName']
-    patient.name[0].given = [request.body.name['name.givenName.name1']]
-    patient.name[0].id = generateObjectId()
-    patient.name[0].period.start = getTodaysDate()
-    patient.name[0].prefix = [request.body.name['name.prefix']]
-
-    // set the address properties
-    patient.address[0].id = generateObjectId()
-    patient.address[0].line = [request.body.address['address.addr.line1']]
-    patient.address[0].period.start = getTodaysDate()
-    patient.address[0].postalCode = request.body.address['address.postalCode']
-    response.body = patient
-    response.status = 201
+      // set the address properties
+      patient.address[0].id = generateObjectId()
+      patient.address[0].line = [request.body.address['address.addr.line1']]
+      patient.address[0].period.start = getTodaysDate()
+      patient.address[0].postalCode = request.body.address['address.postalCode']
+      response.body = patient
+      response.status = 201
+    }
   }
 }
