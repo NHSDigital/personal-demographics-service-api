@@ -9,6 +9,14 @@ Background:
     * def randomUUID = function(){ return java.util.UUID.randomUUID() + '' }
     * url oauth2MockURL
 
+@mock
+Scenario: Mock authentication
+    # We don't authenticate. We do return a valid UUID that the mock knows relates to 
+    # application-restricted access mode - don't change this token without updating
+    # the mock code (getAccessType function)
+    * def accessToken = "17cd981c-71a6-454d-bc7b-2cb27bae2949"
+
+@real
 Scenario: Authentication for application-restricted access - signed JWT authentication
     # note that the apiKey will be different if we're using our own apps...
     * def tokenParams = 

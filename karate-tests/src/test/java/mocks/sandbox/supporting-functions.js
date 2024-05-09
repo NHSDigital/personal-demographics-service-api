@@ -2,6 +2,30 @@
 /* global context, response, session */
 
 /**
+ * Inspects the access token used for the request and deduces the access type.
+ * The access type is either 'HEALTHCARE_WORKER' or 'APP_RESTRICTED'.
+ * A valid UUID token must be provided when making requests. We have pre-defined
+ * access token values to signal the type of access we should simulate.
+ * 
+ * @param {Object} request - The request object.
+ * @returns {Object} - The response headers object.
+ */
+// eslint-disable-next-line no-unused-vars
+function getAccessType (request) {
+  const appRestrictedToken = '17cd981c-71a6-454d-bc7b-2cb27bae2949'
+  const healthcareWorkerToken = '5aaa1f2d-cb57-4ac1-b158-14b06d51ce2e'
+
+  let accessType = 'UNKNOWN'
+
+  if (request.header('Authorization') === `Bearer ${appRestrictedToken}`) {
+    accessType = 'APP_RESTRICTED'
+  } else if (request.header('Authorization') !== `Bearer ${healthcareWorkerToken}`) {
+    accessType = 'HEALTHCARE_WORKER'
+  }
+  return accessType
+}
+
+/**
  * Generates basic response headers based on the provided request.
  *
  * @param {Object} request - The request object.

@@ -2,7 +2,7 @@
 /* global context, request, response */
 
 /* functions defined in supporting-functions.js */
-/* global basicResponseHeaders */
+/* global basicResponseHeaders getAccessType */
 
 /*
  * Generating valid NHS numbers on the fly isn't so easy, so we just have an array of valid numbers
@@ -69,10 +69,23 @@ function postPatientRequestIsValid (request) {
   return valid
 }
 
+function userHasPermission (request) {
+  // check the user making the request has permission to create a patient
+  let valid = true
+  if (getAccessType(request) === 'APP_RESTRICTED') {
+    const body = context.read('classpath:mocks/stubs/errorResponses/INVALID_METHOD.json')
+    body.issue[0].details.coding[0].display = 'Cannot create resource with application-restricted access token'
+    response.body = body
+    response.status = 403
+    valid = false
+  }
+  return valid
+}
+
 if (request.pathMatches('/Patient') && request.post) {
   response.headers = basicResponseHeaders(request)
   response.contentType = 'application/fhir+json'
-  if (postPatientRequestIsValid(request)) {
+  if (userHasPermission(request) && postPatientRequestIsValid(request)) {
     if (!requestMatchesErrorScenario(request)) {
       // clone the NEW_PATIENT object, then set properties based on the contents of the request body
       const patient = JSON.parse(JSON.stringify(NEW_PATIENT))

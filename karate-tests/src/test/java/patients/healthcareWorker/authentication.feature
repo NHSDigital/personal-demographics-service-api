@@ -18,10 +18,11 @@ Background:
 
 @mock
 Scenario: Mock authentication
-    We don't authenticate. Just return some headers
-    * def accessToken = utils.randomUUID()
+    # We don't authenticate. We do return a valid UUID that the mock knows relates to 
+    # healthcare worker access mode - don't change this token without updating
+    # the mock code (getAccessType function)
+    * def accessToken = "5aaa1f2d-cb57-4ac1-b158-14b06d51ce2e"
 
-    
 @real
 Scenario: Call the real oauth2 authentication mock service
     

@@ -1,7 +1,8 @@
+@sandbox
 Feature: Create patient - not permitted for application-restricted users
 
 Background:
-  * def accessToken = karate.callSingle('classpath:patients/appRestricted/authentication.feature').accessToken
+  * def accessToken = karate.callSingle('classpath:patients/appRestricted/auth-redirect.feature').accessToken
   * def requestHeaders = call read('classpath:patients/appRestricted/app-restricted-headers.js')
   * configure headers = requestHeaders  
   * url baseURL
