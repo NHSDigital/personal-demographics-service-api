@@ -19,6 +19,7 @@ retrieve_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_r
 search_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_search.feature')
 related_person_scenario = partial(pytest_bdd.scenario, './features/related_person.feature')
 
+
 @retrieve_scenario('Healthcare worker can retrieve patient')
 def test_retrieve_patient():
     pass
@@ -146,16 +147,6 @@ def test_search_returns_empty():
 
 @related_person_scenario('Retrieve a related person')
 def test_retrieve_related_person():
-    pass
-
-
-@status_scenario('Ping endpoint')
-def test_ping():
-    pass
-
-
-@status_scenario('Healthcheck endpoint')
-def test_healthcheck():
     pass
 
 

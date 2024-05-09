@@ -1,6 +1,5 @@
 import datetime
 import json
-import os
 import re
 import uuid
 
@@ -13,9 +12,8 @@ import pytest_bdd
 from dateutil import parser
 from functools import partial
 from lxml import html
-from pytest_bdd import given, when, then, parsers
+from pytest_bdd import when, then
 
-from tests.functional.conftest import RESPONSES_DIR
 from tests.functional.configuration.config import (CLIENT_ID, CLIENT_SECRET)
 from tests.functional.utils.helpers import get_role_id_from_user_info_endpoint
 
