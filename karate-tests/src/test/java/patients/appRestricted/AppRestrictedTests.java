@@ -6,7 +6,12 @@ class AppRestrictedTests {
     
     @Karate.Test
     Karate testGetPatient() {
-        return Karate.run("getPatient").tags("~@ignore").relativeTo(getClass());
+        return Karate.run("getPatient").relativeTo(getClass());
+    }  
+
+    @Karate.Test
+    Karate testCreatePatient() {
+        return Karate.run("createPatientError").relativeTo(getClass());
     }  
 
 }
