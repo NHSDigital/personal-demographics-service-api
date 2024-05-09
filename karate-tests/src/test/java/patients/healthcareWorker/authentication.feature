@@ -18,10 +18,8 @@ Background:
 
 @mock
 Scenario: Mock authentication
-    # We don't authenticate. We do return a valid UUID that the mock knows relates to 
-    # healthcare worker access mode - don't change this token without updating
-    # the mock code (getAccessType function)
-    * def accessToken = "5aaa1f2d-cb57-4ac1-b158-14b06d51ce2e"
+    # We don't authenticate. We set a value that isn't a UUID, that the mock accepts
+    * def accessToken = "HEALTHCARE_WORKER"
 
 @real
 Scenario: Call the real oauth2 authentication mock service

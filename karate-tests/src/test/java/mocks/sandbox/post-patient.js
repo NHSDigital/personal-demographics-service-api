@@ -72,7 +72,7 @@ function postPatientRequestIsValid (request) {
 function userHasPermission (request) {
   // check the user making the request has permission to create a patient
   let valid = true
-  if (getAccessType(request) === 'APP_RESTRICTED') {
+  if (request.header('Authorization') === 'Bearer APP_RESTRICTED') {
     const body = context.read('classpath:mocks/stubs/errorResponses/INVALID_METHOD.json')
     body.issue[0].details.coding[0].display = 'Cannot create resource with application-restricted access token'
     response.body = body

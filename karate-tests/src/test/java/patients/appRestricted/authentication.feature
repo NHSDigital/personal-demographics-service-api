@@ -11,10 +11,8 @@ Background:
 
 @mock
 Scenario: Mock authentication
-    # We don't authenticate. We do return a valid UUID that the mock knows relates to 
-    # application-restricted access mode - don't change this token without updating
-    # the mock code (getAccessType function)
-    * def accessToken = "17cd981c-71a6-454d-bc7b-2cb27bae2949"
+    # We don't authenticate. We set a value that isn't a UUID, that the mock accepts
+    * def accessToken = "APP_RESTRICTED"
 
 @real
 Scenario: Authentication for application-restricted access - signed JWT authentication
