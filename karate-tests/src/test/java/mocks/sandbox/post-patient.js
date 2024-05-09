@@ -44,12 +44,12 @@ function requestMatchesErrorScenario (request) {
   let match = false
   const family = request.body.name['name.familyName']
   const postalCode = request.body.address['address.postalCode']
-  if (family === 'Karate-test-somwzqz' && postalCode === 'BAP4WG') {
+  if (family === 'McMatch-Single' && postalCode === 'BAP4WG') {
     const body = JSON.parse(JSON.stringify(SINGLE_MATCH))
-    body.issue[0].diagnostics = 'Unable to create new patient. NHS number 5900027104 found for supplied demographic data.'
+    body.issue[0].diagnostics = 'Unable to create new patient. NHS number 5900054586 found for supplied demographic data.'
     response.body = body
     match = true
-  } else if (family === 'McCOAG' && postalCode === 'DN19 7UD') {
+  } else if (family === 'McMatch-Multiple' && postalCode === 'DN19 7UD') {
     response.body = MULTIPLE_MATCHES
     match = true
   }

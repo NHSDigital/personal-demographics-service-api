@@ -68,9 +68,9 @@ Scenario: Post patient - new patient
 
 Scenario: Fail to create a record for a new patient, single demographics match found
   # we rely on data that's already in the database for our existing record
-  * def nhsNumber = "5900027104"
-  * def familyName = "Karate-test-somwzqz"
-  * def givenName = "Zebedee"
+  * def nhsNumber = "5900054586"
+  * def familyName = "McMatch-Single"
+  * def givenName = "Mickey"
   * def prefix = "Mr"
   * def gender = "male"
   * def genderCode = "1"
@@ -97,8 +97,7 @@ Scenario: Fail to create a record for a new patient, single demographics match f
 
 Scenario: Fail to create a record for a new patient, multiple demographics matches found
   # we rely on data that's already in the database for our existing records
-  * def nhsNumber = "5900036502"
-  * def familyName = "McCOAG"
+  * def familyName = "McMatch-Multiple"
   * def gender = "male"
   * def genderCode = "1"
   * def birthDate = "1997-08-20"
