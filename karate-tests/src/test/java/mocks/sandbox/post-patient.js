@@ -2,7 +2,7 @@
 /* global context, request, response */
 
 /* functions defined in supporting-functions.js */
-/* global basicResponseHeaders getAccessType */
+/* global basicResponseHeaders */
 
 /*
  * Generating valid NHS numbers on the fly isn't so easy, so we just have an array of valid numbers
