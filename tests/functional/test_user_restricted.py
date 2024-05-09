@@ -18,8 +18,6 @@ from pytest_nhsd_apim.apigee_apis import ApiProductsAPI
 retrieve_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_retrieve.feature')
 search_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_search.feature')
 related_person_scenario = partial(pytest_bdd.scenario, './features/related_person.feature')
-status_scenario = partial(pytest_bdd.scenario, './features/status_endpoints.feature')
-
 
 @retrieve_scenario('Healthcare worker can retrieve patient')
 def test_retrieve_patient():
