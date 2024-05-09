@@ -1,8 +1,5 @@
-@veit07 @sandbox
+@sandbox
 Feature: Get a patient - Healthcare worker access mode
-
-These tests authenticate as one of the available test healthcare workers,
-darren.mcdrew@nhs.net
 
 Background:
   # schemas and validators that are required by the schema checks
@@ -17,7 +14,6 @@ Background:
   * json ContactPoint = karate.readAsString('classpath:schemas/ContactPoint.json')
   * json GeneralPractitionerReference = karate.readAsString('classpath:schemas/GeneralPractitionerReference.json')
   * json ManagingOrganizationReference = karate.readAsString('classpath:schemas/ManagingOrganizationReference.json')
-  * json patientSearchResultEntry = karate.readAsString('classpath:schemas/patientSearchResultEntry.json')
   * json Patient = karate.readAsString('classpath:schemas/Patient.json')
 
   # auth

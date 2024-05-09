@@ -47,24 +47,6 @@ extends:
             - template: templates/pds-tests-karate.yml
           depends_on:
             - pytest_bdd_tests
-        - environment: internal-dev
-          stage_name: pytest_tests_v_karate_sandbox
-          post_deploy:
-            - template: templates/pds-pytest-karate-sandbox.yml
-          depends_on:
-            - karate_tests
-        - environment: internal-dev
-          service_name: ${{ variables.service_name }}-asid-required
-          short_service_name: ${{ variables.short_service_name }}-asid
-          service_base_path: ${{ variables.service_base_path }}-asid-required
-          stage_name: internal_dev_asid_required
-          jinja_templates:
-            PDS_TARGET_SERVER: spine-demographics
-            REQUIRE_ASID: true
-          post_deploy:
-            - template: templates/pds-tests.yml
-          depends_on:
-            - pytest_tests_v_karate_sandbox
         
         - environment: internal-dev-sandbox
           proxy_path: sandbox

@@ -13,9 +13,8 @@ public class TestParallel {
     @Test
     void testDevParallel() {
         Results results = Runner.path("classpath:patients")
-                .tags("~@sandbox")
                 .outputJunitXml(true)
-                .karateEnv("dev")
+                .karateEnv("veit07")
                 .parallel(5);
         assertTrue(results.getFailCount() == 0, results.getErrorMessages());
     }

@@ -18,18 +18,10 @@ function basicResponseHeaders (request) {
 /*********************************************************************************************************************
  *   Error responses
  *********************************************************************************************************************/
-
-/**
- * Sets an invalid value error response for a given field and value.
- * @param {string} field - The header field name.
- * @param {string} value - The invalid value.
- * @param {object} request - The request object.
- */
-function setInvalidValueError (field, value, request) {
+function setInvalidValueError (diagnostics) {
   const body = context.read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')
-  body.issue[0].diagnostics = `Invalid value - '${value}' in header '${field}'`
+  body.issue[0].diagnostics = diagnostics
   response.body = body
-  response.headers = basicResponseHeaders(request)
   response.status = 400
 }
 
@@ -38,6 +30,13 @@ function setMissingValueError (diagnostics) {
   body.issue[0].diagnostics = diagnostics
   response.body = body
   response.status = 400
+}
+
+function setAccessDeniedError (diagnostics) {
+  const body = context.read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
+  body.issue[0].diagnostics = diagnostics
+  response.body = body
+  response.status = 401
 }
 
 /**
@@ -86,28 +85,72 @@ function isValidUUID (uuid) {
   return regex.test(uuid)
 }
 
+/*
+   * validate the oauth2 bearer token
+    */
+function isValidBearerToken (token) {
+  const tokenParts = token.split(' ')
+  if (tokenParts.length !== 2) {
+    return false
+  } else if (tokenParts[0] !== 'Bearer') {
+    return false
+  } else if (!isValidUUID(tokenParts[1])) {
+    return false
+  }
+  return true
+}
+
 /**
  * Validates the headers of a request.
  *
  * @param {Request} request - The request object.
  * @returns {boolean} - Returns true if the headers are valid, false otherwise.
  */
-// eslint-disable-next-line no-unused-vars
-function validateHeaders (request) {
-  const X_REQUEST_ID = 'X-Request-ID'
-
+function validateAuthHeader (request) {
   let valid = true
+  let diagnostics = ''
+  // Check if the Authorization header is present and correct
+  const authorization = request.header('Authorization')
+  if (authorization === null) {
+    diagnostics = 'Missing Authorization header'
+    valid = false
+  } else if (authorization === '') {
+    diagnostics = 'Empty Authorization header'
+    valid = false
+  } else if (!isValidBearerToken(authorization)) {
+    diagnostics = 'Invalid Access Token'
+    valid = false
+  }
+  if (!valid) {
+    setAccessDeniedError(diagnostics)
+  }
+  return valid
+}
 
+function validateRequestIDHeader (request) {
+  // Check if the X-Request-ID header is present and correct
+  let valid = true
   const requestID = request.header('x-request-id')
   if (!requestID) {
     const diagnostics = 'Invalid request with error - X-Request-ID header must be supplied to access this resource'
     setMissingValueError(diagnostics)
     valid = false
   } else if (!isValidUUID(requestID)) {
-    setInvalidValueError(X_REQUEST_ID, requestID, request)
+    const diagnostics = `Invalid value - '${requestID}' in header 'X-Request-ID'`
+    setInvalidValueError(diagnostics)
     valid = false
   }
   return valid
+}
+
+// eslint-disable-next-line no-unused-vars
+function validateHeaders (request) {
+  if (!validateRequestIDHeader(request)) {
+    return false
+  } else if (!validateAuthHeader(request)) {
+    return false
+  }
+  return true
 }
 
 /**

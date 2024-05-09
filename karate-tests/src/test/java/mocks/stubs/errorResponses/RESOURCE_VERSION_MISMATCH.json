@@ -1,18 +1,17 @@
 {
   "issue": [
     {
-      "code": "value",
+      "code": "conflict",
       "details": {
         "coding": [
           {
-            "code": "INVALID_VALUE",
-            "display": "Provided value is invalid",
+            "code": "RESOURCE_VERSION_MISMATCH",
+            "display": "Resource version supplied does not match actual version",
             "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
             "version": "1"
           }
         ]
       },
-      "diagnostics": "#(diagnostics)",
       "severity": "error"
     }
   ],

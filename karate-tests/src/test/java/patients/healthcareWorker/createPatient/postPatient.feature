@@ -37,7 +37,6 @@ Background:
   * configure headers = requestHeaders  
   * url baseURL
 
-  
 Scenario: Post patient - new patient
   * def familyName = "Karate-test-" + utils.randomString(7)
   * def givenName = "Zebedee"
@@ -50,8 +49,8 @@ Scenario: Post patient - new patient
   * def address = faker.streetAddress()
   
   * path "Patient"
-  * request read('classpath:patients/healthcareWorker/post-patient-request.json')
-  * configure retry = { count: 5, interval: 5 }
+  * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
+  * configure retry = { count: 5, interval: 5000 }
   * retry until responseStatus != 429
   * method post
   * status 201
@@ -77,17 +76,17 @@ Scenario: Fail to create a record for a new patient, single demographics match f
 
   # we get one match in the database for these demographics
   * def demographics = ({ family: familyName, birthdate: birthDate, gender: gender, "address-postalcode": postalCode })
-  * def patientSearchResults = karate.call('classpath:patients/healthcareWorker/getPatientByDemographics.feature', demographics)
+  * def patientSearchResults = karate.call('classpath:patients/healthcareWorker/searchForAPatient/getPatientByDemographics.feature', demographics)
   * assert patientSearchResults.response.total == 1
 
   # so when we try to create a new patient using the same demographics, we get the single_match_found error
   * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
   * configure headers = requestHeaders
   * path "Patient"
-  * request read('classpath:patients/healthcareWorker/post-patient-request.json')
-  * method post
-  * configure retry = { count: 5, interval: 10 }
+  * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
+  * configure retry = { count: 5, interval: 6000 }
   * retry until responseStatus != 429
+  * method post
   * status 200
   * match response == read('classpath:mocks/stubs/errorResponses/SINGLE_MATCH_FOUND.json')
 
@@ -107,11 +106,11 @@ Scenario: Fail to create a record for a new patient, multiple demographics match
   # (NB the matching for post patient doesn't seem to ignore the space in the postalCode value,
   # so for this functionality there are only actually 2 matches, not 3)
   * def demographics = ({ family: familyName, birthdate: birthDate, gender: gender, "address-postalcode": postalCode })
-  * def patientSearchResults = karate.call('classpath:patients/healthcareWorker/getPatientByDemographics.feature', demographics)
+  * def patientSearchResults = karate.call('classpath:patients/healthcareWorker/searchForAPatient/getPatientByDemographics.feature', demographics)
   * assert patientSearchResults.response.total == 3
 
   # so when we try to create a new patient using the same demographics, we get the multiple_matches_found error
-  * def requestBody = read('classpath:patients/healthcareWorker/post-patient-request.json')
+  * def requestBody = read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
   # there are a couple of things we don't need in this body
   * eval delete requestBody["name"]["name.givenName.name1"]
   * eval delete requestBody["name"]["name.prefix"]
@@ -120,7 +119,7 @@ Scenario: Fail to create a record for a new patient, multiple demographics match
   * configure headers = requestHeaders
   * path "Patient"
   * request requestBody
-  * configure retry = { count: 5, interval: 15 }
+  * configure retry = { count: 5, interval: 7000 }
   * retry until responseStatus != 429
   * method post
   * status 200
@@ -130,7 +129,7 @@ Scenario: Fail to create a record for a new patient, multiple demographics match
 Scenario: Negative path: invalid request body
   * path "Patient"
   * request { bananas: "in pyjamas" }
-  * configure retry = { count: 5, interval: 20 }
+  * configure retry = { count: 5, interval: 10000 }
   * retry until responseStatus != 429
   * method post
   * status 400
