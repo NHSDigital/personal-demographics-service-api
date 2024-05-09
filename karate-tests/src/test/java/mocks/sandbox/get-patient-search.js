@@ -101,12 +101,6 @@ if (request.pathMatches('/Patient') && request.get) {
   const phone = request.param('phone')
   const email = request.param('email')
 
-  context.log('*************************')
-  context.log('family:', family)
-  context.log('postalCode:', postalCode)
-  context.log('birthDate:', birthDate)
-  context.log('gender', gender)
-  context.log('*************************')
   if (validateHeaders(request) && validateQueryParams(request)) {
     if (fuzzyMatch) {
       if (!phone && !email) {
