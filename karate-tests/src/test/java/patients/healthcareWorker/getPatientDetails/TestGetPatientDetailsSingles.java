@@ -14,7 +14,7 @@ public class TestGetPatientDetailsSingles {
 
     @BeforeAll
     static void beforeAll() {
-        String env = System.getProperty("karate.env");
+        String env = System.getProperty("karate.env", "veit07");
         if (env.equals("mock")) {
             server = MockRunner.start("src/test/java/mocks", 8080);
         }
