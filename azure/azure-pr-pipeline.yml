@@ -70,3 +70,4 @@ extends:
           jinja_templates:
             PDS_TARGET_SERVER: spine-demographics-int
             REQUIRE_ASID: false
+            RATE_LIMIT_POST: true

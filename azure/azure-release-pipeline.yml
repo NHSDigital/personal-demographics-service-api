@@ -57,6 +57,8 @@ extends:
           - internal_dev
           - internal_qa_sandbox
         jinja_templates:
+          REQUIRE_ASID: false
+          PDS_TARGET_SERVER: spine-demographics
           RATE_LIMIT_POST: false
       - environment: sandbox
         proxy_path: sandbox
@@ -73,3 +75,4 @@ extends:
         jinja_templates:
           REQUIRE_ASID: true
           PDS_TARGET_SERVER: spine-demographics
+          RATE_LIMIT_POST: true
