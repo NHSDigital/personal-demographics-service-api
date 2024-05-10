@@ -8,9 +8,9 @@ Feature: Patient search - Healthcare worker - error scenarios
     * url baseURL
   
   Scenario: Patient search - Missing authorization header
-    * remove requestHeaders.authorization
+    * requestHeaders.authorization = null
     * configure headers = requestHeaders
-    * path 'Patient', nhsNumber
+    * path 'Patient'
     * params { family: "Capon", gender: "male", birthdate: "eq1953-05-29" }
     * method get
     * status 401
@@ -22,19 +22,19 @@ Feature: Patient search - Healthcare worker - error scenarios
   Scenario: Patient search - Empty authorization header
     * requestHeaders.authorization = ""
     * configure headers = requestHeaders
-    * path 'Patient', nhsNumber
+    * path 'Patient'
     * params { family: "Capon", gender: "male", birthdate: "eq1953-05-29" }
     * method get
     * status 401
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders) 
+   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders) 
     * def diagnostics = "Empty Authorization header"
     * def expectedResponse = read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
     * match response == expectedResponse
   
   Scenario: Patient search - Invalid authorization header
-    * set requestHeaders.authorization = "Bearer abcdef123456789"
+    * requestHeaders.authorization = "Bearer abcdef123456789"
     * configure headers = requestHeaders
-    * path 'Patient', nhsNumber
+    * path 'Patient'
     * params { family: "Capon", gender: "male", birthdate: "eq1953-05-29" }
     * method get
     * status 401
@@ -44,9 +44,9 @@ Feature: Patient search - Healthcare worker - error scenarios
     * match response == expectedResponse
 
   Scenario: Patient search - Missing x-request-id header
-    * remove requestHeaders.x-request-id
+    * requestHeaders['x-request-id'] = null
     * configure headers = requestHeaders
-    * path 'Patient', nhsNumber
+    * path 'Patient'
     * params { family: "Capon", gender: "male", birthdate: "eq1953-05-29" }
     * method get
     * status 400
@@ -55,9 +55,9 @@ Feature: Patient search - Healthcare worker - error scenarios
     * def expectedResponse = read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')
       
   Scenario: Patient search - Invalid x-request-id header
-    * set requestHeaders.x-request-id = "1234"
+    * requestHeaders['x-request-id'] = "1234"
     * configure headers = requestHeaders
-    * path 'Patient', nhsNumber
+    * path 'Patient'
     * params { family: "Capon", gender: "male", birthdate: "eq1953-05-29" }
     * method get
     * status 400
@@ -66,9 +66,9 @@ Feature: Patient search - Healthcare worker - error scenarios
     * def expectedResponse = read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')
 
   Scenario: Patient search - Empty x-request-id header
-    * set requestHeaders.x-request-id = ""
+    * requestHeaders['x-request-id'] = ""
     * configure headers = requestHeaders
-    * path 'Patient', nhsNumber
+    * path 'Patient'
     * params { family: "Capon", gender: "male", birthdate: "eq1953-05-29" }
     * method get
     * status 400
