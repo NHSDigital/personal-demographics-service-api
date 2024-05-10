@@ -14,7 +14,8 @@ function fn() {
     var config = {
       oauth2MockURL: `http://localhost:${port}`,
       baseURL: `http://localhost:${port}`,
-      clientID: java.lang.System.getenv('CLIENT_ID')      
+      clientID: java.lang.System.getenv('CLIENT_ID'),
+      internalServerURL: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4'
     };
   } else {
     var config = { 

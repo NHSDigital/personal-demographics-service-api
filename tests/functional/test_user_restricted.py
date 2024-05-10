@@ -17,12 +17,7 @@ from pytest_nhsd_apim.apigee_apis import ApiProductsAPI
 
 retrieve_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_retrieve.feature')
 search_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_search.feature')
-update_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_update.feature')
-allocate_scenario = partial(pytest_bdd.scenario, './features/nhs_number_allocate.feature')
-
 related_person_scenario = partial(pytest_bdd.scenario, './features/related_person.feature')
-
-status_scenario = partial(pytest_bdd.scenario, './features/status_endpoints.feature')
 
 
 @retrieve_scenario('Healthcare worker can retrieve patient')
@@ -150,73 +145,8 @@ def test_search_returns_empty():
     pass
 
 
-@update_scenario('Update patient')
-def test_update_patient():
-    pass
-
-
-@update_scenario('Update patient using deprecated respond-async still returns 200')
-def test_update_patient_with_deprecated_header():
-    pass
-
-
-@update_scenario('Update patient with invalid wait header still updates')
-def test_update_with_invalid_wait():
-    pass
-
-
-@update_scenario('Update patient with low wait header')
-def test_update_with_low_wait():
-    pass
-
-
-@update_scenario('Update patient with missing Authorization header')
-def test_update_with_missing_auth():
-    pass
-
-
-@update_scenario('Update patient with an empty authorization header')
-def test_update_with_empty_auth():
-    pass
-
-
-@update_scenario('Update patient with an invalid authorization header')
-def test_update_using_invalid_auth():
-    pass
-
-
-@update_scenario('Update patient with an empty Request ID header')
-def test_update_using_empty_request_id():
-    pass
-
-
-@update_scenario('Update patient with an invalid X-Request-ID')
-def test_update_using_invalid_request_id():
-    pass
-
-
-@update_scenario('Update patient with a missing X-Request-ID')
-def test_update_with_missing_request_id():
-    pass
-
-
 @related_person_scenario('Retrieve a related person')
 def test_retrieve_related_person():
-    pass
-
-
-@allocate_scenario('A healthcare worker is allowed to allocate an NHS number')
-def test_allocate_nhs_number():
-    pass
-
-
-@status_scenario('Ping endpoint')
-def test_ping():
-    pass
-
-
-@status_scenario('Healthcheck endpoint')
-def test_healthcheck():
     pass
 
 

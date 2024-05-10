@@ -1,0 +1,66 @@
+{
+    "address": [
+        {
+            "id": "651757E6",
+            "line": [
+                "42405 Bayer Glen"
+            ],
+            "period": {
+                "start": "2024-05-02"
+            },
+            "postalCode": "ZUQ9UT",
+            "use": "home"
+        }
+    ],
+    "birthDate": "1989-08-10",
+    "gender": "male",
+    "id": "5900058360",
+    "identifier": [
+        {
+            "extension": [
+                {
+                    "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                    "valueCodeableConcept": {
+                        "coding": [
+                            {
+                                "code": "01",
+                                "display": "Number present and verified",
+                                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                "version": "1.0.0"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "system": "https://fhir.nhs.uk/Id/nhs-number",
+            "value": "5900058360"
+        }
+    ],
+    "meta": {
+        "security": [
+            {
+                "code": "U",
+                "display": "unrestricted",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+            }
+        ],
+        "versionId": "1"
+    },
+    "name": [
+        {
+            "family": "Karate-test-vddfhwr",
+            "given": [
+                "Zebedee"
+            ],
+            "id": "8F1A21BC",
+            "period": {
+                "start": "2024-05-02"
+            },
+            "prefix": [
+                "Mr"
+            ],
+            "use": "usual"
+        }
+    ],
+    "resourceType": "Patient"
+}

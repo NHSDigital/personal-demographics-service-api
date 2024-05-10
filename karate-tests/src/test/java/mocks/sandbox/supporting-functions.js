@@ -76,13 +76,23 @@ context.read('classpath:helpers/nhs-number-validator.js')
 
 /**
  * Checks if a given string is a valid UUID.
+ * There is always the option to not use a valid UUID, if you want to simplify
+ * things and make your access token reflect the type of user you're authenticating
+ * as...
  *
  * @param {string} uuid - The string to be checked.
  * @returns {boolean} - Returns true if the string is a valid UUID, otherwise false.
  */
 function isValidUUID (uuid) {
-  const regex = /[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}/
-  return regex.test(uuid)
+  let valid = false
+  const specialTokens = ['APP_RESTRICTED', 'HEALTHCARE_WORKER']
+  if (specialTokens.includes(uuid)) {
+    valid = true
+  } else {
+    const regex = /[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}/
+    valid = regex.test(uuid)
+  }
+  return valid
 }
 
 /*

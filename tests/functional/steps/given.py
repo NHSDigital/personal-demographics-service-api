@@ -80,6 +80,7 @@ def set_user(access_level: str) -> Patient:
 
 # Keep the comments for easily finding via text search...
 # Given I am a healthcare worker user
+# Given I am a P9 user
 @given(
     parsers.cfparse(
         "I am {_:String} {user_name:String} user",

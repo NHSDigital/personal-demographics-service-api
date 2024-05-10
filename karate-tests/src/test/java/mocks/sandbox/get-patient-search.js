@@ -3,13 +3,16 @@
 */
 
 /* Karate objects */
-/* global request, response */
+/* global context, request, response */
 
 /* Functions defined in supporting-functions.js */
 /* global validateHeaders, setInvalidSearchDataError, setMissingValueError, basicResponseHeaders */
 
 /* Constants defined in stubs.js */
 /* global EMPTY_SEARCHSET, SEARCH_PATIENT_9000000009, FUZZY_SEARCH_PATIENT_17, WILDCARD_SEARCH, RESTRICTED_PATIENT_SEARCH, SIMPLE_SEARCH, COMPOUND_NAME_SEARCH */
+
+const MOCK_SINGLE_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/mock_single_searchset.json')
+const MOCK_MULTIPLE_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/mock_multiple_searchset.json')
 
 function janeSmithSearchsetWithScore (score) {
   return {
@@ -93,6 +96,7 @@ if (request.pathMatches('/Patient') && request.get) {
   const given = request.params.given
   const gender = request.param('gender')
   const birthDate = request.params.birthdate
+  const postalCode = request.param('address-postalcode')
   const fuzzyMatch = request.paramBool('_fuzzy-match')
   const phone = request.param('phone')
   const email = request.param('email')
@@ -126,6 +130,13 @@ if (request.pathMatches('/Patient') && request.get) {
       response.body = timestampBody(COMPOUND_NAME_SEARCH)
     } else {
       response.body = timestampBody(EMPTY_SEARCHSET)
+    }
+    // stubs used for the post patient tests
+    if (family === 'McMatch-Single' && postalCode === 'BAP4WG' && birthDate[0] === '1954-10-26' && gender === 'male') {
+      response.body = timestampBody(MOCK_SINGLE_SEARCHSET)
+    }
+    if (family === 'McMatch-Multiple' && postalCode === 'DN19 7UD' && birthDate[0] === '1997-08-20') {
+      response.body = timestampBody(MOCK_MULTIPLE_SEARCHSET)
     }
   }
 }
