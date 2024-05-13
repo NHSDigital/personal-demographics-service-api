@@ -88,10 +88,30 @@ Scenario:
     function(requestHeaders) {
       /*
         validate the values of the x-correlation-id and x-correlation-id response headers match those
-        of the request
+        of the request (if they were provided)
       */
-      return requestHeaders['x-correlation-id'] == karate.response.header('x-correlation-id') &&
-             requestHeaders['x-request-id'] == karate.response.header('x-request-id')
+      let validRequestID = false
+      let validCorrelationID = false
+
+      const requestID = requestHeaders['x-request-id']
+      const correlationID = requestHeaders['x-correlation-id']
+      
+      if (!requestID) { 
+        validRequestID = karate.response.header('x-request-id') == null        
+      } else if (requestID === '""') {
+        validRequestID = karate.response.header('x-request-id') == null        
+      } else {
+        validRequestID = requestID == karate.response.header('x-request-id')  
+      }
+      return validRequestID
+      /*
+      if (!(correlationID === null) || !(correlationID === '')) { 
+        validCorrelationID == correlationID === karate.response.header('x-correlation-id')
+      } else {
+        validCorrelationID = karate.response.header('x-correlation-id') == null
+      }
+      return validRequestID && validCorrelationID
+      */
     }
     """
   

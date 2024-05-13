@@ -17,12 +17,13 @@ Background:
 
 Scenario Outline: Auth errors: patient <operation> - <diagnostics> 
   * def query = operation == 'search' ? { family: "Capon", gender: "male", birthdate: "eq1953-05-29" } : null
+  * def target = operation == 'search' ? 'Patient' : `Patient/${nhsNumber}`
   
   * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
-  * requestHeaders.authorization = headerValue == 'no_header' ? null : headerValue
+  * requestHeaders.authorization = headerValue
   * configure headers = requestHeaders
   
-  * path 'Patient'
+  * path target
   * params query 
   * method get
   * status 401
@@ -32,8 +33,8 @@ Scenario Outline: Auth errors: patient <operation> - <diagnostics>
 
   Examples:
     | operation    | headerValue                | diagnostics                    | errorResponse   |
-    | get          | no_header                  | Missing Authorization header   | ACCESS_DENIED   |
-    | search       | no_header                  | Missing Authorization header   | ACCESS_DENIED   |
+    | get          |                            | Missing Authorization header   | ACCESS_DENIED   |
+    | search       |                            | Missing Authorization header   | ACCESS_DENIED   |
     | get          | ""                         | Empty Authorization header     | ACCESS_DENIED   |
     | search       | ""                         | Empty Authorization header     | ACCESS_DENIED   |
     | get          | Bearer abcdef123456789     | Invalid Access Token           | ACCESS_DENIED   |
@@ -41,12 +42,13 @@ Scenario Outline: Auth errors: patient <operation> - <diagnostics>
 
 Scenario Outline: x-request-id errors: patient <operation> - <diagnostics> 
   * def query = operation == 'search' ? { family: "Capon", gender: "male", birthdate: "eq1953-05-29" } : null
-  
+  * def target = operation == 'search' ? 'Patient' : `Patient/${nhsNumber}`
+
   * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
-  * requestHeaders['x-request-id'] = headerValue == 'no_header' ? null : headerValue  
+  * requestHeaders['x-request-id'] = headerValue
   * configure headers = requestHeaders
   
-  * path 'Patient'
+  * path target
   * params query 
   * method get
   * status 400
@@ -56,9 +58,7 @@ Scenario Outline: x-request-id errors: patient <operation> - <diagnostics>
 
   Examples:
     | operation    | headerValue                | diagnostics                                                                                 | errorResponse   |
-    | get          | no_header                  | Invalid request with error - X-Request-ID header must be supplied to access this resource   | MISSING_VALUE   |
-    | search       | no_header                  | Invalid request with error - X-Request-ID header must be supplied to access this resource   | MISSING_VALUE   |
-    | get          | ""                         | Invalid value - '' in header 'X-Request-ID'                                                 | INVALID_VALUE   |
-    | search       | ""                         | Invalid value - '' in header 'X-Request-ID'                                                 | INVALID_VALUE   |
+    | get          |                            | Invalid request with error - X-Request-ID header must be supplied to access this resource   | MISSING_VALUE   |
+    | search       |                            | Invalid request with error - X-Request-ID header must be supplied to access this resource   | MISSING_VALUE   |
     | get          | 1234                       | Invalid value - '1234' in header 'X-Request-ID'                                             | INVALID_VALUE   |
     | search       | 1234                       | Invalid value - '1234' in header 'X-Request-ID'                                             | INVALID_VALUE   |

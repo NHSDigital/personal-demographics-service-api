@@ -26,7 +26,6 @@ public class TestMockParallel {
         Results results = Runner.path("classpath:patients")
                 .tags("@sandbox")
                 .outputJunitXml(true)
-                .karateEnv("mock")
                 .parallel(5);
         assertTrue(results.getFailCount() == 0, results.getErrorMessages());
     }
