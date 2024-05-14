@@ -52,6 +52,20 @@ function setInvalidSearchDataError (diagnostics) {
   response.status = 400
 }
 
+// eslint-disable-next-line no-unused-vars
+function setUnsupportedServiceError () {
+  response.body = context.read('classpath:mocks/stubs/errorResponses/UNSUPPORTED_SERVICE.json')
+  response.status = 400
+}
+
+// eslint-disable-next-line no-unused-vars
+function setAdditionalPropertiesError (diagnostics) {
+  const body = context.read('classpath:mocks/stubs/errorResponses/ADDITIONAL_PROPERTIES.json')
+  body.issue[0].diagnostics = diagnostics
+  response.body = body
+  response.status = 400
+}
+
 /**
  * Sets an INVALID_UPDATE error response for the given request and diagnostics.
  *

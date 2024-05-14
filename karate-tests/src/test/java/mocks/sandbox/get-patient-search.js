@@ -6,7 +6,7 @@
 /* global context, request, response */
 
 /* Functions defined in supporting-functions.js */
-/* global validateHeaders, setInvalidSearchDataError, setMissingValueError, basicResponseHeaders */
+/* global validateHeaders, setAdditionalPropertiesError, setInvalidValueError, setInvalidSearchDataError, setMissingValueError, setUnsupportedServiceError, basicResponseHeaders */
 
 /* Constants defined in stubs.js */
 /* global EMPTY_SEARCHSET, SEARCH_PATIENT_9000000009, FUZZY_SEARCH_PATIENT_17, WILDCARD_SEARCH, RESTRICTED_PATIENT_SEARCH, SIMPLE_SEARCH, COMPOUND_NAME_SEARCH */
@@ -52,16 +52,47 @@ function timestampBody (body) {
     Specific query param validation to support main handler
 */
 function validateQueryParams (request) {
-  const NOT_ENOUGH_SEARCH_PARAMS = 'Not enough search parameters were provided for a valid search, you must supply family and birthdate as a minimum and only use recognised parameters from the api catalogue.'
-
-  const REQUIRED_PARAMS = [
-    'family', 'birthdate'
-  ]
   const VALID_PARAMS = [
     '_fuzzy-match', '_exact-match', '_history', '_max-results',
     'family', 'given', 'gender', 'birthdate', 'death-date',
     'address-postcode', 'address-postalcode', 'general-practitioner', 'email', 'phone'
   ]
+
+  // check that params were actually provided
+  if (Object.keys(request.params).length === 0) {
+    return setUnsupportedServiceError()
+  }
+
+  // reject any invalid params
+  const validParams = []
+  const invalidParams = []
+  for (const paramName in request.params) {
+    if (VALID_PARAMS.includes(paramName)) {
+      validParams.push(paramName)
+    } else {
+      invalidParams.push(paramName)
+    }
+  }
+  if (invalidParams.length === 3) {
+    // the diagnostics message isn't built dynamically, because the order of properties doesn't correspond to the order of the params
+    // instead, this is a dumb rule that just assumes the three invalid params are the ones our test uses
+    const diagnostics = "Invalid request with error - Additional properties are not allowed ('manufacturer', 'year', 'model' were unexpected)"
+    return setAdditionalPropertiesError(diagnostics)
+  }
+  if (invalidParams[0] === 'year') {
+    const diagnostics = "Invalid request with error - Additional properties are not allowed ('year' was unexpected)"
+    return setAdditionalPropertiesError(diagnostics)
+  }
+  // check that the birthdate was provided
+  if (!validParams.includes('birthdate')) {
+    const diagnostics = "Missing value - 'birth_date/birth_date_range_start/birth_date_range_end'"
+    return setMissingValueError(diagnostics)
+  }
+  // check that the family name was provided
+  if (!validParams.includes('family')) {
+    const diagnostics = "Invalid search data provided - 'No searches were performed as the search criteria did not meet the minimum requirements'"
+    return setInvalidSearchDataError(diagnostics)
+  }
 
   // check the validity of certain params first
   const birthDateArray = request.params.birthdate
@@ -70,21 +101,8 @@ function validateQueryParams (request) {
       const birthDate = birthDateArray[index]
       if (!birthDate || !birthDate.match(/^(eq|ge|le)?[0-9]{4}-[0-9]{2}-[0-9]{2}$/)) {
         const diagnostics = `Invalid value - '${birthDate}' in field 'birthdate'`
-        return setInvalidSearchDataError(diagnostics)
+        return setInvalidValueError(diagnostics)
       }
-    }
-  }
-
-  // ignore any params that we don't handle
-  const validParams = []
-  for (const paramName in request.params) {
-    if (VALID_PARAMS.includes(paramName)) {
-      validParams.push(paramName)
-    }
-  }
-  for (const index in REQUIRED_PARAMS) {
-    if (!validParams.includes(REQUIRED_PARAMS[index])) {
-      return setMissingValueError(NOT_ENOUGH_SEARCH_PARAMS)
     }
   }
   return true

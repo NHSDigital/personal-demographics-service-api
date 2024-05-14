@@ -25,11 +25,6 @@ public class TestSearch {
     }
 
     @Karate.Test
-    Karate testThis() {
-        return Karate.run("searchParams").tags("@this").relativeTo(getClass());
-    }   
-
-    @Karate.Test
     Karate testSearchErrors() {
         return Karate.run("searchErrors").relativeTo(getClass());
     }   
