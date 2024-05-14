@@ -60,41 +60,6 @@ def add_proxies_to_products(products_api: ApiProductsAPI,
         products_api.put_product_by_name(product_name=product_name, body=default_product)
 
 
-@scenario("PDS FHIR API accepts request with valid access token")
-def test_valid():
-    pass
-
-
-@scenario("PDS FHIR API rejects request with invalid access token")
-def test_invalid():
-    pass
-
-
-@scenario("PDS FHIR API rejects request with missing access token")
-def test_missing():
-    pass
-
-
-@scenario("PDS FHIR API rejects request with expired access token")
-def test_expired():
-    pass
-
-
-@scenario("PDS FHIR API accepts request without user role ID")
-def test_valid_when_without_user_id():
-    pass
-
-
-@scenario("PDS FHIR API rejects request for more than one result")
-def test_rejects_request_for_two_results():
-    pass
-
-
-@scenario("PDS FHIR API accepts request for one result")
-def test_accepts_request_for_one_result():
-    pass
-
-
 @scenario("PDS FHIR API rejects synchronous PATCH requests")
 def test_rejects_synchronous_patch_request():
     pass

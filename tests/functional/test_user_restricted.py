@@ -1,148 +1,14 @@
 import pytest_bdd
-from pytest_bdd import given, then, parsers
+from pytest_bdd import then, parsers
 from functools import partial
-from .data.patients import Patient
-from .data import searches
-from .data.searches import Search
-from .data.updates import Update
 from .utils.helpers import get_role_id_from_user_info_endpoint
 import pytest
 from pytest_check import check
-from .configuration.config import BASE_URL, PDS_BASE_PATH
-from requests import Response
-import re
 import uuid
 from jsonpath_rw import parse
 from pytest_nhsd_apim.apigee_apis import ApiProductsAPI
 
-retrieve_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_retrieve.feature')
-search_scenario = partial(pytest_bdd.scenario, './features/healthcare_worker_search.feature')
 related_person_scenario = partial(pytest_bdd.scenario, './features/related_person.feature')
-
-
-@retrieve_scenario('Healthcare worker can retrieve patient')
-def test_retrieve_patient():
-    pass
-
-
-@retrieve_scenario('Healthcare worker using deprecated url')
-def test_retrieve_with_deprecated_url():
-    pass
-
-
-@retrieve_scenario('Attempt to retrieve a patient with missing authorization header')
-def test_retrieve_with_missing_auth():
-    pass
-
-
-@retrieve_scenario('Attempt to retrieve a patient with an empty authorization header')
-def test_retrieve_using_empty_auth():
-    pass
-
-
-@retrieve_scenario('Attempt to retrieve a patient with an invalid authorization header')
-def test_retrieve_using_invalid_auth():
-    pass
-
-
-@retrieve_scenario('Attempt to retrieve a patient without stating a role')
-def test_retrieve_with_missing_role():
-    pass
-
-
-@retrieve_scenario('Attempt to retrieve a patient with an invalid role')
-def test_retrieve_using_invalid_role():
-    pass
-
-
-@retrieve_scenario('Attempt to retrieve a patient without Request ID header')
-def test_retrieve_using_empty_request_id():
-    pass
-
-
-@retrieve_scenario('Attempt to retrieve a patient with an invalid X-Request-ID')
-def test_retrieve_using_invalid_request_id():
-    pass
-
-
-@retrieve_scenario('Attempt to retrieve a patient with a missing X-Request-ID')
-def test_retrieve_with_missing_request_id():
-    pass
-
-
-@search_scenario('Healthcare worker can search for patient')
-def test_search_patient():
-    pass
-
-
-@search_scenario('Attempt to search for a patient with missing authorization header')
-def test_search_with_missing_auth():
-    pass
-
-
-@search_scenario('Attempt to search for a patient with an empty authorization header')
-def test_search_using_empty_auth():
-    pass
-
-
-@search_scenario('Attempt to search for a patient with an invalid authorization header')
-def test_search_using_invalid_auth():
-    pass
-
-
-@search_scenario('Attempt to search for a patient with an empty Request ID header')
-def test_search_using_empty_request_id():
-    pass
-
-
-@search_scenario('Attempt to search for a patient with an invalid X-Request-ID')
-def test_search_using_invalid_request_id():
-    pass
-
-
-@search_scenario('Attempt to search for a patient with a missing X-Request-ID')
-def test_search_with_missing_request_id():
-    pass
-
-
-@search_scenario('Healthcare worker searches for sensitive patient')
-def test_search_sensitive_patient():
-    pass
-
-
-@search_scenario('Healthcare worker searches for patient without specifying gender')
-def test_search_gender_free():
-    pass
-
-
-@search_scenario('Healthcare worker searches for a patient with range for date of birth')
-def test_search_with_dob_range():
-    pass
-
-
-@search_scenario('Searching without gender can return mutliple results')
-def test_search_with_vauge_details():
-    pass
-
-
-@search_scenario('Searching with fuzzy match')
-def test_search_with_fuzzy_match():
-    pass
-
-
-@search_scenario('Searching with unicode returns unicode record')
-def test_search_with_unicode():
-    pass
-
-
-@search_scenario('Searching with specified results limit can return error')
-def test_search_returns_error_due_to_results_limit():
-    pass
-
-
-@search_scenario('Search returns an empty bundle')
-def test_search_returns_empty():
-    pass
 
 
 @related_person_scenario('Retrieve a related person')
@@ -180,51 +46,6 @@ def headers_with_authorization(_nhsd_apim_auth_token_data: dict,
     return headers
 
 
-@given("I have a sensitive patient's demographic details", target_fixture='search')
-def search_for_sensitive() -> Patient:
-    return searches.SENSITIVE
-
-
-@given("I have a patient's demographic details without gender", target_fixture='search')
-def search_without_gender() -> Patient:
-    return searches.UNKNOWN_GENDER
-
-
-@given("I have a patient's demographic details with a date of birth range", target_fixture='search')
-def search_dob_range() -> Patient:
-    return searches.DOB_RANGE
-
-
-@given("I enter a patient's demographic details that match the fuzzy search criteria", target_fixture='search')
-def fuzzy_search() -> Search:
-    return searches.FUZZY_CRITERIA
-
-
-@given("I enter a patient's unicode demographic details", target_fixture='search')
-def unicode_search() -> Search:
-    return searches.UNICODE
-
-
-@given("I enter a patient's demographic details incorrectly", target_fixture='search')
-def empty_search() -> Search:
-    return searches.EMPTY_RESULTS
-
-
-@given('I am using the deprecated url', target_fixture='pds_url')
-def use_deprecated_url() -> str:
-    prNo = re.search("pr-[0-9]+", PDS_BASE_PATH)
-    prString = f"-{prNo.group()}" if prNo is not None else ""
-    return f"{BASE_URL}/personal-demographics{prString}"
-
-
-@then('the response body contains the sensitivity flag')
-def response_body_contains_sensitivity_flag(response_body: str) -> None:
-    check_value_in_response_body_at_path(response_body,
-                                         'restricted',
-                                         'str',
-                                         'entry[0].resource.meta.security[0].display')
-
-
 @then(
     parsers.cfparse(
         '{value:String} is {_:String} {type_convertor:String} at {path:String} in the response body',
@@ -237,29 +58,3 @@ def check_value_in_response_body_at_path(response_body: dict, value: str, type_c
         for match in matches:
             assert match.value == eval(type_convertor)(value), \
                 f'{match.value} is not the expected value, {value}, at {path}'
-
-
-@then(
-    parsers.cfparse(
-        'the response body does not contain {field:String}',
-        extra_types=dict(String=str)
-    )
-)
-def response_body_does_not_contain(response_body: dict, field: str) -> None:
-    assert field not in response_body
-
-
-@then(
-    parsers.cfparse(
-        'the response header does not contain {field:String}',
-        extra_types=dict(String=str)
-    )
-)
-def response_header_does_not_contain(response: dict, field: str) -> None:
-    assert field not in response.headers
-
-
-@then("the response body contains the patient's new gender")
-def new_gender(response_body: Response, update: Update) -> None:
-    with check:
-        assert response_body['gender'] == update.value
