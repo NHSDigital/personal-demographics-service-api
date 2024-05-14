@@ -1,0 +1,115 @@
+{
+    "entry": [
+        {
+            "fullUrl": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9693632966",
+            "resource": {
+                "address": [
+                    {
+                        "extension": [
+                            {
+                                "extension": [
+                                    {
+                                        "url": "type",
+                                        "valueCoding": {
+                                            "code": "PAF",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType"
+                                        }
+                                    },
+                                    {
+                                        "url": "value",
+                                        "valueString": "06310553"
+                                    }
+                                ],
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey"
+                            }
+                        ],
+                        "id": "rGPsv",
+                        "line": [
+                            "49 MESSINGHAM LANE",
+                            "SCAWBY",
+                            "BRIGG",
+                            "S HUMBERSIDE"
+                        ],
+                        "period": {
+                            "start": "2021-08-04"
+                        },
+                        "postalCode": "DN20 9BB",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "1920-08-11",
+                "gender": "female",
+                "generalPractitioner": [
+                    {
+                        "id": "HOvkU",
+                        "identifier": {
+                            "period": {
+                                "start": "2012-01-18"
+                            },
+                            "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+                            "value": "A20047"
+                        },
+                        "type": "Organization"
+                    }
+                ],
+                "id": "9693632966",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "9693632966"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "4"
+                },
+                "name": [
+                    {
+                        "family": "MASSAM",
+                        "given": [
+                            "Martha",
+                            "Carol"
+                        ],
+                        "id": "AAFhg",
+                        "period": {
+                            "start": "2011-09-08"
+                        },
+                        "prefix": [
+                            "MRS"
+                        ],
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient"
+            },
+            "search": {
+                "score": 1
+            }
+        }
+    ],
+    "resourceType": "Bundle",
+    "timestamp": "2024-05-14T10:45:32+00:00",
+    "total": 1,
+    "type": "searchset"
+}

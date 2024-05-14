@@ -14,6 +14,16 @@
 const MOCK_SINGLE_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/mock_single_searchset.json')
 const MOCK_MULTIPLE_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/mock_multiple_searchset.json')
 
+/*
+ * These stubs are used for our search tests
+ */
+const JACKIE_JONES_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/jackie_jones_searchset.json')
+const RODNEY_GODSOE_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/rodney_godsoe_searchset.json')
+const MARTHA_MASSAM_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/martha_massam_searchset.json')
+const YOUDS_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/youds_searchset.json')
+const BILL_GARTON_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/bill_garton_searchset.json')
+const PAULINE_ATTISON_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/pauline_attison_searchset.json')
+
 function janeSmithSearchsetWithScore (score) {
   return {
     resourceType: 'Bundle',
@@ -45,7 +55,7 @@ function validateQueryParams (request) {
   const NOT_ENOUGH_SEARCH_PARAMS = 'Not enough search parameters were provided for a valid search, you must supply family and birthdate as a minimum and only use recognised parameters from the api catalogue.'
 
   const REQUIRED_PARAMS = [
-    'family', 'gender', 'birthdate'
+    'family', 'birthdate'
   ]
   const VALID_PARAMS = [
     '_fuzzy-match', '_exact-match', '_history', '_max-results',
@@ -100,10 +110,22 @@ if (request.pathMatches('/Patient') && request.get) {
   const fuzzyMatch = request.paramBool('_fuzzy-match')
   const phone = request.param('phone')
   const email = request.param('email')
+  const maxResults = request.param('_max-results')
+
+  context.log('********************************************')
+  context.log('family:', family)
+  context.log('given:', given)
+  context.log('gender: ', gender)
+  context.log('birthDate: ', birthDate)
+  context.log('********************************************')
 
   if (validateHeaders(request) && validateQueryParams(request)) {
     if (fuzzyMatch) {
-      if (!phone && !email) {
+      if (family === 'Garton' && given[0] === 'Bill' && birthDate[0] === '1946-06-23') {
+        response.body = timestampBody(BILL_GARTON_SEARCHSET)
+      } else if (family === 'ATTSÖN' && given[0] === 'PÀULINÉ' && birthDate[0] === '1960-07-14') {
+        response.body = timestampBody(PAULINE_ATTISON_SEARCHSET)
+      } else if (!phone && !email) {
         response.body = timestampBody(FUZZY_SEARCH_PATIENT_17)
       } else if (phone === '01632960587' && !email) {
         response.body = timestampBody(janeSmithSearchsetWithScore(0.9124))
@@ -137,6 +159,23 @@ if (request.pathMatches('/Patient') && request.get) {
     }
     if (family === 'McMatch-Multiple' && postalCode === 'DN19 7UD' && birthDate[0] === '1997-08-20') {
       response.body = timestampBody(MOCK_MULTIPLE_SEARCHSET)
+    }
+    // stubs used for the search tests
+    if (family === 'Jones' && gender === 'male' && birthDate[0] === 'ge1992-01-01') {
+      response.body = timestampBody(JACKIE_JONES_SEARCHSET)
+    }
+    if (family === 'Godsoe' && gender === 'male' && birthDate[0] === 'eq1936-02-24') {
+      response.body = timestampBody(RODNEY_GODSOE_SEARCHSET)
+    }
+    if (family === 'Massam' && (birthDate[0] === 'eq1920-08-11' || birthDate[0] === 'le1920-08-11')) {
+      response.body = timestampBody(MARTHA_MASSAM_SEARCHSET)
+    }
+    if (family === 'YOUDS') {
+      if (maxResults === '1') {
+        response.body = context.read('classpath:mocks/stubs/searchResponses/TOO_MANY_MATCHES.json')
+      } else {
+        response.body = timestampBody(YOUDS_SEARCHSET)
+      }
     }
   }
 }

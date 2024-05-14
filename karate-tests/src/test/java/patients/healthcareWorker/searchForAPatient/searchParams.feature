@@ -23,6 +23,7 @@ Background:
   * configure headers = requestHeaders 
   * url baseURL
 
+
 Scenario:Search for a patient using parameters
   * path "Patient"
   * params  { family: "Jones", gender: "male", birthdate: "ge1992-01-01", _max-results: "6" }
@@ -30,6 +31,8 @@ Scenario:Search for a patient using parameters
   * status 200
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
   * match response == read('classpath:patients/healthcareWorker/searchForAPatient/schemas/patientSearchBundle.json')
+  * match response.total == 1
+  * match response.entry[0].resource.id == "5900035697"
 
 Scenario: Search for a "restricted" (sensitive) patient
   # When you get search results for a restricted patient, the response should not contain:
@@ -63,7 +66,7 @@ Scenario: Search without specifying gender
   * match response.entry[0].resource.id == "9693632966"
   * match response.entry[0].resource.gender == "female"
 
-Scenario: Search using a range for data of birth
+Scenario: Search using a range for date of birth
   * path 'Patient'
   * params { family: "Massam", birthdate: "le1920-08-11" }
   * method get
