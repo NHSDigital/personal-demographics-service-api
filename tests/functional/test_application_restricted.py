@@ -1,7 +1,6 @@
 import json
 import pytest
 from functools import partial
-import dateutil.parser
 import jwt
 import uuid
 import time
@@ -12,7 +11,6 @@ import pytest_bdd
 
 from tests.functional.configuration import config
 from tests.functional.utils import helpers
-from pytest_nhsd_apim.apigee_apis import ApiProductsAPI
 
 scenario = partial(pytest_bdd.scenario, "features/application_restricted.feature")
 
@@ -47,17 +45,6 @@ def check_which_test_app_to_use():
         )
         config.SIGNING_KEY = config.APPLICATION_RESTRICTED_WITH_ASID_SIGNING_KEY
         config.JWKS_RESOURCE_URL = config.JWKS_RESOURCE_URL_ASID_REQUIRED_APP
-
-
-@given("product grants access to proxy")
-def add_proxies_to_products(products_api: ApiProductsAPI,
-                            nhsd_apim_proxy_name: str):
-    product_name = nhsd_apim_proxy_name.replace("-asid-required", "")
-
-    default_product = products_api.get_product_by_name(product_name=product_name)
-    if nhsd_apim_proxy_name not in default_product['proxies']:
-        default_product['proxies'].append(nhsd_apim_proxy_name)
-        products_api.put_product_by_name(product_name=product_name, body=default_product)
 
 
 @scenario("PDS FHIR API rejects synchronous PATCH requests")
@@ -216,28 +203,6 @@ def set_valid_access_token(auth, context):
     auth["token_type"] = token_response["token_type"]
 
 
-@given("I have no Authorization header")
-def set_no_authorization_header(auth):
-    for key in auth.keys():
-        auth.pop(key)
-
-
-@given("I have an empty Authorization header")
-def set_empty_authorization_header(auth):
-    auth["access_token"] = ""
-    auth["token_type"] = ""
-
-
-@given("I have an invalid access token")
-def set_invalid_access_token(auth):
-    auth["access_token"] = "INVALID_ACCESS_TOKEN"
-
-
-@given("I have no access token")
-def set_no_access_token(auth):
-    auth["access_token"] = None
-
-
 @given("I have an expired access token")
 def set_expired_access_token(auth):
     claims = {
@@ -304,26 +269,6 @@ def get_patient(auth, context):
     context["status"] = response.status_code
 
 
-@when("I GET a patient asking for two results")
-def get_patient_two_results(auth, context):
-
-    headers = helpers.add_auth_header(
-        {
-            "NHSD-SESSION-URID": "123",
-            "X-Request-ID": str(uuid.uuid4()),
-        },
-        auth,
-    )
-
-    response = get_patient_request(
-        headers=headers,
-        extra_params={"_max-results": "2"},
-    )
-
-    context["response"] = response.json()
-    context["status"] = response.status_code
-
-
 @when("I PATCH a patient and ommit the prefer header")
 def patch_sync_patient(auth, context):
 
@@ -382,42 +327,6 @@ def patch_patient(auth: dict, context: dict):
     context["response"] = response.json()
 
 
-@when("I GET a patient asking for one result")
-def get_patient_one_result(auth, context):
-    authentication = auth["access_token"]
-
-    if authentication is not None:
-        token_type = auth["token_type"]
-        authentication = f"{token_type} {authentication}"
-
-    response = get_patient_request(
-        headers={
-            "NHSD-SESSION-URID": "123",
-            "Authorization": f"{authentication}",
-            "X-Request-ID": str(uuid.uuid4()),
-        },
-        extra_params={"_max-results": "1"},
-    )
-
-    context["response"] = response.json()
-    context["status"] = response.status_code
-
-
-@when("I GET a patient without a user role ID")
-def get_patient_without_user_role_id(auth, context):
-    access_token = auth["response"]["access_token"]
-
-    headers = {
-        "Authorization": f"Bearer {access_token}",
-        "X-Request-ID": str(uuid.uuid4()),
-    }
-
-    response = get_patient_request(headers)
-
-    context["response"] = response.json()
-    context["status"] = response.status_code
-
-
 @then(
     parsers.cfparse(
         "I get a {status:Number} HTTP response", extra_types=dict(Number=int)
@@ -425,17 +334,6 @@ def get_patient_without_user_role_id(auth, context):
 )
 def check_status(status, context):
     assert context["status"] == status
-
-
-@then("I get a Bundle resource in the response")
-def check_bundle_resource(context):
-    response = context["response"]
-    EXPECTED_KEYS = {"entry", "resourceType", "timestamp", "total", "type"}
-    assert response.keys() == EXPECTED_KEYS
-    assert response["resourceType"] == "Bundle"
-    assert response["type"] == "searchset"
-    assert response["total"] >= 0
-    assert dateutil.parser.parse(response["timestamp"])
 
 
 @then("I get an error response")
