@@ -44,7 +44,8 @@ Background:
   * url baseURL
 
 Scenario: Post patient - new patient
-  * def familyName = "Karate-test-" + utils.randomString(7)
+  # Don't change the familyName
+  * def familyName = "ToRemove"
   * def givenName = "Zebedee"
   * def prefix = "Mr"
   * def gender = "male"
