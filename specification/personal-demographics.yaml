@@ -518,7 +518,7 @@ paths:
         | Search with limited results             | `family`=`Sm*`, `gender`=`female`, `birthdate`=`eq2010-10-22`, `email`=`jane.smith@example.com`, `phone`=`01632960587`, `_max-results`=`1`                      | HTTP Status 200 with single search result.                              |
         | Search with date range                  | `family`=`Smith`, `gender`=`female`, `birthdate`=`ge2010-10-21`, `birthdate`=`le2010-10-23`, `email`=`jane.smith@example.com`, `phone`=`01632960587`            | HTTP Status 200 with single search result.                              |
         | Fuzzy search with phone and email       | `family`=`Smith`, `given`=`Jane`, `gender`=`female`, `birthdate`=`eq2010-10-22`, `email`=`jane.smith@example.com`, `phone`=`01632960587`, `_fuzzy-match`=`true` | HTTP Status 200 with single search result.                              |
-        | Fuzzy search without phone or email     | `family`=`Smith`, `given`=`Jane`, `gender`=`female`, `birthdate`=`eq2010-10-22`                                                                                 | HTTP Status 200 with search result of two.
+        | Fuzzy search without phone or email     | `family`=`Smith`, `given`=`Jane`, `gender`=`female`, `birthdate`=`eq2010-10-22`, `_fuzzy-match`=`true`                                                          | HTTP Status 200 with single search result.
         | Restricted patient search               | `family`=`Smythe`, `given`=`Janet`, `gender`=`female`, `birthdate`=`eq2005-06-16`, `email`=`janet.smythe@example.com`, `phone`=`01632960587`                    | HTTP Status 200 with single search result with restricted data omitted. |
         | Compound name search                    | `family`=`Smith`, `given`=`John Paul`, `given`=`James`, `gender`=`female`, `birthdate`=`eq2010-10-22`, `email`=`johnp.smith@example.com`, `phone`=`01632960587` | HTTP Status 200 with single search result.                              |
         | Unsuccessful search                     | Any other valid search query parameters                                                                                                                         | HTTP Status 200 with no search results                                  |
@@ -553,7 +553,12 @@ paths:
       responses:
         '200':
           description: |
-            A completed search. This might contain zero, one or many matching patients, or it might contain a 'TOO_MANY_MATCHES' error.
+            A completed search. This might contain zero, one, or many matching patients, or it might contain a 'TOO_MANY_MATCHES' error.
+
+            | HTTP status | Error code                 | Description                                                                |
+            | ----------- | -------------------------- | -------------------------------------------------------------------------- |
+            | 200         | TOO_MANY_MATCHES           | Too many matches were found - user should refine their search parameters.	|
+
           headers:
             X-Correlation-Id:
               $ref: '#/components/headers/X-Correlation-Id'
@@ -569,18 +574,17 @@ paths:
           description: |
             An error occurred as follows:
             
-            | HTTP status | Error code                 | Description |
-            | ----------- | -------------------------- | --------------------------------------------- |
-            | 200         | TOO_MANY_MATCHES           | Too many matches were found - user should be told to refine their search parameters.	|
-            | 400         | INVALID_SEARCH_DATA	       | Invalid combination of search parameters. For details, see the `diagnostics` field. |
-            | 400         | UNSUPPORTED_SERVICE        | No search parameters provided. |
-            | 400         | MISSING_VALUE              | Missing header or query parameter. For details, see the `diagnostics` field. |
-            | 400         | INVALID_VALUE              | Invalid header or query parameter. For details, see the `diagnostics` field. |
-            | 400         | ADDITIONAL_PROPERTIES      | Unrecognised query parameter. For details, see the `diagnostics` field. |
-            | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation. |
-            | 403         | INVALID_VALUE              | Multiple results requested when using the API in application-restricted mode. |
-            | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period. |
-            | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
+            | HTTP status | Error code                 | Description                                                                                                                                |
+            | ----------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+            | 400         | INVALID_SEARCH_DATA	       | Invalid combination of search parameters. For details, see the `diagnostics` field.                                                        |
+            | 400         | UNSUPPORTED_SERVICE        | No search parameters provided.                                                                                                             |
+            | 400         | MISSING_VALUE              | Missing header or query parameter. For details, see the `diagnostics` field.                                                               |
+            | 400         | INVALID_VALUE              | Invalid header or query parameter. For details, see the `diagnostics` field.                                                               |
+            | 400         | ADDITIONAL_PROPERTIES      | Unrecognised query parameter. For details, see the `diagnostics` field.                                                                    |
+            | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation.                                        |
+            | 403         | INVALID_VALUE              | Multiple results requested when using the API in application-restricted mode.                                                              |
+            | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period.                                                   |
+            | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits).  |
   
           content:
             application/fhir+json:
