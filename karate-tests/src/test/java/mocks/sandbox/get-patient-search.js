@@ -143,13 +143,6 @@ if (request.pathMatches('/Patient') && request.get) {
   const email = request.param('email')
   const maxResults = request.param('_max-results')
 
-  context.log('********************************************')
-  context.log('family:', family)
-  context.log('given:', given)
-  context.log('gender: ', gender)
-  context.log('birthDate: ', birthDate)
-  context.log('********************************************')
-
   if (validateHeaders(request) && validateQueryParams(request)) {
     if (fuzzyMatch) {
       if (family === 'Garton' && given[0] === 'Bill' && birthDate[0] === '1946-06-23') {
