@@ -29,4 +29,9 @@ public class TestSearch {
         return Karate.run("searchErrors").relativeTo(getClass());
     }   
 
+    @Karate.Test
+    Karate testOASExamples() {
+        return Karate.run("oasExamples").relativeTo(getClass());
+    }   
+
 }

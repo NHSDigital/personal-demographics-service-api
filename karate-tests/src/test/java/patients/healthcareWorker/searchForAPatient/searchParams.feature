@@ -137,10 +137,3 @@ Scenario: Too many matches
   * method get
   * status 200
   * match response == read('classpath:mocks/stubs/searchResponses/TOO_MANY_MATCHES.json')
-  
-Scenario: Empty search results
-  * path 'Patient'
-  * params { family: "Spiderman", birthdate: "1962-07-31" }
-  * method get
-  * status 200
-  * match response == { resourceType: 'Bundle', type: 'searchset', total: 0, timestamp: '#? utils.isValidTimestamp(_)' }

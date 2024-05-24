@@ -9,7 +9,7 @@
 /* global validateHeaders, setAdditionalPropertiesError, setInvalidValueError, setInvalidSearchDataError, setMissingValueError, setUnsupportedServiceError, basicResponseHeaders */
 
 /* Constants defined in stubs.js */
-/* global EMPTY_SEARCHSET, SEARCH_PATIENT_9000000009, FUZZY_SEARCH_PATIENT_17, WILDCARD_SEARCH, RESTRICTED_PATIENT_SEARCH, SIMPLE_SEARCH, COMPOUND_NAME_SEARCH */
+/* global EMPTY_SEARCHSET, SEARCH_PATIENT_9000000009, FUZZY_SEARCH_PATIENT_17, WILDCARD_SEARCH, RESTRICTED_PATIENT_SEARCH, SIMPLE_SEARCH */
 
 const MOCK_SINGLE_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/mock_single_searchset.json')
 const MOCK_MULTIPLE_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/mock_multiple_searchset.json')
@@ -23,6 +23,7 @@ const MARTHA_MASSAM_SEARCHSET = context.read('classpath:mocks/stubs/searchRespon
 const YOUDS_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/youds_searchset.json')
 const BILL_GARTON_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/bill_garton_searchset.json')
 const PAULINE_ATTISON_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/pauline_attison_searchset.json')
+const JOHN_PAUL_SMITH_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/john_paul_smith_searchset.json')
 
 function janeSmithSearchsetWithScore (score) {
   return {
@@ -76,13 +77,36 @@ function validateQueryParams (request) {
   if (invalidParams.length === 3) {
     // the diagnostics message isn't built dynamically, because the order of properties doesn't correspond to the order of the params
     // instead, this is a dumb rule that just assumes the three invalid params are the ones our test uses
-    const diagnostics = "Invalid request with error - Additional properties are not allowed ('manufacturer', 'year', 'model' were unexpected)"
+    const diagnostics = "Invalid request with error - Additional properties are not allowed ('model', 'manufacturer', 'year' were unexpected)"
     return setAdditionalPropertiesError(diagnostics)
   }
-  if (invalidParams[0] === 'year') {
-    const diagnostics = "Invalid request with error - Additional properties are not allowed ('year' was unexpected)"
+  if (invalidParams.length === 1) {
+    const diagnostics = `Invalid request with error - Additional properties are not allowed ('${invalidParams[0]}' was unexpected)`
     return setAdditionalPropertiesError(diagnostics)
   }
+
+  // check the validity of any date params first
+  const birthDateArray = request.params.birthdate
+  if (birthDateArray) {
+    for (const index in birthDateArray) {
+      const birthDate = birthDateArray[index]
+      if (!birthDate || !birthDate.match(/^(eq|ge|le)?[0-9]{4}-[0-9]{2}-[0-9]{2}$/)) {
+        const diagnostics = `Invalid value - '${birthDate}' in field 'birthdate'`
+        return setInvalidValueError(diagnostics)
+      }
+    }
+  }
+  const deathDateArray = request.params['death-date']
+  if (deathDateArray) {
+    for (const index in deathDateArray) {
+      const deathDate = deathDateArray[index]
+      if (!deathDate || !deathDate.match(/^(eq|ge|le)?[0-9]{4}-[0-9]{2}-[0-9]{2}$/)) {
+        const diagnostics = `Invalid value - '${deathDate}' in field 'death-date'`
+        return setInvalidValueError(diagnostics)
+      }
+    }
+  }
+
   // check that the birthdate was provided
   if (!validParams.includes('birthdate')) {
     const diagnostics = "Missing value - 'birth_date/birth_date_range_start/birth_date_range_end'"
@@ -94,17 +118,6 @@ function validateQueryParams (request) {
     return setInvalidSearchDataError(diagnostics)
   }
 
-  // check the validity of certain params first
-  const birthDateArray = request.params.birthdate
-  if (birthDateArray) {
-    for (const index in birthDateArray) {
-      const birthDate = birthDateArray[index]
-      if (!birthDate || !birthDate.match(/^(eq|ge|le)?[0-9]{4}-[0-9]{2}-[0-9]{2}$/)) {
-        const diagnostics = `Invalid value - '${birthDate}' in field 'birthdate'`
-        return setInvalidValueError(diagnostics)
-      }
-    }
-  }
   return true
 }
 
@@ -154,20 +167,28 @@ if (request.pathMatches('/Patient') && request.get) {
       }
     } else if (['Sm*', 'sm*'].includes(family)) {
       if (!phone && !email) {
-        response.body = timestampBody(WILDCARD_SEARCH)
+        if (!maxResults) {
+          response.body = timestampBody(WILDCARD_SEARCH)
+        } else if (parseInt(maxResults) < 2) {
+          response.body = context.read('classpath:mocks/stubs/searchResponses/TOO_MANY_MATCHES.json')
+        }
       } else if (phone === '01632960587' && !email) {
         response.body = timestampBody(janeSmithSearchsetWithScore(1))
       } else if (email === 'jane.smith@example.com' && !phone) {
+        response.body = timestampBody(janeSmithSearchsetWithScore(1))
+      } else if (email === 'jane.smith@example.com' && phone === '01632960587') {
+        response.body = timestampBody(janeSmithSearchsetWithScore(1))
+      } else if (email === 'janet.smythe@example.com') {
         response.body = timestampBody(janeSmithSearchsetWithScore(1))
       }
     } else if (['Smythe', 'smythe'].includes(family)) {
       response.body = timestampBody(RESTRICTED_PATIENT_SEARCH)
     // using eqeqeq to compare birthDates doesn't work here
     // eslint-disable-next-line eqeqeq
-    } else if (['Smith', 'smith'].includes(family) && ['Female', 'female'].includes(gender) && (birthDate == 'eq2010-10-22' || birthDate == 'ge2010-10-21,le2010-10-23') && otherJaneSmithParamsAreValid(request)) {
+    } else if (['Smith', 'smith'].includes(family) && ['Female', 'female'].includes(gender) && (birthDate[0] === 'eq2010-10-22' || (birthDate[0] === 'ge2010-10-21' && birthDate[1] === 'le2010-10-23')) && otherJaneSmithParamsAreValid(request)) {
       response.body = timestampBody(SIMPLE_SEARCH)
     } else if (['Smith', 'smith'].includes(family) && ['Male', 'male'].includes(gender) && given[0] === 'John Paul' && given[1] === 'James') {
-      response.body = timestampBody(COMPOUND_NAME_SEARCH)
+      response.body = timestampBody(JOHN_PAUL_SMITH_SEARCHSET)
     } else {
       response.body = timestampBody(EMPTY_SEARCHSET)
     }
