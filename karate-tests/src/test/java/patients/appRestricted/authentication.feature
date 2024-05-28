@@ -9,6 +9,12 @@ Background:
     * def randomUUID = function(){ return java.util.UUID.randomUUID() + '' }
     * url oauth2MockURL
 
+@mock
+Scenario: Mock authentication
+    # We don't authenticate. We set a value that isn't a UUID, that the mock accepts
+    * def accessToken = "APP_RESTRICTED"
+
+@real
 Scenario: Authentication for application-restricted access - signed JWT authentication
     # note that the apiKey will be different if we're using our own apps...
     * def tokenParams = 

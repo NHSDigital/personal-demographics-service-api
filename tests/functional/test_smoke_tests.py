@@ -5,8 +5,7 @@ from typing import Dict
 from tests.functional.test_user_restricted import (
     retrieve_scenario,
     search_scenario,
-    related_person_scenario,
-    status_scenario
+    related_person_scenario
 )
 
 from pytest_nhsd_apim.auth_journey import AuthorizationCodeConfig, AuthorizationCodeAuthenticator
@@ -26,11 +25,6 @@ def test_search_patient():
 
 @related_person_scenario('Retrieve a related person')
 def test_retrieve_related_person():
-    pass
-
-
-@status_scenario('Healthcheck endpoint')
-def test_healthcheck():
     pass
 
 

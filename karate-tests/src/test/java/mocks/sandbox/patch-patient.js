@@ -2,7 +2,7 @@
 /* global context, request, response, session */
 
 /* Functions defined in supporting-functions.js */
-/* global validateHeaders, validateNHSNumber, validatePatientExists, basicResponseHeaders */
+/* global setInvalidValueError, validateHeaders, validateNHSNumber, validatePatientExists, basicResponseHeaders */
 
 function buildResponseHeaders (request, patient) {
   return {
@@ -16,21 +16,33 @@ function buildResponseHeaders (request, patient) {
 /*
     Diagnostics strings for error messages
 */
-const NO_IF_MATCH_HEADER = 'Invalid update with error - If-Match header must be supplied to update this resource'
+const NO_IF_MATCH_HEADER = 'Invalid request with error - If-Match header must be supplied to update this resource'
 const NO_PATCHES_PROVIDED = 'Invalid update with error - No patches found'
-const INVALID_RESOURCE_ID = 'Invalid update with error - This resource has changed since you last read. Please re-read and try again with the new version number.'
-const INVALID_PATCH = 'Invalid patch: Operation `op` property is not one of operations defined in RFC-6902'
 
 /*
     Functions to handle error responses
 */
+function setResourceVersionMismatchError (request) {
+  const body = context.read('classpath:mocks/stubs/errorResponses/RESOURCE_VERSION_MISMATCH.json')
+  response.headers = basicResponseHeaders(request)
+  response.body = body
+  response.status = 409
+}
+
+function setForbiddenUpdateError (request, diagnostics) {
+  const body = context.read('classpath:mocks/stubs/errorResponses/FORBIDDEN_UPDATE.json')
+  body.issue[0].diagnostics = diagnostics
+  response.headers = basicResponseHeaders(request)
+  response.body = body
+  response.status = 403
+}
+
 function setInvalidUpdateError (request, diagnostics) {
   const body = context.read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
   body.issue[0].diagnostics = diagnostics
   response.headers = basicResponseHeaders(request)
   response.body = body
   response.status = 400
-  return false
 }
 
 function setPreconditionFailedError (request, diagnostics) {
@@ -72,22 +84,35 @@ function patchPatient (originalPatient, request) {
     return setInvalidUpdateError(request, NO_PATCHES_PROVIDED)
   }
   if (request.header('if-match') !== `W/"${originalPatient.meta.versionId}"`) {
-    return setPreconditionFailedError(request, INVALID_RESOURCE_ID)
+    return setResourceVersionMismatchError(request)
   }
+
   const validOperations = ['add', 'replace', 'remove', 'test']
   for (let i = 0; i < request.body.patches.length; i++) {
     const patch = request.body.patches[i]
     if (!validOperations.includes(patch.op)) {
-      return setInvalidUpdateError(request, INVALID_PATCH)
+      return setInvalidValueError(`Invalid value - '${patch.op}' in field '0/op'`)
     }
   }
   const updatedPatient = JSON.parse(JSON.stringify(originalPatient))
+  let forbiddenUpdate = false
   const updateErrors = []
 
   for (let i = 0; i < request.body.patches.length; i++) {
     const patch = request.body.patches[i]
     if (patch.op === 'add' && patch.path === '/name/-') {
-      updatedPatient.name.push(patch.value)
+      if (patch.value.use === 'usual') {
+        forbiddenUpdate = 'Forbidden update with error - multiple usual names cannot be added'
+      } else {
+        patch.value.id = 'new-object-id'
+        updatedPatient.name.push(patch.value)
+      }
+    }
+    if (patch.op === 'add' && patch.path === '/name/0/suffix') {
+      updatedPatient.name[0].suffix = patch.value
+    }
+    if (patch.op === 'add' && patch.path === '/name/0/suffix/0') {
+      updatedPatient.name[0].suffix.splice(0, 0, patch.value)
     }
     if (patch.op === 'replace' && patch.path === '/name/0/given/0') {
       updatedPatient.name[0].given[0] = patch.value
@@ -95,10 +120,33 @@ function patchPatient (originalPatient, request) {
     if (patch.op === 'replace' && patch.path === '/gender') {
       updatedPatient.gender = patch.value
     }
+    if (patch.op === 'replace' && patch.path === '/birthDate') {
+      updatedPatient.birthDate = patch.value
+    }
+    if (patch.op === 'remove' && patch.path === '/name/0/suffix') {
+      if (!updatedPatient.name[0].suffix) {
+        updateErrors.push("Invalid update with error - Invalid patch - can't remove non-existent object '0'")
+      } else {
+        delete updatedPatient.name[0].suffix
+      }
+    }
     if (patch.op === 'remove' && patch.path === '/name/0/suffix/0') {
-      updatedPatient.name[0].suffix.splice(0, 1)
+      if (!updatedPatient.name[0].suffix) {
+        updateErrors.push("Invalid update with error - Invalid patch - can't remove non-existent object '0'")
+      } else {
+        updatedPatient.name[0].suffix.splice(0, 1)
+      }
     }
 
+    if (patch.op === 'remove' && patch.path === '/name/1') {
+      if (!request.body.patches[0].op === 'test' || !request.body.patches[0].path.startsWith('/name/1/id')) {
+        updateErrors.push("Invalid update with error - removal '/name/1' is not immediately preceded by equivalent test - instead it is the first item")
+      } else if (request.body.patches[0].path === '/name/1/id' && request.body.patches[0].value === '123456') {
+        updateErrors.push("Invalid update with error - Invalid patch - index '1' is out of bounds")
+      } else {
+        updatedPatient.name.splice(1, 1)
+      }
+    }
     // these specific error scenarios for update errors should be reviewed in SPINEDEM-2695
     if (patch.op === 'replace' && patch.path === '/address/0/line/0' && patch.value === '2 Whitehall Quay') {
       updateErrors.push('Invalid update with error - no id or url found for path with root /address/0')
@@ -109,7 +157,7 @@ function patchPatient (originalPatient, request) {
     } else if (patch.op === 'replace' && patch.path === '/address/0/line') {
       updateErrors.push("Invalid update with error - Invalid patch - can't replace non-existent object 'line'")
     } else if (patch.op === 'replace' && patch.path === '/address/0/id' && patch.value === '123456') {
-      updateErrors.push("Invalid update with error - no 'address' resources with object id 123456")
+      updateErrors.push("Invalid update with error - no 'address' resources with object id '123456'")
     }
   }
 
@@ -121,14 +169,16 @@ function patchPatient (originalPatient, request) {
     "Invalid update with error - Invalid patch - can't replace non-existent object 'line'"
   ]
 
-  if (updateErrors.length > 0) {
+  if (forbiddenUpdate) {
+    return setForbiddenUpdateError(request, forbiddenUpdate)
+  } else if (updateErrors.length > 0) {
     if (updateErrors.every(item => rogueErrors.includes(item)) && rogueErrors.every(item => updateErrors.includes(item))) {
       return setInvalidUpdateError(request, updateErrors[1])
     } else {
       return setInvalidUpdateError(request, updateErrors[0])
     }
   } else {
-    updatedPatient.meta.versionId = (parseInt(updatedPatient.meta.versionId) + 1)
+    updatedPatient.meta.versionId = (parseInt(originalPatient.meta.versionId) + 1)
     return updatedPatient
   }
 }
@@ -144,8 +194,7 @@ if (request.pathMatches('/Patient/{nhsNumber}') && request.patch) {
     const originalPatient = session.patients[nhsNumber]
     const updatedPatient = patchPatient(originalPatient, request)
     if (updatedPatient) {
-      // this line is commented out because the existing tests assume a stateless mock
-      // session.patients[nhsNumber] = updatedPatient;
+      session.patients[nhsNumber] = updatedPatient
       response.headers = buildResponseHeaders(request, updatedPatient)
       response.body = updatedPatient
       response.status = 200

@@ -18,10 +18,9 @@ Background:
 
 @mock
 Scenario: Mock authentication
-    We don't authenticate. Just return some headers
-    * def accessToken = '123456'
+    # We don't authenticate. We set a value that isn't a UUID, that the mock accepts
+    * def accessToken = "HEALTHCARE_WORKER"
 
-    
 @real
 Scenario: Call the real oauth2 authentication mock service
     

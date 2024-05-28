@@ -1,0 +1,20 @@
+{
+  "issue": [
+    {
+      "code": "forbidden",
+      "details": {
+        "coding": [
+          {
+            "code": "FORBIDDEN_UPDATE",
+            "display": "Update is forbidden",
+            "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+            "version": "1"
+          }
+        ]
+      },
+      "diagnostics": "#(diagnostics)",
+      "severity": "information"
+    }
+  ],
+  "resourceType": "OperationOutcome"
+}

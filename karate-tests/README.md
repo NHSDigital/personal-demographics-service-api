@@ -2,6 +2,16 @@
 
 This repo contains the Karate tests for the PDS API. These are functional tests, with load test support as a sweet bonus.
 
+## Karate documentation
+
+If you're new to Karate, you would be well advised to get familiar with the excellent documentation that is available online. For this codebase in particular, the following resources are recommended:
+
+- [Main Karate documentation](https://github.com/karatelabs/karate?tab=readme-ov-file#karate) - the one (big) pager that tells you virtually everything you need to know about how to write a Karate test
+- [Karate JavaScript mocks documentation](https://github.com/karatelabs/karate/wiki/Karate-JavaScript-Mocks) - official docs about how to write Karate mocks using JavaScript
+- [Karate Gatling documentation](https://github.com/karatelabs/karate/tree/develop/karate-gatling#karate-gatling) - official docs about setting up Karate-driven Gatling performance tests
+
+StackOverflow is also a useful source of information - search using the `[Karate]` tag. And of course, online AI helpers can often help you find the answer you're looking for. They've read all the docs! 
+
 ## Pre-requisites
 
 To run these tests, you'll need Java, Maven, and the standard personal-demographics-service-api environment variables.
@@ -60,19 +70,19 @@ To run the tests, make sure you are in the `karate-tests` folder.
 
 Run all the functional tests in parallel:
 ```bash
-mvn test -Dtest=TestParallel
+mvn clean test -Dtest=TestParallel
 ```
 
 There are also individual JUnit tests for running specific feature files. These may be more useful if you're developing / debugging tests and you only want to run certain scenarios.
 
 Run all the tests in a given test file:
 ```bash
-mvn test -Dtest=HealthcareWorkerTests
+mvn clean test -Dtest=HealthcareWorkerTests
 ```
 
 Run only one of the tests in a given test file:
 ```bash 
-mvn test -Dtest=HealthcareWorkerTests#testGetPatient
+mvn clean test -Dtest=HealthcareWorkerTests#testGetPatient
 ```
 
 ### Load tests

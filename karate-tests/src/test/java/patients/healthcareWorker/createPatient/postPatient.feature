@@ -1,11 +1,17 @@
+@sandbox
 Feature: Create a patient - Healthcare worker access mode
 
 Note the use of the Karate retry functionality in this feature:
 
-  - `retry until responseStatus != 429`
+  - `* retry until responseStatus != 429 && responseStatus != 503`
 
-We're using it because the post patient functionality is subject to a spike
-arrest policy, whereby requests can be rejected with a 429 response.
+We're using it because:
+- the post patient functionality is subject to a spik arrest policy, 
+    whereby requests can be rejected with a 429 response.
+- the system may also throw a SERVICE_UNAVAILABLE error - "The downstream 
+  domain processing has not completed within the configured timeout period. 
+  Using the same 'X-Request-ID' header, retry your request after the time 
+  specified by the 'Retry-After' response header."
 
 The intervals between retries are set to be different for each scenario,
 to try to stagger the requests and avoid the spike arrest policy.
@@ -37,9 +43,9 @@ Background:
   * configure headers = requestHeaders  
   * url baseURL
 
-  
 Scenario: Post patient - new patient
-  * def familyName = "Karate-test-" + utils.randomString(7)
+  # Don't change the familyName
+  * def familyName = "ToRemove"
   * def givenName = "Zebedee"
   * def prefix = "Mr"
   * def gender = "male"
@@ -50,9 +56,9 @@ Scenario: Post patient - new patient
   * def address = faker.streetAddress()
   
   * path "Patient"
-  * request read('classpath:patients/healthcareWorker/post-patient-request.json')
-  * configure retry = { count: 5, interval: 5 }
-  * retry until responseStatus != 429
+  * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
+  * configure retry = { count: 5, interval: 5000 }
+  * retry until responseStatus != 429 && responseStatus != 503
   * method post
   * status 201
   * def nhsNumber = response.id
@@ -61,12 +67,11 @@ Scenario: Post patient - new patient
   * match response.address[0].line[0] == address
   * match response.address[0].postalCode == postalCode
 
-
 Scenario: Fail to create a record for a new patient, single demographics match found
   # we rely on data that's already in the database for our existing record
-  * def nhsNumber = "5900027104"
-  * def familyName = "Karate-test-somwzqz"
-  * def givenName = "Zebedee"
+  * def nhsNumber = "5900054586"
+  * def familyName = "McMatch-Single"
+  * def givenName = "Mickey"
   * def prefix = "Mr"
   * def gender = "male"
   * def genderCode = "1"
@@ -77,25 +82,23 @@ Scenario: Fail to create a record for a new patient, single demographics match f
 
   # we get one match in the database for these demographics
   * def demographics = ({ family: familyName, birthdate: birthDate, gender: gender, "address-postalcode": postalCode })
-  * def patientSearchResults = karate.call('classpath:patients/healthcareWorker/getPatientByDemographics.feature', demographics)
+  * def patientSearchResults = karate.call('classpath:patients/healthcareWorker/searchForAPatient/getPatientByDemographics.feature', demographics)
   * assert patientSearchResults.response.total == 1
 
   # so when we try to create a new patient using the same demographics, we get the single_match_found error
   * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
   * configure headers = requestHeaders
   * path "Patient"
-  * request read('classpath:patients/healthcareWorker/post-patient-request.json')
+  * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
+  * configure retry = { count: 5, interval: 6000 }
+  * retry until responseStatus != 429 && responseStatus != 503
   * method post
-  * configure retry = { count: 5, interval: 10 }
-  * retry until responseStatus != 429
   * status 200
-  * match response == read('classpath:mocks/stubs/errorResponses/SINGLE_MATCH_FOUND.json')
-
+  * match response == read('classpath:mocks/stubs/postPatientResponses/SINGLE_MATCH_FOUND.json')
 
 Scenario: Fail to create a record for a new patient, multiple demographics matches found
   # we rely on data that's already in the database for our existing records
-  * def nhsNumber = "5900036502"
-  * def familyName = "McCOAG"
+  * def familyName = "McMatch-Multiple"
   * def gender = "male"
   * def genderCode = "1"
   * def birthDate = "1997-08-20"
@@ -107,11 +110,11 @@ Scenario: Fail to create a record for a new patient, multiple demographics match
   # (NB the matching for post patient doesn't seem to ignore the space in the postalCode value,
   # so for this functionality there are only actually 2 matches, not 3)
   * def demographics = ({ family: familyName, birthdate: birthDate, gender: gender, "address-postalcode": postalCode })
-  * def patientSearchResults = karate.call('classpath:patients/healthcareWorker/getPatientByDemographics.feature', demographics)
+  * def patientSearchResults = karate.call('classpath:patients/healthcareWorker/searchForAPatient/getPatientByDemographics.feature', demographics)
   * assert patientSearchResults.response.total == 3
 
   # so when we try to create a new patient using the same demographics, we get the multiple_matches_found error
-  * def requestBody = read('classpath:patients/healthcareWorker/post-patient-request.json')
+  * def requestBody = read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
   # there are a couple of things we don't need in this body
   * eval delete requestBody["name"]["name.givenName.name1"]
   * eval delete requestBody["name"]["name.prefix"]
@@ -120,19 +123,18 @@ Scenario: Fail to create a record for a new patient, multiple demographics match
   * configure headers = requestHeaders
   * path "Patient"
   * request requestBody
-  * configure retry = { count: 5, interval: 15 }
-  * retry until responseStatus != 429
+  * configure retry = { count: 5, interval: 7000 }
+  * retry until responseStatus != 429 && responseStatus != 503
   * method post
   * status 200
-  * match response == read('classpath:mocks/stubs/errorResponses/MULTIPLE_MATCHES_FOUND.json')
-
+  * match response == read('classpath:mocks/stubs/postPatientResponses/MULTIPLE_MATCHES_FOUND.json')
 
 Scenario: Negative path: invalid request body
   * path "Patient"
   * request { bananas: "in pyjamas" }
-  * configure retry = { count: 5, interval: 20 }
-  * retry until responseStatus != 429
+  * configure retry = { count: 5, interval: 10000 }
+  * retry until responseStatus != 429 && responseStatus != 503
   * method post
   * status 400
-  * def diagnostics = response.issue[0].diagnostics
+  * def diagnostics = "Missing value - 'nhsNumberAllocation'"
   * match response == read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')

@@ -131,7 +131,6 @@ class TestPDSSandboxUpdateSyncWrapSuite:
             update[0]["patch"],
             additional_headers
         )
-
         helpers.check_retrieve_response_body(
             update_response, update[0]["response"]
         )
