@@ -34,7 +34,7 @@
     },
     "gender": "##regex(male|female|other|unknown)",
     "birthDate": "##? utils.isValidDateString(_)",
-    "deceasedDateTime": "##regex(([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2})$|^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T\\d{2}:\\d{2}:\\d{2})$|^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2})$|^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])))",
+    "deceasedDateTime": "##? utils.isValidDateString(_)",
     "name": "##[] (HumanName)",
     "contact": "##[] (Contact)",
     "managingOrganization": "##(ManagingOrganizationReference)",
