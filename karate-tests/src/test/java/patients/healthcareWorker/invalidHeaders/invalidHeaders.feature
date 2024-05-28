@@ -1,3 +1,4 @@
+@sandbox
 Feature: Invalid request headers
   For any PDS requests made as a healthcare worker, you need:
     - a valid authorization header
@@ -35,8 +36,8 @@ Scenario Outline: Auth errors: patient <operation> - <diagnostics>
     | operation    | headerValue                | diagnostics                    | errorResponse   |
     | get          |                            | Missing Authorization header   | ACCESS_DENIED   |
     | search       |                            | Missing Authorization header   | ACCESS_DENIED   |
-    | get          | ""                         | Empty Authorization header     | ACCESS_DENIED   |
-    | search       | ""                         | Empty Authorization header     | ACCESS_DENIED   |
+    | get          | Bearer                     | Missing access token           | ACCESS_DENIED   |
+    | search       | Bearer                     | Missing access token           | ACCESS_DENIED   |
     | get          | Bearer abcdef123456789     | Invalid Access Token           | ACCESS_DENIED   |
     | search       | Bearer abcdef123456789     | Invalid Access Token           | ACCESS_DENIED   |
 

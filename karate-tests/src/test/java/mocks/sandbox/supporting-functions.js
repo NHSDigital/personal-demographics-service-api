@@ -110,8 +110,18 @@ function isValidUUID (uuid) {
 }
 
 /*
-   * validate the oauth2 bearer token
-    */
+ * validate the oauth2 bearer token
+ */
+function containsBearerToken (token) {
+  const tokenParts = token.split(' ')
+  if (tokenParts.length !== 2) {
+    return false
+  } else if (tokenParts[0] !== 'Bearer') {
+    return false
+  }
+  return true
+}
+
 function isValidBearerToken (token) {
   const tokenParts = token.split(' ')
   if (tokenParts.length !== 2) {
@@ -138,8 +148,8 @@ function validateAuthHeader (request) {
   if (authorization === null) {
     diagnostics = 'Missing Authorization header'
     valid = false
-  } else if (authorization === '') {
-    diagnostics = 'Empty Authorization header'
+  } else if (!containsBearerToken(authorization)) {
+    diagnostics = 'Missing access token'
     valid = false
   } else if (!isValidBearerToken(authorization)) {
     diagnostics = 'Invalid Access Token'
