@@ -1,5 +1,5 @@
 /*
-    Supporting functions for building responses
+  Supporting functions for building responses
 */
 
 /* Karate objects */
