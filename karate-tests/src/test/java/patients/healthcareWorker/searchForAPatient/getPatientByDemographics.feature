@@ -6,12 +6,13 @@ Feature: Get (search for) patients based on demographics data
   Background:
     # schemas and validators that are required by the main schema checks
     * def utils = call read('classpath:helpers/utils.feature')
-    * json generalPractitionerReference = karate.readAsString('classpath:schemas/GeneralPractitionerReference.json')
+    * json GeneralPractitionerReference = karate.readAsString('classpath:schemas/GeneralPractitionerReference.json')
     * json Period = karate.readAsString('classpath:schemas/Period.json')
-    * json addressSchema = karate.readAsString('classpath:schemas/Address.json')
-    * json humanNameSchema = karate.readAsString('classpath:schemas/HumanName.json')
-    * json patientSearchResultEntry = karate.readAsString('classpath:schemas/patientSearchResultEntry.json')
-
+    * json Address = karate.readAsString('classpath:schemas/Address.json')
+    * json HumanName = karate.readAsString('classpath:schemas/HumanName.json')
+    * json Patient = karate.readAsString('classpath:schemas/Patient.json')
+    * json patientSearchResultEntry = karate.readAsString('classpath:patients/healthcareWorker/searchForAPatient/schemas/patientSearchResultEntry.json')
+  
     # auth
     * def accessToken = karate.callSingle('classpath:patients/healthcareWorker/auth-redirect.feature').accessToken
     * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
@@ -28,5 +29,5 @@ Feature: Get (search for) patients based on demographics data
     * param address-postalcode = karate.get('address-postalcode')
     * param _max-results = "6"
     * method get
-    * match response == read('classpath:patients/healthcareWorker/searchForAPatient/patientSearchBundle.json')
+    * match response == read('classpath:patients/healthcareWorker/searchForAPatient/schemas/patientSearchBundle.json')
     * status 200

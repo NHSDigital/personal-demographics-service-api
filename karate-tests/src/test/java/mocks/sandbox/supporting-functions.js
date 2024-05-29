@@ -52,6 +52,20 @@ function setInvalidSearchDataError (diagnostics) {
   response.status = 400
 }
 
+// eslint-disable-next-line no-unused-vars
+function setUnsupportedServiceError () {
+  response.body = context.read('classpath:mocks/stubs/errorResponses/UNSUPPORTED_SERVICE.json')
+  response.status = 400
+}
+
+// eslint-disable-next-line no-unused-vars
+function setAdditionalPropertiesError (diagnostics) {
+  const body = context.read('classpath:mocks/stubs/errorResponses/ADDITIONAL_PROPERTIES.json')
+  body.issue[0].diagnostics = diagnostics
+  response.body = body
+  response.status = 400
+}
+
 /**
  * Sets an INVALID_UPDATE error response for the given request and diagnostics.
  *
@@ -96,8 +110,18 @@ function isValidUUID (uuid) {
 }
 
 /*
-   * validate the oauth2 bearer token
-    */
+ * validate the oauth2 bearer token
+ */
+function containsBearerToken (token) {
+  const tokenParts = token.split(' ')
+  if (tokenParts.length !== 2) {
+    return false
+  } else if (tokenParts[0] !== 'Bearer') {
+    return false
+  }
+  return true
+}
+
 function isValidBearerToken (token) {
   const tokenParts = token.split(' ')
   if (tokenParts.length !== 2) {
@@ -124,8 +148,8 @@ function validateAuthHeader (request) {
   if (authorization === null) {
     diagnostics = 'Missing Authorization header'
     valid = false
-  } else if (authorization === '') {
-    diagnostics = 'Empty Authorization header'
+  } else if (!containsBearerToken(authorization)) {
+    diagnostics = 'Missing access token'
     valid = false
   } else if (!isValidBearerToken(authorization)) {
     diagnostics = 'Invalid Access Token'

@@ -1,19 +1,18 @@
 {
   "issue": [
     {
-      "code": "value",
+      "code": "multiple-matches",
       "details": {
         "coding": [
           {
-            "code": "INVALID_SEARCH_DATA",
-            "display": "Search data is invalid",
+            "code": "TOO_MANY_MATCHES",
+            "display": "Too Many Matches",
             "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
             "version": "1"
           }
         ]
       },
-      "diagnostics": "#(diagnostics)",
-      "severity": "error"
+      "severity": "information"
     }
   ],
   "resourceType": "OperationOutcome"

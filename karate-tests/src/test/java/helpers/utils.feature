@@ -51,7 +51,7 @@ Scenario:
         validates the date string based on how we format dates in FIHR, 
         e.g. 2010-10-25 is valid
       */
-      const regex=new RegExp("([0-9]{4}[-](0[1-9]|1[0-2])[-]([0-2]{1}[0-9]{1}|3[0-1]{1})|([0-2]{1}[0-9]{1}|3[0-1]{1})[-](0[1-9]|1[0-2])[-][0-9]{4})")
+      const regex=new RegExp("([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2})$|^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T\\d{2}:\\d{2}:\\d{2})$|^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2})$|^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))")
       return regex.test(dateString)
     }
     """
@@ -88,10 +88,30 @@ Scenario:
     function(requestHeaders) {
       /*
         validate the values of the x-correlation-id and x-correlation-id response headers match those
-        of the request
+        of the request (if they were provided)
       */
-      return requestHeaders['x-correlation-id'] == karate.response.header('x-correlation-id') &&
-             requestHeaders['x-request-id'] == karate.response.header('x-request-id')
+      let validRequestID = false
+      let validCorrelationID = false
+
+      const requestID = requestHeaders['x-request-id']
+      const correlationID = requestHeaders['x-correlation-id']
+      
+      if (!requestID) { 
+        validRequestID = karate.response.header('x-request-id') == null        
+      } else if (requestID === '""') {
+        validRequestID = karate.response.header('x-request-id') == null        
+      } else {
+        validRequestID = requestID == karate.response.header('x-request-id')  
+      }
+      return validRequestID
+      /*
+      if (!(correlationID === null) || !(correlationID === '')) { 
+        validCorrelationID == correlationID === karate.response.header('x-correlation-id')
+      } else {
+        validCorrelationID = karate.response.header('x-correlation-id') == null
+      }
+      return validRequestID && validCorrelationID
+      */
     }
     """
   

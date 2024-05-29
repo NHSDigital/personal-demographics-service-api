@@ -1,12 +1,12 @@
 {
   "issue": [
     {
-      "code": "value",
+      "code": "invariant",
       "details": {
         "coding": [
           {
-            "code": "INVALID_SEARCH_DATA",
-            "display": "Search data is invalid",
+            "code": "ADDITIONAL_PROPERTIES",
+            "display": "Additional properties should not be included",
             "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
             "version": "1"
           }

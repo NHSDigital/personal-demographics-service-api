@@ -1,5 +1,5 @@
 /* karate objects */
-/* global context, request, response */
+/* global context, request, response, session */
 
 /* functions defined in supporting-functions.js */
 /* global basicResponseHeaders */
@@ -16,7 +16,7 @@ const VALID_NHS_NUMBERS = [
   '5899264950', '5604719625', '5117676297', '5705279671', '5890418181'
 ]
 
-context.nhsNumberIndex = context.nhsNumberIndex || 0
+session.nhsNumberIndex = session.nhsNumberIndex || 0
 
 function generateObjectId () {
   // generates a random ID for the name and address objects, e.g. 8F1A21BC
@@ -91,9 +91,9 @@ if (request.pathMatches('/Patient') && request.post) {
       const patient = JSON.parse(JSON.stringify(NEW_PATIENT))
 
       // set a new NHS number for the patient
-      patient.id = VALID_NHS_NUMBERS[context.nhsNumberIndex]
-      patient.identifier[0].value = VALID_NHS_NUMBERS[context.nhsNumberIndex]
-      context.nhsNumberIndex += 1
+      patient.id = VALID_NHS_NUMBERS[session.nhsNumberIndex]
+      patient.identifier[0].value = VALID_NHS_NUMBERS[session.nhsNumberIndex]
+      session.nhsNumberIndex += 1
 
       // set the name properties
       patient.name[0].family = request.body.name['name.familyName']

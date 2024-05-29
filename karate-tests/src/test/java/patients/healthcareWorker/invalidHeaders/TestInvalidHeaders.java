@@ -1,4 +1,4 @@
-package patients.healthcareWorker.getPatientDetails;
+package patients.healthcareWorker.invalidHeaders;
 
 import org.junit.jupiter.api.BeforeAll;
 
@@ -7,9 +7,8 @@ import com.intuit.karate.junit5.Karate;
 
 import mocks.MockRunner;
 
-
-public class TestGetPatientDetailsSingles {
-
+public class TestInvalidHeaders {
+    
     static HttpServer server;
 
     @BeforeAll
@@ -19,14 +18,10 @@ public class TestGetPatientDetailsSingles {
             server = MockRunner.start("src/test/java/mocks", 8080);
         }
     }  
-    
-    @Karate.Test
-    Karate testGetPatientByNHSNumber() {
-        return Karate.run("getPatientByNHSNumber").relativeTo(getClass());
-    }    
 
     @Karate.Test
-    Karate testGetPatientInvalidRoleErrors() {
-        return Karate.run("getPatientInvalidRoleErrors").relativeTo(getClass());
-    }
+    Karate testInvalidHeaders() {
+        return Karate.run("invalidHeaders").relativeTo(getClass());
+    }   
+
 }
