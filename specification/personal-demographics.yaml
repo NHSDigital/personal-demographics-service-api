@@ -112,6 +112,10 @@ info:
 
     For more details, see [service levels](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#service-levels).
     
+    ## Rate limits
+
+    The default rate limit is 5TPS (Transactions Per Second), per app. If you require a higher rate limit please [contact us](https://digital.nhs.uk/developer/help-and-support). or raise this during the onboarding process.
+
     ## Technology
     This API is [RESTful](https://digital.nhs.uk/developer/guides-and-documentation/our-api-technologies#basic-rest).
 
@@ -279,7 +283,9 @@ info:
             </div>
         </div>
     </div> 
-    
+  externalDocs:
+        description: ODS codes and documentation.
+        url: https://fhir.nhs.uk/Id/ods-organization-code
   contact:
     name: Personal Demographics Service FHIR API Support
     url: 'https://digital.nhs.uk/developer/help-and-support'
@@ -291,6 +297,7 @@ servers:
     description: Integration test environment.
   - url: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4'
     description: Production environment.
+
 paths:
   /Patient:
     parameters:
@@ -302,9 +309,6 @@ paths:
     get:
       summary: Search for a patient
       operationId: search-patient
-      externalDocs:
-        description: ODS codes and documentation.
-        url: https://fhir.nhs.uk/Id/ods-organization-code
       description: |
         ## Overview
         Use this endpoint to search for a patient in PDS.
@@ -330,6 +334,61 @@ paths:
         | Healthcare worker access       | Up to 50 matching patient records returned |
         | Patient access                 | Not yet available                          |
 
+        
+
+        ## Patient data returned
+        The patient data returned on a search is not the full set of data that is returned on a retrieval by NHS number. The following data is included:
+        * NHS number
+        * names - usual, nickname and temporary
+        * gender
+        * birth information, apart from place of birth
+        * death information
+        * address - home address
+        * contact details
+        * registered GP
+        * restricted patient flag
+
+        The following data is excluded:
+        * place of birth
+        * names, apart from usual, nickname and temporary 
+        * addresses, apart from home address
+        * pharmacy details
+        * communication details
+        * contact preferences
+
+        ### Restricted patients
+        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record) and are sometimes known as sensitive patients. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telecom`, `contact` and `generalPractitioner` are removed.
+
+        If `address-postalcode`, `address-postcode`, or `general-practitioner` are included in the search parameters, no restricted patients are returned even if a match is identified.
+
+        The restricted flag can be found in the data under `meta/security` on the patient resource.
+        
+        ### Invalidated patients
+        Some patients are marked as invalidated in PDS - also known as `redacted` in FHIR terminology. Invalidated patient records are not returned in search results.
+        If an invalidated patient record has been superseded, the superseding record is returned.
+
+        ## Scoring
+        Every matched patient in the result list includes a score to indicate how closely the patient matched the search parameters.
+
+        A score of 1.0 indicates an exact match. A score of less than 1.0 indicates a partial match.
+
+        The result list is sorted in descending score order - best match first.
+
+        Use the `_exact-match` query parameter to return exact matches only - where the score is 1.0.
+
+        ## Clinical safety and privacy
+        This endpoint can return multiple matching patients for a given search, including partial matches.
+
+        Ensure that you design your software to minimise the following risks:
+        * an end user selects the wrong patient from the results presented, so there is a risk of clinical harm; for example due to retrieval of the wrong clinical data
+        * the end user has access to patients’ personal data, so there is a risk to patient privacy
+
+        Note that:
+        * we record an access request in our audit trail for all patients matched in a PDS search
+        * it is almost certainly a good idea to display search results in descending score order - best match first
+
+        Please consider the information your application returns to users. For example a patient's temporary address can be used to perform a successful search. The home address will be included in the response. For citizen facing services please be aware of this behaviour and do not present a different address to the patient, unless they are logged in at a sufficiently high proof point.
+        
         ## Search options
         The following sections explain the various search options.
         Which options you choose depends very much on your use case, and getting it right is really important.
@@ -453,58 +512,13 @@ paths:
           * Only current data will be searched, unless a history search is also requested in which case the match will take into account both current and historic data
           * Email addresses are not case-sensitive.
 
-        ## Patient data returned
-        The patient data returned on a search is not the full set of data that is returned on a retrieval by NHS number. The following data is included:
-        * NHS number
-        * names - usual, nickname and temporary
-        * gender
-        * birth information, apart from place of birth
-        * death information
-        * address - home address
-        * contact details
-        * registered GP
-        * restricted patient flag
+        ### Differences between the matching types at a glance
 
-        The following data is excluded:
-        * place of birth
-        * names, apart from usual, nickname and temporary 
-        * addresses, apart from home address
-        * pharmacy details
-        * communication details
-        * contact preferences
-
-        ### Restricted patients
-        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record) and are sometimes known as sensitive patients. When performing a search, restricted patients can be returned; however, location sensitive fields such as `address`, `telecom`, `contact` and `generalPractitioner` are removed.
-
-        If `address-postalcode`, `address-postcode`, or `general-practitioner` are included in the search parameters, no restricted patients are returned even if a match is identified.
-
-        The restricted flag can be found in the data under `meta/security` on the patient resource.
-        
-        ### Invalidated patients
-        Some patients are marked as invalidated in PDS - also known as `redacted` in FHIR terminology. Invalidated patient records are not returned in search results.
-        If an invalidated patient record has been superseded, the superseding record is returned.
-
-        ## Scoring
-        Every matched patient in the result list includes a score to indicate how closely the patient matched the search parameters.
-
-        A score of 1.0 indicates an exact match. A score of less than 1.0 indicates a partial match.
-
-        The result list is sorted in descending score order - best match first.
-
-        Use the `_exact-match` query parameter to return exact matches only - where the score is 1.0.
-
-        ## Clinical safety and privacy
-        This endpoint can return multiple matching patients for a given search, including partial matches.
-
-        Ensure that you design your software to minimise the following risks:
-        * an end user selects the wrong patient from the results presented, so there is a risk of clinical harm; for example due to retrieval of the wrong clinical data
-        * the end user has access to patients’ personal data, so there is a risk to patient privacy
-
-        Note that:
-        * we record an access request in our audit trail for all patients matched in a PDS search
-        * it is almost certainly a good idea to display search results in descending score order - best match first
-
-        Please consider the information your application returns to users. For example a patient's temporary address can be used to perform a successful search. The home address will be included in the response. For citizen facing services please be aware of this behaviour and do not present a different address to the patient, unless they are logged in at a sufficiently high proof point.
+        | Search                                  | Non-fuzzy matching                                | Fuzzy matching                                               |
+        | ----------------------------------------| --------------------------------------------------| -------------------------------------------------------------|
+        | History                                 | Optional                                          | Always                                                       |
+        | Names                                   | Allows wildcards                                  | Matches homophones, transposed names and previous names      |
+        | Postcode                                | Allows wildcards                                  | Does not allow wildcards                                     |
         
         ## Sandbox testing
         You can test the following scenarios in our sandbox environment:
@@ -598,6 +612,7 @@ paths:
                           code: INVALID_VALUE
                           display: Provided value is invalid
                     diagnostics: "Invalid value - 'mal' in field 'gender'"   
+ 
   '/Patient/{id}':
     parameters:
       - $ref: '#/components/parameters/Id'
@@ -614,11 +629,11 @@ paths:
         You cannot get a patient's related people details, use the RelatedPerson endpoint instead.
 
         ## Superseded patients
-        Some patients are marked as superseded, this means that for some reason the original resource is no longer valid and has been replaced with a different resource.
+        Some patients are marked as superseded. This means that the original patient details are no longer valid and have been replaced with different patient details.
 
-        On retrieval of a superseded resource, the new resource is automatically returned in place of the requested resource. You can spot a superseded resource when the `id` is not the same as the one requested.
+        On retrieval of a superseded patient's details, the new patient details are automatically returned in place of the requested patient details. You can spot a superseded patient when the `id` is not the same as the one requested.
 
-        When retrieving a superseding resource you must update your system with the new resource and remove the superseded resource, ensuring that the same `id` does not exist against another resource in your system.
+        When retrieving superseding patient details you must update your system with the new patient details and remove the superseded patient details, ensuring that the same `id` does not exist against another patient in your system.
 
         ## Restricted patients
         Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record) and are sometimes known as sensitive patients. Restricted patients can be retrieved; however, location sensitive fields such as `address`, `telecom` and `generalPractitioner` are removed.
@@ -700,7 +715,7 @@ paths:
         ## Overview
         Use this endpoint to update patient details in PDS.
 
-        This is a 'PATCH' operation - you can update specific parts of the patient record, such as name or gender, without having to update the entire record.
+        This is a `PATCH` operation - you can update specific parts of the patient record, such as name or gender, without having to update the entire record.
 
         When you make a PATCH request with your application, the endpoint will respond with a successful (200) response code, along with the updated patient resource, or, an unsuccessful (4xx/5xx) response. 
 
@@ -714,7 +729,7 @@ paths:
         | ------------------------------ | ----------------------------------- |
         | Application-restricted access  | Updates not allowed                 |
         | Healthcare worker access       | Updates allowed                     |
-        | Patient access                 | Updates allowed                     |
+        | Patient access                 | Updates allowed (limited)           |
  
         ## Patient resource versioning
         To update a patient's resource you must have retrieved it first, to ensure you are working against an up-to-date patient resource.
@@ -767,7 +782,7 @@ paths:
         ```json
         {
             "patches": [
-              { "op": "add", "path": "/deceasedDate", "value": "2020-01-01" }
+              { "op": "add", "path": "/deceasedDateTime", "value": "2020-01-01" }
           ]
         }
         ```
@@ -917,7 +932,7 @@ paths:
 
         Removing a list item should only be done on the whole item object, not individual sub-items; instead use the replace operation.
 
-        To remove a list item, a `test` operation must <u>immediately proceed</u> the `remove` . This is an added requirement to ensure no accidental data loss occurs or the wrong item is removed. The test operation should be used to assert either:
+        To remove a list item, a `test` operation must <u>immediately precede</u> the `remove` . This is an added requirement to ensure no accidental data loss occurs or the wrong item is removed. The test operation should be used to assert either:
 
         * the `id` - the object ID for items that have one - for example `name`, `address` or `telecom`.
         * the `url` - the URL for the extension being removed.
@@ -1123,14 +1138,14 @@ paths:
         
         In particular, for a patient at no fixed abode, use the pseudo postcode `ZZ99 3VZ`.
         
-        We recommend you use the [OS Places API](https://digital.nhs.uk/developer/api-catalogue/ordnance-survey-places-api) for looking up and verifying addresses prior to a PDS update. The PDS FHIR API cannot yet handle UPRNs required by the OS Places API. We are planning to support these in future.
+        We recommend you use the [OS Places API](https://digital.nhs.uk/developer/api-catalogue/ordnance-survey-places-api) for looking up and verifying addresses prior to a PDS update. 
         
         When adding or replacing address lines, use the following rules:
-        *	line 1 - premises ID and/or house name, for example `Flat 1` or `The Old Schoolhouse`
-        *	line 2 - house number, dependent thoroughfare name and descriptor (if present), thoroughfare name and descriptor, for example `23 Mill Lane`
-        *	line 3 - dependent locality/village, locality (if present), for example `Boxgrove`
-        *	line 4 - post town, for example `Leeds`
-        *	line 5 - county (if present), for example `West Yorkshire`
+        * line 1 - premises ID and/or house name, for example `Flat 1` or `The Old Schoolhouse`
+        * line 2 - house number, dependent thoroughfare name and descriptor (if present), thoroughfare name and descriptor, for example `23 Mill Lane`
+        * line 3 - dependent locality/village, locality (if present), for example `Boxgrove`
+        * line 4 - post town, for example `Leeds`
+        * line 5 - county (if present), for example `West Yorkshire`
         
         When updating an address, you should populate lines 1 or 2, and line 4. You should not include line 5 in manually created addresses but you may include it in PAF-derived addresses. The address ID must also be included in the update as shown in the below examples.
 
@@ -1184,12 +1199,9 @@ paths:
         However, historically this was constrained only by the integration requirements and was not enforced so theoretically more than one can exist for a patient when retrieving.
         Where multiple instances already exist for the patient it is not expected that local systems should manage those, but should choose the most appropriate one to maintain (for example by examining period dates).
 
-        A `home` address is the patient's main residential address and should normally be used for all clinical and demographic purposes, including clinical and appointment correspondence.
-        However additionally, `temp` and `billing` addresses may be provided by a patient when there is a requirement to record an alternative location for the purposes of unbroken care.
-        When sending correspondence to a patient:
-        *	a present and valid `billing` address may take precedence over `home` and `temp` addresses. A patient should have only a single current `billing` address. An address is considered 'valid' according to its period start and to dates.
-        *	if no current `billing` address is provided, a `temp` address may take precedence over the `home` address, again if it is valid according to its period start and to dates.
-        * if there is no valid, current `billing` and/or `temp` address, the `home` address must be used.
+        A home address is the patient's main residential address and should normally be used for all clinical and demographic purposes, including clinical and appointment correspondence. However additionally, temp and billing addresses may be provided by a patient when there is a requirement to record an alternative location for the purposes of unbroken care. When sending correspondence to a patient:
+        * a present and valid billing address may take precedence over home and temp addresses. A patient should have only a single current billing address. An address is considered 'valid' according to its period start and to dates.
+        * if no current billing address is provided, a temp address may take precedence over the home address, again if it is valid according to its period start and to dates.
 
         Not all local systems support `temp` and `billing` addresses, so these are not uniformly maintained. Therefore, where the patient contact has clinical or business significance, the precedence of these addresses over the `home` address should be determined by a user wherever possible.
         When the end date for a `temp` or `billing` address passes, local systems should use the patient’s `home` address. It is extremely rare that no home address is present on a patient record.

@@ -1,4 +1,3 @@
-description: A contact point, such as a phone number or email address
 type: object
 required:
   - system
