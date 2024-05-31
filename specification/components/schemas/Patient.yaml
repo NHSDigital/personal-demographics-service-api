@@ -16,7 +16,7 @@ properties:
   name:
     type: array
     description: | 
-      List of names associated with the patient.      
+      List of names associated with the patient. This may not appear if the patient is tagged as restricted.     
     minItems: 1
     items:
       $ref: "HumanName.yaml"
