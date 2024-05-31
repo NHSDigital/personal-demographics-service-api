@@ -542,7 +542,7 @@ paths:
         | Too few search parameters               | Any invalid combination of query parameters                                                                                                                     | HTTP Status 400 with problem description                                |
         | Missing X-Request-ID                    | `id`=`9000000009` (or any other valid NHS number)                                                                                                               | HTTP Status 400 with problem description                                |
 
-        You can try out the sandbox using the 'Try this API' feature on this page.
+        You can try out the sandbox by selecting the 'Try' button on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
@@ -636,7 +636,7 @@ paths:
         When retrieving superseding patient details you must update your system with the new patient details and remove the superseded patient details, ensuring that the same `id` does not exist against another patient in your system.
 
         ## Restricted patients
-        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record) and are sometimes known as sensitive patients. Restricted patients can be retrieved; however, location sensitive fields such as `address`, `telecom` and `generalPractitioner` are removed.
+        Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record) and are sometimes known as sensitive patients. Restricted patients can be retrieved; however, location-sensitive fields such as `address`, `telecom` and `generalPractitioner` are removed.
 
         The restricted flag can be found in the data under `meta/security` on the patient resource.
 
@@ -652,7 +652,7 @@ paths:
         | Invalid NHS number               | `id`=`9000000000` (or any invalid NHS number)     | HTTP Status 400 with problem description                                                                                                      |
         | Missing X-Request-ID             | `id`=`9000000009` (or any other valid NHS number) | HTTP Status 400 with problem description                                                                                                      |
 
-        You can try out the sandbox using the 'Try this API' feature on this page.
+        You can try out the sandbox by selecting the 'Try' button on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
@@ -1510,7 +1510,7 @@ paths:
         | Invalid patch operations            | Send body with invalid JSON patches in `patches` attribute                | HTTP Status 400 with problem description         |
         | Missing X-Request-ID                | `id`=`9000000009` (or any other valid NHS number)                         | HTTP Status 400 with problem description         |
 
-        You can try out the sandbox using the 'Try this API' feature on this page.
+        You can try out the sandbox by selecting the 'Try' button on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
@@ -1691,7 +1691,7 @@ paths:
         | Related people do not exist     | `id`=`9000000025`                             | HTTP Status 200 with an empty bundle                          |
         | Missing X-Request-ID            | `id`=`9000000009` (or any other valid NHS number) | HTTP Status 400 with problem description                  |
 
-        You can try out the sandbox using the 'Try this API' feature on this page.
+        You can try out the sandbox by selecting the 'Try' button on this page.
 
         Alternatively, you can try out the sandbox using our Postman collection:
         
