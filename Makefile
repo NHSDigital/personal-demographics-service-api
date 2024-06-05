@@ -30,6 +30,9 @@ lint:
 validate: generate-examples
 	java -jar bin/org.hl7.fhir.validator.jar build/examples/**/*application_fhir+json*.json -version 4.0.1 -tx n/a -extension any | tee /tmp/validation.txt
 
+prism:
+	prism proxy specification/personal-demographics.yaml $OAUTH_BASE_URI/$PDS_BASE_PATH --errors --validate-request false
+
 publish: clean
 	mkdir -p build
 	npm run publish 2> /dev/null
@@ -82,6 +85,7 @@ release: clean publish build-proxy
 	cp -R tests dist
 	cp -R karate-tests dist
 	cp -R postman dist
+	cp -R specification dist
 
 	cp ecs-proxies-deploy.yml dist/ecs-deploy-sandbox.yml
 	cp ecs-proxies-deploy.yml dist/ecs-deploy-internal-qa-sandbox.yml
