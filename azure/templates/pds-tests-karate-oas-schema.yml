@@ -39,7 +39,7 @@ steps:
     displayName: Expose common variables
 
   - bash: |
-      make prism
+      prism proxy specification/personal-demographics.yaml $OAUTH_BASE_URI/$PDS_BASE_PATH --errors --validate-request false
     displayName: 'Start Prism Proxy Server'
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
 
