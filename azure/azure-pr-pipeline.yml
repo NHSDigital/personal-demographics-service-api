@@ -38,23 +38,22 @@ extends:
       REQUIRE_ASID: false
       RATE_LIMIT_POST: true
     apigee_deployments:
-        # - environment: internal-dev
-        #   stage_name: pytest_bdd_tests
-        #   post_deploy:
-        #     - template: templates/pds-tests.yml
-        # - environment: internal-dev
-        #   stage_name: karate_tests
-        #   post_deploy:
-        #     - template: templates/pds-tests-karate.yml
-        #   depends_on:
-        #     - pytest_bdd_tests
-
+        - environment: internal-dev
+          stage_name: pytest_bdd_tests
+          post_deploy:
+            - template: templates/pds-tests.yml
+        - environment: internal-dev
+          stage_name: karate_tests
+          post_deploy:
+            - template: templates/pds-tests-karate.yml
+          depends_on:
+            - pytest_bdd_tests
         - environment: internal-dev
           stage_name: schema_tests
           post_deploy:
             - template: templates/pds-tests-karate-oas-schema.yml
-          # depends_on:
-          #   - karate_tests
+          depends_on:
+            - karate_tests
         
         # - environment: internal-dev-sandbox
         #   proxy_path: sandbox
