@@ -11,12 +11,12 @@ class PatientsSimulation extends Simulation {
   
     protocol.runner.karateEnv("perf")
   
-    val getSpecific = scenario("getSpecific").exec(karateFeature("classpath:patients/healthcareWorker/getPatient.feature"))
-    val search = scenario("search").exec(karateFeature("classpath:patients/healthcareWorker/getPatient.feature"))
+    val unrestricted = scenario("unrestricted").exec(karateFeature("classpath:patients/healthcareWorker/getPatientDetails/getPatientByNHSNumber.feature"))
+    val sensitive = scenario("sensitive").exec(karateFeature("classpath:patients/healthcareWorker/getPatientDetails/getPatientByNHSNumber.feature"))
     
     setUp(
-      getSpecific.inject(rampUsers(100) during (10 seconds)).protocols(protocol),
-      search.inject(rampUsers(100) during (10 seconds)).protocols(protocol),
+      unrestricted.inject(rampUsers(100) during (10 seconds)).protocols(protocol),
+      sensitive.inject(rampUsers(100) during (10 seconds)).protocols(protocol),
     )
   
 }

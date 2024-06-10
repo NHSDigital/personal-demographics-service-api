@@ -23,6 +23,7 @@ Background:
 
   * url baseURL
 
+@unrestricted
 Scenario: Get an "unrestricted" patient
   * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9693632109'
   * path 'Patient', nhsNumber
@@ -40,6 +41,7 @@ Scenario: Get an "unrestricted" patient
     }
     """
 
+@sensitive
 Scenario: Get a "restricted" (sensitive) patient
   * def nhsNumber = karate.env == 'mock' ? '9000000025' : '9727022820'
   * path 'Patient', nhsNumber
