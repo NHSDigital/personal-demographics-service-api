@@ -59,9 +59,9 @@ function requestMatchesErrorScenario (request) {
 function postPatientRequestIsValid (request) {
   // check the request body has the expected structure
   let valid = true
-  if (!request.body.nhsNumberAllocation) {
+  if (!request.body.birthDate) {
     const body = context.read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')
-    body.issue[0].diagnostics = "Missing value - 'nhsNumberAllocation'"
+    body.issue[0].diagnostics = "Missing value - 'birthDate'"
     response.body = body
     response.status = 400
     valid = false
@@ -95,18 +95,16 @@ if (request.pathMatches('/Patient') && request.post) {
       patient.identifier[0].value = VALID_NHS_NUMBERS[session.nhsNumberIndex]
       session.nhsNumberIndex += 1
 
-      // set the name properties
-      patient.name[0].family = request.body.name['name.familyName']
-      patient.name[0].given = [request.body.name['name.givenName.name1']]
+      // name and address objects need an ID
+      patient.name[0] = request.body.name[0]
       patient.name[0].id = generateObjectId()
-      patient.name[0].period.start = getTodaysDate()
-      patient.name[0].prefix = [request.body.name['name.prefix']]
-
-      // set the address properties
+      patient.address[0] = request.body.address[0]
       patient.address[0].id = generateObjectId()
-      patient.address[0].line = [request.body.address['address.addr.line1']]
-      patient.address[0].period.start = getTodaysDate()
-      patient.address[0].postalCode = request.body.address['address.postalCode']
+
+      // set the other properties
+      patient.gender = request.body.gender
+      patient.birthDate = request.body.birthDate
+
       response.body = patient
       response.status = 201
     }
