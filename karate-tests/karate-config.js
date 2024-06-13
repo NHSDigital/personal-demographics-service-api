@@ -17,6 +17,19 @@ function fn() {
       clientID: java.lang.System.getenv('CLIENT_ID'),
       internalServerURL: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4'
     };
+  } else if (env == 'prism') {
+    const prismURL = 'http://127.0.0.1:4010'
+    var config = { 
+      oauth2MockURL: `${java.lang.System.getenv('OAUTH_BASE_URI')}/${java.lang.System.getenv('OAUTH_PROXY')}`,
+      pdsBasePath: `${java.lang.System.getenv('PDS_BASE_PATH')}`,      
+      baseURL: `${prismURL}`,
+      clientID: java.lang.System.getenv('CLIENT_ID'),
+      clientSecret: java.lang.System.getenv('CLIENT_SECRET'),
+      signingKey: java.lang.System.getenv('APPLICATION_RESTRICTED_SIGNING_KEY_PATH'),
+      apiKey: java.lang.System.getenv('APPLICATION_RESTRICTED_API_KEY'),
+      keyID: java.lang.System.getenv('KEY_ID'),
+      internalServerURL: `${java.lang.System.getenv('INTERNAL_SERVER_BASE_URI')}/personal-demographics/FHIR/R4`
+    };
   } else {
     var config = { 
       oauth2MockURL: `${java.lang.System.getenv('OAUTH_BASE_URI')}/${java.lang.System.getenv('OAUTH_PROXY')}`,

@@ -12,7 +12,13 @@ Scenario: All invalid params
   * params {manufacturer: "Ford", model: "focus", year: "2003" }
   * method get
   * status 400
-  * def diagnostics = "Invalid request with error - Additional properties are not allowed ('model', 'manufacturer', 'year' were unexpected)"
+  # The order of properties in the diagnostics message is not guaranteed, so we have assert the string in a roundabout way for this test
+  * def diagnostics = response.issue[0].diagnostics
+  * assert diagnostics.startsWith("Invalid request with error - Additional properties are not allowed ")
+  * assert diagnostics.includes("model")
+  * assert diagnostics.includes("manufacturer")
+  * assert diagnostics.includes("year")
+  * assert diagnostics.endsWith("were unexpected)")
   * match response == read('classpath:mocks/stubs/errorResponses/ADDITIONAL_PROPERTIES.json')
 
 Scenario: One invalid param
