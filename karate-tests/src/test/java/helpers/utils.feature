@@ -45,9 +45,20 @@ Scenario:
 
   * def randomAddress =
   """
-  function() {
+  function(earliestStartDate) {
     const addresses = karate.read('classpath:helpers/addresses.json')
-    return addresses[Math.floor(Math.random() * addresses.length)];
+    const randomAddress = addresses[Math.floor(Math.random() * addresses.length)]
+    const min = new Date(Date.parse(earliestStartDate)).getTime()
+    const max = new Date(Date.parse('2023-09-01')).getTime()
+    const addressStartDate = new Date(Math.random() * (max - min) + min).toISOString().split('T')[0]
+    const street = `${Math.floor(Math.random() * 99) + 1} ${randomAddress.street}`
+    const addressObject = {
+        period: {"start": addressStartDate},
+        use: "home",
+        postalCode: randomAddress.postalCode,
+        line: [street, randomAddress.city]
+      }
+    return addressObject
   }
   """
 

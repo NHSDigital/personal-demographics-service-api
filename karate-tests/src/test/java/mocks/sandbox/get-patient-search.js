@@ -186,7 +186,7 @@ if (request.pathMatches('/Patient') && request.get) {
       response.body = timestampBody(EMPTY_SEARCHSET)
     }
     // stubs used for the post patient tests
-    if (family === 'McMatch-Single' && postalCode === 'BAP4WG' && birthDate[0] === '1954-10-26' && gender === 'male') {
+    if (family === 'McMatch-Single' && postalCode === 'BAP 4WG' && birthDate[0] === '1954-10-26' && gender === 'male') {
       response.body = timestampBody(MOCK_SINGLE_SEARCHSET)
     }
     if (family === 'McMatch-Multiple' && postalCode === 'DN19 7UD' && birthDate[0] === '1997-08-20') {

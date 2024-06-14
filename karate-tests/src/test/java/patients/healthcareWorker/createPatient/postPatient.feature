@@ -32,15 +32,11 @@ Scenario: Post patient - new patient
   * def familyName = "ToRemove"
 
   * def givenName = ["#(faker.givenName())", "#(faker.givenName())"]
-  * def prefix = ["#(utils.randomPrefix())", "#(utils.randomPrefix())"]
+  * def prefix = ["#(utils.randomPrefix())"]
   * def gender = utils.randomGender()
   * def birthDate = utils.randomBirthDate()
-
-  * def address = utils.randomAddress()
-  * def addressStartDate = utils.randomDate(birthDate)
-  * def postalCode = address.postalCode
-  * def street = `${utils.randomInt()} ${address.street}`
-  * def address = ["#(street)", "#(address.city)", '{"hello": "world"}']
+  * def randomAddress = utils.randomAddress(birthDate)
+  * def address = ["#(randomAddress)"]
   
   * path "Patient"
   * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
@@ -51,10 +47,10 @@ Scenario: Post patient - new patient
   * def nhsNumber = response.id
   * def expectedResponse = read('classpath:patients/healthcareWorker/new-nhs-number-response-template.json')
   * match response == expectedResponse
-  * match response.address[0].line[0] == address[0]
+  * match response.address[0].line[0] == address[0].line[0]
   # the city may or may not get capitalised...
-  * match response.address[0].line[1].toUpperCase() == address[1].toUpperCase()
-  * match response.address[0].postalCode == postalCode
+  * match response.address[0].line[1].toUpperCase() == address[0].line[1].toUpperCase()
+  * match response.address[0].postalCode == address[0].postalCode
 
 Scenario: Fail to create a record for a new patient, single demographics match found
   # we rely on data that's already in the database for our existing record
@@ -64,12 +60,18 @@ Scenario: Fail to create a record for a new patient, single demographics match f
   * def prefix = ["Mr"]
   * def gender = "male"
   * def birthDate = "1954-10-26"
-  * def postalCode = "BAP 4WG"
-  * def address = ["317 Stuart Streets"]
-  * def addressStartDate = "2024-05-09"
-
+  * def address = 
+    """
+      [{
+        "period": { "start": "2024-05-09"},
+        "use": "home",
+        "postalCode": "BAP 4WG",
+        "line": ["317 Stuart Streets"]
+      }]
+    """
+    
   # we get one match in the database for these demographics
-  * def demographics = ({ family: familyName, birthdate: birthDate, gender: gender, "address-postalcode": postalCode })
+  * def demographics = ({ family: familyName, birthdate: birthDate, gender: gender, "address-postalcode": address[0].postalCode })
   * def patientSearchResults = karate.call('classpath:patients/healthcareWorker/searchForAPatient/getPatientByDemographics.feature', demographics)
   * assert patientSearchResults.response.total == 1
 
@@ -90,12 +92,17 @@ Scenario: Fail to create a record for a new patient, multiple demographics match
   * def familyName = "McMatch-Multiple"
   * def gender = "male"
   * def birthDate = "1997-08-20"
-  * def postalCode = "DN19 7UD"
-  * def address = ["1 Jasmine Court"]
-  * def addressStartDate = "2024-03-19"
-
+  * def address = 
+    """
+      [{
+          "period": { "start": "2024-03-19"},
+          "use": "home",
+          "postalCode": "DN19 7UD",
+          "line": ["1 Jasmine Court"]
+        }]
+    """
   # we get two matches in the database for these demographics
-  * def demographics = ({ given: givenName, family: familyName, birthdate: birthDate, gender: gender, "address-postalcode": postalCode })
+  * def demographics = ({ given: givenName, family: familyName, birthdate: birthDate, gender: gender, "address-postalcode": address[0].postalCode })
   * def patientSearchResults = karate.call('classpath:patients/healthcareWorker/searchForAPatient/getPatientByDemographics.feature', demographics)
   * assert patientSearchResults.response.total == 2
 
@@ -130,19 +137,24 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
     | { "name": { "family": "Smith" }, "address": [{ "line": ["1"] }] }                                              | gender       |
     | { "name": { "family": "Smith" }, "address": [{ "line": ["1"] }], "gender": "male" }                            | birthDate    |
 
-  Scenario Outline: Negative path: invalid value in request body - <invalidProperty>
+  Scenario Outline: Negative path: invalid value in request body - <property>
     # this is not an exhaustive test of all possible invalid values - see the integration tests for this
     # we're really just proving a few of the main properties here
-    * def givenName = property == "givenName" ? invalidValue : ["#(faker.givenName())", "#(faker.givenName())"]
+    * def validGivenName = ["#(faker.givenName())", "#(faker.givenName())"]
+    * def validBirthDate = utils.randomBirthDate()
+    * def validGender = utils.randomGender()
+    * def validAddress = ["#(utils.randomAddress(validBirthDate))"]
+    
+    # so we can put an array in the examples table and pass it as an array instead of a string,
+    # convert the values to json as standard.
+    * json jsonValue = invalidValue
+
+    * def givenName = property == "givenName" ? jsonValue : validGivenName
+    * def familyName = "ToRemove"
     * def prefix = ["#(utils.randomPrefix())"]
-    * def gender = property == "gender" ? invalidValue : utils.randomGender()
-    * def birthDate = property == "birthDate" ? invalidValue : utils.randomBirthDate()
-  
-    * def address = property == "address" ? invalidValue : utils.randomAddress()
-    * def addressStartDate = utils.randomBirthDate()
-    * def postalCode = address.postalCode
-    * def street = `${utils.randomInt()} ${address.street}`
-    * def address = ["#(street)", "#(address.city)", '{"hello": "world"}']
+    * def gender = property == "gender" ? jsonValue : validGender
+    * def birthDate = property == "birthDate" ? jsonValue : validBirthDate
+    * def address = property == "address" ? jsonValue : validAddress
     
     * path "Patient"
     * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
@@ -154,9 +166,9 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
     * match response == read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')
   
     Examples:
-      | property            | invalidValue      | diagnostics                                                 |
-      | givenName           | not an array      | Invalid value - 'not an array' in field 'name/0/given'      |
-      | address             | [not, an, object] | Invalid value - 'None' in field 'address/0/postalCode'      |
-      | gender              | notAValidOption   | Invalid value - 'notAValidOption' in field 'gender'         |
-      | birthDate           | not-a-date        | Invalid value - 'not-a-date' in field 'birthDate'           | 
+      | property            | invalidValue                | diagnostics                                                 |
+      | givenName           | not an array                | Invalid value - 'not an array' in field 'name/0/given'      |
+      | address             | ['not', 'an', 'object']     | Invalid value - 'not' in field 'address/0'                  |
+      | gender              | notAValidOption             | Invalid value - 'notAValidOption' in field 'gender'         |
+      | birthDate           | not-a-date                  | Invalid value - 'not-a-date' in field 'birthDate'           | 
       

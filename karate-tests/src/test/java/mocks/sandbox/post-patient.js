@@ -23,15 +23,6 @@ function generateObjectId () {
   return Math.random().toString(16).substr(2, 8).toUpperCase()
 }
 
-function getTodaysDate () {
-  // returns today's date in the format YYYY-MM-DD
-  const today = new Date()
-  const year = today.getFullYear()
-  const month = today.getMonth() + 1
-  const day = today.getDate()
-  return `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`
-}
-
 const NEW_PATIENT = context.read('classpath:mocks/stubs/postPatientResponses/new_patient.json')
 const SINGLE_MATCH = context.read('classpath:mocks/stubs/postPatientResponses/SINGLE_MATCH_FOUND.json')
 const MULTIPLE_MATCHES = context.read('classpath:mocks/stubs/postPatientResponses/MULTIPLE_MATCHES_FOUND.json')
@@ -42,9 +33,9 @@ function requestMatchesErrorScenario (request) {
   // logic of the real system, just a simple check that will demonstrate the behaviour when specific
   // data is sent in the request.
   let match = false
-  const family = request.body.name['name.familyName']
-  const postalCode = request.body.address['address.postalCode']
-  if (family === 'McMatch-Single' && postalCode === 'BAP4WG') {
+  const family = request.body.name[0].family
+  const postalCode = request.body.address[0].postalCode
+  if (family === 'McMatch-Single' && postalCode === 'BAP 4WG') {
     const body = JSON.parse(JSON.stringify(SINGLE_MATCH))
     body.issue[0].diagnostics = 'Unable to create new patient. NHS number 5900054586 found for supplied demographic data.'
     response.body = body
@@ -58,10 +49,45 @@ function requestMatchesErrorScenario (request) {
 
 function postPatientRequestIsValid (request) {
   // check the request body has the expected structure
+  let missingValue = false
+  let invalidValue = false
   let valid = true
-  if (!request.body.birthDate) {
+  let diagnostics = ''
+  if (!request.body.name) {
+    diagnostics = "Missing value - 'name'"
+    missingValue = true
+  } else if (!request.body.address) {
+    diagnostics = "Missing value - 'address'"
+    missingValue = true
+  } else if (!request.body.gender) {
+    diagnostics = "Missing value - 'gender'"
+    missingValue = true
+  } else if (!request.body.birthDate) {
+    diagnostics = "Missing value - 'birthDate'"
+    missingValue = true
+  } else if (!Array.isArray(request.body.name[0].given)) {
+    diagnostics = "Invalid value - 'not an array' in field 'name/0/given'"
+    invalidValue = true
+  } else if (typeof request.body.address[0] !== 'object') {
+    diagnostics = `Invalid value - '${request.body.address[0]}' in field 'address/0'`
+    invalidValue = true
+  } else if (!['male', 'female', 'other', 'unknown'].includes(request.body.gender)) {
+    diagnostics = "Invalid value - 'notAValidOption' in field 'gender'"
+    invalidValue = true
+  } else if (!request.body.birthDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    diagnostics = "Invalid value - 'not-a-date' in field 'birthDate'"
+    invalidValue = true
+  }
+
+  if (missingValue) {
     const body = context.read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')
-    body.issue[0].diagnostics = "Missing value - 'birthDate'"
+    body.issue[0].diagnostics = diagnostics
+    response.body = body
+    response.status = 400
+    valid = false
+  } else if (invalidValue) {
+    const body = context.read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')
+    body.issue[0].diagnostics = diagnostics
     response.body = body
     response.status = 400
     valid = false

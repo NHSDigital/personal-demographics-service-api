@@ -8,14 +8,7 @@
       "period": {"start": "#(birthDate)"}
     }
   ],
-  "address": [
-    {
-      "period": {"start": "#(addressStartDate)"},
-      "use": "home",
-      "postalCode": "#(postalCode)",
-      "line": "#(address)"
-    }
-  ],
+  "address": "#(address)",
   "gender": "#(gender)",
   "birthDate": "#(birthDate)",
   "extension": [
