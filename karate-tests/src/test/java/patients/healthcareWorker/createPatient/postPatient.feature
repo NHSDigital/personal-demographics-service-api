@@ -1,4 +1,4 @@
-@sandbox @no-oas @ignore
+@sandbox @no-oas
 Feature: Create a patient - Healthcare worker access mode
 
 Note the use of the Karate retry functionality in this feature:
