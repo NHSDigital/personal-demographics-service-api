@@ -170,5 +170,4 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
       | givenName           | not an array                | Invalid value - 'not an array' in field 'name/0/given'      |
       | address             | ['not', 'an', 'object']     | Invalid value - 'not' in field 'address/0'                  |
       | gender              | notAValidOption             | Invalid value - 'notAValidOption' in field 'gender'         |
-      | birthDate           | not-a-date                  | Invalid value - 'not-a-date' in field 'birthDate'           | 
-      
+      | birthDate           | not-a-date                  | Invalid value - 'not-a-date' in field 'birthDate'           |
