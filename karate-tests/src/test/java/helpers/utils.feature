@@ -56,7 +56,7 @@ Scenario:
         period: {"start": addressStartDate},
         use: "home",
         postalCode: randomAddress.postalCode,
-        line: [street, randomAddress.city]
+        line: ["", street, "", randomAddress.city, ""]
       }
     return addressObject
   }

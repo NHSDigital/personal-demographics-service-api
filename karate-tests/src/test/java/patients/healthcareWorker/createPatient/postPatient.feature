@@ -27,10 +27,11 @@ Background:
   * configure headers = requestHeaders  
   * url baseURL
 
-Scenario: Post patient - new patient
-  # Don't change the familyName - this is used by a batch job that cleans up the system database
+  # Use this family name if the test is going to create patients - this is used by a batch job that cleans up the system database
   * def familyName = "ToRemove"
 
+  
+Scenario: Post patient - new patient
   * def givenName = ["#(faker.givenName())", "#(faker.givenName())"]
   * def prefix = ["#(utils.randomPrefix())"]
   * def gender = utils.randomGender()
@@ -47,9 +48,11 @@ Scenario: Post patient - new patient
   * def nhsNumber = response.id
   * def expectedResponse = read('classpath:patients/healthcareWorker/new-nhs-number-response-template.json')
   * match response == expectedResponse
-  * match response.address[0].line[0] == address[0].line[0]
+  # In our request body, we send an array of address lines that include blank lines (" ") - but in the response, blank lines are removed,
+  # so the array is shorter. We need to account for this in our match statement.
+  * match response.address[0].line[0] == address[0].line[1]
   # the city may or may not get capitalised...
-  * match response.address[0].line[1].toUpperCase() == address[0].line[1].toUpperCase()
+  * match response.address[0].line[1].toUpperCase() == address[0].line[3].toUpperCase()
   * match response.address[0].postalCode == address[0].postalCode
 
 Scenario: Fail to create a record for a new patient, single demographics match found
@@ -66,7 +69,7 @@ Scenario: Fail to create a record for a new patient, single demographics match f
         "period": { "start": "2024-05-09"},
         "use": "home",
         "postalCode": "BAP 4WG",
-        "line": ["317 Stuart Streets"]
+        "line": ["", "317 Stuart Streets", "", "Glasgow"]
       }]
     """
     
@@ -171,3 +174,28 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
       | address             | ['not', 'an', 'object']     | Invalid value - 'not' in field 'address/0'                  |
       | gender              | notAValidOption             | Invalid value - 'notAValidOption' in field 'gender'         |
       | birthDate           | not-a-date                  | Invalid value - 'not-a-date' in field 'birthDate'           |
+
+  Scenario: Negative path: invalid "line" array defined as part of address
+    * def givenName = ["#(faker.givenName())", "#(faker.givenName())"]
+    * def prefix = ["#(utils.randomPrefix())"]
+    * def gender = utils.randomGender()
+    * def birthDate = utils.randomBirthDate()
+    * def validAddress = utils.randomAddress(birthDate)
+  
+    # our "validAddress" has a valid array for the "line" property. let's change that.
+    # we only want one item in the array
+    * def invalidLine = validAddress.line[1]
+    * copy invalidAddress = validAddress
+    * set invalidAddress.line = [invalidLine]
+    * def address = ["#(invalidAddress)"]
+    
+    # you can't create a new patient if the line property doesn't match the spec
+    * path "Patient"
+    * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
+    * configure retry = { count: 5, interval: 5000 }
+    * retry until responseStatus != 429 && responseStatus != 503
+    * method post
+    * status 400
+    * def diagnostics = "Invalid patient create data provided - 'address lines 1 and 4 or 2 and 4 must be completed as a minimum'"
+    * match response == read('classpath:mocks/stubs/errorResponses/INVALID_CREATE.json')
+  
