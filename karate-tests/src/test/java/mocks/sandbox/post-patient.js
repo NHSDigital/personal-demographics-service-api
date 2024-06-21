@@ -124,7 +124,12 @@ if (request.pathMatches('/Patient') && request.post) {
       // name and address objects need an ID
       patient.name[0] = request.body.name[0]
       patient.name[0].id = generateObjectId()
+
+      // in the address object, the line property is an array that can contain blank strings. For the response,
+      // the blank strings are removed.
+      const line = request.body.address[0].line.filter((line) => line !== '')
       patient.address[0] = request.body.address[0]
+      patient.address[0].line = line
       patient.address[0].id = generateObjectId()
 
       // set the other properties

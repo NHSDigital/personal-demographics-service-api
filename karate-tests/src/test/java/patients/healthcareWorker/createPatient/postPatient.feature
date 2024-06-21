@@ -1,4 +1,4 @@
-@sandbox @no-oas
+@no-oas
 Feature: Create a patient - Healthcare worker access mode
 
 Note the use of the Karate retry functionality in this feature:
@@ -31,6 +31,7 @@ Background:
   * def familyName = "ToRemove"
 
   
+@sandbox 
 Scenario: Post patient - new patient
   * def givenName = ["#(faker.givenName())", "#(faker.givenName())"]
   * def prefix = ["#(utils.randomPrefix())"]
@@ -55,6 +56,7 @@ Scenario: Post patient - new patient
   * match response.address[0].line[1].toUpperCase() == address[0].line[3].toUpperCase()
   * match response.address[0].postalCode == address[0].postalCode
 
+@sandbox 
 Scenario: Fail to create a record for a new patient, single demographics match found
   # we rely on data that's already in the database for our existing record
   * def nhsNumber = "5900054586"
@@ -89,6 +91,7 @@ Scenario: Fail to create a record for a new patient, single demographics match f
   * status 200
   * match response == read('classpath:mocks/stubs/postPatientResponses/SINGLE_MATCH_FOUND.json')
 
+@sandbox 
 Scenario: Fail to create a record for a new patient, multiple demographics matches found
   # we rely on data that's already in the database for our existing records
   * def givenName = ["Leandro", "Gerry"]
@@ -123,6 +126,7 @@ Scenario: Fail to create a record for a new patient, multiple demographics match
   * status 200
   * match response == read('classpath:mocks/stubs/postPatientResponses/MULTIPLE_MATCHES_FOUND.json')
 
+@sandbox 
 Scenario Outline: Negative path: missing value in request body - missing <missingValue>
   * path "Patient"
   * request payload
@@ -140,6 +144,7 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
     | { "name": { "family": "Smith" }, "address": [{ "line": ["1"] }] }                                              | gender       |
     | { "name": { "family": "Smith" }, "address": [{ "line": ["1"] }], "gender": "male" }                            | birthDate    |
 
+  @sandbox 
   Scenario Outline: Negative path: invalid value in request body - <property>
     # this is not an exhaustive test of all possible invalid values - see the integration tests for this
     # we're really just proving a few of the main properties here
@@ -175,7 +180,8 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
       | gender              | notAValidOption             | Invalid value - 'notAValidOption' in field 'gender'         |
       | birthDate           | not-a-date                  | Invalid value - 'not-a-date' in field 'birthDate'           |
 
-  Scenario: Negative path: invalid "line" array defined as part of address
+    
+    Scenario: Negative path: invalid "line" array defined as part of address
     * def givenName = ["#(faker.givenName())", "#(faker.givenName())"]
     * def prefix = ["#(utils.randomPrefix())"]
     * def gender = utils.randomGender()
