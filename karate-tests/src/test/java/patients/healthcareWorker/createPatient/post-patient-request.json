@@ -8,7 +8,7 @@
       "period": {"start": "#(birthDate)"}
     }
   ],
-  "address": "#(address)",
+  "address": ["#(address)"],
   "gender": "#(gender)",
   "birthDate": "#(birthDate)",
   "extension": [

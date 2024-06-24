@@ -68,7 +68,10 @@ function postPatientRequestIsValid (request) {
   } else if (!Array.isArray(request.body.name[0].given)) {
     diagnostics = "Invalid value - 'not an array' in field 'name/0/given'"
     invalidValue = true
-  } else if (typeof request.body.address[0] !== 'object') {
+  } else if (Array.isArray(request.body.address[0])) {
+    diagnostics = `Invalid value - '${JSON.stringify(request.body.address[0]).replace(/"/g, "'").replace(/','/g, "', '")}' in field 'address/0'`
+    invalidValue = true
+  } else if (typeof request.body.address[0] !== 'object' || Array.isArray(request.body.address[0])) {
     diagnostics = `Invalid value - '${request.body.address[0]}' in field 'address/0'`
     invalidValue = true
   } else if (!['male', 'female', 'other', 'unknown'].includes(request.body.gender)) {

@@ -38,7 +38,7 @@ Scenario: Post patient - new patient
   * def gender = utils.randomGender()
   * def birthDate = utils.randomBirthDate()
   * def randomAddress = utils.randomAddress(birthDate)
-  * def address = ["#(randomAddress)"]
+  * def address = randomAddress
   
   * path "Patient"
   * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
@@ -51,10 +51,10 @@ Scenario: Post patient - new patient
   * match response == expectedResponse
   # In our request body, we send an array of address lines that include blank lines (" ") - but in the response, blank lines are removed,
   # so the array is shorter. We need to account for this in our match statement.
-  * match response.address[0].line[0] == address[0].line[1]
+  * match response.address[0].line[0] == address.line[1]
   # the city may or may not get capitalised...
-  * match response.address[0].line[1].toUpperCase() == address[0].line[3].toUpperCase()
-  * match response.address[0].postalCode == address[0].postalCode
+  * match response.address[0].line[1].toUpperCase() == address.line[3].toUpperCase()
+  * match response.address[0].postalCode == address.postalCode
 
 @sandbox 
 Scenario: Fail to create a record for a new patient, single demographics match found
@@ -67,16 +67,16 @@ Scenario: Fail to create a record for a new patient, single demographics match f
   * def birthDate = "1954-10-26"
   * def address = 
     """
-      [{
-        "period": { "start": "2024-05-09"},
-        "use": "home",
-        "postalCode": "BAP 4WG",
-        "line": ["", "317 Stuart Streets", "", "Glasgow"]
-      }]
+    {
+      "period": { "start": "2024-05-09"},
+      "use": "home",
+      "postalCode": "BAP 4WG",
+      "line": ["", "317 Stuart Streets", "", "Glasgow"]
+    }
     """
     
   # we get one match in the database for these demographics
-  * def demographics = ({ family: familyName, birthdate: birthDate, gender: gender, "address-postalcode": address[0].postalCode })
+  * def demographics = ({ family: familyName, birthdate: birthDate, gender: gender, "address-postalcode": address.postalCode })
   * def patientSearchResults = karate.call('classpath:patients/healthcareWorker/searchForAPatient/getPatientByDemographics.feature', demographics)
   * assert patientSearchResults.response.total == 1
 
@@ -100,15 +100,15 @@ Scenario: Fail to create a record for a new patient, multiple demographics match
   * def birthDate = "1997-08-20"
   * def address = 
     """
-      [{
-          "period": { "start": "2024-03-19"},
-          "use": "home",
-          "postalCode": "DN19 7UD",
-          "line": ["1 Jasmine Court"]
-        }]
+    {
+      "period": { "start": "2024-03-19"},
+      "use": "home",
+      "postalCode": "DN19 7UD",
+      "line": ["1 Jasmine Court"]
+    }
     """
   # we get two matches in the database for these demographics
-  * def demographics = ({ given: givenName, family: familyName, birthdate: birthDate, gender: gender, "address-postalcode": address[0].postalCode })
+  * def demographics = ({ given: givenName, family: familyName, birthdate: birthDate, gender: gender, "address-postalcode": address.postalCode })
   * def patientSearchResults = karate.call('classpath:patients/healthcareWorker/searchForAPatient/getPatientByDemographics.feature', demographics)
   * assert patientSearchResults.response.total == 2
 
@@ -151,7 +151,7 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
     * def validGivenName = ["#(faker.givenName())", "#(faker.givenName())"]
     * def validBirthDate = utils.randomBirthDate()
     * def validGender = utils.randomGender()
-    * def validAddress = ["#(utils.randomAddress(validBirthDate))"]
+    * def validAddress = utils.randomAddress(validBirthDate)
     
     # so we can put an array in the examples table and pass it as an array instead of a string,
     # convert the values to json as standard.
@@ -176,7 +176,7 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
     Examples:
       | property            | invalidValue                | diagnostics                                                 |
       | givenName           | not an array                | Invalid value - 'not an array' in field 'name/0/given'      |
-      | address             | ['not', 'an', 'object']     | Invalid value - 'not' in field 'address/0'                  |
+      | address             | ['another', 'array']        | Invalid value - '['another', 'array']' in field 'address/0' |
       | gender              | notAValidOption             | Invalid value - 'notAValidOption' in field 'gender'         |
       | birthDate           | not-a-date                  | Invalid value - 'not-a-date' in field 'birthDate'           |
 
@@ -193,7 +193,7 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
     * def invalidLine = validAddress.line[1]
     * copy invalidAddress = validAddress
     * set invalidAddress.line = [invalidLine]
-    * def address = ["#(invalidAddress)"]
+    * def address = invalidAddress
     
     # you can't create a new patient if the line property doesn't match the spec
     * path "Patient"
