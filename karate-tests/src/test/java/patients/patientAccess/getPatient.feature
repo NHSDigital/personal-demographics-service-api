@@ -32,7 +32,7 @@ Feature: Patient Access (Retrieve)
     * match response == Patient
 
   Scenario Outline: P0 and P5 users can authenticate but can't retrieve their own details (<patientType> example)
-    * def accessToken = karate.callSingle('classpath:patients/healthcareWorker/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
+    * def accessToken = karate.call('classpath:patients/healthcareWorker/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
     * configure headers = requestHeaders
     * path 'Patient', nhsNumber
@@ -49,7 +49,7 @@ Feature: Patient Access (Retrieve)
       | P5          | 9912003072  |
 
   Scenario: P9 Patient can't retrieve details of another patient
-    * def accessToken = karate.callSingle('classpath:patients/healthcareWorker/auth-redirect.feature', {userID: p5number, scope: 'nhs-login'}).accessToken
+    * def accessToken = karate.call('classpath:patients/healthcareWorker/auth-redirect.feature', {userID: p5number, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
     * configure headers = requestHeaders
     * path 'Patient', p5number
@@ -59,7 +59,7 @@ Feature: Patient Access (Retrieve)
     * def display = 'Patient cannot perform this action'
     * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
     * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
-    
+
     # Scenario: Patient attempts to search for a patient
     #     Given I am a P9 user
     #     And scope added to product
