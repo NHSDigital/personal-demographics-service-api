@@ -29,17 +29,18 @@ Scenario Outline: Auth errors: patient <operation> - <diagnostics>
   * method get
   * status 401
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders) 
-  * def expectedResponse = read(`classpath:mocks/stubs/errorResponses/${errorResponse}.json`)
+  * def display = 'Access Denied - Unauthorised'
+  * def expectedResponse = read(`classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json`)
   * match response == expectedResponse
 
   Examples:
-    | operation    | headerValue                | diagnostics                    | errorResponse   |
-    | get          |                            | Missing Authorization header   | ACCESS_DENIED   |
-    | search       |                            | Missing Authorization header   | ACCESS_DENIED   |
-    | get          | Bearer                     | Missing access token           | ACCESS_DENIED   |
-    | search       | Bearer                     | Missing access token           | ACCESS_DENIED   |
-    | get          | Bearer abcdef123456789     | Invalid Access Token           | ACCESS_DENIED   |
-    | search       | Bearer abcdef123456789     | Invalid Access Token           | ACCESS_DENIED   |
+    | operation    | headerValue                | diagnostics                    |
+    | get          |                            | Missing Authorization header   |
+    | search       |                            | Missing Authorization header   |
+    | get          | Bearer                     | Missing access token           |
+    | search       | Bearer                     | Missing access token           |
+    | get          | Bearer abcdef123456789     | Invalid Access Token           |
+    | search       | Bearer abcdef123456789     | Invalid Access Token           |
 
 Scenario Outline: x-request-id errors: patient <operation> - <diagnostics> 
   * def query = operation == 'search' ? { family: "Capon", gender: "male", birthdate: "eq1953-05-29" } : null
