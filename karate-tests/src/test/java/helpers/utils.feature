@@ -6,7 +6,7 @@ A collection of utility functions for generating, validating and manipulating da
 Scenario:
   # data generators
   * def randomUUID = function(){ return java.util.UUID.randomUUID() + '' }
-  * def randomInt = function() { return Math.floor(Math.random() * 999) + 1 }
+  * def randomInt = function() { return Math.floor(Math.random() * 99) + 1 }
   * def randomString = 
     """
     function(length) {
@@ -32,6 +32,52 @@ Scenario:
     }
     """
 
+  * def randomDate = 
+    """
+    function(earliest) {
+      const min = new Date(Date.parse(earliest)).getTime()
+      const max = new Date(Date.parse('2023-09-01')).getTime()
+      const randomValue = Math.random() * (max - min) + min
+      const randomDate = new Date(randomValue)
+      return randomDate.toISOString().split('T')[0]
+    }
+    """
+
+  * def randomAddress =
+  """
+  function(earliestStartDate) {
+    const addresses = karate.read('classpath:helpers/addresses.json')
+    const randomAddress = addresses[Math.floor(Math.random() * addresses.length)]
+    const min = new Date(Date.parse(earliestStartDate)).getTime()
+    const max = new Date(Date.parse('2023-09-01')).getTime()
+    const addressStartDate = new Date(Math.random() * (max - min) + min).toISOString().split('T')[0]
+    const street = `${Math.floor(Math.random() * 99) + 1} ${randomAddress.street}`
+    const addressObject = {
+        period: {"start": addressStartDate},
+        use: "home",
+        postalCode: randomAddress.postalCode,
+        line: ["", street, "", randomAddress.city, ""]
+      }
+    return addressObject
+  }
+  """
+
+  * def randomGender = 
+  """
+  function() {
+    const genders = ['male', 'female', 'other', 'unknown']
+    return genders[Math.floor(Math.random() * genders.length)];
+  }
+  """
+
+  * def randomPrefix = 
+  """
+  function() {
+    const prefixes = ['Mr', 'Mrs', 'Miss', 'Ms', 'Dr', 'Prof', 'Rev', 'Sir', 'Lady', 'Lord']
+    return prefixes[Math.floor(Math.random() * prefixes.length)];
+  }
+  """
+  
   # data validators
   * def isTodaysDate = 
     """
@@ -104,14 +150,6 @@ Scenario:
         validRequestID = requestID == karate.response.header('x-request-id')  
       }
       return validRequestID
-      /*
-      if (!(correlationID === null) || !(correlationID === '')) { 
-        validCorrelationID == correlationID === karate.response.header('x-correlation-id')
-      } else {
-        validCorrelationID = karate.response.header('x-correlation-id') == null
-      }
-      return validRequestID && validCorrelationID
-      */
     }
     """
   

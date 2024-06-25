@@ -156,8 +156,7 @@ You'll see output in your terminal to suggest the sandbox is running properly (o
 
 As with other tests, the CI process takes place on both Github and Azure DevOps (ADO). 
 
-- In `.github/workflows/continuous-integration-workflow.yaml` you'll find the steps that are run on Github relating to installing Java and Maven.
-- In the `Makefile`, a vital thing to note is how in the `release` operation we copy the `karate-tests` folder (`cp -R karate-tests dist`). This `release` step essentially builds the folder structure in ADO, so to be able to run the Karate tests it is vital to copy the `karate-tests` folder.
+- In the `Makefile`, a vital thing to note is how in the `release` operation we copy the `karate-tests` folder (`cp -R karate-tests dist`). This `release` step essentially builds the folder structure in ADO (via the `apigee-build.yml` script), so to be able to run the Karate tests it is vital to copy the `karate-tests` folder.
 - In `azure/azure-pr-pipeline` you'll find the definition of the `karate-tests` stage that is run in ADO as part of the `build` pipeline. As with the other stages of the build, the `karate-tests` stage is in the `apigee_deployments` section:
 ```yaml
 - environment: internal-dev
