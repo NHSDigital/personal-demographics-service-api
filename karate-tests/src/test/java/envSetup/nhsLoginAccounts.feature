@@ -4,7 +4,7 @@ Feature: NHS Login accounts
 
     https://nhsd-confluence.digital.nhs.uk/display/APM/Testing+with+mock+auth#Testingwithmockauth-NHSLogintestusers
     
-    This feature simply validates that we can log in as these users.
+    This feature simply demonstrates how these users are currently configured in the system under test
 
   Background:
     * def utils = call read('classpath:helpers/utils.feature')
@@ -24,7 +24,7 @@ Feature: NHS Login accounts
 
   Scenario Outline: P9 patients that can authenticate using nhs-login (<nhsNumber> <family> <given>)
     # all of the p9 patients listed in the doc can authenticate using nhs-login
-    * def accessToken = karate.call('classpath:patients/healthcareWorker/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * assert accessToken != null
 
     Examples:
@@ -40,11 +40,10 @@ Feature: NHS Login accounts
       | 9446041481    | DENIS     | Forest    | 
       | 5900110915    | NICHOLSEN | GARFIELD  |
 
-
   Scenario Outline: P9 patients that have corresponding patient objects (<given> <family> example)
     # but only two of them have a corresponding patient object
-    * def accessToken = karate.call('classpath:patients/healthcareWorker/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
-    * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders 
     * path 'Patient', nhsNumber
     * method get
@@ -59,8 +58,8 @@ Feature: NHS Login accounts
 
   Scenario Outline: P9 patients that don't have corresponding patient objects (<nhsNumber> <family> <given>)
     # the rest of them don't have corresponding patient objects...
-    * def accessToken = karate.call('classpath:patients/healthcareWorker/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
-    * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders 
     * path 'Patient', nhsNumber
     * method get
@@ -76,4 +75,3 @@ Feature: NHS Login accounts
       | 9462767270    | LOGAN     | KIERAN    | 
       | 9446041481    | DENIS     | Forest    | 
       | 5900110915    | NICHOLSEN | GARFIELD  |
-

@@ -13,14 +13,14 @@ Feature: Invalid request headers
 Background:
   * def utils = call read('classpath:helpers/utils.feature')  
   * def nhsNumber = '9693632109'
-  * def accessToken = karate.callSingle('classpath:patients/healthcareWorker/auth-redirect.feature').accessToken
+  * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
   * url baseURL
 
 Scenario Outline: Auth errors: patient <operation> - <diagnostics> 
   * def query = operation == 'search' ? { family: "Capon", gender: "male", birthdate: "eq1953-05-29" } : null
   * def target = operation == 'search' ? 'Patient' : `Patient/${nhsNumber}`
   
-  * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+  * def requestHeaders = call read('classpath:auth/auth-headers.js')
   * requestHeaders.authorization = headerValue
   * configure headers = requestHeaders
   
@@ -46,7 +46,7 @@ Scenario Outline: x-request-id errors: patient <operation> - <diagnostics>
   * def query = operation == 'search' ? { family: "Capon", gender: "male", birthdate: "eq1953-05-29" } : null
   * def target = operation == 'search' ? 'Patient' : `Patient/${nhsNumber}`
 
-  * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+  * def requestHeaders = call read('classpath:auth/auth-headers.js')
   * requestHeaders['x-request-id'] = headerValue
   * configure headers = requestHeaders
   

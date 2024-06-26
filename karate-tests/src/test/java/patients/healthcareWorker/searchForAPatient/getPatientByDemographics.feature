@@ -14,8 +14,8 @@ Feature: Get (search for) patients based on demographics data
     * json patientSearchResultEntry = karate.readAsString('classpath:patients/healthcareWorker/searchForAPatient/schemas/patientSearchResultEntry.json')
   
     # auth
-    * def accessToken = karate.callSingle('classpath:patients/healthcareWorker/auth-redirect.feature').accessToken
-    * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+    * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders 
     * url baseURL
   

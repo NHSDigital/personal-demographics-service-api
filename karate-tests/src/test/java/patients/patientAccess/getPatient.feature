@@ -21,8 +21,8 @@ Feature: Patient Access (Retrieve)
     * def p0number = '9912003073'
 
   Scenario: P9 Patient can authenticate and retrieve their own details
-    * def accessToken = karate.callSingle('classpath:patients/healthcareWorker/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
-    * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+    * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Patient', p9number
     * method get
@@ -32,8 +32,8 @@ Feature: Patient Access (Retrieve)
     * match response == Patient
 
   Scenario Outline: P0 and P5 users can authenticate but can't retrieve their own details (<patientType> example)
-    * def accessToken = karate.call('classpath:patients/healthcareWorker/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
-    * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Patient', nhsNumber
     * method get
@@ -49,8 +49,8 @@ Feature: Patient Access (Retrieve)
       | P5          | 9912003072  |
 
   Scenario: P9 Patient can't retrieve details of another patient
-    * def accessToken = karate.call('classpath:patients/healthcareWorker/auth-redirect.feature', {userID: p5number, scope: 'nhs-login'}).accessToken
-    * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p5number, scope: 'nhs-login'}).accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Patient', p5number
     * method get
