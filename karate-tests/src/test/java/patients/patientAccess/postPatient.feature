@@ -1,3 +1,4 @@
+@no-oas
 Feature: Patient cannot allocate an NHS number
 
 Background:

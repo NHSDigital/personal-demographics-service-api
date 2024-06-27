@@ -5,6 +5,7 @@ Feature: Patient updates their details
     * def faker = Java.type('helpers.FakerWrapper')      
     * url baseURL
     * def p9number = '9912003071'
+    * def p5number = '9912003072'
 
   Scenario: Patient cannot update their gender
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
@@ -36,43 +37,46 @@ Feature: Patient updates their details
     * method get
     * status 200
     * def originalVersion = parseInt(response.meta.versionId)
+    * def originalEtag = karate.response.header('etag')
+    * def originalTelecom = response.telecom
 
-    * def newTelecom = { "period": { "start": "#(utils.todaysDate())" }, "system": "phone", "use": "mobile", "value": "#(faker.phoneNumber())" }
-
+    # patient can't remove their telecom entries
     * configure headers = call read('classpath:auth/auth-headers.js') 
     * header Content-Type = "application/json-patch+json"
-    * header If-Match = karate.response.header('etag')
+    * header If-Match = originalEtag
     * path 'Patient', p9number
-    * request 
-      """
-        {"patches": [
-          { "op":"test","path":"/telecom/0/id","value":"#(response.telecom[0].id)" }, 
-          { "op": "remove", "path": "/telecom/0" },
-          { "op": "add", "path": "/telecom/-", "value": "#(newTelecom)" }
-        ]}
-      """
+    * request { "patches": [{ "op": "test", "path": "/telecom/0/id", "value": "#(response.telecom[0].id)" }, { "op": "remove", "path": "/telecom/0"} ]}
+    * method patch
+    * status 400
+    
+    # "replace" will update the telecom object we identify
+    * configure headers = call read('classpath:auth/auth-headers.js') 
+    * header Content-Type = "application/json-patch+json"
+    * header If-Match = originalEtag
+    * def newTelecom = { "id": "#(originalTelecom[0].id)", "period": { "start": "#(utils.todaysDate())" }, "system": "phone", "use": "mobile", "value": "#(faker.phoneNumber())" }
+    * request { "patches": [{ "op": "replace", "path": "/telecom/0", "value": "#(newTelecom)" }]}
+    * path 'Patient', p9number
     * method patch
     * status 200
-    * def newValue = response.gender
-    * match newValue == targetValue
-    * match parseInt(response.meta.versionId) == originalVersion + 1
+    * assert originalTelecom.length == response.telecom.length
+    * match response.telecom[*].id contains originalTelecom[0].id
+    * def updatedObject = karate.jsonPath(response, "$.telecom[?(@.id=='" + originalTelecom[0].id + "')]")
+    * match updatedObject[0] == newTelecom
 
-
-  # Scenario: Patient cannot update another patient
-  #   Given I am a P9 user
-  #   And scope added to product
-  #   And I have another patient's NHS number
-
-  #   When I update another patient's PDS record
-
-  #   Then I get a 403 HTTP response code
-  #   And Patient cannot perform this action is at issue[0].details.coding[0].display in the response body
- 
-  # Scenario: Patient update uses incorrect path
-  #   Given I am a P9 user
-  #   And scope added to product
-
-  #   When I update another patient's PDS record using an incorrect path
-
-  #   Then I get a 403 HTTP response code
-  #   And Patient cannot perform this action is at issue[0].details.coding[0].display in the response body
+  Scenario: Patient cannot update another patient
+    # same "replace" operation as in previous test, but this time on a different patient
+    # just as a patient can't get another patient, they can't patch another patient either
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders
+    * header Content-Type = "application/json-patch+json"
+    * header If-Match = "W/\"1\""
+    * def newTelecom = { "id": "#(originalTelecom[0].id)", "period": { "start": "#(utils.todaysDate())" }, "system": "phone", "use": "mobile", "value": "#(faker.phoneNumber())" }
+    * request { "patches": [{ "op": "replace", "path": "/telecom/0", "value": "#(newTelecom)" }]}
+    * path 'Patient', p5number
+    * method patch
+    * status 403
+    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+    * def display = 'Patient cannot perform this action'
+    * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
+    * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')

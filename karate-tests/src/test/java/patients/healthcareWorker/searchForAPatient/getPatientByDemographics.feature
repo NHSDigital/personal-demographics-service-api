@@ -11,6 +11,7 @@ Feature: Get (search for) patients based on demographics data
     * json Address = karate.readAsString('classpath:schemas/Address.json')
     * json HumanName = karate.readAsString('classpath:schemas/HumanName.json')
     * json Patient = karate.readAsString('classpath:schemas/Patient.json')
+    * json ContactPoint = karate.readAsString('classpath:schemas/ContactPoint.json')
     * json patientSearchResultEntry = karate.readAsString('classpath:patients/healthcareWorker/searchForAPatient/schemas/patientSearchResultEntry.json')
   
     # auth
