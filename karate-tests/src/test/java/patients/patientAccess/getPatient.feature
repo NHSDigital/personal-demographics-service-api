@@ -49,8 +49,7 @@ Feature: Patient Access (Retrieve)
       | P5          | 9912003072  |
 
   Scenario: P9 Patient can't retrieve details of another patient
-    
-    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p5number, scope: 'nhs-login'}).accessToken
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Patient', p5number
@@ -61,12 +60,15 @@ Feature: Patient Access (Retrieve)
     * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
     * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
 
-    Scenario: Patient attempts to search for a patient
-        Given I am a P9 user
-        And scope added to product
-    
-        When I search for a patient's PDS record
-
-        Then I get a 403 HTTP response code
-        And ACCESS_DENIED is at issue[0].details.coding[0].code in the response body
-        And Patient cannot perform this action is at issue[0].details.coding[0].display in the response body
+  Scenario: P9 Patient can't search for a patient (including searching for their own record)
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders
+    * path 'Patient'
+    * params { family: 'Bobins', gender: 'male', birthDate: "eq2008-06-03" }
+    * method get
+    * status 403
+    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+    * def display = 'Patient cannot perform this action'
+    * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
+    * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
