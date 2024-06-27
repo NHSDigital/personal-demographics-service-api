@@ -1,12 +1,29 @@
 Feature: Patient cannot allocate an NHS number
 
-Scenario: A patient cannot allocate an NHS number
-    Given I am a P9 user
-    And scope added to product
-    
-    When I request an NHS number allocation
+Background:
+    * def utils = call read('classpath:helpers/utils.feature')
+    * def faker = Java.type('helpers.FakerWrapper')      
+    * url baseURL
 
-    Then I get a 403 HTTP response code
-    And INVALID_METHOD is at issue[0].details.coding[0].code in the response body
-    And Cannot create resource with patient-access access token is at issue[0].details.coding[0].display in the response body
-    And Your app has insufficient permissions to use this method. Please contact support. is at issue[0].diagnostics in the response body
+Scenario: A patient cannot allocate an NHS number
+    * def p9number = '9912003071'
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders
+    * def givenName = ["#(faker.givenName())", "#(faker.givenName())"]
+    * def familyName = "ToRemove"
+    * def prefix = ["#(utils.randomPrefix())"]
+    * def gender = utils.randomGender()
+    * def birthDate = utils.randomBirthDate()
+    * def randomAddress = utils.randomAddress(birthDate)
+    * def address = randomAddress
+    
+    * path "Patient"
+    * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
+    * configure retry = { count: 5, interval: 5000 }
+    * retry until responseStatus != 429 && responseStatus != 503
+    * method post
+    * status 403
+    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+    * def display = 'Cannot create resource with patient-access access token'
+    * match response == read('classpath:mocks/stubs/errorResponses/INVALID_METHOD.json')
