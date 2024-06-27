@@ -24,7 +24,7 @@ Background:
     
   * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
   * def requestHeaders = call read('classpath:auth/auth-headers.js')
-  * configure headers = requestHeaders
+  * configure headers = requestHeaders  
   * url baseURL
 
   # Use this family name if the test is going to create patients - this is used by a batch job that cleans up the system database

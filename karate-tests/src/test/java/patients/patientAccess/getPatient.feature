@@ -49,6 +49,7 @@ Feature: Patient Access (Retrieve)
       | P5          | 9912003072  |
 
   Scenario: P9 Patient can't retrieve details of another patient
+    
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p5number, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -60,32 +61,12 @@ Feature: Patient Access (Retrieve)
     * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
     * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
 
-    # Scenario: Patient attempts to search for a patient
-    #     Given I am a P9 user
-    #     And scope added to product
+    Scenario: Patient attempts to search for a patient
+        Given I am a P9 user
+        And scope added to product
     
-    #     When I search for a patient's PDS record
+        When I search for a patient's PDS record
 
-    #     Then I get a 403 HTTP response code
-    #     And ACCESS_DENIED is at issue[0].details.coding[0].code in the response body
-    #     And Patient cannot perform this action is at issue[0].details.coding[0].display in the response body
-
-    # Scenario: Patient cannot retrieve their record with an expired token
-    #     Given I am a P9 user
-    #     And scope added to product
-    #     And I have an expired access token
-
-    #     When I retrieve my details
-
-    #     Then I get a 401 HTTP response code
-    #     And ACCESS_DENIED is at issue[0].details.coding[0].code in the response body
-    #     And Access Token expired is at issue[0].diagnostics in the response body
-
-    # Scenario: Patient can retrieve their record with a refreshed token
-    #     Given I am a P9 user
-    #     And scope added to product
-    #     And I have a refreshed access token
-
-    #     When I retrieve my details
-
-    #     Then I get a 200 HTTP response code
+        Then I get a 403 HTTP response code
+        And ACCESS_DENIED is at issue[0].details.coding[0].code in the response body
+        And Patient cannot perform this action is at issue[0].details.coding[0].display in the response body
