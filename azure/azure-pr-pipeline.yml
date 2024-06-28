@@ -37,37 +37,41 @@ extends:
       PDS_TARGET_SERVER: spine-demographics
       REQUIRE_ASID: false
       RATE_LIMIT_POST: true
+    test_steps:
+      - bash: "make validate"
+        displayName: Validate FHIR
+        workingDirectory: "${{ variables.service_name }}"
     apigee_deployments:
-        - environment: internal-dev
-          stage_name: pytest_bdd_tests
-          post_deploy:
-            - template: templates/pds-tests.yml
-        - environment: internal-dev
-          stage_name: karate_tests
-          post_deploy:
-            - template: templates/pds-tests-karate.yml
-          depends_on:
-            - pytest_bdd_tests
-        
-        - environment: internal-dev-sandbox
-          proxy_path: sandbox
-          stage_name: pytest_v_node_sandbox
-          post_deploy:
-            - template: templates/sandbox-tests.yml
-        - environment: internal-dev-sandbox
-          proxy_path: sandbox
-          stage_name: postman_collection_v_node_sandbox
-          post_deploy:
-            - template: templates/sandbox-tests-postman-collection.yml
-          depends_on: 
-            - pytest_v_node_sandbox
-            
-        - environment: internal-dev
-          service_name: ${{ variables.service_name }}-int
-          short_service_name: ${{ variables.short_service_name }}-int
-          service_base_path: ${{ variables.service_base_path }}-int
-          stage_name: internal_dev_int
-          jinja_templates:
-            PDS_TARGET_SERVER: spine-demographics-int
-            REQUIRE_ASID: false
-            RATE_LIMIT_POST: true
+      - environment: internal-dev
+        stage_name: pytest_bdd_tests
+        post_deploy:
+          - template: templates/pds-tests.yml
+      - environment: internal-dev
+        stage_name: karate_tests
+        post_deploy:
+          - template: templates/pds-tests-karate.yml
+        depends_on:
+          - pytest_bdd_tests
+      
+      - environment: internal-dev-sandbox
+        proxy_path: sandbox
+        stage_name: pytest_v_node_sandbox
+        post_deploy:
+          - template: templates/sandbox-tests.yml
+      - environment: internal-dev-sandbox
+        proxy_path: sandbox
+        stage_name: postman_collection_v_node_sandbox
+        post_deploy:
+          - template: templates/sandbox-tests-postman-collection.yml
+        depends_on: 
+          - pytest_v_node_sandbox
+          
+      - environment: internal-dev
+        service_name: ${{ variables.service_name }}-int
+        short_service_name: ${{ variables.short_service_name }}-int
+        service_base_path: ${{ variables.service_base_path }}-int
+        stage_name: internal_dev_int
+        jinja_templates:
+          PDS_TARGET_SERVER: spine-demographics-int
+          REQUIRE_ASID: false
+          RATE_LIMIT_POST: true
