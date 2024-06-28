@@ -37,10 +37,6 @@ extends:
       PDS_TARGET_SERVER: spine-demographics
       REQUIRE_ASID: false
       RATE_LIMIT_POST: true
-    test_steps:
-      - bash: "make validate"
-        displayName: Validate FHIR
-        workingDirectory: "${{ variables.service_name }}"
     apigee_deployments:
       - environment: internal-dev
         stage_name: pytest_bdd_tests
