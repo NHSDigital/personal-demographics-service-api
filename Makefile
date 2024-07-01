@@ -80,7 +80,7 @@ build-proxy:
 
 release: clean publish build-proxy
 	mkdir -p dist
-	cp -R build/. dist/
+	cp -R build dist
 	cp -R terraform dist
 	cp -R tests dist
 	cp -R karate-tests dist
