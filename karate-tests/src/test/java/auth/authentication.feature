@@ -13,6 +13,7 @@ Feature: Authentication for Healthcare Worker
 
 Background:
     * def userID = karate.get('userID', '656005750107')
+    * def scope = karate.get('scope', null)
     * def javaUtils = Java.type('helpers.Utils')
     * def utils = call read('classpath:helpers/utils.feature')
 
@@ -25,14 +26,25 @@ Scenario: Mock authentication
 Scenario: Call the real oauth2 authentication mock service
     
     # 1. Call the "authorize" endpoint
+    # for the sake of supporting the NHS login flow (where scope='nhs-login'),
+    # we need to avoid following the redirects, since the redirect URL isn't fully valid
+    # and Karate won't follow it automatically.
+    * configure followRedirects = false
+
     * url oauth2MockURL
     * path 'authorize'
     * param response_type = 'code'
     * param client_id = clientID
     * param state = utils.randomUUID()
     * param redirect_uri = 'https://example.org/callback'
+    * param scope = scope
     * method get
-    * status 200 
+    * status 302
+    
+    * def redirectURL = responseHeaders['Location'][0]
+    * url redirectURL.replace(' ', '%20')
+    * method get
+    * status 200
     
     # 2. This gives us a login form - get the URL this form calls when submitted
     * def action = javaUtils.getLoginFormAction(response)

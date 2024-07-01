@@ -4,8 +4,8 @@ Feature: Patch patient errors - Healthcare worker access mode
   Background:
     * def utils = call read('classpath:helpers/utils.feature')
     
-    * def accessToken = karate.callSingle('classpath:patients/healthcareWorker/auth-redirect.feature').accessToken
-    * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+    * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders 
     
     * url baseURL

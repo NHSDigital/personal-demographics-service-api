@@ -78,6 +78,14 @@ Scenario:
   }
   """
   
+  * def todaysDate = 
+    """
+    function() {
+      const today = new Date()
+      return today.toISOString().split('T')[0]
+    }
+    """
+    
   # data validators
   * def isTodaysDate = 
     """

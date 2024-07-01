@@ -5,10 +5,10 @@ Covers error scenarios that can arise when trying to add data to a patient resou
 
 Background:
     * def utils = call read('classpath:helpers/utils.feature')    
-    * def accessToken = karate.callSingle('classpath:patients/healthcareWorker/auth-redirect.feature').accessToken
+    * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
     * url baseURL
 
-    * configure headers = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js') 
+    * configure headers = call read('classpath:auth/auth-headers.js') 
     * def nhsNumber = '5900059332'
     * path 'Patient', nhsNumber
     * method get
@@ -17,7 +17,7 @@ Background:
 Scenario: Forbidden update example - multiple usual names cannot be added
     * match response.name == '#[1]'
 
-    * configure headers = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js') 
+    * configure headers = call read('classpath:auth/auth-headers.js') 
     * header Content-Type = "application/json-patch+json"
     * header If-Match = karate.response.header('etag')
 

@@ -3,7 +3,7 @@ Feature: Patch patient - Replace data
 
   Background:
     * def utils = call read('classpath:helpers/utils.feature')
-    * def accessToken = karate.callSingle('classpath:patients/healthcareWorker/auth-redirect.feature').accessToken
+    * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
     * url baseURL
 
   Scenario: Replace attribute of an object
@@ -11,7 +11,7 @@ Feature: Patch patient - Replace data
     # in a preceding operation. (This is simlar to, but different from removing an object - we call 
     # "replace" instead of "test")
     * def nhsNumber = karate.env == 'mock' ? '9000000009' : '5900056597'
-    * configure headers = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js') 
+    * configure headers = call read('classpath:auth/auth-headers.js') 
     * path 'Patient', nhsNumber
     * method get
     * status 200
@@ -21,7 +21,7 @@ Feature: Patch patient - Replace data
     * def options = ["Anne", "Mary", "Jane"]
     * def newGivenName = utils.pickDifferentOption(options, givenName)
 
-    * configure headers = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js') 
+    * configure headers = call read('classpath:auth/auth-headers.js') 
     * header Content-Type = "application/json-patch+json"
     * header If-Match = karate.response.header('etag')
     * path 'Patient', nhsNumber
@@ -40,7 +40,7 @@ Feature: Patch patient - Replace data
   Scenario Outline: Replace the <property> property
     # Unlike replacing a property that is an object, there's no need to make a 
     # preceding test operation
-    * configure headers = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js') 
+    * configure headers = call read('classpath:auth/auth-headers.js') 
     * path 'Patient', nhsNumber
     * method get
     * status 200
@@ -49,7 +49,7 @@ Feature: Patch patient - Replace data
     * def currentValue = response[property]
     * def targetValue = utils.pickDifferentOption(options, currentValue)
 
-    * configure headers = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js') 
+    * configure headers = call read('classpath:auth/auth-headers.js') 
     * header Content-Type = "application/json-patch+json"
     * header If-Match = karate.response.header('etag')
     * path 'Patient', nhsNumber

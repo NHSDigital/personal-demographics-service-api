@@ -13,7 +13,8 @@
         <maven.compiler.version>3.11.0</maven.compiler.version>
         <maven.surefire.version>3.0.0</maven.surefire.version>
         <karate.version>1.4.1</karate.version>
-        <gatling.plugin.version>4.8.2</gatling.plugin.version>
+        <gatling.plugin.version>4.9.4</gatling.plugin.version>
+        <scala.maven.plugin.version>4.9.1</scala.maven.plugin.version>
         <slf4j.version>1.7.36</slf4j.version>
         <javafaker.version>1.0.2</javafaker.version>
     </properties>    
@@ -91,7 +92,6 @@
                 <artifactId>gatling-maven-plugin</artifactId>
                 <version>${gatling.plugin.version}</version>
                 <configuration>
-                    <simulationsFolder>src/test/java</simulationsFolder>
                     <includes>
                         <include>patients.PatientsSimulation</include>
                     </includes>
@@ -100,7 +100,7 @@
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>scala-maven-plugin</artifactId>
-                <version>4.5.6</version>
+                <version>${scala.maven.plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>
