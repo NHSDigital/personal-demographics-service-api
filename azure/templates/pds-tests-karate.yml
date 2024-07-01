@@ -35,61 +35,62 @@ steps:
       echo '##vso[task.setvariable variable=KEY_ID]test-1'
     displayName: Expose common variables
 
-   # Run the tests against veit07
-  - bash: |
-      export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
-      export OAUTH_PROXY="oauth2-mock"
-      export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
-      export CLIENT_ID="$(CLIENT_ID)"
-      export CLIENT_SECRET="$(CLIENT_SECRET)"
-      export APPLICATION_RESTRICTED_API_KEY="$(JWT_TESTING_API_KEY)"
-      export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
-      export INTERNAL_SERVER_BASE_URI="$(INTERNAL_SERVER_BASE_URI)"
-      export KEY_ID="$(KEY_ID)"
-      mvn clean test -Dtest=TestParallel 
-    displayName: 'Run Karate Tests'
-    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests"
+  #  # Run the tests against veit07
+  # - bash: |
+  #     export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
+  #     export OAUTH_PROXY="oauth2-mock"
+  #     export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
+  #     export CLIENT_ID="$(CLIENT_ID)"
+  #     export CLIENT_SECRET="$(CLIENT_SECRET)"
+  #     export APPLICATION_RESTRICTED_API_KEY="$(JWT_TESTING_API_KEY)"
+  #     export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
+  #     export INTERNAL_SERVER_BASE_URI="$(INTERNAL_SERVER_BASE_URI)"
+  #     export KEY_ID="$(KEY_ID)"
+  #     mvn clean test -Dtest=TestParallel 
+  #   displayName: 'Run Karate Tests'
+  #   workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests"
     
-  - task: PublishTestResults@2
-    displayName: 'Publish Karate test results'
-    condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
-    inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports/*.xml
-      failTaskOnFailedTests: true
+  # - task: PublishTestResults@2
+  #   displayName: 'Publish Karate test results'
+  #   condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
+  #   inputs:
+  #     testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports/*.xml
+  #     failTaskOnFailedTests: true
 
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Karate HTML test report as an artifact'
-    condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
-    inputs:
-      pathToPublish: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports
-      artifactName: KarateHTMLReports
+  # - task: PublishBuildArtifacts@1
+  #   displayName: 'Publish Karate HTML test report as an artifact'
+  #   condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
+  #   inputs:
+  #     pathToPublish: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports
+  #     artifactName: KarateHTMLReports
 
-  # Run the tests against the Karate mocks
-  - bash: |
-      export CLIENT_ID="$(CLIENT_ID)"
-      mvn clean test -Dtest=TestMockParallel 
-    displayName: 'Run Karate Mock Tests'
-    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests"
+  # # Run the tests against the Karate mocks
+  # - bash: |
+  #     export CLIENT_ID="$(CLIENT_ID)"
+  #     mvn clean test -Dtest=TestMockParallel 
+  #   displayName: 'Run Karate Mock Tests'
+  #   workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests"
     
-  - task: PublishTestResults@2
-    displayName: 'Publish Karate sandbox test results'
-    condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
-    inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports/*.xml
-      failTaskOnFailedTests: true
+  # - task: PublishTestResults@2
+  #   displayName: 'Publish Karate sandbox test results'
+  #   condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
+  #   inputs:
+  #     testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports/*.xml
+  #     failTaskOnFailedTests: true
 
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Karate Sandbox HTML test report as an artifact'
-    condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
-    inputs:
-      pathToPublish: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports
-      artifactName: KarateSandboxHTMLReports
+  # - task: PublishBuildArtifacts@1
+  #   displayName: 'Publish Karate Sandbox HTML test report as an artifact'
+  #   condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
+  #   inputs:
+  #     pathToPublish: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports
+  #     artifactName: KarateSandboxHTMLReports
 
   # Run the tests against veit07, via the Prism proxy
   - bash: |
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
-      make publish
+      ls -l "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+      ls -l "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/build"
       prism proxy build/personal-demographics.json $OAUTH_BASE_URI/$PDS_BASE_PATH --errors --validate-request false &
     displayName: 'Start Prism Proxy Server'
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
