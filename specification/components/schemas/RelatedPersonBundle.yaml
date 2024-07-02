@@ -10,7 +10,7 @@ properties:
     default: searchset
   timestamp:
     type: string
-    description: Time the search was performed.
+    description: Time the search was performed, including the year, month, date, time and timezone, in the format YYYY-MM-DDThh:mm:ss+hh:mm.
     format: datetime
     example: '2019-12-25T12:00:00+00:00'
   total:

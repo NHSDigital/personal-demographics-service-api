@@ -23,13 +23,25 @@ properties:
           type: string
           description: A CodeSystem that identifies the reason a PDS record has been removed.
           example: SCT
-          enum:
-            - DEA
-            - EMB
-            - SCT
-            - NIT
-            - TRA
-            - ORR
+          oneOf: 
+            - enum:
+              - DEA
+              description: Death
+            - enum:
+              - EMB
+              description:  Embarkation
+            - enum:
+              - SCT
+              description: Transferred to Scotland
+            - enum:
+              - NIT
+              description: Transferred to Northern Ireland
+            - enum:
+              - TRA
+              description: Temporary resident not returned
+            - enum:
+              - ORR
+              description: Other reason
         display:
           type: string
           description: Display-friendly representation of the removal reason exit code.
