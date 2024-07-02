@@ -283,9 +283,6 @@ info:
             </div>
         </div>
     </div> 
-  externalDocs:
-        description: ODS codes and documentation.
-        url: https://fhir.nhs.uk/Id/ods-organization-code
   contact:
     name: Personal Demographics Service FHIR API Support
     url: 'https://digital.nhs.uk/developer/help-and-support'
@@ -297,7 +294,6 @@ servers:
     description: Integration test environment.
   - url: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4'
     description: Production environment.
-
 paths:
   /Patient:
     parameters:
