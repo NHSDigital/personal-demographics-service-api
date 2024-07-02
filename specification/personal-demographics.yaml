@@ -633,9 +633,9 @@ paths:
         You cannot get a patient's related people details, use the RelatedPerson endpoint instead.
 
         ## Superseded patients
-        Some patients are marked as superseded. This means that the original patient details are no longer valid and have been replaced with different patient details.
+        Some patients are marked as superseded. This means that the original patient details are no longer valid and have been replaced with different details.
 
-        On retrieval of a superseded patient's details, the new patient details are automatically returned in place of the requested patient details. You can spot a superseded patient when the `id` is not the same as the one requested.
+        On retrieval of a superseded patient's details, the new details are automatically returned in place of the requested details. You can spot a superseded patient when the `id` is not the same as the one requested.
 
         When retrieving superseding patient details you must update your system with the new patient details and remove the superseded patient details, ensuring that the same `id` does not exist against another patient in your system.
 
