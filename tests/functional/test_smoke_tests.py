@@ -3,24 +3,12 @@ import pytest
 import uuid
 from typing import Dict
 from tests.functional.test_user_restricted import (
-    retrieve_scenario,
-    search_scenario,
     related_person_scenario
 )
 
 from pytest_nhsd_apim.auth_journey import AuthorizationCodeConfig, AuthorizationCodeAuthenticator
 
 pytestmark = pytest.mark.smoke_test
-
-
-@retrieve_scenario('Healthcare worker can retrieve patient')
-def test_retrieve_patient():
-    pass
-
-
-@search_scenario('Healthcare worker can search for patient')
-def test_search_patient():
-    pass
 
 
 @related_person_scenario('Retrieve a related person')

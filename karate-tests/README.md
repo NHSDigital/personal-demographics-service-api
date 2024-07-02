@@ -156,8 +156,7 @@ You'll see output in your terminal to suggest the sandbox is running properly (o
 
 As with other tests, the CI process takes place on both Github and Azure DevOps (ADO). 
 
-- In `.github/workflows/continuous-integration-workflow.yaml` you'll find the steps that are run on Github relating to installing Java and Maven.
-- In the `Makefile`, a vital thing to note is how in the `release` operation we copy the `karate-tests` folder (`cp -R karate-tests dist`). This `release` step essentially builds the folder structure in ADO, so to be able to run the Karate tests it is vital to copy the `karate-tests` folder.
+- In the `Makefile`, a vital thing to note is how in the `release` operation we copy the `karate-tests` folder (`cp -R karate-tests dist`). This `release` step essentially builds the folder structure in ADO (via the `apigee-build.yml` script), so to be able to run the Karate tests it is vital to copy the `karate-tests` folder.
 - In `azure/azure-pr-pipeline` you'll find the definition of the `karate-tests` stage that is run in ADO as part of the `build` pipeline. As with the other stages of the build, the `karate-tests` stage is in the `apigee_deployments` section:
 ```yaml
 - environment: internal-dev
@@ -174,3 +173,27 @@ As with other tests, the CI process takes place on both Github and Azure DevOps 
 The `pds-tests-karate.yml` template runs the Karate tests and then publishes the results in two different ways:
 1. The `PublishTestResults@2` task is called upon to read the JUnit XML results that were produced by the test run, and these results are published in the `Tests` tab of the build phase. More info on this ADO task [can be found here](https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/publish-test-results-v2?view=azure-pipelines&tabs=trx%2Ctrxattachments%2Cyaml)
 1. The `PublishBuildArtifacts@1` task is call upon to publish the Karate HTML reports that were produced by the test run. These results are available as downloadable build artifacts - you can download the whole folder as a zip file and then uncompress on your machine to view the results. More info on this ADO task [can be found here](https://learn.microsoft.com/en-us/azure/devops/pipelines/artifacts/build-artifacts?view=azure-devops&tabs=yaml)
+
+## Using Prism as a proxy to validate requests and responses against the OAS schema
+
+Using the command-line tool Prism, we can set up a proxy server that validates all requests and responses against the rules laid down in our OAS file.
+
+```bash
+npm install -g @stoplight/prism-cli
+```
+
+Prism reads our YAML file directly and sets up listeners for each of the endpoints listed. Any responses that relate to these endpoints will be validated against the rules described in the OAS file. Note that we pass in two options when starting the Prism proxy:
+
+- `--errors`: if there are any discrepancies between the described schema and the actual schema, Prism will return a 405 error with a description of the issue. This will cause our test to fail and the discrepancy will be visible in the test report.
+- `--validate-request false`: a number of our tests intentionally send invalid requests - we're testing the API handles these errors correctly and we don't want Prism to raise errors. We do, however, want to make these requests and validate the response schemas. 
+
+To start Prism with the desired config, therefore, execute the following command from the project root (not from the `karate-tests` folder):
+```bash
+prism proxy specification/personal-demographics.yaml $OAUTH_BASE_URI/$PDS_BASE_PATH --errors --validate-request false
+```
+
+There is a chance that we are testing endpoints that aren't yet covered by the OAS file. The `@no-oas` tag is used to identify scenarios that shouldn't run via the Prism proxy. The `TestSchemaParallel` test runner is configured to ignore these tests, and direct requests to the Prism proxy server. From the `karate-tests` folder, with Prism running in the background
+
+```bash
+mvn test -Dtest=TestSchemaParallel
+```

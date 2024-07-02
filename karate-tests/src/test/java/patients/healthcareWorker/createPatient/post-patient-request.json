@@ -1,20 +1,34 @@
 {
-  "nhsNumberAllocation": "Done",
-  "name": {
-    "use": "L",
-    "name.givenName.name1": "#(givenName)",
-    "name.familyName": "#(familyName)",
-    "name.prefix": "#(prefix)"
-  },
-  "gender": {
-    "gender.code": "#(genderCode)"
-  },
-  "birthTime": {
-    "birthTime.value": "#(birthTime)"},
-  "address": {
-    "use": "H",
-    "address.postalCode": "#(postalCode)",
-    "address.addr.line1" : "#(address)"
-  },
-  "registeringAuthority": "#(registeringAuthority)"
-}  
+  "name": [
+    {
+      "use": "usual",
+      "given": "#(givenName)",
+      "family": "#(familyName)",
+      "prefix": "#(prefix)",
+      "period": {"start": "#(birthDate)"}
+    }
+  ],
+  "address": ["#(address)"],
+  "gender": "#(gender)",
+  "birthDate": "#(birthDate)",
+  "extension": [
+    {
+      "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RegisteringAuthority",
+      "extension": [
+        {
+          "url": "registeringAuthorityType",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://fhir.nhs.uk/CodeSystem/UKCore-RegisteringAuthorityType",
+                "code": "x"
+              }
+            ]
+          }
+        },
+        { "url": "organisationIdentifier", "valueString": "RGS" }
+      ]
+    }
+  ],
+  "resourceType": "Patient"
+}

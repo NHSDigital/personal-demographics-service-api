@@ -1,0 +1,20 @@
+{
+    "issue": [
+        {
+            "code": "value",
+            "details": {
+                "coding": [
+                    {
+                        "code": "INVALID_CREATE",
+                        "display": "Patient create data is invalid",
+                        "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+                        "version": "1"
+                    }
+                ]
+            },
+            "diagnostics": "#(diagnostics)",
+            "severity": "error"
+        }
+    ],
+    "resourceType": "OperationOutcome"
+}

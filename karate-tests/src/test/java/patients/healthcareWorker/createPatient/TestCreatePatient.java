@@ -20,11 +20,6 @@ public class TestCreatePatient {
     }
 
     @Karate.Test
-    Karate testSpecific() {
-        return Karate.run("postPatient").tags("this").relativeTo(getClass());
-    }
-
-    @Karate.Test
     Karate testCreate() {
         return Karate.run("postPatient").relativeTo(getClass());
     }
