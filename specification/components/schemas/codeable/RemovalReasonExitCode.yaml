@@ -24,7 +24,6 @@ properties:
           description: A CodeSystem that identifies the reason a PDS record has been removed.
           example: SCT
           oneOf: 
-          oneOf:
             - enum:
               - DEA
               description: Death
