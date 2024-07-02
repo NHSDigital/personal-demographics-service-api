@@ -1,0 +1,20 @@
+{
+    "fullUrl": "#? utils.isValidRelatedPersonURL(_)",
+    "resource": {
+        "active": "#boolean",
+        "id": "#string",
+        "name": "##[]",
+        "patient": {
+            "identifier": {
+                "system": "https://fhir.nhs.uk/Id/nhs-number",
+                "value": "#? utils.isValidNHSNumber(_)"
+            }
+        },
+        "relationship": [
+            {
+                "coding": "#[] (CodingSchema)"
+            }
+        ],
+        "resourceType": "RelatedPerson"
+    }
+}

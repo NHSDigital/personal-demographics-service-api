@@ -13,9 +13,9 @@ Background:
   * json HumanName = karate.readAsString('classpath:schemas/HumanName.json')
   
   * json Patient = karate.readAsString('classpath:schemas/Patient.json')
-  * json patientSearchResultEntry = karate.readAsString('classpath:patients/healthcareWorker/searchForAPatient/schemas/patientSearchResultEntry.json')
+  * json patientSearchResultEntry = karate.readAsString('classpath:schemas/searchSchemas/patientSearchResultEntry.json')
   * json SensitivePatient = karate.readAsString('classpath:schemas/SensitivePatient.json')
-  * json sensitivePatientSearchResultEntry = karate.readAsString('classpath:patients/healthcareWorker/searchForAPatient/schemas/sensitivePatientSearchResultEntry.json')
+  * json sensitivePatientSearchResultEntry = karate.readAsString('classpath:schemas/searchSchemas/sensitivePatientSearchResultEntry.json')
   
   # auth
   * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
@@ -30,7 +30,7 @@ Scenario:Search for a patient using parameters
   * method get
   * status 200
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
-  * match response == read('classpath:patients/healthcareWorker/searchForAPatient/schemas/patientSearchBundle.json')
+  * match response == read('classpath:schemas/searchSchemas/patientSearchBundle.json')
   * match response.total == 1
   * match response.entry[0].resource.id == "5900035697"
 
@@ -46,7 +46,7 @@ Scenario: Search for a "restricted" (sensitive) patient
   * status 200
   * match response.entry[0].resource.id == "9693632125"
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
-  * match response == read('classpath:patients/healthcareWorker/searchForAPatient/schemas/sensitivePatientSearchBundle.json')
+  * match response == read('classpath:schemas/searchSchemas/sensitivePatientSearchBundle.json')
   * match response.entry[0].resource.meta.security[0] == 
     """
     {
@@ -62,7 +62,7 @@ Scenario: Search without specifying gender
   * method get
   * status 200
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
-  * match response == read('classpath:patients/healthcareWorker/searchForAPatient/schemas/patientSearchBundle.json')
+  * match response == read('classpath:schemas/searchSchemas/patientSearchBundle.json')
   * match response.entry[0].resource.id == "9693632966"
   * match response.entry[0].resource.gender == "female"
 
@@ -72,7 +72,7 @@ Scenario: Search using a range for date of birth
   * method get
   * status 200
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
-  * match response == read('classpath:patients/healthcareWorker/searchForAPatient/schemas/patientSearchBundle.json')
+  * match response == read('classpath:schemas/searchSchemas/patientSearchBundle.json')
   * match response.entry[0].resource.id == "9693632966"
   * match response.entry[0].resource.gender == "female"
 
@@ -82,7 +82,7 @@ Scenario: Wide search, multiple results
   * method get
   * status 200
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
-  * match response == read('classpath:patients/healthcareWorker/searchForAPatient/schemas/patientSearchBundle.json')
+  * match response == read('classpath:schemas/searchSchemas/patientSearchBundle.json')
   * match response.total == 4
   * match each response.entry[*].resource.name[*].family == "YOUDS" 
   * match each response.entry[*].resource.birthDate == "1970-01-24"
@@ -95,7 +95,7 @@ Scenario: Fuzzy match search
   * method get
   * status 200
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
-  * match response == read('classpath:patients/healthcareWorker/searchForAPatient/schemas/patientSearchBundle.json')
+  * match response == read('classpath:schemas/searchSchemas/patientSearchBundle.json')
   * match response.total == 1
   * match response.entry[0].resource.name[0].family == "GARTON" 
   * match response.entry[0].resource.birthDate == "1955-11-05"
@@ -107,7 +107,7 @@ Scenario: Unicode search
   * method get
   * status 200
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
-  * match response == read('classpath:patients/healthcareWorker/searchForAPatient/schemas/patientSearchBundle.json')
+  * match response == read('classpath:schemas/searchSchemas/patientSearchBundle.json')
   * match response.total == 2
   * match response.entry[0].search.score == 0.9317
   * match response.entry[0].resource.id == "9693633148"

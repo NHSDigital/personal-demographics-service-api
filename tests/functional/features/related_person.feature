@@ -1,15 +1,6 @@
 Feature: Related Person endpoint
     Access a patient's related person
 
-    Scenario: Retrieve a related person
-        Given I am a healthcare worker user
-        And I have a patient with a related person
-
-        When I retrieve their related person
-
-        Then I get a 200 HTTP response code
-        And 9693633687 is at entry[0].resource.patient.identifier.value in the response body
-
     Scenario: Patient can retrieve a single related person
         Given I am a P9_WITH_RELATED_PERSON user
         And scope added to product
