@@ -23,7 +23,7 @@ Background:
 
   * url baseURL
 
-@unrestricted
+@unrestricted @smoke
 Scenario: Get an "unrestricted" patient
   * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9693632109'
   * path 'Patient', nhsNumber
