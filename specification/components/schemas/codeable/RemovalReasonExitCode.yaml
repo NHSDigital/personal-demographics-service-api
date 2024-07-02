@@ -24,18 +24,18 @@ properties:
           description: A CodeSystem that identifies the reason a PDS record has been removed.
           example: SCT
           oneOf: 
-             const: DEA
-              description: Death
-              const: EMB
-              description:  Embarkation
-              const: SCT
-              description: Transferred to Scotland
-              const: NIT
-              description: Transferred to Northern Ireland
-              const: TRA
-              description: Temporary resident not returned
-              const: ORR
-              description: Other reason
+            const: DEA
+            description: Death
+            const: EMB
+            description:  Embarkation
+            const: SCT
+            description: Transferred to Scotland
+            const: NIT
+            description: Transferred to Northern Ireland
+            const: TRA
+            description: Temporary resident not returned
+            const: ORR
+            description: Other reason
         display:
           type: string
           description: Display-friendly representation of the removal reason exit code.
