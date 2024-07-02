@@ -514,11 +514,11 @@ paths:
 
         ### Differences between the matching types at a glance
 
-        | Search                                  | Non-fuzzy matching                                | Fuzzy matching                                               |
-        | ----------------------------------------| --------------------------------------------------| -------------------------------------------------------------|
-        | History                                 | Optional                                          | Always                                                       |
-        | Names                                   | Allows wildcards                                  | Matches homophones, transposed names and previous names      |
-        | Postcode                                | Allows wildcards                                  | Does not allow wildcards                                     |
+        | Search                                  | Non-fuzzy matching                                | Fuzzy matching                                                                    |
+        | ----------------------------------------| --------------------------------------------------| ----------------------------------------------------------------------------------|
+        | History                                 | Optional                                          | Always                                                                            |
+        | Names                                   | Allows wildcards                                  | Matches homophones, transposed names and previous names. Does not allow wildcards.|
+        | Postcode                                | Allows wildcards                                  | Does not allow wildcards                                                          |
         
         ## Sandbox testing
         You can test the following scenarios in our sandbox environment:
