@@ -72,7 +72,10 @@ Feature: get /Patient - Application-restricted access mode
       }  
       """  
 
+  @oas-bug
   Scenario: PDS FHIR API rejects request for more than one result
+    # This test is expected to fail due to a discrepancy between the OAS definition and the implementation:
+    # https://nhsd-jira.digital.nhs.uk/browse/SPINEDEM-3187
     * configure headers = requestHeaders
     * path "Patient"
     * param _max-results = 2

@@ -1,5 +1,5 @@
 /* karate objects */
-/* global context, request, response */
+/* global context, request, response, session */
 
 /* functions defined in supporting-functions.js */
 /* global basicResponseHeaders */
@@ -16,20 +16,11 @@ const VALID_NHS_NUMBERS = [
   '5899264950', '5604719625', '5117676297', '5705279671', '5890418181'
 ]
 
-context.nhsNumberIndex = context.nhsNumberIndex || 0
+session.nhsNumberIndex = session.nhsNumberIndex || 0
 
 function generateObjectId () {
   // generates a random ID for the name and address objects, e.g. 8F1A21BC
   return Math.random().toString(16).substr(2, 8).toUpperCase()
-}
-
-function getTodaysDate () {
-  // returns today's date in the format YYYY-MM-DD
-  const today = new Date()
-  const year = today.getFullYear()
-  const month = today.getMonth() + 1
-  const day = today.getDate()
-  return `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`
 }
 
 const NEW_PATIENT = context.read('classpath:mocks/stubs/postPatientResponses/new_patient.json')
@@ -42,9 +33,9 @@ function requestMatchesErrorScenario (request) {
   // logic of the real system, just a simple check that will demonstrate the behaviour when specific
   // data is sent in the request.
   let match = false
-  const family = request.body.name['name.familyName']
-  const postalCode = request.body.address['address.postalCode']
-  if (family === 'McMatch-Single' && postalCode === 'BAP4WG') {
+  const family = request.body.name[0].family
+  const postalCode = request.body.address[0].postalCode
+  if (family === 'McMatch-Single' && postalCode === 'BAP 4WG') {
     const body = JSON.parse(JSON.stringify(SINGLE_MATCH))
     body.issue[0].diagnostics = 'Unable to create new patient. NHS number 5900054586 found for supplied demographic data.'
     response.body = body
@@ -58,10 +49,48 @@ function requestMatchesErrorScenario (request) {
 
 function postPatientRequestIsValid (request) {
   // check the request body has the expected structure
+  let missingValue = false
+  let invalidValue = false
   let valid = true
-  if (!request.body.nhsNumberAllocation) {
+  let diagnostics = ''
+  if (!request.body.name) {
+    diagnostics = "Missing value - 'name'"
+    missingValue = true
+  } else if (!request.body.address) {
+    diagnostics = "Missing value - 'address'"
+    missingValue = true
+  } else if (!request.body.gender) {
+    diagnostics = "Missing value - 'gender'"
+    missingValue = true
+  } else if (!request.body.birthDate) {
+    diagnostics = "Missing value - 'birthDate'"
+    missingValue = true
+  } else if (!Array.isArray(request.body.name[0].given)) {
+    diagnostics = "Invalid value - 'not an array' in field 'name/0/given'"
+    invalidValue = true
+  } else if (Array.isArray(request.body.address[0])) {
+    diagnostics = `Invalid value - '${JSON.stringify(request.body.address[0]).replace(/"/g, "'").replace(/','/g, "', '")}' in field 'address/0'`
+    invalidValue = true
+  } else if (typeof request.body.address[0] !== 'object' || Array.isArray(request.body.address[0])) {
+    diagnostics = `Invalid value - '${request.body.address[0]}' in field 'address/0'`
+    invalidValue = true
+  } else if (!['male', 'female', 'other', 'unknown'].includes(request.body.gender)) {
+    diagnostics = "Invalid value - 'notAValidOption' in field 'gender'"
+    invalidValue = true
+  } else if (!request.body.birthDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    diagnostics = "Invalid value - 'not-a-date' in field 'birthDate'"
+    invalidValue = true
+  }
+
+  if (missingValue) {
     const body = context.read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')
-    body.issue[0].diagnostics = "Missing value - 'nhsNumberAllocation'"
+    body.issue[0].diagnostics = diagnostics
+    response.body = body
+    response.status = 400
+    valid = false
+  } else if (invalidValue) {
+    const body = context.read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')
+    body.issue[0].diagnostics = diagnostics
     response.body = body
     response.status = 400
     valid = false
@@ -91,22 +120,25 @@ if (request.pathMatches('/Patient') && request.post) {
       const patient = JSON.parse(JSON.stringify(NEW_PATIENT))
 
       // set a new NHS number for the patient
-      patient.id = VALID_NHS_NUMBERS[context.nhsNumberIndex]
-      patient.identifier[0].value = VALID_NHS_NUMBERS[context.nhsNumberIndex]
-      context.nhsNumberIndex += 1
+      patient.id = VALID_NHS_NUMBERS[session.nhsNumberIndex]
+      patient.identifier[0].value = VALID_NHS_NUMBERS[session.nhsNumberIndex]
+      session.nhsNumberIndex += 1
 
-      // set the name properties
-      patient.name[0].family = request.body.name['name.familyName']
-      patient.name[0].given = [request.body.name['name.givenName.name1']]
+      // name and address objects need an ID
+      patient.name[0] = request.body.name[0]
       patient.name[0].id = generateObjectId()
-      patient.name[0].period.start = getTodaysDate()
-      patient.name[0].prefix = [request.body.name['name.prefix']]
 
-      // set the address properties
+      // in the address object, the line property is an array that can contain blank strings. For the response,
+      // the blank strings are removed.
+      const line = request.body.address[0].line.filter((line) => line !== '')
+      patient.address[0] = request.body.address[0]
+      patient.address[0].line = line
       patient.address[0].id = generateObjectId()
-      patient.address[0].line = [request.body.address['address.addr.line1']]
-      patient.address[0].period.start = getTodaysDate()
-      patient.address[0].postalCode = request.body.address['address.postalCode']
+
+      // set the other properties
+      patient.gender = request.body.gender
+      patient.birthDate = request.body.birthDate
+
       response.body = patient
       response.status = 201
     }

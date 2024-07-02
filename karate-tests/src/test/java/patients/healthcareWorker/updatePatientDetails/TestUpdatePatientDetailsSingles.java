@@ -13,15 +13,10 @@ public class TestUpdatePatientDetailsSingles {
 
     @BeforeAll
     static void beforeAll() {
-        String env = System.getProperty("karate.env");
+        String env = System.getProperty("karate.env", "veit07");
         if (env.equals("mock")) {
             server = MockRunner.start("src/test/java/mocks", 8080);
         }
-    }
-    
-    @Karate.Test
-    Karate testSpecific() {
-        return Karate.run("replaceErrors").tags("@this").relativeTo(getClass());
     }
 
     @Karate.Test

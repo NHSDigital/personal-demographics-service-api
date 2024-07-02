@@ -2,7 +2,7 @@
 /* global context, request, response, session */
 
 /* Functions defined in supporting-functions.js */
-/* global setInvalidValueError, validateHeaders, validateNHSNumber, validatePatientExists, basicResponseHeaders */
+/* global setInvalidValueError, setUnsupportedServiceError, validateHeaders, validateNHSNumber, validatePatientExists, basicResponseHeaders */
 
 function buildResponseHeaders (request, patient) {
   return {
@@ -53,13 +53,6 @@ function setPreconditionFailedError (request, diagnostics) {
   response.status = 412
 }
 
-function setUnsupportedServiceError (request) {
-  const body = context.read('classpath:mocks/stubs/errorResponses/UNSUPPORTED_SERVICE.json')
-  response.headers = basicResponseHeaders(request)
-  response.body = body
-  response.status = 400
-}
-
 /*
     Validate the headers specific to patching a patient
 */
@@ -70,7 +63,8 @@ function validatePatchHeaders (request) {
     valid = false
   }
   if (valid && !request.header('content-type').startsWith('application/json')) {
-    setUnsupportedServiceError(request)
+    setUnsupportedServiceError()
+    response.headers = basicResponseHeaders(request)
     valid = false
   }
   return valid

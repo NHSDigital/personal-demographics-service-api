@@ -6,7 +6,7 @@ A collection of utility functions for generating, validating and manipulating da
 Scenario:
   # data generators
   * def randomUUID = function(){ return java.util.UUID.randomUUID() + '' }
-  * def randomInt = function() { return Math.floor(Math.random() * 999) + 1 }
+  * def randomInt = function() { return Math.floor(Math.random() * 99) + 1 }
   * def randomString = 
     """
     function(length) {
@@ -32,6 +32,52 @@ Scenario:
     }
     """
 
+  * def randomDate = 
+    """
+    function(earliest) {
+      const min = new Date(Date.parse(earliest)).getTime()
+      const max = new Date(Date.parse('2023-09-01')).getTime()
+      const randomValue = Math.random() * (max - min) + min
+      const randomDate = new Date(randomValue)
+      return randomDate.toISOString().split('T')[0]
+    }
+    """
+
+  * def randomAddress =
+  """
+  function(earliestStartDate) {
+    const addresses = karate.read('classpath:helpers/addresses.json')
+    const randomAddress = addresses[Math.floor(Math.random() * addresses.length)]
+    const min = new Date(Date.parse(earliestStartDate)).getTime()
+    const max = new Date(Date.parse('2023-09-01')).getTime()
+    const addressStartDate = new Date(Math.random() * (max - min) + min).toISOString().split('T')[0]
+    const street = `${Math.floor(Math.random() * 99) + 1} ${randomAddress.street}`
+    const addressObject = {
+        period: {"start": addressStartDate},
+        use: "home",
+        postalCode: randomAddress.postalCode,
+        line: ["", street, "", randomAddress.city, ""]
+      }
+    return addressObject
+  }
+  """
+
+  * def randomGender = 
+  """
+  function() {
+    const genders = ['male', 'female', 'other', 'unknown']
+    return genders[Math.floor(Math.random() * genders.length)];
+  }
+  """
+
+  * def randomPrefix = 
+  """
+  function() {
+    const prefixes = ['Mr', 'Mrs', 'Miss', 'Ms', 'Dr', 'Prof', 'Rev', 'Sir', 'Lady', 'Lord']
+    return prefixes[Math.floor(Math.random() * prefixes.length)];
+  }
+  """
+  
   # data validators
   * def isTodaysDate = 
     """
@@ -51,7 +97,7 @@ Scenario:
         validates the date string based on how we format dates in FIHR, 
         e.g. 2010-10-25 is valid
       */
-      const regex=new RegExp("([0-9]{4}[-](0[1-9]|1[0-2])[-]([0-2]{1}[0-9]{1}|3[0-1]{1})|([0-2]{1}[0-9]{1}|3[0-1]{1})[-](0[1-9]|1[0-2])[-][0-9]{4})")
+      const regex=new RegExp("([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2})$|^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T\\d{2}:\\d{2}:\\d{2})$|^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2})$|^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))")
       return regex.test(dateString)
     }
     """
@@ -88,10 +134,22 @@ Scenario:
     function(requestHeaders) {
       /*
         validate the values of the x-correlation-id and x-correlation-id response headers match those
-        of the request
+        of the request (if they were provided)
       */
-      return requestHeaders['x-correlation-id'] == karate.response.header('x-correlation-id') &&
-             requestHeaders['x-request-id'] == karate.response.header('x-request-id')
+      let validRequestID = false
+      let validCorrelationID = false
+
+      const requestID = requestHeaders['x-request-id']
+      const correlationID = requestHeaders['x-correlation-id']
+      
+      if (!requestID) { 
+        validRequestID = karate.response.header('x-request-id') == null        
+      } else if (requestID === '""') {
+        validRequestID = karate.response.header('x-request-id') == null        
+      } else {
+        validRequestID = requestID == karate.response.header('x-request-id')  
+      }
+      return validRequestID
     }
     """
   

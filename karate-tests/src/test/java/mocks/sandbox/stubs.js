@@ -8,7 +8,6 @@
 const SEARCH_PATIENT_9000000009 = context.read('classpath:mocks/stubs/searchResponses/search_patient_9000000009.json')
 const SEARCH_PATIENT_9000000017 = context.read('classpath:mocks/stubs/searchResponses/search_patient_9000000017.json')
 const RESTRICTED_PATIENT_SEARCH = context.read('classpath:mocks/stubs/searchResponses/search_patient_9000000025.json')
-const COMPOUND_NAME_SEARCH = context.read('classpath:mocks/stubs/searchResponses/compound_name_search.json')
 const EMPTY_SEARCHSET = { resourceType: 'Bundle', type: 'searchset', total: 0 }
 
 const SIMPLE_SEARCH = {

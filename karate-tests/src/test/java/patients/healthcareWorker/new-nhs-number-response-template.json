@@ -38,10 +38,10 @@
         {
             "id": "#string",
             "family": "#(familyName)",
-            "given": "##[] #(givenName)",
-            "prefix": "##[] #(prefix)",
+            "given": "#(givenName)",
+            "prefix": "#(prefix)",
             "period": {
-                "start": "#? utils.isTodaysDate(_)"
+                "start": "##? utils.isValidDateString(_)"
             },
             "use": "usual"
         }
