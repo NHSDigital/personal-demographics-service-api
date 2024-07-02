@@ -22,3 +22,13 @@ Scenario: Patient can do related person search for their own record
   * status 200
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
   * match response == RelatedPersonSearchBundle
+
+
+Scenario: Patient can't do related person search another patient's record
+    * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9693632109'
+    * path 'Patient', nhsNumber, 'RelatedPerson'
+    * method get
+    * status 403
+    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+    * match response == RelatedPersonSearchBundle
+  
