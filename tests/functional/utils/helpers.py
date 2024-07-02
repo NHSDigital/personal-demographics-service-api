@@ -1,12 +1,7 @@
-from typing import Optional, Dict, Any, Generator
-from random import randint
 import json
 import requests
 
-
-def is_key_in_dict(obj: dict, key: str) -> bool:
-    found_items = [item for item in find_items_in_dict(obj, key)]
-    return True if found_items else False
+from typing import Optional, Dict, Any, Generator
 
 
 def find_item_in_dict(obj={}, search_key=""):
@@ -32,27 +27,6 @@ def find_items_in_dict(obj: dict, key: Any) -> Generator[Any, None, None]:
                 for el in v:
                     for value in find_items_in_dict(el, key):
                         yield value
-
-
-def generate_random_phone_number():
-    return f"07784{randint(100000, 999999)}"
-
-
-def get_add_telecom_phone_patch_body():
-    return {
-        "patches": [
-            {
-                "op": "add",
-                "path": "/telecom/-",
-                "value": {
-                    "period": {"start": "2020-02-27"},
-                    "system": "phone",
-                    "use": "mobile",
-                    "value": "07784123456",
-                },
-            }
-        ]
-    }
 
 
 def add_auth_header(headers: Dict[str, str], auth: Optional[Dict[str, str]]):

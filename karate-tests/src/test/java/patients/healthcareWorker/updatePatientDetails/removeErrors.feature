@@ -5,10 +5,10 @@ Feature: Patch patient - Remove data errors
 
   Background:
     * def utils = call read('classpath:helpers/utils.feature')
-    * def accessToken = karate.callSingle('classpath:patients/healthcareWorker/auth-redirect.feature').accessToken
+    * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
     * url baseURL
 
-    * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * def nhsNumber = '5900057208'
     * path 'Patient', nhsNumber
@@ -23,7 +23,7 @@ Feature: Patch patient - Remove data errors
     * def diagnostics = "Invalid update with error - removal '/name/1' is not immediately preceded by equivalent test - instead it is the first item"
     * def expectedBody = read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
 
-    * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders 
     * header Content-Type = "application/json-patch+json"
     * header If-Match = etag
@@ -39,7 +39,7 @@ Feature: Patch patient - Remove data errors
     * def diagnostics = "Invalid update with error - Invalid patch - index '1' is out of bounds"
     * def expectedBody = read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
 
-    * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders 
     * header Content-Type = "application/json-patch+json"
     * header If-Match = etag
@@ -61,7 +61,7 @@ Feature: Patch patient - Remove data errors
     * def diagnostics = "Invalid update with error - Invalid patch - can't remove non-existent object '0'"
     * def expectedBody = read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
 
-    * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders 
     * header Content-Type = "application/json-patch+json"
     * header If-Match = etag

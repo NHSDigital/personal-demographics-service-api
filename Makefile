@@ -85,7 +85,6 @@ release: clean publish build-proxy
 	cp -R tests dist
 	cp -R karate-tests dist
 	cp -R postman dist
-	cp -R specification dist
 
 	cp ecs-proxies-deploy.yml dist/ecs-deploy-sandbox.yml
 	cp ecs-proxies-deploy.yml dist/ecs-deploy-internal-qa-sandbox.yml

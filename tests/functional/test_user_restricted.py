@@ -1,19 +1,13 @@
-import pytest_bdd
-from pytest_bdd import then, parsers
-from functools import partial
-from .utils.helpers import get_role_id_from_user_info_endpoint
-import pytest
-from pytest_check import check
 import uuid
+
+import pytest
+
+from pytest_bdd import then, parsers
+from pytest_check import check
 from jsonpath_rw import parse
 from pytest_nhsd_apim.apigee_apis import ApiProductsAPI
 
-related_person_scenario = partial(pytest_bdd.scenario, './features/related_person.feature')
-
-
-@related_person_scenario('Retrieve a related person')
-def test_retrieve_related_person():
-    pass
+from .utils.helpers import get_role_id_from_user_info_endpoint
 
 
 @pytest.fixture(autouse=True)

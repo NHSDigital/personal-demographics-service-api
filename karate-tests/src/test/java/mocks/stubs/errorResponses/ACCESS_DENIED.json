@@ -10,7 +10,7 @@
             "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
             "version": "1",
             "code": "ACCESS_DENIED",
-            "display": "Access Denied - Unauthorised"
+            "display": "#(display)"
           }
         ]
       },

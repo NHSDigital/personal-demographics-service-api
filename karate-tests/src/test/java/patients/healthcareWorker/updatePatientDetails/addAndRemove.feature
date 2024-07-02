@@ -8,9 +8,9 @@ Feature: Patch patient - Add and remove data
 
   Background:
     * def utils = call read('classpath:helpers/utils.feature')
-    * def accessToken = karate.callSingle('classpath:patients/healthcareWorker/auth-redirect.feature').accessToken
+    * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
     
-    * configure headers = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+    * configure headers = call read('classpath:auth/auth-headers.js')
     
     * url baseURL
     * def nhsNumber = '5900056449'
@@ -44,7 +44,7 @@ Feature: Patch patient - Add and remove data
     * copy expectedName = newName
     * set expectedName.id = "#string"
 
-    * configure headers = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')     
+    * configure headers = call read('classpath:auth/auth-headers.js')     
     * header Content-Type = "application/json-patch+json"
     * header If-Match = karate.response.header('etag')
     * path 'Patient', nhsNumber
@@ -69,7 +69,7 @@ Feature: Patch patient - Add and remove data
     * def diagnostics = "Invalid update with error - removal '/name/1' is not immediately preceded by equivalent test - instead it is the first item"
     * def expectedBody = read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
 
-    * configure headers = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+    * configure headers = call read('classpath:auth/auth-headers.js')
     * header Content-Type = "application/json-patch+json"
     * header If-Match = etag
     * path 'Patient', nhsNumber
@@ -87,7 +87,7 @@ Feature: Patch patient - Add and remove data
           {"op":"remove","path":"/name/1"}
       ]}
       """
-    * configure headers = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')     
+    * configure headers = call read('classpath:auth/auth-headers.js')     
     * header Content-Type = "application/json-patch+json"
     * header If-Match = etag
     * path 'Patient', nhsNumber
@@ -105,7 +105,7 @@ Feature: Patch patient - Add and remove data
 
     * def suffixArray = ["PhD", "MBBS"]
     
-    * configure headers = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')     
+    * configure headers = call read('classpath:auth/auth-headers.js')     
     * header Content-Type = "application/json-patch+json"
     * header If-Match = karate.response.header('etag')
     * path 'Patient', nhsNumber
@@ -127,7 +127,7 @@ Feature: Patch patient - Add and remove data
     # array.
     * def originalVersion = parseInt(response.meta.versionId)
 
-    * configure headers = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')     
+    * configure headers = call read('classpath:auth/auth-headers.js')     
     * header Content-Type = "application/json-patch+json"
     * header If-Match = karate.response.header('etag')      
     * path 'Patient', nhsNumber
@@ -148,7 +148,7 @@ Feature: Patch patient - Add and remove data
     # You can also add a new suffix to an existing array of suffixes
     * def originalVersion = parseInt(response.meta.versionId)
 
-    * configure headers = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')     
+    * configure headers = call read('classpath:auth/auth-headers.js')     
     * header Content-Type = "application/json-patch+json"
     * header If-Match = karate.response.header('etag')
     * path 'Patient', nhsNumber
@@ -169,7 +169,7 @@ Feature: Patch patient - Add and remove data
     # And you can get rid of the whole array of suffixes
     * def originalVersion = parseInt(response.meta.versionId)
 
-    * configure headers = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')     
+    * configure headers = call read('classpath:auth/auth-headers.js')     
     * header Content-Type = "application/json-patch+json"
     * header If-Match = karate.response.header('etag')
     * path 'Patient', nhsNumber
