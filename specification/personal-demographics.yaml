@@ -305,10 +305,10 @@ paths:
 externalDocs:
   description: ODS codes and documentation.
   url: https://fhir.nhs.uk/Id/ods-organization-code    
-    get:
-      summary: Search for a patient
-      operationId: search-patient
-      description: |
+get:
+  summary: Search for a patient
+  operationId: search-patient
+  description: |
         ## Overview
         Use this endpoint to search for a patient in PDS.
         
@@ -616,7 +616,7 @@ externalDocs:
                           display: Provided value is invalid
                     diagnostics: "Invalid value - 'mal' in field 'gender'"   
  
-  '/Patient/{id}':
+'/Patient/{id}':
     parameters:
       - $ref: '#/components/parameters/Id'
       - $ref: '#/components/parameters/BearerAuthorization'
