@@ -1665,7 +1665,7 @@ get:
                           code: SERVICE_UNAVAILABLE
                           display: Service unavailable
                     diagnostics: "The downstream domain processing has not completed within the configured timeout period. Using the same 'X-Request-ID' header, retry your request after the time specified by the 'Retry-After' response header."
-  '/Patient/{id}/RelatedPerson':
+'/Patient/{id}/RelatedPerson':
     parameters:
       - $ref: '#/components/parameters/Id'
       - $ref: '#/components/parameters/BearerAuthorization'
