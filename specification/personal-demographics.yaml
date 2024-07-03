@@ -305,7 +305,7 @@ paths:
 externalDocs:
         description: ODS codes and documentation.
         url: https://fhir.nhs.uk/Id/ods-organization-code    
-    get:
+get:
       summary: Search for a patient
       operationId: search-patient
       description: |
