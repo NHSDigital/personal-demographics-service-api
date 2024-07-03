@@ -615,8 +615,7 @@ get:
                           code: INVALID_VALUE
                           display: Provided value is invalid
                     diagnostics: "Invalid value - 'mal' in field 'gender'"   
- 
-  '/Patient/{id}':
+'/Patient/{id}':
     parameters:
       - $ref: '#/components/parameters/Id'
       - $ref: '#/components/parameters/BearerAuthorization'
