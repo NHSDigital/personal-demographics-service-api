@@ -303,8 +303,8 @@ paths:
       - $ref: '#/components/parameters/CorrelationID'
       - $ref: '#/components/parameters/NHSD-End-User-Organisation-ODS'
 externalDocs:
-        description: ODS codes and documentation.
-        url: https://fhir.nhs.uk/Id/ods-organization-code    
+  description: ODS codes and documentation.
+  url: https://fhir.nhs.uk/Id/ods-organization-code    
     get:
       summary: Search for a patient
       operationId: search-patient
