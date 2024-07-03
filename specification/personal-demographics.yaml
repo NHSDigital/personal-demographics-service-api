@@ -305,7 +305,7 @@ paths:
 externalDocs:
         description: ODS codes and documentation.
         url: https://fhir.nhs.uk/Id/ods-organization-code    
-get:
+    get:
       summary: Search for a patient
       operationId: search-patient
       description: |
@@ -615,7 +615,8 @@ get:
                           code: INVALID_VALUE
                           display: Provided value is invalid
                     diagnostics: "Invalid value - 'mal' in field 'gender'"   
-'/Patient/{id}':
+ 
+  '/Patient/{id}':
     parameters:
       - $ref: '#/components/parameters/Id'
       - $ref: '#/components/parameters/BearerAuthorization'
@@ -1665,7 +1666,7 @@ get:
                           code: SERVICE_UNAVAILABLE
                           display: Service unavailable
                     diagnostics: "The downstream domain processing has not completed within the configured timeout period. Using the same 'X-Request-ID' header, retry your request after the time specified by the 'Retry-After' response header."
-'/Patient/{id}/RelatedPerson':
+  '/Patient/{id}/RelatedPerson':
     parameters:
       - $ref: '#/components/parameters/Id'
       - $ref: '#/components/parameters/BearerAuthorization'
