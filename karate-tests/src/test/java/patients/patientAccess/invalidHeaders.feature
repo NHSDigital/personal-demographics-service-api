@@ -1,5 +1,7 @@
-@sandbox
-Feature: Invalid request headers
+Feature: Patient acess with invalid headers
+
+  Similar to the invalid headers feature for Healthcare Worker, but authenticating as a Patient.
+
   For any PDS requests made as a healthcare worker, you need:
     - a valid authorization header
     - a valid x-request-id header
@@ -64,3 +66,6 @@ Scenario Outline: x-request-id errors: patient <operation> - <diagnostics>
     | search       |                            | Invalid request with error - X-Request-ID header must be supplied to access this resource   | MISSING_VALUE   |
     | get          | 1234                       | Invalid value - '1234' in header 'X-Request-ID'                                             | INVALID_VALUE   |
     | search       | 1234                       | Invalid value - '1234' in header 'X-Request-ID'                                             | INVALID_VALUE   |
+
+
+Scenario: Expired access token

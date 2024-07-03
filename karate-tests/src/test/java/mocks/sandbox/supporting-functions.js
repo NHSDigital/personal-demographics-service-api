@@ -34,6 +34,7 @@ function setMissingValueError (diagnostics) {
 
 function setAccessDeniedError (diagnostics) {
   const body = context.read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
+  body.issue[0].details.coding[0].display = 'Access Denied - Unauthorised'
   body.issue[0].diagnostics = diagnostics
   response.body = body
   response.status = 401

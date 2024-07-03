@@ -6,14 +6,14 @@ darren.mcdrew@nhs.net
 Background:
   * def utils = call read('classpath:helpers/utils.feature')  
   * def nhsNumber = '9693632109'
-  * def accessToken = karate.callSingle('classpath:patients/healthcareWorker/auth-redirect.feature').accessToken
-  * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+  * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
+  * def requestHeaders = call read('classpath:auth/auth-headers.js')
   * url baseURL
 
 Scenario: Attempt to retrieve a patient without stating a role
     # we use a different user for this scenario - a healthcare worker with multiple roles, 656005750104
-    * def accessToken = karate.call('classpath:patients/healthcareWorker/auth-redirect.feature', {userID: '656005750104'}).accessToken
-    * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: '656005750104'}).accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Patient', nhsNumber
     * method get

@@ -22,8 +22,8 @@ Background:
   * json Period = karate.readAsString('classpath:schemas/Period.json')
   * json addressSchema = karate.readAsString('classpath:schemas/Address.json') 
     
-  * def accessToken = karate.callSingle('classpath:patients/healthcareWorker/auth-redirect.feature').accessToken
-  * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+  * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
+  * def requestHeaders = call read('classpath:auth/auth-headers.js')
   * configure headers = requestHeaders  
   * url baseURL
 
@@ -81,7 +81,7 @@ Scenario: Fail to create a record for a new patient, single demographics match f
   * assert patientSearchResults.response.total == 1
 
   # so when we try to create a new patient using the same demographics, we get the single_match_found error
-  * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+  * def requestHeaders = call read('classpath:auth/auth-headers.js')
   * configure headers = requestHeaders
   * path "Patient"
   * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
@@ -116,7 +116,7 @@ Scenario: Fail to create a record for a new patient, multiple demographics match
   * def requestBody = read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
   * eval delete requestBody.name[0].prefix
   
-  * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+  * def requestHeaders = call read('classpath:auth/auth-headers.js')
   * configure headers = requestHeaders
   * path "Patient"
   * request requestBody

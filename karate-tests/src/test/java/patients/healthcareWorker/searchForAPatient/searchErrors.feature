@@ -2,8 +2,8 @@
 Feature: Search errors
 
 Background:
-  * def accessToken = karate.callSingle('classpath:patients/healthcareWorker/auth-redirect.feature').accessToken
-  * configure headers = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+  * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
+  * configure headers = call read('classpath:auth/auth-headers.js')
   * url baseURL
 
 
