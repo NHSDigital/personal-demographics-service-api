@@ -1,3 +1,4 @@
+@sandbox
 Feature: Get related person details (Healthcare worker access)
 
 Background:
@@ -22,3 +23,19 @@ Scenario: Get the related person details for a patient
   * status 200
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
   * match response == RelatedPersonSearchBundle
+
+Scenario: Patient doesn't have a related person
+  * def nhsNumber = karate.env == 'mock' ? '9000000025' : '9693632109'
+  * path 'Patient', nhsNumber, 'RelatedPerson'
+  * method get
+  * status 200
+  * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+  * match response == 
+    """
+    {
+      "resourceType": "Bundle",
+      "type": "searchset",
+      "timestamp": "#? utils.isValidTimestamp(_)",
+      "total": 0
+    }
+    """

@@ -20,5 +20,4 @@ public class TestSchemaParallel {
         assertTrue(results.getFailCount() == 0, results.getErrorMessages());
     }
 
-
 }

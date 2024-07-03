@@ -17,7 +17,7 @@ if (request.pathMatches('/Patient/{nhsNumber}/RelatedPerson') && request.get) {
     const nhsNumber = request.pathParams.nhsNumber
 
     if (nhsNumber === '9000000009') {
-      response.body = context.read('classpath:mocks/stubs/relatedPersonResponses/related_person_90000000009.json')
+      response.body = context.read('classpath:mocks/stubs/relatedPersonResponses/related_person_9000000009.json')
     } else if (nhsNumber === '9111231130') {
       response.body = context.read('classpath:mocks/stubs/errorResponses/RESOURCE_NOT_FOUND.json')
       response.status = 404
@@ -26,6 +26,7 @@ if (request.pathMatches('/Patient/{nhsNumber}/RelatedPerson') && request.get) {
       response.status = 200
     } else {
       response.body = EMPTY_SEARCHSET
+      response.body.timestamp = new Date().toISOString()
     }
   }
 }
