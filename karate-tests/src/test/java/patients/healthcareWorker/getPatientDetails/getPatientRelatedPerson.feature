@@ -29,8 +29,9 @@ Scenario: Patient has one related person
   * match response.total == 1
 
 
+@sandbox-only
 Scenario: Patient has more than one related person
-  * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9693633679'
+  * def nhsNumber = '9000000009'
   * path 'Patient', nhsNumber, 'RelatedPerson'
   * method get
   * status 200

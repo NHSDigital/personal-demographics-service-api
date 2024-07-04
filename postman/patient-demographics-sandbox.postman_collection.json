@@ -17,6 +17,20 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});\r",
 									""
 								],
 								"type": "text/javascript",
@@ -29,8 +43,7 @@
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -66,13 +79,37 @@
 				},
 				{
 					"name": "Basic search",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"pm.test(\"Searchset is returned\", function () {",
+									"  const jsonData = pm.response.json();",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");",
+									"  pm.expect(jsonData.total).to.equal(1);",
+									"",
+									"});",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {",
+									"  const jsonData = pm.response.json();",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -104,13 +141,37 @@
 				},
 				{
 					"name": "Basic search including phone",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -146,13 +207,37 @@
 				},
 				{
 					"name": "Basic search including email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -188,13 +273,37 @@
 				},
 				{
 					"name": "Basic search including email and phone",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -234,13 +343,33 @@
 				},
 				{
 					"name": "Basic search including email and phone negative match",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"An empty searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(0);\r",
+									"  pm.expect(jsonData).to.not.have.property(\"entry\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -280,13 +409,37 @@
 				},
 				{
 					"name": "Multi parameter search including phone",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -354,13 +507,37 @@
 				},
 				{
 					"name": "Multi parameter search including email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -428,13 +605,37 @@
 				},
 				{
 					"name": "Multi parameter search including phone and email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -506,13 +707,31 @@
 				},
 				{
 					"name": "Too few search parameters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(400);\r",
+									"});\r",
+									"pm.test(\"Unsupported Service error\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.issue[0].details.coding[0].code).to.equal(\"UNSUPPORTED_SERVICE\");\r",
+									"  pm.expect(jsonData.issue[0].details.coding[0].display).to.equal(\"Unsupported Service\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -530,13 +749,31 @@
 				},
 				{
 					"name": "Invalid date format - birth date",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(400);\r",
+									"});\r",
+									"pm.test(\"Unsupported Service error\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.issue[0].details.coding[0].code).to.equal(\"INVALID_VALUE\");\r",
+									"  pm.expect(jsonData.issue[0].diagnostics).to.equal(\"Invalid value - '20101022' in field 'birthdate'\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -581,9 +818,23 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									""
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000017\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000017\");\r",
+									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						},
 						{
@@ -592,7 +843,8 @@
 								"exec": [
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -601,8 +853,7 @@
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -642,13 +893,37 @@
 				},
 				{
 					"name": "Fuzzy search including phone",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -692,13 +967,37 @@
 				},
 				{
 					"name": "Fuzzy search including email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -742,13 +1041,37 @@
 				},
 				{
 					"name": "Fuzzy search including phone and email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -796,17 +1119,35 @@
 				},
 				{
 					"name": "Invalid date format - death date",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(400);\r",
+									"});\r",
+									"pm.test(\"Unsupported Service error\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.issue[0].details.coding[0].code).to.equal(\"INVALID_VALUE\");\r",
+									"  pm.expect(jsonData.issue[0].diagnostics).to.equal(\"Invalid value - '20101022' in field 'death-date'\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/Patient?family=Smith&given=Jane&gender=female&death-date=20101022",
+							"raw": "{{base_url}}/Patient?family=Smith&given=Jane&birthdate=2000-01-01&gender=female&death-date=20101022",
 							"host": [
 								"{{base_url}}"
 							],
@@ -821,6 +1162,10 @@
 								{
 									"key": "given",
 									"value": "Jane"
+								},
+								{
+									"key": "birthdate",
+									"value": "2000-01-01"
 								},
 								{
 									"key": "gender",
@@ -838,13 +1183,38 @@
 				},
 				{
 					"name": "Wildcard search",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(2);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes 2 patients\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"  pm.expect(jsonData.entry[1].resource.id).to.equal(\"9000000017\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -875,14 +1245,98 @@
 					"response": []
 				},
 				{
-					"name": "Wildcard search including phone",
+					"name": "Wildcard search with results limit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Too Many Matches error\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.issue[0].details.coding[0].code).to.equal(\"TOO_MANY_MATCHES\");\r",
+									"  pm.expect(jsonData.issue[0].details.coding[0].display).to.equal(\"Too Many Matches\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/Patient?family=Sm*&gender=female&birthdate=eq2010-10-22&_max-results=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							],
+							"query": [
+								{
+									"key": "family",
+									"value": "Sm*"
+								},
+								{
+									"key": "gender",
+									"value": "female"
+								},
+								{
+									"key": "birthdate",
+									"value": "eq2010-10-22"
+								},
+								{
+									"key": "_max-results",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Example of a wildcarded search with limited results, where the \"family\" name is wildcarded and \"_max-results\" is added, which limits the number of results to 2 patients - will return a result of 2 patients - Jane Smith patient (nhsId - 9000000009) & Jayne Smith (nhsId - 9000000017)\r\n\r\nNote: if \"_max-results\" is reduced to 1 then a \"TOO_MANY_RESULTS\" error response will be returned, as the number of matched patients found is greater than the \"_max-results\" parameter."
+					},
+					"response": []
+				},
+				{
+					"name": "Wildcard search including phone",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -918,13 +1372,37 @@
 				},
 				{
 					"name": "Wildcard search including email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -960,13 +1438,33 @@
 				},
 				{
 					"name": "Unsuccessful search",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"An empty searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(0);\r",
+									"  pm.expect(jsonData).to.not.have.property(\"entry\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -1001,56 +1499,38 @@
 					"response": []
 				},
 				{
-					"name": "Search with limited results",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/Patient?family=Sm*&gender=female&birthdate=eq2010-10-22&_max-results=1",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"Patient"
-							],
-							"query": [
-								{
-									"key": "family",
-									"value": "Sm*"
-								},
-								{
-									"key": "gender",
-									"value": "female"
-								},
-								{
-									"key": "birthdate",
-									"value": "eq2010-10-22"
-								},
-								{
-									"key": "_max-results",
-									"value": "1"
-								}
-							]
-						},
-						"description": "Example of a wildcarded search with limited results, where the \"family\" name is wildcarded and \"_max-results\" is added, which limits the number of results to 2 patients - will return a result of 2 patients - Jane Smith patient (nhsId - 9000000009) & Jayne Smith (nhsId - 9000000017)\r\n\r\nNote: if \"_max-results\" is reduced to 1 then a \"TOO_MANY_RESULTS\" error response will be returned, as the number of matched patients found is greater than the \"_max-results\" parameter."
-					},
-					"response": []
-				},
-				{
 					"name": "Search with limited results inc phone",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -1090,13 +1570,37 @@
 				},
 				{
 					"name": "Search with limited results inc email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -1265,13 +1769,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/Patient/9000000009",
+							"raw": "{{base_url}}/Patient/9693632109",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"Patient",
-								"9000000009"
+								"9693632109"
 							]
 						},
 						"description": "Example of successful patient retrieval"
@@ -1547,13 +2051,13 @@
 												"header": [
 													{
 														"key": "If-Match",
-														"type": "text",
-														"value": "W/\"2\""
+														"value": "W/\"2\"",
+														"type": "text"
 													},
 													{
 														"key": "Content-Type",
-														"type": "text",
-														"value": "application/json-patch+json"
+														"value": "application/json-patch+json",
+														"type": "text"
 													},
 													{
 														"key": "X-Request-ID",
@@ -1601,13 +2105,13 @@
 												"header": [
 													{
 														"key": "If-Match",
-														"type": "text",
-														"value": "W/\"2\""
+														"value": "W/\"2\"",
+														"type": "text"
 													},
 													{
 														"key": "Content-Type",
-														"type": "text",
-														"value": "application/json-patch+json"
+														"value": "application/json-patch+json",
+														"type": "text"
 													},
 													{
 														"key": "X-Request-ID",
@@ -1660,13 +2164,13 @@
 												"header": [
 													{
 														"key": "If-Match",
-														"type": "text",
-														"value": "W/\"2\""
+														"value": "W/\"2\"",
+														"type": "text"
 													},
 													{
 														"key": "Content-Type",
-														"type": "text",
-														"value": "application/json-patch+json"
+														"value": "application/json-patch+json",
+														"type": "text"
 													},
 													{
 														"key": "X-Request-ID",
@@ -1779,13 +2283,13 @@
 												"header": [
 													{
 														"key": "If-Match",
-														"type": "text",
-														"value": "W/\"2\""
+														"value": "W/\"2\"",
+														"type": "text"
 													},
 													{
 														"key": "Content-Type",
-														"type": "text",
-														"value": "application/json-patch+json"
+														"value": "application/json-patch+json",
+														"type": "text"
 													},
 													{
 														"key": "X-Request-ID",
@@ -1891,13 +2395,13 @@
 												"header": [
 													{
 														"key": "If-Match",
-														"type": "text",
-														"value": "W/\"2\""
+														"value": "W/\"2\"",
+														"type": "text"
 													},
 													{
 														"key": "Content-Type",
-														"type": "text",
-														"value": "application/json-patch+json"
+														"value": "application/json-patch+json",
+														"type": "text"
 													},
 													{
 														"key": "X-Request-ID",
@@ -2003,13 +2507,13 @@
 												"header": [
 													{
 														"key": "If-Match",
-														"type": "text",
-														"value": "W/\"2\""
+														"value": "W/\"2\"",
+														"type": "text"
 													},
 													{
 														"key": "Content-Type",
-														"type": "text",
-														"value": "application/json-patch+json"
+														"value": "application/json-patch+json",
+														"type": "text"
 													},
 													{
 														"key": "X-Request-ID",
@@ -2115,13 +2619,13 @@
 												"header": [
 													{
 														"key": "If-Match",
-														"type": "text",
-														"value": "W/\"2\""
+														"value": "W/\"2\"",
+														"type": "text"
 													},
 													{
 														"key": "Content-Type",
-														"type": "text",
-														"value": "application/json-patch+json"
+														"value": "application/json-patch+json",
+														"type": "text"
 													},
 													{
 														"key": "X-Request-ID",
@@ -2174,13 +2678,13 @@
 												"header": [
 													{
 														"key": "If-Match",
-														"type": "text",
-														"value": "W/\"2\""
+														"value": "W/\"2\"",
+														"type": "text"
 													},
 													{
 														"key": "Content-Type",
-														"type": "text",
-														"value": "application/json-patch+json"
+														"value": "application/json-patch+json",
+														"type": "text"
 													},
 													{
 														"key": "X-Request-ID",
@@ -2228,13 +2732,13 @@
 												"header": [
 													{
 														"key": "If-Match",
-														"type": "text",
-														"value": "W/\"2\""
+														"value": "W/\"2\"",
+														"type": "text"
 													},
 													{
 														"key": "Content-Type",
-														"type": "text",
-														"value": "application/json-patch+json"
+														"value": "application/json-patch+json",
+														"type": "text"
 													},
 													{
 														"key": "X-Request-ID",
@@ -2282,13 +2786,13 @@
 												"header": [
 													{
 														"key": "If-Match",
-														"type": "text",
-														"value": "W/\"2\""
+														"value": "W/\"2\"",
+														"type": "text"
 													},
 													{
 														"key": "Content-Type",
-														"type": "text",
-														"value": "application/json-patch+json"
+														"value": "application/json-patch+json",
+														"type": "text"
 													},
 													{
 														"key": "X-Request-ID",
@@ -2336,13 +2840,13 @@
 												"header": [
 													{
 														"key": "If-Match",
-														"type": "text",
-														"value": "W/\"2\""
+														"value": "W/\"2\"",
+														"type": "text"
 													},
 													{
 														"key": "Content-Type",
-														"type": "text",
-														"value": "application/json-patch+json"
+														"value": "application/json-patch+json",
+														"type": "text"
 													},
 													{
 														"key": "X-Request-ID",
@@ -2390,13 +2894,13 @@
 												"header": [
 													{
 														"key": "If-Match",
-														"type": "text",
-														"value": "W/\"2\""
+														"value": "W/\"2\"",
+														"type": "text"
 													},
 													{
 														"key": "Content-Type",
-														"type": "text",
-														"value": "application/json-patch+json"
+														"value": "application/json-patch+json",
+														"type": "text"
 													},
 													{
 														"key": "X-Request-ID",
@@ -2464,13 +2968,13 @@
 								"header": [
 									{
 										"key": "If-Match",
-										"type": "text",
-										"value": "W/\"2\""
+										"value": "W/\"2\"",
+										"type": "text"
 									},
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json-patch+json"
+										"value": "application/json-patch+json",
+										"type": "text"
 									},
 									{
 										"key": "X-Request-ID",
@@ -2503,13 +3007,13 @@
 								"header": [
 									{
 										"key": "If-Match",
-										"type": "text",
-										"value": "W/\"2\""
+										"value": "W/\"2\"",
+										"type": "text"
 									},
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json-patch+json"
+										"value": "application/json-patch+json",
+										"type": "text"
 									},
 									{
 										"key": "X-Request-ID",
@@ -2542,13 +3046,13 @@
 								"header": [
 									{
 										"key": "If-Match",
-										"type": "text",
-										"value": "W/\"2\""
+										"value": "W/\"2\"",
+										"type": "text"
 									},
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json-patch+json"
+										"value": "application/json-patch+json",
+										"type": "text"
 									},
 									{
 										"key": "X-Request-ID",
@@ -2581,13 +3085,13 @@
 								"header": [
 									{
 										"key": "If-Match",
-										"type": "text",
-										"value": "W/\"2\""
+										"value": "W/\"2\"",
+										"type": "text"
 									},
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json-patch+json"
+										"value": "application/json-patch+json",
+										"type": "text"
 									},
 									{
 										"key": "X-Request-ID",
@@ -2620,8 +3124,8 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json-patch+json"
+										"value": "application/json-patch+json",
+										"type": "text"
 									},
 									{
 										"key": "If-Match",
@@ -2670,13 +3174,13 @@
 								"header": [
 									{
 										"key": "If-Match",
-										"type": "text",
-										"value": "W/\"2\""
+										"value": "W/\"2\"",
+										"type": "text"
 									},
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json-patch+json"
+										"value": "application/json-patch+json",
+										"type": "text"
 									},
 									{
 										"key": "X-Request-ID",
@@ -2708,8 +3212,8 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/fhir+json"
+										"value": "application/fhir+json",
+										"type": "text"
 									},
 									{
 										"key": "If-Match",
@@ -2747,8 +3251,8 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json-patch+json"
+										"value": "application/json-patch+json",
+										"type": "text"
 									},
 									{
 										"key": "X-Request-ID",
@@ -2792,13 +3296,13 @@
 								"header": [
 									{
 										"key": "If-Match",
-										"type": "text",
-										"value": "W/\"2\""
+										"value": "W/\"2\"",
+										"type": "text"
 									},
 									{
 										"key": "Content-Type",
-										"type": "text",
-										"value": "application/json-patch+json"
+										"value": "application/json-patch+json",
+										"type": "text"
 									}
 								],
 								"body": {
@@ -2946,8 +3450,97 @@
 					}
 				}
 			]
+		},
+		{
+			"name": "Search - OAS",
+			"item": [
+				{
+					"name": "Basic search with phone & email positive",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22&phone=01632960587&email=jane.smith@example.com",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							],
+							"query": [
+								{
+									"key": "family",
+									"value": "Smith"
+								},
+								{
+									"key": "gender",
+									"value": "female"
+								},
+								{
+									"key": "birthdate",
+									"value": "eq2010-10-22"
+								},
+								{
+									"key": "phone",
+									"value": "01632960587"
+								},
+								{
+									"key": "email",
+									"value": "jane.smith@example.com"
+								}
+							]
+						},
+						"description": "Example of a simple search including phone and email using minimum search parameters (\"family\" name, \"gender\" & \"date of birth\" & \"phone\" & \"email\") will return a single result."
+					},
+					"response": []
+				}
+			],
+			"description": "The examples that are in the OAS file"
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "HEALTHCARE_WORKER",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
@@ -2971,7 +3564,7 @@
 	"variable": [
 		{
 			"key": "base_url",
-			"value": "https://sandbox.api.service.nhs.uk/personal-demographics/FHIR/R4"
+			"value": ""
 		},
 		{
 			"key": "contentLocation",
