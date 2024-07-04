@@ -1205,12 +1205,12 @@ paths:
         However, historically this was constrained only by the integration requirements and was not enforced so theoretically more than one can exist for a patient when retrieving.
         Where multiple instances already exist for the patient it is not expected that local systems should manage those, but should choose the most appropriate one to maintain (for example by examining period dates).
 
-        A home address is the patient's main residential address and should normally be used for all clinical and demographic purposes, including clinical and appointment correspondence. However additionally, temp and billing addresses may be provided by a patient when there is a requirement to record an alternative location for the purposes of unbroken care. When sending correspondence to a patient:
-        * a present and valid billing address may take precedence over home and temp addresses. A patient should have only a single current billing address. An address is considered 'valid' according to its period start and to dates.
-        * if no current billing address is provided, a temp address may take precedence over the home address, again if it is valid according to its period start and to dates.
+        A `home` address is the patient's main residential address and should normally be used for all clinical and demographic purposes, including clinical and appointment correspondence. However additionally, `temp` and `billing` addresses may be provided by a patient when there is a requirement to record an alternative location for the purposes of unbroken care. When sending correspondence to a patient:
+        * a present and valid `billing` address may take precedence over `home` and `temp` addresses. A patient should have only a single current `billing` address. An address is considered 'valid' according to its period start and to dates.
+        * if no current `billing` address is provided, a `temp` address may take precedence over the `home` address, again if it is valid according to its period start and to dates.
 
         Not all local systems support `temp` and `billing` addresses, so these are not uniformly maintained. Therefore, where the patient contact has clinical or business significance, the precedence of these addresses over the `home` address should be determined by a user wherever possible.
-        When the end date for a `temp` or `billing` address passes, local systems should use the patient’s `home` address. It is extremely rare that no home address is present on a patient record.
+        When the end date for a `temp` or `billing` address passes, local systems should use the patient’s `home` address. It is extremely rare that no `home` address is present on a patient record.
 
         Be aware of the following business rules:
         * you cannot add more than one of each address use types; `home`, `temp` or `billing`
