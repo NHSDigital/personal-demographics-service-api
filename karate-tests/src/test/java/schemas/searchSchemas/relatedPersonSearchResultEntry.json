@@ -3,7 +3,11 @@
     "resource": {
         "active": "#boolean",
         "id": "#string",
-        "name": "##[]",
+        "name": "##[] (HumanName)",
+        "address": "##[]",
+        "extension": "##[]",
+        "telecom": "##[] (ContactPoint)",
+        "period": "##(Period)",
         "patient": {
             "identifier": {
                 "system": "https://fhir.nhs.uk/Id/nhs-number",

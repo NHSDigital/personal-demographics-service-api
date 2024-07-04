@@ -12,7 +12,7 @@
         "patient": {
           "identifier": {
             "system": "https://fhir.nhs.uk/Id/nhs-number",
-            "value": "90000000009"
+            "value": "9000000009"
           }
         },
         "active": true,
