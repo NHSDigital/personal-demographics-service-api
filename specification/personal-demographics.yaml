@@ -302,9 +302,6 @@ paths:
       - $ref: '#/components/parameters/RequestID'
       - $ref: '#/components/parameters/CorrelationID'
       - $ref: '#/components/parameters/NHSD-End-User-Organisation-ODS'
-externalDocs:
-  description: ODS codes and documentation.
-  url: https://fhir.nhs.uk/Id/ods-organization-code    
 get:
   summary: Search for a patient
   operationId: search-patient
@@ -547,7 +544,9 @@ get:
         
         
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/32547823-005ebee4-7510-44c3-bb0e-58f26b2ba747)
-
+  externalDocs:
+    description: ODS codes and documentation.
+    url: https://fhir.nhs.uk/Id/ods-organization-code    
   parameters:
         - $ref: '#/components/parameters/FuzzyMatch'
         - $ref: '#/components/parameters/ExactMatch'
@@ -615,7 +614,6 @@ get:
                           code: INVALID_VALUE
                           display: Provided value is invalid
                     diagnostics: "Invalid value - 'mal' in field 'gender'"   
- 
 '/Patient/{id}':
     parameters:
       - $ref: '#/components/parameters/Id'
