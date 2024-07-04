@@ -17,12 +17,13 @@ Background:
   * json Patient = karate.readAsString('classpath:schemas/Patient.json')
 
   # auth
-  * def accessToken = karate.callSingle('classpath:patients/healthcareWorker/auth-redirect.feature').accessToken
-  * def requestHeaders = call read('classpath:patients/healthcareWorker/healthcare-worker-headers.js')
+  * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
+  * def requestHeaders = call read('classpath:auth/auth-headers.js')
   * configure headers = requestHeaders 
 
   * url baseURL
 
+@unrestricted
 Scenario: Get an "unrestricted" patient
   * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9693632109'
   * path 'Patient', nhsNumber
@@ -40,6 +41,7 @@ Scenario: Get an "unrestricted" patient
     }
     """
 
+@sensitive
 Scenario: Get a "restricted" (sensitive) patient
   * def nhsNumber = karate.env == 'mock' ? '9000000025' : '9727022820'
   * path 'Patient', nhsNumber
