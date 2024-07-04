@@ -16,7 +16,7 @@ properties:
   name:
     type: array
     description: | 
-      List of names associated with the patient.      
+      List of names associated with the patient. This may not appear if the patient is tagged as `restricted` (also known as a sensitive patient).     
     minItems: 1
     items:
       $ref: "HumanName.yaml"
@@ -40,8 +40,7 @@ properties:
   telecom:
     type: array
     description: |
-      List of contact points for the patient; for example, phone numbers or email addresses.
-      When a patient tagged as `restricted` is retrieved, all contact points are removed from the response.
+      List of contact points for the patient; for example, phone numbers or email addresses. When a patient tagged as `restricted` is retrieved, all contact points are removed from the response (a contact point, such as a phone number or email address).
     items:
       $ref: "ContactPoint.yaml"
   contact:
