@@ -36,3 +36,5 @@ keys/
 # Karate ignores
 **/target/**
 karate.jar
+
+newman-test-report.xml
