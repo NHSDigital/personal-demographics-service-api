@@ -9,7 +9,12 @@
       "resource": {
         "id": "F4CF8B96",
         "resourceType": "RelatedPerson",
-        "patient": {},
+        "patient": {
+          "identifier": {
+            "system": "https://fhir.nhs.uk/Id/nhs-number",
+            "value": "5328023641"
+          }
+        },
         "active": true,
         "period": {
           "start": "2020-01-01",

@@ -226,3 +226,13 @@ function validatePatientExists (request) {
   }
   return valid
 }
+
+/*
+  Add a timestamp to the body of the response
+*/
+// eslint-disable-next-line no-unused-vars
+function timestampBody (body) {
+  // timestamp format is '2019-12-25T12:00:00+00:00'
+  body.timestamp = new Date().toISOString()
+  return body
+}

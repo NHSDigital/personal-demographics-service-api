@@ -6,7 +6,7 @@
 /* global context, request, response */
 
 /* Functions defined in supporting-functions.js */
-/* global validateHeaders, setAdditionalPropertiesError, setInvalidValueError, setInvalidSearchDataError, setMissingValueError, setUnsupportedServiceError, basicResponseHeaders */
+/* global validateHeaders, setAdditionalPropertiesError, setInvalidValueError, setInvalidSearchDataError, setMissingValueError, setUnsupportedServiceError, basicResponseHeaders, timestampBody */
 
 /* Constants defined in stubs.js */
 /* global EMPTY_SEARCHSET, SEARCH_PATIENT_9000000009, FUZZY_SEARCH_PATIENT_17, WILDCARD_SEARCH, RESTRICTED_PATIENT_SEARCH, SIMPLE_SEARCH */
@@ -40,14 +40,6 @@ function janeSmithSearchsetWithScore (score) {
   }
 }
 
-/*
-  Add a timestamp to the body of the response
-*/
-function timestampBody (body) {
-  // timestamp format is '2019-12-25T12:00:00+00:00'
-  body.timestamp = new Date().toISOString()
-  return body
-}
 
 /*
     Specific query param validation to support main handler
