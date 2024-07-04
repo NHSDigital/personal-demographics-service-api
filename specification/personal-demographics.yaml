@@ -548,7 +548,7 @@ get:
         
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/32547823-005ebee4-7510-44c3-bb0e-58f26b2ba747)
 
-      parameters:
+  parameters:
         - $ref: '#/components/parameters/FuzzyMatch'
         - $ref: '#/components/parameters/ExactMatch'
         - $ref: '#/components/parameters/History'
@@ -1666,7 +1666,7 @@ get:
                           code: SERVICE_UNAVAILABLE
                           display: Service unavailable
                     diagnostics: "The downstream domain processing has not completed within the configured timeout period. Using the same 'X-Request-ID' header, retry your request after the time specified by the 'Retry-After' response header."
-  '/Patient/{id}/RelatedPerson':
+'/Patient/{id}/RelatedPerson':
     parameters:
       - $ref: '#/components/parameters/Id'
       - $ref: '#/components/parameters/BearerAuthorization'
