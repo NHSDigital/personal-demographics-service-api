@@ -283,6 +283,9 @@ info:
             </div>
         </div>
     </div> 
+  externalDocs:
+    description: ODS codes and documentation.
+    url: https://fhir.nhs.uk/Id/ods-organization-code  
   contact:
     name: Personal Demographics Service FHIR API Support
     url: 'https://digital.nhs.uk/developer/help-and-support'
@@ -295,17 +298,17 @@ servers:
   - url: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4'
     description: Production environment.
 paths:
-  /Patient:
+  '/Patient':
     parameters:
       - $ref: '#/components/parameters/BearerAuthorization'
       - $ref: '#/components/parameters/RoleId'
       - $ref: '#/components/parameters/RequestID'
       - $ref: '#/components/parameters/CorrelationID'
       - $ref: '#/components/parameters/NHSD-End-User-Organisation-ODS'
-get:
-  summary: Search for a patient
-  operationId: search-patient
-  description: |
+    get:
+      summary: Search for a patient
+      operationId: search-patient
+      description: |
         ## Overview
         Use this endpoint to search for a patient in PDS.
         
@@ -544,10 +547,7 @@ get:
         
         
         [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/32547823-005ebee4-7510-44c3-bb0e-58f26b2ba747)
-  externalDocs:
-    description: ODS codes and documentation.
-    url: https://fhir.nhs.uk/Id/ods-organization-code    
-  parameters:
+      parameters:
         - $ref: '#/components/parameters/FuzzyMatch'
         - $ref: '#/components/parameters/ExactMatch'
         - $ref: '#/components/parameters/History'
@@ -562,7 +562,7 @@ get:
         - $ref: '#/components/parameters/GeneralPractitioner'
         - $ref: '#/components/parameters/EmailAddress'
         - $ref: '#/components/parameters/PhoneNumber'
-  responses:
+      responses:
         '200':
           description: |
             A completed search. This might contain zero, one, or many matching patients, or it might contain a 'TOO_MANY_MATCHES' error.
@@ -614,7 +614,7 @@ get:
                           code: INVALID_VALUE
                           display: Provided value is invalid
                     diagnostics: "Invalid value - 'mal' in field 'gender'"   
-'/Patient/{id}':
+  '/Patient/{id}':
     parameters:
       - $ref: '#/components/parameters/Id'
       - $ref: '#/components/parameters/BearerAuthorization'
@@ -1664,7 +1664,7 @@ get:
                           code: SERVICE_UNAVAILABLE
                           display: Service unavailable
                     diagnostics: "The downstream domain processing has not completed within the configured timeout period. Using the same 'X-Request-ID' header, retry your request after the time specified by the 'Retry-After' response header."
-'/Patient/{id}/RelatedPerson':
+  '/Patient/{id}/RelatedPerson':
     parameters:
       - $ref: '#/components/parameters/Id'
       - $ref: '#/components/parameters/BearerAuthorization'
