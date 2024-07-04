@@ -563,7 +563,7 @@ get:
         - $ref: '#/components/parameters/GeneralPractitioner'
         - $ref: '#/components/parameters/EmailAddress'
         - $ref: '#/components/parameters/PhoneNumber'
-      responses:
+  responses:
         '200':
           description: |
             A completed search. This might contain zero, one, or many matching patients, or it might contain a 'TOO_MANY_MATCHES' error.
