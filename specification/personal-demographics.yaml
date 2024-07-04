@@ -287,9 +287,6 @@ info:
     name: Personal Demographics Service FHIR API Support
     url: 'https://digital.nhs.uk/developer/help-and-support'
     email: ssd.nationalservicedesk@nhs.net
-  externalDocs:
-    description: ODS codes and documentation.
-    url: https://fhir.nhs.uk/Id/ods-organization-code
 servers:
   - url: 'https://sandbox.api.service.nhs.uk/personal-demographics/FHIR/R4'
     description: Sandbox environment.
