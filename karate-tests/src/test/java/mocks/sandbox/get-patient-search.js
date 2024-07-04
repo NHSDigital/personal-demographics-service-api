@@ -40,7 +40,6 @@ function janeSmithSearchsetWithScore (score) {
   }
 }
 
-
 /*
     Specific query param validation to support main handler
 */
