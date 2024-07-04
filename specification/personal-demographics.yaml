@@ -282,14 +282,14 @@ info:
                 <div data-uipath="website.contentblock.emphasis.content" class="nhsd-t-word-break"><p class="nhsd-t-body">To get started, sign in or create a <a href="https://onboarding.prod.api.platform.nhs.uk/">developer account</a>, then select 'product onboarding'.</p></div>            
             </div>
         </div>
-    </div> 
-  externalDocs:
-    description: ODS codes and documentation.
-    url: https://fhir.nhs.uk/Id/ods-organization-code  
+    </div>   
   contact:
     name: Personal Demographics Service FHIR API Support
     url: 'https://digital.nhs.uk/developer/help-and-support'
     email: ssd.nationalservicedesk@nhs.net
+  externalDocs:
+    description: ODS codes and documentation.
+    url: https://fhir.nhs.uk/Id/ods-organization-code
 servers:
   - url: 'https://sandbox.api.service.nhs.uk/personal-demographics/FHIR/R4'
     description: Sandbox environment.
@@ -622,9 +622,6 @@ paths:
       - $ref: '#/components/parameters/RequestID'
       - $ref: '#/components/parameters/CorrelationID'
       - $ref: '#/components/parameters/NHSD-End-User-Organisation-ODS'
-    externalDocs:
-        description: IETF RFC 6902, which defines json-patch.
-        url: https://tools.ietf.org/html/rfc6902
     get:
       description: |
         ## Overview
