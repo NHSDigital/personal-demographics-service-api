@@ -13,7 +13,7 @@ public class TestSmoke {
     @Test
     void testSmoke() {
         Results results = Runner.path("classpath:patients")
-            .karateEnv("veit07")
+            .karateEnv("int")
             .tags("@smoke")
             .outputJunitXml(true)
             .parallel(5);
