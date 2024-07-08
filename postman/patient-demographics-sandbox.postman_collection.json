@@ -1769,13 +1769,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/Patient/9693632109",
+							"raw": "{{base_url}}/Patient/9000000009",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"Patient",
-								"9693632109"
+								"9000000009"
 							]
 						},
 						"description": "Example of successful patient retrieval"
@@ -3352,6 +3352,25 @@
 			"item": [
 				{
 					"name": "Single Related Person exists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"one related person\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.total).to.eql(1);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -3378,6 +3397,25 @@
 				},
 				{
 					"name": "Related Persons do not exist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"no results\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.total).to.eql(0);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -3450,85 +3488,6 @@
 					}
 				}
 			]
-		},
-		{
-			"name": "Search - OAS",
-			"item": [
-				{
-					"name": "Basic search with phone & email positive",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Response status code is 200\", function () {\r",
-									"    pm.expect(pm.response.code).to.equal(200);\r",
-									"});\r",
-									"pm.test(\"Searchset is returned\", function () {\r",
-									"  const jsonData = pm.response.json();\r",
-									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
-									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
-									"  pm.expect(jsonData.total).to.equal(1);\r",
-									"\r",
-									"});\r",
-									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
-									"  const jsonData = pm.response.json();\r",
-									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
-									"});"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "X-Request-ID",
-								"value": "{{$guid}}"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/Patient?family=Smith&gender=female&birthdate=eq2010-10-22&phone=01632960587&email=jane.smith@example.com",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"Patient"
-							],
-							"query": [
-								{
-									"key": "family",
-									"value": "Smith"
-								},
-								{
-									"key": "gender",
-									"value": "female"
-								},
-								{
-									"key": "birthdate",
-									"value": "eq2010-10-22"
-								},
-								{
-									"key": "phone",
-									"value": "01632960587"
-								},
-								{
-									"key": "email",
-									"value": "jane.smith@example.com"
-								}
-							]
-						},
-						"description": "Example of a simple search including phone and email using minimum search parameters (\"family\" name, \"gender\" & \"date of birth\" & \"phone\" & \"email\") will return a single result."
-					},
-					"response": []
-				}
-			],
-			"description": "The examples that are in the OAS file"
 		}
 	],
 	"auth": {
