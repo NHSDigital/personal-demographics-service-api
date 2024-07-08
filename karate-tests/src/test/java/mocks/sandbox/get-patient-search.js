@@ -46,7 +46,7 @@ function janeSmithSearchsetWithScore (score) {
 function validateQueryParams (request) {
   const VALID_PARAMS = [
     '_fuzzy-match', '_exact-match', '_history', '_max-results',
-    'family', 'given', 'gender', 'birthdate', 'death-date',
+    'family', 'given', 'gender', 'birthdate', 'death-date', 'history',
     'address-postcode', 'address-postalcode', 'general-practitioner', 'email', 'phone'
   ]
 
