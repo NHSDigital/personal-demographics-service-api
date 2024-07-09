@@ -443,7 +443,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/Patient?_fuzzy-match=false&_exact-match=false&history=true&_max-results=1&family=Smith&gender=female&birthdate=eq2010-10-22&given=Jane&death-date=eq2010-10-22&address-postcode=LS1 6AE&general-practitioner=Y12345&phone=01632960587",
+							"raw": "{{base_url}}/Patient?_fuzzy-match=false&_exact-match=false&_max-results=1&family=Smith&gender=female&birthdate=eq2010-10-22&given=Jane&death-date=eq2010-10-22&address-postcode=LS1 6AE&general-practitioner=Y12345&phone=01632960587",
 							"host": [
 								"{{base_url}}"
 							],
@@ -461,7 +461,8 @@
 								},
 								{
 									"key": "history",
-									"value": "true"
+									"value": "true",
+									"disabled": true
 								},
 								{
 									"key": "_max-results",
@@ -1300,7 +1301,7 @@
 								}
 							]
 						},
-						"description": "Example of a wildcarded search with limited results, where the \"family\" name is wildcarded and \"_max-results\" is added, which limits the number of results to 2 patients - will return a result of 2 patients - Jane Smith patient (nhsId - 9000000009) & Jayne Smith (nhsId - 9000000017)\r\n\r\nNote: if \"_max-results\" is reduced to 1 then a \"TOO_MANY_RESULTS\" error response will be returned, as the number of matched patients found is greater than the \"_max-results\" parameter."
+						"description": "Example of a wildcarded search with limited results, where the \"family\" name is wildcarded and \"_max-results\" is added, which limits the number of results to 2 patients.\n\nThis request will return search bundle containing 2 patients - Jane Smith patient (nhsId - 9000000009) & Jayne Smith (nhsId - 9000000017)\n\nNote: if \"_max-results\" is reduced to 1 then a \"TOO_MANY_RESULTS\" error response will be returned, as the number of matched patients found is greater than the \"_max-results\" parameter."
 					},
 					"response": []
 				},
@@ -1513,7 +1514,6 @@
 									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
 									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
 									"  pm.expect(jsonData.total).to.equal(1);\r",
-									"\r",
 									"});\r",
 									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
 									"  const jsonData = pm.response.json();\r",
@@ -3442,6 +3442,25 @@
 				},
 				{
 					"name": "Multiple Related Persons exists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"two related persons\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.total).to.eql(2);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
