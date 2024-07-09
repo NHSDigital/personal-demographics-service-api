@@ -119,12 +119,12 @@ steps:
       export TEST_PATIENT_ID="$(TEST_PATIENT_ID)"
       export INTERNAL_DEV_ASID="$(INTERNAL_DEV_ASID)"
 
-      poetry run pytest -v tests/functional/test_patient_access.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/patient-create-test-report.xml --reruns 20 --reruns-delay 1
+      poetry run pytest -v tests/functional/test_patient_access.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/patient-access-test-report.xml --reruns 20 --reruns-delay 1
     displayName: Run patient access tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
 
   - task: PublishTestResults@2
     displayName: "Publish patient access test results"
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/patient-create-test-report.xml
+      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/patient-access-test-report.xml
       failTaskOnFailedTests: true
