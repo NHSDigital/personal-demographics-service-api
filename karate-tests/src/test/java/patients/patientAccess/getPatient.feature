@@ -20,8 +20,9 @@ Feature: Patient Access (Retrieve)
     * def p5number = '9912003072'
     * def p0number = '9912003073'
 
+  @smoke
   Scenario: P9 Patient can authenticate and retrieve their own details
-    * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Patient', p9number

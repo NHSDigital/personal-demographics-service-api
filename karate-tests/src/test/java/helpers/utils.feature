@@ -126,6 +126,15 @@ Scenario:
     """
 
   * def isValidNHSNumber = read('classpath:helpers/nhs-number-validator.js')
+
+  * def isValidURL =
+  """
+    function(url) {
+      const regex = new RegExp("^(http|https)://")
+      return regex.test(url)
+    }
+  """
+  
   * def isValidPatientURL = 
     """
     function(url) {
@@ -134,6 +143,18 @@ Scenario:
       const nhsNumber = url.split('/')[url.split('/').length -1]
       const validNHSNumber = karate.call('classpath:helpers/nhs-number-validator.js', nhsNumber)
       return validNHSNumber
+    }
+    """
+
+  * def isValidRelatedPersonURL = 
+    """
+    function(url) {
+      const baseURL = karate.get('internalServerURL') + "/Patient/"
+      if (!url.startsWith(baseURL)) return false
+      const nhsNumber = url.split('/')[url.split('/').length -3]
+      const validNHSNumber = karate.call('classpath:helpers/nhs-number-validator.js', nhsNumber)
+      const relatedPerson = url.split("/")[url.split("/").length - 2] == 'RelatedPerson'
+      return (validNHSNumber && relatedPerson)
     }
     """
 

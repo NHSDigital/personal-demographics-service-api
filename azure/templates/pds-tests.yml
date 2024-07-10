@@ -78,23 +78,6 @@ steps:
       failTaskOnFailedTests: true
 
   - bash: |
-      export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
-      export AUTHENTICATE_URL="https://example.org/callback"
-      export OAUTH_PROXY="oauth2-mock"
-      export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
-      export INTERNAL_DEV_ASID="$(INTERNAL_DEV_ASID)"
-
-      poetry run pytest -v tests/functional/test_user_restricted.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/user-restricted-test-report.xml --reruns 20 --reruns-delay 1
-    displayName: Run user restricted tests
-    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
-  
-  - task: PublishTestResults@2
-    displayName: 'Publish user restricted test results'
-    inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/user-restricted-test-report.xml
-      failTaskOnFailedTests: true
-
-  - bash: |
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
@@ -118,10 +101,15 @@ steps:
       export TEST_PATIENT_ID="$(TEST_PATIENT_ID)"
       export INTERNAL_DEV_ASID="$(INTERNAL_DEV_ASID)"
 
-      poetry run pytest -v tests/functional/test_patient_access.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/patient-access-test-report.xml --reruns 20 --reruns-delay 1
-    displayName: Run patient access tests
+      poetry run pytest -v tests/functional/test_patient_create.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/patient-create-test-report.xml --reruns 20 --reruns-delay 1
+    displayName: Run post patient tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
 
+  - task: PublishTestResults@2
+    displayName: "Publish post patient test results"
+    inputs:
+      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/patient-create-test-report.xml
+      failTaskOnFailedTests: true
 
   - bash: |
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
@@ -131,12 +119,12 @@ steps:
       export TEST_PATIENT_ID="$(TEST_PATIENT_ID)"
       export INTERNAL_DEV_ASID="$(INTERNAL_DEV_ASID)"
 
-      poetry run pytest -v tests/functional/test_patient_create.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/patient-create-test-report.xml --reruns 20 --reruns-delay 1
-    displayName: Run post patient tests
+      poetry run pytest -v tests/functional/test_patient_access.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/patient-access-test-report.xml --reruns 20 --reruns-delay 1
+    displayName: Run patient access tests
     workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
 
   - task: PublishTestResults@2
-    displayName: "Publish post patient test results"
+    displayName: "Publish patient access test results"
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/patient-create-test-report.xml
+      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/patient-access-test-report.xml
       failTaskOnFailedTests: true

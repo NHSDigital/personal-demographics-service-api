@@ -1,0 +1,7 @@
+{
+    "entry": "#[] (RelatedPersonSearchResultEntry)",
+    "resourceType": "Bundle",
+    "timestamp": "#? utils.isValidTimestamp(_)",
+    "total": "#number",
+    "type": "searchset"
+}

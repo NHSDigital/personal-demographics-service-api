@@ -1,9 +1,5 @@
 steps:
 
-  - bash: poetry install
-    workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
-    displayName: Setup tests
-
   - template: "azure/components/aws-assume-role.yml@common"
     parameters:
      role: "auto-ops"
@@ -11,46 +7,33 @@ steps:
 
   - template: "azure/components/get-aws-secrets-and-ssm-params.yml@common"
     parameters:
-     secret_file_ids:
-       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_WITH_ASID_PRIVATE_KEY
-       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_PRIVATE_KEY
-     config_ids:
-       - /ptl/azure-devops/personal-demographics/int/CLIENT_ID_INT
-       - /ptl/azure-devops/personal-demographics/TEST_PATIENT_ID
-       - /ptl/azure-devops/personal-demographics/AUTH_TOKEN_EXPIRY_MS
-       - /ptl/azure-devops/personal-demographics/AUTH_TOKEN_EXPIRY_MS_INT
-       - /ptl/azure-devops/personal-demographics/int/APIGEE_APP_ID
-     secret_ids:
-       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_API_KEY
-       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_WITH_ASID_API_KEY
-       - ptl/azure-devops/personal-demographics/int/CLIENT_SECRET_INT
+      secret_file_ids:
+        - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_PRIVATE_KEY
+      config_ids:
+        - /ptl/azure-devops/personal-demographics/int/CLIENT_ID_INT
+        - /ptl/azure-devops/personal-demographics/TEST_PATIENT_ID
+        - /ptl/azure-devops/personal-demographics/INTERNAL_SERVER_BASE_URI
+      secret_ids:
+        - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_API_KEY
+        - ptl/azure-devops/personal-demographics/int/CLIENT_SECRET_INT
 
   - bash: |
       export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
-      export APPLICATION_RESTRICTED_WITH_ASID_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_WITH_ASID_PRIVATE_KEY)"
       export APPLICATION_RESTRICTED_API_KEY="$(JWT_TESTING_API_KEY)"
-      export APPLICATION_RESTRICTED_WITH_ASID_API_KEY="$(JWT_TESTING_WITH_ASID_API_KEY)"
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
-      export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
       export KEY_ID="test-1"
-      export APIGEE_API_TOKEN="$(secret.AccessToken)"
-      export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2-mock"
-      export REDIRECT_URI="https://example.org/callback"
-      export AUTHENTICATE_URL="https://example.org/callback"
       export CLIENT_ID="$(CLIENT_ID_INT)"
       export CLIENT_SECRET="$(CLIENT_SECRET_INT)"
-      export TEST_PATIENT_ID="$(TEST_PATIENT_ID)"
-      export JWT_PRIVATE_KEY_ABSOLUTE_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
-      export AUTH_TOKEN_EXPIRY_MS="$(AUTH_TOKEN_EXPIRY_MS)"
-      export AUTH_TOKEN_EXPIRY_MS_INT="$(AUTH_TOKEN_EXPIRY_MS_INT)"
-
-      poetry run pytest -v tests/ -m smoke_test --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --apigee-app-id "$(APIGEE_APP_ID)" --apigee-organization nhsd-prod --junitxml=tests/test-report.xml --reruns 5 --reruns-delay 1
-    displayName: Run smoke tests
-    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+      export INTERNAL_SERVER_BASE_URI="$(INTERNAL_SERVER_BASE_URI)"
+      mvn clean test -Dtest=TestSmoke 
+    displayName: 'Run Karate Smoke Tests'
+    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests"
+    
   - task: PublishTestResults@2
     displayName: 'Publish smoke test results'
+    condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/test-report.xml
+      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports/*.xml
       failTaskOnFailedTests: true

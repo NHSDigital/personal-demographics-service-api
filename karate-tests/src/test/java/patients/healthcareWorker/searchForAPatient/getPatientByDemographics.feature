@@ -12,7 +12,7 @@ Feature: Get (search for) patients based on demographics data
     * json HumanName = karate.readAsString('classpath:schemas/HumanName.json')
     * json Patient = karate.readAsString('classpath:schemas/Patient.json')
     * json ContactPoint = karate.readAsString('classpath:schemas/ContactPoint.json')
-    * json patientSearchResultEntry = karate.readAsString('classpath:patients/healthcareWorker/searchForAPatient/schemas/patientSearchResultEntry.json')
+    * json patientSearchResultEntry = karate.readAsString('classpath:schemas/searchSchemas/patientSearchResultEntry.json')
   
     # auth
     * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
@@ -30,5 +30,5 @@ Feature: Get (search for) patients based on demographics data
     * param address-postalcode = karate.get('address-postalcode')
     * param _max-results = "6"
     * method get
-    * match response == read('classpath:patients/healthcareWorker/searchForAPatient/schemas/patientSearchBundle.json')
+    * match response == read('classpath:schemas/searchSchemas/patientSearchBundle.json')
     * status 200

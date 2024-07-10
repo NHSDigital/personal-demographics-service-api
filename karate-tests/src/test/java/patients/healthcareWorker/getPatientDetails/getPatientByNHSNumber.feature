@@ -14,6 +14,7 @@ Background:
   * json ContactPoint = karate.readAsString('classpath:schemas/ContactPoint.json')
   * json GeneralPractitionerReference = karate.readAsString('classpath:schemas/GeneralPractitionerReference.json')
   * json ManagingOrganizationReference = karate.readAsString('classpath:schemas/ManagingOrganizationReference.json')
+  * json CodingSchema = karate.readAsString('classpath:schemas/searchSchemas/codingSchema.json')
   * json Patient = karate.readAsString('classpath:schemas/Patient.json')
 
   # auth
@@ -23,7 +24,7 @@ Background:
 
   * url baseURL
 
-@unrestricted
+@unrestricted @smoke
 Scenario: Get an "unrestricted" patient
   * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9693632109'
   * path 'Patient', nhsNumber

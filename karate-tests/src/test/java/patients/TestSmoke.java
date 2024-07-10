@@ -8,15 +8,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 
-public class TestSchemaParallel {
-
+public class TestSmoke {
+    
     @Test
-    void testSchemaParallel() {
+    void testSmoke() {
         Results results = Runner.path("classpath:patients")
-                .outputJunitXml(true)
-                .tags("~@sandbox-only", "~@no-oas", "~@oas-bug")
-                .karateEnv("prism")
-                .parallel(5);
+            .karateEnv("int")
+            .tags("@smoke")
+            .outputJunitXml(true)
+            .parallel(5);
         assertTrue(results.getFailCount() == 0, results.getErrorMessages());
     }
 

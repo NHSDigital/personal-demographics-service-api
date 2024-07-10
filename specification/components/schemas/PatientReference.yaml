@@ -17,5 +17,5 @@ properties:
       value:
         type: string
         description: NHS number for the related person
-        example: "90000000009"
+        example: "9000000009"
         pattern: "^\\d{10}$"
