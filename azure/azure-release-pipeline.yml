@@ -16,6 +16,7 @@ resources:
     trigger:
       branches:
         include:
+          - feature/SPINEDEM-3420-smoke-tests
           - refs/tags/v*
 
 pool:
