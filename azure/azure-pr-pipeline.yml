@@ -26,22 +26,22 @@ pool:
 variables:
   - template: project.yml
 
-# extends:
-#   template: azure/common/apigee-deployment.yml@common
-#   parameters:
-#     service_name: ${{ variables.service_name }}
-#     short_service_name: ${{ variables.short_service_name }}
-#     service_base_path: ${{ variables.service_base_path }}
-#     deploy_review_sandbox: true
-#     jinja_templates:
-#       PDS_TARGET_SERVER: spine-demographics
-#       REQUIRE_ASID: false
-#       RATE_LIMIT_POST: true
-#     apigee_deployments:
-#       - environment: internal-dev
-#         stage_name: karate_tests
-#         post_deploy:
-#           - template: templates/pds-tests-karate.yml
+extends:
+  template: azure/common/apigee-deployment.yml@common
+  parameters:
+    service_name: ${{ variables.service_name }}
+    short_service_name: ${{ variables.short_service_name }}
+    service_base_path: ${{ variables.service_base_path }}
+    deploy_review_sandbox: true
+    jinja_templates:
+      PDS_TARGET_SERVER: spine-demographics
+      REQUIRE_ASID: false
+      RATE_LIMIT_POST: true
+    apigee_deployments:
+      # - environment: internal-dev
+      #   stage_name: karate_tests
+      #   post_deploy:
+      #     - template: templates/pds-tests-karate.yml
 #       - environment: internal-dev
 #         stage_name: pytest_bdd_tests
 #         post_deploy:
@@ -55,12 +55,12 @@ variables:
 #         post_deploy:
 #           - template: templates/sandbox-tests.yml
           
-#       - environment: internal-dev
-#         service_name: ${{ variables.service_name }}-int
-#         short_service_name: ${{ variables.short_service_name }}-int
-#         service_base_path: ${{ variables.service_base_path }}-int
-#         stage_name: internal_dev_int
-#         jinja_templates:
-#           PDS_TARGET_SERVER: spine-demographics-int
-#           REQUIRE_ASID: false
-#           RATE_LIMIT_POST: true
+      - environment: internal-dev
+        service_name: ${{ variables.service_name }}-int
+        short_service_name: ${{ variables.short_service_name }}-int
+        service_base_path: ${{ variables.service_base_path }}-int
+        stage_name: internal_dev_int
+        jinja_templates:
+          PDS_TARGET_SERVER: spine-demographics-int
+          REQUIRE_ASID: false
+          RATE_LIMIT_POST: true
