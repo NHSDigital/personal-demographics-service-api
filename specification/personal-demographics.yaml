@@ -1967,7 +1967,7 @@ components:
           type: string
     Gender:
       name: gender
-      description: Gender with which the patient most strongly identifies.
+      description: This is the gender that is recorded on official documents, for example a birth certificate or passport. For some people, the gender held in PDS might not match the gender they identify with.
       example: female
       in: query
       required: false
