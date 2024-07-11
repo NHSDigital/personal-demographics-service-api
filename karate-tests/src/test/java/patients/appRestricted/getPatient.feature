@@ -12,7 +12,6 @@ Feature: get /Patient - Application-restricted access mode
     * param email = "jane.smith@example.com" 
     * param phone = "01632960587"
 
-  @smoke  
   Scenario: All headers provided
     * configure headers = requestHeaders 
     * path "Patient"
