@@ -34,6 +34,18 @@ Scenario:Search for a patient using parameters
   * match response.total == 1
   * match response.entry[0].resource.id == "5900035697"
 
+
+@smoke-only
+Scenario:Search for a patient using parameters (INT smoke test)
+  * path "Patient"
+  * params  { family: "Capon", gender: "male", birthdate: "eq1953-05-29" }
+  * method get
+  * status 200
+  * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+  * match response == read('classpath:schemas/searchSchemas/patientSearchBundle.json')
+  * match response.total == 1
+  * match response.entry[0].resource.id == "9693632117"
+
 Scenario: Search for a "restricted" (sensitive) patient
   # When you get search results for a restricted patient, the response should not contain:
   # - address

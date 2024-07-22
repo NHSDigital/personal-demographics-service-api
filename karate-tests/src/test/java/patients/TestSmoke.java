@@ -14,7 +14,7 @@ public class TestSmoke {
     void testSmoke() {
         Results results = Runner.path("classpath:patients")
             .karateEnv("int")
-            .tags("@smoke")
+            .tags("@smoke, @smoke-only")
             .outputJunitXml(true)
             .parallel(5);
         assertTrue(results.getFailCount() == 0, results.getErrorMessages());

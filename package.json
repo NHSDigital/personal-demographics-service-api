@@ -15,6 +15,7 @@
   "homepage": "https://github.com/NHSDigital/personal-demographics-service-api",
   "dependencies": {
     "@redocly/cli": "^1.10.6",
+    "nvm": "0.0.4",
     "swagger-cli": "^4.0.4"
   },
   "devDependencies": {

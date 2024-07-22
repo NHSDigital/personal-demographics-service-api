@@ -28,6 +28,16 @@ Scenario: Patient has one related person
   * match response == RelatedPersonSearchBundle
   * match response.total == 1
 
+@smoke-only
+Scenario: Patient has one related person (INT smoke test)
+  * def nhsNumber = '9693633679'
+  * path 'Patient', nhsNumber, 'RelatedPerson'
+  * method get
+  * status 200
+  * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+  * match response == RelatedPersonSearchBundle
+  * match response.total == 1
+
 
 @sandbox-only
 Scenario: Patient has more than one related person
