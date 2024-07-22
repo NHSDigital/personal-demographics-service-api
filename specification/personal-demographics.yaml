@@ -36,7 +36,7 @@ info:
     * nominated pharmacy
     * dispensing doctor pharmacy
     * medical appliance supplier pharmacy
-    * related people, such as next of kin (read only - update coming soon)
+    * related people, such as next of kin (read only)
     
     ### Patients included in PDS
     Regardless of nationality, or where they live now, PDS includes all patients who have ever been registered with a GP practice, or treated by a health or care organisation (even as a visitor or migrant) in England, Wales, the Isle of Man, or in a UK Defence Medical Services unit anywhere in the world. 
