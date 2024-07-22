@@ -60,6 +60,72 @@ info:
     ### Existing API users
     To find out which healthcare software development organisations and products are already using this API, see [PDS FHIR API - integrated products](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/integrated-products).
 
+    ## Access modes
+    This API has three access modes. They are: 
+    * healthcare worker access 
+    * patient access 
+    * restricted access 
+
+    ### Healthcare worker access 
+    If the end user is a healthcare worker then you must use this access mode. Use this access mode to: 
+    * search for patients – and be able to present a list of matches for the user to choose from 
+    * get patient details 
+    * update patient details 
+
+    This access mode is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis), meaning an end user must be present, authenticated and authorised. 
+
+    The end user must be: 
+    * a healthcare worker 
+    * strongly authenticated, using [NHS Care Identity Service 2 (NHS CIS2)](https://digital.nhs.uk/services/care-identity-service/applications-and-services/cis2-authentication)
+    * authorised, using [national role-based access control (RBAC)](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/national-rbac-for-developers)
+
+    To use this access mode, use one of the following security patterns:
+    
+    |	Security pattern		                                                                                                                                                                                                  |	Technical details	                                             |	Advantages                                                              | Disadvantages                                                             |
+    |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| ---------------------------------------------------------| -------------------------------------------------------------------------|---------------------------------------------------------------------------|
+    |[NHS CIS2 - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-combined-authentication-and-authorisation) |OAuth 2.0 authorisation code flow with API key and secret |No need to integrate and onboard separately with NHS CIS2.                |No access to user information.<br> Not recommended for use in GP software.     |
+    |[NHS CIS2 - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-cis2-separate-authentication-and-authorisation) |OAuth 2.0 token exchange with signed JWT                  |Gives access to user information.<br>Recommended for use in GP software.     |Need to integrate and onboard separately with NHS CIS2.                    |
+
+    This access mode is available in production ([beta] (https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status)).  
+
+    ### Patient access 
+    If the end user is a patient then you must use this access mode. Use this access mode to: 
+    * get the patient’s own details 
+    * update the patient’s own details (limited) 
+
+    This access mode is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis), meaning an end user must be present, authenticated and authorised. 
+    
+    The end user must be: 
+    * a patient who receives health and social care or makes use of NHS services 
+    * strongly authenticated, using [NHS login](https://digital.nhs.uk/services/nhs-login)
+
+    To use this access mode, use one of the following security patterns:
+    
+    |	Security pattern		                                                                                                                                                                                                          |	Technical details	                                  |	Advantages	                                                | Disadvantages                                           |
+    |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| ----------------------------------------------------| ------------------------------------------------------------|---------------------------------------------------------|
+    |[NHS login - combined authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-login-combined-authentication-and-authorisation) |OAuth 2.0 authorisation code with API key and secret |No need to integrate and onboard separately with NHS login.  |No access to user information.                           |
+    |[NHS login - separate authentication and authorisation](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/user-restricted-restful-apis-nhs-login-separate-authentication-and-authorisation) |OAuth 2.0 token exchange with signed JWT             |Gives access to user information.                            |Need to integrate and onboard separately with NHS login. |
+
+    This access mode is available in production ([beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status)).
+
+    ### Restricted access
+    You must only use this access mode if you need to: 
+    * search for a patient and get a single match result returned 
+    * get a single patient's details
+
+    This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis), meaning we authenticate and authorise the calling application but not the end user. 
+
+    The end user could be: 
+    * a healthcare worker – in which case you must ensure they are authenticated and suitably authorised locally 
+    * a patient – in which case you must ensure they are authenticated locally 
+    * not present at all - for example as part of a back-end process to retrieve NHS numbers for data flowing from one system to another
+
+    To use this access mode, use one of the following security patterns:
+    * [Application-restricted RESTful API - signed JWT authentication](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-signed-jwt-authentication)
+    * [Application-restricted RESTful API - API key authentication](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-api-key-authentication)
+
+    Available in production ([stable](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status))
+
     ## Related APIs
     The following APIs also give access to the Personal Demographics Service:
     - [Personal Demographics Service (SMSP) API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-smsp) - this API is now deprecated.
