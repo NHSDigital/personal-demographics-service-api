@@ -139,6 +139,8 @@ info:
     - [Ordnance Survey (OS Places) API](https://digital.nhs.uk/developer/api-catalogue/ordnance-survey-places-api) - use this to identify, look up and verify addresses prior to a PDS update.
     
     ## Roadmap
+    The [Personal Demographics Service (PDS) ](https://digital.nhs.uk/services/personal-demographics-service/pds-roadmap-and-strategy) roadmap shows the planned changes for PDS products, including the PDS FHIR API. 
+
     To see our roadmap, or to suggest, comment or vote on features for this API, see our [interactive product backlog](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
     
     If you have any other queries, please [contact us](https://digital.nhs.uk/developer/help-and-support).
