@@ -13,6 +13,7 @@ info:
     * search for patients
     * get patient details
     * update patient details
+    * get a patient's related people
     * verify an NHS number for a patient
 
     You cannot currently use this API to:
