@@ -125,18 +125,6 @@ info:
     * [Application-restricted RESTful API - API key authentication](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-api-key-authentication)
 
     Available in production ([stable](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status))
-
-    ## Related APIs
-    The following APIs also give access to the Personal Demographics Service:
-    - [Personal Demographics Service (SMSP) API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-smsp) - this API is now deprecated.
-    - [Personal Demographics Service (HL7 V3) API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3) - use this if you want to use functions that are not yet available on the FHIR API, such as creating a new record for a birth, receiving birth notifications, or creating a record for a new patient (except when registering a new patient at a GP Practice, use [NHAIS](https://digital.nhs.uk/services/nhais)). For birth notifications, another option is [PDS Notifications - FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir).
-
-    Once our roadmap is complete, the above APIs will become redundant.
-
-    The following APIs are also related to this API:
-    - [Personal Demographics Service Notifications - FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir) - use this to subscribe to be notified of a set of patient record changes, including any record update, birth, death, change of address and change of GP.
-    - [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) - use this to get full details for the organisations related to the patient, such as their registered GP or nominated pharmacy.
-    - [Ordnance Survey (OS Places) API](https://digital.nhs.uk/developer/api-catalogue/ordnance-survey-places-api) - use this to identify, look up and verify addresses prior to a PDS update.
     
     ## Roadmap
     The [Personal Demographics Service (PDS) ](https://digital.nhs.uk/services/personal-demographics-service/pds-roadmap-and-strategy) roadmap shows the planned changes for PDS products, including the PDS FHIR API. 
@@ -262,6 +250,19 @@ info:
             </div>
         </div>
     </div>
+
+    ## Related APIs
+    The following APIs also give access to the Personal Demographics Service:
+    - [Personal Demographics Service (SMSP) API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-smsp) - this API is now deprecated.
+    - [Personal Demographics Service (HL7 V3) API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3) - use this if you want to use functions that are not yet available on the FHIR API, such as creating a new record for a birth, receiving birth notifications, or creating a record for a new patient (except when registering a new patient at a GP Practice, use [NHAIS](https://digital.nhs.uk/services/nhais)). For birth notifications, another option is [PDS Notifications - FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir).
+
+    Once our roadmap is complete, the above APIs will become redundant.
+
+    The following APIs are also related to this API:
+    - [Personal Demographics Service Notifications - FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir) - use this to subscribe to be notified of a set of patient record changes, including any record update, birth, death, change of address and change of GP.
+    - [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) - use this to get full details for the organisations related to the patient, such as their registered GP or nominated pharmacy.
+    - [Ordnance Survey (OS Places) API](https://digital.nhs.uk/developer/api-catalogue/ordnance-survey-places-api) - use this to identify, look up and verify addresses prior to a PDS update.
+
     <div class="nhsd-m-emphasis-box nhsd-m-emphasis-box--emphasis nhsd-!t-margin-bottom-6" aria-label="Highlighted Information">
         <div class="nhsd-a-box nhsd-a-box--border-blue">
           <div class="nhsd-m-emphasis-box__content-box">
