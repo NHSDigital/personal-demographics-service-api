@@ -25,7 +25,7 @@ public class TestMockParallel {
     void testMockParallel() {
         Results results = Runner.path("classpath:patients")
             .karateEnv("mock")
-            .tags("@sandbox, @sandbox-only")
+            .tags("@sandbox, @sandbox-only", "~@smoke-only")
             .outputJunitXml(true)
             .parallel(5);
         assertTrue(results.getFailCount() == 0, results.getErrorMessages());
