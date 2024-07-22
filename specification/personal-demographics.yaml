@@ -42,17 +42,6 @@ info:
     Regardless of nationality, or where they live now, PDS includes all patients who have ever been registered with a GP practice, or treated by a health or care organisation (even as a visitor or migrant) in England, Wales, the Isle of Man, or in a UK Defence Medical Services unit anywhere in the world. 
 
     All patients in PDS have an NHS number which is unique. The 10-digit NHS number is used in England, Wales, the Isle of Man, Scotland and Northern Ireland, but not the Channel Islands. Scotland and Northern Ireland have their own distinct number ranges.
-
-    ### Access modes
-    This API has three access modes:
-    
-    | Access mode                    | Functions          | Availability |
-    | ------------------------------ | ------------------ | ------------ |
-    | [Application-restricted access](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis)  |Search for a patient (single result).<br>Get patient details.                                    | Available in production ([stable](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status)) |
-    | [Healthcare worker access](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis)              |Search for patients (multiple results).<br>Get patient details.<br>Update patient details.    | Available in production ([beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status))   |
-    | [Patient access](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis)                        |Get own details.<br>Update own details (limited).                                                 | Available in production ([beta](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status))   |
-    
-    For further details about the access modes for this API, see [Security and authorisation](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir#api-description__security-and-authorisation) below.
     
     ## Who can use this API
     This API can only be used where there is a [legal basis](http://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) to do so. Make sure you have a valid use case before you go too far with your development.  You must demonstrate you have a [valid use case](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) as part of digital onboarding. 
