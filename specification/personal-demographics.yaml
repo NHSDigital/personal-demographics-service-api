@@ -14,7 +14,6 @@ info:
     * get patient details
     * update patient details
     * get a patient's related people
-    * verify an NHS number for a patient
 
     You cannot currently use this API to:
     * create a new record for a birth - use [PDS HL7 V3 API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3)
