@@ -28,7 +28,7 @@ info:
     You can read and update the following data:
     * NHS number (read only)
     * name
-    * gender
+    * administrative gender
     * addresses and contact details
     * birth information
     * death information
