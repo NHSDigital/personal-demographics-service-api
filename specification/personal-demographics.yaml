@@ -115,10 +115,10 @@ info:
 
     This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis), meaning we authenticate and authorise the calling application but not the end user. 
 
-    The end user could be: 
-    * a healthcare worker – in which case you must ensure they are authenticated and suitably authorised locally 
-    * a patient – in which case you must ensure they are authenticated locally 
-    * not present at all - for example as part of a back-end process to retrieve NHS numbers for data flowing from one system to another
+    This access mode is not designed to be accessed by an end user. You might use this access mode as part of a back-end process to: 
+    * retrieve NHS numbers for data flowing from one system to another
+    *	verify an NHS number
+    *	get a patient’s registered GP practice or contact details
 
     To use this access mode, use one of the following security patterns:
     * [Application-restricted RESTful API - signed JWT authentication](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-signed-jwt-authentication)
