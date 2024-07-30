@@ -30,6 +30,7 @@ extends:
     service_name: ${{ variables.service_name }}
     short_service_name: ${{ variables.short_service_name }}
     service_base_path: ${{ variables.service_base_path }}
+    prod_producer_approval: true
     enable_monitoring: true
     enable_status_monitoring: true
     jinja_templates:
