@@ -1,0 +1,9 @@
+<AssignMessage continueOnError="false" enabled="true" name="AssignMessage.RemoveUserRoleHeader">
+  <!-- If a request shouldn't need this header, make sure it's 
+       removed so it doesn't end up being used in SPINE logs -->
+  <Remove>
+    <Headers>
+      <Header name="NHSD-Session-URID"/>
+    </Headers>
+  </Remove>
+</AssignMessage>

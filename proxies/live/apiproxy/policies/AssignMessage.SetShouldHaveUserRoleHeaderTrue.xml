@@ -1,0 +1,6 @@
+<AssignMessage continueOnError="false" enabled="true" name="AssignMessage.SetShouldHaveUserRoleHeaderTrue">
+  <AssignVariable>
+    <Name>should-have-user-role-header</Name>
+    <Value>true</Value>
+  </AssignVariable>
+</AssignMessage>
