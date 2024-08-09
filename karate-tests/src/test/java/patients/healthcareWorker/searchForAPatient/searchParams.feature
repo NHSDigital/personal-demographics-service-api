@@ -24,6 +24,7 @@ Background:
   * url baseURL
 
 
+@smoke
 Scenario:Search for a patient using parameters
   * path "Patient"
   * params  { family: "Jones", gender: "male", birthdate: "ge1992-01-01", _max-results: "6" }
