@@ -40,7 +40,7 @@ Feature: Patient updates their details
     * def originalEtag = karate.response.header('etag')
     * def originalTelecom = response.telecom
 
-    # patient can't remove their telecom entries
+    # patient can't remove their non mobile telecom entries
     * configure headers = call read('classpath:auth/auth-headers.js') 
     * header Content-Type = "application/json-patch+json"
     * header If-Match = originalEtag
