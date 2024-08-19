@@ -29,7 +29,6 @@ Feature: Patient updates their details
     * def diagnostics = 'Invalid update with error - This user does not have permission to update the fields in the patches provided.'
     * match response == read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
 
-  @firsttest
   Scenario: Patient can update their contact details
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
