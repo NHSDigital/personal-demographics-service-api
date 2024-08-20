@@ -40,7 +40,7 @@ Feature: Patient updates their details
     * def originalEtag = karate.response.header('etag')
     * def originalTelecom = response.telecom
 
-    # patient can't remove their telecom entries
+    # patient can't remove their non mobile telecom entries
     * configure headers = call read('classpath:auth/auth-headers.js') 
     * header Content-Type = "application/json-patch+json"
     * header If-Match = originalEtag
@@ -53,14 +53,14 @@ Feature: Patient updates their details
     * configure headers = call read('classpath:auth/auth-headers.js') 
     * header Content-Type = "application/json-patch+json"
     * header If-Match = originalEtag
-    * def newTelecom = { "id": "#(originalTelecom[0].id)", "period": { "start": "#(utils.todaysDate())" }, "system": "phone", "use": "mobile", "value": "#(faker.phoneNumber())" }
-    * request { "patches": [{ "op": "replace", "path": "/telecom/0", "value": "#(newTelecom)" }]}
+    * def newTelecom = { "id": "#(originalTelecom[9].id)", "period": { "start": "#(utils.todaysDate())" }, "system": "phone", "use": "mobile", "value": "#(faker.phoneNumber())" }
+    * request { "patches": [{ "op": "replace", "path": "/telecom/9", "value": "#(newTelecom)" }]}
     * path 'Patient', p9number
     * method patch
     * status 200
     * assert originalTelecom.length == response.telecom.length
-    * match response.telecom[*].id contains originalTelecom[0].id
-    * def updatedObject = karate.jsonPath(response, "$.telecom[?(@.id=='" + originalTelecom[0].id + "')]")
+    * match response.telecom[*].id contains originalTelecom[9].id
+    * def updatedObject = karate.jsonPath(response, "$.telecom[?(@.id=='" + originalTelecom[9].id + "')]")
     * match updatedObject[0] == newTelecom
 
   Scenario: Patient cannot update another patient
