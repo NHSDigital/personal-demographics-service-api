@@ -73,7 +73,7 @@ Run all the functional tests in parallel:
 mvn clean test -Dtest=TestParallel
 ```
 
-If you want to run a subset of tests, at this point in time it seems easiest to modifiy one of the test profile files temporarily.
+If you want to run a subset of tests, at this point in time it seems easiest to modify one of the test profile files temporarily.
 
 For example to run only the healthcare worker tests, change the path from "classpath:patients" to "classpath:patients/healthcareWorker"
 Or add a tag to the tests you would like to run, and add it to the tag() method in the runner class.
@@ -181,8 +181,8 @@ Prism reads our JSON OAS spec directly and sets up listeners for each of the end
 - `--errors`: if there are any discrepancies between the described schema and the actual schema, Prism will return a 405 error with a description of the issue. This will cause our test to fail and the discrepancy will be visible in the test report.
 - `--validate-request false`: a number of our tests intentionally send invalid requests - we're testing the API handles these errors correctly and we don't want Prism to raise errors. We do, however, want to make these requests and validate the response schemas. 
 
-To start Prism with the desired config, therefore, execute the following command from the project root (not from the `karate-tests` folder).
-To genereate the JSON file, see that publish command in package.json 
+To start Prism with the desired config, execute the following command from the project root (not from the `karate-tests` folder).
+To generate the JSON file, see that publish command in package.json 
 ```bash
 prism proxy build/personal-demographics.json ${OAUTH_BASE_URI}/${PDS_BASE_PATH} --errors --validate-request false
 ```
