@@ -197,3 +197,22 @@ Scenario:
       return optionsArray[Math.floor(Math.random() * optionsArray.length)]
     }
     """
+
+  * def getIndexOfFirstMobile = 
+    """
+    function(telecoms) {
+      /*
+        Takes a patient telecom array, and returns the first index 
+        that is of system phone and use mobile.
+
+        Raises an error if one is not present.
+      */
+      for (var index in telecoms){
+        var telecom = telecoms[index]
+        if (telecom.system == "phone" && telecom.use == "mobile"){
+          return index
+        }
+      }
+      throw new Error('Test data in wrong state: no mobile phone on patient')
+    }
+    """

@@ -53,14 +53,15 @@ Feature: Patient updates their details
     * configure headers = call read('classpath:auth/auth-headers.js') 
     * header Content-Type = "application/json-patch+json"
     * header If-Match = originalEtag
-    * def newTelecom = { "id": "#(originalTelecom[8].id)", "period": { "start": "#(utils.todaysDate())" }, "system": "phone", "use": "mobile", "value": "#(faker.phoneNumber())" }
-    * request { "patches": [{ "op": "replace", "path": "/telecom/8", "value": "#(newTelecom)" }]}
+    * def mobileIndex = utils.getIndexOfFirstMobile(originalTelecom)
+    * def newTelecom = { "id": "#(originalTelecom[mobileIndex].id)", "period": { "start": "#(utils.todaysDate())" }, "system": "phone", "use": "mobile", "value": "#(faker.phoneNumber())" }
+    * request { "patches": [{ "op": "replace", "path": "#('/telecom/' + mobileIndex)", "value": "#(newTelecom)" }]}
     * path 'Patient', p9number
     * method patch
     * status 200
     * assert originalTelecom.length == response.telecom.length
-    * match response.telecom[*].id contains originalTelecom[8].id
-    * def updatedObject = karate.jsonPath(response, "$.telecom[?(@.id=='" + originalTelecom[8].id + "')]")
+    * match response.telecom[*].id contains originalTelecom[mobileIndex].id
+    * def updatedObject = karate.jsonPath(response, "$.telecom[?(@.id=='" + originalTelecom[mobileIndex].id + "')]")
     * match updatedObject[0] == newTelecom
 
   Scenario: Patient cannot update another patient
