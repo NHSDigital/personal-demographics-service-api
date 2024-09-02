@@ -3,6 +3,13 @@ name: "$(SourceBranchName)+$(BuildID)"
 trigger: none
 pr: none
 
+schedules:
+  - cron: 0 2 * * *
+    displayName: 2am daily
+    branches:
+      include: ['master']
+    always: true
+
 resources:
   repositories:
     - repository: common
