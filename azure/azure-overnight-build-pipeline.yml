@@ -15,10 +15,7 @@ resources:
     source: "Personal-Demographics-Service-Build"
     trigger:
       branches:
-        exclude:
-          - master
-          - refs/heads/master
-          - refs/tags/v*
+        include: ['master']
 
 pool:
   name: 'AWS-ECS'
@@ -54,13 +51,3 @@ extends:
         stage_name: pytest_v_node_sandbox
         post_deploy:
           - template: templates/sandbox-tests.yml
-          
-      - environment: internal-dev
-        service_name: ${{ variables.service_name }}-int
-        short_service_name: ${{ variables.short_service_name }}-int
-        service_base_path: ${{ variables.service_base_path }}-int
-        stage_name: internal_dev_int
-        jinja_templates:
-          PDS_TARGET_SERVER: spine-demographics-int
-          REQUIRE_ASID: false
-          RATE_LIMIT_POST: true
