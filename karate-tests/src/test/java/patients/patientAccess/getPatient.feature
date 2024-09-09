@@ -13,6 +13,7 @@ Feature: Patient Access (Retrieve)
     * json ContactPoint = karate.readAsString('classpath:schemas/ContactPoint.json')
     * json GeneralPractitionerReference = karate.readAsString('classpath:schemas/GeneralPractitionerReference.json')
     * json ManagingOrganizationReference = karate.readAsString('classpath:schemas/ManagingOrganizationReference.json')
+    * json CodingSchema = karate.readAsString('classpath:schemas/searchSchemas/codingSchema.json')
     * json Patient = karate.readAsString('classpath:schemas/Patient.json')
 
     * configure url = baseURL

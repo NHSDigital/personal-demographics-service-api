@@ -38,8 +38,19 @@
         <Condition>(original-request-details.header.X-Request-ID != null) and (not original-request-details.header.X-Request-ID ~~ "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")</Condition>
       </Step>
       <Step>
-        <Name>FlowCallout.UserRoleService</Name>
+        <Name>AssignMessage.SetShouldHaveUserRoleHeaderFalse</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.SetShouldHaveUserRoleHeaderTrue</Name>
         <Condition>(access-mode Equals "user-restricted") and apim-app-flow-vars.pds.app-restricted.update IsNot "true"</Condition>
+      </Step>
+      <Step>
+        <Name>AssignMessage.RemoveUserRoleHeader</Name>
+        <Condition>should-have-user-role-header == "false"</Condition>
+      </Step>
+      <Step>
+        <Name>FlowCallout.UserRoleService</Name>
+        <Condition>should-have-user-role-header == "true"</Condition>
       </Step>
       <Step>
         <Name>AssignMessage.AddUserIdHeader</Name>

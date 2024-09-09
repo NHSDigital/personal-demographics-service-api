@@ -73,17 +73,11 @@ Run all the functional tests in parallel:
 mvn clean test -Dtest=TestParallel
 ```
 
-There are also individual JUnit tests for running specific feature files. These may be more useful if you're developing / debugging tests and you only want to run certain scenarios.
+If you want to run a subset of tests, at this point in time it seems easiest to modify one of the test profile files temporarily.
 
-Run all the tests in a given test file:
-```bash
-mvn clean test -Dtest=HealthcareWorkerTests
-```
+For example to run only the healthcare worker tests, change the path from "classpath:patients" to "classpath:patients/healthcareWorker"
+Or add a tag to the tests you would like to run, and add it to the tag() method in the runner class.
 
-Run only one of the tests in a given test file:
-```bash 
-mvn clean test -Dtest=HealthcareWorkerTests#testGetPatient
-```
 
 ### Load tests
 To see an example of how Karate can repurpose functional tests as a load test, we've got the `PatientsSimulation.scala` file, which lets us run the `getPatient.feature` file using Gatling:
@@ -182,14 +176,15 @@ Using the command-line tool Prism, we can set up a proxy server that validates a
 npm install -g @stoplight/prism-cli
 ```
 
-Prism reads our YAML file directly and sets up listeners for each of the endpoints listed. Any responses that relate to these endpoints will be validated against the rules described in the OAS file. Note that we pass in two options when starting the Prism proxy:
+Prism reads our JSON OAS spec directly and sets up listeners for each of the endpoints listed. Any responses that relate to these endpoints will be validated against the rules described in the OAS file. Note that we pass in two options when starting the Prism proxy:
 
 - `--errors`: if there are any discrepancies between the described schema and the actual schema, Prism will return a 405 error with a description of the issue. This will cause our test to fail and the discrepancy will be visible in the test report.
 - `--validate-request false`: a number of our tests intentionally send invalid requests - we're testing the API handles these errors correctly and we don't want Prism to raise errors. We do, however, want to make these requests and validate the response schemas. 
 
-To start Prism with the desired config, therefore, execute the following command from the project root (not from the `karate-tests` folder):
+To start Prism with the desired config, execute the following command from the project root (not from the `karate-tests` folder).
+To generate the JSON file, see that publish command in package.json 
 ```bash
-prism proxy specification/personal-demographics.yaml $OAUTH_BASE_URI/$PDS_BASE_PATH --errors --validate-request false
+prism proxy build/personal-demographics.json ${OAUTH_BASE_URI}/${PDS_BASE_PATH} --errors --validate-request false
 ```
 
 There is a chance that we are testing endpoints that aren't yet covered by the OAS file. The `@no-oas` tag is used to identify scenarios that shouldn't run via the Prism proxy. The `TestSchemaParallel` test runner is configured to ignore these tests, and direct requests to the Prism proxy server. From the `karate-tests` folder, with Prism running in the background
