@@ -618,7 +618,7 @@ paths:
         ## Overview
         Use this endpoint to get patient details from PDS for a given NHS number.
         
-        You cannot get a patient's related people details, use the Related Person endpoint instead.
+        You cannot get a patient's related people details, use the RelatedPerson endpoint instead.
 
         ## Superseded patients
         Some patients are marked as superseded. This means that the original patient details are no longer valid and have been replaced with different details.
