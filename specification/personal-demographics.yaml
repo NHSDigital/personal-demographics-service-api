@@ -1488,8 +1488,21 @@ paths:
 
         A user with Patient access will be able to update the following fields:
         * Address
+        * Communication (communication language and interpreter required only)
+        * Emergency contact
         * Pharmacy
+        * Place of birth
         * Telecom (mobile and email only)
+
+        In Patient access mode, if you want to `test` the following fields, then you must include the whole object in the `test` patch: 
+        * Communication (communication language and interpreter required only)
+        * Emergency contact
+        * Pharmacy
+        * Place of birth
+        * Telecom (mobile and email only) 
+
+
+        In Patient access mode
 
         ## Sandbox test scenarios
 
