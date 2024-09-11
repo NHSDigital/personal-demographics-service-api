@@ -22,4 +22,8 @@ public class FakerWrapper {
         return faker.name().firstName();
     }
 
+    public static String cityName() {
+        return faker.address().city();
+    }
+
 }
