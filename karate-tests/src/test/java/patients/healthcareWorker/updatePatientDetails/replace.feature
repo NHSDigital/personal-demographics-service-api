@@ -218,3 +218,6 @@ Feature: Patch patient - Replace data
        """       
       * method patch
       * status 400
+      * def display = 'Patient cannot perform this action'
+      * def diagnostics = "Invalid update with error - interpreterRequired cannot be removed"
+      * match response == read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
