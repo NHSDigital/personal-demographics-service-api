@@ -204,6 +204,7 @@ Scenario:
       /*
         Takes a patient telecom array, and returns the first index 
         that is of system phone and use mobile.
+        
         Raises an error if one is not present.
       */
       for (var index in telecoms){
