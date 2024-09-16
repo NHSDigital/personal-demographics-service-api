@@ -96,9 +96,9 @@ Feature: Patient updates their details
     * def originalEtag = karate.response.header('etag')
     * def communicationUrl = "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication"
     * def commLanguageDtls = response.extension.find(x => x.url == communicationUrl)
-    # Test will be terminated if communication language details is not available in the response 
+    # Test fails if the patient's communication language details are not available in the response 
 
-    * if (commLanguageDtls == null) {karate.abort('No value found for NHS communication, stopping the test.')}
+    * if (commLanguageDtls == null) {karate.fail('No value found for NHS communication, stopping the test.')}
     * def commLanguageDtlsIndex = response.extension.findIndex(x => x.url == communicationUrl)
     * def communicationPath =  "/extension/" + commLanguageDtlsIndex
     

@@ -157,9 +157,9 @@ Feature: Patch patient - Replace data
       * def originalVersion = parseInt(response.meta.versionId)
       * def commExtensionUrl = "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication"
       * def commLanguageDtls = response.extension.find(x => x.url == commExtensionUrl)
-      # Test will be terminated if NHS communication is not available in the response 
+      # Test fails if the patient's communication details are present in the record
 
-      * if (commLanguageDtls == null) {karate.abort('No value found for communication Language, stopping the test.')}
+      * if (commLanguageDtls == null) {karate.fail('No value found for communication Language, stopping the test.')}
       * def interpreterDls = commLanguageDtls[1]
       * def commLanguageindex = response.extension.findIndex(x => x.url == commExtensionUrl)
       * def interpreterPath = "/extension/" + commLanguageindex + "/extension/1"
@@ -196,9 +196,9 @@ Feature: Patch patient - Replace data
       * def originalVersion = parseInt(response.meta.versionId)
       * def commExtensionUrl = "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication"
       * def commLanguageDtls = response.extension.find(x => x.url == commExtensionUrl)
-      # Test will be terminated if communication language details is not available in the response 
+      # Test fails if the patient's communication language details are present in the record
   
-      * if (commLanguageDtls == null) {karate.abort('No value found for NHS communication, stopping the test.')}
+      * if (commLanguageDtls == null) {karate.fail('No value found for NHS communication, stopping the test.')}
       * def interpreterDls = commLanguageDtls[1]
       * def commLanguageindex = response.extension.findIndex(x => x.url == commExtensionUrl)
       * def interpreterPath = "/extension/" + commLanguageindex + "/extension/1"
