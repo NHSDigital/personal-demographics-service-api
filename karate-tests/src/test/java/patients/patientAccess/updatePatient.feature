@@ -210,5 +210,6 @@ Feature: Patient updates their details
     * status 200  
     * def updatedPobCity = response.extension[pobIndex].valueAddress.city
     * match updatedPobCity == cityName
+    * match parseInt(response.meta.versionId) == originalVersion + 2
 
  
