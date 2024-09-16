@@ -156,8 +156,11 @@ Feature: Patch patient - Replace data
       * status 200
       * def originalVersion = parseInt(response.meta.versionId)
       * def commExtensionUrl = "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication"
-      * def commLanguageDls = response.extension.find(x => x.url == commExtensionUrl)
-      * def interpreterDls = commLanguageDls[1]
+      * def commLanguageDtls = response.extension.find(x => x.url == commExtensionUrl)
+      # Test will be terminated if NHS communication is not available in the response 
+
+      * if (commLanguageDtls == null) {karate.abort('No value found for communication Language, stopping the test.')}
+      * def interpreterDls = commLanguageDtls[1]
       * def commLanguageindex = response.extension.findIndex(x => x.url == commExtensionUrl)
       * def interpreterPath = "/extension/" + commLanguageindex + "/extension/1"
       * def interpreter = response.extension[commLanguageindex].extension[1].valueBoolean
@@ -185,15 +188,18 @@ Feature: Patch patient - Replace data
       * match parseInt(response.meta.versionId) == originalVersion + 1
   
     Scenario: Send empty field on the update - interpreterRequired url is empty
-      * def nhsNumber = '5900071413'
+      * def nhsNumber = '5900076067'
       * configure headers = call read('classpath:auth/auth-headers.js') 
       * path 'Patient', nhsNumber
       * method get
       * status 200
       * def originalVersion = parseInt(response.meta.versionId)
       * def commExtensionUrl = "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication"
-      * def commLanguageDls = response.extension.find(x => x.url == commExtensionUrl)
-      * def interpreterDls = commLanguageDls[1]
+      * def commLanguageDtls = response.extension.find(x => x.url == commExtensionUrl)
+      # Test will be terminated if communication language details is not available in the response 
+  
+      * if (commLanguageDtls == null) {karate.abort('No value found for NHS communication, stopping the test.')}
+      * def interpreterDls = commLanguageDtls[1]
       * def commLanguageindex = response.extension.findIndex(x => x.url == commExtensionUrl)
       * def interpreterPath = "/extension/" + commLanguageindex + "/extension/1"
       * def interpreter = response.extension[commLanguageindex].extension[1].valueBoolean

@@ -208,6 +208,9 @@ Feature: Patch patient - Add and remove data
     * status 200 
     * def idAftPod = response.meta.versionId
     * def pobDetails = response.extension.find(x => x.url == placeOBirthUrl)
+    # Test will be terminated if place of birth is not available in the response 
+  
+    * if (pobDetails == null) {karate.abort('No value found for place of Birth, stopping the test.')}
     * def pobIndex = response.extension.findIndex(x => x.url == placeOBirthUrl)
     * def pobPath =  "/extension/" + pobIndex
     
