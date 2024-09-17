@@ -1,0 +1,53 @@
+name: "$(SourceBranchName)+$(BuildID)"
+
+trigger: none
+pr: none
+
+resources:
+  repositories:
+    - repository: common
+      type: github
+      name: NHSDigital/api-management-utils
+      ref: refs/heads/edge
+      endpoint: NHSDigital
+  pipelines:
+  - pipeline: build_pipeline
+    source: "Personal-Demographics-Service-Build"
+    trigger:
+      branches:
+        include: ['master']
+
+pool:
+  name: 'AWS-ECS'
+
+variables:
+  - template: project.yml
+
+extends:
+  template: azure/common/apigee-deployment.yml@common
+  parameters:
+    service_name: ${{ variables.service_name }}
+    short_service_name: ${{ variables.short_service_name }}
+    service_base_path: ${{ variables.service_base_path }}
+    deploy_review_sandbox: true
+    jinja_templates:
+      PDS_TARGET_SERVER: spine-demographics
+      REQUIRE_ASID: false
+      RATE_LIMIT_POST: true
+    apigee_deployments:
+      - environment: internal-dev
+        stage_name: karate_tests
+        post_deploy:
+          - template: templates/pds-tests-karate.yml
+      - environment: internal-dev
+        stage_name: pytest_bdd_tests
+        post_deploy:
+          - template: templates/pds-tests.yml
+        depends_on:
+          - karate_tests
+      
+      - environment: internal-dev-sandbox
+        proxy_path: sandbox
+        stage_name: pytest_v_node_sandbox
+        post_deploy:
+          - template: templates/sandbox-tests.yml
