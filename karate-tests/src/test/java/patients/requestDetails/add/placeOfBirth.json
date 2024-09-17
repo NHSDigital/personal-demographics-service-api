@@ -1,0 +1,16 @@
+{
+    "patches": [
+      {
+        "op": "add",
+        "path": "/extension/-",
+        "value":{
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-birthPlace",
+            "valueAddress": {
+            "city": "Manchester",
+            "district": "Greater Manchester",
+            "country": "GBR"
+             }
+            }
+         }
+    ]
+}

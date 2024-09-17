@@ -16,7 +16,7 @@ public class TestParallel {
                 .outputJunitXml(true)
                 .tags("~@sandbox-only", "~@smoke-only")
                 .karateEnv("veit07")
-                .parallel(5);
+                .parallel(3);
         assertTrue(results.getFailCount() == 0, results.getErrorMessages());
     }
 

@@ -1,10 +1,10 @@
-@sandbox
+
 Feature: Patch patient - Add and remove data
   
-  This feature tests adding data to a patient and then remove it.
-  We have extensive integration tests for the patch operations in TestBase scripts
-  in the spineii repo, so we aren't going for exhaustive testing here, but rather
-  illustrative tests that explain how to add and remove properties. 
+    This feature tests adding data to a patient and then remove it.
+    We have extensive integration tests for the patch operations in TestBase scripts
+    in the spineii repo, so we aren't going for exhaustive testing here, but rather
+    illustrative tests that explain how to add and remove properties. 
 
   Background:
     * def utils = call read('classpath:helpers/utils.feature')
@@ -22,6 +22,7 @@ Feature: Patch patient - Add and remove data
     * def originalEtag = karate.response.header('etag')
     * copy originalNameArray = response.name
 
+  @sandbox
   Scenario: Add and remove patient data
     * match response.name == "#[1]"
     
@@ -184,3 +185,59 @@ Feature: Patch patient - Add and remove data
     * status 200
     * match response.name[0].suffix == '#notpresent'
     * match parseInt(response.meta.versionId) == originalVersion + 1
+
+
+  Scenario:  Healthcare worker can add and remove place of birth details(city and district)
+    * def placeOfBirthNhsNumber = '5900077810'
+    * configure headers = call read('classpath:auth/auth-headers.js') 
+    * path 'Patient', placeOfBirthNhsNumber
+    * method get
+    * status 200
+    * def originalVersion = parseInt(response.meta.versionId)
+
+    #add place of birth details
+
+    * configure headers = call read('classpath:auth/auth-headers.js') 
+    * header Content-Type = "application/json-patch+json"
+    * header If-Match = karate.response.header('etag')
+    * path 'Patient', placeOfBirthNhsNumber
+    * def requestBody = read('classpath:patients/requestDetails/add/placeOfBirth.json')
+    * def placeOBirthUrl = requestBody.patches[0].value.url
+    * request requestBody
+    * method patch
+    * status 200 
+    * def idAftPod = response.meta.versionId
+    * def pobDetails = response.extension.find(x => x.url == placeOBirthUrl)
+    # Test fails if the patient's place of birth details are not present in the record
+  
+    * if (pobDetails == null) {karate.fail('No value found for place of Birth, stopping the test.')}
+    * def pobIndex = response.extension.findIndex(x => x.url == placeOBirthUrl)
+    * def pobPath =  "/extension/" + pobIndex
+    
+     # remove place of birth details
+
+    * configure headers = call read('classpath:auth/auth-headers.js') 
+    * header Content-Type = "application/json-patch+json"
+    * header If-Match = karate.response.header('etag')
+    * path 'Patient', placeOfBirthNhsNumber
+    * request 
+    """
+      {
+        "patches": [
+          {
+            "op": "test",
+            "path": "#(pobPath)",
+            "value": "#(pobDetails)"     
+          },
+          {
+           "op": "remove",
+            "path": "#(pobPath)" 
+          }
+        ]
+      }
+      """ 
+    * method patch
+    * status 200
+    * match parseInt(response.meta.versionId) == parseInt(idAftPod)+ 1
+    * match response.extension[1] == '#notpresent'
+
