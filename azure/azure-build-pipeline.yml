@@ -8,6 +8,13 @@ trigger:
     include:
       - v*
 
+schedules:
+  - cron: 0 2 * * *
+    displayName: 2am daily
+    branches:
+      include: ['master']
+    always: true
+
 pr:
   branches:
     include: ['*']
