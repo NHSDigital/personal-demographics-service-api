@@ -17,7 +17,7 @@ Feature: Patient Access (Retrieve)
     * json Patient = karate.readAsString('classpath:schemas/Patient.json')
 
     * configure url = baseURL
-    * def p9number = '9900000285'
+    * def p9number = '9912003071'
     * def p5number = '9912003072'
     * def p0number = '9912003073'
 
