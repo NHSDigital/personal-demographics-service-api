@@ -3,10 +3,10 @@ var request_pathsuffix = context.getVariable('proxy.pathsuffix');
 var request_path_nhs_number = request_pathsuffix.split("/")[2];
 var method_is_restricted = true
 var sync_wrapped = context.getVariable('request.header.x-sync-wrapped');
-var vot = context.getVariable('jwt.DecodeJWT.DecodeIdToken.decoded.claim.vot');
+var vot = context.getVariable('jwt.DecodeJWT.DecodeIdToken.claim.vot');
 var allowed_vots = ["P9.Cp.Cd","P9.Cm","P9.Cp.Ck"];
 
-if (allowed_vots.includes(vot)) {
+if (allowed_vots.indexOf(vot) !== -1) {
     method_is_restricted = false
 }
 
