@@ -1,3 +1,4 @@
+@contactTest
 Feature: Patient updates their details
 
   Background:
@@ -81,3 +82,139 @@ Feature: Patient updates their details
     * def display = 'Patient cannot perform this action'
     * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
     * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
+
+
+
+  Scenario: Send empty field on the update - communication Language code
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders
+    * path 'Patient', p9number
+    * method get
+    * status 200
+    * def originalVersion = parseInt(response.meta.versionId)
+    * def originalEtag = karate.response.header('etag')
+    * def communicationUrl = "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication"
+    * def commLanguageDtls = response.extension.find(x => x.url == communicationUrl)
+    # Test fails if the patient's communication language details are not available in the response 
+
+    * if (commLanguageDtls == null) {karate.fail('No value found for NHS communication, stopping the test.')}
+    * def commLanguageDtlsIndex = response.extension.findIndex(x => x.url == communicationUrl)
+    * def communicationPath =  "/extension/" + commLanguageDtlsIndex
+    
+    # Empty value on communication extension
+    * configure headers = call read('classpath:auth/auth-headers.js') 
+    * header Content-Type = "application/json-patch+json"
+    * header If-Match = karate.response.header('etag')
+    * path 'Patient', p9number
+    * def requestbody = 
+    """
+      {
+        "patches": [
+          {
+            "op": "test",
+            "path": "#(communicationPath)",
+            "value":{
+              "url": "#(communicationUrl)",
+              "extension":[
+                  {
+                  "url": "language",
+                  "valueCodeableConcept": {
+                          "coding": " "}
+              },
+              {
+                  "url": "interpreterRequired",
+                  "valueBoolean": false
+              }]
+              
+          }
+          },
+            { "op": "remove", "path": "#(communicationPath)" }
+        ]
+      }
+        """
+      * print requestbody
+      * request requestbody  
+      * method patch
+      * status 400 
+      * def display = 'Patient cannot perform this action'
+      * def diagnostics = "Invalid update with error - Invalid patch - {'url': 'https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication', 'extension': [{'url': 'language', 'valueCodeableConcept': {'coding': [{'system': 'https://fhir.hl7.org.uk/CodeSystem/UKCore-HumanLanguage', 'version': '1.0.0', 'code': 'fr', 'display': 'French'}]}}, {'url': 'interpreterRequired', 'valueBoolean': True}]} (<class 'dict'>) is not equal to tested value {'url': 'https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication', 'extension': [{'url': 'language', 'valueCodeableConcept': {'coding': ' '}}, {'url': 'interpreterRequired', 'valueBoolean': False}]} (<class 'dict'>)"
+      * match response == read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')     
+  
+
+  Scenario: Patient can update their emergency contact details and place of birth
+    * def p9number = '9900000285'
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders
+    * path 'Patient', p9number
+    * method get
+    * status 200
+    * def originalVersion = parseInt(response.meta.versionId)
+    * def originalEtag = karate.response.header('etag')
+    * def placeOfBirthDls = read('classpath:patients/requestDetails/add/placeOfBirth.json')
+    * def placeOBirthUrl = placeOfBirthDls.patches[0].value.url
+    * def originalTelecom = response.contact[0].telecom[0].value
+    * def contactID = response.contact[0].id
+    * def relationshipDetails =  response.contact[0].relationship
+    * def pobDetails = response.extension.find(x => x.url == placeOBirthUrl)
+    * def pobDistrict = pobDetails.valueAddress.district
+    * def pobcountry = pobDetails.valueAddress.country
+    * def pobIndex = response.extension.findIndex(x => x.url == placeOBirthUrl)
+    * def pobPath =  "/extension/" + pobIndex
+
+    # update emergency contact details
+    * configure headers = call read('classpath:auth/auth-headers.js') 
+    * header Content-Type = "application/json-patch+json"
+    * header If-Match = originalEtag
+    * def newMobileNumber = faker.phoneNumber()
+    * path 'Patient', p9number
+    * def requestbody =
+    """
+    {
+      "patches":[
+        {"op":"replace",
+        "path":"/contact/0",
+        "value":{
+          "id": "#(contactID)",
+          "relationship":"#(relationshipDetails)",
+          "telecom":[
+            {"system":"phone",
+            "value":"#(newMobileNumber)"}
+            ]}}]}
+     """ 
+    * request requestbody      
+    * method patch
+    * status 200
+    * match response.contact[0].id contains contactID
+    * match response.contact[0].telecom[0].value == newMobileNumber
+    * match parseInt(response.meta.versionId) == originalVersion + 1
+
+    #update place of birth details
+    * def cityName = faker.cityName()
+    * configure headers = call read('classpath:auth/auth-headers.js') 
+    * header Content-Type = "application/json-patch+json"
+    * header If-Match = karate.response.header('etag')
+    * path 'Patient', p9number
+    * request 
+    """
+    {
+      "patches":[
+        {"op":"replace",
+        "path":"#(pobPath)",
+        "value":{
+          "url": "#(placeOBirthUrl)",
+        "valueAddress": {
+                "city": "#(cityName)",
+                "district": "#(pobDistrict)",
+                "country": "#(pobcountry)"
+            }
+        }}]}
+     """  
+    * method patch
+    * status 200  
+    * def updatedPobCity = response.extension[pobIndex].valueAddress.city
+    * match updatedPobCity == cityName
+    * match parseInt(response.meta.versionId) == originalVersion + 2
+
+ 
