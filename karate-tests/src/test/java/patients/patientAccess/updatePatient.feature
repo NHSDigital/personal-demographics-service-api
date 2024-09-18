@@ -5,7 +5,7 @@ Feature: Patient updates their details
     * def utils = call read('classpath:helpers/utils.feature')
     * def faker = Java.type('helpers.FakerWrapper')      
     * url baseURL
-    * def p9number = '9912003071'
+    * def p9number = '9900000285'
     * def p5number = '9912003072'
 
   Scenario: Patient cannot update their gender
