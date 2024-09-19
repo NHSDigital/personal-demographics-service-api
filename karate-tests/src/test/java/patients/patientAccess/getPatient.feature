@@ -33,7 +33,6 @@ Feature: Patient Access (Retrieve)
     * match response.id == p9number
     * match response == Patient
 
-  @ignore
   Scenario Outline: <patientType> users can authenticate but can't retrieve their own details (<patientType> example)
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
@@ -77,7 +76,6 @@ Feature: Patient Access (Retrieve)
     * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
     * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
    
-  @ignore 
   Scenario Outline: <patientTypeAndVot> user can authenticate and retrieve their own details
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
