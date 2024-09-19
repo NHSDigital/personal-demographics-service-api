@@ -6,15 +6,15 @@ var sync_wrapped = context.getVariable('request.header.x-sync-wrapped');
 var vot = context.getVariable('jwt.DecodeJWT.DecodeIdToken.claim.vot');
 var allowed_vots = ["P9.Cp.Cd","P9.Cm","P9.Cp.Ck"];
 
-if (allowed_vots.indexOf(vot) !== -1) {
+if ((allowed_vots.indexOf(vot) > -1) && (request_pathsuffix.split("/")[1] == "_poll" && sync_wrapped == "true") && (request_path_nhs_number == id_token_nhs_number)) {
     method_is_restricted = false
 }
 
-if (request_pathsuffix.split("/")[1] == "_poll" && sync_wrapped == "true"){
-    method_is_restricted = false
-}
+// if (request_pathsuffix.split("/")[1] == "_poll" && sync_wrapped == "true"){
+//     method_is_restricted = false
+// }
 
-if (request_path_nhs_number == id_token_nhs_number){
-    method_is_restricted = false
-}
+// if (request_path_nhs_number == id_token_nhs_number){
+//     method_is_restricted = false
+// }
 context.setVariable('apigee.method_is_restricted', method_is_restricted);
