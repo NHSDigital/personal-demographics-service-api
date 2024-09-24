@@ -32,7 +32,7 @@ Feature: Patient Access (Retrieve)
     * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
     * match response.id == p9number
     * match response == Patient
-  @testvot
+
   Scenario Outline: <patientType> users can authenticate but can't retrieve their own details (<patientType> example)
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
