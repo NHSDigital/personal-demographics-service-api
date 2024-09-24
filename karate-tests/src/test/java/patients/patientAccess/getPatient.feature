@@ -32,7 +32,7 @@ Feature: Patient Access (Retrieve)
     * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
     * match response.id == p9number
     * match response == Patient
-
+  @testvot
   Scenario Outline: <patientType> users can authenticate but can't retrieve their own details (<patientType> example)
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
@@ -46,10 +46,11 @@ Feature: Patient Access (Retrieve)
     * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
 
     Examples:
-      | patientType | nhsNumber   |
-      | P0          | 9912003073  |
-      | P5          | 9912003072  |
-      | P9.Cp       | 5900068196  |
+      | patientType     | nhsNumber   |
+      | P0              | 9912003073  |
+      | P5              | 9912003072  |
+      | P9.Cp           | 5900068196  |
+      | P9 only(no vot) | 9472063810  |
 
   Scenario: P9 Patient can't retrieve details of another patient
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
