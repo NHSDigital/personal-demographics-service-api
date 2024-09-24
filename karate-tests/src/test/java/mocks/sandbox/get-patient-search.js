@@ -24,6 +24,9 @@ const YOUDS_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/youd
 const BILL_GARTON_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/bill_garton_searchset.json')
 const PAULINE_ATTISON_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/pauline_attison_searchset.json')
 const JOHN_PAUL_SMITH_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/john_paul_smith_searchset.json')
+const CUFF_SUPERSEDED_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/cuff_superseded_searchset.json')
+const OTHER_GIVENNAME_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/other_givenName.json')
+const MULTIMATCHWITHPHONEANDEMAIL_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/multimatch_phoneAndEmail_searchset.json')
 
 function janeSmithSearchsetWithScore (score) {
   return {
@@ -173,6 +176,12 @@ if (request.pathMatches('/Patient') && request.get) {
       response.body = timestampBody(SIMPLE_SEARCH)
     } else if (['Smith', 'smith'].includes(family) && ['Male', 'male'].includes(gender) && given[0] === 'John Paul' && given[1] === 'James') {
       response.body = timestampBody(JOHN_PAUL_SMITH_SEARCHSET)
+    } else if (['CUFF', 'Cuff'].includes(family) && ['Female', 'female'].includes(gender) && (birthDate[0] === 'eq1926-01-07')) {
+      response.body = timestampBody(CUFF_SUPERSEDED_SEARCHSET)
+    } else if (['Smith', 'smith'].includes(family) && ['male', 'Male'].includes(gender) && (birthDate[0] === 'eq2000-05-05') && given[0] === 'Sam' && given[1] === 'Bob') {
+      response.body = timestampBody(OTHER_GIVENNAME_SEARCHSET)
+    } else if (['Smith', 'smith'].includes(family) && ['male', 'Male'].includes(gender) && (birthDate[0] === 'eq2000-05-05') && phone === '01234123123' && email === 'test@test.com') {
+      response.body = timestampBody(MULTIMATCHWITHPHONEANDEMAIL_SEARCHSET)
     } else {
       response.body = timestampBody(EMPTY_SEARCHSET)
     }

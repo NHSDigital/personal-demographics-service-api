@@ -149,3 +149,39 @@ Scenario: Too many matches
   * method get
   * status 200
   * match response == read('classpath:mocks/stubs/searchResponses/TOO_MANY_MATCHES.json')
+
+Scenario: Search should not return superseded patients record
+  # 5900053636 was merged with 9732019395, search result shouldn't return 5900053636
+  * path 'Patient'
+  * def supersededRecord = '5900053636'
+  * params { family: "CUFF", birthdate: "eq1926-01-07",gender: "female"}
+  * method get
+  * status 200
+  * match response.total == 2
+  * def idList = karate.jsonPath(response, "$.entry[*].resource.id")
+  * match each idList != supersededRecord
+
+
+Scenario: Simple search with other given name - Single match
+  * path 'Patient'
+  * params { family: "Smith", gender: "male", birthdate: "eq2000-05-05", given: ["Sam","Bob" ] }
+  * method get
+  * status 200
+  * match response.total == 1
+ 
+Scenario: Simple search with email and phone number - Multi match
+  * path 'Patient'
+  * params { family: "Smith", gender: "male", birthdate: "eq2000-05-05", phone: "01234123123", email: "test@test.com" }
+  * method get
+  * status 200
+  * match response.total == 11
+  * def telecomValueList = karate.jsonPath(response, "$.entry[*].resource.telecom[*].value") 
+  * match telecomValueList contains any ['01234123123','test@test.com']
+
+Scenario: Simple search with email and phone number - no results
+  * path 'Patient'
+  * params { family: "Smith", gender: "male", birthdate: "eq2000-05-05", phone: "01234123123", email: "test@test.com" }
+  * method get
+  * status 200
+  * match response.total == 11
+
