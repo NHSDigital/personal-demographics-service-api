@@ -18,7 +18,9 @@ variables:
   - template: project.yml
 
 parameters:
-  service_name: ${{ variables.service_name }}
+  - name: service_name
+    type: string
+    default: ${{ variables.service_name }}
 
 steps:
   - bash: |
