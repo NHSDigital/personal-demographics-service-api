@@ -17,8 +17,16 @@ pool:
 variables:
   - template: project.yml
 
+
 steps:
-  - template: azure/components/set-facts.yml@common
+  - bash: |
+      set -euo pipefail
+      echo "!!! Using ls -t will set the latest file for the artifact. If you get an error here, it is because '${{ parameters.service_name }}' is not the source alias name of the artifact"
+      ls -R $(Pipeline.Workspace)
+      export SERVICE_ARTIFACT_NAME=`ls -t $(Pipeline.Workspace)/s/${{ parameters.service_name }}`
+      echo "##vso[task.setvariable variable=SERVICE_ARTIFACT_NAME]$SERVICE_ARTIFACT_NAME"
+      echo "Set Artifact Name of: $SERVICE_ARTIFACT_NAME"
+    displayName: 'Set SERVICE_ARTIFACT_NAME'
 
   - template: templates/pds-tests-karate.yml
     parameters:
