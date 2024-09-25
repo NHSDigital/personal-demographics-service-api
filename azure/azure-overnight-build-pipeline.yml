@@ -17,7 +17,7 @@ pool:
 variables:
   - template: project.yml
 
-extends:
+steps:
   - template: templates/pds-tests-karate.yml
     parameters:
       environment: 'internal-dev'
