@@ -23,14 +23,11 @@ pool:
 variables:
   - template: project.yml
 
-parameters:
-  - name: deploy_template
-    type: string
-
 extends:
   template: azure/common/apigee-deployment.yml@common
   parameters:
-    deploy_template: pr.yml
+    - name: deploy_template
+      default: pr.yml
     service_name: ${{ variables.service_name }}
     short_service_name: ${{ variables.short_service_name }}
     service_base_path: ${{ variables.service_base_path }}
