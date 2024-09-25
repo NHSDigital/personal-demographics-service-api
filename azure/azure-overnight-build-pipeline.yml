@@ -17,6 +17,8 @@ pool:
 variables:
   - template: project.yml
 
+parameters:
+  service_name: ${{ variables.service_name }}
 
 steps:
   - bash: |
@@ -27,8 +29,6 @@ steps:
       echo "##vso[task.setvariable variable=SERVICE_ARTIFACT_NAME]$SERVICE_ARTIFACT_NAME"
       echo "Set Artifact Name of: $SERVICE_ARTIFACT_NAME"
     displayName: 'Set SERVICE_ARTIFACT_NAME'
-    parameters:
-      service_name: ${{ variables.service_name }}
 
   - template: templates/pds-tests-karate.yml
     parameters:
