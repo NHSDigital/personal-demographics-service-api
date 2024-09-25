@@ -23,7 +23,7 @@ pool:
 variables:
   - template: project.yml
 
-parameter:
+parameters:
   - name: deploy_template
     type: string
 
