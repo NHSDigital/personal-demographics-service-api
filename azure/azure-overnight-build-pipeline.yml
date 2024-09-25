@@ -18,6 +18,8 @@ variables:
   - template: project.yml
 
 steps:
+  - template: azure/common/set-facts.yml@common
+
   - template: templates/pds-tests-karate.yml
     parameters:
       environment: 'internal-dev'
