@@ -23,6 +23,9 @@ pool:
 variables:
   - template: project.yml
 
+parameter:
+  - name: deploy_template
+    type: string
 
 extends:
   template: azure/common/apigee-deployment.yml@common
