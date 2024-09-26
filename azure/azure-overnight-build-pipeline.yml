@@ -23,6 +23,7 @@ steps:
     displayName: Setup tests
   
   - task: Npm@1
+    displayName: Install node packages
     inputs:
       command: 'install'
       workingDir: '$(Pipeline.Workspace)/s'
