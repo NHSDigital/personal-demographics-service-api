@@ -21,6 +21,11 @@ steps:
   - bash: poetry install
     workingDirectory: $(Pipeline.Workspace)/s
     displayName: Setup tests
+  
+  - task: Npm@1
+    inputs:
+      command: 'install'
+      workingDir: '$(Pipeline.Workspace)/s'
 
   - template: templates/pds-tests-karate-overnight.yml
     parameters:
