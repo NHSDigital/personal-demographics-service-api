@@ -18,6 +18,10 @@ variables:
   - template: project.yml
 
 steps:
+  - bash: poetry install
+    workingDirectory: $(Pipeline.Workspace)/s
+    displayName: Setup tests
+
   - template: templates/pds-tests-karate-overnight.yml
     parameters:
       environment: 'internal-dev'
