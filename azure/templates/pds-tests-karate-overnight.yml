@@ -90,9 +90,7 @@ steps:
       export OAUTH_BASE_URI="https://${{ parameters.environment }}.api.service.nhs.uk"
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
       make publish
-      ls -l "$(Pipeline.Workspace)/s"
-      ls -l "$(Pipeline.Workspace)/s/build"
-      prism proxy personal-demographics.json $OAUTH_BASE_URI/$PDS_BASE_PATH --errors --validate-request false &
+      prism proxy build/personal-demographics.json $OAUTH_BASE_URI/$PDS_BASE_PATH --errors --validate-request false &
     displayName: 'Start Prism Proxy Server'
     workingDirectory: "$(Pipeline.Workspace)/s"
 
