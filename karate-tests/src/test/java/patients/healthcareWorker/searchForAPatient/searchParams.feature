@@ -1,5 +1,5 @@
 @sandbox
-Feature: Search for a patient - Healthcare worker access mode - "Simple search"
+Feature: Search for a patient - Healthcare worker access mode 
 
 These tests authenticate as one of the available test healthcare workers,
 darren.mcdrew@nhs.net
@@ -212,6 +212,7 @@ Scenario: Simple and Alphanumeric search with email and phone number - no result
   * method get
   * status 200
   * match response.total == 0
+
 Scenario: Simple search with phone number including country code
   * def birthDateValue = "eq2017-09-06"
   * def familyValue = "Muir"
@@ -224,6 +225,7 @@ Scenario: Simple search with phone number including country code
   * match response.total == 1
   * def telecomValueList = karate.jsonPath(response, "$.entry[*].resource.telecom[*].value") 
   * match telecomValueList contains ['#(phoneValue)'] 
+
 Scenario: Include history for non fuzzy search
   * def birthDateValue = "eq2000-05-05"
   * def emailValue = "Historic@historic.com"
