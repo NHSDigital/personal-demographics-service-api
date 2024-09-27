@@ -11,7 +11,7 @@ Background:
   * json RelatedPersonSearchBundle = karate.readAsString('classpath:schemas/searchSchemas/relatedPersonSearchBundle.json')
 
   # auth
-  * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: '9472063845', scope: 'nhs-login'}).accessToken
+  * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: '9900000285', scope: 'nhs-login'}).accessToken
   * def requestHeaders = call read('classpath:auth/auth-headers.js')
   * configure headers = requestHeaders 
 
@@ -21,7 +21,7 @@ Background:
 Scenario: Patient can do related person search for their own record
   # The response should include the family name, according to our OAS definition:
   # https://nhsd-jira.digital.nhs.uk/browse/SPINEDEM-3344
-  * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9472063845'
+  * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9900000285'
   * path 'Patient', nhsNumber, 'RelatedPerson'
   * method get
   * status 200
