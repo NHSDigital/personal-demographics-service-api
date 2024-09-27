@@ -161,27 +161,167 @@ Scenario: Search should not return superseded patients record
   * def idList = karate.jsonPath(response, "$.entry[*].resource.id")
   * match each idList != supersededRecord
 
-
 Scenario: Simple search with other given name - Single match
+  * def birthDateValue = "eq2000-05-05"
+  * def genderValue =  "male"
+  * def familyName = "Smith"
+  * def givenNames = ["Sam","Bob" ]
   * path 'Patient'
-  * params { family: "Smith", gender: "male", birthdate: "eq2000-05-05", given: ["Sam","Bob" ] }
+  * params { family: '#(familyName)', gender: '#(genderValue)', birthdate: '#(birthDateValue)', given: '#(givenNames)' }
+  * method get
+  * status 200
+  * assert response.total >= 1
+  * def givenNames = karate.jsonPath(response, "$.entry[*].resource.name[*].given[*]") 
+  * match givenNames contains any ['Sam', 'Bob']
+
+Scenario: Simple and Alphanumeric search with email and phone number - Multi match
+  * def birthDateValue = "eq2000-05-05"
+  * def emailValue = "test@test.com"
+  * def phoneValue = "01234123123"
+  * def genderValue =  "male"
+  * path 'Patient'
+  * params { family: "Smith", gender: '#(genderValue)', birthdate: '#(birthDateValue)', email: '#(emailValue)', phone: '#(phoneValue)' }
+  * method get
+  * status 200
+  * assert response.total > 1
+  * def telecomValueList = karate.jsonPath(response, "$.entry[*].resource.telecom[*].value") 
+  * match telecomValueList contains any ['#(phoneValue)', '#(emailValue)']
+   # alphanumeric serach 
+  * path 'Patient'
+  * params { family: "Sm*", gender: '#(genderValue)', birthdate: '#(birthDateValue)', email: '#(emailValue)', phone: '#(phoneValue)' }
+  * method get
+  * status 200
+  * print response
+  * assert response.total > 1
+  * def telecomValueList = karate.jsonPath(response, "$.entry[*].resource.telecom[*].value") 
+  * match telecomValueList contains any ['#(phoneValue)', '#(emailValue)']
+
+Scenario: Simple and Alphanumeric search with email and phone number - no results
+  * def birthDateValue = "eq2000-05-05"
+  * def emailValue = "rubbish@test.com"
+  * def phoneValue = "01234123123"
+  * def genderValue =  "male"
+  * path 'Patient'
+  * params { family: "Smith", gender: '#(genderValue)', birthdate: '#(birthDateValue)', email: '#(emailValue)', phone: '#(phoneValue)' }
+  * method get
+  * status 200
+  * match response.total == 0
+  # alphanumeric serach 
+  * path 'Patient'
+  * params { family: "Sm*",gender: '#(genderValue)', birthdate: '#(birthDateValue)', email: '#(emailValue)', phone: '#(phoneValue)' }
+  * method get
+  * status 200
+  * match response.total == 0
+Scenario: Simple search with phone number including country code
+  * def birthDateValue = "eq2017-09-06"
+  * def familyValue = "Muir"
+  * def phoneValue = "00917855986859"
+  * def genderValue =  "male"
+  * path 'Patient'
+  * params { family: '#(familyValue)', gender: '#(genderValue)', birthdate: '#(birthDateValue)', phone: '#(phoneValue)' }
   * method get
   * status 200
   * match response.total == 1
- 
-Scenario: Simple search with email and phone number - Multi match
-  * path 'Patient'
-  * params { family: "Smith", gender: "male", birthdate: "eq2000-05-05", phone: "01234123123", email: "test@test.com" }
-  * method get
-  * status 200
-  * match response.total == 11
   * def telecomValueList = karate.jsonPath(response, "$.entry[*].resource.telecom[*].value") 
-  * match telecomValueList contains any ['01234123123','test@test.com']
-
-Scenario: Simple search with email and phone number - no results
+  * match telecomValueList contains ['#(phoneValue)'] 
+Scenario: Include history for non fuzzy search
+  * def birthDateValue = "eq2000-05-05"
+  * def emailValue = "Historic@historic.com"
+  * def phoneValue = "01234123123"
+  * def genderValue = "male"
+  * def familyValue = "Smith"
   * path 'Patient'
-  * params { family: "Smith", gender: "male", birthdate: "eq2000-05-05", phone: "01234123123", email: "test@test.com" }
+  * params { family: '#(familyValue)', gender: '#(genderValue)', email: '#(emailValue)', birthdate: '#(birthDateValue)' }
   * method get
   * status 200
-  * match response.total == 11
+  * match response.total == 0
+  # include history flag
+  * path 'Patient'
+  * params { family: '#(familyValue)', gender: '#(genderValue)', birthdate: '#(birthDateValue)', email: '#(emailValue)', _history: true }
+  * method get
+  * status 200
+  * def telecomValueList = karate.jsonPath(response, "$.entry[*].resource.telecom[*].value") 
+  * match each telecomValueList != emailValue
 
+Scenario: Simple search with phone number including country code
+  * def birthDateValue = "eq2017-09-06"
+  * def familyValue = "Muir"
+  * def phoneValue = "00917855986859"
+  * def genderValue =  "male"
+  * path 'Patient'
+  * params { family: '#(familyValue)', gender: '#(genderValue)', birthdate: '#(birthDateValue)', phone: '#(phoneValue)' }
+  * method get
+  * status 200
+  * match response.total == 1
+  * def telecomValueList = karate.jsonPath(response, "$.entry[*].resource.telecom[*].value") 
+  * match telecomValueList contains ['#(phoneValue)'] 
+
+Scenario: wildcard search on postcode
+  * def birthDate = "eq2000-05-05"
+  * def gender = "male"
+  * def family = "Smith"
+  * def postcode = "DN17*"
+  * path 'Patient'
+  * params { family: '#(family)', birthdate: '#(birthDate)',gender: '#(gender)', address-postalcode: '#(postcode)'}
+  * method get
+  * status 200
+  * assert response.total >= 2
+  * def postcodeList = karate.jsonPath(response, "$.entry[*].resource.address[*].postalCode")
+  * def filteredList = karate.filter(postcodeList, function(x){ return x.startsWith('DN17') })
+  * match filteredList != []
+
+Scenario: Alphanumeric search with registered GP practice
+  * def birthDate = "eq2015-10-22"
+  * def family = "Me*"
+  * def gp = "A20047"
+  * path 'Patient'
+  * params { family: '#(family)', birthdate: '#(birthDate)', general-practitioner: '#(gp)'}
+  * method get
+  * status 200
+  * assert response.total == 1
+  * def gpList = karate.jsonPath(response, "$.entry[*].resource.generalPractitioner[*].identifier.value")
+  * match gpList contains ['#(gp)']
+
+Scenario: Simple search with date of death parameter
+  * def birthDate = "ge1980-01-01"
+  * def family = "TUNNEY"
+  * def deathDate = "le2019-02-28"
+  * path 'Patient'
+  * params { family: '#(family)', birthdate: '#(birthDate)', death-date: '#(deathDate)'}
+  * method get
+  * status 200
+  * assert response.total == 1
+  * def deceasedDate = karate.jsonPath(response, "$.entry[*].resource.deceasedDateTime")
+  * match deceasedDate != null 
+
+Scenario: Algorithm search with basic(given name, gender, date of birth and postal code) and phone number - no match -> single match -> multi match
+  * def birthDate = "ge2000-05-03"
+  * def family = "Smythe"
+  * def gender = "male"
+  * def given = "Mat"
+  * def postcode = "DN17 4AA"
+  * def email = "rubbish@work.com"
+  * def phone = "01222111111"  
+  # no search results 
+  * path 'Patient'
+  * params { family: '#(family)', birthdate: '#(birthDate)', gender: '#(gender)', given: '#(given)', address-postalcode:'#(postcode)', email: '#(email)', phone: '#(phone)', _fuzzy-match: true }
+  * method get
+  * status 200
+  * assert response.total == 0
+  # single search result
+  * def email = "test@test.com"
+  * def nhsNumber = '5900022366'  
+  * path 'Patient'
+  * params { family: '#(family)', birthdate: '#(birthDate)', gender: '#(gender)', given: '#(given)', address-postalcode:'#(postcode)', email: '#(email)', phone: '#(phone)', _fuzzy-match: true }
+  * method get
+  * status 200
+  * assert response.total == 1 
+  * match response.entry[0].resource.id == nhsNumber
+  # Multi match
+  * path 'Patient'
+  * params { family: '#(family)', birthdate: '#(birthDate)', gender: '#(gender)', given: '#(given)', address-postalcode:'#(postcode)', _fuzzy-match: true }
+  * method get
+  * status 200
+  * assert response.total >= 1 
+  * def postcodeList = karate.jsonPath(response, "$.entry[*].resource.address[*].postalCode")
+  * match postcodeList contains ['#(postcode)']
