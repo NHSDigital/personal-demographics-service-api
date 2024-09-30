@@ -1,0 +1,100 @@
+{
+    "entry": [
+        {
+            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/5900022366",
+            "resource": {
+                "address": [
+                    {
+                        "id": "51F273DD",
+                        "line": [
+                            "Elm Cottage",
+                            "West End Road",
+                            "ULCEBY"
+                        ],
+                        "period": {
+                            "start": "2022-08-24"
+                        },
+                        "postalCode": "DN17 4AA",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "2000-05-05",
+                "gender": "male",
+                "id": "5900022366",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "5900022366"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "2"
+                },
+                "name": [
+                    {
+                        "family": "Smith",
+                        "given": [
+                            "Sam",
+                            "Matt"
+                        ],
+                        "id": "EC093519",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient",
+                "telecom": [
+                    {
+                        "id": "F7CFA85B",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "email",
+                        "use": "home",
+                        "value": "test@test.com"
+                    },
+                    {
+                        "id": "1ACFC3C6",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "phone",
+                        "use": "home",
+                        "value": "01222111111"
+                    }
+                ]
+            },
+            "search": {
+                "score": 0.8827
+            }
+        }
+    ],
+    "resourceType": "Bundle",
+    "timestamp": "2024-09-27T12:15:53+00:00",
+    "total": 1,
+    "type": "searchset"
+}
