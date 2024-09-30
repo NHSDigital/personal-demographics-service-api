@@ -101,9 +101,9 @@ Scenario: Wide search, multiple results
   * match response.entry[*].resource.id == ["9693633679", "9693633687", "9693633695", "9693633709"]
   * match response.entry[*].resource.gender == ["male", "female", "unknown", "other"]
 
-Scenario: Fuzzy match search
+Scenario: Fuzzy match search - Family name is homophone of actual historic family name
   * path 'Patient'
-  * params { _fuzzy-match: true, family: "Garton", given: "Bill", birthdate: "1946-06-23" }
+  * params { _fuzzy-match: true, family: "Blogs", given: "Joe", birthdate: "1955-11-05" }
   * method get
   * status 200
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
