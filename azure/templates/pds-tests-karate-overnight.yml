@@ -28,7 +28,7 @@ steps:
       - ptl/backends/ig3/INTERNAL_DEV_ASID
   
   - bash: |
-      echo '##vso[task.setvariable variable=APIGEE_ENVIRONMENT]${{ parameters.environment }}'
+      echo '##vso[task.setvariable variable=APIGEE_ENVIRONMENT]$(ENVIRONMENT)'
       echo '##vso[task.setvariable variable=PDS_BASE_PATH]$(SERVICE_BASE_PATH)'
       echo '##vso[task.setvariable variable=CLIENT_ID]$(CLIENT_ID)'
       echo '##vso[task.setvariable variable=CLIENT_SECRET]$(CLIENT_SECRET)'
@@ -37,7 +37,7 @@ steps:
 
    # Run the tests against veit07
   - bash: |
-      export OAUTH_BASE_URI="https://${{ parameters.environment }}.api.service.nhs.uk"
+      export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2-mock"
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
       export CLIENT_ID="$(CLIENT_ID)"
@@ -87,7 +87,7 @@ steps:
 
   # Run the tests against veit07, via the Prism proxy
   - bash: |
-      export OAUTH_BASE_URI="https://${{ parameters.environment }}.api.service.nhs.uk"
+      export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
       make publish
       prism proxy build/personal-demographics.json $OAUTH_BASE_URI/$PDS_BASE_PATH --errors --validate-request false &
@@ -95,7 +95,7 @@ steps:
     workingDirectory: "$(Pipeline.Workspace)/s"
 
   - bash: |
-      export OAUTH_BASE_URI="https://${{ parameters.environment }}.api.service.nhs.uk"
+      export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export OAUTH_PROXY="oauth2-mock"
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
       export CLIENT_ID="$(CLIENT_ID)"

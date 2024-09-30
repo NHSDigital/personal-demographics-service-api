@@ -23,6 +23,8 @@ pool:
 
 variables:
   - template: project.yml
+  - name: environment
+    value: internal-dev
 
 steps:
   - bash: poetry install
