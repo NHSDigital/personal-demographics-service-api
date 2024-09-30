@@ -1,3 +1,7 @@
+parameters:
+  - name: artifact_path
+    type: string
+
 steps:
 
   - task: Npm@1
@@ -20,20 +24,20 @@ steps:
       export KEY_ID="$(KEY_ID)"
       mvn clean test -Dtest=TestParallel 
     displayName: 'Run Karate Tests'
-    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests"
+    workingDirectory: "$(Pipeline.Workspace)/${{ parameters.artifact_path }}/karate-tests"
     
   - task: PublishTestResults@2
     displayName: 'Publish Karate test results'
     condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports/*.xml
+      testResultsFiles: $(Pipeline.Workspace)/${{ parameters.artifact_path }}/karate-tests/target/karate-reports/*.xml
       failTaskOnFailedTests: true
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Karate HTML test report as an artifact'
     condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
     inputs:
-      pathToPublish: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports
+      pathToPublish: $(Pipeline.Workspace)/${{ parameters.artifact_path }}/karate-tests/target/karate-reports
       artifactName: KarateHTMLReports
 
   # Run the tests against the Karate mocks
@@ -41,31 +45,31 @@ steps:
       export CLIENT_ID="$(CLIENT_ID)"
       mvn clean test -Dtest=TestMockParallel 
     displayName: 'Run Karate Mock Tests'
-    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests"
+    workingDirectory: "$(Pipeline.Workspace)/${{ parameters.artifact_path }}/karate-tests"
     
   - task: PublishTestResults@2
     displayName: 'Publish Karate sandbox test results'
     condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports/*.xml
+      testResultsFiles: $(Pipeline.Workspace)/${{ parameters.artifact_path }}/karate-tests/target/karate-reports/*.xml
       failTaskOnFailedTests: true
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Karate Sandbox HTML test report as an artifact'
     condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
     inputs:
-      pathToPublish: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports
+      pathToPublish: $(Pipeline.Workspace)/${{ parameters.artifact_path }}/karate-tests/target/karate-reports
       artifactName: KarateSandboxHTMLReports
 
   # Run the tests against veit07, via the Prism proxy
   - bash: |
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
-      ls -l "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
-      ls -l "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/build"
+      ls -l "$(Pipeline.Workspace)/${{ parameters.artifact_path }}"
+      ls -l "$(Pipeline.Workspace)/${{ parameters.artifact_path }}/build"
       prism proxy personal-demographics.json $OAUTH_BASE_URI/$PDS_BASE_PATH --errors --validate-request false &
     displayName: 'Start Prism Proxy Server'
-    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+    workingDirectory: "$(Pipeline.Workspace)/${{ parameters.artifact_path }}"
 
   - bash: |
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
@@ -79,18 +83,18 @@ steps:
       export KEY_ID="$(KEY_ID)"
       mvn clean test -Dtest=TestSchemaParallel 
     displayName: 'Run Schema Tests'
-    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests"
+    workingDirectory: "$(Pipeline.Workspace)/${{ parameters.artifact_path }}/karate-tests"
     
   - task: PublishTestResults@2
     displayName: 'Publish Karate Schema HTML test results'
     condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports/*.xml
+      testResultsFiles: $(Pipeline.Workspace)/${{ parameters.artifact_path }}/karate-tests/target/karate-reports/*.xml
       failTaskOnFailedTests: true
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Karate Schema HTML test report as an artifact'
     condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
     inputs:
-      pathToPublish: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports
+      pathToPublish: $(Pipeline.Workspace)/${{ parameters.artifact_path }}/karate-tests/target/karate-reports
       artifactName: KarateSchemaTestsHTMLReports
