@@ -42,8 +42,6 @@ extends:
         stage_name: karate_tests
         post_deploy:
           - template: templates/pds-tests-karate.yml
-            parameters:
-              artifact_path: s/${{ variables.service_name }}/${{ variables.service_artifact_name }}
       - environment: internal-dev
         stage_name: pytest_bdd_tests
         post_deploy:
