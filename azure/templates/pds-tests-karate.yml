@@ -5,7 +5,7 @@ steps:
       command: 'custom'
       customCommand: 'install -g @stoplight/prism-cli'
 
-  - template: "set-common-variables-and-commands.yml"
+  - template: "expose-pds-variables-and-commands.yml"
 
   # Run the tests against veit07
   - bash: |
