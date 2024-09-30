@@ -136,7 +136,7 @@ if (request.pathMatches('/Patient') && request.get) {
 
   if (validateHeaders(request) && validateQueryParams(request)) {
     if (fuzzyMatch) {
-      if (family === 'Garton' && given[0] === 'Bill' && birthDate[0] === '1946-06-23') {
+      if (family === 'Blogs' && given[0] === 'Joe' && birthDate[0] === '1955-11-05') {
         response.body = timestampBody(BILL_GARTON_SEARCHSET)
       } else if (family === 'ATTSÖN' && given[0] === 'PÀULINÉ' && birthDate[0] === '1960-07-14') {
         response.body = timestampBody(PAULINE_ATTISON_SEARCHSET)
