@@ -33,7 +33,7 @@ Feature: Patient Access (Retrieve)
     * match response.id == p9number
     * match response == Patient
 
-  Scenario Outline: P0 and P5 users can authenticate but can't retrieve their own details (<patientType> example)
+  Scenario Outline: <patientType> users can authenticate but can't retrieve their own details (<patientType> example)
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -46,9 +46,11 @@ Feature: Patient Access (Retrieve)
     * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
 
     Examples:
-      | patientType | nhsNumber   |
-      | P0          | 9912003073  |
-      | P5          | 9912003072  |
+      | patientType     | nhsNumber   |
+      | P0              | 9912003073  |
+      | P5              | 9912003072  |
+      | P9.Cp           | 5900068196  |
+      | P9 only(no vot) | 9472063810  |
 
   Scenario: P9 Patient can't retrieve details of another patient
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
@@ -74,3 +76,20 @@ Feature: Patient Access (Retrieve)
     * def display = 'Patient cannot perform this action'
     * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
     * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
+   
+  Scenario Outline: <patientTypeAndVot> user can authenticate and retrieve their own details
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders
+    * path 'Patient', nhsNumber
+    * method get
+    * status 200
+    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+    * match response.id == nhsNumber
+    * match response == Patient
+
+    Examples:
+    | patientTypeAndVot | nhsNumber   |
+    | P9.Cp.Cd          | 9900000285  |
+    | P9.Cm             | 5900071332  |
+    | P9.Cp.Ck          | 5900069176  |
