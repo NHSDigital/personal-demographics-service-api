@@ -61,7 +61,13 @@ steps:
   - bash: |
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
-      prism proxy personal-demographics.json $OAUTH_BASE_URI/$PDS_BASE_PATH --errors --validate-request false &
+      if [ -z "$(SERVICE_PATH_NAME)" ]; then
+        make publish
+        export SPEC_PATH="build/personal-demographics.json"
+      else
+        export SPEC_PATH="personal-demographics.json"
+      fi
+      prism proxy $SPEC_PATH $OAUTH_BASE_URI/$PDS_BASE_PATH --errors --validate-request false &
     displayName: 'Start Prism Proxy Server'
     workingDirectory: "$(ARTIFACT_PATH)"
 
