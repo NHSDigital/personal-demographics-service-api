@@ -170,7 +170,7 @@ Scenario: Simple search with other given name - Single match
   * params { family: '#(familyName)', gender: '#(genderValue)', birthdate: '#(birthDateValue)', given: '#(givenNames)' }
   * method get
   * status 200
-  * assert response.total >= 1
+  * assert response.total == 1
   * def givenNames = karate.jsonPath(response, "$.entry[*].resource.name[*].given[*]") 
   * match givenNames contains any ['Sam', 'Bob']
 
@@ -226,24 +226,27 @@ Scenario: Simple search with phone number including country code
   * def telecomValueList = karate.jsonPath(response, "$.entry[*].resource.telecom[*].value") 
   * match telecomValueList contains ['#(phoneValue)'] 
 
-Scenario: Include history for non fuzzy search
+Scenario: Include history flag for non fuzzy search
   * def birthDateValue = "eq2000-05-05"
-  * def emailValue = "Historic@historic.com"
-  * def phoneValue = "01234123123"
+  * def previousEmail = "Historic@historic.com"
+  * def currentEmail = "New@new.com"  
   * def genderValue = "male"
   * def familyValue = "Smith"
   * path 'Patient'
-  * params { family: '#(familyValue)', gender: '#(genderValue)', email: '#(emailValue)', birthdate: '#(birthDateValue)' }
+  * params { family: '#(familyValue)', gender: '#(genderValue)', email: '#(previousEmail)', birthdate: '#(birthDateValue)' }
   * method get
   * status 200
   * match response.total == 0
   # include history flag
   * path 'Patient'
-  * params { family: '#(familyValue)', gender: '#(genderValue)', birthdate: '#(birthDateValue)', email: '#(emailValue)', _history: true }
+  * params { family: '#(familyValue)', gender: '#(genderValue)', birthdate: '#(birthDateValue)', email: '#(previousEmail)', _history: true }
   * method get
   * status 200
-  * def telecomValueList = karate.jsonPath(response, "$.entry[*].resource.telecom[*].value") 
-  * match each telecomValueList != emailValue
+  * def emailValues = karate.jsonPath(response, "$.entry[*].resource.telecom[?(@.system == 'email')].value") 
+  * print emailValues
+  * match emailValues !contains previousEmail
+  * match emailValues contains currentEmail
+  * match response.total == 1
 
 Scenario: Simple search with phone number including country code
   * def birthDateValue = "eq2017-09-06"
