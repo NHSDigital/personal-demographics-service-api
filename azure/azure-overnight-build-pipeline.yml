@@ -38,5 +38,3 @@ steps:
       workingDir: '$(Pipeline.Workspace)/s'
 
   - template: templates/pds-tests-karate-overnight.yml
-    parameters:
-      environment: 'internal-dev'
