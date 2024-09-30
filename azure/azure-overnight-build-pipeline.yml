@@ -25,6 +25,8 @@ variables:
   - template: project.yml
   - name: environment
     value: internal-dev
+  - name: SERVICE_ARTIFACT_NAME
+    value: ''
 
 steps:
   - bash: poetry install
