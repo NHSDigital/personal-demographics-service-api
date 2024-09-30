@@ -980,15 +980,9 @@ paths:
         ```
         ### Special considerations for removals ###
         
-        Please note that when applying patch updates to telecom objects under P9 authorisation (patient level updates), we apply a tighter criteria to prevent Patients
-        updating things they should not and patch operation test is on the whole object (see below). The criteria applied to telecom to allow patients to update is as 
-        follows:
-          1) If the path contains 'telecom' and the system value equals 'phone', the only allowed use is 'mobile'
-          2) If the path contains 'telecom' and the system value equals 'email', any use is permitted.
-          3) If the path contains 'extension', the object must be checked and the url value must equal 'https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NominatedPharmacy'
-        If these conditions are not met, a permissions error and 4xx code is returned.
+        See the [Patient access section](#patient-access) for information on updating fields in Patient access mode. 
 
-        Special care should be taken when performing multiple removals in the same list; as removing a particular index could affect all subsequent index positions. The next two examples perform **<u>exactly</u>** the same operation.
+        Special care should also be taken when performing multiple removals in the same list; as removing a particular index could affect all subsequent index positions. The next two examples perform **<u>exactly</u>** the same operation.
 
         Using the following initial (simplified) data, with the intention of removing the names in index 1 (Irwin) and 2 (Bruce):
 
@@ -1488,8 +1482,17 @@ paths:
 
         A user with Patient access will be able to update the following fields:
         * Address
+        * Communication (communication language and interpreter required only)
+        * Emergency contact
         * Pharmacy
+        * Place of birth
         * Telecom (mobile and email only)
+
+        In Patient access mode, for all operations except `remove`, you must include the whole object in the patch to update the following fields: 
+        * Communication (communication language and interpreter required only)
+        * Pharmacy
+        * Place of birth
+        * Telecom (mobile and email only) 
 
         ## Sandbox test scenarios
 
