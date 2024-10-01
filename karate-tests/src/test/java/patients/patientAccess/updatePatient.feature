@@ -1,4 +1,3 @@
-@contactTest
 Feature: Patient updates their details
 
   Background:
