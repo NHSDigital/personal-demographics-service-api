@@ -40,3 +40,5 @@ steps:
       workingDir: '$(Pipeline.Workspace)/s'
 
   - template: templates/pds-tests-karate.yml
+
+  - template: templates/pds-tests.yml

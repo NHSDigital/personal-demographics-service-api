@@ -1,10 +1,9 @@
 steps:
+  - template: "expose-pds-variables-and-commands.yml"
 
   - bash: poetry install
-    workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
+    workingDirectory: $(ARTIFACT_PATH)
     displayName: Setup tests
-
-  - template: "expose-pds-variables-and-commands.yml"
 
   - bash: |
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
@@ -15,12 +14,12 @@ steps:
 
       poetry run pytest -v tests/functional/test_application_restricted.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/functional-test-report.xml --reruns 5 --reruns-delay 1
     displayName: Run application restricted tests
-    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+    workingDirectory: "$(ARTIFACT_PATH)"
 
   - task: PublishTestResults@2
     displayName: 'Publish application restricted test results'
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/functional-test-report.xml
+      testResultsFiles: $(ARTIFACT_PATH)/tests/functional-test-report.xml
       failTaskOnFailedTests: true
 
   - bash: |
@@ -31,12 +30,12 @@ steps:
 
       poetry run pytest -v tests/functional/test_proxy_behaviour.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/proxy-behaviour-test-report.xml --reruns 5 --reruns-delay 1
     displayName: Run proxy behaviour tests
-    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+    workingDirectory: "$(ARTIFACT_PATH)"
 
   - task: PublishTestResults@2
     displayName: 'Publish proxy behaviour test results'
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/proxy-behaviour-test-report.xml
+      testResultsFiles: $(ARTIFACT_PATH)/tests/proxy-behaviour-test-report.xml
       failTaskOnFailedTests: true
 
   - bash: |
@@ -47,12 +46,12 @@ steps:
 
       poetry run pytest -v tests/functional/test_sync_wrap.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/sync-wrap-test-report.xml --reruns 5 --reruns-delay 1
     displayName: Run sync wrap tests
-    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+    workingDirectory: "$(ARTIFACT_PATH)"
 
   - task: PublishTestResults@2
     displayName: "Publish sync wrap test results"
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/sync-wrap-test-report.xml
+      testResultsFiles: $(ARTIFACT_PATH)/tests/sync-wrap-test-report.xml
       failTaskOnFailedTests: true
 
   - bash: |
@@ -65,12 +64,12 @@ steps:
 
       poetry run pytest -v tests/functional/test_patient_create.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/patient-create-test-report.xml --reruns 20 --reruns-delay 1
     displayName: Run post patient tests
-    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+    workingDirectory: "$(ARTIFACT_PATH)"
 
   - task: PublishTestResults@2
     displayName: "Publish post patient test results"
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/patient-create-test-report.xml
+      testResultsFiles: $(ARTIFACT_PATH)/tests/patient-create-test-report.xml
       failTaskOnFailedTests: true
 
   - bash: |
@@ -83,10 +82,10 @@ steps:
 
       poetry run pytest -v tests/functional/test_patient_access.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/patient-access-test-report.xml --reruns 20 --reruns-delay 1
     displayName: Run patient access tests
-    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+    workingDirectory: "$(ARTIFACT_PATH)"
 
   - task: PublishTestResults@2
     displayName: "Publish patient access test results"
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/patient-access-test-report.xml
+      testResultsFiles: $(ARTIFACT_PATH)/tests/patient-access-test-report.xml
       failTaskOnFailedTests: true
