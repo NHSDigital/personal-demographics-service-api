@@ -61,7 +61,7 @@ steps:
   - bash: |
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
-      if [ -z "$(SERVICE_PATH_NAME)" ]; then
+      if [ -z "$(SERVICE_ARTIFACT_NAME)" ]; then
         make publish
         export SPEC_PATH="build/personal-demographics.json"
       else

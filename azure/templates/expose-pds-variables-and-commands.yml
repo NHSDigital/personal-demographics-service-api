@@ -39,7 +39,7 @@ steps:
       echo '##vso[task.setvariable variable=AUTH_TOKEN_EXPIRY_MS_INT]$(AUTH_TOKEN_EXPIRY_MS_INT)'
       echo '##vso[task.setvariable variable=REDIRECT_URI]https://example.org/callback'
       echo '##vso[task.setvariable variable=APIGEE_API_TOKEN]$(secret.AccessToken)'
-      if [ -z "$(SERVICE_PATH_NAME)" ]; then
+      if [ -z "$(SERVICE_ARTIFACT_NAME)" ]; then
         echo '##vso[task.setvariable variable=ARTIFACT_PATH]$(Pipeline.Workspace)/s/'
       else
         echo '##vso[task.setvariable variable=ARTIFACT_PATH]$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/'
