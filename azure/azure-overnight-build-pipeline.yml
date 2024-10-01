@@ -39,4 +39,4 @@ steps:
       command: 'install'
       workingDir: '$(Pipeline.Workspace)/s'
 
-  - template: templates/pds-tests-karate-overnight.yml
+  - template: templates/pds-tests-karate.yml
