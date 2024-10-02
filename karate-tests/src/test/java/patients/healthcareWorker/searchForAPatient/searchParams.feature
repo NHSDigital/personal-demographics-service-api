@@ -330,3 +330,64 @@ Scenario: Algorithm search with basic(given name, gender, date of birth and post
   * assert response.total >= 1 
   * def postcodeList = karate.jsonPath(response, "$.entry[*].resource.address[*].postalCode")
   * match postcodeList contains ['#(postcode)']
+
+@Searchtest
+  Scenario: Search for a PDS record based on historic DOB, family name, gender
+    * def historicDob = "2024-01-12"
+    * def historicfamilyName = "HUME"
+    * def historicGender = "female"
+    * def givenName = "Casey"
+    * def currentDob = "1999-09-09"
+    * def currentGender = "male"
+    * def currentFamilyName = "MED"
+    # no pds records for non fuzzy search when historic dob is sent as query parameter
+    * path 'Patient'
+    * params { family: '#(currentFamilyName)', birthdate: '#(historicDob)', gender: '#(currentGender)' }
+    * method get
+    * status 200
+    * assert response.total == 0
+    # no pds records for non fuzzy search when historic gender is sent as query parameter
+    * path 'Patient'
+    * params { family: '#(currentFamilyName)', birthdate: '#(currentDob)', gender: '#(historicGender)' }
+    * method get
+    * status 200
+    * assert response.total == 0
+    # no pds records for non fuzzy search when historic family name is sent as query parameter
+    * path 'Patient'
+    * params { family: '#(historicfamilyName)', birthdate: '#(currentDob)', gender: '#(currentGender)' }
+    * method get
+    * status 200
+    * assert response.total == 0
+    #  Fuzzy matching should not return historic matches when historic dob is sent as query parameter
+    * path 'Patient'
+    * params { family: '#(currentFamilyName)', birthdate: '#(historicDob)', gender: '#(currentGender)', given: '#(givenName)', _fuzzy-match: true }
+    * method get
+    * status 200
+    * assert response.total == 0
+    # Fuzzy matching should return historic matches when historic gender is sent as query parameter
+    * path 'Patient'
+    * params { family: '#(currentFamilyName)', birthdate: '#(currentDob)', gender: '#(historicGender)', given: '#(givenName)', _fuzzy-match: true }
+    * method get
+    * status 200
+    * assert response.total == 1
+    * match response.entry[0].resource.gender == currentGender
+    #  Fuzzy matching should return historic matches when historic family name is sent as query parameter
+    * path 'Patient'
+    * params { family: '#(historicfamilyName)', birthdate: '#(currentDob)', gender: '#(currentGender)', given: '#(givenName)', _fuzzy-match: true }
+    * method get
+    * status 200
+    * assert response.total == 1
+    * match response.entry[0].resource.name[0].family == currentFamilyName
+    # Include history search should not return historic matches when historic dob is sent as query parameter
+    * path 'Patient'
+    * params { family: '#(currentFamilyName)', birthdate: '#(historicDob)', gender: '#(currentGender)', _history: true }
+    * method get
+    * status 200
+    * assert response.total == 0
+    #  Include history search should return historic matches when historic family name is sent as query parameter
+    * path 'Patient'
+    * params { family: '#(historicfamilyName)', birthdate: '#(currentDob)', gender: '#(currentGender)', _history: true }
+    * method get
+    * status 200
+    * assert response.total == 1
+    * match response.entry[0].resource.name[0].family == currentFamilyName
