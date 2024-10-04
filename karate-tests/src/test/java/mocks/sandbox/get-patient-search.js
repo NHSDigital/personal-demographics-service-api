@@ -34,6 +34,7 @@ const GP_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/general
 const DEATHDATE_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/dateOfDeath_searchset.json')
 const FUZZY_SINGLE_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/fuzzy_single_searchset.json')
 const FUZZY_MULTI_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/fuzzy_multimatch_searchset.json')
+const HISTORIC_DATA_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/med_rowenad_searchset.json')
 
 function janeSmithSearchsetWithScore (score) {
   return {
@@ -157,6 +158,12 @@ if (request.pathMatches('/Patient') && request.get) {
         response.body = timestampBody(FUZZY_SINGLE_SEARCHSET)
       } else if (family === 'Smythe' && (given[0]) === 'Mat' && (birthDate[0]) === 'ge2000-05-03' && gender === 'male' && postalCode === 'DN17 4AA' && email !== 'rubbish@work.com') {
         response.body = timestampBody(FUZZY_MULTI_SEARCHSET)
+      } else if (['MED', 'HUME'].includes(family) && (given[0]) === 'Casey' && (birthDate[0]) === '1999-09-09') {
+        response.body = timestampBody(HISTORIC_DATA_SEARCHSET)
+      } else if (family === 'MED' && (given[0]) === 'Casey' && (birthDate[0]) === '2024-01-12') {
+        response.body = timestampBody(EMPTY_SEARCHSET)
+      } else if (family === 'LEEKE' && (given[0]) === 'Horace' && (birthDate[0]) === '1956-05-02' && postalCode === 'DN16') {
+        response.body = timestampBody(EMPTY_SEARCHSET)
       } else if (!phone && !email) {
         response.body = timestampBody(FUZZY_SEARCH_PATIENT_17)
       } else if (phone === '01632960587' && !email) {
@@ -171,6 +178,10 @@ if (request.pathMatches('/Patient') && request.get) {
     } else if (historyMatch) {
       if (['Smith', 'smith'].includes(family) && ['Male', 'male'].includes(gender) && (birthDate[0]) === 'eq2000-05-05' && email === 'Historic@historic.com') {
         response.body = timestampBody(HISTORIC_EMAIL_SEARCHSET)
+      } else if (['HUME'].includes(family) && (birthDate[0]) === '1999-09-09') {
+        response.body = timestampBody(HISTORIC_DATA_SEARCHSET)
+      } else if (family === 'MED' && (birthDate[0]) === '2024-01-12') {
+        response.body = timestampBody(EMPTY_SEARCHSET)
       }
     } else if (['Sm*', 'sm*'].includes(family)) {
       if (!phone && !email) {

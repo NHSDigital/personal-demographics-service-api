@@ -331,7 +331,6 @@ Scenario: Algorithm search with basic(given name, gender, date of birth and post
   * def postcodeList = karate.jsonPath(response, "$.entry[*].resource.address[*].postalCode")
   * match postcodeList contains ['#(postcode)']
 
-@Searchtest
   Scenario: Search for a PDS record based on historic DOB, family name, gender
     * def historicDob = "2024-01-12"
     * def historicfamilyName = "HUME"
@@ -391,3 +390,15 @@ Scenario: Algorithm search with basic(given name, gender, date of birth and post
     * status 200
     * assert response.total == 1
     * match response.entry[0].resource.name[0].family == currentFamilyName
+
+  Scenario: Fuzzy matching shouldn't return hidden matches
+    * def historicPostcode = "DN16"
+    * def givenName = "Horace"
+    * def currentDob = "1956-05-02"
+    * def currentFamilyName = "LEEKE"
+    # no pds records for non fuzzy search when historic dob is sent as query parameter
+    * path 'Patient'
+    * params { family: '#(currentFamilyName)', birthdate: '#(currentDob)', given: '#(givenName)', address-postalcode: '#(historicPostcode)', _fuzzy-match: true }' }
+    * method get
+    * status 200
+    * assert response.total == 0
