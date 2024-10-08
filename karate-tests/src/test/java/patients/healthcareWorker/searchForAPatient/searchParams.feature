@@ -339,6 +339,7 @@ Scenario: Algorithm search with basic(given name, gender, date of birth and post
     * def currentDob = "1999-09-09"
     * def currentGender = "male"
     * def currentFamilyName = "MED"
+    * def expectedNhsNumber - "9733162450"
     # no pds records for non fuzzy search when historic dob is sent as query parameter
     * path 'Patient'
     * params { family: '#(currentFamilyName)', birthdate: '#(historicDob)', gender: '#(currentGender)' }
@@ -369,6 +370,7 @@ Scenario: Algorithm search with basic(given name, gender, date of birth and post
     * method get
     * status 200
     * assert response.total == 1
+    * match response.entry[0].id == expectedNhsNumber
     * match response.entry[0].resource.gender == currentGender
     #  Fuzzy matching should return historic matches when historic family name is sent as query parameter
     * path 'Patient'
@@ -376,6 +378,7 @@ Scenario: Algorithm search with basic(given name, gender, date of birth and post
     * method get
     * status 200
     * assert response.total == 1
+    * match response.entry[0].id == expectedNhsNumber
     * match response.entry[0].resource.name[0].family == currentFamilyName
     # Include history search should not return historic matches when historic dob is sent as query parameter
     * path 'Patient'
@@ -389,6 +392,7 @@ Scenario: Algorithm search with basic(given name, gender, date of birth and post
     * method get
     * status 200
     * assert response.total == 1
+    * match response.entry[0].id == expectedNhsNumber
     * match response.entry[0].resource.name[0].family == currentFamilyName
 
   @no-sandbox
