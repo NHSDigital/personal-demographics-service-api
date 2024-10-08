@@ -398,13 +398,13 @@ Scenario: Algorithm search with basic(given name, gender, date of birth and post
   @no-sandbox
   Scenario: Historic matching shouldn't return hidden matches
     # Expect a record to exist with current given=Horace, dob=1956-05-02, family=LEEKE, postalcode=DN15 0AD, and hidden postalcode=DN16 3SS.
-    * def hiddenPartialPostcode = "DN16 3SS"
+    * def hiddenPostalcode = "DN16 3SS"
     * def givenName = "Horace"
     * def currentDob = "1956-05-02"
     * def currentFamilyName = "LEEKE"
     # The query param postalcode should match the hidden postalcode, but not included in the result as the snippet is hidden instead of historic.
     * path 'Patient'
-    * params { family: '#(currentFamilyName)', birthdate: '#(currentDob)', given: '#(givenName)', address-postalcode: '#(hiddenPartialPostcode)', _history: true }' }
+    * params { family: '#(currentFamilyName)', birthdate: '#(currentDob)', given: '#(givenName)', address-postalcode: '#(hiddenPostalcode)', _history: true }' }
     * method get
     * status 200
     * assert response.total == 0
