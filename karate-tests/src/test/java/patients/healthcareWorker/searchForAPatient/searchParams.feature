@@ -391,14 +391,15 @@ Scenario: Algorithm search with basic(given name, gender, date of birth and post
     * assert response.total == 1
     * match response.entry[0].resource.name[0].family == currentFamilyName
 
-  Scenario: Fuzzy matching shouldn't return hidden matches
-    * def historicPostcode = "DN16"
+  Scenario: Historic matching shouldn't return hidden matches
+    # Expect a record to exist with current given=Horace, dob=1956-05-02, family=LEEKE, postalcode=DN15 0AD, and hidden postalcode=DN16 3SS.
+    * def hiddenPartialPostcode = "DN16 3SS"
     * def givenName = "Horace"
     * def currentDob = "1956-05-02"
     * def currentFamilyName = "LEEKE"
-    # no pds records for non fuzzy search when historic dob is sent as query parameter
+    # The query param postalcode should match the hidden postalcode, but not included in the result as the snippet is hidden instead of historic.
     * path 'Patient'
-    * params { family: '#(currentFamilyName)', birthdate: '#(currentDob)', given: '#(givenName)', address-postalcode: '#(historicPostcode)', _fuzzy-match: true }' }
+    * params { family: '#(currentFamilyName)', birthdate: '#(currentDob)', given: '#(givenName)', address-postalcode: '#(hiddenPartialPostcode)', _history: true }' }
     * method get
     * status 200
     * assert response.total == 0
