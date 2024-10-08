@@ -339,7 +339,7 @@ Scenario: Algorithm search with basic(given name, gender, date of birth and post
     * def currentDob = "1999-09-09"
     * def currentGender = "male"
     * def currentFamilyName = "MED"
-    * def expectedNhsNumber - "9733162450"
+    * def expectedNhsNumber = "9733162450"
     # no pds records for non fuzzy search when historic dob is sent as query parameter
     * path 'Patient'
     * params { family: '#(currentFamilyName)', birthdate: '#(historicDob)', gender: '#(currentGender)' }
