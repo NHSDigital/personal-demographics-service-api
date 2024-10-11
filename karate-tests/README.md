@@ -64,6 +64,11 @@ The newer variable you may not have defined is `INTERNAL_SERVER_BASE_URI` - ask 
 
 All of the tests run against what's currently deployed on veit07.
 
+### A note on test data
+
+Because veit07 is a separate environment, test patients can be modified between automated test runs, and by other testers who use the environment. This means you'll need to be cautious in the way you write assertions.
+There is also a limit of how many P9 patients exist, [consult this page before using a patient for a new tpye of request.](https://nhsd-confluence.digital.nhs.uk/display/DEMGRPH/NHS+Numbers+with+NHS+Login+for+FHIR+on+VEIT07)
+
 ### Functional tests 
 
 To run the tests, make sure you are in the `karate-tests` folder.

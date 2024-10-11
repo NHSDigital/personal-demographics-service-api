@@ -142,7 +142,7 @@ Feature: Patient updates their details
   
 
   Scenario: Patient can update their emergency contact details and place of birth
-    * def p9number = '9900000285'
+    * def p9number = '5900069176'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
