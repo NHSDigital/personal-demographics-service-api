@@ -185,8 +185,8 @@ Feature: Patient updates their details
     * request requestbody      
     * method patch
     * status 200
-    * match response.contact[0].id contains contactID
-    * match response.contact[0].telecom[0].value == newMobileNumber
+    * def contactDetails = karate.filter(response.contact, function(x){ return x.id == contactID && x.telecom[0].system == 'phone'})
+    * match contactDetails[0].telecom[0].value == newMobileNumber
     * match parseInt(response.meta.versionId) == originalVersion + 1
 
     #update place of birth details
