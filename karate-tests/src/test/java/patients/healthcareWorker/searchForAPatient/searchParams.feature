@@ -1,4 +1,3 @@
-@sandbox
 Feature: Search for a patient - Healthcare worker access mode 
 
 These tests authenticate as one of the available test healthcare workers,
@@ -23,7 +22,7 @@ Background:
   * configure headers = requestHeaders 
   * url baseURL
 
-
+@sandbox
 Scenario:Search for a patient using parameters
   * path "Patient"
   * params  { family: "Jones", gender: "male", birthdate: "ge1992-01-01", _max-results: "6" }
@@ -46,6 +45,7 @@ Scenario:Search for a patient using parameters (INT smoke test)
   * match response.total == 1
   * match response.entry[0].resource.id == "9693632117"
 
+@sandbox
 Scenario: Search for a "restricted" (sensitive) patient
   # When you get search results for a restricted patient, the response should not contain:
   # - address
@@ -68,6 +68,7 @@ Scenario: Search for a "restricted" (sensitive) patient
     }
     """
 
+@sandbox
 Scenario: Search without specifying gender
   * path 'Patient'
   * params { family: "Massam", birthdate: "eq1920-08-11" }
@@ -78,6 +79,7 @@ Scenario: Search without specifying gender
   * match response.entry[0].resource.id == "9693632966"
   * match response.entry[0].resource.gender == "female"
 
+@sandbox
 Scenario: Search using a range for date of birth
   * path 'Patient'
   * params { family: "Massam", birthdate: "le1920-08-11" }
@@ -88,6 +90,7 @@ Scenario: Search using a range for date of birth
   * match response.entry[0].resource.id == "9693632966"
   * match response.entry[0].resource.gender == "female"
 
+@sandbox
 Scenario: Wide search, multiple results
   * path 'Patient'
   * params { family: "YOUDS", birthdate: "1970-01-24" }
@@ -101,6 +104,7 @@ Scenario: Wide search, multiple results
   * match response.entry[*].resource.id == ["9693633679", "9693633687", "9693633695", "9693633709"]
   * match response.entry[*].resource.gender == ["male", "female", "unknown", "other"]
 
+@sandbox
 Scenario: Fuzzy match search - Family name is homophone of actual historic family name
   * path 'Patient'
   * params { _fuzzy-match: true, family: "Blogs", given: "Joe", birthdate: "1955-11-05" }
@@ -113,6 +117,7 @@ Scenario: Fuzzy match search - Family name is homophone of actual historic famil
   * match response.entry[0].resource.birthDate == "1955-11-05"
   * match response.entry[0].resource.id == "9693632109"
 
+@sandbox
 Scenario: Unicode search
   * path 'Patient'
   * params { _fuzzy-match: true, family: "ATTSÖN", given: "PÀULINÉ", birthdate: "1960-07-14" }
@@ -135,6 +140,7 @@ Scenario: Unicode search
   * match response.entry[1].resource.name[0].family == "attison"
   * match response.entry[1].resource.name[0].given == ["Pauline", "Mary", "Jane"]
 
+@sandbox
 Scenario: Too many matches
   # if you set _max-results to a number lower than the total number of matches for a query
   # then you get a Too Many Matches response...
@@ -150,6 +156,7 @@ Scenario: Too many matches
   * status 200
   * match response == read('classpath:mocks/stubs/searchResponses/TOO_MANY_MATCHES.json')
 
+@sandbox
 Scenario: Search should not return superseded patients record
   # 5900053636 was merged with 9732019395, search result shouldn't return 5900053636
   * path 'Patient'
@@ -161,6 +168,7 @@ Scenario: Search should not return superseded patients record
   * def idList = karate.jsonPath(response, "$.entry[*].resource.id")
   * match each idList != supersededRecord
 
+@sandbox
 Scenario: Simple search with other given name - Single match
   * def birthDateValue = "eq2000-05-05"
   * def genderValue =  "male"
@@ -174,6 +182,7 @@ Scenario: Simple search with other given name - Single match
   * def givenNames = karate.jsonPath(response, "$.entry[*].resource.name[*].given[*]") 
   * match givenNames contains any ['Sam', 'Bob']
 
+@sandbox
 Scenario: Simple and Alphanumeric search with email and phone number - Multi match
   * def birthDateValue = "eq2000-05-05"
   * def emailValue = "test@test.com"
@@ -196,6 +205,7 @@ Scenario: Simple and Alphanumeric search with email and phone number - Multi mat
   * def telecomValueList = karate.jsonPath(response, "$.entry[*].resource.telecom[*].value") 
   * match telecomValueList contains any ['#(phoneValue)', '#(emailValue)']
 
+@sandbox
 Scenario: Simple and Alphanumeric search with email and phone number - no results
   * def birthDateValue = "eq2000-05-05"
   * def emailValue = "rubbish@test.com"
@@ -213,6 +223,7 @@ Scenario: Simple and Alphanumeric search with email and phone number - no result
   * status 200
   * match response.total == 0
 
+@sandbox
 Scenario: Simple search with phone number including country code
   * def birthDateValue = "eq2017-09-06"
   * def familyValue = "Muir"
@@ -226,6 +237,7 @@ Scenario: Simple search with phone number including country code
   * def telecomValueList = karate.jsonPath(response, "$.entry[*].resource.telecom[*].value") 
   * match telecomValueList contains ['#(phoneValue)'] 
 
+@sandbox
 Scenario: Include history flag for non fuzzy search
   * def birthDateValue = "eq2000-05-05"
   * def previousEmail = "Historic@historic.com"
@@ -248,6 +260,7 @@ Scenario: Include history flag for non fuzzy search
   * match emailValues contains currentEmail
   * match response.total == 1
 
+@sandbox
 Scenario: Simple search with phone number including country code
   * def birthDateValue = "eq2017-09-06"
   * def familyValue = "Muir"
@@ -261,6 +274,7 @@ Scenario: Simple search with phone number including country code
   * def telecomValueList = karate.jsonPath(response, "$.entry[*].resource.telecom[*].value") 
   * match telecomValueList contains ['#(phoneValue)'] 
 
+@sandbox
 Scenario: wildcard search on postcode
   * def birthDate = "eq2000-05-05"
   * def gender = "male"
@@ -275,6 +289,7 @@ Scenario: wildcard search on postcode
   * def filteredList = karate.filter(postcodeList, function(x){ return x.startsWith('DN17') })
   * match filteredList != []
 
+@sandbox
 Scenario: Alphanumeric search with registered GP practice
   * def birthDate = "eq2015-10-22"
   * def family = "Me*"
@@ -287,6 +302,7 @@ Scenario: Alphanumeric search with registered GP practice
   * def gpList = karate.jsonPath(response, "$.entry[*].resource.generalPractitioner[*].identifier.value")
   * match gpList contains ['#(gp)']
 
+@sandbox
 Scenario: Simple search with date of death parameter
   * def birthDate = "ge1980-01-01"
   * def family = "TUNNEY"
@@ -299,6 +315,7 @@ Scenario: Simple search with date of death parameter
   * def deceasedDate = karate.jsonPath(response, "$.entry[*].resource.deceasedDateTime")
   * match deceasedDate != null 
 
+@sandbox
 Scenario: Algorithm search with basic(given name, gender, date of birth and postal code) and phone number - no match -> single match -> multi match
   * def birthDate = "ge2000-05-03"
   * def family = "Smythe"
@@ -331,80 +348,80 @@ Scenario: Algorithm search with basic(given name, gender, date of birth and post
   * def postcodeList = karate.jsonPath(response, "$.entry[*].resource.address[*].postalCode")
   * match postcodeList contains ['#(postcode)']
 
-  Scenario: Search for a PDS record based on historic DOB, family name, gender
-    * def historicDob = "2024-01-12"
-    * def historicfamilyName = "HUME"
-    * def historicGender = "female"
-    * def givenName = "Casey"
-    * def currentDob = "1999-09-09"
-    * def currentGender = "male"
-    * def currentFamilyName = "MED"
-    * def expectedNhsNumber = "9733162450"
-    # no pds records for non fuzzy search when historic dob is sent as query parameter
-    * path 'Patient'
-    * params { family: '#(currentFamilyName)', birthdate: '#(historicDob)', gender: '#(currentGender)' }
-    * method get
-    * status 200
-    * assert response.total == 0
-    # no pds records for non fuzzy search when historic gender is sent as query parameter
-    * path 'Patient'
-    * params { family: '#(currentFamilyName)', birthdate: '#(currentDob)', gender: '#(historicGender)' }
-    * method get
-    * status 200
-    * assert response.total == 0
-    # no pds records for non fuzzy search when historic family name is sent as query parameter
-    * path 'Patient'
-    * params { family: '#(historicfamilyName)', birthdate: '#(currentDob)', gender: '#(currentGender)' }
-    * method get
-    * status 200
-    * assert response.total == 0
-    #  Fuzzy matching should not return historic matches when historic dob is sent as query parameter
-    * path 'Patient'
-    * params { family: '#(currentFamilyName)', birthdate: '#(historicDob)', gender: '#(currentGender)', given: '#(givenName)', _fuzzy-match: true }
-    * method get
-    * status 200
-    * assert response.total == 0
-    # Fuzzy matching should return historic matches when historic gender is sent as query parameter
-    * path 'Patient'
-    * params { family: '#(currentFamilyName)', birthdate: '#(currentDob)', gender: '#(historicGender)', given: '#(givenName)', _fuzzy-match: true }
-    * method get
-    * status 200
-    * assert response.total == 1
-    * match response.entry[0].resource.id == expectedNhsNumber
-    * match response.entry[0].resource.gender == currentGender
-    #  Fuzzy matching should return historic matches when historic family name is sent as query parameter
-    * path 'Patient'
-    * params { family: '#(historicfamilyName)', birthdate: '#(currentDob)', gender: '#(currentGender)', given: '#(givenName)', _fuzzy-match: true }
-    * method get
-    * status 200
-    * assert response.total == 1
-    * match response.entry[0].resource.id == expectedNhsNumber
-    * match response.entry[0].resource.name[0].family == currentFamilyName
-    # Include history search should not return historic matches when historic dob is sent as query parameter
-    * path 'Patient'
-    * params { family: '#(currentFamilyName)', birthdate: '#(historicDob)', gender: '#(currentGender)', _history: true }
-    * method get
-    * status 200
-    * assert response.total == 0
-    #  Include history search should return historic matches when historic family name is sent as query parameter
-    * path 'Patient'
-    * params { family: '#(historicfamilyName)', birthdate: '#(currentDob)', gender: '#(currentGender)', _history: true }
-    * method get
-    * status 200
-    * assert response.total == 1
-    * match response.entry[0].resource.id == expectedNhsNumber
-    * match response.entry[0].resource.name[0].family == currentFamilyName
+@sandbox
+Scenario: Search for a PDS record based on historic DOB, family name, gender
+  * def historicDob = "2024-01-12"
+  * def historicfamilyName = "HUME"
+  * def historicGender = "female"
+  * def givenName = "Casey"
+  * def currentDob = "1999-09-09"
+  * def currentGender = "male"
+  * def currentFamilyName = "MED"
+  * def expectedNhsNumber = "9733162450"
+  # no pds records for non fuzzy search when historic dob is sent as query parameter
+  * path 'Patient'
+  * params { family: '#(currentFamilyName)', birthdate: '#(historicDob)', gender: '#(currentGender)' }
+  * method get
+  * status 200
+  * assert response.total == 0
+  # no pds records for non fuzzy search when historic gender is sent as query parameter
+  * path 'Patient'
+  * params { family: '#(currentFamilyName)', birthdate: '#(currentDob)', gender: '#(historicGender)' }
+  * method get
+  * status 200
+  * assert response.total == 0
+  # no pds records for non fuzzy search when historic family name is sent as query parameter
+  * path 'Patient'
+  * params { family: '#(historicfamilyName)', birthdate: '#(currentDob)', gender: '#(currentGender)' }
+  * method get
+  * status 200
+  * assert response.total == 0
+  #  Fuzzy matching should not return historic matches when historic dob is sent as query parameter
+  * path 'Patient'
+  * params { family: '#(currentFamilyName)', birthdate: '#(historicDob)', gender: '#(currentGender)', given: '#(givenName)', _fuzzy-match: true }
+  * method get
+  * status 200
+  * assert response.total == 0
+  # Fuzzy matching should return historic matches when historic gender is sent as query parameter
+  * path 'Patient'
+  * params { family: '#(currentFamilyName)', birthdate: '#(currentDob)', gender: '#(historicGender)', given: '#(givenName)', _fuzzy-match: true }
+  * method get
+  * status 200
+  * assert response.total == 1
+  * match response.entry[0].resource.id == expectedNhsNumber
+  * match response.entry[0].resource.gender == currentGender
+  #  Fuzzy matching should return historic matches when historic family name is sent as query parameter
+  * path 'Patient'
+  * params { family: '#(historicfamilyName)', birthdate: '#(currentDob)', gender: '#(currentGender)', given: '#(givenName)', _fuzzy-match: true }
+  * method get
+  * status 200
+  * assert response.total == 1
+  * match response.entry[0].resource.id == expectedNhsNumber
+  * match response.entry[0].resource.name[0].family == currentFamilyName
+  # Include history search should not return historic matches when historic dob is sent as query parameter
+  * path 'Patient'
+  * params { family: '#(currentFamilyName)', birthdate: '#(historicDob)', gender: '#(currentGender)', _history: true }
+  * method get
+  * status 200
+  * assert response.total == 0
+  #  Include history search should return historic matches when historic family name is sent as query parameter
+  * path 'Patient'
+  * params { family: '#(historicfamilyName)', birthdate: '#(currentDob)', gender: '#(currentGender)', _history: true }
+  * method get
+  * status 200
+  * assert response.total == 1
+  * match response.entry[0].resource.id == expectedNhsNumber
+  * match response.entry[0].resource.name[0].family == currentFamilyName
 
-  @no-sandbox
-  Scenario: Historic matching shouldn't return hidden matches
-    # Expect a record to exist with current given=Horace, dob=1956-05-02, family=LEEKE, postalcode=DN15 0AD, and hidden postalcode=DN16 3SS.
-    * def hiddenPostalcode = "DN16 3SS"
-    * def givenName = "Horace"
-    * def currentDob = "1956-05-02"
-    * def currentFamilyName = "LEEKE"
-    # The query param postalcode should match the hidden postalcode, but not included in the result as the snippet is hidden instead of historic.
-    * path 'Patient'
-    * params { family: '#(currentFamilyName)', birthdate: '#(currentDob)', given: '#(givenName)', address-postalcode: '#(hiddenPostalcode)', _history: true }' }
-    * method get
-    * status 200
-    * assert response.total == 0
+Scenario: Historic matching shouldn't return hidden matches
+  # Expect a record to exist with current given=Horace, dob=1956-05-02, family=LEEKE, postalcode=DN15 0AD, and hidden postalcode=DN16 3SS.
+  * def hiddenPostalcode = "DN16 3SS"
+  * def givenName = "Horace"
+  * def currentDob = "1956-05-02"
+  * def currentFamilyName = "LEEKE"
+  # The query param postalcode should match the hidden postalcode, but not included in the result as the snippet is hidden instead of historic.
+  * path 'Patient'
+  * params { family: '#(currentFamilyName)', birthdate: '#(currentDob)', given: '#(givenName)', address-postalcode: '#(hiddenPostalcode)', _history: true }' }
+  * method get
+  * status 200
+  * assert response.total == 0
