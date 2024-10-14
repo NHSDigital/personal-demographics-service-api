@@ -21,7 +21,7 @@ const JACKIE_JONES_SEARCHSET = context.read('classpath:mocks/stubs/searchRespons
 const RODNEY_GODSOE_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/rodney_godsoe_searchset.json')
 const MARTHA_MASSAM_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/martha_massam_searchset.json')
 const YOUDS_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/youds_searchset.json')
-const BILL_GARTON_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/bill_garton_searchset.json')
+const JOE_BLOGS_HISOTRIC_NAME_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/bill_garton_searchset.json')
 const PAULINE_ATTISON_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/pauline_attison_searchset.json')
 const JOHN_PAUL_SMITH_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/john_paul_smith_searchset.json')
 const CUFF_SUPERSEDED_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/cuff_superseded_searchset.json')
@@ -151,7 +151,7 @@ if (request.pathMatches('/Patient') && request.get) {
   if (validateHeaders(request) && validateQueryParams(request)) {
     if (fuzzyMatch) {
       if (family === 'Blogs' && given[0] === 'Joe' && birthDate[0] === '1955-11-05') {
-        response.body = timestampBody(BILL_GARTON_SEARCHSET)
+        response.body = timestampBody(JOE_BLOGS_HISOTRIC_NAME_SEARCHSET)
       } else if (family === 'ATTSÖN' && (given[0]) === 'PÀULINÉ' && birthDate[0] === '1960-07-14') {
         response.body = timestampBody(PAULINE_ATTISON_SEARCHSET)
       } else if (phone === '01222111111' && email === 'test@test.com') {
