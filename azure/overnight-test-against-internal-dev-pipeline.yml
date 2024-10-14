@@ -1,0 +1,44 @@
+name: "$(SourceBranchName)+$(BuildID)"
+
+trigger: none
+pr: none
+
+schedules:
+  - cron: 0 2 * * *
+    displayName: 2am daily
+    branches:
+      include: ['master']
+    always: true
+
+resources:
+  repositories:
+    - repository: common
+      type: github
+      name: NHSDigital/api-management-utils
+      ref: refs/heads/edge
+      endpoint: NHSDigital
+
+pool:
+  name: 'AWS-ECS'
+
+variables:
+  - template: project.yml
+  - name: environment
+    value: internal-dev
+  - name: SERVICE_ARTIFACT_NAME
+    value: ''
+
+steps:
+  - bash: poetry install
+    workingDirectory: $(Pipeline.Workspace)/s
+    displayName: Setup tests
+  
+  - task: Npm@1
+    displayName: Install node packages
+    inputs:
+      command: 'install'
+      workingDir: '$(Pipeline.Workspace)/s'
+
+  - template: templates/pds-tests-karate.yml
+
+  - template: templates/pds-tests.yml

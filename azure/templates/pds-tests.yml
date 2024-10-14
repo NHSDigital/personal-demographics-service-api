@@ -1,49 +1,9 @@
 steps:
+  - template: "expose-pds-variables-and-commands.yml"
 
   - bash: poetry install
-    workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
+    workingDirectory: $(ARTIFACT_PATH)
     displayName: Setup tests
-
-  - template: "azure/components/aws-assume-role.yml@common"
-    parameters:
-     role: "auto-ops"
-     profile: "apm_ptl"
-
-  - template: "azure/components/get-aws-secrets-and-ssm-params.yml@common"
-    parameters:
-     secret_file_ids:
-      - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_WITH_ASID_PRIVATE_KEY
-      - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_PRIVATE_KEY
-      - ptl/app-credentials/jwt_testing/non-prod/ID_TOKEN_NHS_LOGIN_PRIVATE_KEY
-     config_ids:
-      - /ptl/azure-devops/env-internal-dev/test-app/internal-testing-internal-dev/CLIENT_ID
-      - /ptl/azure-devops/env-internal-dev/test-app/internal-testing-internal-dev/CLIENT_SECRET
-      - /ptl/azure-devops/personal-demographics/TEST_PATIENT_ID
-      - /ptl/azure-devops/personal-demographics/AUTH_TOKEN_EXPIRY_MS
-      - /ptl/azure-devops/personal-demographics/AUTH_TOKEN_EXPIRY_MS_INT
-     secret_ids:
-      - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_API_KEY
-      - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_WITH_ASID_API_KEY
-      - ptl/backends/ig3/INTERNAL_DEV_ASID
-
-  - bash: |
-      echo '##vso[task.setvariable variable=PDS_BASE_PATH]$(SERVICE_BASE_PATH)'
-      echo '##vso[task.setvariable variable=APIGEE_ENVIRONMENT]$(ENVIRONMENT)'
-      echo '##vso[task.setvariable variable=CLIENT_ID]$(CLIENT_ID)'
-      echo '##vso[task.setvariable variable=CLIENT_SECRET]$(CLIENT_SECRET)'
-      echo '##vso[task.setvariable variable=KEY_ID]test-1'
-      echo '##vso[task.setvariable variable=TEST_PATIENT_ID]$(TEST_PATIENT_ID)'
-      echo '##vso[task.setvariable variable=APPLICATION_RESTRICTED_SIGNING_KEY_PATH]$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)'
-      echo '##vso[task.setvariable variable=APPLICATION_RESTRICTED_WITH_ASID_SIGNING_KEY_PATH]$(Pipeline.Workspace)/secrets/$(JWT_TESTING_WITH_ASID_PRIVATE_KEY)'
-      echo '##vso[task.setvariable variable=APPLICATION_RESTRICTED_API_KEY]$(JWT_TESTING_API_KEY)'
-      echo '##vso[task.setvariable variable=APPLICATION_RESTRICTED_WITH_ASID_API_KEY]$(JWT_TESTING_WITH_ASID_API_KEY)'
-      echo '##vso[task.setvariable variable=JWT_PRIVATE_KEY_ABSOLUTE_PATH]$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)'
-      echo '##vso[task.setvariable variable=ID_TOKEN_NHS_LOGIN_PRIVATE_KEY_ABSOLUTE_PATH]$(Pipeline.Workspace)/secrets/$(ID_TOKEN_NHS_LOGIN_PRIVATE_KEY)'
-      echo '##vso[task.setvariable variable=AUTH_TOKEN_EXPIRY_MS]$(AUTH_TOKEN_EXPIRY_MS)'
-      echo '##vso[task.setvariable variable=AUTH_TOKEN_EXPIRY_MS_INT]$(AUTH_TOKEN_EXPIRY_MS_INT)'
-      echo '##vso[task.setvariable variable=REDIRECT_URI]https://example.org/callback'
-      echo '##vso[task.setvariable variable=APIGEE_API_TOKEN]$(secret.AccessToken)'
-    displayName: Expose common variables
 
   - bash: |
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
@@ -54,11 +14,12 @@ steps:
 
       poetry run pytest -v tests/functional/test_application_restricted.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/functional-test-report.xml --reruns 5 --reruns-delay 1
     displayName: Run application restricted tests
-    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+    workingDirectory: "$(ARTIFACT_PATH)"
+
   - task: PublishTestResults@2
     displayName: 'Publish application restricted test results'
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/functional-test-report.xml
+      testResultsFiles: $(ARTIFACT_PATH)/tests/functional-test-report.xml
       failTaskOnFailedTests: true
 
   - bash: |
@@ -69,12 +30,12 @@ steps:
 
       poetry run pytest -v tests/functional/test_proxy_behaviour.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/proxy-behaviour-test-report.xml --reruns 5 --reruns-delay 1
     displayName: Run proxy behaviour tests
-    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+    workingDirectory: "$(ARTIFACT_PATH)"
 
   - task: PublishTestResults@2
     displayName: 'Publish proxy behaviour test results'
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/proxy-behaviour-test-report.xml
+      testResultsFiles: $(ARTIFACT_PATH)/tests/proxy-behaviour-test-report.xml
       failTaskOnFailedTests: true
 
   - bash: |
@@ -85,12 +46,12 @@ steps:
 
       poetry run pytest -v tests/functional/test_sync_wrap.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/sync-wrap-test-report.xml --reruns 5 --reruns-delay 1
     displayName: Run sync wrap tests
-    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+    workingDirectory: "$(ARTIFACT_PATH)"
 
   - task: PublishTestResults@2
     displayName: "Publish sync wrap test results"
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/sync-wrap-test-report.xml
+      testResultsFiles: $(ARTIFACT_PATH)/tests/sync-wrap-test-report.xml
       failTaskOnFailedTests: true
 
   - bash: |
@@ -103,12 +64,12 @@ steps:
 
       poetry run pytest -v tests/functional/test_patient_create.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/patient-create-test-report.xml --reruns 20 --reruns-delay 1
     displayName: Run post patient tests
-    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+    workingDirectory: "$(ARTIFACT_PATH)"
 
   - task: PublishTestResults@2
     displayName: "Publish post patient test results"
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/patient-create-test-report.xml
+      testResultsFiles: $(ARTIFACT_PATH)/tests/patient-create-test-report.xml
       failTaskOnFailedTests: true
 
   - bash: |
@@ -121,10 +82,10 @@ steps:
 
       poetry run pytest -v tests/functional/test_patient_access.py --api-name=personal-demographics-service --proxy-name "$(FULLY_QUALIFIED_SERVICE_NAME)" --junitxml=tests/patient-access-test-report.xml --reruns 20 --reruns-delay 1
     displayName: Run patient access tests
-    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+    workingDirectory: "$(ARTIFACT_PATH)"
 
   - task: PublishTestResults@2
     displayName: "Publish patient access test results"
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/patient-access-test-report.xml
+      testResultsFiles: $(ARTIFACT_PATH)/tests/patient-access-test-report.xml
       failTaskOnFailedTests: true
