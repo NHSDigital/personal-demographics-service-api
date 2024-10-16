@@ -67,7 +67,7 @@ All of the tests run against what's currently deployed on veit07.
 ### A note on test data
 
 Because veit07 is a separate environment, test patients can be modified between automated test runs, and by other testers who use the environment. This means you'll need to be cautious in the way you write assertions.
-There is also a limit of how many P9 patients exist, [consult this page before using a patient for a new tpye of request.](https://nhsd-confluence.digital.nhs.uk/display/DEMGRPH/NHS+Numbers+with+NHS+Login+for+FHIR+on+VEIT07)
+There is also a limit of how many P9 patients exist, [consult this page before using a patient for a new type of request.](https://nhsd-confluence.digital.nhs.uk/display/DEMGRPH/NHS+Numbers+with+NHS+Login+for+FHIR+on+VEIT07)
 
 ### Functional tests 
 
