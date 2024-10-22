@@ -76,7 +76,7 @@
       </Step>
       <Step>
         <Name>RaiseFault.PostMethodNotAllowed</Name>
-        <Condition>(access-mode Equals user-restricted) and (request.verb Equals "POST") and (proxy.pathsuffix MatchesPath "/Patient/*/RelatedPerson")</Condition>
+        <Condition>(access-mode Equals "user-restricted") and (request.verb Equals "POST") and (proxy.pathsuffix MatchesPath "/Patient/*/RelatedPerson")</Condition>
       </Step>
       <Step>
         <!--This should always be the last Step - as it is just before the message is sent - so the initial request stays intact for as long as possible.
