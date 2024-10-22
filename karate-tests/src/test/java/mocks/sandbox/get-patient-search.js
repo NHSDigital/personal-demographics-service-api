@@ -151,7 +151,7 @@ if (request.pathMatches('/Patient') && request.get) {
   if (validateHeaders(request) && validateQueryParams(request)) {
     if (fuzzyMatch) {
       if (family === 'Blogs' && given[0] === 'Joe' && birthDate[0] === '1955-11-05') {
-        response.body = timestampBody(JOE_BLOGS_HISOTRIC_NAME_SEARCHSET)
+        response.body = timestampBody(JOE_BLOGS_HISTORIC_NAME_SEARCHSET)
       } else if (family === 'ATTSÖN' && (given[0]) === 'PÀULINÉ' && birthDate[0] === '1960-07-14') {
         response.body = timestampBody(PAULINE_ATTISON_SEARCHSET)
       } else if (phone === '01222111111' && email === 'test@test.com') {
