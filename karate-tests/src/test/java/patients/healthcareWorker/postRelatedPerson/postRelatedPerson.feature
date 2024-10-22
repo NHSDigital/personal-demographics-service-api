@@ -10,7 +10,6 @@ Background:
 
 Scenario: Post forbidden - not allowed for healthcareWorker
     * configure headers = call read('classpath:auth/auth-headers.js') 
-    * header If-Match = karate.response.header('etag')
 
     * def display = "Cannot create resource with user-restricted access token"
     * def expectedResponse = read('classpath:mocks/stubs/errorResponses/INVALID_METHOD.json')
