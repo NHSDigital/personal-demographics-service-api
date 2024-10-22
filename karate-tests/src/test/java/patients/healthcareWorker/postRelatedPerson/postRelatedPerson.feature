@@ -14,7 +14,7 @@ Scenario: Post forbidden - not allowed for healthcareWorker
     * def display = "Cannot create resource with user-restricted access token"
     * def expectedResponse = read('classpath:mocks/stubs/errorResponses/INVALID_METHOD.json')
 
-    * path 'Patient', nhsNumber, 'RelatedPersons'
+    * path 'Patient', nhsNumber, 'RelatedPerson'
     * request {}
     * method post
     * status 403
