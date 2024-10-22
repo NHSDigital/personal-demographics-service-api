@@ -9,7 +9,8 @@ Background:
     * def nhsNumber = '5900069176'
 
 Scenario: Post forbidden - not allowed for healthcareWorker
-    * configure headers = call read('classpath:auth/auth-headers.js') 
+    * configure headers = call read('classpath:auth/auth-headers.js')
+    * header If-Match = "W/\"1\""
 
     * def display = "Cannot create resource with user-restricted access token"
     * def expectedResponse = read('classpath:mocks/stubs/errorResponses/INVALID_METHOD.json')
