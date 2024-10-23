@@ -779,7 +779,7 @@ paths:
         ```json
         {
             "patches": [
-              { "op": "add", "path": "/deceasedDateTime", "value": "2020-01-01" }
+              { "op": "add", "path": "/deceasedDateTime", "value": "2025-01-01" }
           ]
         }
         ```
@@ -794,7 +794,7 @@ paths:
                     "path": "/name/-",
                     "value": {
                         "use": "usual",
-                        "period": { "start": "2019-12-31" },
+                        "period": { "start": "2024-12-31" },
                         "prefix": ["Dr"],
                         "given": [
                           "Joe",
@@ -882,7 +882,7 @@ paths:
                     "value": {
                         "id": "123",
                         "use": "usual",
-                        "period": { "start": "2019-12-31" },
+                        "period": { "start": "2024-12-31" },
                         "prefix": ["Dr"],
                         "given": [
                           "Joe",
@@ -968,7 +968,7 @@ paths:
                     "value": {
                         "id": "123",
                         "use": "usual",
-                        "period": { "start": "2019-12-31" },
+                        "period": { "start": "2024-12-31" },
                         "prefix": ["Dr"],
                         "given": [
                           "Joe",
