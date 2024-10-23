@@ -1,8 +1,6 @@
 type: object
 description: |
   Business effective period when data item was, is, or will be in use.
-required:
-  - start
 properties:
   start:
     type: string
