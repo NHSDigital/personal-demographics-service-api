@@ -38,10 +38,8 @@ Scenario: Patient has one related person (INT smoke test)
   * match response == RelatedPersonSearchBundle
   * match response.total == 1
 
-
-@sandbox-only
 Scenario: Patient has more than one related person
-  * def nhsNumber = '9000000009'
+  * def nhsNumber =  karate.env == 'mock' ? '9000000009' : '9733162264'
   * path 'Patient', nhsNumber, 'RelatedPerson'
   * method get
   * status 200

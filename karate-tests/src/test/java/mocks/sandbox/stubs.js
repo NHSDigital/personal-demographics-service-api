@@ -41,5 +41,6 @@ session.patients = session.patients || {
   9000000009: context.read('classpath:mocks/stubs/patientResponses/patient_9000000009.json'),
   9000000025: context.read('classpath:mocks/stubs/patientResponses/patient_9000000025.json'),
   9000000033: context.read('classpath:mocks/stubs/patientResponses/patient_9000000033.json'),
-  9693632109: context.read('classpath:mocks/stubs/patientResponses/patient_9693632109.json')
+  9693632109: context.read('classpath:mocks/stubs/patientResponses/patient_9693632109.json'),
+  9733162043: context.read('classpath:mocks/stubs/patientResponses/patient_9733162043.json')
 }
