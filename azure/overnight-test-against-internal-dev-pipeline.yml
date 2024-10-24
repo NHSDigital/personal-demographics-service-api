@@ -29,13 +29,7 @@ variables:
     value: ''
   - name: FULLY_QUALIFIED_SERVICE_NAME
     value: personal-demographics-internal-dev   
-jobs:
-  - job: getAwsSecrets
-    template: azure/components/get-aws-secrets-and-ssm-params.yml@common
-  - job: getAccessToken
-    dependsOn: getAwsSecrets 
-    template: azure/components/get-access-token.yml@common
-
+    
 steps:
   - bash: poetry install
     workingDirectory: $(Pipeline.Workspace)/s
@@ -46,6 +40,10 @@ steps:
     inputs:
       command: 'install'
       workingDir: '$(Pipeline.Workspace)/s'
+
+  - template: azure/components/get-aws-secrets-and-ssm-params.yml@common
+
+  - template: azure/components/get-access-token.yml@common    
 
   - template: templates/pds-tests-karate.yml
 
