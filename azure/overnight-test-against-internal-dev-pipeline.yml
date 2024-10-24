@@ -31,12 +31,10 @@ variables:
     value: personal-demographics-internal-dev   
 jobs:
   - job: getAwsSecrets
-    extends:
-      template: azure/components/get-aws-secrets-and-ssm-params.yml@common
+    template: azure/components/get-aws-secrets-and-ssm-params.yml@common
   - job: getAccessToken
-    dependsOn: getAwsSecrets
-    extends:
-      template: azure/components/get-access-token.yml@common
+    dependsOn: getAwsSecrets 
+    template: azure/components/get-access-token.yml@common
 
 steps:
   - bash: poetry install
