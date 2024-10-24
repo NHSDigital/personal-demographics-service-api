@@ -29,10 +29,14 @@ variables:
     value: ''
   - name: FULLY_QUALIFIED_SERVICE_NAME
     value: personal-demographics-internal-dev   
-  - name: ENVIRONMENT
-    value: internal-dev 
-  - name: APIGEE_ORGANIZATION
-    value: nonprod   
+jobs:
+  - job: getAwsSecrets
+    extends:
+      template: azure/components/get-aws-secrets-and-ssm-params.yml@common
+  - job: getAccessToken
+    dependsOn: getAwsSecrets
+    extends:
+      template: azure/components/get-access-token.yml@common
 
 steps:
   - bash: poetry install
