@@ -147,13 +147,13 @@ def post_patient_multiple_times(healthcare_worker_auth_headers: dict, pds_url: s
 def assert_expected_spike_arrest_response_codes(post_results):
     successful_requests = [x for x in post_results if x['status'] == 400]
     spike_arrests = [x for x in post_results if x['status'] == 429]
-    actual_number_of_spike_arrest_responses = len(spike_arrests)
+    actual_number_of_spike_arrests = len(spike_arrests)
 
     patients_to_create = 40
     target_time_between_first_and_last_request = 10
-    expected_minimum_number_of_spike_arrest_responses = int(patients_to_create / target_time_between_first_and_last_request)
+    expected_minimum_number_of_spike_arrests = int(patients_to_create / target_time_between_first_and_last_request)
 
-    assert actual_number_of_spike_arrest_responses >= expected_minimum_number_of_spike_arrest_responses
+    assert actual_number_of_spike_arrests >= expected_minimum_number_of_spike_arrests
     assert len(successful_requests) + len(spike_arrests) == len(post_results)
 
 
