@@ -43,21 +43,13 @@ steps:
 
   - template: azure/components/get-aws-secrets-and-ssm-params.yml@common
     parameters:
-      secret_file_ids:
-      - ${{ each secret_file_id in parameters.secret_file_ids }}:
-          - ${{ secret_file_id }}
-        secret_ids:
+     secret_ids:
           - ptl/aazure-devops/apigee-nonprod/APIGEE_OTP_KEY
           - ptl/aazure-devops/apigee-nonprod/APIGEE_PASSWORD
-          - ${{ each secret_id in parameters.secret_ids }}:
-              - ${{ secret_id }}
-        config_ids:
+     config_ids:
           - ptl/aazure-devops/apigee-nonprod/APIGEE_USERNAME
-          - ${{ each config_id in parameters.config_ids }}:
-              - ${{ config_id }}
 
   - template: azure/components/get-access-token.yml@common    
-
   - template: templates/pds-tests-karate.yml
 
   - template: templates/pds-tests.yml
