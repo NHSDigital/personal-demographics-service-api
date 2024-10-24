@@ -27,7 +27,9 @@ variables:
     value: internal-dev
   - name: SERVICE_ARTIFACT_NAME
     value: ''
-
+  - name: FULLY_QUALIFIED_SERVICE_NAME
+    value: personal-demographics-internal-dev
+    
 steps:
   - bash: poetry install
     workingDirectory: $(Pipeline.Workspace)/s
@@ -38,6 +40,19 @@ steps:
     inputs:
       command: 'install'
       workingDir: '$(Pipeline.Workspace)/s'
+
+  - template: azure/components/get-aws-secrets-and-ssm-params.yml@common
+    parameters:
+     secret_ids:
+          - ptl/azure-devops/apigee-nonprod/APIGEE_OTP_KEY
+          - ptl/azure-devops/apigee-nonprod/APIGEE_PASSWORD
+     config_ids:
+          - ptl/azure-devops/apigee-nonprod/APIGEE_USERNAME
+
+  - template: azure/components/get-access-token.yml@common 
+    parameters:
+     apigee_username: $(APIGEE_USERNAME)
+     apigee_password: $(APIGEE_PASSWORD) 
 
   - template: templates/pds-tests-karate.yml
 
