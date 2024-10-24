@@ -29,11 +29,7 @@ variables:
     value: ''
   - name: FULLY_QUALIFIED_SERVICE_NAME
     value: personal-demographics-internal-dev
-  - name: APIGEE_USERNAME
-    value: ''
-  - name: APIGEE_PASSWORD 
-    value: ''    
-
+    
 steps:
   - bash: poetry install
     workingDirectory: $(Pipeline.Workspace)/s
@@ -47,6 +43,8 @@ steps:
 
   - template: azure/components/get-aws-secrets-and-ssm-params.yml@common
     parameters:
+     apigee_username: $(APIGEE_USERNAME)
+     apigee_password: $(APIGEE_PASSWORD)
      secret_ids:
           - ptl/aazure-devops/apigee-nonprod/APIGEE_OTP_KEY
           - ptl/aazure-devops/apigee-nonprod/APIGEE_PASSWORD
