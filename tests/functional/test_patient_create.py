@@ -21,7 +21,7 @@ from tests.functional.utils.helpers import get_role_id_from_user_info_endpoint
 scenario = partial(pytest_bdd.scenario, './features/post_patient.feature')
 
 
-@scenario('The rate limit is tripped when POSTing new Patients (>5tps)')
+@scenario('The rate limit is tripped when POSTing new Patients (>3tps)')
 def test_post_patient_rate_limit():
     pass
 
