@@ -21,7 +21,7 @@ from tests.functional.utils.helpers import get_role_id_from_user_info_endpoint
 scenario = partial(pytest_bdd.scenario, './features/post_patient.feature')
 
 
-@scenario('The rate limit is tripped when POSTing new Patients (>5tps)')
+@scenario('The rate limit is tripped when POSTing new Patients (>3tps)')
 def test_post_patient_rate_limit():
     pass
 
@@ -114,12 +114,11 @@ async def _create_all_patients(headers, url, body, loop, num_patients):
 # ---------------------------------------------------------------------------------------------------------------
 # WHEN------------------------------------------------------------------------------------------------------------
 @pytest.mark.asyncio
-@when("I post to the Patient endpoint more than 5 times per second", target_fixture='post_results')
+@when("I post to the Patient endpoint more than 3 times per second", target_fixture='post_results')
 def post_patient_multiple_times(healthcare_worker_auth_headers: dict, pds_url: str) -> list:
-    # firing 30 requests in 5 seconds should trigger the spike arrest policy
-    # about 5 times...
-    patients_to_create = 30
-    target_request_time = 5
+    # firing 40 requests in 10 seconds should trigger the spike arrest policy
+    patients_to_create = 40
+    target_time_between_first_and_last_request = 10
 
     url = f'{pds_url}/Patient'
     body = json.dumps({"nhsNumberAllocation": "Done"})
@@ -135,10 +134,10 @@ def post_patient_multiple_times(healthcare_worker_auth_headers: dict, pds_url: s
 
     response_times = [x['response_time'] for x in results]
     response_times.sort()
-    elapsed_time_res = response_times[-1] - response_times[0]
+    actual_time_between_first_and_last_request = response_times[-1] - response_times[0]
 
     # we fired requests at or faster than the expected rate
-    assert elapsed_time_res.seconds <= target_request_time
+    assert actual_time_between_first_and_last_request.seconds <= target_time_between_first_and_last_request
 
     return results
 
@@ -148,7 +147,13 @@ def post_patient_multiple_times(healthcare_worker_auth_headers: dict, pds_url: s
 def assert_expected_spike_arrest_response_codes(post_results):
     successful_requests = [x for x in post_results if x['status'] == 400]
     spike_arrests = [x for x in post_results if x['status'] == 429]
-    assert len(spike_arrests) >= 5
+    actual_number_of_spike_arrests = len(spike_arrests)
+
+    patients_to_create = 40
+    target_time_between_first_and_last_request = 10
+    expected_minimum_number_of_spike_arrests = int(patients_to_create / target_time_between_first_and_last_request)
+
+    assert actual_number_of_spike_arrests >= expected_minimum_number_of_spike_arrests
     assert len(successful_requests) + len(spike_arrests) == len(post_results)
 
 
