@@ -141,6 +141,16 @@ function patchPatient (originalPatient, request) {
         updatedPatient.name.splice(1, 1)
       }
     }
+
+    if (patch.op === 'remove' && patch.path === '/name/0') {
+      if (request.body.patches[0].value.use === 'usual') {
+        forbiddenUpdate = 'Forbidden update with error - not permitted to remove usual name'
+      }
+    }
+
+    if (patch.op === 'remove' && patch.path === '/birthDate') {
+      forbiddenUpdate = 'Forbidden update with error - source not permitted to remove \'birthDate\''
+    }
     // these specific error scenarios for update errors should be reviewed in SPINEDEM-2695
     if (patch.op === 'replace' && patch.path === '/address/0/line/0' && patch.value === '2 Whitehall Quay') {
       updateErrors.push('Invalid update with error - no id or url found for path with root /address/0')
