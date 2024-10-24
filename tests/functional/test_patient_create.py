@@ -114,7 +114,7 @@ async def _create_all_patients(headers, url, body, loop, num_patients):
 # ---------------------------------------------------------------------------------------------------------------
 # WHEN------------------------------------------------------------------------------------------------------------
 @pytest.mark.asyncio
-@when("I post to the Patient endpoint more than 5 times per second", target_fixture='post_results')
+@when("I post to the Patient endpoint more than 3 times per second", target_fixture='post_results')
 def post_patient_multiple_times(healthcare_worker_auth_headers: dict, pds_url: str) -> list:
     # firing 30 requests in 5 seconds should trigger the spike arrest policy
     # about 5 times...
