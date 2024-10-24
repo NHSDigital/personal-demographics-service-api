@@ -30,9 +30,9 @@ variables:
   - name: FULLY_QUALIFIED_SERVICE_NAME
     value: personal-demographics-internal-dev
   - name: APIGEE_USERNAME
-    default: ''
+    value: ''
   - name: APIGEE_PASSWORD 
-    default: ''    
+    value: ''    
 
 steps:
   - bash: poetry install
