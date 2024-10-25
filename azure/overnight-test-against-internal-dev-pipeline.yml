@@ -40,7 +40,7 @@ steps:
     inputs:
       command: 'install'
       workingDir: '$(Pipeline.Workspace)/s'
-      
+
   - template: "azure/components/aws-assume-role.yml@common"
     parameters:
      role: "auto-ops"
@@ -87,6 +87,11 @@ steps:
         echo '##vso[task.setvariable variable=ARTIFACT_PATH]$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/'
       fi
     displayName: Expose common variables
+
+  - template: azure/components/get-access-token.yml@common 
+    parameters:
+     apigee_username: $(APIGEE_USERNAME)
+     apigee_password: $(APIGEE_PASSWORD)   
 
   - template: templates/pds-tests-karate.yml
 
