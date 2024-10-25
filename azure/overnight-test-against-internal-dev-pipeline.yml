@@ -87,7 +87,11 @@ steps:
         echo '##vso[task.setvariable variable=ARTIFACT_PATH]$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/'
       fi
     displayName: Expose common variables
-
+    
+  - template: azure/components/get-mfa-code.yml  
+    parameters:
+     apigee_otp_key: "ptl/azure-devops/apigee-nonprod/APIGEE_OTP_KEY"
+    
   - template: azure/components/get-access-token.yml@common 
     parameters:
      apigee_username: "ptl/azure-devops/apigee-nonprod/APIGEE_USERNAME"
