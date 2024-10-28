@@ -348,7 +348,7 @@ Scenario: Algorithm search with basic(given name, gender, date of birth and post
   * def postcodeList = karate.jsonPath(response, "$.entry[*].resource.address[*].postalCode")
   * match postcodeList contains ['#(postcode)']
 
-@sandbox
+@sandbox-only
 Scenario: Search for a PDS record based on historic DOB, family name, gender
   * def historicDob = "2024-01-12"
   * def historicfamilyName = "HUME"
