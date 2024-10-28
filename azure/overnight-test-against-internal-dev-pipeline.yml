@@ -60,12 +60,12 @@ steps:
     
   - template: azure/components/get-mfa-code.yml@common  
     parameters:
-     apigee_otp_key: "ptl/azure-devops/apigee-nonprod/APIGEE_OTP_KEY"
+     apigee_otp_key: $(APIGEE_OTP_KEY)
     
   - template: azure/components/get-access-token.yml@common 
     parameters:
-     apigee_username: "/ptl/azure-devops/apigee-nonprod/APIGEE_USERNAME"
-     apigee_password: "ptl/azure-devops/apigee-nonprod/APIGEE_PASSWORD"
+     apigee_username: $(APIGEE_USERNAME)
+     apigee_password: $(APIGEE_PASSWORD)
 
   - template: templates/pds-tests-karate.yml
 
