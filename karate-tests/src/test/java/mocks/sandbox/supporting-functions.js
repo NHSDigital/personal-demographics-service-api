@@ -104,7 +104,7 @@ function isValidUUID (uuid) {
   if (specialTokens.includes(uuid)) {
     valid = true
   } else {
-    const regex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+    const regex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
     valid = regex.test(uuid)
   }
   return valid
