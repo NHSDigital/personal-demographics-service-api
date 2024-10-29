@@ -73,8 +73,7 @@ format:
 	poetry run black **/*.py
 
 sandbox: update-examples
-	docker build -t nhs/pds-sandbox karate-tests
-	docker run --name karate-sandbox -p 9090:9090 nhs/pds-sandbox
+	cd sandbox && npm run start
 
 build-proxy:
 	scripts/build_proxy.sh
