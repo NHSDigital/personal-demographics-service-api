@@ -123,136 +123,142 @@ function validateQueryParams (request) {
   return true
 }
 
-function otherJaneSmithParamsAreValid (request) {
-  if (request.param('phone') && request.param('phone') !== '01632960587') return false
-  if (request.param('email') && request.param('email') !== 'jane.smith@example.com') return false
-  return true
-}
+// function otherJaneSmithParamsAreValid (request) {
+//   if (request.param('phone') && request.param('phone') !== '01632960587') return false
+//   if (request.param('email') && request.param('email') !== 'jane.smith@example.com') return false
+//   return true
+// }
 
-/*
-    Handler for search Patient functionality
-*/
-if (request.pathMatches('/Patient') && request.get) {
-  response.headers = basicResponseHeaders(request)
+// /*
+//     Handler for search Patient functionality
+// */
+// if (request.pathMatches('/Patient') && request.get) {
+//   response.headers = basicResponseHeaders(request)
 
-  const family = request.param('family')
-  const given = request.params.given || []
-  const gender = request.param('gender')
-  const birthDate = request.params.birthdate || []
-  const postalCode = request.param('address-postalcode')
-  const fuzzyMatch = request.paramBool('_fuzzy-match')
-  const phone = request.param('phone')
-  const email = request.param('email')
-  const maxResults = request.param('_max-results')
-  const historyMatch = request.param('_history')
-  const gp = request.param('general-practitioner')
-  const deathDate = request.param('death-date')
+//   const family = request.param('family')
+//   const given = request.params.given || []
+//   const gender = request.param('gender')
+//   const birthDate = request.params.birthdate || []
+//   const postalCode = request.param('address-postalcode')
+//   const fuzzyMatch = request.paramBool('_fuzzy-match')
+//   const phone = request.param('phone')
+//   const email = request.param('email')
+//   const maxResults = request.param('_max-results')
+//   const historyMatch = request.param('_history')
+//   const gp = request.param('general-practitioner')
+//   const deathDate = request.param('death-date')
 
-  if (validateHeaders(request) && validateQueryParams(request)) {
-    if (fuzzyMatch) {
-      if (family === 'Blogs' && given[0] === 'Joe' && birthDate[0] === '1955-11-05') {
-        response.body = timestampBody(JOE_BLOGS_HISTORIC_NAME_SEARCHSET)
-      } else if (family === 'ATTSÖN' && (given[0]) === 'PÀULINÉ' && birthDate[0] === '1960-07-14') {
-        response.body = timestampBody(PAULINE_ATTISON_SEARCHSET)
-      } else if (phone === '01222111111' && email === 'test@test.com') {
-        response.body = timestampBody(FUZZY_SINGLE_SEARCHSET)
-      } else if (family === 'Smythe' && (given[0]) === 'Mat' && (birthDate[0]) === 'ge2000-05-03' && gender === 'male' && postalCode === 'DN17 4AA' && email !== 'rubbish@work.com') {
-        response.body = timestampBody(FUZZY_MULTI_SEARCHSET)
-      } else if (['MED', 'HUME'].includes(family) && (given[0]) === 'Casey' && (birthDate[0]) === '1999-09-09') {
-        response.body = timestampBody(HISTORIC_DATA_SEARCHSET)
-      } else if (family === 'MED' && (given[0]) === 'Casey' && (birthDate[0]) === '2024-01-12') {
-        response.body = timestampBody(EMPTY_SEARCHSET)
-      } else if (family === 'LEEKE' && (given[0]) === 'Horace' && (birthDate[0]) === '1956-05-02' && postalCode === 'DN16') {
-        response.body = timestampBody(EMPTY_SEARCHSET)
-      } else if (!phone && !email) {
-        response.body = timestampBody(FUZZY_SEARCH_PATIENT_17)
-      } else if (phone === '01632960587' && !email) {
-        response.body = timestampBody(janeSmithSearchsetWithScore(0.9124))
-      } else if (email === 'jane.smith@example.com' && !phone) {
-        response.body = timestampBody(janeSmithSearchsetWithScore(0.9124))
-      } else if (phone === '01632960587' && email === 'jane.smith@example.com') {
-        response.body = timestampBody(janeSmithSearchsetWithScore(0.9542))
-      } else {
-        response.body = timestampBody(EMPTY_SEARCHSET)
-      }
-    } else if (historyMatch) {
-      if (['Smith', 'smith'].includes(family) && ['Male', 'male'].includes(gender) && (birthDate[0]) === 'eq2000-05-05' && email === 'Historic@historic.com') {
-        response.body = timestampBody(HISTORIC_EMAIL_SEARCHSET)
-      } else if (['HUME'].includes(family) && (birthDate[0]) === '1999-09-09') {
-        response.body = timestampBody(HISTORIC_DATA_SEARCHSET)
-      } else if (family === 'MED' && (birthDate[0]) === '2024-01-12') {
-        response.body = timestampBody(EMPTY_SEARCHSET)
-      }
-    } else if (['Sm*', 'sm*'].includes(family)) {
-      if (!phone && !email) {
-        if (!maxResults) {
-          response.body = timestampBody(WILDCARD_SEARCH)
-        } else if (parseInt(maxResults) < 2) {
-          response.body = context.read('classpath:mocks/stubs/searchResponses/TOO_MANY_MATCHES.json')
-        }
-      } else if (phone === '01632960587' && !email) {
-        response.body = timestampBody(janeSmithSearchsetWithScore(1))
-      } else if (email === 'jane.smith@example.com' && !phone) {
-        response.body = timestampBody(janeSmithSearchsetWithScore(1))
-      } else if (email === 'jane.smith@example.com' && phone === '01632960587') {
-        response.body = timestampBody(janeSmithSearchsetWithScore(1))
-      } else if (email === 'janet.smythe@example.com') {
-        response.body = timestampBody(janeSmithSearchsetWithScore(1))
-      } else if (email === 'test@test.com' && phone === '01234123123' && (birthDate[0]) === 'eq2000-05-05') {
-        response.body = timestampBody(MULTIMATCHWITHPHONEANDEMAIL_SEARCHSET)
-      } else {
-        response.body = timestampBody(EMPTY_SEARCHSET)
-      }
-    } else if (['Smythe', 'smythe'].includes(family)) {
-      response.body = timestampBody(RESTRICTED_PATIENT_SEARCH)
-    // using eqeqeq to compare birthDates doesn't work here
-    // eslint-disable-next-line eqeqeq
-    } else if (['Smith', 'smith'].includes(family) && ['Female', 'female'].includes(gender) && (birthDate[0] === 'eq2010-10-22' || (birthDate[0] === 'ge2010-10-21' && birthDate[1] === 'le2010-10-23')) && otherJaneSmithParamsAreValid(request)) {
-      response.body = timestampBody(SIMPLE_SEARCH)
-    } else if (['Smith', 'smith'].includes(family) && ['Male', 'male'].includes(gender) && (given[0]) === 'John Paul' && given[1] === 'James') {
-      response.body = timestampBody(JOHN_PAUL_SMITH_SEARCHSET)
-    } else if (['CUFF', 'Cuff'].includes(family) && ['Female', 'female'].includes(gender) && (birthDate[0] === 'eq1926-01-07')) {
-      response.body = timestampBody(CUFF_SUPERSEDED_SEARCHSET)
-    } else if (['Smith', 'smith'].includes(family) && ['Male', 'male'].includes(gender) && (birthDate[0]) === 'eq2000-05-05' && (given[0]) === 'Sam' && (given[1]) === 'Bob') {
-      response.body = timestampBody(OTHER_GIVENNAME_SEARCHSET)
-    } else if (['Smith', 'smith'].includes(family) && ['Male', 'male'].includes(gender) && (birthDate[0]) === 'eq2000-05-05' && phone === '01234123123' && email === 'test@test.com') {
-      response.body = timestampBody(MULTIMATCHWITHPHONEANDEMAIL_SEARCHSET)
-    } else if (['Muir', 'Muir'].includes(family) && ['Male', 'male'].includes(gender) && (birthDate[0]) === 'eq2017-09-06' && phone === '00917855986859') {
-      response.body = timestampBody(COUNTRYCODE_SEARCHSET)
-    } else if (['DN17*'].includes(postalCode) && ['Smith', 'smith'].includes(family) && ['Male', 'male'].includes(gender) && (birthDate[0]) === 'eq2000-05-05') {
-      response.body = timestampBody(POSTALCODE_WILDCARD_SEARCHSET)
-    } else if (['A20047'].includes(gp) && ['Me*'].includes(family) && (birthDate[0]) === 'eq2015-10-22') {
-      response.body = timestampBody(GP_SEARCHSET)
-    } else if (deathDate === 'le2019-02-28' && ['TUNNEY'].includes(family) && (birthDate[0]) === 'ge1980-01-01') {
-      response.body = timestampBody(DEATHDATE_SEARCHSET)
-    } else {
-      response.body = timestampBody(EMPTY_SEARCHSET)
-    }
-    // stubs used for the post patient tests
-    if (family === 'McMatch-Single' && postalCode === 'BAP 4WG' && (birthDate[0]) === '1954-10-26' && gender === 'male') {
-      response.body = timestampBody(MOCK_SINGLE_SEARCHSET)
-    }
-    if (family === 'McMatch-Multiple' && postalCode === 'DN19 7UD' && (birthDate[0]) === '1997-08-20') {
-      response.body = timestampBody(MOCK_MULTIPLE_SEARCHSET)
-    }
-    // stubs used for the search tests
-    if (family === 'Jones' && gender === 'male' && (birthDate[0]) === 'ge1992-01-01') {
-      response.body = timestampBody(JACKIE_JONES_SEARCHSET)
-    }
-    if (family === 'Godsoe' && gender === 'male' && (birthDate[0]) === 'eq1936-02-24') {
-      response.body = timestampBody(RODNEY_GODSOE_SEARCHSET)
-    }
-    if (family === 'Massam' && (birthDate[0] === 'eq1920-08-11' || birthDate[0] === 'le1920-08-11')) {
-      response.body = timestampBody(MARTHA_MASSAM_SEARCHSET)
-    }
-    if (family === 'YOUDS') {
-      if (maxResults === '1') {
-        response.body = context.read('classpath:mocks/stubs/searchResponses/TOO_MANY_MATCHES.json')
-      } else {
-        response.body = timestampBody(YOUDS_SEARCHSET)
-      }
-    }
-  }
+//   if (validateHeaders(request) && validateQueryParams(request)) {
+//     if (fuzzyMatch) {
+//       if (family === 'Blogs' && given[0] === 'Joe' && birthDate[0] === '1955-11-05') {
+//         response.body = timestampBody(JOE_BLOGS_HISTORIC_NAME_SEARCHSET)
+//       } else if (family === 'ATTSÖN' && (given[0]) === 'PÀULINÉ' && birthDate[0] === '1960-07-14') {
+//         response.body = timestampBody(PAULINE_ATTISON_SEARCHSET)
+//       } else if (phone === '01222111111' && email === 'test@test.com') {
+//         response.body = timestampBody(FUZZY_SINGLE_SEARCHSET)
+//       } else if (family === 'Smythe' && (given[0]) === 'Mat' && (birthDate[0]) === 'ge2000-05-03' && gender === 'male' && postalCode === 'DN17 4AA' && email !== 'rubbish@work.com') {
+//         response.body = timestampBody(FUZZY_MULTI_SEARCHSET)
+//       } else if (['MED', 'HUME'].includes(family) && (given[0]) === 'Casey' && (birthDate[0]) === '1999-09-09') {
+//         response.body = timestampBody(HISTORIC_DATA_SEARCHSET)
+//       } else if (family === 'MED' && (given[0]) === 'Casey' && (birthDate[0]) === '2024-01-12') {
+//         response.body = timestampBody(EMPTY_SEARCHSET)
+//       } else if (family === 'LEEKE' && (given[0]) === 'Horace' && (birthDate[0]) === '1956-05-02' && postalCode === 'DN16') {
+//         response.body = timestampBody(EMPTY_SEARCHSET)
+//       } else if (!phone && !email) {
+//         response.body = timestampBody(FUZZY_SEARCH_PATIENT_17)
+//       } else if (phone === '01632960587' && !email) {
+//         response.body = timestampBody(janeSmithSearchsetWithScore(0.9124))
+//       } else if (email === 'jane.smith@example.com' && !phone) {
+//         response.body = timestampBody(janeSmithSearchsetWithScore(0.9124))
+//       } else if (phone === '01632960587' && email === 'jane.smith@example.com') {
+//         response.body = timestampBody(janeSmithSearchsetWithScore(0.9542))
+//       } else {
+//         response.body = timestampBody(EMPTY_SEARCHSET)
+//       }
+//     } else if (historyMatch) {
+//       if (['Smith', 'smith'].includes(family) && ['Male', 'male'].includes(gender) && (birthDate[0]) === 'eq2000-05-05' && email === 'Historic@historic.com') {
+//         response.body = timestampBody(HISTORIC_EMAIL_SEARCHSET)
+//       } else if (['HUME'].includes(family) && (birthDate[0]) === '1999-09-09') {
+//         response.body = timestampBody(HISTORIC_DATA_SEARCHSET)
+//       } else if (family === 'MED' && (birthDate[0]) === '2024-01-12') {
+//         response.body = timestampBody(EMPTY_SEARCHSET)
+//       }
+//     } else if (['Sm*', 'sm*'].includes(family)) {
+//       if (!phone && !email) {
+//         if (!maxResults) {
+//           response.body = timestampBody(WILDCARD_SEARCH)
+//         } else if (parseInt(maxResults) < 2) {
+//           response.body = context.read('classpath:mocks/stubs/searchResponses/TOO_MANY_MATCHES.json')
+//         }
+//       } else if (phone === '01632960587' && !email) {
+//         response.body = timestampBody(janeSmithSearchsetWithScore(1))
+//       } else if (email === 'jane.smith@example.com' && !phone) {
+//         response.body = timestampBody(janeSmithSearchsetWithScore(1))
+//       } else if (email === 'jane.smith@example.com' && phone === '01632960587') {
+//         response.body = timestampBody(janeSmithSearchsetWithScore(1))
+//       } else if (email === 'janet.smythe@example.com') {
+//         response.body = timestampBody(janeSmithSearchsetWithScore(1))
+//       } else if (email === 'test@test.com' && phone === '01234123123' && (birthDate[0]) === 'eq2000-05-05') {
+//         response.body = timestampBody(MULTIMATCHWITHPHONEANDEMAIL_SEARCHSET)
+//       } else {
+//         response.body = timestampBody(EMPTY_SEARCHSET)
+//       }
+//     } else if (['Smythe', 'smythe'].includes(family)) {
+//       response.body = timestampBody(RESTRICTED_PATIENT_SEARCH)
+//     // using eqeqeq to compare birthDates doesn't work here
+//     // eslint-disable-next-line eqeqeq
+//     } else if (['Smith', 'smith'].includes(family) && ['Female', 'female'].includes(gender) && (birthDate[0] === 'eq2010-10-22' || (birthDate[0] === 'ge2010-10-21' && birthDate[1] === 'le2010-10-23')) && otherJaneSmithParamsAreValid(request)) {
+//       response.body = timestampBody(SIMPLE_SEARCH)
+//     } else if (['Smith', 'smith'].includes(family) && ['Male', 'male'].includes(gender) && (given[0]) === 'John Paul' && given[1] === 'James') {
+//       response.body = timestampBody(JOHN_PAUL_SMITH_SEARCHSET)
+//     } else if (['CUFF', 'Cuff'].includes(family) && ['Female', 'female'].includes(gender) && (birthDate[0] === 'eq1926-01-07')) {
+//       response.body = timestampBody(CUFF_SUPERSEDED_SEARCHSET)
+//     } else if (['Smith', 'smith'].includes(family) && ['Male', 'male'].includes(gender) && (birthDate[0]) === 'eq2000-05-05' && (given[0]) === 'Sam' && (given[1]) === 'Bob') {
+//       response.body = timestampBody(OTHER_GIVENNAME_SEARCHSET)
+//     } else if (['Smith', 'smith'].includes(family) && ['Male', 'male'].includes(gender) && (birthDate[0]) === 'eq2000-05-05' && phone === '01234123123' && email === 'test@test.com') {
+//       response.body = timestampBody(MULTIMATCHWITHPHONEANDEMAIL_SEARCHSET)
+//     } else if (['Muir', 'Muir'].includes(family) && ['Male', 'male'].includes(gender) && (birthDate[0]) === 'eq2017-09-06' && phone === '00917855986859') {
+//       response.body = timestampBody(COUNTRYCODE_SEARCHSET)
+//     } else if (['DN17*'].includes(postalCode) && ['Smith', 'smith'].includes(family) && ['Male', 'male'].includes(gender) && (birthDate[0]) === 'eq2000-05-05') {
+//       response.body = timestampBody(POSTALCODE_WILDCARD_SEARCHSET)
+//     } else if (['A20047'].includes(gp) && ['Me*'].includes(family) && (birthDate[0]) === 'eq2015-10-22') {
+//       response.body = timestampBody(GP_SEARCHSET)
+//     } else if (deathDate === 'le2019-02-28' && ['TUNNEY'].includes(family) && (birthDate[0]) === 'ge1980-01-01') {
+//       response.body = timestampBody(DEATHDATE_SEARCHSET)
+//     } else {
+//       response.body = timestampBody(EMPTY_SEARCHSET)
+//     }
+//     // stubs used for the post patient tests
+//     if (family === 'McMatch-Single' && postalCode === 'BAP 4WG' && (birthDate[0]) === '1954-10-26' && gender === 'male') {
+//       response.body = timestampBody(MOCK_SINGLE_SEARCHSET)
+//     }
+//     if (family === 'McMatch-Multiple' && postalCode === 'DN19 7UD' && (birthDate[0]) === '1997-08-20') {
+//       response.body = timestampBody(MOCK_MULTIPLE_SEARCHSET)
+//     }
+//     // stubs used for the search tests
+//     if (family === 'Jones' && gender === 'male' && (birthDate[0]) === 'ge1992-01-01') {
+//       response.body = timestampBody(JACKIE_JONES_SEARCHSET)
+//     }
+//     if (family === 'Godsoe' && gender === 'male' && (birthDate[0]) === 'eq1936-02-24') {
+//       response.body = timestampBody(RODNEY_GODSOE_SEARCHSET)
+//     }
+//     if (family === 'Massam' && (birthDate[0] === 'eq1920-08-11' || birthDate[0] === 'le1920-08-11')) {
+//       response.body = timestampBody(MARTHA_MASSAM_SEARCHSET)
+//     }
+//     if (family === 'YOUDS') {
+//       if (maxResults === '1') {
+//         response.body = context.read('classpath:mocks/stubs/searchResponses/TOO_MANY_MATCHES.json')
+//       } else {
+//         response.body = timestampBody(YOUDS_SEARCHSET)
+//       }
+//     }
+//   }
+// }
+
+function otherJaneSmithParamsAreValid(request) {
+  const phone = request.param('phone');
+  const email = request.param('email');
+  return (!phone || phone === '01632960587') && (!email || email === 'jane.smith@example.com');
 }
 
 // Define match cases as functions
@@ -270,14 +276,154 @@ const matchCases = [
     action: () => timestampBody(FUZZY_SINGLE_SEARCHSET)
   },
   {
-    condition: (params) => params.fuzzyMatch && params.family === 'Smythe' && (given[0]) === 'Mat' && (birthDate[0]) === 'ge2000-05-03' && gender === 'male' && postalCode === 'DN17 4AA' && email !== 'rubbish@work.com',
-    action: () => timestampBody(FUZZY_SINGLE_SEARCHSET)
+    condition: (params) => params.fuzzyMatch && params.family === 'Smythe' && (params.given[0]) === 'Mat' && (params.birthDate[0]) === 'ge2000-05-03' &&
+     params.gender === 'male' &&
+     params.postalCode === 'DN17 4AA' && params.email !== 'rubbish@work.com',
+    action: () => timestampBody(FUZZY_MULTI_SEARCHSET)
   },
-  // Add additional cases as needed
+  {
+    condition: (params) => params.fuzzyMatch && ['MED', 'HUME'].includes(params.family) && (params.given[0]) === 'Casey' && (params.birthDate[0]) === '1999-09-09',
+    action: () => timestampBody(HISTORIC_DATA_SEARCHSET)
+  },
+  {
+    condition: (params) => params.fuzzyMatch && params.family === 'MED' && (params.given[0]) === 'Casey' && (params.birthDate[0]) === '2024-01-12',
+    action: () => timestampBody(EMPTY_SEARCHSET)
+  },
+  {
+    condition: (params) => params.fuzzyMatch && params.family === 'LEEKE' && (params.given[0]) === 'Horace' && (params.birthDate[0]) === '1956-05-02' &&
+     params.postalCode === 'DN16',
+    action: () => timestampBody(EMPTY_SEARCHSET)
+  },
+  {
+    condition: (params) => params.fuzzyMatch && !params.phone && !params.email,
+    action: () => timestampBody(FUZZY_SEARCH_PATIENT_17)
+  },
+  {
+    condition: (params) => params.fuzzyMatch && params.phone === '01632960587' && !params.email,
+    action: () => timestampBody(janeSmithSearchsetWithScore(0.9124))
+  },
+  {
+    condition: (params) => params.fuzzyMatch && params.email === 'jane.smith@example.com' && !params.phone,
+    action: () => timestampBody(janeSmithSearchsetWithScore(0.9124))
+  },
+  {
+    condition: (params) => params.fuzzyMatch && params.phone === '01632960587' && params.email === 'jane.smith@example.com',
+    action: () => timestampBody(janeSmithSearchsetWithScore(0.9542))
+  },
+  {
+    condition: (params) => params.historyMatch && ['Smith', 'smith'].includes(params.family) && ['Male', 'male'].includes(params.gender) && 
+    (params.birthDate[0]) === 'eq2000-05-05' && params.email === 'Historic@historic.com',
+    action: () => timestampBody(HISTORIC_EMAIL_SEARCHSET)
+  },
+  {
+    condition: (params) => params.historyMatch && ['HUME'].includes(params.family) && (params.birthDate[0]) === '1999-09-09',
+    action: () => timestampBody(HISTORIC_DATA_SEARCHSET)
+  },
+  {
+    condition: (params) => params.historyMatch && params.family === 'MED' && (params.birthDate[0]) === '2024-01-12',
+    action: () => timestampBody(EMPTY_SEARCHSET)
+  },
+  {
+    condition: (params) => ['Sm*', 'sm*'].includes(params.family) && !params.phone && !params.email && !params.maxResults,
+    action: () => timestampBody(WILDCARD_SEARCH)
+  },
+  {
+    condition: (params) => ['Sm*', 'sm*'].includes(params.family) && !params.phone && !params.email && parseInt(params.maxResults) < 2,
+    action: () => context.read('classpath:mocks/stubs/searchResponses/TOO_MANY_MATCHES.json')
+  },
+  {
+    condition: (params) => ['Sm*', 'sm*'].includes(params.family) && params.phone === '01632960587' && params.email,
+    action: () => timestampBody(janeSmithSearchsetWithScore(1))
+  },
+  {
+    condition: (params) => ['Sm*', 'sm*'].includes(params.family) && params.email === 'jane.smith@example.com' && !params.phone,
+    action: () => timestampBody(janeSmithSearchsetWithScore(1))
+  },
+  {
+    condition: (params) => ['Sm*', 'sm*'].includes(params.family) && params.email === 'jane.smith@example.com' && params.phone === '01632960587',
+    action: () => timestampBody(janeSmithSearchsetWithScore(1))
+  },
+  {
+    condition: (params) => ['Sm*', 'sm*'].includes(params.family) && params.email === 'janet.smythe@example.com',
+    action: () => timestampBody(janeSmithSearchsetWithScore(1))
+  },
+  {
+    condition: (params) => ['Sm*', 'sm*'].includes(params.family) && params.email === 'test@test.com' && params.phone === '01234123123' &&
+     (params.birthDate[0]) === 'eq2000-05-05',
+    action: () => timestampBody(MULTIMATCHWITHPHONEANDEMAIL_SEARCHSET)
+  },
+  {
+    condition: (params) => ['Smythe', 'smythe'].includes(params.family),
+    action: () => timestampBody(RESTRICTED_PATIENT_SEARCH)
+  },
   {
     condition: (params) => ['Smith', 'smith'].includes(params.family) && ['Female', 'female'].includes(params.gender) &&
-      (params.birthDate[0] === 'eq2010-10-22' || (params.birthDate[0] === 'ge2010-10-21' && params.birthDate[1] === 'le2010-10-23')) && otherJaneSmithParamsAreValid(params.request),
+    (params.birthDate[0] === 'eq2010-10-22' || (params.birthDate[0] === 'ge2010-10-21' && params.birthDate[1] === 'le2010-10-23')) &&
+     otherJaneSmithParamsAreValid(request),
     action: () => timestampBody(SIMPLE_SEARCH)
+  },
+  {
+    condition: (params) => ['Smith', 'smith'].includes(params.family) && ['Male', 'male'].includes(params.gender) && (params.given[0]) === 'John Paul' &&
+     params.given[1] === 'James',
+    action: () => timestampBody(JOHN_PAUL_SMITH_SEARCHSET)
+  },
+  {
+    condition: (params) => ['CUFF', 'Cuff'].includes(params.family) && ['Female', 'female'].includes(params.gender) &&
+     (params.birthDate[0] === 'eq1926-01-07'),
+    action: () => timestampBody(CUFF_SUPERSEDED_SEARCHSET)
+  },
+  {
+    condition: (params) => ['Smith', 'smith'].includes(params.family) && ['Male', 'male'].includes(params.gender) &&
+     (params.birthDate[0]) === 'eq2000-05-05' &&
+     (params.given[0]) === 'Sam' && (params.given[1]) === 'Bob',
+    action: () => timestampBody(OTHER_GIVENNAME_SEARCHSET)
+  },
+  {
+    condition: (params) => ['Smith', 'smith'].includes(params.family) && ['Male', 'male'].includes(params.gender) &&
+     (params.birthDate[0]) === 'eq2000-05-05' &&
+     params.phone === '01234123123' && params.email === 'test@test.com',
+    action: () => timestampBody(MULTIMATCHWITHPHONEANDEMAIL_SEARCHSET)
+  },
+  {
+    condition: (params) => ['Muir', 'Muir'].includes(params.family) && ['Male', 'male'].includes(params.gender) &&
+     (params.birthDate[0]) === 'eq2017-09-06' &&
+     params.phone === '00917855986859',
+    action: () => timestampBody(COUNTRYCODE_SEARCHSET)
+  },
+  {
+    condition: (params) => ['DN17*'].includes(params.postalCode) && ['Smith', 'smith'].includes(params.family) &&
+     ['Male', 'male'].includes(params.gender) &&
+     (params.birthDate[0]) === 'eq2000-05-05',
+    action: () => timestampBody(POSTALCODE_WILDCARD_SEARCHSET)
+  },
+  {
+    condition: (params) => ['A20047'].includes(params.gp) && ['Me*'].includes(params.family) && (params.birthDate[0]) === 'eq2015-10-22',
+    action: () => timestampBody(GP_SEARCHSET)
+  },
+  {
+    condition: (params) => params.deathDate === 'le2019-02-28' && ['TUNNEY'].includes(params.family) && (params.birthDate[0]) === 'ge1980-01-01',
+    action: () => timestampBody(DEATHDATE_SEARCHSET)
+  },
+  {
+    condition: (params) => params.family === 'McMatch-Single' && params.postalCode === 'BAP 4WG' && (params.birthDate[0]) === '1954-10-26' &&
+     params.gender === 'male',
+    action: () => timestampBody(MOCK_SINGLE_SEARCHSET)
+  },
+  {
+    condition: (params) => params.family === 'McMatch-Multiple' && params.postalCode === 'DN19 7UD' && (params.birthDate[0]) === '1997-08-20',
+    action: () => timestampBody(MOCK_MULTIPLE_SEARCHSET)
+  },
+  {
+    condition: (params) => params.family === 'Jones' && params.gender === 'male' && (params.birthDate[0]) === 'ge1992-01-01',
+    action: () => timestampBody(JACKIE_JONES_SEARCHSET)
+  },
+  {
+    condition: (params) => params.family === 'Godsoe' && params.gender === 'male' && (params.birthDate[0]) === 'eq1936-02-24',
+    action: () => timestampBody(RODNEY_GODSOE_SEARCHSET)
+  },
+  {
+    condition: (params) => params.family === 'Massam' && (params.birthDate[0] === 'eq1920-08-11' || params.birthDate[0] === 'le1920-08-11'),
+    action: () => timestampBody(MARTHA_MASSAM_SEARCHSET)
   },
   {
     condition: (params) => params.family === 'YOUDS' && params.maxResults === '1',
@@ -288,17 +434,30 @@ const matchCases = [
     action: () => timestampBody(YOUDS_SEARCHSET)
   }
   // Add additional match cases for other conditions
-];
+]
 
-function handleRequest(request, response) {
-  if (request.pathMatches('/Patient') && request.get) {
-    response.headers = basicResponseHeaders(request);
+if (request.pathMatches('/Patient') && request.get && validateHeaders(request) && validateQueryParams(request)) {
+  response.headers = basicResponseHeaders(request)
+  const params = {
+    family: request.param('family'),
+    given: request.params.given || [],
+    gender: request.param('gender'),
+    birthDate: request.params.birthdate || [],
+    postalCode: request.param('address-postalcode'),
+    fuzzyMatch: request.paramBool('_fuzzy-match'),
+    phone: request.param('phone'),
+    email: request.param('email'),
+    maxResults: request.param('_max-results'),
+    historyMatch: request.param('_history'),
+    gp: request.param('general-practitioner'),
+    deathDate: request.param('death-date'),
+    request
+  }
+  const matchedCase = matchCases.find(caseObj => caseObj.condition(params))
 
-    // Validation
-    if (!(validateHeaders(request) && validateQueryParams(request))) return;
-
-    // Match response based on defined conditions
-    const matchedResponse = responseMap.find((entry) => entry.condition(request)).response;
-    response.body = timestampBody(matchedResponse);
+  if (matchedCase) {
+    response.body = matchedCase.action()
+  } else {
+    response.body = timestampBody(EMPTY_SEARCHSET)
   }
 }
