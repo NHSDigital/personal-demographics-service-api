@@ -237,7 +237,7 @@ Scenario: Healthcare worker can't remove usual name and DOB
   * status 200
   * def originalVersion = parseInt(response.meta.versionId)
   * def usualNameIndex = response.name.findIndex(x => x.use == 'usual')
-  * def pathToUsualName = "/name/"+ nameIndex 
+  * def pathToUsualName = "/name/"+ usualNameIndex 
   * def usualNameDetails = response.name.find(x => x.use == 'usual')
   * def birthDateValue = response.birthDate
   * def etag = karate.response.header('etag')
@@ -254,12 +254,12 @@ Scenario: Healthcare worker can't remove usual name and DOB
       "patches": [
         {
           "op": "test",
-          "path": "#(namePathToRemove)",
-          "value":"#(nameDetails)"       
+          "path": "#(pathToUsualName)",
+          "value":"#(usualNameDetails)"       
         },
         {
         "op": "remove",
-          "path": "#(namePathToRemove)"
+          "path": "#(pathToUsualName)"
         }
       ]
     }
