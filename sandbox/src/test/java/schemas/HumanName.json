@@ -1,0 +1,9 @@
+{
+    "id": "##string",
+    "use": "##regex(usual|temp|nickname|old|maiden)",
+    "period": "##(Period)",
+    "given": "##[] #string? _.length < 36",
+    "family": "#string? _.length < 36",
+    "prefix": "##[] #string",
+    "suffix": "##[] #string"
+}

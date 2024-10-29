@@ -1,0 +1,66 @@
+{
+    "address": [
+        {
+            "id": "92CA389F",
+            "line": [
+                "2690 Kasey Lodge"
+            ],
+            "period": {
+                "start": "2024-05-01"
+            },
+            "postalCode": "AVG8LL",
+            "use": "home"
+        }
+    ],
+    "birthDate": "1958-02-23",
+    "gender": "male",
+    "id": "5900059332",
+    "identifier": [
+        {
+            "extension": [
+                {
+                    "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                    "valueCodeableConcept": {
+                        "coding": [
+                            {
+                                "code": "01",
+                                "display": "Number present and verified",
+                                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                "version": "1.0.0"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "system": "https://fhir.nhs.uk/Id/nhs-number",
+            "value": "5900059332"
+        }
+    ],
+    "meta": {
+        "security": [
+            {
+                "code": "U",
+                "display": "unrestricted",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+            }
+        ],
+        "versionId": "1"
+    },
+    "name": [
+        {
+            "family": "Karate-test-wzclvui",
+            "given": [
+                "Zebedee"
+            ],
+            "id": "47744120",
+            "period": {
+                "start": "2024-05-01"
+            },
+            "prefix": [
+                "Mr"
+            ],
+            "use": "usual"
+        }
+    ],
+    "resourceType": "Patient"
+}

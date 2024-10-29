@@ -1,0 +1,1985 @@
+{
+    "entry": [
+        {
+            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/5069635395",
+            "resource": {
+                "address": [
+                    {
+                        "id": "EE13E36A",
+                        "line": [
+                            "5 The Blackthorns",
+                            "Broughton",
+                            "BRIGG"
+                        ],
+                        "period": {
+                            "start": "2022-08-24"
+                        },
+                        "postalCode": "DN17 4AA",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "2000-05-05",
+                "contact": [
+                    {
+                        "id": "AF342F9E",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "relationship": [
+                            {
+                                "coding": [
+                                    {
+                                        "code": "C",
+                                        "display": "Emergency Contact",
+                                        "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+                                    }
+                                ]
+                            }
+                        ],
+                        "telecom": [
+                            {
+                                "system": "phone",
+                                "value": "01234123123"
+                            }
+                        ]
+                    }
+                ],
+                "gender": "male",
+                "id": "5069635395",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "5069635395"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "2"
+                },
+                "name": [
+                    {
+                        "family": "Smith",
+                        "given": [
+                            "Sam",
+                            "Matt"
+                        ],
+                        "id": "246851C5",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient",
+                "telecom": [
+                    {
+                        "id": "0622AADB",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "email",
+                        "use": "home",
+                        "value": "test@test.com"
+                    }
+                ]
+            },
+            "search": {
+                "score": 0.965
+            }
+        },
+        {
+            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/5502481484",
+            "resource": {
+                "address": [
+                    {
+                        "id": "F650C3C3",
+                        "line": [
+                            "Shahdaroba",
+                            "Poplar Drive",
+                            "Broughton",
+                            "BRIGG"
+                        ],
+                        "period": {
+                            "start": "2022-08-24"
+                        },
+                        "postalCode": "DN17 4AA",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "2000-05-05",
+                "gender": "male",
+                "id": "5502481484",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "5502481484"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "2"
+                },
+                "name": [
+                    {
+                        "family": "Smith",
+                        "given": [
+                            "Sam",
+                            "Matt"
+                        ],
+                        "id": "CF90C06B",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient",
+                "telecom": [
+                    {
+                        "id": "6F3EE252",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "phone",
+                        "use": "home",
+                        "value": "01234123123"
+                    },
+                    {
+                        "id": "42FE16A9",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "email",
+                        "use": "work",
+                        "value": "test@test.com"
+                    }
+                ]
+            },
+            "search": {
+                "score": 0.965
+            }
+        },
+        {
+            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/5667541432",
+            "resource": {
+                "address": [
+                    {
+                        "id": "15D93BE1",
+                        "line": [
+                            "146 Burringham Road",
+                            "SCUNTHORPE"
+                        ],
+                        "period": {
+                            "start": "2022-08-24"
+                        },
+                        "postalCode": "DN17 4AA",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "2000-05-05",
+                "deceasedDateTime": "2022-03-03T00:00:00+00:00",
+                "extension": [
+                    {
+                        "extension": [
+                            {
+                                "url": "deathNotificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "2",
+                                            "display": "Formal - death notice received from Registrar of Deaths",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-DeathNotificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "url": "systemEffectiveDate",
+                                "valueDateTime": "2022-08-08T17:28:41+00:00"
+                            }
+                        ],
+                        "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus"
+                    }
+                ],
+                "gender": "male",
+                "id": "5667541432",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "5667541432"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "4"
+                },
+                "name": [
+                    {
+                        "family": "Smith",
+                        "given": [
+                            "Sam",
+                            "Matt"
+                        ],
+                        "id": "EF49854D",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient",
+                "telecom": [
+                    {
+                        "id": "06F23F70",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "email",
+                        "use": "home",
+                        "value": "test@test.com"
+                    },
+                    {
+                        "id": "E77E0899",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "phone",
+                        "use": "home",
+                        "value": "01234123123"
+                    }
+                ]
+            },
+            "search": {
+                "score": 0.965
+            }
+        },
+        {
+            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/5689174815",
+            "resource": {
+                "address": [
+                    {
+                        "id": "5D1EE820",
+                        "line": [
+                            "3",
+                            "1 Albert Square Meadowside",
+                            "DUNDEE"
+                        ],
+                        "period": {
+                            "start": "2022-08-24"
+                        },
+                        "postalCode": "DN17 4AA",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "2000-05-05",
+                "deceasedDateTime": "2022-07-07T00:00:00+00:00",
+                "extension": [
+                    {
+                        "extension": [
+                            {
+                                "url": "deathNotificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "2",
+                                            "display": "Formal - death notice received from Registrar of Deaths",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-DeathNotificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "url": "systemEffectiveDate",
+                                "valueDateTime": "2022-08-08T17:33:22+00:00"
+                            }
+                        ],
+                        "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus"
+                    }
+                ],
+                "gender": "male",
+                "id": "5689174815",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "5689174815"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "3"
+                },
+                "name": [
+                    {
+                        "family": "Smith",
+                        "given": [
+                            "Sam",
+                            "Matt"
+                        ],
+                        "id": "101C7601",
+                        "period": {
+                            "start": "2022-08-08"
+                        },
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient",
+                "telecom": [
+                    {
+                        "id": "D725A4E4",
+                        "period": {
+                            "start": "2022-08-08"
+                        },
+                        "system": "email",
+                        "use": "home",
+                        "value": "test@test.com"
+                    },
+                    {
+                        "id": "E9FD1599",
+                        "period": {
+                            "start": "2022-08-08"
+                        },
+                        "system": "phone",
+                        "use": "home",
+                        "value": "01234123123"
+                    }
+                ]
+            },
+            "search": {
+                "score": 0.965
+            }
+        },
+        {
+            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/5900020584",
+            "resource": {
+                "address": [
+                    {
+                        "id": "151D8EFA",
+                        "line": [
+                            "street",
+                            "town"
+                        ],
+                        "period": {
+                            "start": "2022-08-24"
+                        },
+                        "postalCode": "DN17 4AA",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "2000-05-05",
+                "gender": "male",
+                "id": "5900020584",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "5900020584"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "4"
+                },
+                "name": [
+                    {
+                        "family": "Smith",
+                        "given": [
+                            "Sam",
+                            "Matt"
+                        ],
+                        "id": "8DC3F6AC",
+                        "period": {
+                            "start": "2022-08-12"
+                        },
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient",
+                "telecom": [
+                    {
+                        "id": "17DACEA4",
+                        "period": {
+                            "start": "2022-08-11"
+                        },
+                        "system": "phone",
+                        "use": "home",
+                        "value": "0121000222"
+                    },
+                    {
+                        "id": "C2FDE019",
+                        "period": {
+                            "start": "2022-08-11"
+                        },
+                        "system": "email",
+                        "use": "home",
+                        "value": "New@new.com"
+                    }
+                ]
+            },
+            "search": {
+                "score": 0.965
+            }
+        },
+        {
+            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/5900021459",
+            "resource": {
+                "address": [
+                    {
+                        "id": "5D326751",
+                        "line": [
+                            "Ivanhoe",
+                            "New Holland Road",
+                            "BARROW-UPON-HUMBER"
+                        ],
+                        "period": {
+                            "start": "2022-08-24"
+                        },
+                        "postalCode": "DN17 4AA",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "2000-05-05",
+                "gender": "male",
+                "id": "5900021459",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "5900021459"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "2"
+                },
+                "name": [
+                    {
+                        "family": "Smith",
+                        "given": [
+                            "Sam",
+                            "Matt"
+                        ],
+                        "id": "A4CEAF9B",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient",
+                "telecom": [
+                    {
+                        "id": "7FF09004",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "email",
+                        "use": "home",
+                        "value": "test@test.com"
+                    },
+                    {
+                        "id": "3065EF23",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "phone",
+                        "use": "temp",
+                        "value": "01234123123"
+                    }
+                ]
+            },
+            "search": {
+                "score": 0.965
+            }
+        },
+        {
+            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/5900022366",
+            "resource": {
+                "address": [
+                    {
+                        "id": "51F273DD",
+                        "line": [
+                            "Elm Cottage",
+                            "West End Road",
+                            "ULCEBY"
+                        ],
+                        "period": {
+                            "start": "2022-08-24"
+                        },
+                        "postalCode": "DN17 4AA",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "2000-05-05",
+                "gender": "male",
+                "id": "5900022366",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "5900022366"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "2"
+                },
+                "name": [
+                    {
+                        "family": "Smith",
+                        "given": [
+                            "Sam",
+                            "Matt"
+                        ],
+                        "id": "EC093519",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient",
+                "telecom": [
+                    {
+                        "id": "F7CFA85B",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "email",
+                        "use": "home",
+                        "value": "test@test.com"
+                    },
+                    {
+                        "id": "1ACFC3C6",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "phone",
+                        "use": "home",
+                        "value": "01222111111"
+                    }
+                ]
+            },
+            "search": {
+                "score": 0.965
+            }
+        },
+        {
+            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/5900022978",
+            "resource": {
+                "address": [
+                    {
+                        "id": "F6197DEB",
+                        "line": [
+                            "2 HIGHFIELD CRESCENT",
+                            "SCUNTHORPE"
+                        ],
+                        "period": {
+                            "start": "2022-08-24"
+                        },
+                        "postalCode": "DN17 4AA",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "2000-05-05",
+                "gender": "male",
+                "id": "5900022978",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "5900022978"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "2"
+                },
+                "name": [
+                    {
+                        "family": "Smith",
+                        "given": [
+                            "Sam",
+                            "Matt"
+                        ],
+                        "id": "B9D97A4C",
+                        "period": {
+                            "start": "2022-08-10"
+                        },
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient",
+                "telecom": [
+                    {
+                        "id": "9ECEB2EB",
+                        "period": {
+                            "start": "2022-08-10"
+                        },
+                        "system": "email",
+                        "use": "home",
+                        "value": "test@test.com"
+                    },
+                    {
+                        "id": "620FA849",
+                        "period": {
+                            "start": "2022-08-10"
+                        },
+                        "system": "phone",
+                        "use": "home",
+                        "value": "01234444444"
+                    }
+                ]
+            },
+            "search": {
+                "score": 0.965
+            }
+        },
+        {
+            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/5900025225",
+            "resource": {
+                "address": [
+                    {
+                        "id": "BE57324B",
+                        "line": [
+                            "1 SCHOOL CROFT",
+                            "WESTWOODSIDE",
+                            "DONCASTER"
+                        ],
+                        "period": {
+                            "start": "2022-08-24"
+                        },
+                        "postalCode": "DN17 4AA",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "2000-05-05",
+                "gender": "male",
+                "id": "5900025225",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "5900025225"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "2"
+                },
+                "name": [
+                    {
+                        "family": "Smith",
+                        "given": [
+                            "Sam",
+                            "Matt"
+                        ],
+                        "id": "38EF8A2D",
+                        "period": {
+                            "start": "2022-08-10"
+                        },
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient",
+                "telecom": [
+                    {
+                        "id": "E2650674",
+                        "period": {
+                            "start": "2022-08-10"
+                        },
+                        "system": "email",
+                        "use": "home",
+                        "value": "test@test.com"
+                    },
+                    {
+                        "id": "DA0494A1",
+                        "period": {
+                            "start": "2022-08-10"
+                        },
+                        "system": "phone",
+                        "use": "temp",
+                        "value": "01234111111"
+                    }
+                ]
+            },
+            "search": {
+                "score": 0.965
+            }
+        },
+        {
+            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/5900026086",
+            "resource": {
+                "address": [
+                    {
+                        "id": "F03A91B0",
+                        "line": [
+                            "8 Bedale Road",
+                            "SCUNTHORPE"
+                        ],
+                        "period": {
+                            "start": "2022-08-24"
+                        },
+                        "postalCode": "DN17 4AA",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "2000-05-05",
+                "gender": "male",
+                "id": "5900026086",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "5900026086"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "2"
+                },
+                "name": [
+                    {
+                        "family": "Smith",
+                        "given": [
+                            "Sam",
+                            "Matt"
+                        ],
+                        "id": "C2765599",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient",
+                "telecom": [
+                    {
+                        "id": "3C8F1590",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "email",
+                        "use": "home",
+                        "value": "test@test.com"
+                    },
+                    {
+                        "id": "431DD5FF",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "phone",
+                        "use": "work",
+                        "value": "01234123123"
+                    }
+                ]
+            },
+            "search": {
+                "score": 0.965
+            }
+        },
+        {
+            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/5900026191",
+            "resource": {
+                "address": [
+                    {
+                        "id": "4751CDD0",
+                        "line": [
+                            "Riseholme",
+                            "Greengate Lane",
+                            "Goxhill",
+                            "BARROW-UPON-HUMBER"
+                        ],
+                        "period": {
+                            "start": "2022-08-24"
+                        },
+                        "postalCode": "DN17 4AA",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "2000-05-05",
+                "deceasedDateTime": "2022-07-07T00:00:00+00:00",
+                "extension": [
+                    {
+                        "extension": [
+                            {
+                                "url": "deathNotificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "2",
+                                            "display": "Formal - death notice received from Registrar of Deaths",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-DeathNotificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "url": "systemEffectiveDate",
+                                "valueDateTime": "2022-08-09T12:29:23+00:00"
+                            }
+                        ],
+                        "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus"
+                    }
+                ],
+                "gender": "male",
+                "id": "5900026191",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "5900026191"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "3"
+                },
+                "name": [
+                    {
+                        "family": "Smith",
+                        "given": [
+                            "Sam",
+                            "Matt"
+                        ],
+                        "id": "D43DFBA6",
+                        "period": {
+                            "start": "2022-08-09"
+                        },
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient",
+                "telecom": [
+                    {
+                        "id": "547E8DEA",
+                        "period": {
+                            "start": "2022-08-09"
+                        },
+                        "system": "email",
+                        "use": "home",
+                        "value": "test@test.com"
+                    },
+                    {
+                        "id": "03309CC1",
+                        "period": {
+                            "start": "2022-08-09"
+                        },
+                        "system": "phone",
+                        "use": "home",
+                        "value": "01234123123"
+                    }
+                ]
+            },
+            "search": {
+                "score": 0.965
+            }
+        },
+        {
+            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/5900027376",
+            "resource": {
+                "address": [
+                    {
+                        "id": "2E01FB2A",
+                        "line": [
+                            "6 Sturmer Court",
+                            "SCUNTHORPE"
+                        ],
+                        "period": {
+                            "start": "2022-08-24"
+                        },
+                        "postalCode": "DN17 4AA",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "2000-05-05",
+                "gender": "male",
+                "id": "5900027376",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "5900027376"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "2"
+                },
+                "name": [
+                    {
+                        "family": "Smith",
+                        "given": [
+                            "Sam",
+                            "Matt"
+                        ],
+                        "id": "8B2D0BC0",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient",
+                "telecom": [
+                    {
+                        "id": "3DE2D9C7",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "email",
+                        "use": "home",
+                        "value": "email@email.com"
+                    },
+                    {
+                        "id": "D04A1D9F",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "phone",
+                        "use": "home",
+                        "value": "01234123123"
+                    }
+                ]
+            },
+            "search": {
+                "score": 0.965
+            }
+        },
+        {
+            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/5900028917",
+            "resource": {
+                "address": [
+                    {
+                        "id": "BBEFF749",
+                        "line": [
+                            "DANE LODGE",
+                            "MILL LANE",
+                            "WRAWBY",
+                            "BRIGG"
+                        ],
+                        "period": {
+                            "start": "2022-08-24"
+                        },
+                        "postalCode": "DN17 4AA",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "2000-05-05",
+                "gender": "male",
+                "id": "5900028917",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "5900028917"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "2"
+                },
+                "name": [
+                    {
+                        "family": "Smith",
+                        "given": [
+                            "Sam",
+                            "Matt"
+                        ],
+                        "id": "07EAC539",
+                        "period": {
+                            "start": "2022-08-10"
+                        },
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient",
+                "telecom": [
+                    {
+                        "id": "C043BF6B",
+                        "period": {
+                            "start": "2022-08-10"
+                        },
+                        "system": "email",
+                        "use": "home",
+                        "value": "test@test.com"
+                    },
+                    {
+                        "id": "589C335C",
+                        "period": {
+                            "start": "2022-08-10"
+                        },
+                        "system": "phone",
+                        "use": "mobile",
+                        "value": "01234333333"
+                    }
+                ]
+            },
+            "search": {
+                "score": 0.965
+            }
+        },
+        {
+            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/5900030741",
+            "resource": {
+                "address": [
+                    {
+                        "id": "FB3109FC",
+                        "line": [
+                            "81 Ermine Street",
+                            "Broughton",
+                            "BRIGG"
+                        ],
+                        "period": {
+                            "start": "2022-08-24"
+                        },
+                        "postalCode": "DN17 4AA",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "2000-05-05",
+                "gender": "male",
+                "id": "5900030741",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "5900030741"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "2"
+                },
+                "name": [
+                    {
+                        "family": "Smith",
+                        "given": [
+                            "Sam",
+                            "Bob"
+                        ],
+                        "id": "DD5B5096",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient",
+                "telecom": [
+                    {
+                        "id": "8393FF71",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "email",
+                        "use": "home",
+                        "value": "test@test.com"
+                    },
+                    {
+                        "id": "EE465034",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "phone",
+                        "use": "home",
+                        "value": "01234123123"
+                    }
+                ]
+            },
+            "search": {
+                "score": 0.965
+            }
+        },
+        {
+            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/5900031160",
+            "resource": {
+                "address": [
+                    {
+                        "id": "258C18C4",
+                        "line": [
+                            "6 Northlands Avenue",
+                            "Winterton",
+                            "SCUNTHORPE"
+                        ],
+                        "period": {
+                            "start": "2022-08-24"
+                        },
+                        "postalCode": "DN17 4AA",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "2000-05-05",
+                "gender": "male",
+                "id": "5900031160",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "5900031160"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "2"
+                },
+                "name": [
+                    {
+                        "family": "Smith",
+                        "given": [
+                            "Sam",
+                            "Matt"
+                        ],
+                        "id": "101577CF",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient",
+                "telecom": [
+                    {
+                        "id": "F606AE4E",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "email",
+                        "use": "home",
+                        "value": "test@test.com"
+                    },
+                    {
+                        "id": "A67A7F77",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "phone",
+                        "use": "mobile",
+                        "value": "01234123123"
+                    }
+                ]
+            },
+            "search": {
+                "score": 0.965
+            }
+        },
+        {
+            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/5900032809",
+            "resource": {
+                "address": [
+                    {
+                        "id": "C3DFF427",
+                        "line": [
+                            "1 ST. VINCENTS AVENUE",
+                            "SCUNTHORPE"
+                        ],
+                        "period": {
+                            "start": "2022-08-24"
+                        },
+                        "postalCode": "DN17 4AA",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "2000-05-05",
+                "contact": [
+                    {
+                        "id": "FDFA5BCB",
+                        "period": {
+                            "start": "2022-08-10"
+                        },
+                        "relationship": [
+                            {
+                                "coding": [
+                                    {
+                                        "code": "C",
+                                        "display": "Emergency Contact",
+                                        "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+                                    }
+                                ]
+                            }
+                        ],
+                        "telecom": [
+                            {
+                                "system": "phone",
+                                "value": "01234555555"
+                            }
+                        ]
+                    }
+                ],
+                "gender": "male",
+                "id": "5900032809",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "5900032809"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "2"
+                },
+                "name": [
+                    {
+                        "family": "Smith",
+                        "given": [
+                            "Sam",
+                            "Matt"
+                        ],
+                        "id": "B9088EA8",
+                        "period": {
+                            "start": "2022-08-10"
+                        },
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient",
+                "telecom": [
+                    {
+                        "id": "FE3EFE95",
+                        "period": {
+                            "start": "2022-08-10"
+                        },
+                        "system": "email",
+                        "use": "home",
+                        "value": "test@test.com"
+                    }
+                ]
+            },
+            "search": {
+                "score": 0.965
+            }
+        },
+        {
+            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/5900033694",
+            "resource": {
+                "address": [
+                    {
+                        "id": "0DE2D405",
+                        "line": [
+                            "CRESTA",
+                            "COLLEGE ROAD",
+                            "EAST HALTON",
+                            "IMMINGHAM",
+                            "S HUMBERSIDE"
+                        ],
+                        "period": {
+                            "start": "2022-08-24"
+                        },
+                        "postalCode": "DN17 4AA",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "2000-05-05",
+                "gender": "male",
+                "id": "5900033694",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "5900033694"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "2"
+                },
+                "name": [
+                    {
+                        "family": "Smith",
+                        "given": [
+                            "Sam",
+                            "Matt"
+                        ],
+                        "id": "8A48BEAF",
+                        "period": {
+                            "start": "2022-08-10"
+                        },
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient",
+                "telecom": [
+                    {
+                        "id": "94165207",
+                        "period": {
+                            "start": "2022-08-10"
+                        },
+                        "system": "email",
+                        "use": "home",
+                        "value": "test@test.com"
+                    },
+                    {
+                        "id": "29479209",
+                        "period": {
+                            "start": "2022-08-10"
+                        },
+                        "system": "phone",
+                        "use": "work",
+                        "value": "01234222222"
+                    }
+                ]
+            },
+            "search": {
+                "score": 0.965
+            }
+        },
+        {
+            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/5900034143",
+            "resource": {
+                "address": [
+                    {
+                        "id": "A97B1182",
+                        "line": [
+                            "1 ALAN CRESCENT",
+                            "SCUNTHORPE",
+                            "S HUMBERSIDE"
+                        ],
+                        "period": {
+                            "start": "2022-08-24"
+                        },
+                        "postalCode": "DN17 4AA",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "2000-05-05",
+                "gender": "male",
+                "id": "5900034143",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "5900034143"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "2"
+                },
+                "name": [
+                    {
+                        "family": "Smith",
+                        "given": [
+                            "Sam",
+                            "Matt"
+                        ],
+                        "id": "CDFC2784",
+                        "period": {
+                            "start": "2022-08-10"
+                        },
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient",
+                "telecom": [
+                    {
+                        "id": "02DF6A8D",
+                        "period": {
+                            "start": "2022-08-10"
+                        },
+                        "system": "phone",
+                        "use": "home",
+                        "value": "01234123123"
+                    },
+                    {
+                        "id": "3D3F7CA2",
+                        "period": {
+                            "start": "2022-08-10"
+                        },
+                        "system": "email",
+                        "use": "work",
+                        "value": "work@work.com"
+                    }
+                ]
+            },
+            "search": {
+                "score": 0.965
+            }
+        },
+        {
+            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/5900034372",
+            "resource": {
+                "address": [
+                    {
+                        "extension": [
+                            {
+                                "extension": [
+                                    {
+                                        "url": "type",
+                                        "valueCoding": {
+                                            "code": "PAF",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType"
+                                        }
+                                    },
+                                    {
+                                        "url": "value",
+                                        "valueString": "26106297"
+                                    }
+                                ],
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey"
+                            }
+                        ],
+                        "id": "08006299",
+                        "line": [
+                            "Don Moorings",
+                            "Island Road",
+                            "Garthorpe",
+                            "SCUNTHORPE"
+                        ],
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "postalCode": "DN17 4AA",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "2000-05-05",
+                "gender": "male",
+                "generalPractitioner": [
+                    {
+                        "id": "57537991",
+                        "identifier": {
+                            "period": {
+                                "start": "2023-08-13"
+                            },
+                            "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+                            "value": "H81109"
+                        },
+                        "type": "Organization"
+                    }
+                ],
+                "id": "5900034372",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "5900034372"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "2"
+                },
+                "name": [
+                    {
+                        "family": "Smith",
+                        "given": [
+                            "Dave",
+                            "Matt"
+                        ],
+                        "id": "73ED0D7F",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient",
+                "telecom": [
+                    {
+                        "id": "7BF4B988",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "email",
+                        "use": "home",
+                        "value": "test@test.com"
+                    },
+                    {
+                        "id": "D59AF086",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "phone",
+                        "use": "home",
+                        "value": "01234123123"
+                    }
+                ]
+            },
+            "search": {
+                "score": 0.965
+            }
+        },
+        {
+            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/5900036863",
+            "resource": {
+                "address": [
+                    {
+                        "id": "B03419DB",
+                        "line": [
+                            "122 Grange Lane South",
+                            "SCUNTHORPE"
+                        ],
+                        "period": {
+                            "start": "2022-08-24"
+                        },
+                        "postalCode": "DN17 4AA",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "2000-05-05",
+                "gender": "male",
+                "id": "5900036863",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "5900036863"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "2"
+                },
+                "name": [
+                    {
+                        "family": "Smith",
+                        "given": [
+                            "Sam",
+                            "Matt"
+                        ],
+                        "id": "F8A76F5A",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient",
+                "telecom": [
+                    {
+                        "id": "90AC976F",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "email",
+                        "use": "home",
+                        "value": "test@test.com"
+                    },
+                    {
+                        "id": "2269DB08",
+                        "period": {
+                            "start": "2022-08-05"
+                        },
+                        "system": "phone",
+                        "use": "home",
+                        "value": "01234123123"
+                    }
+                ]
+            },
+            "search": {
+                "score": 0.965
+            }
+        }
+    ],
+    "resourceType": "Bundle",
+    "timestamp": "2024-09-26T14:06:40+00:00",
+    "total": 20,
+    "type": "searchset"
+}

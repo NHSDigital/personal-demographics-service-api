@@ -2,5 +2,5 @@
 docker_containers:
 
   - name: pds-sandbox
-    dockerfile: "karate-tests/Dockerfile"
-    path: "karate-tests"
+    dockerfile: "sandbox/Dockerfile"
+    path: "sandbox

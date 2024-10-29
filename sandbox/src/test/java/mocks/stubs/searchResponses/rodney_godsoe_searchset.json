@@ -1,0 +1,63 @@
+{
+  "entry": [
+    {
+      "fullUrl": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9693632125",
+      "resource": {
+        "birthDate": "1936-02-24",
+        "gender": "male",
+        "id": "9693632125",
+        "identifier": [
+          {
+            "extension": [
+              {
+                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "code": "01",
+                      "display": "Number present and verified",
+                      "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                      "version": "1.0.0"
+                    }
+                  ]
+                }
+              }
+            ],
+            "system": "https://fhir.nhs.uk/Id/nhs-number",
+            "value": "9693632125"
+          }
+        ],
+        "meta": {
+          "security": [
+            {
+              "code": "R",
+              "display": "restricted",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+            }
+          ],
+          "versionId": "2"
+        },
+        "name": [
+          {
+            "family": "GODSOE",
+            "given": ["Rodney", "Jeff"],
+            "id": "lLXvC",
+            "period": {
+              "start": "1996-06-13"
+            },
+            "prefix": ["MR"],
+            "use": "usual"
+          }
+        ],
+        "resourceType": "Patient"
+      },
+      "search": {
+        "score": 1
+      }
+    }
+  ],
+  "resourceType": "Bundle",
+  "timestamp": "2024-05-14T10:38:24+00:00",
+  "total": 1,
+  "type": "searchset"
+}

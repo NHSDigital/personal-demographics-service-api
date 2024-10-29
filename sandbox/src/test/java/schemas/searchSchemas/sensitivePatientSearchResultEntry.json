@@ -1,0 +1,8 @@
+{
+    "fullUrl": "#? utils.isValidPatientURL(_)",
+    "resource": "#(SensitivePatient)",
+    "search": {
+      "score": "#number"
+    }
+  }
+  
