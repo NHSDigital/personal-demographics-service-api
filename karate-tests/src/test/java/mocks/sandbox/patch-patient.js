@@ -143,7 +143,7 @@ function patchPatient (originalPatient, request) {
     }
 
     if (patch.op === 'remove' && patch.path === '/name/0') {
-      if (request.body.patches[0].value.use === 'usual') {
+      if (patch.value.use === 'usual') {
         forbiddenUpdate = 'Forbidden update with error - not permitted to remove usual name'
       }
     }
