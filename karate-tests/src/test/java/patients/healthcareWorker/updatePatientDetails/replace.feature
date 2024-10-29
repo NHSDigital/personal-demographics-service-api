@@ -236,9 +236,9 @@ Scenario: Healthcare worker can't remove usual name and DOB
   * method get
   * status 200
   * def originalVersion = parseInt(response.meta.versionId)
-  * def nameIndex = response.name.findIndex(x => x.use == 'usual')
-  * def namePathToRemove = "/name/"+ nameIndex 
-  * def nameDetails = response.name.find(x => x.use == 'usual')
+  * def usualNameIndex = response.name.findIndex(x => x.use == 'usual')
+  * def pathToUsualName = "/name/"+ nameIndex 
+  * def usualNameDetails = response.name.find(x => x.use == 'usual')
   * def birthDateValue = response.birthDate
   * def etag = karate.response.header('etag')
   # remove usual name
