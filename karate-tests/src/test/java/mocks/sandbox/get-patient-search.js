@@ -254,3 +254,51 @@ if (request.pathMatches('/Patient') && request.get) {
     }
   }
 }
+
+// Define match cases as functions
+const matchCases = [
+  {
+    condition: (params) => params.fuzzyMatch && params.family === 'Blogs' && params.given[0] === 'Joe' && params.birthDate[0] === '1955-11-05',
+    action: () => timestampBody(JOE_BLOGS_HISTORIC_NAME_SEARCHSET)
+  },
+  {
+    condition: (params) => params.fuzzyMatch && params.family === 'ATTSÖN' && params.given[0] === 'PÀULINÉ' && params.birthDate[0] === '1960-07-14',
+    action: () => timestampBody(PAULINE_ATTISON_SEARCHSET)
+  },
+  {
+    condition: (params) => params.fuzzyMatch && params.phone === '01222111111' && params.email === 'test@test.com',
+    action: () => timestampBody(FUZZY_SINGLE_SEARCHSET)
+  },
+  {
+    condition: (params) => params.fuzzyMatch && params.family === 'Smythe' && (given[0]) === 'Mat' && (birthDate[0]) === 'ge2000-05-03' && gender === 'male' && postalCode === 'DN17 4AA' && email !== 'rubbish@work.com',
+    action: () => timestampBody(FUZZY_SINGLE_SEARCHSET)
+  },
+  // Add additional cases as needed
+  {
+    condition: (params) => ['Smith', 'smith'].includes(params.family) && ['Female', 'female'].includes(params.gender) &&
+      (params.birthDate[0] === 'eq2010-10-22' || (params.birthDate[0] === 'ge2010-10-21' && params.birthDate[1] === 'le2010-10-23')) && otherJaneSmithParamsAreValid(params.request),
+    action: () => timestampBody(SIMPLE_SEARCH)
+  },
+  {
+    condition: (params) => params.family === 'YOUDS' && params.maxResults === '1',
+    action: () => context.read('classpath:mocks/stubs/searchResponses/TOO_MANY_MATCHES.json')
+  },
+  {
+    condition: (params) => params.family === 'YOUDS',
+    action: () => timestampBody(YOUDS_SEARCHSET)
+  }
+  // Add additional match cases for other conditions
+];
+
+function handleRequest(request, response) {
+  if (request.pathMatches('/Patient') && request.get) {
+    response.headers = basicResponseHeaders(request);
+
+    // Validation
+    if (!(validateHeaders(request) && validateQueryParams(request))) return;
+
+    // Match response based on defined conditions
+    const matchedResponse = responseMap.find((entry) => entry.condition(request)).response;
+    response.body = timestampBody(matchedResponse);
+  }
+}
