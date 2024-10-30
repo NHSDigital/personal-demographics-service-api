@@ -71,6 +71,7 @@ info:
     * search for patients – and be able to present a list of matches for the user to choose from 
     * get patient details 
     * update patient details 
+    * get a patient's related people
 
     This access mode is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis), meaning an end user must be present, authenticated and authorised. 
 
@@ -91,7 +92,8 @@ info:
     ### Patient access 
     If the end user is a patient then you must use this access mode. Use this access mode to: 
     * get the patient’s own details 
-    * update the patient’s own details (limited) 
+    * update the patient’s own details (limited)
+    * get the patient's related people
 
     This access mode is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis), meaning an end user must be present, authenticated and authorised. 
     
@@ -117,6 +119,7 @@ info:
     You must only use this access mode if you need to: 
     * search for a patient and get a single match result returned 
     * get a single patient's details
+    * get a single patient's related people
 
     This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis), meaning we authenticate and authorise the calling application but not the end user. 
 
@@ -261,7 +264,7 @@ info:
     The following APIs are related to this API:
 
     ### Personal Demographics Service (PDS) HL7 V3 API
-    Use [PDS HL7 V3 API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3) if you want to use functions that are not yet available on the FHIR API, such as creating a new record for a birth, receiving birth notifications, or creating a record for a new patient (except when registering a new patient at a GP Practice, use [NHAIS](https://digital.nhs.uk/services/nhais)). For birth notifications, another option is [PDS Notifications - FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir).
+    Use [PDS HL7 V3 API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3) if you want to use functions that are not yet available on the FHIR API, such as creating a new record for a birth, receiving birth notifications, or creating a record for a new patient (except when registering a new patient at a GP Practice, use [Primary Care Registration Management (PCRM)](https://digital.nhs.uk/services/primary-care-registration-management)). For birth notifications, another option is [PDS Notifications - FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir).
 
     Once our roadmap is complete, PDS HL7 V3 API will become redundant. 
     
@@ -931,9 +934,9 @@ paths:
 
         To remove a list item, a `test` operation must <u>immediately precede</u> the `remove` . This is an added requirement to ensure no accidental data loss occurs or the wrong item is removed. The test operation should be used to assert either:
 
-        * the `id` - the object ID for items that have one - for example `name`, `address` or `telecom`.
-        * the `url` - the URL for the extension being removed.
-        * the whole object being removed. (this is the only allowed option for patient access updates)
+        * the `id` - the object ID for items that have one - for example `name`, `address` or `telecom`
+        * the `url` - the URL for the extension being removed
+        * the whole object being removed
 
         An example of a list item removal using the `id` would be:
 
