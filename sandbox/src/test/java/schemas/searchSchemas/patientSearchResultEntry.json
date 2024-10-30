@@ -1,7 +1,0 @@
-{
-  "fullUrl": "#? utils.isValidPatientURL(_)",
-  "resource": "#(Patient)",
-  "search": {
-    "score": "#number"
-  }
-}

@@ -1,8 +1,0 @@
-{
-  "type": "##string",
-  "identifier": {
-    "system": "https://fhir.nhs.uk/Id/ods-organization-code",
-    "value": "#regex([0-9A-Z]+)",
-    "period": "##(Period)"
-  }
-}
