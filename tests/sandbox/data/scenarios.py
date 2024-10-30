@@ -43,7 +43,7 @@ fuzzy_search_patient_17 = {
 
 # error responses
 resource_not_found = {
-    "resourceType":"OperationOutcome","issue":[{"severity":"error","code":"not-found","details":{"coding":[{"system":"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode","version":"1","code":"RESOURCE_NOT_FOUND","display":"Resource not found"}]}}]}
+    "resourceType":"OperationOutcome","issue":[{"severity":"information","code":"not-found","details":{"coding":[{"system":"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode","version":"1","code":"RESOURCE_NOT_FOUND","display":"Resource not found"}]}}]}
 missing_x_request_id = {
     "resourceType":"OperationOutcome","issue":[{"severity":"error","code":"required","details":{"coding":[{"system":"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode","version":"1","code":"MISSING_VALUE","display":"Required value is missing"}]},"diagnostics":"Invalid request with error - X-Request-ID header must be supplied to access this resource"}]}
 not_enough_search_params = {

@@ -140,6 +140,8 @@ if (request.pathMatches('/Patient') && request.get) {
   const gender = request.param('gender')
   const birthDate = request.params.birthdate || []
   const postalCode = request.param('address-postalcode')
+  const postCode = request.param('address-postcode')
+  const exactMatch = request.paramBool('_exact-match')
   const fuzzyMatch = request.paramBool('_fuzzy-match')
   const phone = request.param('phone')
   const email = request.param('email')
@@ -253,4 +255,22 @@ if (request.pathMatches('/Patient') && request.get) {
       }
     }
   }
+
+  // pytest sandbox scenarios
+  if (isDefaultPatientSearch(fuzzyMatch, exactMatch, historyMatch, maxResults, family, given, gender, deathDate, postCode, gp)) {
+      response.body = timestampBody(janeSmithSearchsetWithScore(1))
+  }
+  if (isWildcardSearchLimitResults(family, gender, maxResults)) {
+      response.body = timestampBody(WILDCARD_SEARCH)
+  }
+}
+
+function isWildcardSearchLimitResults(family, gender, maxResults) {
+  return family === "Sm*" && gender === "female" && birthdate === "eq2010-10-22" && maxResults === "2"
+}
+
+// This covers "Default Parameters Search, Default Parameters Search with Phone and Default Parameters Search"
+function isDefaultPatientSearch(fuzzyMatch, exactMatch, historyMatch, maxResults, family, given, gender, deathDate, postCode, gp) {
+  return !fuzzyMatch && !exactMatch && historyMatch && maxResults === '1' && family == 'Smith' && given === 'Jane' &&
+    gender === 'female' && birthdate === 'eq2010-10-22' && deathDate === 'eq2010-10-22' && postCode === 'LS1 6AE' && gp === 'Y12345'
 }
