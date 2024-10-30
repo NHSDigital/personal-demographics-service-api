@@ -322,7 +322,7 @@ paths:
           * email address
           * phone number
           
-        There are various search options, such as fuzzy search, exact match, history and wildcards.
+        There are various search options, such as fuzzy search, exact match, history and wildcards. Wildcard searches using the PDS FHIR API return information differently to the FHIR framework standards. 
         
         The behaviour of this endpoint depends on which access mode you are using:
         
