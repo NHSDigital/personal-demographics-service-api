@@ -124,7 +124,7 @@ function validateQueryParams (request) {
   return true
 }
 
-function otherJaneSmithParamsAreValid(request) {
+function otherJaneSmithParamsAreValid (request) {
   const phone = request.param('phone')
   const email = request.param('email')
   return (!phone || phone === '01632960587') && (!email || email === 'jane.smith@example.com')
