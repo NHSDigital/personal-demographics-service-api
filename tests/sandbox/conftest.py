@@ -7,7 +7,9 @@ import time
 @pytest.fixture(params=[{"prefer": False}])
 def additional_headers(request):
     """Set additional headers and optionally add prefer header"""
-    headers = {"X-Request-ID": str(uuid.uuid1()), "X-Correlation-ID": str(uuid.uuid1())}
+    headers = {"X-Request-ID": str(uuid.uuid1()),
+               "X-Correlation-ID": str(uuid.uuid1()),
+               "Authorization": f"Bearer {uuid.uuid4()}"}
     if request.param["prefer"] is True:
         headers["Prefer"] = "respond-async"
     return headers
