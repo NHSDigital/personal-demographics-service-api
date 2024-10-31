@@ -181,6 +181,8 @@ info:
     * 500 to 599 if it failed because of an error on our server
     
     Errors specific to each API are shown in the Endpoints section, under Response. See our [reference guide](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#http-status-codes) for more on errors.
+
+    Your API-calling application should have a mechanism to automatically try again, possibly giving status information to your end user, before giving up. If your application fails on the first API failure, it could be quite brittle. See our [reference guide](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#error-handling) for more information about error handling.
     
     ## Open source
     You might find the following [open source](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#open-source) resources useful:
