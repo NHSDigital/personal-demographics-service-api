@@ -105,8 +105,19 @@ function patchPatient (originalPatient, request) {
   const addNameSuffix = (suffix) => {
     updatedPatient.name[0].suffix = suffix
   }
+  const addNewName = (value) => {
+    if (value.use === 'usual') {
+      forbiddenUpdate = 'Forbidden update with error - multiple usual names cannot be added'
+    } else {
+      value.id = 'new-object-id'
+      updatedPatient.name.push(value)
+    }
+  }
+  const addNameSuffixAtStart = (value) => {
+    updatedPatient.name[0].suffix.unshift(value)
+  }
   const removeNameSuffix = () => delete updatedPatient.name[0].suffix
-  const updateAddressLine = (value) => {
+  function updateAddressDetails (value) {
     if (value === '2 Whitehall Quay') {
       updateErrors.push('Invalid update with error - no id or url found for path with root /address/0')
     } else if (!Object.prototype.hasOwnProperty.call(originalPatient, 'address')) {
@@ -132,53 +143,62 @@ function patchPatient (originalPatient, request) {
     const { op, path, value } = patch
 
     switch (op) {
-      case 'add':
-        if (path === '/name/-') {
-          if (value.use === 'usual') {
-            forbiddenUpdate = 'Forbidden update with error - multiple usual names cannot be added'
-          } else {
-            value.id = 'new-object-id'
-            updatedPatient.name.push(value)
-          }
-        } else if (path === '/name/0/suffix') addNameSuffix(value)
-        else if (path === '/name/0/suffix/0') updatedPatient.name[0].suffix.unshift(value)
+      case 'add': {
+        const addPaths = {
+          '/name/-': () => addNewName(value),
+          '/name/0/suffix': () => addNameSuffix(value),
+          '/name/0/suffix/0': () => addNameSuffixAtStart(value)
+        }
+        if (addPaths[path]) {
+          addPaths[path]()
+        }
         break
+      }
 
-      case 'replace':
-        if (path === '/name/0/given/0') {
-          updatedPatient.name[0].given[0] = value
-        } else if (path === '/gender') {
-          updatedPatient.gender = value
-        } else if (path === '/birthDate') {
-          updatedPatient.birthDate = value
-        } else if (path === '/address/0/line/0') {
-          updateAddressLine(value)
+      case 'replace': {
+        const updateGivenName = () => { updatedPatient.name[0].given[0] = value }
+        const updateGender = () => { updatedPatient.gender = value }
+        const updateBirthDate = () => { updatedPatient.birthDate = value }
+        const updateAddressLine = () => { updateAddressDetails(value) }
+        const updateAddressId = () => { updateAddressDetails(value) }
+
+        const replacePaths = {
+          '/name/0/given/0': updateGivenName,
+          '/gender': updateGender,
+          '/birthDate': updateBirthDate,
+          '/address/0/line/0': updateAddressLine,
+          '/address/0/id': updateAddressId
+        }
+        if (replacePaths[path]) {
+          replacePaths[path]()
         } else if (path.startsWith('/address/0/') && !Object.prototype.hasOwnProperty.call(originalPatient, 'address')) {
           updateErrors.push("Invalid update with error - Invalid patch - index '0' is out of bounds")
-        } else if (path === '/address/0/id') {
-          updateAddressLine(value)
         } else if (path === '/address/0/line') {
           updateErrors.push("Invalid update with error - Invalid patch - can't replace non-existent object 'line'")
         }
         break
+      }
 
-      case 'remove':
-        if (path === '/name/0/suffix') {
+      case 'remove':{
+        const removeSuffixIfExists = (suffixIndex) => {
           if (!updatedPatient.name[0].suffix) {
             updateErrors.push("Invalid update with error - Invalid patch - can't remove non-existent object '0'")
+          } else if (suffixIndex !== undefined) {
+            updatedPatient.name[0].suffix.splice(suffixIndex, 1)
           } else {
             removeNameSuffix()
           }
-        } else if (path === '/name/0/suffix/0') {
-          if (!updatedPatient.name[0].suffix) {
-            updateErrors.push("Invalid update with error - Invalid patch - can't remove non-existent object '0'")
-          } else {
-            updatedPatient.name[0].suffix.splice(0, 1)
-          }
-        } else if (path === '/name/1') {
-          handleNameRemovalError(request, updateErrors)
+        }
+        const removePaths = {
+          '/name/0/suffix': () => removeSuffixIfExists(),
+          '/name/0/suffix/0': () => removeSuffixIfExists(0),
+          '/name/1': () => handleNameRemovalError(request, updateErrors)
+        }
+        if (removePaths[path]) {
+          removePaths[path]()
         }
         break
+      }
     }
   }
 
