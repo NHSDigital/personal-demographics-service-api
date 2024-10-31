@@ -153,39 +153,41 @@ def check_response_status_code(response: requests.Response, expected_status: int
 
 
 #  A Function to check the Response Headers.  Arguments accepted are the actual Response & expected Response.
-def check_response_headers(response: requests.Response, expected_headers={}) -> None:
-    if "X-Request-ID" in expected_headers:
+def check_response_headers(response: requests.Response, expected_headers: Dict[str, str]={}) -> None:
+    expected_headers = {key.lower() : value for key, value in expected_headers.items()}
+    actual_headers = {key.lower() : value for key, value in response.headers.items()}
+    if "x-request-id" in expected_headers:
         with check:
             assert (
-                response.headers["X-Request-ID"] == expected_headers["X-Request-ID"]
+                actual_headers["x-request-id"] == expected_headers["x-request-id"]
             ), (
                 f"UNEXPECTED RESPONSE: "
-                f"actual X-Request-ID is: {response.headers['X-Request-ID']} "
-                f"expected X-Request-ID is: {expected_headers['X-Request-ID']}"
+                f"actual X-Request-ID is: {actual_headers['x-request-id']} "
+                f"expected X-Request-ID is: {expected_headers['x-request-id']}"
             )
     else:
         with check:
-            assert "X-Request-ID" not in response.headers, (
+            assert "x-request-id" not in actual_headers, (
                 f"UNEXPECTED RESPONSE: expected X-Request-ID not to be present "
-                f"but {response.headers['X-Request-ID']} found in response header"
+                f"but {actual_headers['x-request-id']} found in response header"
             )
 
-    if "X-Correlation-ID" in expected_headers:
+    if "x-correlation-id" in expected_headers:
         with check:
             assert (
-                response.headers["X-Correlation-ID"]
-                == expected_headers["X-Correlation-ID"]
+                actual_headers["x-correlation-id"]
+                == expected_headers["x-correlation-id"]
             ), (
                 f"UNEXPECTED RESPONSE: "
-                f"actual X-Request-ID is: {response.headers['X-Correlation-ID']} "
-                f"expected X-Request-ID is: {expected_headers['X-Correlation-ID']}"
+                f"actual X-Request-ID is: {actual_headers['x-correlation-id']} "
+                f"expected X-Request-ID is: {expected_headers['x-correlation-id']}"
             )
 
     else:
         with check:
-            assert "X-Correlation-ID" not in response.headers, (
+            assert "x-correlation-id" not in actual_headers, (
                 f"UNEXPECTED RESPONSE: expected X-Correlation-ID not to be present "
-                f"but {response.headers['X-Correlation-ID']} found in response header"
+                f"but {actual_headers['x-correlation-id']} found in response header"
             )
 
 
