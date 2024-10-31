@@ -41,13 +41,13 @@ def search_patient(query_params: Union[dict, str], headers={}) -> requests.Respo
 def update_patient(patient: str, patient_record: str, payload: dict, extra_headers={}) -> requests.Response:
     # TODO: The karate sandbox is stateful, which means we cannot assume the versionId of the record, as other test's
     # may have updated the record.
-    patient = requests.get(
+    patient_record = requests.get(
         f"{config.SANDBOX_BASE_URL}/Patient/{patient}", headers=extra_headers
     ).json()
-    patient_record = patient['meta']['versionId']
+    version_id = patient_record['meta']['versionId']
     headers = {
         "Content-Type": "application/json-patch+json",
-        "If-Match": f'W/"{patient_record}"',
+        "If-Match": f'W/"{version_id}"',
     }
     headers.update(extra_headers)
     response = requests.patch(
