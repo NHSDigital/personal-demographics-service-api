@@ -153,9 +153,9 @@ def check_response_status_code(response: requests.Response, expected_status: int
 
 
 #  A Function to check the Response Headers.  Arguments accepted are the actual Response & expected Response.
-def check_response_headers(response: requests.Response, expected_headers: Dict[str, str]={}) -> None:
-    expected_headers = {key.lower() : value for key, value in expected_headers.items()}
-    actual_headers = {key.lower() : value for key, value in response.headers.items()}
+def check_response_headers(response: requests.Response, expected_headers: Dict[str, str] = {}) -> None:
+    expected_headers = {key.lower(): value for key, value in expected_headers.items()}
+    actual_headers = {key.lower(): value for key, value in response.headers.items()}
     if "x-request-id" in expected_headers:
         with check:
             assert (
