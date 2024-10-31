@@ -1,5 +1,3 @@
-TODO: _If_ we don't want to send an auth header for the sandbox - how does this work? should it then have it's @sandbox tag removed?
-
 @sandbox @no-oas
 Feature: Create patient - not permitted for application-restricted users
   A spike arrest policy is in a place for this endpoint, and the spike arrest policy 
