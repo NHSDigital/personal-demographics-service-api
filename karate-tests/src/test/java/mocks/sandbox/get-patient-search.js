@@ -36,7 +36,6 @@ const FUZZY_SINGLE_SEARCHSET = context.read('classpath:mocks/stubs/searchRespons
 const FUZZY_MULTI_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/fuzzy_multimatch_searchset.json')
 const HISTORIC_DATA_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/med_rowenad_searchset.json')
 const COMPOUND_NAME_SEARCH = context.read('classpath:mocks/stubs/searchResponses/compound_name_search.json')
-const NO_RESPONSE = context.read('classpath:mocks/stubs/searchResponses/no_response.json')
 
 function janeSmithSearchsetWithScore (score) {
   return {
