@@ -17,6 +17,14 @@ function fn() {
       clientID: java.lang.System.getenv('CLIENT_ID'),
       internalServerURL: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4'
     };
+  } else if (env == 'pr-internal-dev-sandbox') {
+    var port = karate.properties['mockserver.port'] || '8080';      
+    var config = {
+      oauth2MockURL: `http://localhost:${port}`,
+      baseURL: `http://localhost:${port}`,
+      clientID: java.lang.System.getenv('CLIENT_ID'),
+      internalServerURL: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4'
+    };
   } else if (env == 'prism') {
     const prismURL = 'http://127.0.0.1:4010'
     var config = { 
