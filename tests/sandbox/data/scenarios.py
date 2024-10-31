@@ -57,7 +57,7 @@ invalid_resource_id = {
 invalid_x_request_id = {
     "resourceType": "OperationOutcome", "issue": [{"severity": "error", "code": "value", "details": {"coding": [{"system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode", "version": "1", "code": "INVALID_VALUE", "display": "Provided value is invalid"}]}, "diagnostics": "Invalid value - '1234' in header 'X-Request-ID'"}]}
 invalid_birthdate = {
-    "resourceType": "OperationOutcome", "issue": [{"severity": "error", "code": "value", "details": {"coding": [{"system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode", "version": "1", "code": "INVALID_SEARCH_DATA", "display": "Provided value is invalid"}]}, "diagnostics": "Invalid value - '20101022' in field 'birthdate'"}]}
+    "resourceType": "OperationOutcome", "issue": [{"severity": "error", "code": "value", "details": {"coding": [{"system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode", "version": "1", "code": "INVALID_VALUE", "display": "Provided value is invalid"}]}, "diagnostics": "Invalid value - '20101022' in field 'birthdate'"}]}
 
 # test scenario data
 retrieve = {
