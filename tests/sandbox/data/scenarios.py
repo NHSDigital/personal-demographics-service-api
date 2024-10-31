@@ -46,6 +46,8 @@ resource_not_found = {
     "resourceType":"OperationOutcome","issue":[{"severity":"information","code":"not-found","details":{"coding":[{"system":"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode","version":"1","code":"RESOURCE_NOT_FOUND","display":"Resource not found"}]}}]}
 missing_x_request_id = {
     "resourceType":"OperationOutcome","issue":[{"severity":"error","code":"required","details":{"coding":[{"system":"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode","version":"1","code":"MISSING_VALUE","display":"Required value is missing"}]},"diagnostics":"Invalid request with error - X-Request-ID header must be supplied to access this resource"}]}
+additional_properties = {
+    "issue":[{"code":"invariant","details":{"coding":[{"code":"ADDITIONAL_PROPERTIES","display":"Additional properties should not be included","system":"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode","version":"1"}]},"diagnostics":"Invalid request with error - Additional properties are not allowed ('foo' was unexpected)","severity":"error"}],"resourceType":"OperationOutcome"}
 not_enough_search_params = {
     "resourceType":"OperationOutcome","issue":[{"severity":"error","code":"required","details":{"coding":[{"system":"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode","version":"1","code":"MISSING_VALUE","display":"Required value is missing"}]},"diagnostics":"Not enough search parameters were provided for a valid search, you must supply family and birthdate as a minimum and only use recognised parameters from the api catalogue."}]}
 invalid_resource_id = {
@@ -149,8 +151,8 @@ search_error = {
         "query_params": {},
         "response":not_enough_search_params},
     "Unsupported Operation with Completely Invalid Params": {
-        "query_params": {"manufacturer": "Ford","model": "focus", "year": "2003"},
-        "response": not_enough_search_params},
+        "query_params": {"foo": "bar"},
+        "response": additional_properties},
     "Unsupported Operation with Invalid Param and Family Birthdate": {
         "query_params": {"family": "Smith","birthdate": "eq2010-10-22", "year": "2003"},
         "response": not_enough_search_params},
