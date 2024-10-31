@@ -259,28 +259,28 @@ if (request.pathMatches('/Patient') && request.get) {
 
   // pytest sandbox scenarios
   if (isDefaultPatientSearch(fuzzyMatch, exactMatch, historyMatch, maxResults, family, given, gender, birthDate[0], deathDate, postCode, gp)) {
-      response.body = timestampBody(janeSmithSearchsetWithScore(1))
+    response.body = timestampBody(janeSmithSearchsetWithScore(1))
   }
   if (isWildcardSearchLimitResults(family, gender, maxResults, birthDate[0])) {
-      response.body = timestampBody(WILDCARD_SEARCH)
+    response.body = timestampBody(WILDCARD_SEARCH)
   }
   if (isCompoundGivenNameSearch(fuzzyMatch, exactMatch, historyMatch, family, given, gender)) {
-      response.body = timestampBody(COMPOUND_NAME_SEARCH)
+    response.body = timestampBody(COMPOUND_NAME_SEARCH)
   }
 }
 
 // This covers "Compound Given Name Search" and "Multi Given Name Search including Phone and Email"
-function isCompoundGivenNameSearch(fuzzyMatch, exactMatch, historyMatch, family, given, gender) {
-  return !fuzzyMatch && !exactMatch & historyMatch && family === "Smith", given.includes("John Paul") && given.includes("James") &&
-    gender === "male" && birthdate === "eq2010-10-22"
+function isCompoundGivenNameSearch (fuzzyMatch, exactMatch, historyMatch, family, given, gender, birthDate) {
+  return !fuzzyMatch && !exactMatch & historyMatch && family === 'Smith' && given.includes('John Paul') && given.includes('James') &&
+    gender === 'male' && birthDate === 'eq2010-10-22'
 }
 
-function isWildcardSearchLimitResults(family, gender, maxResults, birthDate) {
-  return family === "Sm*" && gender === "female" && birthDate === "eq2010-10-22" && maxResults === "2"
+function isWildcardSearchLimitResults (family, gender, maxResults, birthDate) {
+  return family === 'Sm*' && gender === 'female' && birthDate === 'eq2010-10-22' && maxResults === '2'
 }
 
-// This covers "Default Parameters Search", "Default Parameters Search with Phone" and "Default Parameters Search"
-function isDefaultPatientSearch(fuzzyMatch, exactMatch, historyMatch, maxResults, family, given, gender, birthDate, deathDate, postCode, gp) {
-  return !fuzzyMatch && !exactMatch && historyMatch && maxResults === '1' && family == 'Smith' && given === 'Jane' &&
+// This covers 'Default Parameters Search', 'Default Parameters Search with Phone' and 'Default Parameters Search'
+function isDefaultPatientSearch (fuzzyMatch, exactMatch, historyMatch, maxResults, family, given, gender, birthDate, deathDate, postCode, gp) {
+  return !fuzzyMatch && !exactMatch && historyMatch && maxResults === '1' && family === 'Smith' && given === 'Jane' &&
     gender === 'female' && birthDate === 'eq2010-10-22' && deathDate === 'eq2010-10-22' && postCode === 'LS1 6AE' && gp === 'Y12345'
 }
