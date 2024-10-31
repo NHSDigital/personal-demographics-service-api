@@ -265,11 +265,8 @@ if (request.pathMatches('/Patient') && request.get) {
   if (isWildcardSearchLimitResults(family, gender, maxResults, birthDate[0])) {
     response.body = timestampBody(WILDCARD_SEARCH)
   }
-  if (isCompoundGivenNameSearch(fuzzyMatch, exactMatch, historyMatch, family, given, gender)) {
+  if (isCompoundGivenNameSearch(fuzzyMatch, exactMatch, historyMatch, family, given, gender, birthDate[0])) {
     response.body = timestampBody(COMPOUND_NAME_SEARCH)
-  }
-  if (!response.body) {
-    response.body = timestampBody(NO_RESPONSE)
   }
 }
 
