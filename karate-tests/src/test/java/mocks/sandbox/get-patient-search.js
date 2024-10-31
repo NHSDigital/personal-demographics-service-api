@@ -259,13 +259,13 @@ if (request.pathMatches('/Patient') && request.get) {
   }
 
   // pytest sandbox scenarios
-  if (isDefaultPatientSearch(fuzzyMatch, exactMatch, historyMatch, maxResults, family, given, gender, birthDate[0], deathDate, postCode, gp)) {
+  if (isDefaultPatientSearch(fuzzyMatch, exactMatch, historyMatch, maxResults, family, given[0], gender, birthDate[0], deathDate, postCode, gp)) {
     response.body = timestampBody(janeSmithSearchsetWithScore(1))
   }
   if (isWildcardSearchLimitResults(family, gender, maxResults, birthDate[0])) {
     response.body = timestampBody(WILDCARD_SEARCH)
   }
-  if (isCompoundGivenNameSearch(fuzzyMatch, exactMatch, historyMatch, family, given, gender)) {
+  if (isCompoundGivenNameSearch(fuzzyMatch, exactMatch, historyMatch, family, given[0], gender)) {
     response.body = timestampBody(COMPOUND_NAME_SEARCH)
   }
   if (!response.body) {
