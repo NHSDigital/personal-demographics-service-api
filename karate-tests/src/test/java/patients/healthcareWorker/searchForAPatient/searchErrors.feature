@@ -42,6 +42,7 @@ Scenario: Unsuccessful search on email/phone only
   * params { email: "j.smith@example.com", phone: "0163" }
   * method get
   * status 400
+  // Shouldn't this be a "INVALID_SEARCH_DATA" response?
   * def diagnostics = "Missing value - 'birth_date/birth_date_range_start/birth_date_range_end'"
   * match response == read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')
 
