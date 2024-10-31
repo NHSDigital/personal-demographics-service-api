@@ -81,90 +81,6 @@ function patchPatient (originalPatient, request) {
     return setResourceVersionMismatchError(request)
   }
 
-  const validOperations = ['add', 'replace', 'remove', 'test']
-  for (let i = 0; i < request.body.patches.length; i++) {
-    const patch = request.body.patches[i]
-    if (!validOperations.includes(patch.op)) {
-      return setInvalidValueError(`Invalid value - '${patch.op}' in field '0/op'`)
-    }
-  }
-  const updatedPatient = JSON.parse(JSON.stringify(originalPatient))
-  let forbiddenUpdate = false
-  const updateErrors = []
-
-  for (let i = 0; i < request.body.patches.length; i++) {
-    const patch = request.body.patches[i]
-    if (patch.op === 'add' && patch.path === '/name/-') {
-      if (patch.value.use === 'usual') {
-        forbiddenUpdate = 'Forbidden update with error - multiple usual names cannot be added'
-      } else {
-        patch.value.id = 'new-object-id'
-        updatedPatient.name.push(patch.value)
-      }
-    }
-    if (patch.op === 'add' && patch.path === '/name/0/suffix') {
-      updatedPatient.name[0].suffix = patch.value
-    }
-    if (patch.op === 'add' && patch.path === '/name/0/suffix/0') {
-      updatedPatient.name[0].suffix.splice(0, 0, patch.value)
-    }
-    if (patch.op === 'replace' && patch.path === '/name/0/given/0') {
-      updatedPatient.name[0].given[0] = patch.value
-    }
-    if (patch.op === 'replace' && patch.path === '/gender') {
-      updatedPatient.gender = patch.value
-    }
-    if (patch.op === 'replace' && patch.path === '/birthDate') {
-      updatedPatient.birthDate = patch.value
-    }
-    if (patch.op === 'remove' && patch.path === '/name/0/suffix') {
-      if (!updatedPatient.name[0].suffix) {
-        updateErrors.push("Invalid update with error - Invalid patch - can't remove non-existent object '0'")
-      } else {
-        delete updatedPatient.name[0].suffix
-      }
-    }
-    if (patch.op === 'remove' && patch.path === '/name/0/suffix/0') {
-      if (!updatedPatient.name[0].suffix) {
-        updateErrors.push("Invalid update with error - Invalid patch - can't remove non-existent object '0'")
-      } else {
-        updatedPatient.name[0].suffix.splice(0, 1)
-      }
-    }
-
-    if (patch.op === 'remove' && patch.path === '/name/1') {
-      if (!request.body.patches[0].op === 'test' || !request.body.patches[0].path.startsWith('/name/1/id')) {
-        updateErrors.push("Invalid update with error - removal '/name/1' is not immediately preceded by equivalent test - instead it is the first item")
-      } else if (request.body.patches[0].path === '/name/1/id' && request.body.patches[0].value === '123456') {
-        updateErrors.push("Invalid update with error - Invalid patch - index '1' is out of bounds")
-      } else {
-        updatedPatient.name.splice(1, 1)
-      }
-    }
-
-    if (patch.op === 'remove' && patch.path === '/name/0') {
-      if (patch.value.use === 'usual') {
-        forbiddenUpdate = 'Forbidden update with error - not permitted to remove usual name'
-      }
-    }
-
-    if (patch.op === 'remove' && patch.path === '/birthDate') {
-      forbiddenUpdate = 'Forbidden update with error - source not permitted to remove \'birthDate\''
-    }
-    // these specific error scenarios for update errors should be reviewed in SPINEDEM-2695
-    if (patch.op === 'replace' && patch.path === '/address/0/line/0' && patch.value === '2 Whitehall Quay') {
-      updateErrors.push('Invalid update with error - no id or url found for path with root /address/0')
-    } else if (patch.op === 'replace' && patch.path.startsWith('/address/0/') && !Object.prototype.hasOwnProperty.call(originalPatient, 'address')) {
-      updateErrors.push("Invalid update with error - Invalid patch - index '0' is out of bounds")
-    } else if (patch.op === 'replace' && patch.path === '/address/0/id' && patch.value === '456') {
-      updateErrors.push("Invalid update with error - no 'address' resources with object id 456")
-    } else if (patch.op === 'replace' && patch.path === '/address/0/line') {
-      updateErrors.push("Invalid update with error - Invalid patch - can't replace non-existent object 'line'")
-    } else if (patch.op === 'replace' && patch.path === '/address/0/id' && patch.value === '123456') {
-      updateErrors.push("Invalid update with error - no 'address' resources with object id '123456'")
-    }
-  }
-
   // why is it that for this specific scenario (Invalid patch - attempt to replace non-existent object),
   // we have to pick the last error message, when for all the others we pick the first error message?
   // review this logic in SPINEDEM-2695
@@ -173,6 +89,100 @@ function patchPatient (originalPatient, request) {
     "Invalid update with error - Invalid patch - can't replace non-existent object 'line'"
   ]
 
+  const validOperations = ['add', 'replace', 'remove', 'test']
+  // Validate patch operations
+  for (const patch of request.body.patches) {
+    if (!validOperations.includes(patch.op)) {
+      return setInvalidValueError(`Invalid value - '${patch.op}' in field '0/op'`)
+    }
+  }
+
+  const updatedPatient = JSON.parse(JSON.stringify(originalPatient))
+  const updateErrors = []
+  let forbiddenUpdate = null
+
+  // Helper functions for specific operations
+  const addNameSuffix = (suffix) => {
+    updatedPatient.name[0].suffix = suffix
+  }
+  const removeNameSuffix = () => delete updatedPatient.name[0].suffix
+  const updateAddressLine = (value) => {
+    if (value === '2 Whitehall Quay') {
+      updateErrors.push('Invalid update with error - no id or url found for path with root /address/0')
+    } else if (!Object.prototype.hasOwnProperty.call(originalPatient, 'address')) {
+      updateErrors.push("Invalid update with error - Invalid patch - index '0' is out of bounds")
+    } else if (value === '456') {
+      updateErrors.push("Invalid update with error - no 'address' resources with object id 456")
+    } else if (value === '123456') {
+      updateErrors.push("Invalid update with error - no 'address' resources with object id '123456'")
+    }
+  }
+  // Helper to handle specific name removal errors
+  function handleNameRemovalError (request, updateErrors) {
+    if (!request.body.patches[0]?.op === 'test' || !request.body.patches[0].path.startsWith('/name/1/id')) {
+      updateErrors.push("Invalid update with error - removal '/name/1' is not immediately preceded by equivalent test - instead it is the first item")
+    } else if (request.body.patches[0].path === '/name/1/id' && request.body.patches[0].value === '123456') {
+      updateErrors.push("Invalid update with error - Invalid patch - index '1' is out of bounds")
+    } else {
+      updatedPatient.name.splice(1, 1)
+    }
+  }
+
+  for (const patch of request.body.patches) {
+    const { op, path, value } = patch
+
+    switch (op) {
+      case 'add':
+        if (path === '/name/-') {
+          if (value.use === 'usual') {
+            forbiddenUpdate = 'Forbidden update with error - multiple usual names cannot be added'
+          } else {
+            value.id = 'new-object-id'
+            updatedPatient.name.push(value)
+          }
+        } else if (path === '/name/0/suffix') addNameSuffix(value)
+        else if (path === '/name/0/suffix/0') updatedPatient.name[0].suffix.unshift(value)
+        break
+
+      case 'replace':
+        if (path === '/name/0/given/0') {
+          updatedPatient.name[0].given[0] = value
+        } else if (path === '/gender') {
+          updatedPatient.gender = value
+        } else if (path === '/birthDate') {
+          updatedPatient.birthDate = value
+        } else if (path === '/address/0/line/0') {
+          updateAddressLine(value)
+        } else if (path.startsWith('/address/0/') && !Object.prototype.hasOwnProperty.call(originalPatient, 'address')) {
+          updateErrors.push("Invalid update with error - Invalid patch - index '0' is out of bounds")
+        } else if (path === '/address/0/id') {
+          updateAddressLine(value)
+        } else if (path === '/address/0/line') {
+          updateErrors.push("Invalid update with error - Invalid patch - can't replace non-existent object 'line'")
+        }
+        break
+
+      case 'remove':
+        if (path === '/name/0/suffix') {
+          if (!updatedPatient.name[0].suffix) {
+            updateErrors.push("Invalid update with error - Invalid patch - can't remove non-existent object '0'")
+          } else {
+            removeNameSuffix()
+          }
+        } else if (path === '/name/0/suffix/0') {
+          if (!updatedPatient.name[0].suffix) {
+            updateErrors.push("Invalid update with error - Invalid patch - can't remove non-existent object '0'")
+          } else {
+            updatedPatient.name[0].suffix.splice(0, 1)
+          }
+        } else if (path === '/name/1') {
+          handleNameRemovalError(request, updateErrors)
+        }
+        break
+    }
+  }
+
+  // Handle final update errors
   if (forbiddenUpdate) {
     return setForbiddenUpdateError(request, forbiddenUpdate)
   } else if (updateErrors.length > 0) {
@@ -182,7 +192,8 @@ function patchPatient (originalPatient, request) {
       return setInvalidUpdateError(request, updateErrors[0])
     }
   } else {
-    updatedPatient.meta.versionId = (parseInt(originalPatient.meta.versionId) + 1)
+    // Update patient meta versionId and return
+    updatedPatient.meta.versionId = (parseInt(originalPatient.meta.versionId) + 1).toString()
     return updatedPatient
   }
 }
