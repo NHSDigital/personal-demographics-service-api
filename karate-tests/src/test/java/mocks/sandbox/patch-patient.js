@@ -57,17 +57,18 @@ function setPreconditionFailedError (request, diagnostics) {
     Validate the headers specific to patching a patient
 */
 function validatePatchHeaders (request) {
-  let valid = true
-  if (!request.header('if-match')) {
+  const ifMatchHeader = request.header('if-match')
+  const contentType = request.header('content-type')
+  if (!ifMatchHeader) {
     setPreconditionFailedError(request, NO_IF_MATCH_HEADER)
-    valid = false
+    return false
   }
-  if (valid && !request.header('content-type').startsWith('application/json')) {
+  if (!contentType || !contentType.startsWith('application/json')) {
     setUnsupportedServiceError()
     response.headers = basicResponseHeaders(request)
-    valid = false
+    return false
   }
-  return valid
+  return true
 }
 
 /*
