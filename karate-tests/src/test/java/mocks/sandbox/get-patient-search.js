@@ -35,7 +35,6 @@ const DEATHDATE_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/
 const FUZZY_SINGLE_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/fuzzy_single_searchset.json')
 const FUZZY_MULTI_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/fuzzy_multimatch_searchset.json')
 const HISTORIC_DATA_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/med_rowenad_searchset.json')
-const COMPOUND_NAME_SEARCH = context.read('classpath:mocks/stubs/searchResponses/compound_name_search.json')
 
 function janeSmithSearchsetWithScore (score) {
   return {
@@ -141,8 +140,6 @@ if (request.pathMatches('/Patient') && request.get) {
   const gender = request.param('gender')
   const birthDate = request.params.birthdate || []
   const postalCode = request.param('address-postalcode')
-  const postCode = request.param('address-postcode')
-  const exactMatch = request.paramBool('_exact-match')
   const fuzzyMatch = request.paramBool('_fuzzy-match')
   const phone = request.param('phone')
   const email = request.param('email')
@@ -150,6 +147,7 @@ if (request.pathMatches('/Patient') && request.get) {
   const historyMatch = request.param('_history')
   const gp = request.param('general-practitioner')
   const deathDate = request.param('death-date')
+  // Why isn't _exact-match used?
 
   if (validateHeaders(request) && validateQueryParams(request)) {
     if (fuzzyMatch) {
@@ -256,31 +254,4 @@ if (request.pathMatches('/Patient') && request.get) {
       }
     }
   }
-
-  // pytest sandbox scenarios
-  if (isDefaultPatientSearch(fuzzyMatch, exactMatch, historyMatch, maxResults, family, given[0], gender, birthDate[0], deathDate, postCode, gp)) {
-    response.body = timestampBody(janeSmithSearchsetWithScore(1))
-  }
-  if (isWildcardSearchLimitResults(family, gender, maxResults, birthDate[0])) {
-    response.body = timestampBody(WILDCARD_SEARCH)
-  }
-  if (isCompoundGivenNameSearch(fuzzyMatch, exactMatch, historyMatch, family, given, gender, birthDate[0])) {
-    response.body = timestampBody(COMPOUND_NAME_SEARCH)
-  }
-}
-
-// This covers "Compound Given Name Search" and "Multi Given Name Search including Phone and Email"
-function isCompoundGivenNameSearch (fuzzyMatch, exactMatch, historyMatch, family, given, gender, birthDate) {
-  return !fuzzyMatch && !exactMatch & historyMatch && family === 'Smith' && given.includes('John Paul') && given.includes('James') &&
-    gender === 'male' && birthDate === 'eq2010-10-22'
-}
-
-function isWildcardSearchLimitResults (family, gender, maxResults, birthDate) {
-  return family === 'Sm*' && gender === 'female' && birthDate === 'eq2010-10-22' && maxResults === '2'
-}
-
-// This covers 'Default Parameters Search', 'Default Parameters Search with Phone' and 'Default Parameters Search'
-function isDefaultPatientSearch (fuzzyMatch, exactMatch, historyMatch, maxResults, family, given, gender, birthDate, deathDate, postCode, gp) {
-  return !fuzzyMatch && !exactMatch && historyMatch && maxResults === '1' && family === 'Smith' && given === 'Jane' &&
-    gender === 'female' && birthDate === 'eq2010-10-22' && deathDate === 'eq2010-10-22' && postCode === 'LS1 6AE' && gp === 'Y12345'
 }
