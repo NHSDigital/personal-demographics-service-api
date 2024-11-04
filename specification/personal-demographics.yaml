@@ -118,8 +118,8 @@ info:
     ### Restricted access
     You must only use this access mode if you need to: 
     * search for a patient and get a single match result returned 
-    * get a single patient's details
-    * get a single patient's related people
+    * get a patient's details
+    * get a patient's related people
 
     This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis), meaning we authenticate and authorise the calling application but not the end user. 
 
@@ -182,7 +182,7 @@ info:
     
     Errors specific to each API are shown in the Endpoints section, under Response. See our [reference guide](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#http-status-codes) for more on errors.
 
-    Your API-calling application should have a mechanism to automatically try again, possibly giving status information to your end user, before giving up. If your application fails on the first API failure, it could be quite brittle. See our [reference guide](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#error-handling) for more information about error handling.
+    Your API-calling application should have a mechanism to automatically try again, for example by giving status information to your end user, before giving up. See our [reference guide](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#error-handling) for more information about error handling.
     
     ## Open source
     You might find the following [open source](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#open-source) resources useful:
