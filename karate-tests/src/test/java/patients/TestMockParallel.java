@@ -13,6 +13,7 @@ public class TestMockParallel {
     @Test
     void testMockParallel() {
         Results results = Runner.path("classpath:patients")
+            .karateEnv("sandbox")
             .tags("@sandbox, @sandbox-only", "~@smoke-only")
             .outputJunitXml(true)
             .parallel(5);

@@ -9,6 +9,19 @@ function fn() {
     // https://github.com/karatelabs/karate#report-verbosity
     var LM = Java.type('demo.headers.DemoLogModifier');
     karate.configure('logModifier', new LM());
+  } else if (env == 'sandbox') { // TODO: Ensure steps for running sandbox locally are correct.
+    var config = {
+      oauth2MockURL: `${java.lang.System.getenv('OAUTH_BASE_URI')}/${java.lang.System.getenv('OAUTH_PROXY')}`,
+      pdsBasePath: `${java.lang.System.getenv('PDS_BASE_PATH')}`,
+      baseURL: `${java.lang.System.getenv('OAUTH_BASE_URI')}/${java.lang.System.getenv('PDS_BASE_PATH')}`,
+      clientID: java.lang.System.getenv('CLIENT_ID'),
+      clientSecret: java.lang.System.getenv('CLIENT_SECRET'),
+      signingKey: java.lang.System.getenv('APPLICATION_RESTRICTED_SIGNING_KEY_PATH'),
+      apiKey: java.lang.System.getenv('APPLICATION_RESTRICTED_API_KEY'),
+      keyID: java.lang.System.getenv('KEY_ID'),
+      clientID: java.lang.System.getenv('CLIENT_ID'),
+      internalServerURL: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4'
+    };
   } else if (env == 'local-sandbox') { // TODO: Ensure steps for running sandbox locally are correct.
     var port = karate.properties['mockserver.port'] || '8080';      
     var config = {

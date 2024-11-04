@@ -20,7 +20,7 @@ Background:
   * url baseURL
 
 Scenario: Patient has one related person
-  * def nhsNumber = karate.env == 'mock' ? '9000000017' : '9693633679'
+  * def nhsNumber = karate.env.includes('sandbox') ? '9000000017' : '9693633679'
   * path 'Patient', nhsNumber, 'RelatedPerson'
   * method get
   * status 200
@@ -50,7 +50,7 @@ Scenario: Patient has more than one related person
   * match response.total == 2
 
 Scenario: Patient doesn't have a related person
-  * def nhsNumber = karate.env == 'mock' ? '9000000025' : '9693632109'
+  * def nhsNumber = karate.env.includes('sandbox') ? '9000000025' : '9693632109'
   * path 'Patient', nhsNumber, 'RelatedPerson'
   * method get
   * status 200

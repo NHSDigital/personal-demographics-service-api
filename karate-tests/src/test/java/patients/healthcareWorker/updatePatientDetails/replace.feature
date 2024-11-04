@@ -12,7 +12,7 @@ Feature: Patch patient - Replace data
     # To replace the attribute of an object, you need to provide the id of the object you want to replace
     # in a preceding operation. (This is simlar to, but different from removing an object - we call 
     # "replace" instead of "test")
-    * def nhsNumber = karate.env == 'mock' ? '9000000009' : '5900056597'
+    * def nhsNumber = karate.env.includes('sandbox') ? '9000000009' : '5900056597'
     * configure headers = call read('classpath:auth/auth-headers.js') 
     * path 'Patient', nhsNumber
     * method get
