@@ -109,6 +109,7 @@ async def poll_until(url: str,
 #  Arguments accepted are the actual Response & expected Response.
 def check_retrieve_response_body(response: requests.Response, expected_response: dict) -> None:
     response_body = json.loads(response.text)
+    del response_body['meta']['versionId'] # Karate sandbox is currently stateful, so versionId's are not checked.
     with check:
         assert response_body == expected_response, (
             f"UNEXPECTED RESPONSE: "
