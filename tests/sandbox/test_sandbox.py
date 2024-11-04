@@ -8,53 +8,53 @@ from .utils import helpers
 from .configuration import config
 
 
-# @pytest.mark.deployment_scenarios
-# @pytest.mark.skipif(
-#     config.SANDBOX_BASE_URL.startswith("http://0.0.0.0"),
-#     reason="Only run these these tests against a deployed sandbox")
-# class TestPDSSandboxDeploymentSuite:
-#     """Sandbox PDS Deployment Scenarios. Checks performed: status_codes and version deployed"""
+@pytest.mark.deployment_scenarios
+@pytest.mark.skipif(
+    config.SANDBOX_BASE_URL.startswith("http://0.0.0.0"),
+    reason="Only run these these tests against a deployed sandbox")
+class TestPDSSandboxDeploymentSuite:
+    """Sandbox PDS Deployment Scenarios. Checks performed: status_codes and version deployed"""
 
-#     @pytest.mark.asyncio
-#     async def test_wait_for_ping(self,
-#                                  commit_id: str):
-#         async def apigee_deployed(response: ClientResponse):
-#             if response.status != 200:
-#                 return False
-#             body = await response.json(content_type=None)
-#             return body.get("commitId") == commit_id
+    @pytest.mark.asyncio
+    async def test_wait_for_ping(self,
+                                 commit_id: str):
+        async def apigee_deployed(response: ClientResponse):
+            if response.status != 200:
+                return False
+            body = await response.json(content_type=None)
+            return body.get("commitId") == commit_id
 
-#         await helpers.poll_until(url=f"{config.SANDBOX_BASE_URL}/_ping",
-#                                  until=apigee_deployed,
-#                                  timeout=30)
+        await helpers.poll_until(url=f"{config.SANDBOX_BASE_URL}/_ping",
+                                 until=apigee_deployed,
+                                 timeout=30)
 
-#     @pytest.mark.asyncio
-#     async def test_check_status_is_secured(self):
-#         response = requests.get(f"{config.SANDBOX_BASE_URL}/_status")
-#         assert response.status_code == 401
+    @pytest.mark.asyncio
+    async def test_check_status_is_secured(self):
+        response = requests.get(f"{config.SANDBOX_BASE_URL}/_status")
+        assert response.status_code == 401
 
-#     @pytest.mark.asyncio
-#     async def test_wait_for_status(self,
-#                                    commit_id: str,
-#                                    status_endpoint_header: Dict[str, str]):
-#         async def is_deployed(response: ClientResponse):
-#             if response.status != 200:
-#                 return False
-#             body = await response.json()
+    @pytest.mark.asyncio
+    async def test_wait_for_status(self,
+                                   commit_id: str,
+                                   status_endpoint_header: Dict[str, str]):
+        async def is_deployed(response: ClientResponse):
+            if response.status != 200:
+                return False
+            body = await response.json()
 
-#             if body.get("commitId") != commit_id:
-#                 return False
+            if body.get("commitId") != commit_id:
+                return False
 
-#             backend = helpers.dict_path(body, path=["checks", "healthcheck", "outcome", "version"])
-#             if not backend:
-#                 return True
+            backend = helpers.dict_path(body, path=["checks", "healthcheck", "outcome", "version"])
+            if not backend:
+                return True
 
-#             return backend.get("commitId") == commit_id
+            return backend.get("commitId") == commit_id
 
-#         await helpers.poll_until(url=f"{config.SANDBOX_BASE_URL}/_status",
-#                                  headers=status_endpoint_header,
-#                                  until=is_deployed,
-#                                  timeout=120)
+        await helpers.poll_until(url=f"{config.SANDBOX_BASE_URL}/_status",
+                                 headers=status_endpoint_header,
+                                 until=is_deployed,
+                                 timeout=120)
 
 
 @pytest.mark.retrieve_scenarios
