@@ -172,7 +172,7 @@ function patchPatient (originalPatient, request) {
       return setInvalidUpdateError(request, updateErrors[0])
     }
   } else {
-    updatedPatient.meta.versionId = (parseInt(originalPatient.meta.versionId) + 1)
+    updatedPatient.meta.versionId = '' + (parseInt(originalPatient.meta.versionId) + 1)
     return updatedPatient
   }
 }
