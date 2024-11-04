@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import mocks.MockRunner;
 
 
-public class TestMockParallel {
+public class TestLocalMockParallel {
 
     static HttpServer server;
 
@@ -22,7 +22,7 @@ public class TestMockParallel {
     }
 
     @Test
-    void testMockParallel() {
+    void testLocalMockParallel() {
         Results results = Runner.path("classpath:patients")
             .karateEnv("local-sandbox")
             .tags("@sandbox, @sandbox-only", "~@smoke-only")
