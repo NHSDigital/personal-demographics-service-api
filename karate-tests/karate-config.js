@@ -13,7 +13,7 @@ function fn() {
     var config = {
       oauth2MockURL: `${java.lang.System.getenv('OAUTH_BASE_URI')}/${java.lang.System.getenv('OAUTH_PROXY')}`,
       pdsBasePath: `${java.lang.System.getenv('PDS_BASE_PATH')}`,
-      baseURL: `${java.lang.System.getenv('OAUTH_BASE_URI')}/${java.lang.System.getenv('PDS_BASE_PATH')}`,
+      baseURL: `https://${java.lang.System.getenv('APIGEE_ENVIRONMENT')}.api.service.nhs.uk/${java.lang.System.getenv('PDS_BASE_PATH')}`,
       clientID: java.lang.System.getenv('CLIENT_ID'),
       clientSecret: java.lang.System.getenv('CLIENT_SECRET'),
       signingKey: java.lang.System.getenv('APPLICATION_RESTRICTED_SIGNING_KEY_PATH'),
