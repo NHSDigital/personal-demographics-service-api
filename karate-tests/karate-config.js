@@ -9,7 +9,7 @@ function fn() {
     // https://github.com/karatelabs/karate#report-verbosity
     var LM = Java.type('demo.headers.DemoLogModifier');
     karate.configure('logModifier', new LM());
-  } else if (env == 'local') { // TODO: Ensure steps for running sandbox locally are correct.
+  } else if (env == 'local-sandbox') { // TODO: Ensure steps for running sandbox locally are correct.
     var port = karate.properties['mockserver.port'] || '8080';      
     var config = {
       oauth2MockURL: `http://localhost:${port}`,
