@@ -314,7 +314,7 @@ paths:
         Use this endpoint to search for a patient in PDS.
         
         You can search using various combinations of:
-          * given name, which includes any first names and middle names the patient has
+          * given name
           * family name
           * gender
           * postcode
@@ -463,9 +463,11 @@ paths:
         It is unlikely to work well with wildcards or fuzzy search.
 
         ### Names
-        Matching names can be difficult due to:
-          * names that include middle names, such as in `Jane Anne Smith`
-          * [compound first names](https://en.wikipedia.org/wiki/Given_name#Compound), such as in `John Paul Smith`
+        Matching names can be difficult when a person has multiple given names, including:
+          * given names that include middle names, such as in `Jane Anne Smith`
+          * [compound given names](https://en.wikipedia.org/wiki/Given_name#Compound), such as in `John Paul Smith`
+
+        Matching names can also be difficult when a name has:
           * multiple or double-barrelled surnames, such as in `Michael Smith-Jones`
           * homophones, such as `Smith` and `Smythe` or `Ann` and `Anne`
           * abbreviated names, such as `Bob` instead of `Robert`
@@ -1956,7 +1958,7 @@ components:
 
         Not case sensitive. Max 35 characters.
         Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
-        Wildcard searches will match the start of the first name and not subsequent given names, for example the given names "Alan Michael" can be searched with "Ala*" but not "Mic*".
+        Wildcard searches will match the start of the first given name and not subsequent given names, for example the given names "Alan Michael" can be searched with "Ala*" but not "Mic*".
         Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
 
         A patient may have more than one given name, for example because they have a first name and a middle name.
@@ -1966,7 +1968,7 @@ components:
         The first name may be a [compound name](https://en.wikipedia.org/wiki/Given_name#Compound), for example `John Paul`.
         To search for `John Paul James Smith` (where `John Paul` is the first name, `James` is the middle name, and `Smith` the family name) use `given=John%20Paul&given=James&family=Smith`.
 
-        Note that it is not necessary to specify middle names, and that doing so may impact your search results in the case they are not recorded in the demographics system.
+        It is not necessary to specify subsequent given names, and doing so may impact your search results if they are not recorded in the PDS.
       example: Jane
       in: query
       required: false
