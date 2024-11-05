@@ -59,3 +59,11 @@ Scenario: Get a "restricted" (sensitive) patient
       "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
     }
     """
+   
+  Scenario: Get an "invalid" patient
+    * def nhsNumber = '9000000000'
+    * def expectedBody = read('classpath:mocks/stubs/errorResponses/INVALID_RESOURCE_ID.json')
+    * path 'Patient', nhsNumber
+    * method get
+    * status 400
+    * match response == expectedBody
