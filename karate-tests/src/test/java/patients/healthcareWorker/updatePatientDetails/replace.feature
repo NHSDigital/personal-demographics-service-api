@@ -227,3 +227,71 @@ Feature: Patch patient - Replace data
       * def display = 'Patient cannot perform this action'
       * def diagnostics = "Invalid update with error - interpreterRequired cannot be removed"
       * match response == read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
+      
+Scenario: Healthcare worker can't remove usual name and DOB
+  * def expectedResponse = read('classpath:mocks/stubs/errorResponses/FORBIDDEN_UPDATE.json')
+  * def nhsNumber = '9733162043'
+  * configure headers = call read('classpath:auth/auth-headers.js') 
+  * path 'Patient', nhsNumber
+  * method get
+  * status 200
+  * def originalVersion = parseInt(response.meta.versionId)
+  * def usualNameIndex = response.name.findIndex(x => x.use == 'usual')
+  * def pathToUsualName = "/name/"+ usualNameIndex 
+  * def usualNameDetails = response.name.find(x => x.use == 'usual')
+  * def birthDateValue = response.birthDate
+  * def etag = karate.response.header('etag')
+  # remove usual name
+  * def diagnostics = "Forbidden update with error - not permitted to remove usual name"
+  * configure headers = call read('classpath:auth/auth-headers.js') 
+  * header Content-Type = "application/json-patch+json"
+  * header If-Match = etag
+  * path 'Patient', nhsNumber
+
+  * def patchRequest = 
+  """
+    {
+      "patches": [
+        {
+          "op": "test",
+          "path": "#(pathToUsualName)",
+          "value":"#(usualNameDetails)"       
+        },
+        {
+        "op": "remove",
+          "path": "#(pathToUsualName)"
+        }
+      ]
+    }
+  """
+  * request patchRequest
+  * method patch
+  * status 403
+  * match response == expectedResponse
+  # remove date of birth
+  * def diagnostics = "Forbidden update with error - source not permitted to remove 'birthDate'"
+  * configure headers = call read('classpath:auth/auth-headers.js') 
+  * header Content-Type = "application/json-patch+json"
+  * header If-Match = etag
+  * path 'Patient', nhsNumber
+
+  * def patchRequest = 
+  """
+    {
+      "patches": [
+        {
+          "op": "test",
+          "path": "/birthDate",
+          "value":"#(birthDateValue)"       
+        },
+        {
+        "op": "remove",
+          "path": "/birthDate"
+        }
+      ]
+    }
+  """
+  * request patchRequest
+  * method patch
+  * status 403
+  * match response == expectedResponse
