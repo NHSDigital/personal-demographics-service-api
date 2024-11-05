@@ -6,7 +6,7 @@ Note the use of the Karate retry functionality in this feature:
   - `* retry until responseStatus != 429 && responseStatus != 503`
 
 We're using it because:
-- the post patient functionality is subject to a spik arrest policy, 
+- the post patient functionality is subject to a spike arrest policy, 
     whereby requests can be rejected with a 429 response.
 - the system may also throw a SERVICE_UNAVAILABLE error - "The downstream 
   domain processing has not completed within the configured timeout period. 
