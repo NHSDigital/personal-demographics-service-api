@@ -786,7 +786,7 @@ paths:
         ```json
         {
             "patches": [
-              { "op": "add", "path": "/deceasedDateTime", "value": "2025-01-01" }
+              { "op": "add", "path": "/deceasedDateTime", "value": "2020-01-01" }
           ]
         }
         ```
