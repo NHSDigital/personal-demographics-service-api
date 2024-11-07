@@ -6,7 +6,7 @@
 
 /* Functions defined in operations.js */
 /* global updateAddressDetails, handleNameRemovalError, removeSuffixIfExists, removeNameSuffix, updateGivenName, updateGender, updateBirthDate,
- addNameSuffixAtStart, addNameSuffix */
+ addNameSuffixAtStart, addNameSuffix, addNewName, removeUsualName, removeBirthDate, forbiddenUpdate */
 
 function buildResponseHeaders (request, patient) {
   return {
@@ -95,27 +95,7 @@ function patchPatient (originalPatient, request) {
   }
 
   const updatedPatient = JSON.parse(JSON.stringify(originalPatient))
-  let forbiddenUpdate = null
   const updateErrors = []
-
-  const addNewName = (value) => {
-    if (value.use === 'usual') {
-      forbiddenUpdate = 'Forbidden update with error - multiple usual names cannot be added'
-    } else {
-      value.id = 'new-object-id'
-      updatedPatient.name.push(value)
-    }
-  }
-
-  const removeUsualName = (updatedPatient) => {
-    if (updatedPatient.name[0].use === 'usual') {
-      forbiddenUpdate = 'Forbidden update with error - not permitted to remove usual name'
-    }
-  }
-
-  const removeBirthDate = () => {
-    forbiddenUpdate = 'Forbidden update with error - source not permitted to remove \'birthDate\''
-  }
 
   for (const patch of request.body.patches) {
     const { op, path, value } = patch
@@ -123,7 +103,7 @@ function patchPatient (originalPatient, request) {
     switch (op) {
       case 'add': {
         const addPaths = {
-          '/name/-': () => addNewName(value),
+          '/name/-': () => addNewName(value, updatedPatient),
           '/name/0/suffix': () => addNameSuffix(updatedPatient, value),
           '/name/0/suffix/0': () => addNameSuffixAtStart(updatedPatient, value)
         }

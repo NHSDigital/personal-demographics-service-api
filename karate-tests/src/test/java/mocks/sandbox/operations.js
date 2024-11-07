@@ -54,7 +54,22 @@ function addNameSuffix (patient, suffix) {
   patient.name[0].suffix = suffix
 }
 
-function addNewName (patient, name) {
-  name.id = 'new-object-id'
-  patient.name.push(name)
+let forbiddenUpdate = null
+function addNewName (value, patient) {
+  if (value.use === 'usual') {
+    forbiddenUpdate = 'Forbidden update with error - multiple usual names cannot be added'
+  } else {
+    value.id = 'new-object-id'
+    patient.name.push(value)
+  }
+}
+
+function removeUsualName (patient) {
+  if (patient.name[0].use === 'usual') {
+    forbiddenUpdate = 'Forbidden update with error - not permitted to remove usual name'
+  }
+}
+
+function removeBirthDate () {
+  forbiddenUpdate = 'Forbidden update with error - source not permitted to remove \'birthDate\''
 }
