@@ -325,8 +325,7 @@ if (request.pathMatches('/Patient') && request.get) {
     maxResults: request.param('_max-results'),
     historyMatch: request.param('_history'),
     gp: request.param('general-practitioner'),
-    deathDate: request.param('death-date'),
-    request
+    deathDate: request.param('death-date')
   }
 
   if (validateHeaders(request) && validateQueryParams(request)) {

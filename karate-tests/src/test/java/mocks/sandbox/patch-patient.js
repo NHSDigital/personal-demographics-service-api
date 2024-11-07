@@ -114,16 +114,13 @@ function patchPatient (originalPatient, request) {
       }
 
       case 'replace': {
-        const updateAddressLine = () => { updateAddressDetails(value, originalPatient, updateErrors) }
-        const updateAddressId = () => { updateAddressDetails(value, originalPatient, updateErrors) }
-
         const replacePaths = {
-          '/name/0/given/0': updateGivenName(updatedPatient, value),
-          '/gender': updateGender(updatedPatient, value),
-          '/birthDate': updateBirthDate(updatedPatient, value),
-          '/address/0/line/0': updateAddressLine,
-          '/address/0/line': updateAddressLine,
-          '/address/0/id': updateAddressId
+          '/name/0/given/0': () => updateGivenName(updatedPatient, value),
+          '/gender': () => updateGender(updatedPatient, value),
+          '/birthDate': () => updateBirthDate(updatedPatient, value),
+          '/address/0/line/0': () => updateAddressDetails(value, originalPatient, updateErrors),
+          '/address/0/line': () => updateAddressDetails(value, originalPatient, updateErrors),
+          '/address/0/id': () => updateAddressDetails(value, originalPatient, updateErrors)
         }
         if (replacePaths[path]) {
           replacePaths[path]()
