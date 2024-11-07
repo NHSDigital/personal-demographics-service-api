@@ -4,6 +4,10 @@
 /* Functions defined in supporting-functions.js */
 /* global setInvalidValueError, setUnsupportedServiceError, validateHeaders, validateNHSNumber, validatePatientExists, basicResponseHeaders */
 
+/* Functions defined in operations.js */
+/* global updateAddressDetails, handleNameRemovalError, removeSuffixIfExists, removeNameSuffix, updateGivenName, updateGender, updateBirthDate,
+ addNameSuffixAtStart, addNameSuffix */
+
 function buildResponseHeaders (request, patient) {
   return {
     'content-type': 'application/fhir+json',
@@ -29,14 +33,6 @@ function setResourceVersionMismatchError (request) {
   response.status = 409
 }
 
-function setForbiddenUpdateError (request, diagnostics) {
-  const body = context.read('classpath:mocks/stubs/errorResponses/FORBIDDEN_UPDATE.json')
-  body.issue[0].diagnostics = diagnostics
-  response.headers = basicResponseHeaders(request)
-  response.body = body
-  response.status = 403
-}
-
 function setInvalidUpdateError (request, diagnostics) {
   const body = context.read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
   body.issue[0].diagnostics = diagnostics
@@ -51,6 +47,14 @@ function setPreconditionFailedError (request, diagnostics) {
   response.headers = basicResponseHeaders(request)
   response.body = body
   response.status = 412
+}
+
+function setForbiddenUpdateError (diagnostics) {
+  const body = context.read('classpath:mocks/stubs/errorResponses/FORBIDDEN_UPDATE.json')
+  body.issue[0].diagnostics = diagnostics
+  response.headers = basicResponseHeaders(request)
+  response.body = body
+  response.status = 403
 }
 
 /*
@@ -82,14 +86,6 @@ function patchPatient (originalPatient, request) {
     return setResourceVersionMismatchError(request)
   }
 
-  // why is it that for this specific scenario (Invalid patch - attempt to replace non-existent object),
-  // we have to pick the last error message, when for all the others we pick the first error message?
-  // review this logic in SPINEDEM-2695
-  const rogueErrors = [
-    "Invalid update with error - no 'address' resources with object id 456",
-    "Invalid update with error - Invalid patch - can't replace non-existent object 'line'"
-  ]
-
   const validOperations = ['add', 'replace', 'remove', 'test']
   // Validate patch operations
   for (const patch of request.body.patches) {
@@ -102,41 +98,14 @@ function patchPatient (originalPatient, request) {
   const updateErrors = []
   let forbiddenUpdate = null
 
-  // Helper functions for specific operations
-  const addNameSuffix = (suffix) => {
-    updatedPatient.name[0].suffix = suffix
-  }
   const addNewName = (value) => {
+    console.log('add name been called ::::::::::::::::::::')
     if (value.use === 'usual') {
       forbiddenUpdate = 'Forbidden update with error - multiple usual names cannot be added'
+      console.log('forbidden update is set:::', forbiddenUpdate)
     } else {
       value.id = 'new-object-id'
       updatedPatient.name.push(value)
-    }
-  }
-  const addNameSuffixAtStart = (value) => {
-    updatedPatient.name[0].suffix.unshift(value)
-  }
-  const removeNameSuffix = () => delete updatedPatient.name[0].suffix
-  function updateAddressDetails (value) {
-    if (value === '2 Whitehall Quay') {
-      updateErrors.push('Invalid update with error - no id or url found for path with root /address/0')
-    } else if (!Object.prototype.hasOwnProperty.call(originalPatient, 'address')) {
-      updateErrors.push("Invalid update with error - Invalid patch - index '0' is out of bounds")
-    } else if (value === '456') {
-      updateErrors.push("Invalid update with error - no 'address' resources with object id 456")
-    } else if (value === '123456') {
-      updateErrors.push("Invalid update with error - no 'address' resources with object id '123456'")
-    }
-  }
-  // Helper to handle specific name removal errors
-  function handleNameRemovalError (request, updateErrors) {
-    if (!request.body.patches[0]?.op === 'test' || !request.body.patches[0].path.startsWith('/name/1/id')) {
-      updateErrors.push("Invalid update with error - removal '/name/1' is not immediately preceded by equivalent test - instead it is the first item")
-    } else if (request.body.patches[0].path === '/name/1/id' && request.body.patches[0].value === '123456') {
-      updateErrors.push("Invalid update with error - Invalid patch - index '1' is out of bounds")
-    } else {
-      updatedPatient.name.splice(1, 1)
     }
   }
 
@@ -146,9 +115,9 @@ function patchPatient (originalPatient, request) {
     switch (op) {
       case 'add': {
         const addPaths = {
-          '/name/-': () => addNewName(value),
-          '/name/0/suffix': () => addNameSuffix(value),
-          '/name/0/suffix/0': () => addNameSuffixAtStart(value)
+          '/name/-': addNewName(value),
+          '/name/0/suffix': addNameSuffix(updatedPatient, value),
+          '/name/0/suffix/0': addNameSuffixAtStart(updatedPatient, value)
         }
         if (addPaths[path]) {
           addPaths[path]()
@@ -157,43 +126,30 @@ function patchPatient (originalPatient, request) {
       }
 
       case 'replace': {
-        const updateGivenName = () => { updatedPatient.name[0].given[0] = value }
-        const updateGender = () => { updatedPatient.gender = value }
-        const updateBirthDate = () => { updatedPatient.birthDate = value }
-        const updateAddressLine = () => { updateAddressDetails(value) }
-        const updateAddressId = () => { updateAddressDetails(value) }
+        const updateAddressLine = () => { updateAddressDetails(value, originalPatient, updateErrors) }
+        const updateAddressId = () => { updateAddressDetails(value, originalPatient, updateErrors) }
 
         const replacePaths = {
-          '/name/0/given/0': updateGivenName,
-          '/gender': updateGender,
-          '/birthDate': updateBirthDate,
+          '/name/0/given/0': updateGivenName(updatedPatient, value),
+          '/gender': updateGender(updatedPatient, value),
+          '/birthDate': updateBirthDate(updatedPatient, value),
           '/address/0/line/0': updateAddressLine,
+          '/address/0/line': updateAddressLine,
           '/address/0/id': updateAddressId
         }
         if (replacePaths[path]) {
           replacePaths[path]()
         } else if (path.startsWith('/address/0/') && !Object.prototype.hasOwnProperty.call(originalPatient, 'address')) {
           updateErrors.push("Invalid update with error - Invalid patch - index '0' is out of bounds")
-        } else if (path === '/address/0/line') {
-          updateErrors.push("Invalid update with error - Invalid patch - can't replace non-existent object 'line'")
         }
         break
       }
 
       case 'remove':{
-        const removeSuffixIfExists = (suffixIndex) => {
-          if (!updatedPatient.name[0].suffix) {
-            updateErrors.push("Invalid update with error - Invalid patch - can't remove non-existent object '0'")
-          } else if (suffixIndex !== undefined) {
-            updatedPatient.name[0].suffix.splice(suffixIndex, 1)
-          } else {
-            removeNameSuffix()
-          }
-        }
         const removePaths = {
-          '/name/0/suffix': () => removeSuffixIfExists(),
-          '/name/0/suffix/0': () => removeSuffixIfExists(0),
-          '/name/1': () => handleNameRemovalError(request, updateErrors)
+          '/name/0/suffix': () => removeNameSuffix(updatedPatient),
+          '/name/0/suffix/0': () => removeSuffixIfExists(updatedPatient, updateErrors, 0),
+          '/name/1': () => handleNameRemovalError(request, updateErrors, updatedPatient)
         }
         if (removePaths[path]) {
           removePaths[path]()
@@ -203,8 +159,18 @@ function patchPatient (originalPatient, request) {
     }
   }
 
-  // Handle final update errors
+  console.log('Outside of for loop :::::::::::::::;;;;;;;;;;;;;;;', forbiddenUpdate)
+
+  // why is it that for this specific scenario (Invalid patch - attempt to replace non-existent object),
+  // we have to pick the last error message, when for all the others we pick the first error message?
+  // review this logic in SPINEDEM-2695
+  const rogueErrors = [
+    "Invalid update with error - no 'address' resources with object id 456",
+    "Invalid update with error - Invalid patch - can't replace non-existent object 'line'"
+  ]
+
   if (forbiddenUpdate) {
+    console.log('inside a loop:::::::::::::', forbiddenUpdate)
     return setForbiddenUpdateError(request, forbiddenUpdate)
   } else if (updateErrors.length > 0) {
     if (updateErrors.every(item => rogueErrors.includes(item)) && rogueErrors.every(item => updateErrors.includes(item))) {
