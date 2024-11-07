@@ -146,24 +146,10 @@ function patchPatient (originalPatient, request) {
     }
   }
 
-  // why is it that for this specific scenario (Invalid patch - attempt to replace non-existent object),
-  // we have to pick the last error message, when for all the others we pick the first error message?
-  // review this logic in SPINEDEM-2695
-  const rogueErrors = [
-    "Invalid update with error - no 'address' resources with object id 456",
-    "Invalid update with error - Invalid patch - can't replace non-existent object 'line'"
-  ]
-
-  // Handle final update errors
-
   if (forbiddenUpdate) {
     return setForbiddenUpdateError(request, forbiddenUpdate)
   } else if (updateErrors.length > 0) {
-    if (updateErrors.every(item => rogueErrors.includes(item)) && rogueErrors.every(item => updateErrors.includes(item))) {
-      return setInvalidUpdateError(request, updateErrors[1])
-    } else {
-      return setInvalidUpdateError(request, updateErrors[0])
-    }
+    return setInvalidUpdateError(request, updateErrors[0])
   } else {
     // Update patient meta versionId and return
     updatedPatient.meta.versionId = (parseInt(originalPatient.meta.versionId) + 1).toString()

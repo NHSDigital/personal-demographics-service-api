@@ -3,8 +3,6 @@ function updateAddressDetails (value, originalPatient, updateErrors) {
     updateErrors.push('Invalid update with error - no id or url found for path with root /address/0')
   } else if (!Object.prototype.hasOwnProperty.call(originalPatient, 'address')) {
     updateErrors.push("Invalid update with error - Invalid patch - index '0' is out of bounds")
-  } else if (value === '456') {
-    updateErrors.push("Invalid update with error - no 'address' resources with object id 456")
   } else if (value === '123456') {
     updateErrors.push("Invalid update with error - no 'address' resources with object id '123456'")
   } else {
