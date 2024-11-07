@@ -8,9 +8,9 @@ properties:
     type: string
     format: date
     description: Start date of time period, if known, in format `yyyy-mm-dd`. Can be a future date.
-    example: 2020-01-01
+    example: 2024-01-01
   end:
     type: string
     format: date
     description: End date of time period, if known and if not ongoing, in format `yyyy-mm-dd`. Can be a future date.
-    example: 2021-12-31
+    example: 2025-12-31
