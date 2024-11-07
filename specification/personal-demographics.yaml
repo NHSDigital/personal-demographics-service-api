@@ -71,6 +71,7 @@ info:
     * search for patients – and be able to present a list of matches for the user to choose from 
     * get patient details 
     * update patient details 
+    * get a patient's related people
 
     This access mode is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis), meaning an end user must be present, authenticated and authorised. 
 
@@ -91,7 +92,8 @@ info:
     ### Patient access 
     If the end user is a patient then you must use this access mode. Use this access mode to: 
     * get the patient’s own details 
-    * update the patient’s own details (limited) 
+    * update the patient’s own details (limited)
+    * get the patient's related people
 
     This access mode is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis), meaning an end user must be present, authenticated and authorised. 
     
@@ -116,7 +118,8 @@ info:
     ### Restricted access
     You must only use this access mode if you need to: 
     * search for a patient and get a single match result returned 
-    * get a single patient's details
+    * get a patient's details
+    * get a patient's related people
 
     This access mode is [application-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#application-restricted-apis), meaning we authenticate and authorise the calling application but not the end user. 
 
@@ -178,6 +181,8 @@ info:
     * 500 to 599 if it failed because of an error on our server
     
     Errors specific to each API are shown in the Endpoints section, under Response. See our [reference guide](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#http-status-codes) for more on errors.
+
+    Your API-calling application should have a mechanism to automatically try again, for example by giving status information to your end user, before giving up. See our [reference guide](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#error-handling) for more information about error handling.
     
     ## Open source
     You might find the following [open source](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#open-source) resources useful:
@@ -261,7 +266,7 @@ info:
     The following APIs are related to this API:
 
     ### Personal Demographics Service (PDS) HL7 V3 API
-    Use [PDS HL7 V3 API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3) if you want to use functions that are not yet available on the FHIR API, such as creating a new record for a birth, receiving birth notifications, or creating a record for a new patient (except when registering a new patient at a GP Practice, use [NHAIS](https://digital.nhs.uk/services/nhais)). For birth notifications, another option is [PDS Notifications - FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir).
+    Use [PDS HL7 V3 API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3) if you want to use functions that are not yet available on the FHIR API, such as creating a new record for a birth, receiving birth notifications, or creating a record for a new patient (except when registering a new patient at a GP Practice, use [Primary Care Registration Management (PCRM)](https://digital.nhs.uk/services/primary-care-registration-management)). For birth notifications, another option is [PDS Notifications - FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir).
 
     Once our roadmap is complete, PDS HL7 V3 API will become redundant. 
     
@@ -319,7 +324,7 @@ paths:
           * email address
           * phone number
           
-        There are various search options, such as fuzzy search, exact match, history and wildcards.
+        There are various search options, such as fuzzy search, exact match, history and wildcards. Wildcard searches using the PDS FHIR API return information differently to the FHIR framework standards. 
         
         The behaviour of this endpoint depends on which access mode you are using:
         
@@ -458,9 +463,11 @@ paths:
         It is unlikely to work well with wildcards or fuzzy search.
 
         ### Names
-        Matching names can be difficult due to:
-          * multiple given names, such as in `Jane Anne Smith`
+        Matching names can be difficult when a person has multiple given names, including:
+          * given names that include middle names, such as in `Jane Anne Smith`
           * [compound given names](https://en.wikipedia.org/wiki/Given_name#Compound), such as in `John Paul Smith`
+
+        Matching names can also be difficult when a name has:
           * multiple or double-barrelled surnames, such as in `Michael Smith-Jones`
           * homophones, such as `Smith` and `Smythe` or `Ann` and `Anne`
           * abbreviated names, such as `Bob` instead of `Robert`
@@ -794,7 +801,7 @@ paths:
                     "path": "/name/-",
                     "value": {
                         "use": "usual",
-                        "period": { "start": "2019-12-31" },
+                        "period": { "start": "2024-12-31" },
                         "prefix": ["Dr"],
                         "given": [
                           "Joe",
@@ -812,7 +819,7 @@ paths:
         When adding a base level list item such as a new name or address, ensure the index is always `-`, otherwise the request is rejected. For example, `/name/-`.
         The reason for this is because the backend system makes the decision on the ordering of the listed objects to ensure they are always returned in the same order.
 
-        If you are adding to a sub-element that is a list, such as an additional given name, it is valid to provide an exact index. So the following is valid:
+        If you are adding to a sub-element that is a list, such as an extra given name, it is valid to provide an exact index. So the following is valid:
 
         ```json
         {
@@ -882,7 +889,7 @@ paths:
                     "value": {
                         "id": "123",
                         "use": "usual",
-                        "period": { "start": "2019-12-31" },
+                        "period": { "start": "2024-12-31" },
                         "prefix": ["Dr"],
                         "given": [
                           "Joe",
@@ -931,9 +938,9 @@ paths:
 
         To remove a list item, a `test` operation must <u>immediately precede</u> the `remove` . This is an added requirement to ensure no accidental data loss occurs or the wrong item is removed. The test operation should be used to assert either:
 
-        * the `id` - the object ID for items that have one - for example `name`, `address` or `telecom`.
-        * the `url` - the URL for the extension being removed.
-        * the whole object being removed. (this is the only allowed option for patient access updates)
+        * the `id` - the object ID for items that have one - for example `name`, `address` or `telecom`
+        * the `url` - the URL for the extension being removed
+        * the whole object being removed
 
         An example of a list item removal using the `id` would be:
 
@@ -968,7 +975,7 @@ paths:
                     "value": {
                         "id": "123",
                         "use": "usual",
-                        "period": { "start": "2019-12-31" },
+                        "period": { "start": "2024-12-31" },
                         "prefix": ["Dr"],
                         "given": [
                           "Joe",
@@ -1947,21 +1954,21 @@ components:
     Given:
       name: given
       description: |
-        The patient's given names.
+        The patient's given names, including their first and middle names.
 
         Not case sensitive. Max 35 characters.
         Use `*` as a wildcard but not in the first two characters and not in fuzzy search mode.
         Wildcard searches will match the start of the first given name and not subsequent given names, for example the given names "Alan Michael" can be searched with "Ala*" but not "Mic*".
         Must be [URL encoded](https://en.wikipedia.org/wiki/Percent-encoding), for example a space must be represented by either `%20` or `+` and a wildcard must be encoded as `%2A`.
 
-        A patient may have more than one given name. Subsequent given names are commonly referred to as 'middle names'.
+        A patient may have more than one given name, for example because they have a first name and a middle name.
         Specify multiple given names by repeating this parameter.
         To search for  `Jane Anne Smith` use `given=Jane&given=Anne&family=Smith`.
 
-        The first given name may be a [compound name](https://en.wikipedia.org/wiki/Given_name#Compound), for example `John Paul`.
-        To search for `John Paul James Smith` (where `John Paul` is the first given name, `James` is the second given name, and `Smith` the family name) use `given=John%20Paul&given=James&family=Smith`.
+        The first name may be a [compound name](https://en.wikipedia.org/wiki/Given_name#Compound), for example `John Paul`.
+        To search for `John Paul James Smith` (where `John Paul` is the first name, `James` is the middle name, and `Smith` the family name) use `given=John%20Paul&given=James&family=Smith`.
 
-        Note that it is not necessary to specify subsequent given (middle) names, and that doing so may impact your search results in the case they are not recorded in the demographics system.
+        It is not necessary to specify subsequent given names, and doing so may impact your search results if they are not recorded in the PDS.
       example: Jane
       in: query
       required: false
