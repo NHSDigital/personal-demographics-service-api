@@ -49,7 +49,7 @@ function setPreconditionFailedError (request, diagnostics) {
   response.status = 412
 }
 
-function setForbiddenUpdateError (diagnostics) {
+function setForbiddenUpdateError (request, diagnostics) {
   const body = context.read('classpath:mocks/stubs/errorResponses/FORBIDDEN_UPDATE.json')
   body.issue[0].diagnostics = diagnostics
   response.headers = basicResponseHeaders(request)
@@ -95,14 +95,12 @@ function patchPatient (originalPatient, request) {
   }
 
   const updatedPatient = JSON.parse(JSON.stringify(originalPatient))
-  const updateErrors = []
   let forbiddenUpdate = null
+  const updateErrors = []
 
   const addNewName = (value) => {
-    console.log('add name been called ::::::::::::::::::::')
     if (value.use === 'usual') {
       forbiddenUpdate = 'Forbidden update with error - multiple usual names cannot be added'
-      console.log('forbidden update is set:::', forbiddenUpdate)
     } else {
       value.id = 'new-object-id'
       updatedPatient.name.push(value)
@@ -115,9 +113,9 @@ function patchPatient (originalPatient, request) {
     switch (op) {
       case 'add': {
         const addPaths = {
-          '/name/-': addNewName(value),
-          '/name/0/suffix': addNameSuffix(updatedPatient, value),
-          '/name/0/suffix/0': addNameSuffixAtStart(updatedPatient, value)
+          '/name/-': () => addNewName(value),
+          '/name/0/suffix': () => addNameSuffix(updatedPatient, value),
+          '/name/0/suffix/0': () => addNameSuffixAtStart(updatedPatient, value)
         }
         if (addPaths[path]) {
           addPaths[path]()
@@ -159,8 +157,6 @@ function patchPatient (originalPatient, request) {
     }
   }
 
-  console.log('Outside of for loop :::::::::::::::;;;;;;;;;;;;;;;', forbiddenUpdate)
-
   // why is it that for this specific scenario (Invalid patch - attempt to replace non-existent object),
   // we have to pick the last error message, when for all the others we pick the first error message?
   // review this logic in SPINEDEM-2695
@@ -169,8 +165,9 @@ function patchPatient (originalPatient, request) {
     "Invalid update with error - Invalid patch - can't replace non-existent object 'line'"
   ]
 
+  // Handle final update errors
+
   if (forbiddenUpdate) {
-    console.log('inside a loop:::::::::::::', forbiddenUpdate)
     return setForbiddenUpdateError(request, forbiddenUpdate)
   } else if (updateErrors.length > 0) {
     if (updateErrors.every(item => rogueErrors.includes(item)) && rogueErrors.every(item => updateErrors.includes(item))) {

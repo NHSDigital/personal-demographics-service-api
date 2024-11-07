@@ -13,7 +13,7 @@ Background:
     * path 'Patient', nhsNumber
     * method get
     * status 200 
-@investigate
+
 Scenario: Forbidden update example - multiple usual names cannot be added
     * match response.name == '#[1]'
 
