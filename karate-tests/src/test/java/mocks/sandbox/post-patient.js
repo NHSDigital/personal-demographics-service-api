@@ -32,70 +32,99 @@ function requestMatchesErrorScenario (request) {
   // and we don't create a patient. There is no complex logic here where we try to mimic the matching
   // logic of the real system, just a simple check that will demonstrate the behaviour when specific
   // data is sent in the request.
-  let match = false
+
   const family = request.body.name[0].family
   const postalCode = request.body.address[0].postalCode
-  if (family === 'McMatch-Single' && postalCode === 'BAP 4WG') {
-    const body = JSON.parse(JSON.stringify(SINGLE_MATCH))
-    body.issue[0].diagnostics = 'Unable to create new patient. NHS number 5900054586 found for supplied demographic data.'
-    response.body = body
-    match = true
-  } else if (family === 'McMatch-Multiple' && postalCode === 'DN19 7UD') {
-    response.body = MULTIPLE_MATCHES
-    match = true
+
+  const matchConditions = [
+    {
+      condition: family === 'McMatch-Single' && postalCode === 'BAP 4WG',
+      responseBody: () => {
+        const body = JSON.parse(JSON.stringify(SINGLE_MATCH))
+        body.issue[0].diagnostics = 'Unable to create new patient. NHS number 5900054586 found for supplied demographic data.'
+        return body
+      }
+    },
+    {
+      condition: family === 'McMatch-Multiple' && postalCode === 'DN19 7UD',
+      responseBody: () => MULTIPLE_MATCHES
+    }
+  ]
+  for (const { condition, responseBody } of matchConditions) {
+    if (condition) {
+      response.body = responseBody()
+      return true
+    }
   }
-  return match
+  return false
 }
 
 function postPatientRequestIsValid (request) {
-  // check the request body has the expected structure
-  let missingValue = false
-  let invalidValue = false
-  let valid = true
-  let diagnostics = ''
-  if (!request.body.name) {
-    diagnostics = "Missing value - 'name'"
-    missingValue = true
-  } else if (!request.body.address) {
-    diagnostics = "Missing value - 'address'"
-    missingValue = true
-  } else if (!request.body.gender) {
-    diagnostics = "Missing value - 'gender'"
-    missingValue = true
-  } else if (!request.body.birthDate) {
-    diagnostics = "Missing value - 'birthDate'"
-    missingValue = true
-  } else if (!Array.isArray(request.body.name[0].given)) {
-    diagnostics = "Invalid value - 'not an array' in field 'name/0/given'"
-    invalidValue = true
-  } else if (Array.isArray(request.body.address[0])) {
-    diagnostics = `Invalid value - '${JSON.stringify(request.body.address[0]).replace(/"/g, "'").replace(/','/g, "', '")}' in field 'address/0'`
-    invalidValue = true
-  } else if (typeof request.body.address[0] !== 'object' || Array.isArray(request.body.address[0])) {
-    diagnostics = `Invalid value - '${request.body.address[0]}' in field 'address/0'`
-    invalidValue = true
-  } else if (!['male', 'female', 'other', 'unknown'].includes(request.body.gender)) {
-    diagnostics = "Invalid value - 'notAValidOption' in field 'gender'"
-    invalidValue = true
-  } else if (!request.body.birthDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
-    diagnostics = "Invalid value - 'not-a-date' in field 'birthDate'"
-    invalidValue = true
+  const diagnosticsMap = {
+    missing: 'classpath:mocks/stubs/errorResponses/MISSING_VALUE.json',
+    invalid: 'classpath:mocks/stubs/errorResponses/INVALID_VALUE.json'
+  }
+  const validations = [
+    {
+      condition: !request.body?.name,
+      diagnostics: 'Missing value - \'name\'',
+      type: 'missing'
+    },
+    {
+      condition: !request.body?.address,
+      diagnostics: 'Missing value - \'address\'',
+      type: 'missing'
+    },
+    {
+      condition: !request.body?.gender,
+      diagnostics: 'Missing value - \'gender\'',
+      type: 'missing'
+    },
+    {
+      condition: !request.body?.birthDate,
+      diagnostics: 'Missing value - \'birthDate\'',
+      type: 'missing'
+    },
+    {
+      condition: !Array.isArray(request.body?.name?.[0]?.given),
+      diagnostics: 'Invalid value - \'not an array\' in field \'name/0/given\'',
+      type: 'invalid'
+    },
+    {
+      condition: Array.isArray(request.body?.address?.[0]),
+      diagnostics: `Invalid value - '${JSON.stringify(request.body?.address?.[0] || {})
+  .replace(/"/g, "'")
+  .replace(/','/g, "', '")}' in field 'address/0'`,
+      type: 'invalid'
+    },
+    {
+      condition: typeof request.body?.address?.[0] !== 'object' || Array.isArray(request.body?.address?.[0]),
+      diagnostics: `Invalid value - '${request.body?.address?.[0]}' in field 'address/0'`,
+      type: 'invalid'
+    },
+    {
+      condition: !['male', 'female', 'other', 'unknown'].includes(request.body?.gender),
+      diagnostics: 'Invalid value - \'notAValidOption\' in field \'gender\'',
+      type: 'invalid'
+    },
+    {
+      condition: !request.body?.birthDate?.match(/^\d{4}-\d{2}-\d{2}$/),
+      diagnostics: 'Invalid value - \'not-a-date\' in field \'birthDate\'',
+      type: 'invalid'
+    }
+  ]
+
+  for (const { condition, diagnostics, type } of validations) {
+    if (condition) {
+      const body = context.read(diagnosticsMap[type])
+      body.issue[0].diagnostics = diagnostics
+      response.body = body
+      response.status = 400
+      return false
+    }
   }
 
-  if (missingValue) {
-    const body = context.read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')
-    body.issue[0].diagnostics = diagnostics
-    response.body = body
-    response.status = 400
-    valid = false
-  } else if (invalidValue) {
-    const body = context.read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')
-    body.issue[0].diagnostics = diagnostics
-    response.body = body
-    response.status = 400
-    valid = false
-  }
-  return valid
+  return true
 }
 
 function userHasPermission (request) {
@@ -111,36 +140,45 @@ function userHasPermission (request) {
   return valid
 }
 
-if (request.pathMatches('/Patient') && request.post) {
+function initializePatientData (request) {
+  const patient = JSON.parse(JSON.stringify(NEW_PATIENT))
+
+  // set a new NHS number for the patient
+  patient.id = VALID_NHS_NUMBERS[session.nhsNumberIndex]
+  patient.identifier[0].value = VALID_NHS_NUMBERS[session.nhsNumberIndex]
+  session.nhsNumberIndex += 1
+
+  // name and address objects need an ID
+  patient.name[0] = request.body.name[0]
+  patient.name[0].id = generateObjectId()
+
+  // in the address object, the line property is an array that can contain blank strings. For the response,
+  // the blank strings are removed.
+  const line = request.body.address[0].line.filter((line) => line !== '')
+  patient.address[0] = request.body.address[0]
+  patient.address[0].line = line
+  patient.address[0].id = generateObjectId()
+
+  // set the other properties
+  patient.gender = request.body.gender
+  patient.birthDate = request.body.birthDate
+
+  return patient
+}
+
+function handlePatientCreationRequest (request) {
   response.headers = basicResponseHeaders(request)
   response.contentType = 'application/fhir+json'
   if (userHasPermission(request) && postPatientRequestIsValid(request)) {
     if (!requestMatchesErrorScenario(request)) {
-      // clone the NEW_PATIENT object, then set properties based on the contents of the request body
-      const patient = JSON.parse(JSON.stringify(NEW_PATIENT))
-
-      // set a new NHS number for the patient
-      patient.id = VALID_NHS_NUMBERS[session.nhsNumberIndex]
-      patient.identifier[0].value = VALID_NHS_NUMBERS[session.nhsNumberIndex]
-      session.nhsNumberIndex += 1
-
-      // name and address objects need an ID
-      patient.name[0] = request.body.name[0]
-      patient.name[0].id = generateObjectId()
-
-      // in the address object, the line property is an array that can contain blank strings. For the response,
-      // the blank strings are removed.
-      const line = request.body.address[0].line.filter((line) => line !== '')
-      patient.address[0] = request.body.address[0]
-      patient.address[0].line = line
-      patient.address[0].id = generateObjectId()
-
-      // set the other properties
-      patient.gender = request.body.gender
-      patient.birthDate = request.body.birthDate
-
+      const patient = initializePatientData(request)
       response.body = patient
       response.status = 201
     }
   }
+}
+
+// Check if the incoming request is a POST to the /Patient endpoint and handle accordingly
+if (request.pathMatches('/Patient') && request.post) {
+  handlePatientCreationRequest(request)
 }
