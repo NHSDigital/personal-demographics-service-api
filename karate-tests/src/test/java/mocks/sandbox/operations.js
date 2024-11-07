@@ -58,9 +58,3 @@ function addNewName (patient, name) {
   name.id = 'new-object-id'
   patient.name.push(name)
 }
-
-function addUsualName (value) {
-  if (value.use === 'usual') {
-    return 'Forbidden update with error - multiple usual names cannot be added'
-  }
-}

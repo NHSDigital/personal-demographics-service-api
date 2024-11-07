@@ -107,6 +107,16 @@ function patchPatient (originalPatient, request) {
     }
   }
 
+  const removeUsualName = (updatedPatient) => {
+    if (updatedPatient.name[0].use === 'usual') {
+      forbiddenUpdate = 'Forbidden update with error - not permitted to remove usual name'
+    }
+  }
+
+  const removeBirthDate = () => {
+    forbiddenUpdate = 'Forbidden update with error - source not permitted to remove \'birthDate\''
+  }
+
   for (const patch of request.body.patches) {
     const { op, path, value } = patch
 
@@ -147,7 +157,9 @@ function patchPatient (originalPatient, request) {
         const removePaths = {
           '/name/0/suffix': () => removeNameSuffix(updatedPatient),
           '/name/0/suffix/0': () => removeSuffixIfExists(updatedPatient, updateErrors, 0),
-          '/name/1': () => handleNameRemovalError(request, updateErrors, updatedPatient)
+          '/name/1': () => handleNameRemovalError(request, updateErrors, updatedPatient),
+          '/name/0': () => removeUsualName(updatedPatient),
+          '/birthDate': () => removeBirthDate()
         }
         if (removePaths[path]) {
           removePaths[path]()

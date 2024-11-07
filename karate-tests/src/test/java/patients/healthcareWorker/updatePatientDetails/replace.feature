@@ -227,7 +227,8 @@ Feature: Patch patient - Replace data
       * def display = 'Patient cannot perform this action'
       * def diagnostics = "Invalid update with error - interpreterRequired cannot be removed"
       * match response == read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
-      
+
+@sandbox
 Scenario: Healthcare worker can't remove usual name and DOB
   * def expectedResponse = read('classpath:mocks/stubs/errorResponses/FORBIDDEN_UPDATE.json')
   * def nhsNumber = '9733162043'
