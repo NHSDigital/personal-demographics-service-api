@@ -14,6 +14,7 @@ Feature: Patch patient - Add and remove data
     
     * url baseURL
   
+  @sandbox
   Scenario: Add and remove patient data
     * def nhsNumber = '5900056449'
     * path 'Patient', nhsNumber
@@ -151,6 +152,7 @@ Feature: Patch patient - Add and remove data
     * match response.name[0].suffix == '#notpresent'
     * match parseInt(response.meta.versionId) == originalVersion + 1
  
+  @sandbox
   Scenario: Add suffix to the existing array of suffixes and then remove the same 
     # 1. Add new suffix to the array
     # ==============================
