@@ -168,7 +168,6 @@ if (request.pathMatches('/Patient/{nhsNumber}') && request.patch) {
     const originalPatient = session.patients[nhsNumber]
     const updatedPatient = patchPatient(originalPatient, request)
     if (updatedPatient) {
-      session.patients[nhsNumber] = updatedPatient
       response.headers = buildResponseHeaders(request, updatedPatient)
       response.body = updatedPatient
       response.status = 200
