@@ -13,7 +13,7 @@ Feature: Patch patient - Add and remove data
     * configure headers = call read('classpath:auth/auth-headers.js')
     
     * url baseURL
-    
+  
   Scenario: Add and remove patient data
     * def nhsNumber = '5900056449'
     * path 'Patient', nhsNumber
@@ -61,9 +61,6 @@ Feature: Patch patient - Add and remove data
     * path 'Patient', nhsNumber
     * method get
     * status 200
-    * copy originalNameArray = response.name
-    * def originalVersion = parseInt(response.meta.versionId)
-    * def nameID = response.name[1].id
     
     # 2.1. You can't call a "remove" operation without first calling a "test" operation
     * def diagnostics = "Invalid update with error - removal '/name/1' is not immediately preceded by equivalent test - instead it is the first item"
@@ -80,6 +77,11 @@ Feature: Patch patient - Add and remove data
 
     # 2.2. How to remove the name object correctly - define the id of the object 
     # you want to remove in the "test" operation
+    * path 'Patient', nhsNumber
+    * method get
+    * status 200
+    * def originalVersion = parseInt(response.meta.versionId)
+    * def nameID = response.name[1].id
     * def patchBody = 
       """
       {"patches":[
@@ -89,7 +91,7 @@ Feature: Patch patient - Add and remove data
       """
     * configure headers = call read('classpath:auth/auth-headers.js')     
     * header Content-Type = "application/json-patch+json"
-    * header If-Match = etag
+    * header If-Match = karate.response.header('etag')
     * path 'Patient', nhsNumber
     * request patchBody 
     * method patch
@@ -131,9 +133,7 @@ Feature: Patch patient - Add and remove data
     * method get
     * status 200
     * def originalVersion = parseInt(response.meta.versionId)
-    * def firstNameIndexWithSuffix = response.name.findIndex(x => x.suffix != null)
-    * def namePath = "/name/"+ firstNameIndexWithSuffix 
-    * def nameId = response.name.find(x => x.suffix != null).id
+    * def patientObject = response
    
     * configure headers = call read('classpath:auth/auth-headers.js')     
     * header Content-Type = "application/json-patch+json"
@@ -142,15 +142,15 @@ Feature: Patch patient - Add and remove data
     * request 
       """
       {"patches":[
-        { "op": "test", "path": "#(namePath)/id", "value": "#(nameId)" },
-        { "op": "remove", "path": "#(namePath)/suffix" }
+        { "op": "test", "path": "/name/0/id", "value": "#(patientObject.name[0].id)" },
+        { "op": "remove", "path": "/name/0/suffix" }
       ]}
       """
     * method patch
     * status 200
     * match response.name[0].suffix == '#notpresent'
     * match parseInt(response.meta.versionId) == originalVersion + 1
-
+ 
   Scenario: Add suffix to the existing array of suffixes and then remove the same 
     # 1. Add new suffix to the array
     # ==============================
@@ -161,7 +161,7 @@ Feature: Patch patient - Add and remove data
     * status 200
     * def originalVersion = parseInt(response.meta.versionId)
     * def firstNameIndexWithSuffix = response.name.findIndex(x => x.suffix != null)
-    * def namePath = "/name/"+ firstNameIndexWithSuffix 
+    * def namePath = "/name/"+ firstNameIndexWithSuffix + "/id" 
     * def nameId = response.name.find(x => x.suffix != null).id
     * def suffix = "Esquire"
    
@@ -172,7 +172,7 @@ Feature: Patch patient - Add and remove data
     * request
       """
       {"patches":[
-        { "op": "add", "path": "#(namePath)/id", "value": "#(nameId))" },
+        { "op": "add", "path": "#(namePath)", "value": "#(nameId)" },
         { "op": "add", "path": "/name/0/suffix/0", "value": "#(suffix)" }
       ]}
       """
@@ -190,8 +190,9 @@ Feature: Patch patient - Add and remove data
     * status 200
     * def originalVersion = parseInt(response.meta.versionId)
     * def firstNameIndexWithSuffix = response.name.findIndex(x => x.suffix != null)
-    * def namePath = "/name/"+ firstNameIndexWithSuffix 
+    * def namePath = "/name/"+ firstNameIndexWithSuffix + "/id" 
     * def nameId = response.name.find(x => x.suffix != null).id
+    * def suffixPath = "/name/"+ firstNameIndexWithSuffix + "/suffix/0"
   
     * configure headers = call read('classpath:auth/auth-headers.js')     
     * header Content-Type = "application/json-patch+json"
@@ -200,8 +201,8 @@ Feature: Patch patient - Add and remove data
     * request 
       """
       {"patches":[
-        { "op": "test", "path": "#(namePath)/id", "value": "#(nameId)" },
-        { "op": "remove","path": "#(namePath)/suffix/0" }
+        { "op": "test", "path": "#(namePath)", "value": "#(nameId)" },
+        { "op": "remove","path": "#(suffixPath)" }
       ]}
       """ 
     * method patch
@@ -262,4 +263,3 @@ Feature: Patch patient - Add and remove data
     * status 200
     * match parseInt(response.meta.versionId) == parseInt(idAftPod)+ 1
     * match response.extension[1] == '#notpresent'
-
