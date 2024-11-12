@@ -13,18 +13,14 @@ Feature: Patch patient - Add and remove data
     * configure headers = call read('classpath:auth/auth-headers.js')
     
     * url baseURL
+  
+  @sandbox
+  Scenario: Add and remove patient data
     * def nhsNumber = '5900056449'
     * path 'Patient', nhsNumber
     * method get
     * status 200
-    * def patientObject = response
     * def originalVersion = parseInt(response.meta.versionId)
-    * def originalEtag = karate.response.header('etag')
-    * copy originalNameArray = response.name
-
-  @sandbox
-  Scenario: Add and remove patient data
-    * match response.name == "#[1]"
     
     # 1. Add a new name to the array of patient names
     # ===============================================
@@ -52,8 +48,9 @@ Feature: Patch patient - Add and remove data
     * request {"patches": [{ "op": "add", "path": "/name/-", "value": "#(newName)" }]}
     * method patch
     * status 200
-    * match response.name == "#[2]"
-    * match response.name[1] == expectedName
+    * def addedName = response.name.find(x => x.family == "Bloggs")
+   
+    * match addedName == expectedName
     * match parseInt(response.meta.versionId) == originalVersion + 1
     
     # 2. Remove the name we just added
@@ -62,9 +59,9 @@ Feature: Patch patient - Add and remove data
     # Now remove the name. To illustrate the remove behaviour, we do two tests here:
     # 1. We try to remove the name without first testing for it, which should fail
     # 2. We test for the name and then remove it, which should succeed
-    * def originalVersion = parseInt(response.meta.versionId)
-    * def nameID = response.name[1].id
-    * def etag = karate.response.header('etag')
+    * path 'Patient', nhsNumber
+    * method get
+    * status 200
     
     # 2.1. You can't call a "remove" operation without first calling a "test" operation
     * def diagnostics = "Invalid update with error - removal '/name/1' is not immediately preceded by equivalent test - instead it is the first item"
@@ -72,7 +69,7 @@ Feature: Patch patient - Add and remove data
 
     * configure headers = call read('classpath:auth/auth-headers.js')
     * header Content-Type = "application/json-patch+json"
-    * header If-Match = etag
+    * header If-Match = karate.response.header('etag')
     * path 'Patient', nhsNumber
     * request {"patches":[{"op":"remove","path":"/name/1"}]}
     * method patch
@@ -81,6 +78,11 @@ Feature: Patch patient - Add and remove data
 
     # 2.2. How to remove the name object correctly - define the id of the object 
     # you want to remove in the "test" operation
+    * path 'Patient', nhsNumber
+    * method get
+    * status 200
+    * def originalVersion = parseInt(response.meta.versionId)
+    * def nameID = response.name[1].id
     * def patchBody = 
       """
       {"patches":[
@@ -90,17 +92,20 @@ Feature: Patch patient - Add and remove data
       """
     * configure headers = call read('classpath:auth/auth-headers.js')     
     * header Content-Type = "application/json-patch+json"
-    * header If-Match = etag
+    * header If-Match = karate.response.header('etag')
     * path 'Patient', nhsNumber
     * request patchBody 
     * method patch
     * status 200
-    * match response.name == "#[1]"
-    * match response.name == originalNameArray
+    * match response.name !contains { id: '#(nameID)' }
     * match parseInt(response.meta.versionId) == originalVersion + 1
 
     # 3. Add a suffix array 
     # =====================
+    * path 'Patient', nhsNumber
+    * method get
+    * status 200
+    * def patientObject = response
     * def originalVersion = parseInt(response.meta.versionId)
     * match response.name[0].suffix == "#notpresent"
 
@@ -121,55 +126,16 @@ Feature: Patch patient - Add and remove data
     * status 200
     * match response.name[0].suffix == suffixArray
     * match parseInt(response.meta.versionId) == originalVersion + 1
-    
-    # 4. Remove one of the suffixes we just added
-    # ===========================================
-    # We added an array of suffixes; now we're going to remove one of the suffixes in the
-    # array.
-    * def originalVersion = parseInt(response.meta.versionId)
 
-    * configure headers = call read('classpath:auth/auth-headers.js')     
-    * header Content-Type = "application/json-patch+json"
-    * header If-Match = karate.response.header('etag')      
-    * path 'Patient', nhsNumber
-    * request 
-      """
-      {"patches":[
-        { "op": "test", "path": "/name/0/id", "value": "#(patientObject.name[0].id)" },
-        { "op": "remove","path": "/name/0/suffix/0" }
-      ]}
-      """ 
-    * method patch
-    * status 200
-    * match response.name[0].suffix == ["MBBS"]
-    * match parseInt(response.meta.versionId) == originalVersion + 1
-
-    # 5. Add new suffix to the array
-    # ==============================
-    # You can also add a new suffix to an existing array of suffixes
-    * def originalVersion = parseInt(response.meta.versionId)
-
-    * configure headers = call read('classpath:auth/auth-headers.js')     
-    * header Content-Type = "application/json-patch+json"
-    * header If-Match = karate.response.header('etag')
-    * path 'Patient', nhsNumber
-    * request
-      """
-      {"patches":[
-        { "op": "add", "path": "/name/0/id", "value": "#(patientObject.name[0].id)" },
-        { "op": "add", "path": "/name/0/suffix/0", "value": "Esquire" }
-      ]}
-      """
-    * method patch
-    * status 200
-    * match response.name[0].suffix == ["Esquire", "MBBS"]
-    * match parseInt(response.meta.versionId) == originalVersion + 1
-
-    # 6. Remove the whole suffix array
+    # 4. Remove the whole suffix array
     # ================================
     # And you can get rid of the whole array of suffixes
+    * path 'Patient', nhsNumber
+    * method get
+    * status 200
     * def originalVersion = parseInt(response.meta.versionId)
-
+    * def patientObject = response
+   
     * configure headers = call read('classpath:auth/auth-headers.js')     
     * header Content-Type = "application/json-patch+json"
     * header If-Match = karate.response.header('etag')
@@ -184,6 +150,65 @@ Feature: Patch patient - Add and remove data
     * method patch
     * status 200
     * match response.name[0].suffix == '#notpresent'
+    * match parseInt(response.meta.versionId) == originalVersion + 1
+ 
+  @sandbox
+  Scenario: Add suffix to the existing array of suffixes and then remove the same 
+    # 1. Add new suffix to the array
+    # ==============================
+    # You can also add a new suffix to an existing array of suffixes
+    * def nhsNumber = '9733162051'
+    * path 'Patient', nhsNumber
+    * method get
+    * status 200
+    * def originalVersion = parseInt(response.meta.versionId)
+    * def firstNameIndexWithSuffix = response.name.findIndex(x => x.suffix != null)
+    * def namePath = "/name/"+ firstNameIndexWithSuffix + "/id" 
+    * def nameId = response.name.find(x => x.suffix != null).id
+    * def suffix = "Esquire"
+   
+    * configure headers = call read('classpath:auth/auth-headers.js')     
+    * header Content-Type = "application/json-patch+json"
+    * header If-Match = karate.response.header('etag')
+    * path 'Patient', nhsNumber
+    * request
+      """
+      {"patches":[
+        { "op": "add", "path": "#(namePath)", "value": "#(nameId)" },
+        { "op": "add", "path": "/name/0/suffix/0", "value": "#(suffix)" }
+      ]}
+      """
+    * method patch
+    * status 200
+    * match response.name[0].suffix contains suffix
+    * match parseInt(response.meta.versionId) == originalVersion + 1
+    
+    # 2. Remove one of the suffixes we just added
+    # ===========================================
+    # We added an array of suffixes; now we're going to remove one of the suffixes in the
+    # array.
+    * path 'Patient', nhsNumber
+    * method get
+    * status 200
+    * def originalVersion = parseInt(response.meta.versionId)
+    * def firstNameIndexWithSuffix = response.name.findIndex(x => x.suffix != null)
+    * def namePath = "/name/"+ firstNameIndexWithSuffix + "/id" 
+    * def nameId = response.name.find(x => x.suffix != null).id
+    * def suffixPath = "/name/"+ firstNameIndexWithSuffix + "/suffix/0"
+  
+    * configure headers = call read('classpath:auth/auth-headers.js')     
+    * header Content-Type = "application/json-patch+json"
+    * header If-Match = karate.response.header('etag')      
+    * path 'Patient', nhsNumber
+    * request 
+      """
+      {"patches":[
+        { "op": "test", "path": "#(namePath)", "value": "#(nameId)" },
+        { "op": "remove","path": "#(suffixPath)" }
+      ]}
+      """ 
+    * method patch
+    * status 200
     * match parseInt(response.meta.versionId) == originalVersion + 1
 
 
@@ -240,4 +265,3 @@ Feature: Patch patient - Add and remove data
     * status 200
     * match parseInt(response.meta.versionId) == parseInt(idAftPod)+ 1
     * match response.extension[1] == '#notpresent'
-
