@@ -9,14 +9,6 @@
  * to pick from when we need to create a new patient. When the array is exhausted, the mock server
  * should reset itself to its initial state, removing all creates and updates.
  */
-// const VALID_NHS_NUMBERS = [
-//   '5182663366', '5306479413', '5865618296', '5596570559', '5061511085',
-//   '5954974977', '5157195761', '5897052085', '5359513144', '5446520122',
-//   '5103506718', '5468649624', '5002272274', '5941993854', '5574773538',
-//   '5899264950', '5604719625', '5117676297', '5705279671', '5890418181'
-// ]
-
-// session.nhsNumberIndex = session.nhsNumberIndex || 0
 
 function generateObjectId () {
   // generates a random ID for the name and address objects, e.g. 8F1A21BC
@@ -144,9 +136,6 @@ function initializePatientData (request) {
   const patient = JSON.parse(JSON.stringify(NEW_PATIENT))
 
   // set a new NHS number for the patient
-  // patient.id = VALID_NHS_NUMBERS[session.nhsNumberIndex]
-  // patient.identifier[0].value = VALID_NHS_NUMBERS[session.nhsNumberIndex]
-  // session.nhsNumberIndex += 1
 
   patient.id = '5182663366'
   patient.identifier[0].value = '5182663366'
