@@ -128,9 +128,8 @@ info:
     *	verify an NHS number
     *	get a patient’s registered GP practice or contact details
 
-    To use this access mode, use one of the following security patterns:
+    To use this access mode, use this security pattern:
     * [Application-restricted RESTful API - signed JWT authentication](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-signed-jwt-authentication)
-    * [Application-restricted RESTful API - API key authentication](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-api-key-authentication)
 
     Available in production ([stable](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#api-status))
     
