@@ -1992,7 +1992,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n  \"correction\": false,\r\n  \"patches\": [\r\n    {\r\n      \"op\": \"add\",\r\n      \"path\": \"/name/-\",\r\n      \"value\": {\r\n        \"use\": \"usual\",\r\n        \"period\": {\r\n          \"start\": \"2019-12-31\"\r\n        },\r\n        \"text\": \"Dr Joe H. M. Bloggs PhD\",\r\n        \"prefix\": \"Dr\",\r\n        \"given\": [\r\n          \"Joe\",\r\n          \"Horation\",\r\n          \"Maximus\"\r\n        ],\r\n        \"family\": \"Bloggs\",\r\n        \"suffix\": \"PhD\"\r\n      }\r\n    }\r\n  ]\r\n}"
+													"raw": "{\r\n  \"correction\": false,\r\n  \"patches\": [\r\n    {\r\n      \"op\": \"add\",\r\n      \"path\": \"/name/-\",\r\n      \"value\": {\r\n        \"use\": \"old\",\r\n        \"period\": {\r\n          \"start\": \"2019-12-31\"\r\n        },\r\n        \"text\": \"Dr Joe H. M. Bloggs PhD\",\r\n        \"prefix\": \"Dr\",\r\n        \"given\": [\r\n          \"Joe\",\r\n          \"Horation\",\r\n          \"Maximus\"\r\n        ],\r\n        \"family\": \"Bloggs\",\r\n        \"suffix\": \"PhD\"\r\n      }\r\n    }\r\n  ]\r\n}"
 												},
 												"url": {
 													"raw": "{{base_url}}/Patient/9000000009",

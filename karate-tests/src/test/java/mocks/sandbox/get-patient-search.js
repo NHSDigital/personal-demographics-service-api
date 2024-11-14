@@ -169,18 +169,22 @@ const matchCases = [
      params.postalCode === 'DN16',
     action: () => timestampBody(EMPTY_SEARCHSET)
   },
+  // Fuzzy search
   {
     condition: (params) => params.fuzzyMatch && !params.phone && !params.email,
     action: () => timestampBody(FUZZY_SEARCH_PATIENT_17)
   },
+  // Fuzzy search including phone
   {
     condition: (params) => params.fuzzyMatch && params.phone === '01632960587' && !params.email,
     action: () => timestampBody(janeSmithSearchsetWithScore(0.9124))
   },
+  // Fuzzy search including email
   {
     condition: (params) => params.fuzzyMatch && params.email === 'jane.smith@example.com' && !params.phone,
     action: () => timestampBody(janeSmithSearchsetWithScore(0.9124))
   },
+  // Fuzzy search including phone and email
   {
     condition: (params) => params.fuzzyMatch && params.phone === '01632960587' && params.email === 'jane.smith@example.com',
     action: () => timestampBody(janeSmithSearchsetWithScore(0.9542))
@@ -198,39 +202,58 @@ const matchCases = [
     condition: (params) => params.historyMatch && params.family === 'MED' && (params.birthDate[0]) === '2024-01-12',
     action: () => timestampBody(EMPTY_SEARCHSET)
   },
+  // Wildcard search
   {
     condition: (params) => ['Sm*', 'sm*'].includes(params.family) && !params.phone && !params.email && !params.maxResults,
     action: () => timestampBody(WILDCARD_SEARCH)
   },
+  // Search with limited results
   {
     condition: (params) => ['Sm*', 'sm*'].includes(params.family) && !params.phone && !params.email && parseInt(params.maxResults) < 2,
     action: () => TOO_MANY_MATCHES
   },
+  // Search with limited results inc phone
   {
-    condition: (params) => ['Sm*', 'sm*'].includes(params.family) && params.phone === '01632960587' && params.email,
+    condition: (params) => ['Sm*', 'sm*'].includes(params.family) && params.phone && !params.email && parseInt(params.maxResults) < 2,
+    action: () => TOO_MANY_MATCHES
+  },
+  // Search with limited results inc email
+  {
+    condition: (params) => ['Sm*', 'sm*'].includes(params.family) && !params.phone && params.email && parseInt(params.maxResults) < 2,
+    action: () => TOO_MANY_MATCHES
+  },
+  // wildcard search including phone
+  {
+    condition: (params) => ['Sm*', 'sm*'].includes(params.family) && params.phone === '01632960587' && !params.email,
     action: () => timestampBody(janeSmithSearchsetWithScore(1))
   },
+  // wildcard search including email
   {
     condition: (params) => ['Sm*', 'sm*'].includes(params.family) && params.email === 'jane.smith@example.com' && !params.phone,
     action: () => timestampBody(janeSmithSearchsetWithScore(1))
   },
+  // wildcard search including email
   {
     condition: (params) => ['Sm*', 'sm*'].includes(params.family) && params.email === 'jane.smith@example.com' && params.phone === '01632960587',
     action: () => timestampBody(janeSmithSearchsetWithScore(1))
   },
+  // Search with limited results inc phone
   {
     condition: (params) => ['Sm*', 'sm*'].includes(params.family) && params.email === 'janet.smythe@example.com',
     action: () => timestampBody(janeSmithSearchsetWithScore(1))
   },
+  // Multiple matches with phone and email
   {
     condition: (params) => ['Sm*', 'sm*'].includes(params.family) && params.email === 'test@test.com' && params.phone === '01234123123' &&
      (params.birthDate[0]) === 'eq2000-05-05',
     action: () => timestampBody(MULTIMATCHWITHPHONEANDEMAIL_SEARCHSET)
   },
+  // Restricted (sensitive) patient search
   {
     condition: (params) => ['Smythe', 'smythe'].includes(params.family),
     action: () => timestampBody(RESTRICTED_PATIENT_SEARCH)
   },
+  // Search with date range, Basic search, Basic search including phone
   {
     condition: (params) => ['Smith', 'smith'].includes(params.family) && ['Female', 'female'].includes(params.gender) &&
     (params.birthDate[0] === 'eq2010-10-22' || (params.birthDate[0] === 'ge2010-10-21' && params.birthDate[1] === 'le2010-10-23')) &&
