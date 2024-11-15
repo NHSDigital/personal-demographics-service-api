@@ -9,7 +9,7 @@
     },
     "overrides": [
         {
-          "files": ["operations.js, supporting-functions.js"], 
+          "files": ["operations.js"], 
           "rules": {
             "no-unused-vars": "off"
           }

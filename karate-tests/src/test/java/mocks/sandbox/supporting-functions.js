@@ -144,11 +144,11 @@ function isValidBearerToken (token) {
 function validateAuthHeader (request) {
   let valid = true
   let diagnostics = ''
-  // Authorization is not mandatory on sandbox if it's present then check if the Authorization header is in correct formate
+  // Check if the Authorization header is present and correct
   const authorization = request.header('Authorization')
   if (authorization === null) {
-    // authorization is not mandatory on sandbox
-    valid = true
+    diagnostics = 'Missing Authorization header'
+    valid = false
   } else if (!containsBearerToken(authorization)) {
     diagnostics = 'Missing access token'
     valid = false
