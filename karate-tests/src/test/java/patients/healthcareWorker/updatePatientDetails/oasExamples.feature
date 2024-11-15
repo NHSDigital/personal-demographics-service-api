@@ -331,7 +331,7 @@ Scenario:  Healthcare worker can replace and remove Contact Preference
     
 Scenario:  Healthcare worker can remove Single Contact Preference
     * def nhsNumber = '9000000009'
-    * def extensionURL = "PreferredWrittenCommunicationFormat"
+    * def firstExtensionURL = "PreferredWrittenCommunicationFormat"
     * path 'Patient', nhsNumber
     * request 
      """ 
@@ -340,7 +340,7 @@ Scenario:  Healthcare worker can remove Single Contact Preference
               { 
                 "op": "test",
                 "path": "/extension/5/extension/0/url",
-                "value": "#(extensionURL)"
+                "value": "#(firstExtensionURL)"
               },
               { 
                 "op": "remove",
@@ -354,6 +354,6 @@ Scenario:  Healthcare worker can remove Single Contact Preference
     * def extensionsIn5thExtension = response.extension[5].extension.length
     * if (extensionsIn5thExtension > 2) { karate.fail('Single Contact Preference not been removed from /extension/5/extension/2.')}
     * match response.extension[5].url == "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-ContactPreference"
-    * match response.extension[5].extension[0].url == extensionURL
+    * match response.extension[5].extension[0].url == firstExtensionURL
     * match response.extension[5].extension[1].url == "PreferredContactMethod"
   
