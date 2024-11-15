@@ -5,22 +5,21 @@ Feature: Update patient's record - OAS file examples
     documentation describes.
 
   Background:
-    * def utils = call read('classpath:helpers/utils.feature')
     # auth
     * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders 
     * url baseURL
-  
-Scenario:  Healthcare worker can add deceased date and death notification
     * def nhsNumber = '9000000033'
     * path 'Patient', nhsNumber
     * method get
     * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
-    * configure headers = call read('classpath:auth/auth-headers.js')     
+    * def originalVersion = parseInt(response.meta.versionId)  
     * header Content-Type = "application/json-patch+json"
     * header If-Match = karate.response.header('etag')
+  
+Scenario:  Healthcare worker can add deceased date and death notification
+    * def nhsNumber = '9000000033'
     * def deceasedDate = '2020-01-01'
     * def extensionVal = 
     """
@@ -59,16 +58,11 @@ Scenario:  Healthcare worker can add deceased date and death notification
     """
     * method patch
     * status 200
+    * match response.id == nhsNumber
+    * match response.deceasedDateTime contains deceasedDate
 
 Scenario:  Healthcare worker can update deceased date and death notification
     * def nhsNumber = '9000000009'
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
-    * configure headers = call read('classpath:auth/auth-headers.js')     
-    * header Content-Type = "application/json-patch+json"
-    * header If-Match = karate.response.header('etag')
     * def deceasedDate = '2010-10-23'
     * def extensionVal = 
     """
@@ -106,17 +100,12 @@ Scenario:  Healthcare worker can update deceased date and death notification
     } 
     """
     * method patch
-    * status 200    
+    * status 200 
+    * match response.id == nhsNumber
+    * match response.deceasedDateTime contains deceasedDate   
 
 Scenario:  Healthcare worker can add communication extension
     * def nhsNumber = '9000000033'
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
-    * configure headers = call read('classpath:auth/auth-headers.js')     
-    * header Content-Type = "application/json-patch+json"
-    * header If-Match = karate.response.header('etag')
     * def extensionVal = 
     """
         {
@@ -154,13 +143,6 @@ Scenario:  Healthcare worker can add communication extension
 
 Scenario:  Healthcare worker can update communication extension
     * def nhsNumber = '9000000009'
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
-    * configure headers = call read('classpath:auth/auth-headers.js')     
-    * header Content-Type = "application/json-patch+json"
-    * header If-Match = karate.response.header('etag')
     * def extensionVal = 
     """
         {
@@ -198,13 +180,6 @@ Scenario:  Healthcare worker can update communication extension
     
 Scenario:  Healthcare worker can update communication single itesm
     * def nhsNumber = '9000000009'
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
-    * configure headers = call read('classpath:auth/auth-headers.js')     
-    * header Content-Type = "application/json-patch+json"
-    * header If-Match = karate.response.header('etag')
     * def extensionVal = 
     """
         {
@@ -235,13 +210,6 @@ Scenario:  Healthcare worker can update communication single itesm
   
 Scenario:  Healthcare worker can remove Remove Communication
     * def nhsNumber = '9000000009'
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
-    * configure headers = call read('classpath:auth/auth-headers.js')     
-    * header Content-Type = "application/json-patch+json"
-    * header If-Match = karate.response.header('etag')
     * def extensionURL = "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication"
     * path 'Patient', nhsNumber
     * request 
@@ -266,13 +234,6 @@ Scenario:  Healthcare worker can remove Remove Communication
 
 Scenario:  Healthcare worker can replace a Single Contact Preference
     * def nhsNumber = '9000000009'
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
-    * configure headers = call read('classpath:auth/auth-headers.js')     
-    * header Content-Type = "application/json-patch+json"
-    * header If-Match = karate.response.header('etag')
     * def extensionVal = 
     """
         {
@@ -307,13 +268,6 @@ Scenario:  Healthcare worker can replace a Single Contact Preference
     
 Scenario:  Healthcare worker can replace and remove Contact Preference
     * def nhsNumber = '9000000009'
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
-    * configure headers = call read('classpath:auth/auth-headers.js')     
-    * header Content-Type = "application/json-patch+json"
-    * header If-Match = karate.response.header('etag')
     * def extensionVal = 
     """
         {
@@ -356,7 +310,6 @@ Scenario:  Healthcare worker can replace and remove Contact Preference
     * path 'Patient', nhsNumber
     * method get
     * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
     * configure headers = call read('classpath:auth/auth-headers.js')     
     * header Content-Type = "application/json-patch+json"
     * header If-Match = karate.response.header('etag')  
@@ -378,13 +331,6 @@ Scenario:  Healthcare worker can replace and remove Contact Preference
     
 Scenario:  Healthcare worker can remove Single Contact Preference
     * def nhsNumber = '9000000009'
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
-    * configure headers = call read('classpath:auth/auth-headers.js')     
-    * header Content-Type = "application/json-patch+json"
-    * header If-Match = karate.response.header('etag')
     * def extensionURL = "PreferredWrittenCommunicationFormat"
     * path 'Patient', nhsNumber
     * request 
@@ -405,6 +351,7 @@ Scenario:  Healthcare worker can remove Single Contact Preference
     """
     * method patch
     * status 200
-    * def extensions = response.extension[5].extension.length
-    * if (extensions > 2) { karate.fail('Single Contact Preference not been removed from /extension/5/extension/2.')}
+    * def extensionsIn5thExtension = response.extension[5].extension.length
+    * match extensionsIn5thExtension == 2
+    * if (extensionsIn5thExtension > 2) { karate.fail('Single Contact Preference not been removed from /extension/5/extension/2.')}
   

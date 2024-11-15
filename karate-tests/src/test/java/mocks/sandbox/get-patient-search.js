@@ -341,7 +341,7 @@ if (request.pathMatches('/Patient') && request.get) {
     given: request.params.given || [],
     gender: request.param('gender'),
     birthDate: request.params.birthdate || [],
-    postalCode: request.param('address-postalcode'),
+    postalCode: request.param('address-postalcode') || request.param('address-postcode'),
     fuzzyMatch: request.paramBool('_fuzzy-match'),
     phone: request.param('phone'),
     email: request.param('email'),
