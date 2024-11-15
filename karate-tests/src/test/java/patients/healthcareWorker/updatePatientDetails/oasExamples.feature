@@ -352,6 +352,8 @@ Scenario:  Healthcare worker can remove Single Contact Preference
     * method patch
     * status 200
     * def extensionsIn5thExtension = response.extension[5].extension.length
-    * match extensionsIn5thExtension == 2
     * if (extensionsIn5thExtension > 2) { karate.fail('Single Contact Preference not been removed from /extension/5/extension/2.')}
+    * match response.extension[5].url == "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-ContactPreference"
+    * match response.extension[5].extension[0].url == extensionURL
+    * match response.extension[5].extension[1].url == "PreferredContactMethod"
   
