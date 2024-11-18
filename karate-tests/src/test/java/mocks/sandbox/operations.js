@@ -71,3 +71,35 @@ function removeUsualName (patient) {
 function removeBirthDate () {
   forbiddenUpdate = 'Forbidden update with error - source not permitted to remove \'birthDate\''
 }
+
+function addDeceasedDate (patient, value) {
+  patient.deceasedDateTime = value
+}
+
+function addExtension (patient, value) {
+  patient.extension = [value]
+}
+
+function updateDeceasedDate (patient, value) {
+  patient.deceasedDateTime = value
+}
+
+function updateExtension (patient, index, value) {
+  patient.extension[index] = value
+}
+
+function updateSingleItemInExtension (patient, index, childIndex, value) {
+  patient.extension[index].extension[childIndex] = value
+}
+
+function removeExtensionIfExists (patient, updateErrors, index) {
+  if (!patient.extension[index]) {
+    updateErrors.push("Invalid update with error - Invalid patch - can't remove non-existent object '0'")
+  } else {
+    delete patient.extension[index]
+  }
+}
+
+function removeSingleItemFromExtension (patient, index, childIndex) {
+  patient.extension[index].extension.splice(childIndex, 1)
+}

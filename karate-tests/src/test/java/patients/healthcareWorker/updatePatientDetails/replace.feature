@@ -81,18 +81,23 @@ Feature: Patch patient - Replace data
       * header Content-Type = "application/json-patch+json"
       * header If-Match = karate.response.header('etag')
       * path 'Patient', nhsNumber
+      * def mobileNumber = '0788548987'
       * request read('classpath:patients/requestDetails/add/emergencyContact.json')
       * method patch
       * status 200
-      * def versionIdAftAdd = response.meta.versionId
-      * def contactDetails = response.contact
       * match response contains {contact: '#notnull' }
-      * def relationshipDetails = contactDetails[0].relationship
-      * def contactId = contactDetails[0].id
-      * def indexToUpdate = response.contact.findIndex(x => x.id == contactId)
-      * def contactPathToUpdateAndRemove = "/contact/" + indexToUpdate
+      * match response.contact[*].telecom[*].value contains mobileNumber
 
       # update emergency contact
+      * configure headers = call read('classpath:auth/auth-headers.js') 
+      * path 'Patient', nhsNumber
+      * method get
+      * status 200
+      * def originalVersion = parseInt(response.meta.versionId)
+      * def relationshipDetails = response.contact.find(c => c.telecom.some(t => t.value == mobileNumber && t.system == 'phone'))?.relationship
+      * def contactId = response.contact.find(c => c.telecom.some(t => t.value == mobileNumber && t.system == 'phone'))?.id
+      * def indexToUpdate = response.contact.findIndex(x => x.id == contactId)
+      * def contactPathToUpdate = "/contact/" + indexToUpdate
       * configure headers = call read('classpath:auth/auth-headers.js') 
       * header Content-Type = "application/json-patch+json"
       * header If-Match = karate.response.header('etag')
@@ -103,7 +108,7 @@ Feature: Patch patient - Replace data
       {
         "patches":[
           {"op":"replace",
-          "path":"#(contactPathToUpdateAndRemove)",
+          "path":"#(contactPathToUpdate)",
           "value":{
             "id": "#(contactId)",
             "relationship":"#(relationshipDetails)",
@@ -114,14 +119,21 @@ Feature: Patch patient - Replace data
        """       
       * method patch
       * status 200
-      * def updatedContact = response.contact.find(x => x.id == contactId)
-      * def telecomValue = updatedContact.telecom[0].value
       * def versionIdAftUpdate = response.meta.versionId
-      * match parseInt(versionIdAftUpdate) == parseInt(versionIdAftAdd) + 1
-      * match telecomValue == newMobileNumber
+      * match parseInt(versionIdAftUpdate) == originalVersion + 1
+      * match response.contact[*].telecom[*].value contains newMobileNumber
      
       
       # remove emergency contact details
+      * configure headers = call read('classpath:auth/auth-headers.js') 
+      * path 'Patient', nhsNumber
+      * method get
+      * status 200
+      * def originalVersion = parseInt(response.meta.versionId)
+      * def contactId = response.contact.find(c => c.telecom.some(t => t.value == newMobileNumber && t.system == 'phone'))?.id || 'Not Found'
+      * def indexToRemove = response.contact.findIndex(x => x.id == contactId)
+      * def contactPathToRemove = "/contact/" + indexToRemove
+      * def contactValue = response.contact.find(x => x.id == contactId)
       * configure headers = call read('classpath:auth/auth-headers.js') 
       * header Content-Type = "application/json-patch+json"
       * header If-Match = karate.response.header('etag')
@@ -133,12 +145,12 @@ Feature: Patch patient - Replace data
           "patches": [
             {
               "op": "test",
-              "path": "#(contactPathToUpdateAndRemove)",
-              "value":"#(updatedContact)"       
+              "path": "#(contactPathToRemove)",
+              "value":"#(contactValue)"       
             },
             {
             "op": "remove",
-              "path": "#(contactPathToUpdateAndRemove)"
+              "path": "#(contactPathToRemove)"
             }
           ]
         }
@@ -147,7 +159,8 @@ Feature: Patch patient - Replace data
       * method patch
       * status 200
       * def versionIdAftRemove = response.meta.versionId
-      * match parseInt(versionIdAftRemove) == parseInt(versionIdAftUpdate) + 1
+      * match parseInt(versionIdAftRemove) == originalVersion + 1
+      * match response.contact !contains contactValue
     Scenario: Healthcare worker can update communication language-interpreter details
       * def nhsNumber = '5900071413'
       * configure headers = call read('classpath:auth/auth-headers.js') 

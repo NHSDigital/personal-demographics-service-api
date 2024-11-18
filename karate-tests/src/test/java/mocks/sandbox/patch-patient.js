@@ -6,7 +6,8 @@
 
 /* Functions defined in operations.js */
 /* global updateAddressDetails, handleNameRemovalError, removeSuffixIfExists, removeNameSuffix, updateGivenName, updateGender, updateBirthDate,
- addNameSuffixAtStart, addNameSuffix, addNewName, removeUsualName, removeBirthDate, forbiddenUpdate */
+ addNameSuffixAtStart, addNameSuffix, addNewName, removeUsualName, removeBirthDate, forbiddenUpdate, addDeceasedDate, addExtension
+ updateDeceasedDate, updateExtension, updateSingleItemInExtension, removeExtensionIfExists, removeSingleItemFromExtension */
 
 function buildResponseHeaders (request, patient) {
   return {
@@ -85,6 +86,9 @@ function patchPatient (originalPatient, request) {
   if (request.header('if-match') !== `W/"${originalPatient.meta.versionId}"`) {
     return setResourceVersionMismatchError(request)
   }
+  if (request.body.patches.length === 0) {
+    return setInvalidUpdateError(request, NO_PATCHES_PROVIDED)
+  }
 
   const validOperations = ['add', 'replace', 'remove', 'test']
   // Validate patch operations
@@ -105,7 +109,9 @@ function patchPatient (originalPatient, request) {
         const addPaths = {
           '/name/-': () => addNewName(value, updatedPatient),
           '/name/0/suffix': () => addNameSuffix(updatedPatient, value),
-          '/name/0/suffix/0': () => addNameSuffixAtStart(updatedPatient, value)
+          '/name/0/suffix/0': () => addNameSuffixAtStart(updatedPatient, value),
+          '/deceasedDateTime': () => addDeceasedDate(updatedPatient, value),
+          '/extension/-': () => addExtension(updatedPatient, value)
         }
         if (addPaths[path]) {
           addPaths[path]()
@@ -120,7 +126,13 @@ function patchPatient (originalPatient, request) {
           '/birthDate': () => updateBirthDate(updatedPatient, value),
           '/address/0/line/0': () => updateAddressDetails(value, originalPatient, updateErrors),
           '/address/0/line': () => updateAddressDetails(value, originalPatient, updateErrors),
-          '/address/0/id': () => updateAddressDetails(value, originalPatient, updateErrors)
+          '/address/0/id': () => updateAddressDetails(value, originalPatient, updateErrors),
+          '/deceasedDateTime': () => updateDeceasedDate(updatedPatient, value),
+          '/extension/3': () => updateExtension(updatedPatient, 3, value),
+          '/extension/4': () => updateExtension(updatedPatient, 4, value),
+          '/extension/5': () => updateExtension(updatedPatient, 5, value),
+          '/extension/4/extension/0': () => updateSingleItemInExtension(updatedPatient, 4, 0, value),
+          '/extension/5/extension/1': () => updateSingleItemInExtension(updatedPatient, 5, 1, value)
         }
         if (replacePaths[path]) {
           replacePaths[path]()
@@ -135,8 +147,11 @@ function patchPatient (originalPatient, request) {
           '/name/0/suffix': () => removeNameSuffix(updatedPatient),
           '/name/0/suffix/0': () => removeSuffixIfExists(updatedPatient, updateErrors, 0),
           '/name/1': () => handleNameRemovalError(request, updateErrors, updatedPatient),
+          '/name/5': () => handleNameRemovalError(request, updateErrors, updatedPatient),
           '/name/0': () => removeUsualName(updatedPatient),
-          '/birthDate': () => removeBirthDate()
+          '/birthDate': () => removeBirthDate(),
+          '/extension/4': () => removeExtensionIfExists(updatedPatient, updateErrors, 4),
+          '/extension/5/extension/2': () => removeSingleItemFromExtension(updatedPatient, 5, 2)
         }
         if (removePaths[path]) {
           removePaths[path]()
