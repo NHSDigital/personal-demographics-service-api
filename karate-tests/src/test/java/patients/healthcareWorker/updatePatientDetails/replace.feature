@@ -85,7 +85,6 @@ Feature: Patch patient - Replace data
       * request read('classpath:patients/requestDetails/add/emergencyContact.json')
       * method patch
       * status 200
-      * def versionIdAftAdd = response.meta.versionId
       * match response contains {contact: '#notnull' }
       * match response.contact[*].telecom[*].value contains mobileNumber
 
