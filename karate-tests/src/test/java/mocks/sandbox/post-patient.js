@@ -119,19 +119,6 @@ function postPatientRequestIsValid (request) {
   return true
 }
 
-function userHasPermission (request) {
-  // check the user making the request has permission to create a patient
-  let valid = true
-  if (request.header('Authorization') === 'Bearer APP_RESTRICTED') {
-    const body = context.read('classpath:mocks/stubs/errorResponses/INVALID_METHOD.json')
-    body.issue[0].details.coding[0].display = 'Cannot create resource with application-restricted access token'
-    response.body = body
-    response.status = 403
-    valid = false
-  }
-  return valid
-}
-
 function initializePatientData (request) {
   const patient = JSON.parse(JSON.stringify(NEW_PATIENT))
 
@@ -161,7 +148,7 @@ function initializePatientData (request) {
 function handlePatientCreationRequest (request) {
   response.headers = basicResponseHeaders(request)
   response.contentType = 'application/fhir+json'
-  if (userHasPermission(request) && postPatientRequestIsValid(request)) {
+  if (postPatientRequestIsValid(request)) {
     if (!requestMatchesErrorScenario(request)) {
       const patient = initializePatientData(request)
       response.body = patient
