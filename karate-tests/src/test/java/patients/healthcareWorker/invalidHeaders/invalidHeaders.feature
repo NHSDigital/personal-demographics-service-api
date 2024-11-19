@@ -1,4 +1,4 @@
-@sandbox
+
 Feature: Invalid request headers
   For any PDS requests made as a healthcare worker, you need:
     - a valid authorization header
@@ -42,6 +42,7 @@ Scenario Outline: Auth errors: patient <operation> - <diagnostics>
     | get          | Bearer abcdef123456789     | Invalid Access Token           |
     | search       | Bearer abcdef123456789     | Invalid Access Token           |
 
+@sandbox    
 Scenario Outline: x-request-id errors: patient <operation> - <diagnostics> 
   * def query = operation == 'search' ? { family: "Capon", gender: "male", birthdate: "eq1953-05-29" } : null
   * def target = operation == 'search' ? 'Patient' : `Patient/${nhsNumber}`
@@ -64,3 +65,26 @@ Scenario Outline: x-request-id errors: patient <operation> - <diagnostics>
     | search       |                            | Invalid request with error - X-Request-ID header must be supplied to access this resource   | MISSING_VALUE   |
     | get          | 1234                       | Invalid value - '1234' in header 'X-Request-ID'                                             | INVALID_VALUE   |
     | search       | 1234                       | Invalid value - '1234' in header 'X-Request-ID'                                             | INVALID_VALUE   |
+
+  @sandbox-only-fix
+  Scenario Outline: Auth errors: patient <operation> - <diagnostics> 
+    * def query = operation == 'search' ? { family: "Capon", gender: "male", birthdate: "eq1953-05-29" } : null
+    * def target = operation == 'search' ? 'Patient' : `Patient/${nhsNumber}`
+    
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * requestHeaders.authorization = headerValue
+    * configure headers = requestHeaders
+    
+    * path target
+    * params query 
+    * method get
+    * status 401
+    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders) 
+    * def display = 'Access Denied - Unauthorised'
+    * def expectedResponse = read(`classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json`)
+    * match response == expectedResponse
+  
+    Examples:
+      | operation    | headerValue                     | diagnostics                    |
+      | get          | Bearer                          | Missing access token           |
+      | get          | Bearer HEALTHCARE_WORKER        | Invalid Access Token           | 

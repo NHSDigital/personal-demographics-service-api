@@ -99,15 +99,13 @@ context.read('classpath:helpers/nhs-number-validator.js')
  * @returns {boolean} - Returns true if the string is a valid UUID, otherwise false.
  */
 function isValidUUID (uuid) {
-  let valid = false
-  const specialTokens = ['APP_RESTRICTED', 'HEALTHCARE_WORKER']
-  if (specialTokens.includes(uuid)) {
-    valid = true
-  } else {
-    const regex = /[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}/
-    valid = regex.test(uuid)
-  }
-  return valid
+  const regex = /[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}/
+  return regex.test(uuid)
+}
+
+function isValidAuthToken (token) {
+  const regex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z0-9]+(_[a-zA-Z0-9]+)?$/
+  return regex.test(token)
 }
 
 /*
@@ -129,7 +127,7 @@ function isValidBearerToken (token) {
     return false
   } else if (tokenParts[0] !== 'Bearer') {
     return false
-  } else if (!isValidUUID(tokenParts[1])) {
+  } else if (!isValidAuthToken(tokenParts[1])) {
     return false
   }
   return true
@@ -147,8 +145,8 @@ function validateAuthHeader (request) {
   // Check if the Authorization header is present and correct
   const authorization = request.header('Authorization')
   if (authorization === null) {
-    diagnostics = 'Missing Authorization header'
-    valid = false
+    // authorization is not mandatory on sandbox
+    valid = true
   } else if (!containsBearerToken(authorization)) {
     diagnostics = 'Missing access token'
     valid = false
