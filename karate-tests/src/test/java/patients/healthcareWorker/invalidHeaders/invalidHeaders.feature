@@ -66,7 +66,7 @@ Scenario Outline: x-request-id errors: patient <operation> - <diagnostics>
     | get          | 1234                       | Invalid value - '1234' in header 'X-Request-ID'                                             | INVALID_VALUE   |
     | search       | 1234                       | Invalid value - '1234' in header 'X-Request-ID'                                             | INVALID_VALUE   |
 
-  @sandbox-only-fix
+  @sandbox-only
   Scenario Outline: Auth errors: patient <operation> - <diagnostics> 
     * def query = operation == 'search' ? { family: "Capon", gender: "male", birthdate: "eq1953-05-29" } : null
     * def target = operation == 'search' ? 'Patient' : `Patient/${nhsNumber}`
