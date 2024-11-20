@@ -111,23 +111,12 @@ function isValidAuthToken (token) {
 /*
  * validate the oauth2 bearer token
  */
-function containsBearerToken (token) {
+function validateBearerToken(token, validateTokenPart = false) {
   const tokenParts = token.split(' ')
-  if (tokenParts.length !== 2) {
-    return false
-  } else if (tokenParts[0] !== 'Bearer') {
+  if (tokenParts.length !== 2 || tokenParts[0] !== 'Bearer') {
     return false
   }
-  return true
-}
-
-function isValidBearerToken (token) {
-  const tokenParts = token.split(' ')
-  if (tokenParts.length !== 2) {
-    return false
-  } else if (tokenParts[0] !== 'Bearer') {
-    return false
-  } else if (!isValidAuthToken(tokenParts[1])) {
+  if (validateTokenPart && !isValidAuthToken(tokenParts[1])) {
     return false
   }
   return true
@@ -147,10 +136,10 @@ function validateAuthHeader (request) {
   if (authorization === null) {
     // authorization is not mandatory on sandbox
     valid = true
-  } else if (!containsBearerToken(authorization)) {
+  } else if (!validateBearerToken(authorization)) {
     diagnostics = 'Missing access token'
     valid = false
-  } else if (!isValidBearerToken(authorization)) {
+  } else if (!validateBearerToken(authorization, true)) {
     diagnostics = 'Invalid Access Token'
     valid = false
   }
