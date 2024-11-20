@@ -1913,7 +1913,7 @@ components:
         The search looks for matches in historic information such as previous names and addresses.
 
         This parameter has no effect for a fuzzy search, which always includes historic information.
-      example: true
+      example: false
       in: query
       required: false
       schema:

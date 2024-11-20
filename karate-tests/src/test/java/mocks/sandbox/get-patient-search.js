@@ -330,6 +330,13 @@ const matchCases = [
   {
     condition: (params) => params.family === 'YOUDS',
     action: () => timestampBody(YOUDS_SEARCHSET)
+  },
+  // Documentation example scenario
+  {
+    condition: (params) => ['Smith'].includes(params.family) && ['female'].includes(params.gender) && ['Jane'].includes(params.given) &&
+    (params.birthDate[0]) === 'eq2010-10-22' && params.deathDate === 'eq2010-10-22' && params.email === 'jane.smith@example.com' &&
+    params.phone === '01632960587' && params.gp === 'Y12345' && params.postalCode === 'LS1 6AE',
+    action: () => timestampBody(SEARCH_PATIENT_9000000009)
   }
   // Add additional match cases for other conditions
 ]
