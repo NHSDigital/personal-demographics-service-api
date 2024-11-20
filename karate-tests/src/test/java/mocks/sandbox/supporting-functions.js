@@ -111,7 +111,7 @@ function isValidAuthToken (token) {
 /*
  * validate the oauth2 bearer token
  */
-function validateBearerToken (token, validateTokenPart = false) {
+function isValidBearerToken (token, validateTokenPart = false) {
   const tokenParts = token.split(' ')
   if (tokenParts.length !== 2 || tokenParts[0] !== 'Bearer') {
     return false
@@ -136,10 +136,10 @@ function validateAuthHeader (request) {
   if (authorization === null) {
     // authorization is not mandatory on sandbox
     valid = true
-  } else if (!validateBearerToken(authorization)) {
+  } else if (!isValidBearerToken(authorization)) {
     diagnostics = 'Missing access token'
     valid = false
-  } else if (!validateBearerToken(authorization, true)) {
+  } else if (!isValidBearerToken(authorization, true)) {
     diagnostics = 'Invalid Access Token'
     valid = false
   }
