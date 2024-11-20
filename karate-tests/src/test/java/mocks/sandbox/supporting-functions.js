@@ -111,7 +111,7 @@ function isValidAuthToken (token) {
 /*
  * validate the oauth2 bearer token
  */
-function validateBearerToken(token, validateTokenPart = false) {
+function validateBearerToken (token, validateTokenPart = false) {
   const tokenParts = token.split(' ')
   if (tokenParts.length !== 2 || tokenParts[0] !== 'Bearer') {
     return false
