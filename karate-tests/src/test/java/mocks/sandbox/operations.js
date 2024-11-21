@@ -1,12 +1,16 @@
 function updateAddressDetails (value, originalPatient, updateErrors) {
-  if (value === '2 Whitehall Quay') {
-    updateErrors.push('Invalid update with error - no id or url found for path with root /address/0')
-  } else if (!Object.prototype.hasOwnProperty.call(originalPatient, 'address')) {
+  if (!Object.prototype.hasOwnProperty.call(originalPatient, 'address')) {
     updateErrors.push("Invalid update with error - Invalid patch - index '0' is out of bounds")
   } else if (value === '123456') {
     updateErrors.push("Invalid update with error - no 'address' resources with object id '123456'")
-  } else {
+  } else if (value === '2 Whitehall Quay') {
+    originalPatient.address[0].line[0] = value
+  } else if (value === 'LS1 4BU') {
+    originalPatient.address[0].postalCode = value
+  } else if (Array.isArray(value)) {
     updateErrors.push("Invalid update with error - Invalid patch - can't replace non-existent object 'line'")
+  } else if (typeof value === 'object') {
+    originalPatient.address[0] = value
   }
 }
 

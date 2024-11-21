@@ -89,6 +89,15 @@ function patchPatient (originalPatient, request) {
   if (request.body.patches.length === 0) {
     return setInvalidUpdateError(request, NO_PATCHES_PROVIDED)
   }
+  const updateErrors = []
+
+  if (request.body.patches.some(patch => patch.path.startsWith('/address'))) {
+    if (!request.body.patches.some(patch => patch.path === '/address/0')) {
+      if (!request.body.patches.some(patch => patch.path === '/address/0/id')) {
+        updateErrors.push('Invalid update with error - no id or url found for path with root /address/0')
+      }
+    }
+  }
 
   const validOperations = ['add', 'replace', 'remove', 'test']
   // Validate patch operations
@@ -99,7 +108,6 @@ function patchPatient (originalPatient, request) {
   }
 
   const updatedPatient = JSON.parse(JSON.stringify(originalPatient))
-  const updateErrors = []
 
   for (const patch of request.body.patches) {
     const { op, path, value } = patch
@@ -124,9 +132,11 @@ function patchPatient (originalPatient, request) {
           '/name/0/given/0': () => updateGivenName(updatedPatient, value),
           '/gender': () => updateGender(updatedPatient, value),
           '/birthDate': () => updateBirthDate(updatedPatient, value),
-          '/address/0/line/0': () => updateAddressDetails(value, originalPatient, updateErrors),
-          '/address/0/line': () => updateAddressDetails(value, originalPatient, updateErrors),
-          '/address/0/id': () => updateAddressDetails(value, originalPatient, updateErrors),
+          '/address/0': () => updateAddressDetails(value, updatedPatient, updateErrors),
+          '/address/0/line/0': () => updateAddressDetails(value, updatedPatient, updateErrors),
+          '/address/0/line': () => updateAddressDetails(value, updatedPatient, updateErrors),
+          '/address/0/id': () => updateAddressDetails(value, updatedPatient, updateErrors),
+          '/address/0/postalCode': () => updateAddressDetails(value, updatedPatient, updateErrors),
           '/deceasedDateTime': () => updateDeceasedDate(updatedPatient, value),
           '/extension/3': () => updateExtension(updatedPatient, 3, value),
           '/extension/4': () => updateExtension(updatedPatient, 4, value),
