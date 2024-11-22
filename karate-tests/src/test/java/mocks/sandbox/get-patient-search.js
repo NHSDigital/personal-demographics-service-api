@@ -300,16 +300,19 @@ const matchCases = [
      params.phone === '00917855986859',
     action: () => timestampBody(COUNTRYCODE_SEARCHSET)
   },
+  // wildcard search on postcode
   {
     condition: (params) => ['DN17*'].includes(params.postalCode) && ['Smith', 'smith'].includes(params.family) &&
      ['Male', 'male'].includes(params.gender) &&
      (params.birthDate[0]) === 'eq2000-05-05',
     action: () => timestampBody(POSTALCODE_WILDCARD_SEARCHSET)
   },
+  // Alphanumeric search with registered GP practice
   {
     condition: (params) => ['A20047'].includes(params.gp) && ['Me*'].includes(params.family) && (params.birthDate[0]) === 'eq2015-10-22',
     action: () => timestampBody(GP_SEARCHSET)
   },
+  // Simple search with date of death parameter
   {
     condition: (params) => params.deathDate === 'le2019-02-28' && ['TUNNEY'].includes(params.family) && (params.birthDate[0]) === 'ge1980-01-01',
     action: () => timestampBody(DEATHDATE_SEARCHSET)
