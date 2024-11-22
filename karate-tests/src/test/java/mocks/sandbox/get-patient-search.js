@@ -136,6 +136,7 @@ const matchCases = [
     condition: (params) => params.fuzzyMatch && params.family === 'Blogs' && params.given[0] === 'Joe' && params.birthDate[0] === '1955-11-05',
     action: () => timestampBody(JOE_BLOGS_HISTORIC_NAME_SEARCHSET)
   },
+  // Unicode search
   {
     condition: (params) => params.fuzzyMatch && params.family === 'ATTSÖN' && params.given[0] === 'PÀULINÉ' && params.birthDate[0] === '1960-07-14',
     action: () => timestampBody(PAULINE_ATTISON_SEARCHSET)
@@ -144,18 +145,21 @@ const matchCases = [
     condition: (params) => params.fuzzyMatch && params.phone === '01222111111' && params.email === 'test@test.com',
     action: () => timestampBody(FUZZY_SINGLE_SEARCHSET)
   },
+  // Algorithm search with basic(given name, gender, date of birth and postal code) and phone number - no match -> single match -> multi match
   {
     condition: (params) => params.fuzzyMatch && params.family === 'Smythe' && (params.given[0]) === 'Mat' && (params.birthDate[0]) === 'ge2000-05-03' &&
      params.gender === 'male' &&
      params.postalCode === 'DN17 4AA' && params.email !== 'rubbish@work.com',
     action: () => timestampBody(FUZZY_MULTI_SEARCHSET)
   },
+  // Algorithm search with basic(given name, gender, date of birth and postal code) and phone number - no match -> single match -> multi match
   {
     condition: (params) => params.fuzzyMatch && params.family === 'Smythe' && (params.given[0]) === 'Mat' && (params.birthDate[0]) === 'ge2000-05-03' &&
      params.gender === 'male' &&
      params.postalCode === 'DN17 4AA' && params.email === 'rubbish@work.com',
     action: () => timestampBody(EMPTY_SEARCHSET)
   },
+  // Fuzzy matching should not return historic matches when historic dob is sent as query parameter
   {
     condition: (params) => params.fuzzyMatch && ['MED', 'HUME'].includes(params.family) && (params.given[0]) === 'Casey' && (params.birthDate[0]) === '1999-09-09',
     action: () => timestampBody(HISTORIC_DATA_SEARCHSET)
@@ -164,6 +168,7 @@ const matchCases = [
     condition: (params) => params.fuzzyMatch && params.family === 'MED' && (params.given[0]) === 'Casey' && (params.birthDate[0]) === '2024-01-12',
     action: () => timestampBody(EMPTY_SEARCHSET)
   },
+  // Historic matching shouldn't return hidden matches
   {
     condition: (params) => params.fuzzyMatch && params.family === 'LEEKE' && (params.given[0]) === 'Horace' && (params.birthDate[0]) === '1956-05-02' &&
      params.postalCode === 'DN16',
@@ -189,15 +194,18 @@ const matchCases = [
     condition: (params) => params.fuzzyMatch && params.phone === '01632960587' && params.email === 'jane.smith@example.com',
     action: () => timestampBody(janeSmithSearchsetWithScore(0.9542))
   },
+  // Include history flag for non fuzzy search
   {
     condition: (params) => params.historyMatch && ['Smith', 'smith'].includes(params.family) && ['Male', 'male'].includes(params.gender) &&
     (params.birthDate[0]) === 'eq2000-05-05' && params.email === 'Historic@historic.com',
     action: () => timestampBody(HISTORIC_EMAIL_SEARCHSET)
   },
+  // Search for a PDS record based on historic DOB, family name, gender
   {
     condition: (params) => params.historyMatch && ['HUME'].includes(params.family) && (params.birthDate[0]) === '1999-09-09',
     action: () => timestampBody(HISTORIC_DATA_SEARCHSET)
   },
+  // Search for a PDS record based on historic DOB, family name, gender
   {
     condition: (params) => params.historyMatch && params.family === 'MED' && (params.birthDate[0]) === '2024-01-12',
     action: () => timestampBody(EMPTY_SEARCHSET)
@@ -260,11 +268,13 @@ const matchCases = [
      otherJaneSmithParamsAreValid(request),
     action: () => timestampBody(SIMPLE_SEARCH)
   },
+  // Compound name search
   {
     condition: (params) => ['Smith', 'smith'].includes(params.family) && ['Male', 'male'].includes(params.gender) && (params.given[0]) === 'John Paul' &&
      params.given[1] === 'James',
     action: () => timestampBody(JOHN_PAUL_SMITH_SEARCHSET)
   },
+  // Search should not return superseded patients record
   {
     condition: (params) => ['CUFF', 'Cuff'].includes(params.family) && ['Female', 'female'].includes(params.gender) &&
      (params.birthDate[0] === 'eq1926-01-07'),
@@ -276,12 +286,14 @@ const matchCases = [
      (params.given[0]) === 'Sam' && (params.given[1]) === 'Bob',
     action: () => timestampBody(OTHER_GIVENNAME_SEARCHSET)
   },
+  // Simple and Alphanumeric search with email and phone number - Multi match
   {
     condition: (params) => ['Smith', 'smith'].includes(params.family) && ['Male', 'male'].includes(params.gender) &&
      (params.birthDate[0]) === 'eq2000-05-05' &&
      params.phone === '01234123123' && params.email === 'test@test.com',
     action: () => timestampBody(MULTIMATCHWITHPHONEANDEMAIL_SEARCHSET)
   },
+  // Simple search with phone number including country code
   {
     condition: (params) => ['Muir', 'Muir'].includes(params.family) && ['Male', 'male'].includes(params.gender) &&
      (params.birthDate[0]) === 'eq2017-09-06' &&
