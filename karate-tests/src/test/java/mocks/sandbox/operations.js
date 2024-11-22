@@ -76,6 +76,10 @@ function removeBirthDate () {
   forbiddenUpdate = 'Forbidden update with error - source not permitted to remove \'birthDate\''
 }
 
+function removeGender () {
+  forbiddenUpdate = 'Forbidden update with error - source not permitted to remove \'gender\''
+}
+
 function addDeceasedDate (patient, value) {
   patient.deceasedDateTime = value
 }

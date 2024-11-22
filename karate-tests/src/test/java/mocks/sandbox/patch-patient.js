@@ -7,7 +7,7 @@
 /* Functions defined in operations.js */
 /* global updateAddressDetails, handleNameRemovalError, removeSuffixIfExists, removeNameSuffix, updateGivenName, updateGender, updateBirthDate,
  addNameSuffixAtStart, addNameSuffix, addNewName, removeUsualName, removeBirthDate, forbiddenUpdate, addDeceasedDate, addExtension
- updateDeceasedDate, updateExtension, updateSingleItemInExtension, removeExtensionIfExists, removeSingleItemFromExtension */
+ updateDeceasedDate, updateExtension, updateSingleItemInExtension, removeExtensionIfExists, removeSingleItemFromExtension, removeGender */
 
 function buildResponseHeaders (request, patient) {
   return {
@@ -92,6 +92,7 @@ function patchPatient (originalPatient, request) {
   const updateErrors = []
 
   if (request.body.patches.some(patch => patch.path.startsWith('/address'))) {
+    // Address is not whole object
     if (!request.body.patches.some(patch => patch.path === '/address/0')) {
       if (!request.body.patches.some(patch => patch.path === '/address/0/id')) {
         updateErrors.push('Invalid update with error - no id or url found for path with root /address/0')
@@ -160,7 +161,9 @@ function patchPatient (originalPatient, request) {
           '/name/5': () => handleNameRemovalError(request, updateErrors, updatedPatient),
           '/name/0': () => removeUsualName(updatedPatient),
           '/birthDate': () => removeBirthDate(),
+          '/gender': () => removeGender(),
           '/extension/4': () => removeExtensionIfExists(updatedPatient, updateErrors, 4),
+          '/extension/1': () => removeExtensionIfExists(updatedPatient, updateErrors, 1),
           '/extension/5/extension/2': () => removeSingleItemFromExtension(updatedPatient, 5, 2)
         }
         if (removePaths[path]) {
