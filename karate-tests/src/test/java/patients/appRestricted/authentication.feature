@@ -12,7 +12,7 @@ Background:
 @mock
 Scenario: Mock authentication
     # We don't authenticate. We set a value that isn't a UUID, that the mock accepts
-    * def accessToken = "APP_RESTRICTED"
+    * def accessToken = "g1112R_ccQ1Ebbb4gtHBP1aaaNM"
 
 @real
 Scenario: Authentication for application-restricted access - signed JWT authentication
