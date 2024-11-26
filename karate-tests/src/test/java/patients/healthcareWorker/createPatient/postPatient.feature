@@ -126,7 +126,7 @@ Scenario: Fail to create a record for a new patient, multiple demographics match
   * status 200
   * match response == read('classpath:mocks/stubs/postPatientResponses/MULTIPLE_MATCHES_FOUND.json')
 
-@sandbox 
+@sandbox
 Scenario Outline: Negative path: missing value in request body - missing <missingValue>
   * path "Patient"
   * request payload

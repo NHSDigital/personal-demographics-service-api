@@ -99,37 +99,24 @@ context.read('classpath:helpers/nhs-number-validator.js')
  * @returns {boolean} - Returns true if the string is a valid UUID, otherwise false.
  */
 function isValidUUID (uuid) {
-  let valid = false
-  const specialTokens = ['APP_RESTRICTED', 'HEALTHCARE_WORKER']
-  if (specialTokens.includes(uuid)) {
-    valid = true
-  } else {
-    const regex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
-    valid = regex.test(uuid)
-  }
-  return valid
+  const regex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
+  return regex.test(uuid)
+}
+
+function isValidAuthToken (token) {
+  const regex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z0-9]+(_[a-zA-Z0-9]+)?$/
+  return regex.test(token)
 }
 
 /*
  * validate the oauth2 bearer token
  */
-function containsBearerToken (token) {
+function isValidBearerToken (token, validateTokenPart = false) {
   const tokenParts = token.split(' ')
-  if (tokenParts.length !== 2) {
-    return false
-  } else if (tokenParts[0] !== 'Bearer') {
+  if (tokenParts.length !== 2 || tokenParts[0] !== 'Bearer') {
     return false
   }
-  return true
-}
-
-function isValidBearerToken (token) {
-  const tokenParts = token.split(' ')
-  if (tokenParts.length !== 2) {
-    return false
-  } else if (tokenParts[0] !== 'Bearer') {
-    return false
-  } else if (!isValidUUID(tokenParts[1])) {
+  if (validateTokenPart && !isValidAuthToken(tokenParts[1])) {
     return false
   }
   return true
@@ -147,12 +134,12 @@ function validateAuthHeader (request) {
   // Check if the Authorization header is present and correct
   const authorization = request.header('Authorization')
   if (authorization === null) {
-    diagnostics = 'Missing Authorization header'
-    valid = false
-  } else if (!containsBearerToken(authorization)) {
+    // authorization is not mandatory on sandbox
+    valid = true
+  } else if (!isValidBearerToken(authorization)) {
     diagnostics = 'Missing access token'
     valid = false
-  } else if (!isValidBearerToken(authorization)) {
+  } else if (!isValidBearerToken(authorization, true)) {
     diagnostics = 'Invalid Access Token'
     valid = false
   }
