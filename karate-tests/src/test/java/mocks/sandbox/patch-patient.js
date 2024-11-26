@@ -7,7 +7,7 @@
 /* Functions defined in operations.js */
 /* global updateAddressDetails, handleNameRemovalError, removeSuffixIfExists, removeNameSuffix, updateGivenName, updateGender, updateBirthDate,
  addNameSuffixAtStart, addNameSuffix, addNewName, removeUsualName, removeBirthDate, forbiddenUpdate, addDeceasedDate, addExtension
- updateDeceasedDate, updateExtension, updateSingleItemInExtension, removeExtensionIfExists, removeSingleItemFromExtension */
+ updateDeceasedDate, updateExtension, updateSingleItemInExtension, removeExtensionIfExists, removeSingleItemFromExtension, removeGender */
 
 function buildResponseHeaders (request, patient) {
   return {
@@ -89,6 +89,16 @@ function patchPatient (originalPatient, request) {
   if (request.body.patches.length === 0) {
     return setInvalidUpdateError(request, NO_PATCHES_PROVIDED)
   }
+  const updateErrors = []
+
+  if (request.body.patches.some(patch => patch.path.startsWith('/address'))) {
+    // Address is not whole object
+    if (!request.body.patches.some(patch => patch.path === '/address/0')) {
+      if (!request.body.patches.some(patch => patch.path === '/address/0/id')) {
+        updateErrors.push('Invalid update with error - no id or url found for path with root /address/0')
+      }
+    }
+  }
 
   const validOperations = ['add', 'replace', 'remove', 'test']
   // Validate patch operations
@@ -99,7 +109,6 @@ function patchPatient (originalPatient, request) {
   }
 
   const updatedPatient = JSON.parse(JSON.stringify(originalPatient))
-  const updateErrors = []
 
   for (const patch of request.body.patches) {
     const { op, path, value } = patch
@@ -124,9 +133,11 @@ function patchPatient (originalPatient, request) {
           '/name/0/given/0': () => updateGivenName(updatedPatient, value),
           '/gender': () => updateGender(updatedPatient, value),
           '/birthDate': () => updateBirthDate(updatedPatient, value),
-          '/address/0/line/0': () => updateAddressDetails(value, originalPatient, updateErrors),
-          '/address/0/line': () => updateAddressDetails(value, originalPatient, updateErrors),
-          '/address/0/id': () => updateAddressDetails(value, originalPatient, updateErrors),
+          '/address/0': () => updateAddressDetails(value, updatedPatient, updateErrors),
+          '/address/0/line/0': () => updateAddressDetails(value, updatedPatient, updateErrors),
+          '/address/0/line': () => updateAddressDetails(value, updatedPatient, updateErrors),
+          '/address/0/id': () => updateAddressDetails(value, updatedPatient, updateErrors),
+          '/address/0/postalCode': () => updateAddressDetails(value, updatedPatient, updateErrors),
           '/deceasedDateTime': () => updateDeceasedDate(updatedPatient, value),
           '/extension/3': () => updateExtension(updatedPatient, 3, value),
           '/extension/4': () => updateExtension(updatedPatient, 4, value),
@@ -150,7 +161,9 @@ function patchPatient (originalPatient, request) {
           '/name/5': () => handleNameRemovalError(request, updateErrors, updatedPatient),
           '/name/0': () => removeUsualName(updatedPatient),
           '/birthDate': () => removeBirthDate(),
+          '/gender': () => removeGender(),
           '/extension/4': () => removeExtensionIfExists(updatedPatient, updateErrors, 4),
+          '/extension/1': () => removeExtensionIfExists(updatedPatient, updateErrors, 1),
           '/extension/5/extension/2': () => removeSingleItemFromExtension(updatedPatient, 5, 2)
         }
         if (removePaths[path]) {
