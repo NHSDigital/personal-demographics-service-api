@@ -1,16 +1,12 @@
-FROM node:20.12.1-alpine3.18
+FROM amazoncorretto:17-alpine-jdk
+RUN apk add --no-cache git
 
-WORKDIR /app
+LABEL version="0.0.1"
 
-COPY package*.json ./
+WORKDIR /source
+RUN git clone https://github.com/NHSDigital/karate-jar 
 
-RUN npm install --only=production
-
-COPY src/ ./
-COPY mocks/ mocks
-RUN chmod -R a+x /app
-
-USER nobody
-
-# Entry point
-CMD ["node", "app.js"]
+COPY ./karate-tests/ /app/
+WORKDIR /app/src/test/java
+CMD ["java", "-cp", "/source/karate-jar/karate.jar:.", "com.intuit.karate.Main", "-m", "mocks/sandbox/sandbox.js", "-p", "9000"]
+EXPOSE 9000
