@@ -1,4 +1,4 @@
-@no-oas
+
 Feature: Create a patient - Healthcare worker access mode
 
 Note the use of the Karate retry functionality in this feature:
@@ -177,7 +177,7 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
       | property            | invalidValue                | diagnostics                                                 |
       | givenName           | not an array                | Invalid value - 'not an array' in field 'name/0/given'      |
       | address             | ['another', 'array']        | Invalid value - '['another', 'array']' in field 'address/0' |
-      | gender              | notAValidOption             | Invalid value - 'notAValidOption' in field 'gender'         |
+      | gender              | other                       | Invalid value - 'other' in field 'gender'         |
       | birthDate           | not-a-date                  | Invalid value - 'not-a-date' in field 'birthDate'           |
 
     
@@ -204,4 +204,126 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
     * status 400
     * def diagnostics = "Invalid patient create data provided - 'address lines 1 and 4 or 2 and 4 must be completed as a minimum'"
     * match response == read('classpath:mocks/stubs/errorResponses/INVALID_CREATE.json')
+
+  Scenario: Negative path: Address key url's and extensions are mandatory
+    * def givenName = ["#(faker.givenName())", "#(faker.givenName())"]
+    * def prefix = ["#(utils.randomPrefix())"]
+    * def gender = utils.randomGender()
+    * def birthDate = utils.randomBirthDate()
+    * def address =
+              """
+              {
+                  "use": "home",
+                  "period": {
+                      "start": "2020-01-01"
+                  },
+                  "id": "456",
+                  "line": [
+                      "1 High Street",
+                      "",
+                      "Doýnna TOPSONÔ",
+                      "Leeds",
+                      "West Yorkshire"
+                  ],
+                  "postalCode": "LS1 6AE",
+                  "extension": [
+                    {         
+                  "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey"
+                },
+                {
+                    "extension": [
+                        {
+                            "url": "type",
+                            "valueCoding": {
+                                "code": "UPRN",
+                                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType"
+                            }
+                        },
+                        {
+                            "url": "value",
+                            "valueString": "123456789012"
+                        }
+                    ],
+                    "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey"
+                }
+                  ]
+              }
+              """
+  
+    # you can't create a new patient if the line property doesn't match the spec
+    * path "Patient"
+    * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
+    * configure retry = { count: 5, interval: 5000 }
+    * retry until responseStatus != 429 && responseStatus != 503
+    * method post
+    * status 400
+    * def diagnostics = `Missing value - 'address/0/extension/0/extension'`
+    * match response == read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')
+  
+  Scenario:Negative path: Create new patient with invalid telecom details
+    * def givenName = ["#(faker.givenName())", "#(faker.givenName())"]
+    * def prefix = ["#(utils.randomPrefix())"]
+    * def gender = utils.randomGender()
+    * def birthDate = utils.randomBirthDate()
+    * def randomAddress = utils.randomAddress(birthDate)
+    * def address = randomAddress
+    * def patientPayload = read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
+    * def telecom = 
+    """
+      [
+        {
+            "use": "home",
+            "system": "email",
+            "value": "testemail",
+            "period": {
+                "start": "2020-01-02",
+                "end": "2021-01-02"
+            }
+        }
+    ]
+    """
+    * patientPayload.telecom = telecom
+    
+    * path "Patient"
+    * request patientPayload
+    * configure retry = { count: 5, interval: 5000 }
+    * retry until responseStatus != 429 && responseStatus != 503
+    * method post
+    * status 400
+    * def diagnostics = "Invalid patient create data provided - 'email format is invalid'"
+    * match response == read('classpath:mocks/stubs/errorResponses/INVALID_CREATE.json')
+  
+  @allocation-fix 
+  Scenario Outline: Negative path: too many values in request body - <property>
+    # this is not an exhaustive test of all possible too many values  values - see the integration tests for this
+    # we're really just proving a few of the main properties here
+    * def validGivenName = ["#(faker.givenName())", "#(faker.givenName())"]
+    * def validBirthDate = utils.randomBirthDate()
+    * def validGender = utils.randomGender()
+    * def validAddress = utils.randomAddress(validBirthDate)
+    
+    # so we can put an array in the examples table and pass it as an array instead of a string,
+    # convert the values to json as standard.
+    * json jsonValue = invalidValue
+
+    * def givenName = property == "givenName" ? jsonValue : validGivenName
+    * def familyName = "ToRemove"
+    * def prefix = ["#(utils.randomPrefix())"]
+    * def gender = property == "gender" ? jsonValue : validGender
+    * def birthDate = property == "birthDate" ? jsonValue : validBirthDate
+    * def address = property == "address" ? jsonValue : validAddress
+    
+    * path "Patient"
+    * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
+
+    * configure retry = { count: 5, interval: 10000 }
+    * retry until responseStatus != 429 && responseStatus != 503
+    * method post
+    * status 400
+    * match response == read('classpath:mocks/stubs/errorResponses/TOO_MANY_VALUES_SUBMITTED.json')
+  
+    Examples:
+      | property            | invalidValue                                    | diagnostics                                                 |
+      | givenName           | ["One", "Two", "Three", "Four", "Five", "six"]  | Too many values submitted - ['One', 'Two', 'Three', 'Four', 'Five', 'six'] in field 'name/0/given'      |
+
   

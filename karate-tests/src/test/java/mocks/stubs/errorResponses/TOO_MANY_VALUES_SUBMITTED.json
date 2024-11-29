@@ -1,0 +1,20 @@
+{
+    "issue": [
+        {
+            "code": "value",
+            "details": {
+                "coding": [
+                    {
+                        "code": "TOO_MANY_VALUES_SUBMITTED",
+                        "display": "Too many values submitted",
+                        "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+                        "version": "1"
+                    }
+                ]
+            },
+            "diagnostics": "#(diagnostics)",
+            "severity": "error"
+        }
+    ],
+    "resourceType": "OperationOutcome"
+}
