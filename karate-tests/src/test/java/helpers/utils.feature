@@ -65,7 +65,7 @@ Scenario:
   * def randomGender = 
   """
   function() {
-    const genders = ['male', 'female', 'other', 'unknown']
+    const genders = ['male', 'female', 'unknown']
     return genders[Math.floor(Math.random() * genders.length)];
   }
   """
