@@ -1,4 +1,4 @@
-
+@no-oas
 Feature: Create a patient - Healthcare worker access mode
 
 Note the use of the Karate retry functionality in this feature:
@@ -138,13 +138,13 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
   * match response == read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')
 
   Examples:
-    | payload                                                                                                        | missingValue |
-    | { "bananas": "in pyjamas" }                                                                                    | name         | 
-    | { "name": { "family": "Smith" } }                                                                              | address      |
-    | { "name": { "family": "Smith" }, "address": [{ "line": ["1"] }] }                                              | gender       |
-    | { "name": { "family": "Smith" }, "address": [{ "line": ["1"] }], "gender": "male" }                            | birthDate    |
+    | payload                                                                                                                                                                       | missingValue     |
+    | { "bananas": "in pyjamas" }                                                                                                                                                   | name             | 
+    | { "name": { "family": "Smith" } }                                                                                                                                             | address          |
+    | { "name": { "family": "Smith" }, "address": [{ "line": ["1"] }] }                                                                                                             | gender           |
+    | { "name": { "family": "Smith" }, "address": [{ "line": ["1"] }], "gender": "male" }                                                                                           | birthDate        |
+    | { "name": [{ "family": "ToRemove", "given": ["No-Extensions"],"period": {"start": "2024-01-12"}}],"address": [{ "line": ["1"] }], "gender": "male","birthDate": "2023-12-12"} | address/0/period | 
 
-  @sandbox 
   Scenario Outline: Negative path: invalid value in request body - <property>
     # this is not an exhaustive test of all possible invalid values - see the integration tests for this
     # we're really just proving a few of the main properties here
@@ -158,7 +158,7 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
     * json jsonValue = invalidValue
 
     * def givenName = property == "givenName" ? jsonValue : validGivenName
-    * def familyName = "ToRemove"
+    * def familyName = property == "familyName" ? jsonValue : "ToRemove"
     * def prefix = ["#(utils.randomPrefix())"]
     * def gender = property == "gender" ? jsonValue : validGender
     * def birthDate = property == "birthDate" ? jsonValue : validBirthDate
@@ -168,6 +168,7 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
     * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
 
     * configure retry = { count: 5, interval: 10000 }
+
     * retry until responseStatus != 429 && responseStatus != 503
     * method post
     * status 400
@@ -177,8 +178,9 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
       | property            | invalidValue                | diagnostics                                                 |
       | givenName           | not an array                | Invalid value - 'not an array' in field 'name/0/given'      |
       | address             | ['another', 'array']        | Invalid value - '['another', 'array']' in field 'address/0' |
-      | gender              | other                       | Invalid value - 'other' in field 'gender'         |
+      | gender              | other                       | Invalid value - 'other' in field 'gender'                   |
       | birthDate           | not-a-date                  | Invalid value - 'not-a-date' in field 'birthDate'           |
+      | givenName           | 'O`Brien'                   | Invalid value - 'O`Brien' in field 'name/0/given'           |
 
     
     Scenario: Negative path: invalid "line" array defined as part of address
@@ -292,8 +294,7 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
     * status 400
     * def diagnostics = "Invalid patient create data provided - 'email format is invalid'"
     * match response == read('classpath:mocks/stubs/errorResponses/INVALID_CREATE.json')
-  
-  @allocation-fix 
+   
   Scenario Outline: Negative path: too many values in request body - <property>
     # this is not an exhaustive test of all possible too many values  values - see the integration tests for this
     # we're really just proving a few of the main properties here
@@ -323,7 +324,38 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
     * match response == read('classpath:mocks/stubs/errorResponses/TOO_MANY_VALUES_SUBMITTED.json')
   
     Examples:
-      | property            | invalidValue                                    | diagnostics                                                 |
+      | property            | invalidValue                                    | diagnostics                                                                                             |
       | givenName           | ["One", "Two", "Three", "Four", "Five", "six"]  | Too many values submitted - ['One', 'Two', 'Three', 'Four', 'Five', 'six'] in field 'name/0/given'      |
+  
+  Scenario: Fail to create a record for a new patient when usual name has end date
+    * def givenName = ["#(faker.givenName())", "#(faker.givenName())"]
+    * def prefix = ["#(utils.randomPrefix())"]
+    * def gender = utils.randomGender()
+    * def birthDate = utils.randomBirthDate()
+    * def randomAddress = utils.randomAddress(birthDate)
+    * def address = randomAddress
+    * def patientPayload = read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
+    * def nameWithEndDate = 
+    """
+      {
+          "family": "Rosey",
+          "given": ["One"],
+          "prefix": ["Mr"],
+          "suffix": ["MBE"],
+          "use": "usual",
+          "period": {"start": "2020-01-01", "end": "2024-01-01"}
+      }
 
+    """
+    * patientPayload.name[0] = nameWithEndDate
+    
+    * path "Patient"
+    * request patientPayload
+    * configure retry = { count: 5, interval: 5000 }
+    * retry until responseStatus != 429 && responseStatus != 503
+    * method post
+    * status 400
+    * def diagnostics = "Invalid patient create data provided - 'An end date can not be provided on usual name'"
+    * match response == read('classpath:mocks/stubs/errorResponses/INVALID_CREATE.json')
+  
   
