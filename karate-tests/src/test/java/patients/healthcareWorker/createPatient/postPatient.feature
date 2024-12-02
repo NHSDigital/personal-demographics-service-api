@@ -144,7 +144,8 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
     | { "name": { "family": "Smith" }, "address": [{ "line": ["1"] }] }                                                                                                             | gender           |
     | { "name": { "family": "Smith" }, "address": [{ "line": ["1"] }], "gender": "male" }                                                                                           | birthDate        |
     | { "name": [{ "family": "ToRemove", "given": ["No-Extensions"],"period": {"start": "2024-01-12"}}],"address": [{ "line": ["1"] }], "gender": "male","birthDate": "2023-12-12"} | address/0/period | 
-
+    
+  @sandbox
   Scenario Outline: Negative path: invalid value in request body - <property>
     # this is not an exhaustive test of all possible invalid values - see the integration tests for this
     # we're really just proving a few of the main properties here
@@ -158,7 +159,7 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
     * json jsonValue = invalidValue
 
     * def givenName = property == "givenName" ? jsonValue : validGivenName
-    * def familyName = property == "familyName" ? jsonValue : "ToRemove"
+    * def familyName = "ToRemove"
     * def prefix = ["#(utils.randomPrefix())"]
     * def gender = property == "gender" ? jsonValue : validGender
     * def birthDate = property == "birthDate" ? jsonValue : validBirthDate

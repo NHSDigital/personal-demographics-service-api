@@ -78,8 +78,13 @@ function postPatientRequestIsValid (request) {
       type: 'missing'
     },
     {
-      condition: !Array.isArray(request.body?.name?.[0]?.given),
-      diagnostics: 'Invalid value - \'not an array\' in field \'name/0/given\'',
+      condition: !Array.isArray(request.body?.address?.[0]) && !request.body?.address?.[0].period,
+      diagnostics: 'Missing value - \'address/0/period\'',
+      type: 'missing'
+    },
+    {
+      condition: !Array.isArray(request.body?.name?.[0]?.given) || ['O`Brien'].includes(request.body?.name?.[0]?.given),
+      diagnostics: `Invalid value - '${request.body?.name?.[0]?.given}' in field 'name/0/given'`,
       type: 'invalid'
     },
     {
@@ -95,8 +100,8 @@ function postPatientRequestIsValid (request) {
       type: 'invalid'
     },
     {
-      condition: !['male', 'female', 'other', 'unknown'].includes(request.body?.gender),
-      diagnostics: 'Invalid value - \'notAValidOption\' in field \'gender\'',
+      condition: !['male', 'female', 'unknown'].includes(request.body?.gender),
+      diagnostics: 'Invalid value - \'other\' in field \'gender\'',
       type: 'invalid'
     },
     {
