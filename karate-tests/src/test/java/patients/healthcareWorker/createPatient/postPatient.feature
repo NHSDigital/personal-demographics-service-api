@@ -208,7 +208,7 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
     * def diagnostics = "Invalid patient create data provided - 'address lines 1 and 4 or 2 and 4 must be completed as a minimum'"
     * match response == read('classpath:mocks/stubs/errorResponses/INVALID_CREATE.json')
 
-  Scenario: Negative path: Address key url's and extensions are mandatory
+  Scenario: Negative path: Fail to create a record for a new patient when Address key url's or extensions are missing from request
     * def givenName = ["#(faker.givenName())", "#(faker.givenName())"]
     * def prefix = ["#(utils.randomPrefix())"]
     * def gender = utils.randomGender()
@@ -252,8 +252,6 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
                   ]
               }
               """
-  
-    # you can't create a new patient if the line property doesn't match the spec
     * path "Patient"
     * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
     * configure retry = { count: 5, interval: 5000 }
@@ -263,7 +261,7 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
     * def diagnostics = `Missing value - 'address/0/extension/0/extension'`
     * match response == read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')
   
-  Scenario:Negative path: Create new patient with invalid telecom details
+  Scenario:Negative path: Fail to create a record for a new patient with invalid telecom details
     * def givenName = ["#(faker.givenName())", "#(faker.givenName())"]
     * def prefix = ["#(utils.randomPrefix())"]
     * def gender = utils.randomGender()
