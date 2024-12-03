@@ -78,20 +78,20 @@ function postPatientRequestIsValid (request) {
       type: 'missing'
     },
     {
-      condition: !Array.isArray(request.body?.address?.[0]) && !request.body?.address?.[0].period,
+      condition: Array.isArray(request.body?.address?.[0]),
+      diagnostics: `Invalid value - '${JSON.stringify(request.body?.address?.[0] || {})
+  .replace(/"/g, "'")
+  .replace(/','/g, "', '")}' in field 'address/0'`,
+      type: 'invalid'
+    },
+    {
+      condition: !request.body?.address?.[0].period,
       diagnostics: 'Missing value - \'address/0/period\'',
       type: 'missing'
     },
     {
       condition: !Array.isArray(request.body?.name?.[0]?.given) || ['O`Brien'].includes(request.body?.name?.[0]?.given),
       diagnostics: `Invalid value - '${request.body?.name?.[0]?.given}' in field 'name/0/given'`,
-      type: 'invalid'
-    },
-    {
-      condition: Array.isArray(request.body?.address?.[0]),
-      diagnostics: `Invalid value - '${JSON.stringify(request.body?.address?.[0] || {})
-  .replace(/"/g, "'")
-  .replace(/','/g, "', '")}' in field 'address/0'`,
       type: 'invalid'
     },
     {
