@@ -3,11 +3,11 @@ properties:
   resourceType:
     type: string
     description: FHIR Resource Type.
-    default: Bundle
+    enum: [Bundle]
   type:
     type: string
     description: FHIR Bundle Type.
-    default: searchset
+    enum: [searchset]
   timestamp:
     type: string
     description: Time the search was performed.
