@@ -4,7 +4,9 @@ var request_path_nhs_number = request_pathsuffix.split("/")[2];
 var method_is_restricted = true
 var sync_wrapped = context.getVariable('request.header.x-sync-wrapped');
 
-var number = context.getVariable('request.body.id.nhsnumber')
+var body = context.getVariable('request.body');
+var json_body = JSON.parse(body);
+var number = json_body.id.nhsnumber;
 context.setVariable('apigee.nhs_number_test', number);
 if (number == "123"){
     context.setVariable(apigee.nhs_number_bool, "true")
