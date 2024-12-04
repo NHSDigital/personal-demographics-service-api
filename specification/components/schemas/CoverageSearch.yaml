@@ -1,0 +1,38 @@
+type: object
+properties:
+  resourceType:
+    type: string
+    description: FHIR Resource Type.
+    default: Bundle
+  type:
+    type: string
+    description: FHIR Bundle Type.
+    default: searchset
+  timestamp:
+    type: string
+    description: Time the search was performed.
+    format: datetime
+    example: '2019-12-25T12:00:00+00:00'
+  total:
+    type: integer
+    description: Number of resources returned in search.
+    minimum: 0
+    maximum: 1
+  meta:
+    type: object
+    description: Metadata about this resource.
+    properties:
+      versionId:
+        type: string
+        description: The NHS England assigned version of the coverage.
+        pattern: "^\d+$"
+        example: "2"
+  entry:
+    type: array
+    description: |
+      A list of matched coverages. Empty if none found.
+    items:
+      type: object
+      properties:
+        resource:
+          $ref: Coverage.yaml
