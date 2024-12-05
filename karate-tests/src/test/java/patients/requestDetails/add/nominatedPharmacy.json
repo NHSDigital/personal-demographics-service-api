@@ -1,0 +1,17 @@
+{
+    "patches": [
+      {
+        "op": "add",
+        "path": "/extension/-",
+        "value": {
+          "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NominatedPharmacy",
+          "valueReference": {
+            "identifier": {
+              "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+              "value": "FWC87"
+            }
+          }
+        }
+      }
+    ]
+  }
