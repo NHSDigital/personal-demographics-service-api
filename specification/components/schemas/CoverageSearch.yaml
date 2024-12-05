@@ -25,7 +25,7 @@ properties:
       versionId:
         type: string
         description: The NHS England assigned version of the coverage.
-        pattern: "^\d+$"
+        pattern: "^\\d+$"
         example: "2"
   entry:
     type: array
