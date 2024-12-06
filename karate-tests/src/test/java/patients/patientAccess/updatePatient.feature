@@ -274,7 +274,7 @@ Feature: Patient updates their details
 
   Scenario: Patient can add temporary address and remove it
 
-    * def p9numberForAddress = '9900000285'
+    * def p9numberForAddress = '9733162868'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9numberForAddress, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
