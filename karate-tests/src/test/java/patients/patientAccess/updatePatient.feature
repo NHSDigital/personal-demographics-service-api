@@ -237,7 +237,7 @@ Feature: Patient updates their details
     * request requestBody
     * method patch
     * status 200 
-    * def idAftPharmacyAdd = response.meta.versionId
+    * def idAfterPharmacyAdd = response.meta.versionId
     * def pharmacyDetails = response.extension.find(x => x.url == nominatedPharmacyUrl)
     # Test fails if the patient's nominated pharmacy is not present in the record
   
@@ -269,7 +269,7 @@ Feature: Patient updates their details
       """ 
     * method patch
     * status 200
-    * match parseInt(response.meta.versionId) == parseInt(idAftPharmacyAdd)+ 1
+    * match parseInt(response.meta.versionId) == parseInt(idAfterPharmacyAdd)+ 1
     * match response.extension[0] == '#notpresent'
 
   Scenario: Patient can add temporary address and remove it
@@ -308,7 +308,7 @@ Feature: Patient updates their details
     * request requestBody
     * method patch
     * status 200 
-    * def idAftTempAdd = response.meta.versionId
+    * def idAfterTempAddress = response.meta.versionId
     * def tempAddressDetails = response.address.find(x => x.use == "temp")
    
     # Test fails if the patient's temp address details are not present in the record
@@ -341,7 +341,7 @@ Feature: Patient updates their details
       """ 
     * method patch
     * status 200
-    * match parseInt(response.meta.versionId) == parseInt(idAftTempAdd)+ 1
+    * match parseInt(response.meta.versionId) == parseInt(idAfterTempAddress)+ 1
     * match response.address[1] == '#notpresent'
 
     
