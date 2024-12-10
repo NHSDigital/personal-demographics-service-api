@@ -1,0 +1,25 @@
+{
+    "status": "active",
+    "subscriberId": "##string",
+    "identifier": [
+      {
+        "value": "##string"
+      }
+    ],
+    "payor": [
+      {
+        "identifier": {
+          "value": "##string"
+        }
+      }
+    ],
+    "beneficiary": {
+      "system": "#? utils.isValidPatientURL(_)",
+      "value": "#? utils.isValidNHSNumber(_)"
+    },
+    "period": {
+      "end": "##regex(\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])"
+    },
+    "extension": "##[] CoverageCountry"
+    
+  }

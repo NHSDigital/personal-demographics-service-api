@@ -1,0 +1,10 @@
+{
+    "entry": "##[] (patientCoverageResultEntry)",
+    "resourceType": "Bundle",
+      "type": "searchset",
+    "timestamp": "#? utils.isValidTimestamp(_)",
+    "total": "#number",
+    "meta": {
+        "versionId": "#string"
+      }
+}

@@ -6,13 +6,14 @@
 /* global request, response, context */
 
 /* Functions defined in supporting-functions.js */
-/* global validateHeaders, validateNHSNumber, validateNHSNumber, basicResponseHeaders, timestampBody */
+/* global validateHeaders, validateNHSNumber, basicResponseHeaders, timestampBody */
 
 /* Constants defined in stubs.js */
 /* global EMPTY_SEARCHSET */
 
 if (request.pathMatches('/Patient/{nhsNumber}/RelatedPerson') && request.get) {
-  if (validateHeaders(request) && validateNHSNumber(request)) {
+  const nhsNumber = request.pathParams.nhsNumber
+  if (validateHeaders(request) && validateNHSNumber(request, nhsNumber)) {
     response.headers = basicResponseHeaders(request)
     const nhsNumber = request.pathParams.nhsNumber
 
