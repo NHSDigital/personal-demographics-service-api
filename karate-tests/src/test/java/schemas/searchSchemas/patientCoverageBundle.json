@@ -1,10 +1,10 @@
 {
-    "entry": "##[] (patientCoverageResultEntry)",
     "resourceType": "Bundle",
-      "type": "searchset",
+    "type": "searchset",
     "timestamp": "#? utils.isValidTimestamp(_)",
     "total": "#number",
     "meta": {
         "versionId": "#string"
-      }
+      },
+    "entry": "##[] (patientCoverageResultEntry)"
 }

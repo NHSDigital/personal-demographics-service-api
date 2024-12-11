@@ -15,7 +15,6 @@ if (request.pathMatches('/Patient/{nhsNumber}/RelatedPerson') && request.get) {
   const nhsNumber = request.pathParams.nhsNumber
   if (validateHeaders(request) && validateNHSNumber(request, nhsNumber)) {
     response.headers = basicResponseHeaders(request)
-    const nhsNumber = request.pathParams.nhsNumber
 
     if (nhsNumber === '9000000009') {
       const body = context.read('classpath:mocks/stubs/relatedPersonResponses/related_person_9000000009.json')
