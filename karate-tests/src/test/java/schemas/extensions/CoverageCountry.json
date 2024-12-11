@@ -1,0 +1,12 @@
+{
+    "url": "http://extension.url.to/be/defined",
+    "value": {
+      "coding": [
+        {
+          "system": "http://hl7.org/fhir/ValueSet/country",
+          "code": "##string",
+          "display": "##string"
+        }
+      ]
+    }
+  }

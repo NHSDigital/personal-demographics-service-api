@@ -1,0 +1,48 @@
+{
+    "resourceType": "Bundle",
+    "type": "searchset",
+    "timestamp": "2024-12-10T12:00:00+00:00",
+    "total": 1,
+    "meta": {
+      "versionId": "2"
+    },
+    "entry": [
+      {
+        "status": "active",
+        "subscriberId": "9876543210",
+        "identifier": [
+          {
+            "value": "DE123456789012"
+          }
+        ],
+        "payor": [
+          {
+            "identifier": {
+              "value": "DE98765"
+            }
+          }
+        ],
+        "beneficiary": {
+          "system": "https://fhir.nhs.uk/Id/nhs-number",
+          "value": "9733162868"
+        },
+        "period": {
+          "end": "2026-03-03"
+        },
+        "extension": [
+          {
+            "url": "http://extension.url.to/be/defined",
+            "value": {
+              "coding": [
+                {
+                  "system": "http://hl7.org/fhir/ValueSet/country",
+                  "code": "DEU",
+                  "display": "Display-friendly representation of the country code (such as Germany)."
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
