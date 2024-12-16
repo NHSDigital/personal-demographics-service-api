@@ -35,22 +35,24 @@ Background:
     * status 200
     * match response.entry[0] == '#notpresent'
 
-  # Setup data where superseded record and retained record have different coverage details
+  # 9733162922 is displayed in retained record 9733162930
 # Scenario: Retrieve patient current coverage details when superseded NHS number is sent
-#     * def supersededP9number = '9733162868'
-#     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: supersededP9number, scope: 'nhs-login'}).accessToken
+#     * def mergedP9number = '9733162922'
+#     * def retainedRecord = '9733162930' 
+#     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: mergedP9number, scope: 'nhs-login'}).accessToken
 #     * def requestHeaders = call read('classpath:auth/auth-headers.js')
 #     * configure headers = requestHeaders
 #     * path 'Coverage'
-#     * param beneficiary:identifier = supersededP9number
+#     * param beneficiary:identifier = mergedP9number
 #     * method get
 #     * status 200
 #     * match response == coverageBundle
 #     * match response.entry[0].status == 'active'
-#     * match response.entry[0].beneficiary.value !== supersededP9number 
+#     * match response.entry[0].beneficiary.value !== mergedP9number 
+#     * match response.entry[0].beneficiary.value == retainedRecord  
 
 # Scenario: Retrieve patient coverage details where personalIdentification number is not available
-#     * def personal_id_p9 = '9733162868'
+#     * def personal_id_p9 = '9733162884'
 #     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: personal_id_p9, scope: 'nhs-login'}).accessToken
 #     * def requestHeaders = call read('classpath:auth/auth-headers.js')
 #     * configure headers = requestHeaders
