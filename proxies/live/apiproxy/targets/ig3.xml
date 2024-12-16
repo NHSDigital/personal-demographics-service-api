@@ -107,6 +107,15 @@
         </Step>
       </Response>
     </Flow>
+    <Flow name="healthcare_worker">
+      <Condition>(access-mode Equals "user-restricted")</Condition>
+      <Request>
+        <Step>
+          <Name>RaiseFault.ResourceRestricted</Name>
+          <Condition>(proxy.pathsuffix JavaRegex "/Coverage.*")</Condition>
+        </Step>
+      </Request>
+    </Flow>
     <Flow name="application_restricted">
       <Condition>(access-mode Equals "application-restricted")</Condition>
       <Request>
@@ -118,6 +127,10 @@
         <Step>
           <Name>RaiseFault.PostMethodNotAllowed</Name>
           <Condition>(request.verb Equals "POST")</Condition>
+        </Step>
+        <Step>
+          <Name>RaiseFault.ResourceRestricted</Name>
+          <Condition>(proxy.pathsuffix JavaRegex "/Coverage.*")</Condition>
         </Step>
         <!-- If _max-results param is unset, set to allowed value for application-restricted mode -->
         <Step>
