@@ -1,6 +1,6 @@
 function is_request_restricted() {
-    var fullPathSuffix = context.getVariable('proxy.pathsuffix')
     var splitPathsuffix = context.getVariable('proxy.pathsuffix').split("/");
+    var fullUrl = context.getVariable('proxy.url')
 
     // Ignore polling
     var sync_wrapped = context.getVariable('request.header.x-sync-wrapped');
@@ -17,22 +17,24 @@ function is_request_restricted() {
 
     // If GET coverage
     var id_token_nhs_number = context.getVariable('jwt.DecodeJWT.DecodeIdToken.claim.nhs_number');
-    var coverageRegex = new RegExp(/^Coverage\?beneficiary:identifier=[0-9]{10}$/)
+    var coverageRegex = new RegExp(/Coverage\?beneficiary%3Aidentifier=[0-9]{10}$/)
     if (splitPathsuffix[1] == "Coverage"){
-        if (!coverageRegex.test(fullPathSuffix)){
+        if (!coverageRegex.test(fullUrl)) {
             return true // TODO: Make sure the error is around the path not being expected
-        } else if (fullPathSuffix.slice(-10) != id_token_nhs_number){
+        }
+        if (fullUrl.slice(-10) != id_token_nhs_number){
+            context.setVariable('apigee.debug', "Bad nhs number on coverage");
             return true 
         }
-    }
-
-    var request_path_nhs_number = request_pathsuffix.split("/")[2];
-    var id_token_nhs_number = context.getVariable('jwt.DecodeJWT.DecodeIdToken.claim.nhs_number');
-    if ((request_path_nhs_number == id_token_nhs_number)) {
         return false
     }
 
-    return true
+    var request_path_nhs_number = splitPathsuffix[2];
+    if ((request_path_nhs_number != id_token_nhs_number)) {
+        return true
+    }
+    
+    return false
 }
 
 var method_is_restricted = is_request_restricted();
