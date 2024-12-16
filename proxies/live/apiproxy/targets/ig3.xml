@@ -34,7 +34,7 @@
       </Step>
       <Step>
         <Name>RaiseFault.400BadRequest</Name>
-        <Condition>(not proxy.pathsuffix JavaRegex "/Patient/.*|/Patient\?.*|/Patient|/Coverage|/Coverage\?.*|/_poll/.*|/_status|/_ping")</Condition>
+        <Condition>not proxy.pathsuffix JavaRegex "/Patient/.*|/Patient\?.*|/Patient|/Coverage|/Coverage\?.*|/_poll/.*|/_status|/_ping"</Condition>
       </Step>
       <Step>
         <!-- Header NHSD-Request-ID must be in the correct format (GUID) -->
@@ -264,7 +264,7 @@
       </Step>
     </FaultRule>
     <FaultRule name="unsupported_request">
-      <Condition>(not proxy.pathsuffix JavaRegex "/Patient[/\?]+.*") and (not proxy.pathsuffix JavaRegex "/Coverage\??.*")</Condition>
+      <Condition>not proxy.pathsuffix JavaRegex "/Patient/.*|/Patient\?.*|/Patient|/Coverage|/Coverage\?.*|/_poll/.*|/_status|/_ping"</Condition>
       <Step>
         <Name>AssignMessage.Errors.UnsupportedRequest</Name>
       </Step>
