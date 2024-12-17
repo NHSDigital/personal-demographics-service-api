@@ -69,7 +69,7 @@ Scenario: Identifier doesn't match nhs number of user
     * path 'Coverage'
     * param beneficiary:identifier = "9999999990"
     * method get
-    * status 400
+    * status 403
     * def display = 'Patient cannot perform this action'
     * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
     * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
