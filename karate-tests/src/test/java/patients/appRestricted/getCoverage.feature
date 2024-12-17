@@ -1,3 +1,4 @@
+@no-oas
 Feature: Get Coverage
 
   Background:
@@ -14,6 +15,6 @@ Feature: Get Coverage
     * method get
     * status 403
     * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
-    * def diagnostics = "Your app has insufficient permissions to use this operation. Please contact support."
-    * def display = 'Cannot GET resource with application-restricted access token'
-    * def expectedResponse = read(`classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json`)
+    * match response.issue[0].details.coding[0].display == "Cannot GET resource with application-restricted access token"
+    * match response.issue[0].details.coding[0].code == "ACCESS_DENIED"
+    * match response.issue[0].diagnostics == "Your app has insufficient permissions to use this operation. Please contact support."
