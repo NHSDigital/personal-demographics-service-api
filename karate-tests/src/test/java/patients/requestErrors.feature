@@ -1,3 +1,4 @@
+@no-oas
 Feature: Handle request errors
 
 Background:

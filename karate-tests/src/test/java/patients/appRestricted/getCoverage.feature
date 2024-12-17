@@ -1,3 +1,4 @@
+@no-oas
 Feature: Get Coverage
 
   Background:
