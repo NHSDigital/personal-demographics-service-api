@@ -20,7 +20,8 @@ function is_request_restricted() {
     var coverageRegex = new RegExp(/Coverage\?beneficiary%3Aidentifier=[0-9]{10}$/)
     if (splitPathsuffix[1] == "Coverage"){
         if (!coverageRegex.test(fullUrl)) {
-            return true // TODO: Make sure the error is around the path not being expected
+            context.setVariable('apigee.invalid_coverage_search', true);
+            return true
         }
         if (fullUrl.slice(-10) != id_token_nhs_number){
             context.setVariable('apigee.debug', "Bad nhs number on coverage");
