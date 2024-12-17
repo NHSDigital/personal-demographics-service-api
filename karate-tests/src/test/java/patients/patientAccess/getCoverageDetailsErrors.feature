@@ -1,4 +1,3 @@
-@ignore
 Feature: Patient Access (Retrieve)
     Retrieve a chargeable snippet error scenarios
 
@@ -62,7 +61,7 @@ Scenario Outline: x-request-id errors: patient coverage details
        |                            | Invalid request with error - X-Request-ID header must be supplied to access this resource   | MISSING_VALUE   |
        | 1234                       | Invalid value - '1234' in header 'X-Request-ID'                                             | INVALID_VALUE   |
                 
-Scenario: Invalid combination of search parameters
+Scenario: Identifier doesn't match nhs number of user
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -70,8 +69,9 @@ Scenario: Invalid combination of search parameters
     * param beneficiary:identifier = 9999999990
     * method get
     * status 400
-    * def diagnostics = "Invalid search data provided - 'No searches were performed as the search criteria did not meet the minimum requirements'"
-    * match response == read('classpath:mocks/stubs/errorResponses/INVALID_SEARCH_DATA.json')
+    * def display = 'Patient cannot perform this action'
+    * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
+    * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
 
 Scenario: No search params provided
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
@@ -80,7 +80,8 @@ Scenario: No search params provided
     * path 'Coverage'
     * method get
     * status 400
-    * match response == read('classpath:mocks/stubs/errorResponses/UNSUPPORTED_SERVICE.json')
+    * def diagnostics = "Invalid search data provided - 'Coverage search request must follow the format /Coverage?beneficiary:identifier=NHS_NUMBER'"
+    * match response == read('classpath:mocks/stubs/errorResponses/INVALID_SEARCH_DATA.json')
 
 Scenario: Additional invalid param
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
@@ -90,6 +91,6 @@ Scenario: Additional invalid param
     * param { beneficiary:identifier = 9999999990, year: "2003" }
     * method get
     * status 400
-    * def diagnostics = "Invalid request with error - Additional properties are not allowed ('year' was unexpected)"
-    * match response == read('classpath:mocks/stubs/errorResponses/ADDITIONAL_PROPERTIES.json')   
+    * def diagnostics = "Invalid search data provided - 'Coverage search request must follow the format /Coverage?beneficiary:identifier=NHS_NUMBER'"
+    * match response == read('classpath:mocks/stubs/errorResponses/INVALID_SEARCH_DATA.json')
     
