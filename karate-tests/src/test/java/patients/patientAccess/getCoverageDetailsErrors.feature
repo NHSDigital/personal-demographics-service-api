@@ -2,7 +2,8 @@ Feature: Patient Access (Retrieve)
     Retrieve a chargeable snippet error scenarios
 
 Background:
-    
+    * def utils = call read('classpath:helpers/utils.feature')
+
     * configure url = baseURL
     * def p9number = '9733162884'
 
@@ -66,7 +67,7 @@ Scenario: Identifier doesn't match nhs number of user
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = 9999999990
+    * param beneficiary:identifier = "9999999990"
     * method get
     * status 400
     * def display = 'Patient cannot perform this action'
@@ -88,7 +89,7 @@ Scenario: Additional invalid param
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param { beneficiary:identifier = 9999999990, year: "2003" }
+    * params { beneficiary:identifier = "9999999990", year: "2003" }
     * method get
     * status 400
     * def diagnostics = "Invalid search data provided - 'Coverage search request must follow the format /Coverage?beneficiary:identifier=NHS_NUMBER'"
