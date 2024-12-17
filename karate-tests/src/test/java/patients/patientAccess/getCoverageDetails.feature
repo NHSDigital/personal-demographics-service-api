@@ -3,7 +3,6 @@ Feature: Patient Access (Retrieve)
 
 Background:
     * def utils = call read('classpath:helpers/utils.feature')
-    * json CoverageCountry = karate.readAsString('classpath:schemas/extensions/CoverageCountry.json')
     * json patientCoverageResultEntry  = karate.readAsString('classpath:schemas/searchSchemas/patientCoverageResultEntry.json')
     * json coverageBundle = karate.readAsString('classpath:schemas/searchSchemas/patientCoverageBundle.json')
     
@@ -21,7 +20,8 @@ Background:
     * status 200
     * match response == coverageBundle
     * match response.entry[0].status == 'active'
-    * match response.entry[0].beneficiary.value == p9number
+    * match response.entry[0].beneficiary.identifier.value == p9number
+    # * match response.entry[0].beneficiary.value == p9number
 
 @sandbox
  Scenario: Happy path - patient has no coverage details

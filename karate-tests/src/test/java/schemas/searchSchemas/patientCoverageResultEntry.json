@@ -3,7 +3,14 @@
     "subscriberId": "#string",
     "identifier": [
       {
-        "value": "#string"
+        "value": "#string",
+        "assigner": {
+            "identifier": {
+              "system": "#string",
+              "value": "#string"
+            },
+            "display": "#string"
+          }
       }
     ],
     "payor": [
@@ -14,12 +21,13 @@
       }
     ],
     "beneficiary": {
-      "system": "#? utils.isValidURL(_)",
-      "value": "#? utils.isValidNHSNumber(_)"
+      "identifier": {
+        "value": "#? utils.isValidNHSNumber(_)",
+        "system": "#? utils.isValidURL(_)"
+      }
     },
-    "period": {
+    "period": 
+    {
       "end": "##regex(\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01]))"
-    },
-
-    "extension": "##[] (CoverageCountry)"   
+    }
   }
