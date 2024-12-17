@@ -1,0 +1,65 @@
+parameters:
+  - $ref: '#/components/parameters/BearerAuthorization'
+  - $ref: '#/components/parameters/RoleId'
+  - $ref: '#/components/parameters/RequestID'
+  - $ref: '#/components/parameters/CorrelationID'
+  - $ref: '#/components/parameters/NHSD-End-User-Organisation-ODS'
+  get:
+    parameters:
+      BeneficiaryIdentifier:
+        name: beneficiary:identifier
+        description: |
+          The NHS number that identifies the holder/beneficiary of the coverage.
+        examples:
+          ehic_holder:
+            value: 9999999999
+            summary: Returns a bundle that contains a Coverage resource for the patient with NHS number 9999999999.
+          no_ehic:
+            value: 9123456789
+            summary: Returns an empty bundle, alongside a meta object that can be used to apply an update to the patient's coverage.
+        in: query
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: |
+          A completed search for coverage. This will contain zero or one Coverage resources in the Bundle.
+
+        headers:
+          X-Correlation-Id:
+            $ref: '#/components/headers/X-Correlation-Id'
+          X-Request-Id:
+            $ref: '#/components/headers/X-Request-Id'
+
+      '4XX':
+        description: |
+            An error occurred as follows:
+
+            | HTTP status | Error code                 | Description                                                                                                                                |
+            | ----------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+            | 401         | ACCESS_DENIED     	       | Access token missing, invalid or expired, or calling application not configured for this operation.
+            | 403         | ACCESS_DENIED     	       | User cannot perform this operation.
+
+        headers:
+          X-Correlation-Id:
+            $ref: '#/components/headers/X-Correlation-Id'
+          X-Request-Id:
+            $ref: '#/components/headers/X-Request-Id'
+
+        content:
+          application/fhir+json:
+            schema:
+              $ref: '#/components/schemas/OperationOutcome'
+            example:
+              resourceType: OperationOutcome
+              issue:
+                - severity: error
+                  code: forbidden
+                  details:
+                    coding:
+                      - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                        version: '1'
+                        code: ACCESS_DENIED
+                        display: Cannot GET resource with user-restricted access token
+                  diagnostics: "Your app has insufficient permissions to use this operation. Please contact support."
