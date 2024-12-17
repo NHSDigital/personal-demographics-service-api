@@ -1,4 +1,3 @@
-@sandbox
 Feature: Handle request errors
 
 Background:
