@@ -1,0 +1,33 @@
+{
+    "status": "active",
+    "subscriberId": "#string",
+    "identifier": [
+      {
+        "value": "#string",
+        "assigner": {
+            "identifier": {
+              "system": "#string",
+              "value": "#string"
+            },
+            "display": "#string"
+          }
+      }
+    ],
+    "payor": [
+      {
+        "identifier": {
+          "value": "#string"
+        }
+      }
+    ],
+    "beneficiary": {
+      "identifier": {
+        "value": "#? utils.isValidNHSNumber(_)",
+        "system": "#? utils.isValidURL(_)"
+      }
+    },
+    "period": 
+    {
+      "end": "##regex(\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01]))"
+    }
+  }

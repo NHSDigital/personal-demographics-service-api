@@ -200,7 +200,6 @@ Scenario: Simple and Alphanumeric search with email and phone number - Multi mat
   * params { family: "Sm*", gender: '#(genderValue)', birthdate: '#(birthDateValue)', email: '#(emailValue)', phone: '#(phoneValue)' }
   * method get
   * status 200
-  * print response
   * assert response.total > 1
   * def telecomValueList = karate.jsonPath(response, "$.entry[*].resource.telecom[*].value") 
   * match telecomValueList contains any ['#(phoneValue)', '#(emailValue)']
@@ -255,7 +254,6 @@ Scenario: Include history flag for non fuzzy search
   * method get
   * status 200
   * def emailValues = karate.jsonPath(response, "$.entry[*].resource.telecom[?(@.system == 'email')].value") 
-  * print emailValues
   * match emailValues !contains previousEmail
   * match emailValues contains currentEmail
   * match response.total == 1
