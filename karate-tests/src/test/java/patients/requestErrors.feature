@@ -13,7 +13,7 @@ Background:
   * url baseURL
 
 Scenario: Make request to endpoint that is not supported
-  * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9693632109'
+  * def nhsNumber = '9693632109'
   * path 'HelloWorld'
   * method get
   * status 400
@@ -21,7 +21,7 @@ Scenario: Make request to endpoint that is not supported
   * match response.issue[0].diagnostics == "Unsupported path - '/HelloWorld'"
 
 Scenario: Make request to invalid endpoint that is similar to valid endpoint
-  * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9693632109'
+  * def nhsNumber = '9693632109'
   * path 'Patient!'
   * method get
   * status 400
