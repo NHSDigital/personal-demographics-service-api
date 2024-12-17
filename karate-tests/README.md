@@ -108,7 +108,7 @@ We have a Dockerfile set up for the sandbox. You can build the image from this D
 
 1. Build the image:
     ```bash
-    cd karate-tests/src/test/java/mocks
+    cd karate-tests
     docker build -t nhs/pds-sandbox .
     ```
 1. If you run the container you'll see the Karate mockserver logs

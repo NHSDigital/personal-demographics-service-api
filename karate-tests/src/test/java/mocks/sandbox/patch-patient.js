@@ -189,10 +189,10 @@ function patchPatient (originalPatient, request) {
     Handler for patch patient
 */
 if (request.pathMatches('/Patient/{nhsNumber}') && request.patch) {
-  const valid = validateNHSNumber(request) && validatePatchHeaders(request) && validateHeaders(request) && validatePatientExists(request)
+  const nhsNumber = request.pathParams.nhsNumber
+  const valid = validateNHSNumber(request, nhsNumber) && validatePatchHeaders(request) && validateHeaders(request) && validatePatientExists(request)
 
   if (valid) {
-    const nhsNumber = request.pathParams.nhsNumber
     const originalPatient = session.patients[nhsNumber]
     const updatedPatient = patchPatient(originalPatient, request)
     if (updatedPatient) {
