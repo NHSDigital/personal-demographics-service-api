@@ -7,21 +7,25 @@ Background:
     * json coverageBundle = karate.readAsString('classpath:schemas/searchSchemas/patientCoverageBundle.json')
     
     * configure url = baseURL
+
+      # healthcare access auth
+    * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders 
   
-@sandbox
+@ehictest
    Scenario: Happy path - Retrieve patient coverage details
     * def p9number = '9733162868'
-    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
-    * def requestHeaders = call read('classpath:auth/auth-headers.js')
-    * configure headers = requestHeaders
+    # * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
+    # * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    # * configure headers = requestHeaders
     * path 'Coverage'
     * param beneficiary:identifier = p9number
     * method get
     * status 200
     * match response == coverageBundle
     * match response.entry[0].status == 'active'
-    * match response.entry[0].beneficiary.identifier.value == p9number
-    # * match response.entry[0].beneficiary.value == p9number
+    * match response.entry[0].resource.beneficiary.identifier.value == p9number
 
 @sandbox
  Scenario: Happy path - patient has no coverage details
