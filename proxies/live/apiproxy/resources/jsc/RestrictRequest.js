@@ -24,7 +24,6 @@ function is_request_restricted() {
             return true
         }
         if (fullUrl.slice(-10) != id_token_nhs_number){
-            context.setVariable('apigee.debug', "Bad nhs number on coverage");
             return true 
         }
         return false
