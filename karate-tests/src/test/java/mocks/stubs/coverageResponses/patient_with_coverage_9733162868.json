@@ -9,20 +9,15 @@
                         "value": "9733162868"
                     }
                 },
-                "extension": [
-                    {
-                        "url": "http://extension.url.to/be/defined",
-                        "value": {
-                            "coding": {
-                                "code": "DEU",
-                                "display": "Germany",
-                                "system": "http://hl7.org/fhir/ValueSet/country"
-                            }
-                        }
-                    }
-                ],
                 "identifier": [
                     {
+                        "assigner": {
+                            "display": "Germany",
+                            "identifier": {
+                                "system": "urn:iso:std:iso:3166",
+                                "value": "DEU"
+                            }
+                        },
                         "value": "DE123456789012 1234"
                     }
                 ],
@@ -43,10 +38,10 @@
         }
     ],
     "meta": {
-        "versionId": "120"
+        "versionId": "124"
     },
     "resourceType": "Bundle",
-    "timestamp": "2024-12-18T14:13:56+00:00",
+    "timestamp": "2024-12-18T16:16:06+00:00",
     "total": 1,
     "type": "searchset"
 }

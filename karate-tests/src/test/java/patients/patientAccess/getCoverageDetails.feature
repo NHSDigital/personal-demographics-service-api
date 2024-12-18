@@ -21,6 +21,7 @@ Background:
     * match response == coverageBundle
     * match response.entry[0].resource.status == 'active'
     * match response.entry[0].resource.beneficiary.identifier.value == p9number
+    * match response.entry[0].resource.identifier[0].assigner contains { display: '#notnull'}
 
   @sandbox
  Scenario: Happy path - patient has no coverage details
