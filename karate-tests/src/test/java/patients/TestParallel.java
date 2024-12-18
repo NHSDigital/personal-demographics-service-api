@@ -14,7 +14,7 @@ public class TestParallel {
     void testDevParallel() {
         Results results = Runner.path("classpath:patients")
                 .outputJunitXml(true)
-                .tags("@ehictest")
+                .tags("~@sandbox-only", "~@smoke-only")
                 .karateEnv("veit07")
                 .parallel(2);
         assertTrue(results.getFailCount() == 0, results.getErrorMessages());

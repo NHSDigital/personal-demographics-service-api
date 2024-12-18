@@ -1,13 +1,10 @@
 { 
-    "resourceType": "Coverage",
-    "status": "active",
-    "subscriberId": "#string",
     "fullUrl": "#? utils.isValidPatientCoverageURL(_)",
     "resource": {
                 "beneficiary": {
                     "identifier": {
                         "system": "#? utils.isValidURL(_)",
-                        "value": "#? utils.isValidURL(_)"
+                        "value": "#string"
                     }
                 },
                 "extension": [
@@ -36,7 +33,10 @@
                 ],
                 "period": {
                     "end": "##regex(\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01]))"
-                }
+                },
+                "resourceType": "Coverage",
+                "status": "active",
+                "subscriberId": "#string"
     }  
     
   }
