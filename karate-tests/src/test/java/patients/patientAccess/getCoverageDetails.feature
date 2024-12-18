@@ -8,17 +8,12 @@ Background:
     
     * configure url = baseURL
 
-      # healthcare access auth
-    * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
-    * def requestHeaders = call read('classpath:auth/auth-headers.js')
-    * configure headers = requestHeaders 
-  
-  @sandbox
+ @sandbox
    Scenario: Happy path - Retrieve patient coverage details
     * def p9number = '9733162868'
-    # * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
-    # * def requestHeaders = call read('classpath:auth/auth-headers.js')
-    # * configure headers = requestHeaders
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders
     * path 'Coverage'
     * param beneficiary:identifier = p9number
     * method get
@@ -30,42 +25,52 @@ Background:
   @sandbox
  Scenario: Happy path - patient has no coverage details
     * def P9WithNoCoverage = '9733162876'
-    # * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: P9WithNoCoverage, scope: 'nhs-login'}).accessToken
-    # * def requestHeaders = call read('classpath:auth/auth-headers.js')
-    # * configure headers = requestHeaders
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: P9WithNoCoverage, scope: 'nhs-login'}).accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders
     * path 'Coverage'
     * param beneficiary:identifier = P9WithNoCoverage
     * method get
     * status 200
     * match response.entry[0] == '#notpresent'
 
-  # 9733162922 is displayed in retained record 9733162930
-# Scenario: Retrieve patient current coverage details when superseded NHS number is sent
-#     * def mergedP9number = '9733162922'
-#     * def retainedRecord = '9733162930' 
-#     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: mergedP9number, scope: 'nhs-login'}).accessToken
-#     * def requestHeaders = call read('classpath:auth/auth-headers.js')
-#     * configure headers = requestHeaders
-#     * path 'Coverage'
-#     * param beneficiary:identifier = mergedP9number
-#     * method get
-#     * status 200
-#     * match response == coverageBundle
-#     * match response.entry[0].status == 'active'
-#     * match response.entry[0].beneficiary.value !== mergedP9number 
-#     * match response.entry[0].beneficiary.value == retainedRecord  
+ # 9732019735 is displayed in retained record 9732019638
+Scenario: Retrieve patient current coverage details when superseded NHS number is sent
+    * def mergedP9number = '9732019735'
+    * def retainedRecord = '9732019638' 
+    * def ehicCardNo = '12346 00002 02 0002'
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: mergedP9number, scope: 'nhs-login'}).accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders
+    * path 'Coverage'
+    * param beneficiary:identifier = mergedP9number
+    * method get
+    * status 200
+    * match response == coverageBundle
+    * match response.entry[0].resource.status == 'active'
+    * match response.entry[0].resource.beneficiary.identifier.value != mergedP9number 
+    * match response.entry[0].resource.beneficiary.identifier.value == retainedRecord 
+    * match response.entry[0].resource.identifier[0].value == ehicCardNo 
 
-# Scenario: Retrieve patient coverage details where personalIdentification number is not available
-#     * def personal_id_p9 = '9733162884'
-#     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: personal_id_p9, scope: 'nhs-login'}).accessToken
-#     * def requestHeaders = call read('classpath:auth/auth-headers.js')
-#     * configure headers = requestHeaders
-#     * path 'Coverage'
-#     * param beneficiary:identifier = personal_id_p9
-#     * method get
-#     * status 200
-#     * match response == coverageBundle
-#     * match response.entry[0].status == 'active'
-#     * match response.entry[0].subscriberId == '#notpresent'
+Scenario: Retrieve patient coverage details where personalIdentification number is not available
+    * def personal_id_p9 = '9733162884'
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: personal_id_p9, scope: 'nhs-login'}).accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders
+    * path 'Coverage'
+    * param beneficiary:identifier = personal_id_p9
+    * method get
+    * status 200
+    * match response.entry[0].resource.status == 'active'
+    * match response.entry[0].resource !contains { subscriberId: '#notnull' }
 
-
+  Scenario: Patient has no coverage details when Ehic details are hidden
+    * def P9number = '9733162930'
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: P9number, scope: 'nhs-login'}).accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders
+    * path 'Coverage'
+    * param beneficiary:identifier = P9number
+    * method get
+    * status 200
+    * match response.entry[0] == '#notpresent'
