@@ -179,11 +179,11 @@ function validateHeaders (request) {
  * Validates the NHS number from the request.
  *
  * @param {Object} request - The request object.
+ * @param {Object} nhsNumber - The nhsNumber param.
  * @returns {boolean} - Returns true if the NHS number is valid, otherwise false.
  */
 // eslint-disable-next-line no-unused-vars
-function validateNHSNumber (request) {
-  const nhsNumber = request.pathParams.nhsNumber
+function validateNHSNumber (request, nhsNumber) {
   let valid = true
   const validNHSNumber = validate(nhsNumber)
   if (!validNHSNumber) {
