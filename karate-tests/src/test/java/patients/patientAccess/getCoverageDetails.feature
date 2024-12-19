@@ -35,7 +35,7 @@ Background:
     * method get
     * status 200
     * match response.entry[0] == '#notpresent'
-    * match response.meta contains {versionId: 'notnull'}
+    * match response.meta contains {versionId: '#notnull'}
     * match karate.response.header('etag') != null
    
  # 9732019735 is displayed in retained record 9732019638
