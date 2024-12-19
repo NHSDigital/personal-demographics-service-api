@@ -1,16 +1,42 @@
-var id_token_nhs_number = context.getVariable('jwt.DecodeJWT.DecodeIdToken.claim.nhs_number');
-var request_pathsuffix = context.getVariable('proxy.pathsuffix');
-var request_path_nhs_number = request_pathsuffix.split("/")[2];
-var method_is_restricted = true
-var sync_wrapped = context.getVariable('request.header.x-sync-wrapped');
-var vot = context.getVariable('jwt.DecodeJWT.DecodeIdToken.claim.vot');
-var allowed_vots = ["P9.Cp.Cd","P9.Cm","P9.Cp.Ck"];
+function is_request_restricted() {
+    var splitPathsuffix = context.getVariable('proxy.pathsuffix').split("/");
+    var fullUrl = context.getVariable('proxy.url')
 
-if (request_pathsuffix.split("/")[1] == "_poll" && sync_wrapped == "true"){
-    method_is_restricted = false
+    // Ignore polling
+    var sync_wrapped = context.getVariable('request.header.x-sync-wrapped');
+    if (splitPathsuffix[1] == "_poll" && sync_wrapped == "true"){
+        return false
+    }
+
+    // Ensure correct vector of trust
+    var allowed_vots = ["P9.Cp.Cd","P9.Cm","P9.Cp.Ck"];
+    var vot_on_request = context.getVariable('jwt.DecodeJWT.DecodeIdToken.claim.vot');
+    if (allowed_vots.indexOf(vot_on_request) == -1) {
+        return true
+    }
+
+    // If GET coverage
+    var id_token_nhs_number = context.getVariable('jwt.DecodeJWT.DecodeIdToken.claim.nhs_number');
+    var coverageRegex = new RegExp(/Coverage\?beneficiary%3Aidentifier=[0-9]{10}$/)
+    if (splitPathsuffix[1] == "Coverage"){
+        if (!coverageRegex.test(fullUrl)) {
+            context.setVariable('apigee.invalid_coverage_search', true);
+            return true
+        }
+        if (fullUrl.slice(-10) != id_token_nhs_number){
+            context.setVariable('apigee.debug', "Bad nhs number on coverage");
+            return true 
+        }
+        return false
+    }
+
+    var request_path_nhs_number = splitPathsuffix[2];
+    if ((request_path_nhs_number != id_token_nhs_number)) {
+        return true
+    }
+    
+    return false
 }
 
-if ((request_path_nhs_number == id_token_nhs_number) && (allowed_vots.indexOf(vot) > -1)) {
-    method_is_restricted = false
-}
+var method_is_restricted = is_request_restricted();
 context.setVariable('apigee.method_is_restricted', method_is_restricted);
