@@ -1,0 +1,28 @@
+<RaiseFault async="false" continueOnError="false" enabled="true" name="RaiseFault.ResourceRestricted">
+  <FaultResponse>
+    <Set>
+      <Headers />
+      <Payload contentType="text/plain" />
+      <StatusCode>403</StatusCode>
+      <ReasonPhrase>Forbidden</ReasonPhrase>
+    </Set>
+    <AssignVariable>
+      <Name>pds.error.code</Name>
+      <Value>forbidden</Value>
+    </AssignVariable>
+    <AssignVariable>
+      <Name>pds.error.coding.code</Name>
+      <Value>ACCESS_DENIED</Value>
+    </AssignVariable>
+    <AssignVariable>
+      <Name>pds.error.coding.display</Name>
+      <Template>Cannot {request.verb} resource with {access-mode} access token</Template>
+    </AssignVariable>
+    <AssignVariable>
+      <Name>pds.error.diagnostics</Name>
+      <Template>Your app has insufficient permissions to use this operation. Please contact support.</Template>
+    </AssignVariable>
+  </FaultResponse>
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</RaiseFault>
+
