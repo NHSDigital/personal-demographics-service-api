@@ -2,14 +2,14 @@
 Feature: Patient Access (Retrieve Coverage details)
     Retrieve a chargeable snippet for a patient
 
-Background:
+  Background:
     * def utils = call read('classpath:helpers/utils.feature')
     * json patientCoverageResultEntry  = karate.readAsString('classpath:schemas/searchSchemas/patientCoverageResultEntry.json')
     * json coverageBundle = karate.readAsString('classpath:schemas/searchSchemas/patientCoverageBundle.json')
     
     * configure url = baseURL
 
- @sandbox
+  @sandbox
    Scenario: Happy path - Retrieve patient coverage details
     * def p9number = '9733162868'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
@@ -25,7 +25,7 @@ Background:
     * match response.entry[0].resource.identifier[0].assigner contains { display: '#notnull'}
 
   @sandbox
- Scenario: Happy path - patient has no coverage details
+  Scenario: Happy path - patient has no coverage details
     * def P9WithNoCoverage = '9733162876'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: P9WithNoCoverage, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
@@ -38,8 +38,8 @@ Background:
     * match response.meta contains {versionId: '#notnull'}
     * match karate.response.header('etag') != null
    
- # 9732019735 is displayed in retained record 9732019638
-Scenario: Retrieve patient current coverage details when superseded NHS number is sent
+    # 9732019735 is displayed in retained record 9732019638
+  Scenario: Retrieve patient current coverage details when superseded NHS number is sent
     * def mergedP9number = '9732019735'
     * def retainedRecord = '9732019638' 
     * def ehicCardNo = '12346 00002 02 0002'
@@ -55,7 +55,7 @@ Scenario: Retrieve patient current coverage details when superseded NHS number i
     * match response.entry[0].resource.beneficiary.identifier.value == retainedRecord
     * match response.entry[0].resource.identifier[0].value == ehicCardNo 
 
-Scenario: Retrieve patient coverage details where personalIdentification number is not available
+  Scenario: Retrieve patient coverage details where personalIdentification number is not available
     * def personal_id_p9 = '9733162884'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: personal_id_p9, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
