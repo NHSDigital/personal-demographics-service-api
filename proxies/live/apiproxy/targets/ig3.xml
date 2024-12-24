@@ -141,6 +141,10 @@
           <Condition>(request.verb Equals "POST")</Condition>
         </Step>
         <Step>
+          <Name>RaiseFault.InvalidCoverageSearch</Name>
+          <Condition>apigee.invalid_coverage_search Equals true</Condition>
+        </Step>
+        <Step>
           <Name>RaiseFault.InvalidUserNHSlogin</Name>
           <Condition>apigee.method_is_restricted Equals true</Condition>
         </Step>
