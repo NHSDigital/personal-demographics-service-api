@@ -1,33 +1,36 @@
-{
-    "status": "active",
-    "subscriberId": "#string",
-    "identifier": [
-      {
-        "value": "#string",
-        "assigner": {
+  {
+    "fullUrl": "#? utils.isValidPatientCoverageURL(_)",
+    "resource": {
+        "beneficiary": {
             "identifier": {
-              "system": "#string",
-              "value": "#string"
-            },
-            "display": "#string"
-          }
-      }
-    ],
-    "payor": [
-      {
-        "identifier": {
-          "value": "#string"
-        }
-      }
-    ],
-    "beneficiary": {
-      "identifier": {
-        "value": "#? utils.isValidNHSNumber(_)",
-        "system": "#? utils.isValidURL(_)"
-      }
-    },
-    "period": 
-    {
-      "end": "##regex(\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01]))"
-    }
-  }
+                "system": "#? utils.isValidURL(_)",
+                "value": "#? utils.isValidNHSNumber(_)"
+            }
+        },
+        "identifier": [
+            {
+                "assigner": {
+                    "display": "#string",
+                    "identifier": {
+                        "system": "#string",
+                        "value": "#string"
+                    }
+                },
+                "value": "#string"
+            }
+        ],
+        "payor": [
+            {
+                "identifier": {
+                    "value": "#string"
+                }
+            }
+        ],
+        "period": {
+            "end": "##regex(\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01]))"
+        },
+        "resourceType": "Coverage",
+        "status": "active",
+        "subscriberId": "#string"
+    }        
+}
