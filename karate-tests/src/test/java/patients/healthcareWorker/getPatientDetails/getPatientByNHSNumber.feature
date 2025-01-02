@@ -26,7 +26,7 @@ Background:
 
 @unrestricted @smoke
 Scenario: Get an "unrestricted" patient
-  * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9693632109'
+  * def nhsNumber = karate.env.includes('sandbox') ? '9000000009' : '9693632109'
   * path 'Patient', nhsNumber
   * method get
   * status 200
@@ -44,7 +44,7 @@ Scenario: Get an "unrestricted" patient
 
 @sensitive
 Scenario: Get a "restricted" (sensitive) patient
-  * def nhsNumber = karate.env == 'mock' ? '9000000025' : '9727022820'
+  * def nhsNumber = karate.env.includes('sandbox') ? '9000000025' : '9727022820'
   * path 'Patient', nhsNumber
   * method get
   * status 200

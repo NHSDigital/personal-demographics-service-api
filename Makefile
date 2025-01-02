@@ -23,7 +23,6 @@ karate:
 lint:
 	npm run lint-oas
 	npm run lint-karate-js
-	npm run lint-node-sandbox
 	find . -name '*.py' | xargs poetry run flake8
 	find . -name '*.sh' | grep -v node_modules | xargs shellcheck
 

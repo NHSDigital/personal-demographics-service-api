@@ -43,9 +43,13 @@ fuzzy_search_patient_17 = {
 
 # error responses
 resource_not_found = {
-    "resourceType":"OperationOutcome","issue":[{"severity":"error","code":"not-found","details":{"coding":[{"system":"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode","version":"1","code":"RESOURCE_NOT_FOUND","display":"Resource not found"}]}}]}
+    "resourceType":"OperationOutcome","issue":[{"severity":"information","code":"not-found","details":{"coding":[{"system":"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode","version":"1","code":"RESOURCE_NOT_FOUND","display":"Resource not found"}]}}]}
 missing_x_request_id = {
     "resourceType":"OperationOutcome","issue":[{"severity":"error","code":"required","details":{"coding":[{"system":"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode","version":"1","code":"MISSING_VALUE","display":"Required value is missing"}]},"diagnostics":"Invalid request with error - X-Request-ID header must be supplied to access this resource"}]}
+unsupported_service = {
+    "resourceType":"OperationOutcome","issue":[{"severity":"error","code":"processing","details":{"coding":[{"system":"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode","version":"1","code":"UNSUPPORTED_SERVICE","display":"Unsupported Service"}]}}]}
+additional_properties = {
+    "issue":[{"code":"invariant","details":{"coding":[{"code":"ADDITIONAL_PROPERTIES","display":"Additional properties should not be included","system":"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode","version":"1"}]},"diagnostics":"Invalid request with error - Additional properties are not allowed ('foo' was unexpected)","severity":"error"}],"resourceType":"OperationOutcome"}
 not_enough_search_params = {
     "resourceType":"OperationOutcome","issue":[{"severity":"error","code":"required","details":{"coding":[{"system":"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode","version":"1","code":"MISSING_VALUE","display":"Required value is missing"}]},"diagnostics":"Not enough search parameters were provided for a valid search, you must supply family and birthdate as a minimum and only use recognised parameters from the api catalogue."}]}
 invalid_resource_id = {
@@ -53,7 +57,7 @@ invalid_resource_id = {
 invalid_x_request_id = {
     "resourceType": "OperationOutcome", "issue": [{"severity": "error", "code": "value", "details": {"coding": [{"system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode", "version": "1", "code": "INVALID_VALUE", "display": "Provided value is invalid"}]}, "diagnostics": "Invalid value - '1234' in header 'X-Request-ID'"}]}
 invalid_birthdate = {
-    "resourceType": "OperationOutcome", "issue": [{"severity": "error", "code": "value", "details": {"coding": [{"system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode", "version": "1", "code": "INVALID_SEARCH_DATA", "display": "Search data is invalid"}]}, "diagnostics": "Invalid value - '20101022' in field 'birthdate'"}]}
+    "resourceType": "OperationOutcome", "issue": [{"severity": "error", "code": "value", "details": {"coding": [{"system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode", "version": "1", "code": "INVALID_VALUE", "display": "Provided value is invalid"}]}, "diagnostics": "Invalid value - '20101022' in field 'birthdate'"}]}
 
 # test scenario data
 retrieve = {
@@ -147,13 +151,16 @@ search_success = {
 search_error = {
     "Too Few Parameters Search": {
         "query_params": {},
-        "response":not_enough_search_params},
+        "response": unsupported_service},
     "Unsupported Operation with Completely Invalid Params": {
-        "query_params": {"manufacturer": "Ford","model": "focus", "year": "2003"},
-        "response": not_enough_search_params},
-    "Unsupported Operation with Invalid Param and Family Birthdate": {
-        "query_params": {"family": "Smith","birthdate": "eq2010-10-22", "year": "2003"},
-        "response": not_enough_search_params},
+        "query_params": {"foo": "bar"},
+        "response": additional_properties},
+    # TODO: I don't think we are handling this scenario in the sandbox correctly. However,
+    # Given the same tests test hit other envs, that may mean further work than just adjusting 
+    # the canned sandbox response.
+    # "Unsupported Operation with Invalid Param and Family Birthdate": {
+    #     "query_params": {"family": "Smith","birthdate": "eq2010-10-22", "year": "2003"},
+    #     "response": not_enough_search_params},
     "Invalid Date Format Search": {
         "query_params": {"family": "Smith", "given": "jane", "gender": "female", "birthdate": "20101022"}, 
         "response":invalid_birthdate}

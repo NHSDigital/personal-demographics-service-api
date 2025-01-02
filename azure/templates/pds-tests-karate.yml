@@ -36,27 +36,6 @@ steps:
       pathToPublish: $(ARTIFACT_PATH)/karate-tests/target/karate-reports
       artifactName: KarateHTMLReports
 
-  # Run the tests against the Karate mocks
-  - bash: |
-      export CLIENT_ID="$(CLIENT_ID)"
-      mvn clean test -Dtest=TestMockParallel 
-    displayName: 'Run Karate Mock Tests'
-    workingDirectory: "$(ARTIFACT_PATH)/karate-tests"
-    
-  - task: PublishTestResults@2
-    displayName: 'Publish Karate sandbox test results'
-    condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
-    inputs:
-      testResultsFiles: $(ARTIFACT_PATH)/karate-tests/target/karate-reports/*.xml
-      failTaskOnFailedTests: true
-
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Karate Sandbox HTML test report as an artifact'
-    condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
-    inputs:
-      pathToPublish: $(ARTIFACT_PATH)/karate-tests/target/karate-reports
-      artifactName: KarateSandboxHTMLReports
-
   # Run the tests against veit07, via the Prism proxy
   - bash: |
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
