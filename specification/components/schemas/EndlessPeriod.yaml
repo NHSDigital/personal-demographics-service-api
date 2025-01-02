@@ -1,0 +1,11 @@
+type: object
+description: |
+  Business effective period when name is in use.
+required:
+  - start
+properties:
+  start:
+    type: string
+    format: date
+    description: Start date of time period, if known, in format `yyyy-mm-dd`.
+    example: 2024-01-01

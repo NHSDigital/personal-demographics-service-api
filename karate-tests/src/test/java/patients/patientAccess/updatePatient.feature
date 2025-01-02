@@ -132,7 +132,6 @@ Feature: Patient updates their details
         ]
       }
         """
-      * print requestbody
       * request requestbody  
       * method patch
       * status 400 
@@ -216,4 +215,133 @@ Feature: Patient updates their details
     * match updatedPobCity == cityName
     * match parseInt(response.meta.versionId) == originalVersion + 2
 
- 
+  Scenario: Patient can add and remove nominated pharmacy
+
+    * def p9numberForPharmacy = '9446041481'
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9numberForPharmacy, scope: 'nhs-login'}).accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders
+    * path 'Patient', p9numberForPharmacy
+    * method get
+    * status 200
+    * def originalVersion = parseInt(response.meta.versionId)
+    * def originalEtag = karate.response.header('etag')
+    # add nominated pharmacy
+
+    * configure headers = call read('classpath:auth/auth-headers.js') 
+    * header Content-Type = "application/json-patch+json"
+    * header If-Match = originalEtag
+    * path 'Patient', p9numberForPharmacy
+    * def requestBody = read('classpath:patients/requestDetails/add/nominatedPharmacy.json')
+    * def nominatedPharmacyUrl = requestBody.patches[0].value.url
+    * request requestBody
+    * method patch
+    * status 200 
+    * def idAfterPharmacyAdd = response.meta.versionId
+    * def pharmacyDetails = response.extension.find(x => x.url == nominatedPharmacyUrl)
+    # Test fails if the patient's nominated pharmacy is not present in the record
+  
+    * if (pharmacyDetails == null) {karate.fail('No value found for Nominated Pharmacy, stopping the test.')}
+    * def pharmacyIndex = response.extension.findIndex(x => x.url == nominatedPharmacyUrl)
+    * def pharmacyPath =  "/extension/" + pharmacyIndex
+    
+     # remove nominated pharmacy details
+
+    * configure headers = call read('classpath:auth/auth-headers.js') 
+    * header Content-Type = "application/json-patch+json"
+    * header If-Match = karate.response.header('etag')
+    * path 'Patient',p9numberForPharmacy
+    * request 
+    """
+      {
+        "patches": [
+          {
+            "op": "test",
+            "path": "#(pharmacyPath)",
+            "value": "#(pharmacyDetails)"     
+          },
+          {
+           "op": "remove",
+            "path": "#(pharmacyPath)" 
+          }
+        ]
+      }
+      """ 
+    * method patch
+    * status 200
+    * match parseInt(response.meta.versionId) == parseInt(idAfterPharmacyAdd)+ 1
+    * match response.extension[0] == '#notpresent'
+
+  Scenario: Patient can add temporary address and remove it
+
+    * def p9numberForAddress = '9733162868'
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9numberForAddress, scope: 'nhs-login'}).accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders
+    * path 'Patient', p9numberForAddress
+    * method get
+    * status 200
+    * def originalVersion = parseInt(response.meta.versionId)
+    * def originalEtag = karate.response.header('etag')
+    * def utils = call read('classpath:helpers/utils.feature')
+    * def randomAddress = utils.randomTempAddress()
+    * def tempAddress = randomAddress
+    # add temp address
+
+    * configure headers = call read('classpath:auth/auth-headers.js') 
+    * header Content-Type = "application/json-patch+json"
+    * header If-Match = originalEtag
+    * path 'Patient', p9numberForAddress
+    * def requestBody = 
+    """
+      {
+        "patches":
+        [
+            {
+                "op": "add",
+                "path": "/address/-",
+                "value": "#(tempAddress)"
+            }
+        ]
+    }
+    """
+    * request requestBody
+    * method patch
+    * status 200 
+    * def idAfterTempAddress = response.meta.versionId
+    * def tempAddressDetails = response.address.find(x => x.use == "temp")
+   
+    # Test fails if the patient's temp address details are not present in the record
+  
+    * if (tempAddressDetails == null) {karate.fail('No value found for temporary address, stopping the test.')}
+    * def addressIndex = response.address.findIndex(x => x.use == "temp")
+    * def tempAddressPath =  "/address/" + addressIndex
+    
+     # remove temp address details
+
+    * configure headers = call read('classpath:auth/auth-headers.js') 
+    * header Content-Type = "application/json-patch+json"
+    * header If-Match = karate.response.header('etag')
+    * path 'Patient',p9numberForAddress
+    * request 
+    """
+      {
+        "patches": [
+          {
+            "op": "test",
+            "path": "#(tempAddressPath)",
+            "value": "#(tempAddressDetails)"     
+          },
+          {
+           "op": "remove",
+            "path": "#(tempAddressPath)" 
+          }
+        ]
+      }
+      """ 
+    * method patch
+    * status 200
+    * match parseInt(response.meta.versionId) == parseInt(idAfterTempAddress)+ 1
+    * match response.address[1] == '#notpresent'
+
+    

@@ -62,10 +62,43 @@ Scenario:
   }
   """
 
+  * def randomTempAddress =
+  """
+  function() {
+    const addresses = karate.read('classpath:helpers/addresses.json')
+    const randomAddress = addresses[Math.floor(Math.random() * addresses.length)]
+    const formatDate = (date) => {
+        const yyyy = date.getFullYear()
+        const mm = String(date.getMonth() + 1).padStart(2, '0') // Months are zero-based
+        const dd = String(date.getDate()).padStart(2, '0')
+        return `${yyyy}-${mm}-${dd}`
+    }
+
+    // Get today's date and formatted dates
+    const today = new Date()
+    const formattedToday = formatDate(today)
+
+    //Get 2 months later date
+    const twoMonthsLater = new Date(today)
+    twoMonthsLater.setMonth(twoMonthsLater.getMonth() + 2)
+    const formattedTwoMonthsLater = formatDate(twoMonthsLater)
+    
+    const street = `${Math.floor(Math.random() * 99) + 1} ${randomAddress.street}`
+    const addressObject = {
+        period: {"start": formattedToday, "end": formattedTwoMonthsLater},
+        use: "temp",
+        text: "Temporary Residence Address",
+        postalCode: randomAddress.postalCode,
+        line: ["", street, "", randomAddress.city, ""]
+      }
+    return addressObject
+  }
+  """
+
   * def randomGender = 
   """
   function() {
-    const genders = ['male', 'female', 'other', 'unknown']
+    const genders = ['male', 'female', 'unknown']
     return genders[Math.floor(Math.random() * genders.length)];
   }
   """
@@ -145,6 +178,18 @@ Scenario:
       return validNHSNumber
     }
     """
+  
+    
+    * def isValidPatientCoverageURL = 
+    """
+    function(url) {
+      const baseURL = karate.get('internalServerURL') + "/Coverage?beneficiary:identifier="
+      if (!url.startsWith(baseURL)) return false
+      const nhsNumber = url.split('=')[url.split('=').length -1]
+      const isValidNHSNumber = karate.call('classpath:helpers/nhs-number-validator.js', nhsNumber)
+      return isValidNHSNumber
+    }
+    """  
 
   * def isValidRelatedPersonURL = 
     """

@@ -1,0 +1,47 @@
+{
+    "entry": [
+        {
+            "fullUrl": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Coverage?beneficiary:identifier=9733162868",
+            "resource": {
+                "beneficiary": {
+                    "identifier": {
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "9733162868"
+                    }
+                },
+                "identifier": [
+                    {
+                        "assigner": {
+                            "display": "Germany",
+                            "identifier": {
+                                "system": "urn:iso:std:iso:3166",
+                                "value": "DEU"
+                            }
+                        },
+                        "value": "DE123456789012 1234"
+                    }
+                ],
+                "payor": [
+                    {
+                        "identifier": {
+                            "value": "DE98765"
+                        }
+                    }
+                ],
+                "period": {
+                    "end": "2026-08-15"
+                },
+                "resourceType": "Coverage",
+                "status": "active",
+                "subscriberId": "9876543210"
+            }
+        }
+    ],
+    "meta": {
+        "versionId": "124"
+    },
+    "resourceType": "Bundle",
+    "timestamp": "2024-12-18T16:16:06+00:00",
+    "total": 1,
+    "type": "searchset"
+}
