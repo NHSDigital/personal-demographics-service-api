@@ -51,16 +51,16 @@ function validate(nhsNumber){
     var remainder = nhsNumberAsArray.slice(0,9)
                               .map(multiplyByPosition)
                               .reduce(addTogether, 0) % 11;
-  
+
     var checkDigit = 11 - remainder;
-  
+
     // replace 11 for 0
     if(checkDigit === 11){
       checkDigit = 0;
     }
   
     var providedCheckDigit = nhsNumberAsArray[9];
-  
+
     // Do the check digits match?
     return checkDigit === Number(providedCheckDigit);
   }
