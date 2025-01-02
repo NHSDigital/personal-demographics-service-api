@@ -1,3 +1,4 @@
+@no-oas
 Feature: Patient Access (Retrieve)
     Retrieve a chargeable snippet error scenarios
 
