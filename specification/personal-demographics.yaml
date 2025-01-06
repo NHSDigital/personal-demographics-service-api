@@ -1464,7 +1464,7 @@ paths:
 
         There are a number of business rules that should be taken into account:
         * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date
-        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
+        * the period `start` date is optional. It cannot be a future date. For `add` operations, if the period `start` date is not given then it defaults to the date of update.
         * if using the `replace` operation, the use and system must be the same as the telecom you're modifying. Otherwise use a delete and add instead.
         * if the telecom system is email, the value must be a valid email format, for example john.smith@example.com; and must be more than 6 characters and less than 90 characters
 
