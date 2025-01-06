@@ -14,6 +14,8 @@ Feature: Authentication for Healthcare Worker
 Background:
     * def userID = karate.get('userID', '656005750107')
     * def scope = karate.get('scope', null)
+    * def clientID = karate.get('clientID')
+    * def clientSecret = karate.get('clientSecret')
     * def javaUtils = Java.type('helpers.Utils')
     * def utils = call read('classpath:helpers/utils.feature')
 
