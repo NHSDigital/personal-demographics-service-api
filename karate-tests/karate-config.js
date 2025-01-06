@@ -49,6 +49,8 @@ function fn() {
       baseURL: `${java.lang.System.getenv('OAUTH_BASE_URI')}/${java.lang.System.getenv('PDS_BASE_PATH')}`,
       clientID: java.lang.System.getenv('CLIENT_ID'),
       clientSecret: java.lang.System.getenv('CLIENT_SECRET'),
+      interactionFreeClientID: java.lang.System.getenv('INTERACTION_FREE_CLIENT_ID'),
+      interactionFreeClientSecret: java.lang.System.getenv('INTERACTION_FREE_CLIENT_SECRET'),
       signingKey: java.lang.System.getenv('APPLICATION_RESTRICTED_SIGNING_KEY_PATH'),
       apiKey: java.lang.System.getenv('APPLICATION_RESTRICTED_API_KEY'),
       keyID: java.lang.System.getenv('KEY_ID'),
