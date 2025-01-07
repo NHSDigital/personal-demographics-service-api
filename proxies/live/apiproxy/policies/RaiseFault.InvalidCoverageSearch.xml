@@ -1,0 +1,27 @@
+<RaiseFault async="false" continueOnError="false" enabled="true" name="RaiseFault.InvalidCoverageSearch">
+  <FaultResponse>
+    <Set>
+      <Headers />
+      <Payload contentType="text/plain" />
+      <StatusCode>400</StatusCode>
+      <ReasonPhrase>Bad Request</ReasonPhrase>
+    </Set>
+    <AssignVariable>
+      <Name>pds.error.code</Name>
+      <Value>value</Value>
+    </AssignVariable>
+    <AssignVariable>
+      <Name>pds.error.coding.code</Name>
+      <Value>INVALID_SEARCH_DATA</Value>
+    </AssignVariable>
+    <AssignVariable>
+      <Name>pds.error.coding.display</Name>
+      <Template>Search data is invalid</Template>
+    </AssignVariable>
+    <AssignVariable>
+      <Name>pds.error.diagnostics</Name>
+      <Template>Invalid search data provided - 'Coverage search request must follow the format /Coverage?beneficiary:identifier=NHS_NUMBER'</Template>
+    </AssignVariable>
+  </FaultResponse>
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</RaiseFault>

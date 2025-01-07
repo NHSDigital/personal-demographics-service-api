@@ -10,7 +10,8 @@
 
 if (request.pathMatches('/Patient/{nhsNumber}') && request.get) {
   response.headers = basicResponseHeaders(request)
-  if (validateHeaders(request) && validateNHSNumber(request) && validatePatientExists(request)) {
+  const nhsNumber = request.pathParams.nhsNumber
+  if (validateHeaders(request) && validateNHSNumber(request, nhsNumber) && validatePatientExists(request)) {
     const patient = session.patients[request.pathParams.nhsNumber]
     const responseHeaders = basicResponseHeaders(request)
     responseHeaders.etag = `W/"${patient.meta.versionId}"`
