@@ -40,7 +40,7 @@ properties:
   telecom:
     type: array
     description: |
-      List of contact points for the patient, like phone numbers or email addresses. A patient should only have one instance of each telecom value on their record at a time. For example, to add a new work email value to the record, the existing work email value should be replaced with the new value. When a patient tagged as `restricted` is retrieved, all contact points, like phone numbers or email addresses, are removed from the response.
+      List of contact points for the patient, like phone numbers or email addresses. A patient should only have one instance of each telecom system and use combination on their record at a time. For example, to add a new work email value to the record, the existing work email value should be replaced with the new value. When a patient tagged as `restricted` is retrieved, all contact points, like phone numbers or email addresses, are removed from the response.
     items:
       $ref: "ContactPoint.yaml"
   contact:
