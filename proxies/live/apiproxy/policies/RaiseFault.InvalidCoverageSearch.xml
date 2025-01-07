@@ -20,7 +20,7 @@
     </AssignVariable>
     <AssignVariable>
       <Name>pds.error.diagnostics</Name>
-      <Template>Invalid search data provided - 'Coverage search request must follow the format /Coverage?beneficiary:identifier={nhs_number}'</Template>
+      <Template>Invalid search data provided - 'Coverage search request must follow the format /Coverage?beneficiary:identifier=NHS_NUMBER'</Template>
     </AssignVariable>
   </FaultResponse>
   <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
