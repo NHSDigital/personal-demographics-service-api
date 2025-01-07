@@ -1,6 +1,6 @@
 @no-oas
-Feature: Patient Access (Retrieve)
-    Retrieve a chargeable snippet error scenarios
+Feature: Patient Access (Retrieve Coverage)
+    Retrieve EHIC details error scenarios
 
 Background:
     * def utils = call read('classpath:helpers/utils.feature')
