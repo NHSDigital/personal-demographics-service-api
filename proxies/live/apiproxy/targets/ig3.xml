@@ -155,7 +155,7 @@
         </Step>
         <Step>
           <Name>RaiseFault.PostMethodNotAllowed</Name>
-          <Condition>(request.verb Equals "POST")</Condition>
+          <Condition>(request.verb Equals "POST" and proxy.pathsuffix MatchesPath "/Patient")</Condition>
         </Step>
         <Step>
           <Name>RaiseFault.InvalidCoverageSearch</Name>
