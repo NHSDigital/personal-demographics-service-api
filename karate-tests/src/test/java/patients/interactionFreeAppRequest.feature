@@ -1,4 +1,4 @@
-@no-oas @interactionFree
+@no-oas
 Feature: Check PDS FHIR requests are rejected as "unauthorized" for interaction free test apps
 
 Background:
