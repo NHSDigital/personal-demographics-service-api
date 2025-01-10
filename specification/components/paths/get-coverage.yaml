@@ -4,7 +4,7 @@ parameters:
   - $ref: '#/components/parameters/RequestID'
   - $ref: '#/components/parameters/CorrelationID'
   - $ref: '#/components/parameters/NHSD-End-User-Organisation-ODS'
-  get:
+get:
     parameters:
       BeneficiaryIdentifier:
         name: beneficiary:identifier
@@ -12,10 +12,10 @@ parameters:
           The NHS number that identifies the holder/beneficiary of the coverage.
         examples:
           ehic_holder:
-            value: 9999999999
-            summary: Returns a bundle that contains a Coverage resource for the patient with NHS number 9999999999.
+            value: 9733162868
+            summary: Returns a bundle that contains a Coverage resource for the patient with NHS number 9733162868.
           no_ehic:
-            value: 9123456789
+            value: 9733162876
             summary: Returns an empty bundle, alongside a meta object that can be used to apply an update to the patient's coverage.
         in: query
         required: true

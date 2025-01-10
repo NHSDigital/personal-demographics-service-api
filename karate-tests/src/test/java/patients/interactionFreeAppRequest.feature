@@ -2,9 +2,6 @@
 Feature: Check PDS FHIR requests are rejected as "unauthorized" for interaction free test apps
 
 Background:
-  * def utils = call read('classpath:helpers/utils.feature')
-
-  # auth
   * url baseURL
 
 Scenario: Make GET /Patient request from app that does not have pdsquery:PatientRetrieve interaction
