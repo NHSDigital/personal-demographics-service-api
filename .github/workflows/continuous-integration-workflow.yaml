@@ -49,6 +49,9 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-build-cache-npm-packages-${{ hashFiles('**/package-lock.json') }}
 
+      - name: Run Jest
+        run: jest
+
       - name: Install repo
         run: make install
 
