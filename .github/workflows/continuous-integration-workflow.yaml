@@ -59,7 +59,7 @@ jobs:
         run: make lint
 
       - name: Run Jest
-        run: jest
+        run: npm run jest
 
       - name: Check resources are valid FHIR 4.0.1
         run: make validate
