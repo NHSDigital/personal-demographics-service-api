@@ -7,6 +7,7 @@ name = "personal-demographics-service-api"
 name = "sandbox"
 version = "0.0.1-alpha"
 description = "PDS API Sandbox"
+package-mode = false
 
 license = "MIT"
 
