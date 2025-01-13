@@ -95,4 +95,15 @@ Scenario: Additional invalid param
     * status 400
     * def diagnostics = "Invalid search data provided - 'Coverage search request must follow the format /Coverage?beneficiary:identifier=NHS_NUMBER'"
     * match response == read('classpath:mocks/stubs/errorResponses/INVALID_SEARCH_DATA.json')
+
+Scenario: Patient that don't have corresponding patient objects
+    * def p9WithoutPatientObject = '9462978182'
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9WithoutPatientObject, scope: 'nhs-login'}).accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders
+    * path 'Coverage'
+    * param beneficiary:identifier = p9WithoutPatientObject
+    * method get
+    * status 404
+    * match response == read('classpath:mocks/stubs/errorResponses/RESOURCE_NOT_FOUND.json')    
     
