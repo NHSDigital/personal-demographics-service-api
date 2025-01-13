@@ -49,9 +49,6 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-build-cache-npm-packages-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Run Jest
-        run: jest
-
       - name: Install repo
         run: make install
 
@@ -60,6 +57,9 @@ jobs:
 
       - name: Lint
         run: make lint
+
+      - name: Run Jest
+        run: jest
 
       - name: Check resources are valid FHIR 4.0.1
         run: make validate
