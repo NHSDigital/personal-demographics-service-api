@@ -15,6 +15,8 @@
   "homepage": "https://github.com/NHSDigital/personal-demographics-service-api",
   "dependencies": {
     "@redocly/cli": "^1.10.6",
+    "jest-cli": "^29.7.0",
+    "jest-when": "^3.7.0",
     "nvm": "0.0.4",
     "swagger-cli": "^4.0.4"
   },
@@ -27,5 +29,6 @@
     "eslint-plugin-promise": "^6.1.1",
     "license-checker": "^25.0.1",
     "puppeteer": "^5.3.1"
-  }
+  },
+  "type": "module"
 }
