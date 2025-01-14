@@ -1,12 +1,13 @@
 [project]
 python = "^3.9"
-name = "sandbox"
+name = "personal-demographics-service-api"
 
 
 [tool.poetry]
 name = "sandbox"
 version = "0.0.1-alpha"
 description = "PDS API Sandbox"
+package-mode = false
 
 license = "MIT"
 
