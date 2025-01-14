@@ -32,6 +32,7 @@ extends:
     service_name: ${{ variables.service_name }}
     short_service_name: ${{ variables.short_service_name }}
     service_base_path: ${{ variables.service_base_path }}
+    python_version: ${{ variables.python_version }}
     deploy_review_sandbox: true
     jinja_templates:
       PDS_TARGET_SERVER: spine-demographics
