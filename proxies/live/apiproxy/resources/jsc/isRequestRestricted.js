@@ -39,5 +39,3 @@ function is_request_restricted() {
     
     return false
 }
-
-module.exports = {is_request_restricted}
