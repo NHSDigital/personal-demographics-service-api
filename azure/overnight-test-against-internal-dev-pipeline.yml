@@ -28,10 +28,11 @@ variables:
   - name: SERVICE_ARTIFACT_NAME
     value: ''
   - name: FULLY_QUALIFIED_SERVICE_NAME
-    value: personal-demographics-internal-dev
+    value: personal-demographics-internal-dev 
     
 steps:
-  - bash: poetry install
+  - bash: |
+      poetry install --python ${{ variables.python_version }}
     workingDirectory: $(Pipeline.Workspace)/s
     displayName: Setup tests
   
