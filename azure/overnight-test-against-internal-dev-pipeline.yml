@@ -28,7 +28,7 @@ variables:
   - name: SERVICE_ARTIFACT_NAME
     value: ''
   - name: FULLY_QUALIFIED_SERVICE_NAME
-    value: personal-demographics-internal-dev 
+    value: personal-demographics-internal-dev
     
 steps:
   - bash: |
