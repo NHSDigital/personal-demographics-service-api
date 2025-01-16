@@ -125,12 +125,12 @@
           <Condition>(request.verb Equals "PATCH")</Condition>
         </Step>
         <Step>
-          <Name>RaiseFault.PostMethodNotAllowed</Name>
-          <Condition>(request.verb Equals "POST")</Condition>
-        </Step>
-        <Step>
           <Name>RaiseFault.ResourceRestricted</Name>
           <Condition>(proxy.pathsuffix JavaRegex "/Coverage.*")</Condition>
+        </Step>
+        <Step>
+          <Name>RaiseFault.PostMethodNotAllowed</Name>
+          <Condition>(request.verb Equals "POST")</Condition>
         </Step>
         <!-- If _max-results param is unset, set to allowed value for application-restricted mode -->
         <Step>
