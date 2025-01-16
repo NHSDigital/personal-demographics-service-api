@@ -1,5 +1,6 @@
 [project]
 python = "^3.9"
+name = "personal-demographics-service-api"
 
 
 [tool.poetry]
