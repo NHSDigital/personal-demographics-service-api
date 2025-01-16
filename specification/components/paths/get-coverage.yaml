@@ -70,3 +70,46 @@ get:
                         code: ACCESS_DENIED
                         display: Cannot GET resource with user-restricted access token
                   diagnostics: "Your app has insufficient permissions to use this operation. Please contact support."
+post:
+    parameters:
+      - $ref: '#/components/parameters/IfMatch'
+    responses:
+      '200':
+        description: |
+          A completed update to coverage. This will contain the Coverage resource just posted in the Bundle.
+
+        headers:
+          X-Correlation-Id:
+            $ref: '#/components/headers/X-Correlation-Id'
+          X-Request-Id:
+            $ref: '#/components/headers/X-Request-Id'
+
+      '4XX':
+        description: |
+            An error occurred as follows:
+
+            | HTTP status | Error code                 | Description                                                                                                                                |
+            | ----------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+
+        headers:
+          X-Correlation-Id:
+            $ref: '#/components/headers/X-Correlation-Id'
+          X-Request-Id:
+            $ref: '#/components/headers/X-Request-Id'
+
+        content:
+          application/fhir+json:
+            schema:
+              $ref: '#/components/schemas/OperationOutcome'
+            example:
+              resourceType: OperationOutcome
+              issue:
+                - severity: error
+                  code: forbidden
+                  details:
+                    coding:
+                      - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                        version: '1'
+                        code: ACCESS_DENIED
+                        display: Cannot POST resource with user-restricted access token
+                  diagnostics: "Your app has insufficient permissions to use this operation. Please contact support."
