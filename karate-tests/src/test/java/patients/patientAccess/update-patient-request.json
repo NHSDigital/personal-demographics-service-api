@@ -1,0 +1,42 @@
+{
+    "resourceType" : "Coverage",
+    "identifier" : [
+      {
+        "value" : "DE123456789012 1234",
+        "assigner": {
+          "identifier": {
+            "system":"urn:iso:std:iso:3166",
+            "value":"DEU"
+          },
+          "display" : "Germany"
+        }
+      }
+    ],
+    "status" : "active",
+    "type" : {
+      "coding" : [
+        {
+          "system" : "http://terminology.hl7.eu/CodeSystem/v3-ActCode",
+          "code" : "EHIC",
+          "display" : "European Health Insurance Card"
+        }
+      ]
+    },
+    "beneficiary" : {
+      "identifier" : {
+        "system":"https://fhir.nhs.uk/Id/nhs-number",
+        "value": "9733162868"
+      }
+    },
+    "period" : {
+      "end" : "#(periodEndDate)"
+    },
+    "payor" : [
+      {
+        "identifier" : {
+          "value" :"DE98765"
+        }
+      }
+    ],
+    "subscriberId": "1029384756"
+  }

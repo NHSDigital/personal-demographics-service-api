@@ -3,7 +3,7 @@ Feature: Check PDS FHIR requests are rejected as "unauthorized" for interaction 
 
 Background:
   * url baseURL
-
+  
 Scenario: Make GET /Patient request from app that does not have pdsquery:PatientRetrieve interaction
   * def nhsNumber = '9693632109'
   * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {clientID: karate.get('interactionFreeClientID'), clientSecret:karate.get('interactionFreeClientSecret')}).accessToken
@@ -24,3 +24,19 @@ Scenario: Make GET /Coverage request from app that does not have pdsquery:Covera
   * method get
   * status 401
   * match response.issue[0].details.coding[0].display == "Access Denied - Unauthorised"
+
+Scenario: Make POST /Coverage request from app that does not have CoverageSelfUpdate interaction
+  * def p9number = '9733162922'
+  * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {clientID: karate.get('interactionFreeClientID'), clientSecret:karate.get('interactionFreeClientSecret'),userID: p9number, scope: 'nhs-login'}).accessToken
+  * def requestHeaders = call read('classpath:auth/auth-headers.js')
+  * configure headers = requestHeaders
+  * header Content-Type = "application/json"
+  # hardcoded scn number as it's not possible to get the scn number from interaction free app
+  * header If-Match = 'W/"1979"'
+  * def utils = call read('classpath:helpers/utils.feature')
+  * def periodEndDate = utils.randomDateWithInYears(4)
+  * path "Coverage"
+  * request read('classpath:patients/patientAccess/update-patient-request.json')
+  * method post
+  * status 401
+  * match response.issue[0].details.coding[0].display == "Access Denied - Unauthorised" 
