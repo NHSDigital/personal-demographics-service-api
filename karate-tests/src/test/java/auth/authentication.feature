@@ -16,6 +16,8 @@ Background:
     * def scope = karate.get('scope', null)
     * def javaUtils = Java.type('helpers.Utils')
     * def utils = call read('classpath:helpers/utils.feature')
+    * def clientID = karate.get('clientID')
+    * def clientSecret = karate.get('clientSecret')
 
 @mock
 Scenario: Mock authentication

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<AssignMessage name="AssignMessage.Errors.MissingRequestId">
+<AssignMessage name="AssignMessage.Errors.UnsupportedRequest">
     <AssignVariable>
         <Name>pds.error.code</Name>
         <Value>value</Value>
     </AssignVariable>
     <AssignVariable>
         <Name>pds.error.coding.code</Name>
-        <Value>MISSING_VALUE</Value>
+        <Value>UNSUPPORTED_REQUEST</Value>
     </AssignVariable>
     <AssignVariable>
         <Name>pds.error.coding.display</Name>
-        <Value>Required value is missing</Value>
+        <Value>The request is not one that is supported.</Value>
     </AssignVariable>
     <AssignVariable>
         <Name>pds.error.diagnostics</Name>
-        <Template>Missing value in header 'X-Request-ID'</Template>
+        <Template>Unsupported path - '{proxy.pathsuffix}'</Template>
     </AssignVariable>
     <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
 </AssignMessage>
