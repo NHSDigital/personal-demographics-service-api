@@ -25,7 +25,7 @@
     "beneficiary" : {
       "identifier" : {
         "system":"https://fhir.nhs.uk/Id/nhs-number",
-        "value": "9733162868"
+        "value": "#(nhsNumber)"
       }
     },
     "period" : {
