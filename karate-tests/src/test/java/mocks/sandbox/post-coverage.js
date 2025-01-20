@@ -4,13 +4,7 @@
 /* functions defined in supporting-functions.js */
 /* global basicResponseHeaders */
 
-/*
- * Generating valid NHS numbers on the fly isn't so easy, so we just have an array of valid numbers
- * to pick from when we need to create a new patient. When the array is exhausted, the mock server
- * should reset itself to its initial state, removing all creates and updates.
- */
-
-const PATIENT_WITH_COVERAGE = context.read('classpath:mocks/stubs/coverageResponses/patient_with_coverage_9733162868.json')
+const PATIENT_WITH_COVERAGE = context.read('classpath:mocks/stubs/coverageResponses/patient_with_coverage_9733162892.json')
 
 function postPatientRequestIsValid (request) {
   const diagnosticsMap = {
@@ -63,30 +57,32 @@ function postPatientRequestIsValid (request) {
   return true
 }
 
-function initializePatientData (request) {
+function initializePatientCoverageData (request) {
   const patient = JSON.parse(JSON.stringify(PATIENT_WITH_COVERAGE))
 
-  // set a new NHS number for the patient
+  // set coverage details for the patient
 
   patient.entry[0].resource.beneficiary.identifier.value = request.body.beneficiary.identifier.value
-  patient.entry[0].resource.identifier.assigner.display = request.body.beneficiary.identifier[0].value
-
-  // set all other values
-
+  patient.entry[0].resource.identifier[0].assigner.display = request.body.identifier[0].assigner.display
+  patient.entry[0].resource.identifier[0].assigner.identifier.value = request.body.identifier[0].assigner.identifier.value
+  patient.entry[0].resource.identifier[0].value = request.body.identifier[0].value
+  patient.entry[0].resource.payor[0].identifier.value = request.body.payor[0].identifier.value
+  patient.entry[0].resource.period.end = request.body.period.end
+  patient.entry[0].resource.subscriberId = request.body.subscriberId
   return patient
 }
 
 function handlePatientCoverageRequest (request) {
   response.headers = basicResponseHeaders(request)
-  response.contentType = 'application/fhir+json'
+  response.contentType = 'application/json'
   if (postPatientRequestIsValid(request)) {
-    const patient = initializePatientData(request)
+    const patient = initializePatientCoverageData(request)
     response.body = patient
     response.status = 201
   }
 }
 
-// Check if the incoming request is a POST to the /Patient endpoint and handle accordingly
+// Check if the incoming request is a POST to the /Coverage endpoint and handle accordingly
 if (request.pathMatches('/Coverage') && request.post) {
   handlePatientCoverageRequest(request)
 }
