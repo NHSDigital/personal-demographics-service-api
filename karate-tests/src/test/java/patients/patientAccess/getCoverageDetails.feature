@@ -68,7 +68,7 @@ Feature: Patient Access (Retrieve Coverage details)
     * match response.entry[0].resource !contains { subscriberId: '#notnull' }
 
   Scenario: Patient has no coverage details when Ehic details are hidden
-    * def P9number = '9733162930'
+    * def P9number = '9733162906'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: P9number, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
