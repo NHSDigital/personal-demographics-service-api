@@ -69,6 +69,7 @@ function initializePatientCoverageData (request) {
   patient.entry[0].resource.payor[0].identifier.value = request.body.payor[0].identifier.value
   patient.entry[0].resource.period.end = request.body.period.end
   patient.entry[0].resource.subscriberId = request.body.subscriberId
+  patient.meta.versionId = (parseInt(patient.meta.versionId) + 1).toString()
   return patient
 }
 

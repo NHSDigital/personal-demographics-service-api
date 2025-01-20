@@ -3,7 +3,7 @@ Feature: Check PDS FHIR requests are rejected as "unauthorized" for interaction 
 
 Background:
   * url baseURL
-  
+
 Scenario: Make GET /Patient request from app that does not have pdsquery:PatientRetrieve interaction
   * def nhsNumber = '9693632109'
   * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {clientID: karate.get('interactionFreeClientID'), clientSecret:karate.get('interactionFreeClientSecret')}).accessToken

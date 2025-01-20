@@ -1,7 +1,7 @@
 {
     "entry": [
         {
-            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Coverage?beneficiary:identifier=9733162892",
+            "fullUrl": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Coverage?beneficiary:identifier=9733162892",
             "resource": {
                 "beneficiary": {
                     "identifier": {
