@@ -74,7 +74,7 @@ post:
     parameters:
       - $ref: '#/components/parameters/IfMatch'
     responses:
-      '200':
+      '201':
         description: |
           A completed update to coverage. This will contain the Coverage resource just posted in the Bundle.
 
@@ -90,7 +90,25 @@ post:
 
             | HTTP status | Error code                 | Description                                                                                                                                |
             | ----------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+            | 400         | INVALID_SEARCH_DATA	       | Invalid combination of search parameters. For details, see the `diagnostics` field.
+            | 400         | MISSING_VALUE              | Missing header or value in the body. For details, see the `diagnostics` field.
+            | 400         | INVALID_VALUE              | Invalid header or value in the body. For details, see the `diagnostics` field.
+            | 400         | INVALID_RESOURCE_ID        | Invalid NHS number.
+            | 400         | VALIDATION_ERROR           | This is the "default" error thrown when no others are applicable.
+            | 401         | ACCESS_DENIED     	       | Access token missing, invalid or expired, or calling application not configured for this operation.
+            | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS number.
+            | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period.
+            | 409         | RESOURCE_VERSION_MISMATCH  | The resource version in the If-Match header of the update request did not match the current version of the resource.
+            | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits).
 
+        '503':
+          description: |
+            The request timed out during processing. This does not imply the request has failed or been rejected. Error code: `SERVICE_UNAVAILABLE`.
+
+            Re-send the request after the time specified in the `Retry-After` header using the same `X-Request-ID` value.
+          headers:
+            RetryAfter:
+              $ref: '#/components/headers/RetryAfter'
         headers:
           X-Correlation-Id:
             $ref: '#/components/headers/X-Correlation-Id'
