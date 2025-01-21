@@ -2,7 +2,7 @@
     "resourceType" : "Coverage",
     "identifier" : [
       {
-        "value" : "DE123456789012 1234",
+        "value" : "DE1234567890121234",
         "assigner": {
           "identifier": {
             "system":"urn:iso:std:iso:3166",
