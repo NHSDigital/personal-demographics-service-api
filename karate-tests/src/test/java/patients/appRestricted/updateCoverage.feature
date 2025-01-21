@@ -1,5 +1,5 @@
 @no-oas
-Feature:  Update Coverage details-not permitted for application-restricted users
+Feature:  Update Coverage details - not permitted for application-restricted users
 
   Background:
     * def utils = karate.callSingle('classpath:helpers/utils.feature')
