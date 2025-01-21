@@ -9,7 +9,7 @@ Feature: Patient Access (Update Coverage details)
     
     * configure url = baseURL
 
-  @sandbox
+   @sandbox
    Scenario: Happy path - update patient coverage details
     * def nhsNumber = '9733162892'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
