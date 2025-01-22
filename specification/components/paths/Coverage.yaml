@@ -5,6 +5,16 @@ parameters:
   - $ref: '#/components/parameters/CorrelationID'
   - $ref: '#/components/parameters/NHSD-End-User-Organisation-ODS'
 get:
+    summary: Get a patient's EHIC details
+    operationId: get-coverage
+    description: |
+      ## Overview
+      Use this endpoint to get a patient's EHIC details. Use the patient's NHS number as the identifier for the Coverage resource.
+        
+      ## Superseded patients
+      Some patients are marked as superseded. This means that the original patient details are no longer valid and have been replaced with different details.
+
+      When attempting to retrieve the EHIC details using an NHS number of a superseded record, the EHIC details of the retained record will be returned. This can be observed by comparing the value with which the query was made and the value returned in the response body.
     parameters:
       BeneficiaryIdentifier:
         name: beneficiary:identifier
@@ -31,6 +41,10 @@ get:
             $ref: '#/components/headers/X-Correlation-Id'
           X-Request-Id:
             $ref: '#/components/headers/X-Request-Id'
+        content:
+          application/fhir+json:
+            schema:
+              $ref: 'components/schemas/CoverageSearch.yaml'
 
       '4XX':
         description: |
@@ -71,8 +85,21 @@ get:
                         display: Cannot GET resource with user-restricted access token
                   diagnostics: "Your app has insufficient permissions to use this operation. Please contact support."
 post:
+    summary: Add or update a patient's EHIC details
+    operationId: post-coverage
+    description: |
+      ## Overview
+      Use this endpoint to add or update a patient's EHIC details.
+
+      There can only be at most one set of EHIC details present on a record. If updating a record with one already present, the request will replace the current resource.
     parameters:
       - $ref: '#/components/parameters/IfMatch'
+    requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "components/schemas/Coverage.yaml"
     responses:
       '2XX':
         description: |
@@ -87,6 +114,10 @@ post:
             $ref: '#/components/headers/X-Correlation-Id'
           X-Request-Id:
             $ref: '#/components/headers/X-Request-Id'
+        content:
+          application/fhir+json:
+            schema:
+              $ref: 'components/schemas/CoverageSearch.yaml'
 
       '4XX':
         description: |

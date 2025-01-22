@@ -1,0 +1,116 @@
+description: Insurance or medical plan or a payment agreement
+type: object
+required:
+  - status
+  - beneficiary
+  - payor
+  - subscriberId
+  - identifier
+  - period
+properties:
+  status:
+    description: The status of the resource instance.
+    type: string
+    enum:
+      - active
+    example: active
+  subscriberId:
+    description: ID assigned to the subscriber
+    type: string
+    minLength: 1
+    maxLength: 25
+    pattern: ^[a-zA-Z0-9]{1,25}$
+  identifier:
+    description: The primary identifier of the insurer
+    type: array
+    minItems: 1
+    maxItems: 1
+    items:
+      type: object
+      required:
+        - value
+        - assigner
+      properties:
+        value:
+          type: string
+          minLength: 1
+          maxLength: 25
+          pattern: ^[a-zA-Z0-9]{1,25}$
+        assigner:
+          $ref: CountryCode.json
+  payor:
+    description: Issuer of the policy
+    type: array
+    minItems: 1
+    maxItems: 1
+    items:
+      type: object
+      required:
+        - identifier
+      properties:
+        identifier:
+          description: Identification number of the institution
+          type: object
+          properties:
+            value:
+              description: The value that is unique
+              type: string
+              minLength: 1
+              maxLength: 30
+              pattern: ^[a-zA-Z0-9]{1,30}$
+  beneficiary:
+    description: The patient that is the beneficiary of the coverage.
+    type: object
+    properties:
+      identifier:
+        type: object
+        properties:
+          system:
+            type: string
+            description: URL for the Patient retrieval API.
+            format: url
+            default: https://fhir.nhs.uk/Id/nhs-number
+            enum:
+              - https://fhir.nhs.uk/Id/nhs-number
+          value:
+            type: string
+            description: NHS number for the beneficiary of the coverage.
+            example: 90000000009
+            pattern: ^\d{10}$
+  period:
+    description: Time period when coverage is valid
+    type: object
+    required:
+      - end
+    properties:
+      end:
+        description: End date of time period, if known, in format `yyyy-mm-dd`. Must be less than 150 years in the past. Must be less than 150 years in the future.
+        type: string
+        format: date
+        example: 2026-12-31
+  type:
+    type: object
+    description: The type of coverage this Coverage resource defines.
+    properties:
+      coding:
+        type: array
+        minItems: 1
+        maxItems: 1
+        items:
+          type: object
+          required:
+            - system
+            - code
+          properties:
+            system:
+              type: string
+              enum:
+                - http://terminology.hl7.eu/CodeSystem/v3-ActCode
+            code:
+              type: string
+              enum:
+                - EHIC
+            display:
+              type: string
+              enum:
+                - European Health Insurance Card
