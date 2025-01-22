@@ -8,7 +8,6 @@ install-python:
 install-node:
 	npm install
 	npm install nvm
-	cd sandbox && npm install
 
 install-hooks:
 	cp scripts/pre-commit .git/hooks/pre-commit
@@ -91,8 +90,11 @@ release: clean publish build-proxy
 
 	cp pyproject.toml dist/pyproject.toml
 
-test-sandbox: 
-	export APIGEE_ENVIRONMENT=node && poetry run pytest -v tests/sandbox/test_sandbox.py
+test-local-sandbox:
+	cd karate-tests && mvn clean test -Dtest=TestLocalMockParallel
+
+test-sandbox:
+	cd karate-tests && mvn clean test -Dtest=TestMockParallel
 
 test-karate-sandbox: 
 	export APIGEE_ENVIRONMENT=karate && poetry run pytest -v tests/sandbox/test_sandbox.py

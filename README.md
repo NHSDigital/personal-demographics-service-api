@@ -141,16 +141,15 @@ Run the install command if not ran already
 make install
 ```
 
-Then start the sandbox locally
+To run the tests against a local version of the sandbox, use:
 ```bash
-make sandbox
+make test-local-sandbox
 ```
 
-To run local tests, use:
+To run the tests against the production sandbox, us:
 ```bash
 make test-sandbox
 ```
-If a lot of the tests fail and the sandbox crashes with the error `Cannot read properties of null (reading 'statusCode')`, you may not be using the correct version of node. Check the version being used by that instance of the terminal and run re-run '`nvm use lts/iron`' if required.
 
 #### Jest
 
