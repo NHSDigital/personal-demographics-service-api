@@ -110,7 +110,6 @@ post:
             | 403	        | FORBIDDEN_UPDATE	         | The user is not permitted to update certain resources or elements, for example most users are not allowed to update the date of death once it has been set. A detailed description will be added to the display. For example - updating a sensitive patient or adding a formal death notification is only permitted from certain systems.
             | 403	        | ACCESS_DENIED	             | Patient cannot perform this action.
             | 412	        | PRECONDITION_FAILED	       | Problem with request, for example missing If-Match header. For details, see the diagnostics field.
-
         headers:
           X-Correlation-Id:
             $ref: '#/components/headers/X-Correlation-Id'
