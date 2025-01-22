@@ -8,13 +8,16 @@
     "lint-oas": "node_modules/.bin/redocly lint specification/personal-demographics.yaml  --skip-rule openapi-tags --skip-rule operation-tags --skip-rule default-and-example-are-redundant --skip-rule no-unused-components --skip-rule no-invalid-media-type-examples --skip-rule info-license --skip-rule security-defined",
     "publish": "mkdir -p build && node_modules/.bin/redocly bundle --dereferenced specification/personal-demographics.yaml | poetry run python scripts/yaml2json.py | poetry run python scripts/set_version.py > build/personal-demographics.json",
     "serve": "node_modules/.bin/redocly preview-docs build/personal-demographics.json",
-    "check-licenses": "node_modules/.bin/license-checker --failOn GPL --failOn AGPL"
+    "check-licenses": "node_modules/.bin/license-checker --failOn GPL --failOn AGPL",
+    "jest": "node_modules/.bin/jest"
   },
   "author": "NHS Digital",
   "license": "MIT",
   "homepage": "https://github.com/NHSDigital/personal-demographics-service-api",
   "dependencies": {
     "@redocly/cli": "^1.10.6",
+    "jest-cli": "^29.7.0",
+    "jest-when": "^3.7.0",
     "nvm": "0.0.4",
     "swagger-cli": "^4.0.4"
   },
@@ -27,5 +30,6 @@
     "eslint-plugin-promise": "^6.1.1",
     "license-checker": "^25.0.1",
     "puppeteer": "^5.3.1"
-  }
+  },
+  "type": "module"
 }

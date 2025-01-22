@@ -152,6 +152,13 @@ make test-sandbox
 ```
 If a lot of the tests fail and the sandbox crashes with the error `Cannot read properties of null (reading 'statusCode')`, you may not be using the correct version of node. Check the version being used by that instance of the terminal and run re-run '`nvm use lts/iron`' if required.
 
+#### Jest
+
+A short javascript file, RestrictRequests.js, handles restricting patient-access requests. Jest is use to unit test this file. To run these tests locally,
+```
+npm run jest
+```
+
 
 ### VS Code Plugins
 

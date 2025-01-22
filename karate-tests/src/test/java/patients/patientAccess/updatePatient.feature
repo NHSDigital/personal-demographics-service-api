@@ -85,6 +85,7 @@ Feature: Patient updates their details
 
 
   Scenario: Send empty field on the update - communication Language code
+    * def p9number = '9733162930'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders

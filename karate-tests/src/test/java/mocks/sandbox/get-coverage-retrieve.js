@@ -33,6 +33,9 @@ if (request.pathMatches('/Coverage') && request.get) {
     } else if (nhsNumber === '9733162876') {
       const NO_COVERAGE_9733162876 = context.read('classpath:mocks/stubs/coverageResponses/patient_without_coverage.json')
       buildResponse(request, NO_COVERAGE_9733162876)
+    } else if (nhsNumber === '9733162892') {
+      const COVERAGE_9733162892 = context.read('classpath:mocks/stubs/coverageResponses/patient_with_coverage_9733162892.json')
+      buildResponse(request, COVERAGE_9733162892)
     }
   }
 }
