@@ -1,0 +1,133 @@
+parameters:
+  - $ref: '#/components/parameters/BearerAuthorization'
+  - $ref: '#/components/parameters/RoleId'
+  - $ref: '#/components/parameters/RequestID'
+  - $ref: '#/components/parameters/CorrelationID'
+  - $ref: '#/components/parameters/NHSD-End-User-Organisation-ODS'
+get:
+    parameters:
+      BeneficiaryIdentifier:
+        name: beneficiary:identifier
+        description: |
+          The NHS number that identifies the holder/beneficiary of the coverage.
+        examples:
+          ehic_holder:
+            value: 9733162868
+            summary: Returns a bundle that contains a Coverage resource for the patient with NHS number 9733162868.
+          no_ehic:
+            value: 9733162876
+            summary: Returns an empty bundle, alongside a meta object that can be used to apply an update to the patient's coverage.
+        in: query
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: |
+          A completed search for coverage. This will contain zero or one Coverage resources in the Bundle.
+
+        headers:
+          X-Correlation-Id:
+            $ref: '#/components/headers/X-Correlation-Id'
+          X-Request-Id:
+            $ref: '#/components/headers/X-Request-Id'
+
+      '4XX':
+        description: |
+            An error occurred as follows:
+
+            | HTTP status | Error code                 | Description                                                                                                                                |
+            | ----------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+            | 400         | INVALID_SEARCH_DATA	       | Invalid combination of search parameters. For details, see the `diagnostics` field.
+            | 400         | MISSING_VALUE              | Missing header or query parameter. For details, see the `diagnostics` field.
+            | 400         | INVALID_VALUE              | Invalid header or query parameter. For details, see the `diagnostics` field.
+            | 401         | ACCESS_DENIED     	       | Access token missing, invalid or expired, or calling application not configured for this operation.
+            | 403         | ACCESS_DENIED     	       | User cannot perform this operation.
+            | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS number.
+            | 404         | INVALIDATED_RESOURCE       | Patient did exist for given NHS number, but has been invalidated and not superseded by another NHS number.
+            | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period.
+            | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits).
+
+        headers:
+          X-Correlation-Id:
+            $ref: '#/components/headers/X-Correlation-Id'
+          X-Request-Id:
+            $ref: '#/components/headers/X-Request-Id'
+
+        content:
+          application/fhir+json:
+            schema:
+              $ref: '#/components/schemas/OperationOutcome'
+            example:
+              resourceType: OperationOutcome
+              issue:
+                - severity: error
+                  code: forbidden
+                  details:
+                    coding:
+                      - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                        version: '1'
+                        code: ACCESS_DENIED
+                        display: Cannot GET resource with user-restricted access token
+                  diagnostics: "Your app has insufficient permissions to use this operation. Please contact support."
+post:
+    parameters:
+      - $ref: '#/components/parameters/IfMatch'
+    responses:
+      '201':
+        description: |
+          A completed update to coverage. This will contain the Coverage resource just posted in the Bundle.
+
+        headers:
+          X-Correlation-Id:
+            $ref: '#/components/headers/X-Correlation-Id'
+          X-Request-Id:
+            $ref: '#/components/headers/X-Request-Id'
+
+      '4XX':
+        description: |
+            An error occurred as follows:
+
+            | HTTP status | Error code                 | Description                                                                                                                                |
+            | ----------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+            | 400         | INVALID_SEARCH_DATA	       | Invalid combination of search parameters. For details, see the `diagnostics` field.
+            | 400         | MISSING_VALUE              | Missing header or value in the body. For details, see the `diagnostics` field.
+            | 400         | INVALID_VALUE              | Invalid header or value in the body. For details, see the `diagnostics` field.
+            | 400         | INVALID_RESOURCE_ID        | Invalid NHS number.
+            | 400         | VALIDATION_ERROR           | This is the "default" error thrown when no others are applicable.
+            | 401         | ACCESS_DENIED     	       | Access token missing, invalid or expired, or calling application not configured for this operation.
+            | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS number.
+            | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period.
+            | 409         | RESOURCE_VERSION_MISMATCH  | The resource version in the If-Match header of the update request did not match the current version of the resource.
+            | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits).
+
+        '503':
+          description: |
+            The request timed out during processing. This does not imply the request has failed or been rejected. Error code: `SERVICE_UNAVAILABLE`.
+
+            Re-send the request after the time specified in the `Retry-After` header using the same `X-Request-ID` value.
+          headers:
+            RetryAfter:
+              $ref: '#/components/headers/RetryAfter'
+        headers:
+          X-Correlation-Id:
+            $ref: '#/components/headers/X-Correlation-Id'
+          X-Request-Id:
+            $ref: '#/components/headers/X-Request-Id'
+
+        content:
+          application/fhir+json:
+            schema:
+              $ref: '#/components/schemas/OperationOutcome'
+            example:
+              resourceType: OperationOutcome
+              issue:
+                - severity: error
+                  code: forbidden
+                  details:
+                    coding:
+                      - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                        version: '1'
+                        code: ACCESS_DENIED
+                        display: Cannot POST resource with user-restricted access token
+                  diagnostics: "Your app has insufficient permissions to use this operation. Please contact support."

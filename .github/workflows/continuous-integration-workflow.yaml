@@ -12,10 +12,10 @@ jobs:
         with:
           fetch-depth: 0  # This causes all history to be fetched, which is required for calculate-version to function
 
-      - name: Install Python 3.8
+      - name: Install Python 3.9
         uses: actions/setup-python@v1
         with:
-          python-version: 3.8
+          python-version: 3.9
 
       - name: Update apt repositories
         run: sudo apt update
@@ -57,6 +57,9 @@ jobs:
 
       - name: Lint
         run: make lint
+
+      - name: Run Jest
+        run: npm run jest
 
       - name: Check resources are valid FHIR 4.0.1
         run: make validate

@@ -13,6 +13,8 @@ steps:
      config_ids:
       - /ptl/azure-devops/env-internal-dev/test-app/internal-testing-internal-dev/CLIENT_ID
       - /ptl/azure-devops/env-internal-dev/test-app/internal-testing-internal-dev/CLIENT_SECRET
+      - /ptl/azure-devops/env-internal-dev/test-app/internal-testing-internal-dev/INTERACTION_FREE_CLIENT_ID
+      - /ptl/azure-devops/env-internal-dev/test-app/internal-testing-internal-dev/INTERACTION_FREE_CLIENT_SECRET
       - /ptl/azure-devops/personal-demographics/TEST_PATIENT_ID
       - /ptl/azure-devops/personal-demographics/INTERNAL_SERVER_BASE_URI
       - /ptl/azure-devops/personal-demographics/AUTH_TOKEN_EXPIRY_MS
@@ -27,6 +29,8 @@ steps:
       echo '##vso[task.setvariable variable=PDS_BASE_PATH]$(SERVICE_BASE_PATH)'
       echo '##vso[task.setvariable variable=CLIENT_ID]$(CLIENT_ID)'
       echo '##vso[task.setvariable variable=CLIENT_SECRET]$(CLIENT_SECRET)'
+      echo '##vso[task.setvariable variable=INTERACTION_FREE_CLIENT_ID]$(INTERACTION_FREE_CLIENT_ID)'
+      echo '##vso[task.setvariable variable=INTERACTION_FREE_CLIENT_SECRET]$(INTERACTION_FREE_CLIENT_SECRET)'
       echo '##vso[task.setvariable variable=KEY_ID]test-1'
       echo '##vso[task.setvariable variable=TEST_PATIENT_ID]$(TEST_PATIENT_ID)'
       echo '##vso[task.setvariable variable=APPLICATION_RESTRICTED_SIGNING_KEY_PATH]$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)'
