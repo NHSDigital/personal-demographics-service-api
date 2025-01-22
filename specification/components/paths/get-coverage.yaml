@@ -74,9 +74,13 @@ post:
     parameters:
       - $ref: '#/components/parameters/IfMatch'
     responses:
-      '200':
+      '2XX':
         description: |
           A completed update to coverage. This will contain the Coverage resource just posted in the Bundle.
+            | HTTP status | Error code                 | Description                                                                                                                                |
+            | ----------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+            | 200         |                            | Coverage successfully updated
+            | 201         |                            | Coverage successfully added
 
         headers:
           X-Correlation-Id:
@@ -90,7 +94,6 @@ post:
 
             | HTTP status | Error code                 | Description                                                                                                                                |
             | ----------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-            | 201         |                            | Coverage successfully added
             | 400         | MISSING_VALUE              | Missing header or value in the body. For details, see the `diagnostics` field.
             | 400         | INVALID_VALUE              | Invalid header or value in the body. For details, see the `diagnostics` field.
             | 400         | INVALID_UPDATE             | Malformed request body or client error after the update was accepted and patient was not updated.
