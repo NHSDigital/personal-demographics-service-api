@@ -9,7 +9,7 @@ function fn() {
     // https://github.com/karatelabs/karate#report-verbosity
     var LM = Java.type('demo.headers.DemoLogModifier');
     karate.configure('logModifier', new LM());
-  } else if (env == 'sandbox') { // TODO: Ensure steps for running sandbox locally are correct.
+  } else if (env == 'sandbox') {
     var config = {
       oauth2MockURL: `${java.lang.System.getenv('OAUTH_BASE_URI')}/${java.lang.System.getenv('OAUTH_PROXY')}`,
       pdsBasePath: `${java.lang.System.getenv('PDS_BASE_PATH')}`,
@@ -22,7 +22,7 @@ function fn() {
       clientID: java.lang.System.getenv('CLIENT_ID'),
       internalServerURL: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4'
     };
-  } else if (env == 'local-sandbox') { // TODO: Ensure steps for running sandbox locally are correct.
+  } else if (env == 'local-sandbox') {
     var port = karate.properties['mockserver.port'] || '8080';      
     var config = {
       oauth2MockURL: `http://localhost:${port}`,
