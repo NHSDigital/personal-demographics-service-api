@@ -19,7 +19,6 @@ function fn() {
       signingKey: java.lang.System.getenv('APPLICATION_RESTRICTED_SIGNING_KEY_PATH'),
       apiKey: java.lang.System.getenv('APPLICATION_RESTRICTED_API_KEY'),
       keyID: java.lang.System.getenv('KEY_ID'),
-      clientID: java.lang.System.getenv('CLIENT_ID'),
       internalServerURL: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4'
     };
   } else if (env == 'local-sandbox') {
