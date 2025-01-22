@@ -7,7 +7,7 @@ This is a RESTful HL7® FHIR® API for the *Personal Demographics Service*.
 It includes:
 * `karate-tests/` - our functional e2e API tests implemented using the Karate framework. [There is a separate readme for these tests at the moment](karate-tests/README.md)
 * `specification/` - an [Open API Specification](https://swagger.io/docs/specification/about/) describing the endpoints, methods and messages exchanged by the API. Use it to generate interactive documentation; the contract between the API and its consumers.
-* `sandbox/` - a NodeJS application that implements a mock implementation of the service. Use it as a back-end service to the interactive documentation to illustrate interactions and concepts. It is not intended to provide an exhaustive/faithful environment suitable for full development and testing.
+* `sandbox/` - a Karate API mock application. Use it as a back-end service to the interactive documentation to illustrate interactions and concepts. It is not intended to provide an exhaustive/faithful environment suitable for full development and testing.
 * `scripts/` - utilities helpful to developers of this specification.
 * `apiproxy/` - the API proxy, which is deployed to our API platform hosted on Google Apigee Edge
 
