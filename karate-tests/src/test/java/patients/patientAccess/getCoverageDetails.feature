@@ -16,12 +16,12 @@ Feature: Patient Access (Retrieve Coverage details)
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = p9number
+    * param subscriber:identifier = p9number
     * method get
     * status 200
     * match response == coverageBundle
     * match response.entry[0].resource.status == 'active'
-    * match response.entry[0].resource.beneficiary.identifier.value == p9number
+    * match response.entry[0].resource.subscriber.identifier.value == p9number
     * match response.entry[0].resource.identifier[0].assigner contains { display: '#notnull'}
 
   @sandbox
@@ -31,7 +31,7 @@ Feature: Patient Access (Retrieve Coverage details)
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = P9WithNoCoverage
+    * param subscriber:identifier = P9WithNoCoverage
     * method get
     * status 200
     * match response.entry[0] == '#notpresent'
@@ -47,12 +47,12 @@ Feature: Patient Access (Retrieve Coverage details)
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = mergedP9number
+    * param subscriber:identifier = mergedP9number
     * method get
     * status 200
     * match response == coverageBundle
     * match response.entry[0].resource.status == 'active'
-    * match response.entry[0].resource.beneficiary.identifier.value == retainedRecord
+    * match response.entry[0].resource.subscriber.identifier.value == retainedRecord
     * match response.entry[0].resource.identifier[0].value == ehicCardNo 
 
   Scenario: Retrieve patient coverage details where personalIdentification number is not available
@@ -61,7 +61,7 @@ Feature: Patient Access (Retrieve Coverage details)
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = personal_id_p9
+    * param subscriber:identifier = personal_id_p9
     * method get
     * status 200
     * match response.entry[0].resource.status == 'active'
@@ -73,7 +73,7 @@ Feature: Patient Access (Retrieve Coverage details)
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = P9number
+    * param subscriber:identifier = P9number
     * method get
     * status 200
     * match response.entry[0] == '#notpresent'

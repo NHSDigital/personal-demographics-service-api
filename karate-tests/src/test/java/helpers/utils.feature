@@ -194,7 +194,7 @@ Scenario:
     * def isValidPatientCoverageURL = 
     """
     function(url) {
-      const baseURL = karate.get('internalServerURL') + "/Coverage?beneficiary:identifier="
+      const baseURL = karate.get('internalServerURL') + "/Coverage?subscriber:identifier="
       if (!url.startsWith(baseURL)) return false
       const nhsNumber = url.split('=')[url.split('=').length -1]
       const isValidNHSNumber = karate.call('classpath:helpers/nhs-number-validator.js', nhsNumber)
