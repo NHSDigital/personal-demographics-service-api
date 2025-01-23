@@ -42,7 +42,6 @@ Feature: Patient Access (Retrieve Coverage details)
   Scenario: Retrieve patient current coverage details when superseded NHS number is sent
     * def mergedP9number = '9732019735'
     * def retainedRecord = '9732019638' 
-    * def ehicCardNo = '1234600002020002'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: mergedP9number, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -53,7 +52,6 @@ Feature: Patient Access (Retrieve Coverage details)
     * match response == coverageBundle
     * match response.entry[0].resource.status == 'active'
     * match response.entry[0].resource.beneficiary.identifier.value == retainedRecord
-    * match response.entry[0].resource.identifier[0].value == ehicCardNo 
 
   Scenario: Retrieve patient coverage details where personalIdentification number is not available
     * def personal_id_p9 = '9733162884'

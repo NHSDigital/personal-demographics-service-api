@@ -1,0 +1,41 @@
+{
+    "resourceType" : "Coverage",
+    "identifier" : [
+      {
+        "assigner": {
+          "identifier": {
+            "system":"urn:iso:std:iso:3166",
+            "value":"FRA"
+          },
+          "display" : "France"
+        }
+      }
+    ],
+    "status" : "active",
+    "type" : {
+      "coding" : [
+        {
+          "system" : "http://terminology.hl7.eu/CodeSystem/v3-ActCode",
+          "code" : "EHIC",
+          "display" : "European Health Insurance Card"
+        }
+      ]
+    },
+    "beneficiary" : {
+      "identifier" : {
+        "system":"https://fhir.nhs.uk/Id/nhs-number",
+        "value": "#(nhsNumber)"
+      }
+    },
+    "period" : {
+      "end" : "#(periodEndDate)"
+    },
+    "payor" : [
+      {
+        "identifier" : {
+          "value" :"FR78765"
+        }
+      }
+    ],
+    "subscriberId": "1029384756"
+  }
