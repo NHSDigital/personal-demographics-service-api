@@ -110,9 +110,8 @@ post:
             | 403	        | FORBIDDEN_UPDATE	         | The user is not permitted to update certain resources or elements, for example most users are not allowed to update the date of death once it has been set. A detailed description will be added to the display. For example - updating a sensitive patient or adding a formal death notification is only permitted from certain systems.
             | 403	        | ACCESS_DENIED	             | Patient cannot perform this action.
             | 412	        | PRECONDITION_FAILED	       | Problem with request, for example missing If-Match header. For details, see the diagnostics field.
+
         headers:
-          X-Correlation-Id:
-            $ref: '#/components/headers/X-Correlation-Id'
           X-Request-Id:
             $ref: '#/components/headers/X-Request-Id'
 
@@ -132,3 +131,29 @@ post:
                         code: ACCESS_DENIED
                         display: Cannot POST resource with user-restricted access token
                   diagnostics: "Your app has insufficient permissions to use this operation. Please contact support."
+
+      '503':
+        description: |
+            The request timed out during processing. This does not imply the request has failed or been rejected. Error code: `SERVICE_UNAVAILABLE`.
+            Re-send the request after the time specified in the `Retry-After` header using the same `X-Request-ID` value.
+        headers:
+          RetryAfter:
+             $ref: '#/components/headers/RetryAfter'
+          X-Request-Id:
+            $ref: '#/components/headers/X-Request-Id'
+
+        content:
+          application/fhir+json:
+            schema:
+              $ref: '#/components/schemas/OperationOutcome'
+            example:
+              resourceType: OperationOutcome
+              issue:
+                - severity: timeout
+                  details:
+                    coding:
+                      - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                        version: '1'
+                        code: SERVICE_UNAVAILABLE
+                        display: Service unavailable
+                  diagnostics: "The downstream domain processing has not completed within the configured timeout period. Using the same 'X-Request-ID' header, retry your request after the time specified by the 'Retry-After' response header."
