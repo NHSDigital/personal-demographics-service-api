@@ -16,7 +16,7 @@ Feature: Patient Access (Update Coverage details)
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = nhsNumber
+    * param subscriber:identifier = nhsNumber
     * method get
     * status 200
     * def originalVersion = parseInt(response.meta.versionId)

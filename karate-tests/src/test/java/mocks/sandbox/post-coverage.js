@@ -28,8 +28,8 @@ function postPatientRequestIsValid (request) {
       type: 'missing'
     },
     {
-      condition: !request.body?.subscriberId,
-      diagnostics: 'Missing value - \'subscriberId\'',
+      condition: !request.body?.subscriber,
+      diagnostics: 'Missing value - \'subscriber\'',
       type: 'missing'
     },
     {
@@ -68,7 +68,7 @@ function initializePatientCoverageData (request) {
   patient.entry[0].resource.identifier[0].value = request.body.identifier[0].value
   patient.entry[0].resource.payor[0].identifier.value = request.body.payor[0].identifier.value
   patient.entry[0].resource.period.end = request.body.period.end
-  patient.entry[0].resource.subscriberId = request.body.subscriberId
+  patient.entry[0].resource.subscriber.identifier.value = request.body.subscriber.identifier.value
   patient.meta.versionId = (parseInt(patient.meta.versionId) + 1).toString()
   return patient
 }
