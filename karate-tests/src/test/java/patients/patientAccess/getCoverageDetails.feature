@@ -64,8 +64,9 @@ Feature: Patient Access (Retrieve Coverage details)
     * param subscriber:identifier = personal_id_p9
     * method get
     * status 200
-    * match response.entry[0].resource.status == 'active'
-    * match response.entry[0].resource !contains { subscriberId: '#notnull' }
+    * match response.entry[0] == '#notpresent'
+    * match response.meta contains {versionId: '#notnull'}
+    * match karate.response.header('etag') != null
 
   Scenario: Patient has no coverage details when Ehic details are hidden
     * def P9number = '9733162906'
