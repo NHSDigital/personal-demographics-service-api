@@ -1,5 +1,5 @@
 
-    @no-oas
+@no-oas
 Feature: Patient Access (Update Coverage details) - error scenarios
 
   Background:
@@ -53,7 +53,8 @@ Feature: Patient Access (Update Coverage details) - error scenarios
            |                            | Missing Authorization header   |      
            | Bearer                     | Missing access token           |
            | Bearer abcdef123456789     | Invalid Access Token           |  
-           
+  
+  @sandbox
   Scenario Outline: x-request-id errors: update patient coverage details
     * def nhsNumber = '9733162868'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
@@ -93,8 +94,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
     * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
    
+  @sandbox
   Scenario: Incorrect resource version to update coverage 
-    * def nhsNumber = '9733162892'
+    * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9733162892'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -114,9 +116,10 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * method post
     * status 409
     * match response == read('classpath:mocks/stubs/errorResponses/RESOURCE_VERSION_MISMATCH.json') 
-    
+  
+  @sandbox   
   Scenario: Missing If-Match header to update coverage 
-    * def nhsNumber = '9733162892'
+    * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9733162892'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -130,8 +133,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def expectedBody = read('classpath:mocks/stubs/errorResponses/PRECONDITION_FAILED.json')
     * match response == expectedBody  
 
+  @sandbox
   Scenario: Missing personal id number in the request body
-    * def nhsNumber = '9733162892'
+    * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9733162892'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -153,8 +157,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def diagnostics = `Missing value - 'subscriberId'`
     * match response == read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')   
 
+  @sandbox  
   Scenario: Missing Identification number of the institution in the request body
-    * def nhsNumber = '9733162892'
+    * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9733162892'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -175,9 +180,10 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * status 400
     * def diagnostics = `Missing value - 'identifier/0/value'`
     * match response == read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')    
-   
+
+  @sandbox
   Scenario: Invalid period in the request body
-    * def nhsNumber = '9733162892'
+    * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9733162892'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
