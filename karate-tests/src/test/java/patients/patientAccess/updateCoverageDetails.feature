@@ -27,7 +27,7 @@ Feature: Patient Access (Update Coverage details)
     * header If-Match = originalEtag
     * def periodEndDate = utils.randomDateWithInYears(4)
     * path "Coverage"
-    * request read('classpath:patients/patientAccess/update-patient-coverage-request.json')
+    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
     * method post
     * status 201
     * match parseInt(response.meta.versionId) == originalVersion + 1
