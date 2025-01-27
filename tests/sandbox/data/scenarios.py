@@ -155,12 +155,9 @@ search_error = {
     "Unsupported Operation with Completely Invalid Params": {
         "query_params": {"foo": "bar"},
         "response": additional_properties},
-    # TODO: I don't think we are handling this scenario in the sandbox correctly. However,
-    # Given the same tests test hit other envs, that may mean further work than just adjusting 
-    # the canned sandbox response.
-    # "Unsupported Operation with Invalid Param and Family Birthdate": {
-    #     "query_params": {"family": "Smith","birthdate": "eq2010-10-22", "year": "2003"},
-    #     "response": not_enough_search_params},
+    "Unsupported Operation with Invalid Param and Family Birthdate": {
+        "query_params": {"family": "Smith","birthdate": "eq2010-10-22", "year": "2003"},
+        "response": {"issue":[{"code":"invariant","details":{"coding":[{"code":"ADDITIONAL_PROPERTIES","display":"Additional properties should not be included","system":"https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode","version":"1"}]},"diagnostics":"Invalid request with error - Additional properties are not allowed ('year' was unexpected)","severity":"error"}],"resourceType":"OperationOutcome"}},
     "Invalid Date Format Search": {
         "query_params": {"family": "Smith", "given": "jane", "gender": "female", "birthdate": "20101022"}, 
         "response":invalid_birthdate}
