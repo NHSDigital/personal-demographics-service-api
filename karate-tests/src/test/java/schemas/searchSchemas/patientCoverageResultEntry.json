@@ -4,7 +4,7 @@
         "beneficiary": {
             "identifier": {
                 "system": "#? utils.isValidURL(_)",
-                "value": "#string"
+                "value": "#regex([0-9a-zA-Z]{1,25})"
             }
         },
         "identifier": [
@@ -13,16 +13,16 @@
                     "display": "#string",
                     "identifier": {
                         "system": "#string",
-                        "value": "#string"
+                        "value": "#regex([A-Z]{3})"
                     }
                 },
-                "value": "#string"
+                "value": "#regex([0-9a-zA-Z]{1,25})"
             }
         ],
         "payor": [
             {
                 "identifier": {
-                    "value": "#string"
+                    "value": "#regex([0-9a-zA-Z]{1,30})"
                 }
             }
         ],
