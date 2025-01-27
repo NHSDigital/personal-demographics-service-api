@@ -24,7 +24,6 @@
     },
     "beneficiary" : {
       "identifier" : {
-        "system":"http://hl7.it/sid/codiceFiscale",
         "value": "1029384756"
       }
     },
