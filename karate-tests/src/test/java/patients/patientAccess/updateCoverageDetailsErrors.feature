@@ -77,23 +77,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
         |                            | Invalid request with error - X-Request-ID header must be supplied to access this resource   | MISSING_VALUE   |
         | 1234                       | Invalid value - '1234' in header 'X-Request-ID'                                             | INVALID_VALUE   |         
 
-  @ignore       
-  Scenario: Login nhs number doesn't match nhs number in the body
-    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
-    * def requestHeaders = call read('classpath:auth/auth-headers.js')
-    * configure headers = requestHeaders
-    * header Content-Type = "application/json"
-    * header If-Match = 'W/"4"'
-    * def periodEndDate = utils.randomDateWithInYears(4)
-    * def nhsNumber = '9732019913'
-    * path "Coverage"
-    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
-    * method post
-    * status 400
-    * def display = 'Patient cannot perform this action'
-    * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
-    * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
-   
   @sandbox
   Scenario: Incorrect resource version to update coverage 
     * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9733162892'
@@ -181,8 +164,7 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def diagnostics = `Missing value - 'identifier/0/value'`
     * match response == read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')    
 
-  @sandbox
-  Scenario: Invalid period in the request body
+  Scenario: Period end date must be less than 150 years in the past or in the future in the request body
     * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9733162892'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
@@ -197,7 +179,7 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * configure headers = requestHeaders
     * header Content-Type = "application/json"
     * header If-Match = originalEtag
-    * def periodEndDate = '2026-13-15'
+    * def periodEndDate = '1860-12-15'
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
     * method post
@@ -243,8 +225,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * status 404
     * match response == read('classpath:mocks/stubs/errorResponses/RESOURCE_NOT_FOUND.json')   
 
+  @testfix  
   Scenario: Send an update for superseded NHS number(authenticate and send update with superseded NHS number)
-    * def mergedP9number = '9732019735'
+    * def mergedP9number = '9732019840'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: mergedP9number, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -266,8 +249,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * status 403
     * def diagnostics = `Forbidden update with error - Update Failed - NHS No. supplied has been superseded in a merge`
     * def expectedResponse = read('classpath:mocks/stubs/errorResponses/FORBIDDEN_UPDATE.json')
+    * match response == expectedResponse
 
-  @ignore 
+  @testfix
   Scenario: Send an update for retained NHS number by authenticating with superseded NHS number
     * def mergedP9number = '9732019735'
     * def retainedRecord = '9732019638'
@@ -291,5 +275,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
     * method post
     * status 403
-    * def diagnostics = `Forbidden update with error - Update Failed - NHS No. supplied has been superseded in a merge`
-    * def expectedResponse = read('classpath:mocks/stubs/errorResponses/FORBIDDEN_UPDATE.json')  
+    * def display = 'Patient cannot perform this action'
+    * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
+    * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
