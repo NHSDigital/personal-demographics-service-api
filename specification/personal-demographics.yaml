@@ -14,6 +14,9 @@ info:
     * get patient details
     * update patient details
     * get a patient's related people
+    * get patient coverage
+    * update patient coverage
+
 
     You cannot currently use this API to:
     * create a new record for a birth - use [PDS HL7 V3 API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3)
@@ -37,6 +40,7 @@ info:
     * dispensing doctor pharmacy
     * medical appliance supplier pharmacy
     * related people, such as next of kin (read only)
+    * patient coverage data
     
     ### Patients included in PDS
     Regardless of nationality, or where they live now, PDS includes all patients who have ever been registered with a GP practice, or treated by a health or care organisation (even as a visitor or migrant) in England, Wales, the Isle of Man, or in a UK Defence Medical Services unit anywhere in the world. 
@@ -94,6 +98,8 @@ info:
     * get the patient’s own details 
     * update the patient’s own details (limited)
     * get the patient's related people
+    * get patient coverage (GP registrations only)
+    * update patient coverage (GP registrations only)
 
     This access mode is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis), meaning an end user must be present, authenticated and authorised. 
     

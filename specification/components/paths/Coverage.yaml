@@ -5,16 +5,19 @@ parameters:
   - $ref: '#/components/parameters/CorrelationID'
   - $ref: '#/components/parameters/NHSD-End-User-Organisation-ODS'
 get:
-    summary: Get a patient's EHIC details
+    summary: Get a patient's coverage
     operationId: get-coverage
     description: |
       ## Overview
-      Use this endpoint to get a patient's EHIC details. Use the patient's NHS number as the identifier for the Coverage resource.
+      Use this endpoint to get a patient's European Health Insurance Card (EHIC) details. Use the patient's NHS number as the identifier for coverage.
+
+      This endpoint only gives EHIC data in the coverage data field. A patient may have other financial coverage, like insurance, but this information will not be returned by PDS. 
         
       ## Superseded patients
       Some patients are marked as superseded. This means that the original patient details are no longer valid and have been replaced with different details.
 
-      When attempting to retrieve the EHIC details using an NHS number of a superseded record, the EHIC details of the retained record will be returned. This can be observed by comparing the value with which the query was made and the value returned in the response body.
+      When trying to get the EHIC details using an NHS number of a superseded record, PDS will return the EHIC details of the latest record. You can see this by comparing the value used in the query with the value returned in the response body.
+   
     parameters:
       BeneficiaryIdentifier:
         name: beneficiary:identifier
