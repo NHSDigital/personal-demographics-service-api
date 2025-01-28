@@ -20,8 +20,7 @@ You should be able to find most predefined scenarios through either the [publish
 
 To start the sandbox on your local machine, build and run the Dockerfile found in `sandbox`. As the application is created through Karate, the source code sits in an adjacent directory to `sandbox`, hence you need to run it from the top-level directory of the repository.
 ```
-docker build -t nhs/pds-sandbox -f sandbox/Dockerfile . 
-docker run --name karate-sandbox -p 9000:9000 nhs/pds-sandbox
+make sandbox
 ```
 Gotchas:
     * "Ubuntu WSL with Docker could not be found" If running in WSL2 ensure you have followed [these instructions](https://stackoverflow.com/questions/63497928/ubuntu-wsl-with-docker-could-not-be-found).
