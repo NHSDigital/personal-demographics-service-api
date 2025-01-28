@@ -101,7 +101,7 @@ The sandbox is a fake FHIR API with functionality that allows us to use it in a 
 
 ### Running the sandbox locally as a separate process
 
-If you want to run the sandbox locally to explore using Postman, for example, you can spin up an instance of the sandbox by using Java to run a Karate jarfile.
+If you want to run the sandbox locally to explore using Postman, for example, you can spin up an instance of the sandbox by running `make sandbox`.
 
 #### Option 1: Using Docker
 We have a Dockerfile set up for the sandbox. You can build the image from this Dockerfile.
