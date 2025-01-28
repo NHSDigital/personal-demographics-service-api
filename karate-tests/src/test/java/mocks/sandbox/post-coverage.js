@@ -114,7 +114,6 @@ function initializePatientCoverageData (request, patient) {
   // set coverage details for the patient
 
   patient.entry[0].resource.beneficiary.identifier.value = request.body.beneficiary.identifier.value
-  patient.entry[0].resource.identifier[0].assigner.display = request.body.identifier[0].assigner.display
   patient.entry[0].resource.identifier[0].assigner.identifier.value = request.body.identifier[0].assigner.identifier.value
   patient.entry[0].resource.identifier[0].value = request.body.identifier[0].value
   patient.entry[0].resource.payor[0].identifier.value = request.body.payor[0].identifier.value

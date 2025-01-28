@@ -8,16 +8,16 @@
 /* Functions defined in supporting-functions.js */
 /* global validateHeaders, validateNHSNumber, basicResponseHeaders,timestampBody */
 
-function buildResponseHeaders (request) {
+function buildResponseHeaders (request, patientCoverageDetails) {
   return {
     'content-type': 'application/fhir+json',
-    etag: 'W/"1"',
+    etag: `W/"${patientCoverageDetails.meta.versionId}"`,
     'x-request-id': request.header('x-request-id'),
     'x-correlation-id': request.header('x-correlation-id')
   }
 }
 function buildResponse (request, responseBody) {
-  response.headers = buildResponseHeaders(request)
+  response.headers = buildResponseHeaders(request, responseBody)
   response.body = timestampBody(responseBody)
   response.status = 200
 }

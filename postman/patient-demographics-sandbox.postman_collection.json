@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "bae42926-a5cd-42c5-964a-ad516a782849",
+		"_postman_id": "64c4c17a-e9c2-44fe-814c-592e445ce4df",
 		"name": "Patient Demographics Sandbox",
 		"description": "Sandbox example requests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -17,11 +17,24 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 400\", function () {\r",
-									"    pm.response.to.have.status(400);\r",
-									"});"
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});\r",
+									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -30,8 +43,7 @@
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -67,13 +79,37 @@
 				},
 				{
 					"name": "Basic search",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"pm.test(\"Searchset is returned\", function () {",
+									"  const jsonData = pm.response.json();",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");",
+									"  pm.expect(jsonData.total).to.equal(1);",
+									"",
+									"});",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {",
+									"  const jsonData = pm.response.json();",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -105,13 +141,37 @@
 				},
 				{
 					"name": "Basic search including phone",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -147,13 +207,37 @@
 				},
 				{
 					"name": "Basic search including email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -189,13 +273,37 @@
 				},
 				{
 					"name": "Basic search including email and phone",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -235,13 +343,33 @@
 				},
 				{
 					"name": "Basic search including email and phone negative match",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"An empty searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(0);\r",
+									"  pm.expect(jsonData).to.not.have.property(\"entry\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -281,17 +409,41 @@
 				},
 				{
 					"name": "Multi parameter search including phone",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/Patient?_fuzzy-match=false&_exact-match=false&history=true&_max-results=1&family=Smith&gender=female&birthdate=eq2010-10-22&given=Jane&death-date=eq2010-10-22&address-postcode=LS1 6AE&general-practitioner=Y12345&phone=01632960587",
+							"raw": "{{base_url}}/Patient?_fuzzy-match=false&_exact-match=false&_max-results=1&family=Smith&gender=female&birthdate=eq2010-10-22&given=Jane&death-date=eq2010-10-22&address-postcode=LS1 6AE&general-practitioner=Y12345&phone=01632960587",
 							"host": [
 								"{{base_url}}"
 							],
@@ -309,7 +461,8 @@
 								},
 								{
 									"key": "history",
-									"value": "true"
+									"value": "true",
+									"disabled": true
 								},
 								{
 									"key": "_max-results",
@@ -355,13 +508,37 @@
 				},
 				{
 					"name": "Multi parameter search including email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -429,13 +606,37 @@
 				},
 				{
 					"name": "Multi parameter search including phone and email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -507,13 +708,31 @@
 				},
 				{
 					"name": "Too few search parameters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(400);\r",
+									"});\r",
+									"pm.test(\"Unsupported Service error\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.issue[0].details.coding[0].code).to.equal(\"UNSUPPORTED_SERVICE\");\r",
+									"  pm.expect(jsonData.issue[0].details.coding[0].display).to.equal(\"Unsupported Service\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -531,13 +750,31 @@
 				},
 				{
 					"name": "Invalid date format - birth date",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(400);\r",
+									"});\r",
+									"pm.test(\"Unsupported Service error\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.issue[0].details.coding[0].code).to.equal(\"INVALID_VALUE\");\r",
+									"  pm.expect(jsonData.issue[0].diagnostics).to.equal(\"Invalid value - '20101022' in field 'birthdate'\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -582,9 +819,23 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									""
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000017\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000017\");\r",
+									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						},
 						{
@@ -593,7 +844,8 @@
 								"exec": [
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -602,8 +854,7 @@
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -643,13 +894,37 @@
 				},
 				{
 					"name": "Fuzzy search including phone",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -693,13 +968,37 @@
 				},
 				{
 					"name": "Fuzzy search including email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -743,13 +1042,37 @@
 				},
 				{
 					"name": "Fuzzy search including phone and email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -797,17 +1120,35 @@
 				},
 				{
 					"name": "Invalid date format - death date",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(400);\r",
+									"});\r",
+									"pm.test(\"Unsupported Service error\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.issue[0].details.coding[0].code).to.equal(\"INVALID_VALUE\");\r",
+									"  pm.expect(jsonData.issue[0].diagnostics).to.equal(\"Invalid value - '20101022' in field 'death-date'\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/Patient?family=Smith&given=Jane&gender=female&death-date=20101022",
+							"raw": "{{base_url}}/Patient?family=Smith&given=Jane&birthdate=2000-01-01&gender=female&death-date=20101022",
 							"host": [
 								"{{base_url}}"
 							],
@@ -822,6 +1163,10 @@
 								{
 									"key": "given",
 									"value": "Jane"
+								},
+								{
+									"key": "birthdate",
+									"value": "2000-01-01"
 								},
 								{
 									"key": "gender",
@@ -839,13 +1184,38 @@
 				},
 				{
 					"name": "Wildcard search",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(2);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes 2 patients\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"  pm.expect(jsonData.entry[1].resource.id).to.equal(\"9000000017\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -876,14 +1246,98 @@
 					"response": []
 				},
 				{
-					"name": "Wildcard search including phone",
+					"name": "Wildcard search with results limit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Too Many Matches error\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.issue[0].details.coding[0].code).to.equal(\"TOO_MANY_MATCHES\");\r",
+									"  pm.expect(jsonData.issue[0].details.coding[0].display).to.equal(\"Too Many Matches\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/Patient?family=Sm*&gender=female&birthdate=eq2010-10-22&_max-results=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							],
+							"query": [
+								{
+									"key": "family",
+									"value": "Sm*"
+								},
+								{
+									"key": "gender",
+									"value": "female"
+								},
+								{
+									"key": "birthdate",
+									"value": "eq2010-10-22"
+								},
+								{
+									"key": "_max-results",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Example of a wildcarded search with limited results, where the \"family\" name is wildcarded and \"_max-results\" is added, which limits the number of results to 2 patients.\n\nThis request will return search bundle containing 2 patients - Jane Smith patient (nhsId - 9000000009) & Jayne Smith (nhsId - 9000000017)\n\nNote: if \"_max-results\" is reduced to 1 then a \"TOO_MANY_RESULTS\" error response will be returned, as the number of matched patients found is greater than the \"_max-results\" parameter."
+					},
+					"response": []
+				},
+				{
+					"name": "Wildcard search including phone",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -919,13 +1373,37 @@
 				},
 				{
 					"name": "Wildcard search including email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -961,13 +1439,33 @@
 				},
 				{
 					"name": "Unsuccessful search",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"An empty searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(0);\r",
+									"  pm.expect(jsonData).to.not.have.property(\"entry\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -1002,56 +1500,37 @@
 					"response": []
 				},
 				{
-					"name": "Search with limited results",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/Patient?family=Sm*&gender=female&birthdate=eq2010-10-22&_max-results=1",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"Patient"
-							],
-							"query": [
-								{
-									"key": "family",
-									"value": "Sm*"
-								},
-								{
-									"key": "gender",
-									"value": "female"
-								},
-								{
-									"key": "birthdate",
-									"value": "eq2010-10-22"
-								},
-								{
-									"key": "_max-results",
-									"value": "1"
-								}
-							]
-						},
-						"description": "Example of a wildcarded search with limited results, where the \"family\" name is wildcarded and \"_max-results\" is added, which limits the number of results to 2 patients - will return a result of 2 patients - Jane Smith patient (nhsId - 9000000009) & Jayne Smith (nhsId - 9000000017)\r\n\r\nNote: if \"_max-results\" is reduced to 1 then a \"TOO_MANY_RESULTS\" error response will be returned, as the number of matched patients found is greater than the \"_max-results\" parameter."
-					},
-					"response": []
-				},
-				{
 					"name": "Search with limited results inc phone",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -1090,14 +1569,38 @@
 					"response": []
 				},
 				{
-					"name": "Search with limited results inc phone",
+					"name": "Search with limited results inc email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Searchset includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
-								"type": "text"
+								"value": "{{$guid}}"
 							}
 						],
 						"url": {
@@ -1230,12 +1733,38 @@
 			"item": [
 				{
 					"name": "Patient exists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"NHS Number correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql('9000000009');\r",
+									"});\r",
+									"pm.test(\"Unrestricted patient\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.meta.security[0]).to.eql({\r",
+									"      \"code\": \"U\",\r",
+									"      \"display\": \"unrestricted\",\r",
+									"      \"system\": \"http://terminology.hl7.org/CodeSystem/v3-Confidentiality\"\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "X-Request-ID",
-								"value": "{{$guid}}",
+								"value": "{{$randomUUID}}",
 								"type": "text"
 							}
 						],
@@ -1255,6 +1784,32 @@
 				},
 				{
 					"name": "Sensitive patient exists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"NHS Number correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql('9000000025');\r",
+									"});\r",
+									"pm.test(\"Unrestricted patient\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.meta.security[0]).to.eql({\r",
+									"      \"code\": \"R\",\r",
+									"      \"display\": \"restricted\",\r",
+									"      \"system\": \"http://terminology.hl7.org/CodeSystem/v3-Confidentiality\"\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -1280,6 +1835,25 @@
 				},
 				{
 					"name": "Invalid NHS Number",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"pm.test(\"INVALID_RESOURCE_ID error is returned\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.issue[0].details.coding[0].code).to.eql(\"INVALID_RESOURCE_ID\");\r",
+									"    pm.expect(jsonData.issue[0].details.coding[0].display).to.eql(\"Resource Id is invalid\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -1305,6 +1879,25 @@
 				},
 				{
 					"name": "Patient doesn't exist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"pm.test(\"RESOURCE_NOT_FOUND error is returned\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.issue[0].details.coding[0].code).to.eql(\"RESOURCE_NOT_FOUND\");\r",
+									"    pm.expect(jsonData.issue[0].details.coding[0].display).to.eql(\"Resource not found\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -1399,7 +1992,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n  \"correction\": false,\r\n  \"patches\": [\r\n    {\r\n      \"op\": \"add\",\r\n      \"path\": \"/name/-\",\r\n      \"value\": {\r\n        \"use\": \"usual\",\r\n        \"period\": {\r\n          \"start\": \"2019-12-31\"\r\n        },\r\n        \"text\": \"Dr Joe H. M. Bloggs PhD\",\r\n        \"prefix\": \"Dr\",\r\n        \"given\": [\r\n          \"Joe\",\r\n          \"Horation\",\r\n          \"Maximus\"\r\n        ],\r\n        \"family\": \"Bloggs\",\r\n        \"suffix\": \"PhD\"\r\n      }\r\n    }\r\n  ]\r\n}"
+													"raw": "{\r\n  \"correction\": false,\r\n  \"patches\": [\r\n    {\r\n      \"op\": \"add\",\r\n      \"path\": \"/name/-\",\r\n      \"value\": {\r\n        \"use\": \"old\",\r\n        \"period\": {\r\n          \"start\": \"2019-12-31\"\r\n        },\r\n        \"text\": \"Dr Joe H. M. Bloggs PhD\",\r\n        \"prefix\": \"Dr\",\r\n        \"given\": [\r\n          \"Joe\",\r\n          \"Horation\",\r\n          \"Maximus\"\r\n        ],\r\n        \"family\": \"Bloggs\",\r\n        \"suffix\": \"PhD\"\r\n      }\r\n    }\r\n  ]\r\n}"
 												},
 												"url": {
 													"raw": "{{base_url}}/Patient/9000000009",
@@ -2759,6 +3352,25 @@
 			"item": [
 				{
 					"name": "Single Related Person exists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"one related person\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.total).to.eql(1);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -2785,6 +3397,25 @@
 				},
 				{
 					"name": "Related Persons do not exist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"no results\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.total).to.eql(0);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -2811,6 +3442,25 @@
 				},
 				{
 					"name": "Multiple Related Persons exists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"two related persons\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.total).to.eql(2);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -2941,7 +3591,7 @@
 									},
 									{
 										"key": "If-Match",
-										"value": "W/\"1\"",
+										"value": "W/\"2\"",
 										"type": "text"
 									},
 									{
@@ -2952,7 +3602,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          },\r\n          \"display\" : \"FRANCE\"\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"9876543218\"\r\n  }",
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }  \r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"9876543218\"\r\n  }",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2984,7 +3634,7 @@
 									},
 									{
 										"key": "If-Match",
-										"value": "W/\"1\"",
+										"value": "W/\"2\"",
 										"type": "text"
 									},
 									{
@@ -2995,7 +3645,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"IT12345678901004\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"ITA\"\r\n          },\r\n          \"display\" : \"Italy\"\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"IT98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"876543217\"\r\n  }",
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"IT12345678901004\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"ITA\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"IT98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"876543217\"\r\n  }",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3033,7 +3683,7 @@
 									},
 									{
 										"key": "If-Match",
-										"value": "W/\"2\"",
+										"value": "W/\"1\"",
 										"type": "text"
 									},
 									{
@@ -3044,7 +3694,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          },\r\n          \"display\" : \"FRANCE\"\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"9876543218\"\r\n  }"
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"9876543218\"\r\n  }"
 								},
 								"url": {
 									"raw": "{{base_url}}/Coverage",
@@ -3078,7 +3728,7 @@
 								"header": [
 									{
 										"key": "If-Match",
-										"value": "W/\"1\"",
+										"value": "W/\"2\"",
 										"type": "text"
 									},
 									{
@@ -3094,7 +3744,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          },\r\n          \"display\" : \"FRANCE\"\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"9876543218\"\r\n  }"
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"9876543218\"\r\n  }"
 								},
 								"url": {
 									"raw": "{{base_url}}/Coverage",
@@ -3126,7 +3776,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          },\r\n          \"display\" : \"FRANCE\"\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"9876543218\"\r\n  }"
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"9876543218\"\r\n  }"
 								},
 								"url": {
 									"raw": "{{base_url}}/Coverage",
@@ -3171,7 +3821,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          },\r\n          \"display\" : \"FRANCE\"\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"9876543218\"\r\n  }"
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"9876543218\"\r\n  }"
 								},
 								"url": {
 									"raw": "{{base_url}}/Coverage",
@@ -3204,7 +3854,7 @@
 								"header": [
 									{
 										"key": "If-Match",
-										"value": "W/\"1\"",
+										"value": "W/\"2\"",
 										"type": "text"
 									},
 									{
@@ -3220,7 +3870,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          },\r\n          \"display\" : \"FRANCE\"\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"9876543218\"\r\n  }"
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"9876543218\"\r\n  }"
 								},
 								"url": {
 									"raw": "{{base_url}}/Coverage",
@@ -3269,7 +3919,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          },\r\n          \"display\" : \"FRANCE\"\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"Expired\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"9876543218\"\r\n  }"
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"Expired\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"9876543218\"\r\n  }"
 								},
 								"url": {
 									"raw": "{{base_url}}/Coverage",
