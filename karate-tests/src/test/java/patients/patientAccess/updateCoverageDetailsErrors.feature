@@ -225,7 +225,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * status 404
     * match response == read('classpath:mocks/stubs/errorResponses/RESOURCE_NOT_FOUND.json')   
 
-  @testfix  
   Scenario: Send an update for superseded NHS number(authenticate and send update with superseded NHS number)
     * def mergedP9number = '9732019840'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: mergedP9number, scope: 'nhs-login'}).accessToken
@@ -250,8 +249,7 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def diagnostics = `Forbidden update with error - Update Failed - NHS No. supplied has been superseded in a merge`
     * def expectedResponse = read('classpath:mocks/stubs/errorResponses/FORBIDDEN_UPDATE.json')
     * match response == expectedResponse
-
-  @testfix
+    
   Scenario: Send an update for retained NHS number by authenticating with superseded NHS number
     * def mergedP9number = '9732019735'
     * def retainedRecord = '9732019638'
