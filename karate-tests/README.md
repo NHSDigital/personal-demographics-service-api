@@ -97,7 +97,7 @@ mvn clean test-compile gatling:test
 The sandbox is a fake FHIR API with functionality that allows us to use it in a few key scenarios:
 1. As an API prototyping tool that allows us to rapidly build a working API that can illustrate new endpoint functionality.
 1. As a versioning aid - different iterations of the sandbox and their related tests can be tagged to represent different versions of the API.
-1. As documentation for the API. This was the sole use of the legacy sandbox. [Our public documentation page](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir) invites people to use the sandbox to explore some of our API functionality, and there is a collection of Postman requests to download too. The new Karate-based sandbox has been developed in a way so that the existing documentation and Postman collection are still valid.
+1. As documentation for the API. [Our public documentation page](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir) invites people to use the sandbox to explore some of our API functionality, and there is a collection of Postman requests to download too. The new Karate-based sandbox has been developed in a way so that the existing documentation and Postman collection are still valid.
 
 ### Running the sandbox locally as a separate process
 
