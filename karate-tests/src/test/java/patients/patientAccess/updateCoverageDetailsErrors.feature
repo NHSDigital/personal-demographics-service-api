@@ -28,8 +28,7 @@ Feature: Patient Access (Update Coverage details) - error scenarios
       | patientType     | nhsNumber   |
       | P9.Cp           | 5900068196  |
       | P5              | 9912003072  |
-      | P9.Cp           | 5900068196  |
-  
+    
   Scenario Outline: Auth errors: update patient coverage details
     * def nhsNumber = '9733162868'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
@@ -91,7 +90,7 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * header Content-Type = "application/json"
-    * def incorrectResourceVersion = originalVersion + 1
+    * def incorrectResourceVersion = originalVersion - 1
     * header If-Match = 'W/"' + incorrectResourceVersion + '"'
     * def periodEndDate = utils.randomDateWithInYears(4)
     * path "Coverage"
@@ -184,7 +183,7 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
     * method post
     * status 400
-    * def diagnostics = `Invalid value - '2026-13-15' in field 'period/end'`
+    * def diagnostics = `Invalid value - '1860-12-15' in field 'period/end'`
     * def expectedResponse = read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')
   
   Scenario: Send empty field in the request body
