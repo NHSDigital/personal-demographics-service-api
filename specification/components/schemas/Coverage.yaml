@@ -70,11 +70,15 @@ properties:
       - identifier
     properties:
       identifier:
-        type: string
-        description: "The personal ID number identifying the beneficiary."
-        minLength: 1
-        maxLength: 25
-        pattern: "^[a-zA-Z0-9]{1,25}$"
+        type: object
+        required:
+          - value
+        properties:
+          value:
+            description: "The personal ID number identifying the beneficiary."
+            minLength: 1
+            maxLength: 25
+            pattern: "^[a-zA-Z0-9]{1,25}$"
   period:
     type: object
     description: "Time period when coverage is valid"
