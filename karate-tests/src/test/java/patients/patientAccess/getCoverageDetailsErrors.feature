@@ -44,7 +44,7 @@ Scenario Outline: Auth errors: patient coverage details
          |                            | Missing Authorization header   |      
          | Bearer                     | Missing access token           |
          | Bearer abcdef123456789     | Invalid Access Token           |
-
+         
 Scenario Outline: x-request-id errors: patient coverage details
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
