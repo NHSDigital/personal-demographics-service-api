@@ -24,7 +24,7 @@ properties:
           - value
         properties:
           system:
-            type: object
+            type: string
             format: url
             enum: ["https://fhir.nhs.uk/Id/nhs-number"]
           value:
@@ -58,7 +58,7 @@ properties:
         - identifier
       properties:
         identifier:
-          type: object
+          type: string
           description: "The value that is unique"
           minLength: 1
           maxLength: 30
@@ -70,7 +70,7 @@ properties:
       - identifier
     properties:
       identifier:
-        type: object
+        type: string
         description: "The personal ID number identifying the beneficiary."
         minLength: 1
         maxLength: 25
