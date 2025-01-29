@@ -1,0 +1,88 @@
+type: object
+required:
+  - status
+  - beneficiary
+  - payor
+  - subscriber
+  - identifier
+  - period
+properties:
+  status:
+    type: string
+    description: "The status of the resource instance."
+    enum: ["active"]
+    default: "active"
+  subscriber:
+    type: object
+    description: "Subscriber and patient covered by the policy"
+    required:
+      - identifier
+    properties:
+      identifier:
+        type: object
+        required:
+          - value
+        properties:
+          system:
+            type: object
+            format: url
+            enum: ["https://fhir.nhs.uk/Id/nhs-number"]
+          value:
+            $ref: NhsNumber.yaml
+  identifier:
+    type: array
+    description: "The primary identifier of the insurer"
+    minItems: 1
+    maxItems: 1
+    items:
+      type: object
+      required:
+        - value
+        - assigner
+      properties:
+        value:
+          type: string
+          minLength: 1
+          maxLength: 25
+          pattern: "^[a-zA-Z0-9]{1,25}$"
+        assigner:
+          $ref: CountryCode.yaml
+  payor:
+    type: array
+    description: "Issuer of the policy"
+    minItems: 1
+    maxItems: 1
+    items:
+      type: object
+      required: 
+        - identifier
+      properties:
+        identifier:
+          type: object
+          description: "The value that is unique"
+          minLength: 1
+          maxLength: 30
+          pattern: "^[a-zA-Z0-9]{1,30}$"
+  beneficiary:
+    type: object
+    description: "Plan beneficiary"
+    required:
+      - identifier
+    properties:
+      identifier:
+        type: object
+        description: "The personal ID number identifying the beneficiary."
+        minLength: 1
+        maxLength: 25
+        pattern: "^[a-zA-Z0-9]{1,25}$"
+  period:
+    type: object
+    description: "Time period when coverage is valid"
+    required:
+      - end
+    properties:
+      end:
+        type: string
+        format: date
+        description: "End date of time period, if known, in format `yyyy-mm-dd`. Must be less than 150 years in the past. Must be less than 150 years in the future."
+        example: "2030-12-31"
