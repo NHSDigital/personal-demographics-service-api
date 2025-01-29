@@ -58,11 +58,16 @@ properties:
         - identifier
       properties:
         identifier:
-          type: string
-          description: "The value that is unique"
-          minLength: 1
-          maxLength: 30
-          pattern: "^[a-zA-Z0-9]{1,30}$"
+          type: object
+          required: 
+            - value
+          properties:
+            value:
+              type: string
+              description: "The value that is unique"
+              minLength: 1
+              maxLength: 30
+              pattern: "^[a-zA-Z0-9]{1,30}$"
   beneficiary:
     type: object
     description: "Plan beneficiary"
