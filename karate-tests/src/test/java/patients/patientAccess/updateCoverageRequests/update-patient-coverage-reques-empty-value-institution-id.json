@@ -23,8 +23,7 @@
     },
     "beneficiary" : {
       "identifier" : {
-        "system":"https://fhir.nhs.uk/Id/nhs-number",
-        "value": "#(nhsNumber)"
+        "value": "1029384756"
       }
     },
     "period" : {
@@ -37,5 +36,10 @@
         }
       }
     ],
-    "subscriberId": "1029384756"
+    "subscriber": {
+      "identifier": {
+        "system":"https://fhir.nhs.uk/Id/nhs-number",
+        "value": "#(nhsNumber)"
+      }
+    }
   }

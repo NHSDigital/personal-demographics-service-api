@@ -10,8 +10,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * def requestHeaders = call read('classpath:auth/auth-headers.js')
-    * configure headers = requestHeaders
     * header Content-Type = "application/json"
     * header If-Match = 'W/"4"'
     * def periodEndDate = utils.randomDateWithInYears(4)
@@ -83,7 +81,7 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = nhsNumber
+    * param subscriber:identifier = nhsNumber
     * method get
     * status 200
     * def originalVersion = parseInt(response.meta.versionId)
@@ -122,7 +120,7 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = nhsNumber
+    * param subscriber:identifier = nhsNumber
     * method get
     * status 200
     * def originalVersion = parseInt(response.meta.versionId)
@@ -146,7 +144,7 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = nhsNumber
+    * param subscriber:identifier = nhsNumber
     * method get
     * status 200
     * def originalVersion = parseInt(response.meta.versionId)
@@ -169,7 +167,7 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = nhsNumber
+    * param subscriber:identifier = nhsNumber
     * method get
     * status 200
     * def originalVersion = parseInt(response.meta.versionId)
@@ -192,7 +190,7 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = nhsNumber
+    * param subscriber:identifier = nhsNumber
     * method get
     * status 200
     * def originalVersion = parseInt(response.meta.versionId)
@@ -230,7 +228,7 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = mergedP9number
+    * param subscriber:identifier = mergedP9number
     * method get
     * status 200
     * def originalVersion = parseInt(response.meta.versionId)
@@ -256,7 +254,7 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = mergedP9number
+    * param subscriber:identifier = mergedP9number
     * method get
     * status 200
     * def originalVersion = parseInt(response.meta.versionId)

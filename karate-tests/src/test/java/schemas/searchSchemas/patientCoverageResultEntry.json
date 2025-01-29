@@ -3,7 +3,6 @@
     "resource": {
         "beneficiary": {
             "identifier": {
-                "system": "#? utils.isValidURL(_)",
                 "value": "#regex([0-9a-zA-Z]{1,25})"
             }
         },

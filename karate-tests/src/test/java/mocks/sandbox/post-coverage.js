@@ -50,13 +50,13 @@ function postPatientRequestIsValid (request) {
       type: 'missing'
     },
     {
-      condition: !request.body?.beneficiary,
+      condition: !request.body?.subscriber.identifier.value,
       diagnostics: 'Missing value - \'beneficiary\'',
       type: 'missing'
     },
     {
-      condition: !request.body?.subscriber,
-      diagnostics: 'Missing value - \'subscriber\'',
+      condition: !request.body?.beneficiary.identifier.value,
+      diagnostics: 'Missing value - \'subscriberId\'',
       type: 'missing'
     },
     {

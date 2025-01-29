@@ -3523,7 +3523,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/Coverage?beneficiary:identifier=9000000009",
+							"raw": "{{base_url}}/Coverage?subscriber:identifier=9000000009",
 							"host": [
 								"{{base_url}}"
 							],
@@ -3532,7 +3532,7 @@
 							],
 							"query": [
 								{
-									"key": "beneficiary:identifier",
+									"key": "subscriber:identifier",
 									"value": "9000000009"
 								}
 							]
@@ -3553,7 +3553,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/Coverage?beneficiary:identifier=9000000033",
+							"raw": "{{base_url}}/Coverage?subscriber:identifier=9000000033",
 							"host": [
 								"{{base_url}}"
 							],
@@ -3562,7 +3562,7 @@
 							],
 							"query": [
 								{
-									"key": "beneficiary:identifier",
+									"key": "subscriber:identifier",
 									"value": "9000000033"
 								}
 							]
@@ -3602,7 +3602,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }  \r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"9876543218\"\r\n  }",
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }  \r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"value\": \"9876543218\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriber\": {\r\n      \"identifier\": {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    }\r\n  }",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3645,7 +3645,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"IT12345678901004\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"ITA\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"IT98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"876543217\"\r\n  }",
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"IT12345678901004\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"ITA\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"value\": \"876543217\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"IT98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriber\": {\r\n      \"identifier\": {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    }\r\n  }",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3694,7 +3694,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"9876543218\"\r\n  }"
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"value\": \"9876543218\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriber\": {\r\n      \"identifier\": {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    }\r\n  }"
 								},
 								"url": {
 									"raw": "{{base_url}}/Coverage",
@@ -3744,7 +3744,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"9876543218\"\r\n  }"
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"value\": \"9876543218\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriber\": {\r\n      \"identifier\": {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    }\r\n  }"
 								},
 								"url": {
 									"raw": "{{base_url}}/Coverage",
@@ -3776,7 +3776,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"9876543218\"\r\n  }"
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"value\": \"9876543218\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriber\": {\r\n      \"identifier\": {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    }\r\n  }"
 								},
 								"url": {
 									"raw": "{{base_url}}/Coverage",
@@ -3821,7 +3821,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"9876543218\"\r\n  }"
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"value\": \"9876543218\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n     \"subscriber\": {\r\n      \"identifier\": {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    }\r\n  }"
 								},
 								"url": {
 									"raw": "{{base_url}}/Coverage",
@@ -3870,7 +3870,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"9876543218\"\r\n  }"
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"value\": \"9876543218\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n     \"subscriber\": {\r\n      \"identifier\": {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    }\r\n  }"
 								},
 								"url": {
 									"raw": "{{base_url}}/Coverage",
@@ -3919,7 +3919,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"Expired\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriberId\": \"9876543218\"\r\n  }"
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"Expired\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"value\": \"9876543218\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriber\": {\r\n      \"identifier\": {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    }\r\n  }"
 								},
 								"url": {
 									"raw": "{{base_url}}/Coverage",

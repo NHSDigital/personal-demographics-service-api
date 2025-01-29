@@ -23,8 +23,6 @@
     },
     "beneficiary" : {
       "identifier" : {
-        "system":"https://fhir.nhs.uk/Id/nhs-number",
-        "value": "#(nhsNumber)"
       }
     },
     "period" : {
@@ -36,5 +34,11 @@
           "value" :"FR78765"
         }
       }
-    ]
+    ],
+    "subscriber": {
+      "identifier": {
+        "system":"https://fhir.nhs.uk/Id/nhs-number",
+        "value": "#(nhsNumber)"
+      }
+    }
   }

@@ -1,12 +1,11 @@
 {
     "entry": [
         {
-            "fullUrl": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Coverage?beneficiary:identifier=9000000009",
+            "fullUrl": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Coverage?subscriber:identifier=9000000009",
             "resource": {
                 "beneficiary": {
                     "identifier": {
-                        "system": "https://fhir.nhs.uk/Id/nhs-number",
-                        "value": "9000000009"
+                        "value": "5647382910"
                     }
                 },
                 "identifier": [
@@ -33,7 +32,12 @@
                 },
                 "resourceType": "Coverage",
                 "status": "active",
-                "subscriberId": "5647382910"
+                "subscriber": {
+                    "identifier": {
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "9000000009"
+                    }
+                }
             }
         }
     ],
