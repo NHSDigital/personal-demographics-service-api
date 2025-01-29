@@ -47,7 +47,9 @@ Scenario:
       function(noOfYears) {
         const today = new Date()
         const min = today.getTime()
-        const max = new Date(today.setFullYear(today.getFullYear()+noOfYears)).getTime()
+        const maxDate = new Date(today)
+        maxDate.setFullYear(maxDate.getFullYear() + noOfYears)
+        const max = maxDate.getTime()
         const randomValue = Math.random() * (max - min) + min
         const randomDate = new Date(randomValue)
         return randomDate.toISOString().split('T')[0]
