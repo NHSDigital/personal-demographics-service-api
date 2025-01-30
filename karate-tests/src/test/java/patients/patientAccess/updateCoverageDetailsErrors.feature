@@ -1,6 +1,5 @@
 
 @no-oas 
-
 Feature: Patient Access (Update Coverage details) - error scenarios
 
   Background:
@@ -124,7 +123,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * param subscriber:identifier = nhsNumber
     * method get
     * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
     * def originalEtag = karate.response.header('etag')
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -132,7 +130,7 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * header If-Match = originalEtag
     * def periodEndDate = utils.randomDateWithInYears(4)
     * path "Coverage"
-    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request-missing-subscriber.json')
+    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request-missing-beneficiary-identifier-value.json')
     * method post
     * status 400
     * def diagnostics = `Missing value - 'beneficiary/identifier/value'`
@@ -148,7 +146,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * param subscriber:identifier = nhsNumber
     * method get
     * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
     * def originalEtag = karate.response.header('etag')
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -171,7 +168,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * param subscriber:identifier = nhsNumber
     * method get
     * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
     * def originalEtag = karate.response.header('etag')
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -194,7 +190,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * param subscriber:identifier = nhsNumber
     * method get
     * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
     * def originalEtag = karate.response.header('etag')
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -232,7 +227,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * param subscriber:identifier = mergedP9number
     * method get
     * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
     * def originalEtag = karate.response.header('etag')
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -258,13 +252,13 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * param subscriber:identifier = mergedP9number
     * method get
     * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
     * def originalEtag = karate.response.header('etag')
+
+    # sending updates with retained record
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * header Content-Type = "application/json"
-    * header If-Match = originalEtag
-    # sending updates with retained record
+    * header If-Match = originalEtag  
     * def nhsNumber = retainedRecord
     * def periodEndDate = utils.randomDateWithInYears(4)
     * path "Coverage"
@@ -284,13 +278,11 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * param subscriber:identifier = nhsNumber
     * method get
     * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
     * def originalEtag = karate.response.header('etag')
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * header Content-Type = "application/json"
     * header If-Match = originalEtag
-    # sending updates with retained record
     * def periodEndDate = utils.randomDateWithInYears(4)
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request-too-many-payors.json')

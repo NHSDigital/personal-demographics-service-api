@@ -33,7 +33,7 @@ function buildPostCoverageResponseHeaders (request, patient) {
 
 const PATIENT_WITH_COVERAGE = context.read('classpath:mocks/stubs/coverageResponses/patient_with_coverage_9000000009.json')
 
-function postPatientRequestIsValid (request) {
+function postCoverageRequestIsValid (request) {
   const diagnosticsMap = {
     missing: 'classpath:mocks/stubs/errorResponses/MISSING_VALUE.json',
     invalid: 'classpath:mocks/stubs/errorResponses/INVALID_VALUE.json'
@@ -128,7 +128,7 @@ function handlePatientCoverageRequest (request) {
   response.contentType = 'application/json'
   const isRequestHeadersValid = validatePostCoverageHeaders(request) && validateHeaders(request)
   if (isRequestHeadersValid) {
-    if (postPatientRequestIsValid(request)) {
+    if (postCoverageRequestIsValid(request)) {
       const originalPatient = JSON.parse(JSON.stringify(PATIENT_WITH_COVERAGE))
       if (request.header('if-match') !== `W/"${originalPatient.meta.versionId}"`) {
         return setResourceVersionMismatchError(request)

@@ -53,7 +53,7 @@ Feature: Patient Access (Retrieve Coverage details)
     * match response.entry[0].resource.status == 'active'
     * match response.entry[0].resource.subscriber.identifier.value == retainedRecord
    
-  Scenario: Retrieve patient coverage details where personalIdentification number is not available(Beneficiary is a mandatory field in FHIR)
+  Scenario: Retrieve patient coverage details where personal identification number is not available(Beneficiary is a mandatory field in FHIR)
     * def personal_id_p9 = '9733162884'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: personal_id_p9, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
