@@ -56,7 +56,7 @@ function postPatientRequestIsValid (request) {
     },
     {
       condition: !request.body?.beneficiary.identifier.value,
-      diagnostics: 'Missing value - \'subscriberId\'',
+      diagnostics: 'Missing value - \'beneficiary/identifier/value\'',
       type: 'missing'
     },
     {

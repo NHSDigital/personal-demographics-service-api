@@ -4,7 +4,8 @@
         "beneficiary": {
             "identifier": {
                 "value": "#regex([0-9a-zA-Z]{1,25})"
-            }
+            },
+            "type": "#string"
         },
         "identifier": [
             {
@@ -34,7 +35,8 @@
             "identifier": {
                 "system": "#? utils.isValidURL(_)",
                 "value": "#? utils.isValidNHSNumber(_)"
-            }
+            },
+            "type": "#string"
         }
     }        
 }

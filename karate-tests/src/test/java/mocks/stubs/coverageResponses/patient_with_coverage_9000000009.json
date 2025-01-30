@@ -6,7 +6,8 @@
                 "beneficiary": {
                     "identifier": {
                         "value": "5647382910"
-                    }
+                    },
+                    "type": "Patient"
                 },
                 "identifier": [
                     {
@@ -36,7 +37,8 @@
                     "identifier": {
                         "system": "https://fhir.nhs.uk/Id/nhs-number",
                         "value": "9000000009"
-                    }
+                    },
+                    "type": "Patient"
                 }
             }
         }

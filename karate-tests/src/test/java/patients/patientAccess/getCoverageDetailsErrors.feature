@@ -1,4 +1,5 @@
 @no-oas
+
 Feature: Patient Access (Retrieve Coverage)
     Retrieve EHIC details error scenarios
 
