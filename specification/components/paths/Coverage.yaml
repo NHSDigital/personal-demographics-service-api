@@ -123,6 +123,15 @@ post:
     
       You can only update EHIC details using patient access mode.
 
+      ## Patient resource versioning
+        To update a patient's details, use the [get a patient's coverage](///link to get coverage endpoint info here//////) to get a version number for the most up-to-date record. The version number is in the `ETag` response header in the form `W/"2"`.
+
+        You must then pass the patient's version number in the update request, in the `If-Match` response header. If the patient resource has been updated in PDS between your first retrieval and the update request, the update will fail.
+
+        When the update succeeds, you will get the updated patient record. This will contain the new resource version number.
+
+        If you make a further update you must use the new version number.
+
     parameters:
       - $ref: '#/components/parameters/IfMatch'
     requestBody:
