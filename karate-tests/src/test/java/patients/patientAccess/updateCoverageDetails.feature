@@ -11,7 +11,7 @@ Feature: Patient Access (Update Coverage details)
 
    @sandbox
    Scenario: Happy path - update patient coverage details
-    * def nhsNumber = '9733162892'
+    * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9733162892'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -27,7 +27,7 @@ Feature: Patient Access (Update Coverage details)
     * header If-Match = originalEtag
     * def periodEndDate = utils.randomDateWithInYears(4)
     * path "Coverage"
-    * request read('classpath:patients/patientAccess/update-patient-coverage-request.json')
+    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
     * method post
     * status 201
     * match parseInt(response.meta.versionId) == originalVersion + 1
