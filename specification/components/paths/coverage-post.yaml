@@ -1,5 +1,8 @@
 summary: Post coverage for a patient
 operationId: post-coverage
+description: |
+  ## Overview
+  To be filled in later
 parameters:
   - $ref: '../../personal-demographics.yaml#/components/parameters/IfMatch'
 responses:

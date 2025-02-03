@@ -1,8 +1,8 @@
+summary: Get a patients coverage
+operationId: get-coverage
 description: |
   ## Overview
   To be filled in later
-summary: Get a patients coverage
-operationId: get-coverage
 parameters:
   - $ref: '../../personal-demographics.yaml#/components/parameters/SubscriberIdentifier'
 responses:
