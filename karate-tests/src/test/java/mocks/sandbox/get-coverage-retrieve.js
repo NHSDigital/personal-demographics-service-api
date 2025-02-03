@@ -24,7 +24,7 @@ function buildResponse (request, responseBody) {
 
 if (request.pathMatches('/Coverage') && request.get) {
   response.headers = basicResponseHeaders(request)
-  const nhsNumber = request.param('beneficiary:identifier')
+  const nhsNumber = request.param('subscriber:identifier')
 
   if (validateHeaders(request) && validateNHSNumber(request, nhsNumber)) {
     if (nhsNumber === '9000000009') {

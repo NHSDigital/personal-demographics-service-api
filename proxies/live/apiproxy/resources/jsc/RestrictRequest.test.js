@@ -105,7 +105,7 @@ test("Searching for Coverage using a different NHS number to NHS-Login token is 
     jestWhen.when(global.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.nhs_number").mockReturnValue(nhsNumber)
 
     const differentNHSNumber = "0987654321"
-    const coverageFullURL = "https://internal-dev.api.service.nhs.uk/personal-demographics/FHIR/R4/Coverage?beneficiary%3Aidentifier=" + differentNHSNumber
+    const coverageFullURL = "https://internal-dev.api.service.nhs.uk/personal-demographics/FHIR/R4/Coverage?subscriber%3Aidentifier=" + differentNHSNumber
     jestWhen.when(global.context.getVariable).calledWith("proxy.url").mockReturnValue(coverageFullURL)
 
 
@@ -128,7 +128,7 @@ test("Searching for Coverage using a malformed NHS number is not accepted", () =
     jestWhen.when(global.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.nhs_number").mockReturnValue(nhsNumber)
 
     const malformedNHSNumber = nhsNumber + 'X'
-    const coverageFullURL = "https://internal-dev.api.service.nhs.uk/personal-demographics/FHIR/R4/Coverage?beneficiary%3Aidentifier=" + malformedNHSNumber
+    const coverageFullURL = "https://internal-dev.api.service.nhs.uk/personal-demographics/FHIR/R4/Coverage?subscriber%3Aidentifier=" + malformedNHSNumber
     jestWhen.when(global.context.getVariable).calledWith("proxy.url").mockReturnValue(coverageFullURL)
 
     restrictRequest()
@@ -151,7 +151,7 @@ test("Patient searching for their own Coverage is allowed", () => {
     const nhsNumber = "1234567890"
     jestWhen.when(global.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.nhs_number").mockReturnValue(nhsNumber)
 
-    const coverageFullURL = "https://internal-dev.api.service.nhs.uk/personal-demographics/FHIR/R4/Coverage?beneficiary%3Aidentifier=" + nhsNumber
+    const coverageFullURL = "https://internal-dev.api.service.nhs.uk/personal-demographics/FHIR/R4/Coverage?subscriber%3Aidentifier=" + nhsNumber
     jestWhen.when(global.context.getVariable).calledWith("proxy.url").mockReturnValue(coverageFullURL)
     
     restrictRequest()

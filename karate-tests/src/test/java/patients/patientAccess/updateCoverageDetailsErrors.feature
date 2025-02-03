@@ -1,5 +1,5 @@
 
-@no-oas
+@no-oas 
 Feature: Patient Access (Update Coverage details) - error scenarios
 
   Background:
@@ -8,8 +8,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
   
    Scenario Outline: Patient can't retrieve coverage details when <patientType> 
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
-    * def requestHeaders = call read('classpath:auth/auth-headers.js')
-    * configure headers = requestHeaders
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * header Content-Type = "application/json"
@@ -83,7 +81,7 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = nhsNumber
+    * param subscriber:identifier = nhsNumber
     * method get
     * status 200
     * def originalVersion = parseInt(response.meta.versionId)
@@ -122,10 +120,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = nhsNumber
+    * param subscriber:identifier = nhsNumber
     * method get
     * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
     * def originalEtag = karate.response.header('etag')
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -133,10 +130,10 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * header If-Match = originalEtag
     * def periodEndDate = utils.randomDateWithInYears(4)
     * path "Coverage"
-    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request-missing-subscriber.json')
+    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request-missing-beneficiary-identifier-value.json')
     * method post
     * status 400
-    * def diagnostics = `Missing value - 'subscriberId'`
+    * def diagnostics = `Missing value - 'beneficiary/identifier/value'`
     * match response == read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')   
 
   @sandbox  
@@ -146,10 +143,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = nhsNumber
+    * param subscriber:identifier = nhsNumber
     * method get
     * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
     * def originalEtag = karate.response.header('etag')
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -169,10 +165,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = nhsNumber
+    * param subscriber:identifier = nhsNumber
     * method get
     * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
     * def originalEtag = karate.response.header('etag')
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -192,10 +187,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = nhsNumber
+    * param subscriber:identifier = nhsNumber
     * method get
     * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
     * def originalEtag = karate.response.header('etag')
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -230,10 +224,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = mergedP9number
+    * param subscriber:identifier = mergedP9number
     * method get
     * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
     * def originalEtag = karate.response.header('etag')
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -256,16 +249,16 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = mergedP9number
+    * param subscriber:identifier = mergedP9number
     * method get
     * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
     * def originalEtag = karate.response.header('etag')
+
+    # sending updates with retained record
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * header Content-Type = "application/json"
-    * header If-Match = originalEtag
-    # sending updates with retained record
+    * header If-Match = originalEtag  
     * def nhsNumber = retainedRecord
     * def periodEndDate = utils.randomDateWithInYears(4)
     * path "Coverage"
@@ -275,3 +268,25 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def display = 'Patient cannot perform this action'
     * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
     * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
+  
+  Scenario: Too many values in the request body
+    * def nhsNumber = '9733162892'
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders
+    * path 'Coverage'
+    * param subscriber:identifier = nhsNumber
+    * method get
+    * status 200
+    * def originalEtag = karate.response.header('etag')
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders
+    * header Content-Type = "application/json"
+    * header If-Match = originalEtag
+    * def periodEndDate = utils.randomDateWithInYears(4)
+    * path "Coverage"
+    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request-too-many-payors.json')
+    * method post
+    * status 400
+    * def diagnostics = `Too many values submitted - [{'identifier': {'value': 'DE98765'}}, {'identifier': {'value': 'FR98765'}}] in field 'payor'`
+    * match response == read('classpath:mocks/stubs/errorResponses/TOO_MANY_VALUES_SUBMITTED.json') 

@@ -1,13 +1,13 @@
 {
     "entry": [
         {
-            "fullUrl": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Coverage?beneficiary:identifier=9733162868",
+            "fullUrl": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Coverage?subscriber:identifier=9733162868",
             "resource": {
                 "beneficiary": {
                     "identifier": {
-                        "system": "https://fhir.nhs.uk/Id/nhs-number",
-                        "value": "9733162868"
-                    }
+                        "value": "DE9876543210"
+                    },
+                    "type": "Patient"
                 },
                 "identifier": [
                     {
@@ -33,7 +33,13 @@
                 },
                 "resourceType": "Coverage",
                 "status": "active",
-                "subscriberId": "DE9876543210"
+                "subscriber": {
+                    "identifier": {
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "9733162868"
+                    },
+                    "type": "Patient"
+                }
             }
         }
     ],

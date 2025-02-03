@@ -6,10 +6,10 @@ parameters:
   - $ref: '#/components/parameters/NHSD-End-User-Organisation-ODS'
 get:
     parameters:
-      BeneficiaryIdentifier:
-        name: beneficiary:identifier
+      SubscriberIdentifier:
+        name: subscriber:identifier
         description: |
-          The NHS number that identifies the holder/beneficiary of the coverage.
+          The NHS number that identifies the holder/subscriber of the coverage.
         examples:
           ehic_holder:
             value: 9733162868

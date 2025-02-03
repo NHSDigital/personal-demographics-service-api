@@ -2,11 +2,11 @@
     "resourceType" : "Coverage",
     "identifier" : [
       {
-        "value" : "FR1234567890121234",
+        "value" : "DE1234567890121234",
         "assigner": {
           "identifier": {
             "system":"urn:iso:std:iso:3166",
-            "value":"FRA"
+            "value":"DEU"
           }
         }
       }
@@ -23,8 +23,7 @@
     },
     "beneficiary" : {
       "identifier" : {
-        "system":"https://fhir.nhs.uk/Id/nhs-number",
-        "value": "#(nhsNumber)"
+        "value": "1029384756"
       }
     },
     "period" : {
@@ -33,8 +32,19 @@
     "payor" : [
       {
         "identifier" : {
-          "value" :"FR78765"
+          "value" :"DE98765"
+        }
+      },
+      {
+        "identifier" : {
+          "value" :"FR98765"
         }
       }
-    ]
+    ],
+    "subscriber": {
+      "identifier": {
+        "system":"https://fhir.nhs.uk/Id/nhs-number",
+        "value": "#(nhsNumber)"
+      }
+    }
   }

@@ -33,7 +33,7 @@ function buildPostCoverageResponseHeaders (request, patient) {
 
 const PATIENT_WITH_COVERAGE = context.read('classpath:mocks/stubs/coverageResponses/patient_with_coverage_9000000009.json')
 
-function postPatientRequestIsValid (request) {
+function postCoverageRequestIsValid (request) {
   const diagnosticsMap = {
     missing: 'classpath:mocks/stubs/errorResponses/MISSING_VALUE.json',
     invalid: 'classpath:mocks/stubs/errorResponses/INVALID_VALUE.json'
@@ -50,13 +50,13 @@ function postPatientRequestIsValid (request) {
       type: 'missing'
     },
     {
-      condition: !request.body?.beneficiary,
+      condition: !request.body?.subscriber.identifier.value,
       diagnostics: 'Missing value - \'beneficiary\'',
       type: 'missing'
     },
     {
-      condition: !request.body?.subscriberId,
-      diagnostics: 'Missing value - \'subscriberId\'',
+      condition: !request.body?.beneficiary.identifier.value,
+      diagnostics: 'Missing value - \'beneficiary/identifier/value\'',
       type: 'missing'
     },
     {
@@ -118,7 +118,7 @@ function initializePatientCoverageData (request, patient) {
   patient.entry[0].resource.identifier[0].value = request.body.identifier[0].value
   patient.entry[0].resource.payor[0].identifier.value = request.body.payor[0].identifier.value
   patient.entry[0].resource.period.end = request.body.period.end
-  patient.entry[0].resource.subscriberId = request.body.subscriberId
+  patient.entry[0].resource.subscriber.identifier.value = request.body.subscriber.identifier.value
   patient.meta.versionId = (parseInt(patient.meta.versionId) + 1).toString()
   return patient
 }
@@ -128,7 +128,7 @@ function handlePatientCoverageRequest (request) {
   response.contentType = 'application/json'
   const isRequestHeadersValid = validatePostCoverageHeaders(request) && validateHeaders(request)
   if (isRequestHeadersValid) {
-    if (postPatientRequestIsValid(request)) {
+    if (postCoverageRequestIsValid(request)) {
       const originalPatient = JSON.parse(JSON.stringify(PATIENT_WITH_COVERAGE))
       if (request.header('if-match') !== `W/"${originalPatient.meta.versionId}"`) {
         return setResourceVersionMismatchError(request)
