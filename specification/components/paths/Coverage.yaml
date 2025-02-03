@@ -102,7 +102,7 @@ get:
               $ref: '#/components/schemas/OperationOutcome'
             example:
               resourceType: OperationOutcome
-              issue:
+              issue:+-
                 - severity: error
                   code: forbidden
                   details:
@@ -124,13 +124,31 @@ post:
       You can only update EHIC details using patient access mode.
 
       ## Patient resource versioning
-        To update a patient's details, use the [get a patient's coverage](///link to get coverage endpoint info here//////) to get a version number for the most up-to-date record. The version number is in the `ETag` response header in the form `W/"2"`.
+      To update a patient's details, use the [get a patient's coverage](///link to get coverage endpoint info here//////) to get a version number for the most up-to-date record. The version number is in the `ETag` response header in the form `W/"2"`.
 
-        You must then pass the patient's version number in the update request, in the `If-Match` response header. If the patient resource has been updated in PDS between your first retrieval and the update request, the update will fail.
+      You must then pass the patient's version number in the update request, in the `If-Match` response header. If the patient record has been updated in PDS between your first retrieval and the update request, the update will fail.
 
-        When the update succeeds, you will get the updated patient record. This will contain the new resource version number.
+      When the update succeeds, you will get the updated patient record. This will contain the new resource version number.
 
-        If you make a further update you must use the new version number.
+      If you make a further update you must use the new version number.
+      
+      ## JSON Patch
+      To update a patient record, a [JSON Patch](https://tools.ietf.org/html/rfc6902) should be sent. A JSON Patch consists of one or more patch objects within a list.
+
+      All updates should be sent together in a single request as a list of patches. This is the most efficient way. It also reduces the danger of race conditions occurring when updating the patient record multiple times in a short period of time.
+
+      When processing the list of patch objects, each patch must be valid and pass all the business rules against the data. If one patch object fails, none of the patch objects will be applied.
+
+      A patch object consists of:
+      * an operation, `op` - this is required.
+      * a path to the data that you want to change, `path` - this is required.
+      * the value that is assigned, `value` - this is required for `add`, `replace` and `test`; but should not be included for a `remove`.
+
+      The following operations are supported:
+      * `add` - to add a new value.
+      * `replace` - to replace an existing value.
+      * `remove` - to remove an existing value.
+      * `test` - to test the state of a value is as expected before continuing with the update.
 
     parameters:
       - $ref: '#/components/parameters/IfMatch'
