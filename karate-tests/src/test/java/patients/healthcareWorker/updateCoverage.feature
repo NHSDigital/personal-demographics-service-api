@@ -18,7 +18,7 @@ Feature: Update Coverage-not permitted for healthcare worker
     * header Content-Type = "application/json"
     * def periodEndDate = utils.randomDateWithInYears(2)
     * path "Coverage"
-    * request read('classpath:patients/patientAccess/update-patient-coverage-request.json')
+    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
     * method post
     * status 403
     * def display = "Cannot POST resource with user-restricted access token"

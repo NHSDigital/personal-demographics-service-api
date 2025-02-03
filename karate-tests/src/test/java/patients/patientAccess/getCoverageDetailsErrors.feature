@@ -13,7 +13,7 @@ Scenario Outline: Patient can't retrieve coverage details when <patientType>
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = nhsNumber
+    * param subscriber:identifier = nhsNumber
     * method get
     * status 403
     * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
@@ -31,7 +31,7 @@ Scenario Outline: Auth errors: patient coverage details
     * requestHeaders.authorization = headerValue
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = p9number
+    * param subscriber:identifier = p9number
     * method get
     * status 401
     * assert utils.validateResponseHeaders(requestHeaders, responseHeaders) 
@@ -44,14 +44,14 @@ Scenario Outline: Auth errors: patient coverage details
          |                            | Missing Authorization header   |      
          | Bearer                     | Missing access token           |
          | Bearer abcdef123456789     | Invalid Access Token           |
-
+         
 Scenario Outline: x-request-id errors: patient coverage details
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * requestHeaders['x-request-id'] = headerValue
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = p9number
+    * param subscriber:identifier = p9number
     * method get
     * status 400
     * assert utils.validateResponseHeaders(requestHeaders, responseHeaders) 
@@ -68,7 +68,7 @@ Scenario: Identifier doesn't match nhs number of user
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = "9999999990"
+    * param subscriber:identifier = "9999999990"
     * method get
     * status 403
     * def display = 'Patient cannot perform this action'
@@ -82,7 +82,7 @@ Scenario: No search params provided
     * path 'Coverage'
     * method get
     * status 400
-    * def diagnostics = "Invalid search data provided - 'Coverage search request must follow the format /Coverage?beneficiary:identifier=NHS_NUMBER'"
+    * def diagnostics = "Invalid search data provided - 'Coverage search request must follow the format /Coverage?subscriber:identifier=NHS_NUMBER'"
     * match response == read('classpath:mocks/stubs/errorResponses/INVALID_SEARCH_DATA.json')
 
 Scenario: Additional invalid param
@@ -90,10 +90,10 @@ Scenario: Additional invalid param
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * params { beneficiary:identifier = "9999999990", year: "2003" }
+    * params { subscriber:identifier = "9999999990", year: "2003" }
     * method get
     * status 400
-    * def diagnostics = "Invalid search data provided - 'Coverage search request must follow the format /Coverage?beneficiary:identifier=NHS_NUMBER'"
+    * def diagnostics = "Invalid search data provided - 'Coverage search request must follow the format /Coverage?subscriber:identifier=NHS_NUMBER'"
     * match response == read('classpath:mocks/stubs/errorResponses/INVALID_SEARCH_DATA.json')
 
 Scenario: Patient that don't have corresponding patient objects
@@ -102,7 +102,7 @@ Scenario: Patient that don't have corresponding patient objects
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Coverage'
-    * param beneficiary:identifier = p9WithoutPatientObject
+    * param subscriber:identifier = p9WithoutPatientObject
     * method get
     * status 404
     * match response == read('classpath:mocks/stubs/errorResponses/RESOURCE_NOT_FOUND.json')    

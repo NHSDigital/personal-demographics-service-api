@@ -67,20 +67,6 @@ function setAdditionalPropertiesError (diagnostics) {
   response.status = 400
 }
 
-/**
- * Sets an INVALID_UPDATE error response for the given request and diagnostics.
- *
- * @param {Object} request - The request object.
- * @param {Array} diagnostics - The diagnostics to be set in the error response.
- */
-// eslint-disable-next-line no-unused-vars
-function setInvalidUpdateError (request, diagnostics) {
-  const body = context.read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
-  body.issue[0].diagnostics = diagnostics
-  response.body = body
-  response.status = 400
-}
-
 /*********************************************************************************************************************
  *   Validation functions
  *********************************************************************************************************************/
@@ -222,4 +208,47 @@ function timestampBody (body) {
   // timestamp format is '2019-12-25T12:00:00+00:00'
   body.timestamp = new Date().toISOString()
   return body
+}
+
+/*
+    Diagnostics strings for error messages
+*/
+// eslint-disable-next-line no-unused-vars
+const NO_IF_MATCH_HEADER = 'Invalid request with error - If-Match header must be supplied to update this resource'
+// eslint-disable-next-line no-unused-vars
+const NO_PATCHES_PROVIDED = 'Invalid update with error - No patches found'
+
+/*
+    Functions to handle error responses
+*/
+// eslint-disable-next-line no-unused-vars
+function setResourceVersionMismatchError (request) {
+  const body = context.read('classpath:mocks/stubs/errorResponses/RESOURCE_VERSION_MISMATCH.json')
+  response.headers = basicResponseHeaders(request)
+  response.body = body
+  response.status = 409
+}
+// eslint-disable-next-line no-unused-vars
+function setInvalidUpdateError (request, diagnostics) {
+  const body = context.read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
+  body.issue[0].diagnostics = diagnostics
+  response.headers = basicResponseHeaders(request)
+  response.body = body
+  response.status = 400
+}
+// eslint-disable-next-line no-unused-vars
+function setPreconditionFailedError (request, diagnostics) {
+  const body = context.read('classpath:mocks/stubs/errorResponses/PRECONDITION_FAILED.json')
+  body.issue[0].diagnostics = diagnostics
+  response.headers = basicResponseHeaders(request)
+  response.body = body
+  response.status = 412
+}
+// eslint-disable-next-line no-unused-vars
+function setForbiddenUpdateError (request, diagnostics) {
+  const body = context.read('classpath:mocks/stubs/errorResponses/FORBIDDEN_UPDATE.json')
+  body.issue[0].diagnostics = diagnostics
+  response.headers = basicResponseHeaders(request)
+  response.body = body
+  response.status = 403
 }
