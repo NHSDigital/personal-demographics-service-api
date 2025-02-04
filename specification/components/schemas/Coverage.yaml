@@ -96,7 +96,7 @@ properties:
         format: date
         description: "End date of time period, if known, in format `yyyy-mm-dd`. Must be less than 150 years in the past. Must be less than 150 years in the future."
         example: "2030-12-31"
-    type:
+  type:
     type: object
     description: The type of coverage this Coverage resource defines.
     properties:
