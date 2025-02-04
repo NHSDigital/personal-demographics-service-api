@@ -18,7 +18,7 @@ Feature:  Update Coverage details - not permitted for application-restricted use
     * header Content-Type = "application/json"
     * header If-Match = originalEtag 
     * path "Coverage"
-    * request read('classpath:patients/patientAccess/update-patient-coverage-request.json')
+    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
     * method post
     * status 403
     * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)

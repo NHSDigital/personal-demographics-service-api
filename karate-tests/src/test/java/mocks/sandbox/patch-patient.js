@@ -1,8 +1,9 @@
 /* Karate objects */
-/* global context, request, response, session */
+/* global request, response, session */
 
 /* Functions defined in supporting-functions.js */
-/* global setInvalidValueError, setUnsupportedServiceError, validateHeaders, validateNHSNumber, validatePatientExists, basicResponseHeaders */
+/* global setInvalidValueError, setUnsupportedServiceError, validateHeaders, validateNHSNumber, validatePatientExists, basicResponseHeaders, NO_IF_MATCH_HEADER,
+NO_PATCHES_PROVIDED, setResourceVersionMismatchError, setInvalidUpdateError, setPreconditionFailedError, setForbiddenUpdateError */
 
 /* Functions defined in operations.js */
 /* global updateAddressDetails, handleNameRemovalError, removeSuffixIfExists, removeNameSuffix, updateGivenName, updateGender, updateBirthDate,
@@ -16,46 +17,6 @@ function buildResponseHeaders (request, patient) {
     'x-request-id': request.header('x-request-id'),
     'x-correlation-id': request.header('x-correlation-id')
   }
-}
-
-/*
-    Diagnostics strings for error messages
-*/
-const NO_IF_MATCH_HEADER = 'Invalid request with error - If-Match header must be supplied to update this resource'
-const NO_PATCHES_PROVIDED = 'Invalid update with error - No patches found'
-
-/*
-    Functions to handle error responses
-*/
-function setResourceVersionMismatchError (request) {
-  const body = context.read('classpath:mocks/stubs/errorResponses/RESOURCE_VERSION_MISMATCH.json')
-  response.headers = basicResponseHeaders(request)
-  response.body = body
-  response.status = 409
-}
-
-function setInvalidUpdateError (request, diagnostics) {
-  const body = context.read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
-  body.issue[0].diagnostics = diagnostics
-  response.headers = basicResponseHeaders(request)
-  response.body = body
-  response.status = 400
-}
-
-function setPreconditionFailedError (request, diagnostics) {
-  const body = context.read('classpath:mocks/stubs/errorResponses/PRECONDITION_FAILED.json')
-  body.issue[0].diagnostics = diagnostics
-  response.headers = basicResponseHeaders(request)
-  response.body = body
-  response.status = 412
-}
-
-function setForbiddenUpdateError (request, diagnostics) {
-  const body = context.read('classpath:mocks/stubs/errorResponses/FORBIDDEN_UPDATE.json')
-  body.issue[0].diagnostics = diagnostics
-  response.headers = basicResponseHeaders(request)
-  response.body = body
-  response.status = 403
 }
 
 /*

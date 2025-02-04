@@ -4,25 +4,35 @@ required:
   - status
   - beneficiary
   - payor
-  - subscriberId
+  - subscriber
   - identifier
   - period
 properties:
   status:
-    description: The status of the resource instance.
     type: string
-    enum:
-      - active
-    example: active
-  subscriberId:
-    description: ID assigned to the subscriber
-    type: string
-    minLength: 1
-    maxLength: 25
-    pattern: ^[a-zA-Z0-9]{1,25}$
+    description: "The status of the resource instance."
+    enum: ["active"]
+    default: "active"
+  subscriber:
+    type: object
+    description: "Subscriber and patient covered by the policy"
+    required:
+      - identifier
+    properties:
+      identifier:
+        type: object
+        required:
+          - value
+        properties:
+          system:
+            type: string
+            format: url
+            enum: ["https://fhir.nhs.uk/Id/nhs-number"]
+          value:
+            $ref: NhsNumber.yaml
   identifier:
-    description: The primary identifier of the insurer
     type: array
+    description: "The primary identifier of the insurer"
     minItems: 1
     maxItems: 1
     items:
@@ -35,60 +45,58 @@ properties:
           type: string
           minLength: 1
           maxLength: 25
-          pattern: ^[a-zA-Z0-9]{1,25}$
+          pattern: "^[a-zA-Z0-9]{1,25}$"
         assigner:
-          $ref: CountryCode.json
+          $ref: CountryCode.yaml
   payor:
-    description: Issuer of the policy
     type: array
+    description: "Issuer of the policy"
     minItems: 1
     maxItems: 1
     items:
       type: object
-      required:
+      required: 
         - identifier
       properties:
         identifier:
-          description: Identification number of the institution
           type: object
+          required: 
+            - value
           properties:
             value:
-              description: The value that is unique
               type: string
+              description: "The value that is unique"
               minLength: 1
               maxLength: 30
-              pattern: ^[a-zA-Z0-9]{1,30}$
+              pattern: "^[a-zA-Z0-9]{1,30}$"
   beneficiary:
-    description: The patient that is the beneficiary of the coverage.
     type: object
+    description: "Plan beneficiary"
+    required:
+      - identifier
     properties:
       identifier:
         type: object
+        required:
+          - value
         properties:
-          system:
-            type: string
-            description: URL for the Patient retrieval API.
-            format: url
-            default: https://fhir.nhs.uk/Id/nhs-number
-            enum:
-              - https://fhir.nhs.uk/Id/nhs-number
           value:
-            type: string
-            description: NHS number for the beneficiary of the coverage.
-            example: 90000000009
-            pattern: ^\d{10}$
+            description: "The personal ID number identifying the beneficiary."
+            minLength: 1
+            maxLength: 25
+            pattern: "^[a-zA-Z0-9]{1,25}$"
   period:
-    description: Time period when coverage is valid
     type: object
+    description: "Time period when coverage is valid"
     required:
       - end
     properties:
       end:
-        description: End date of time period, if known, in format `yyyy-mm-dd`. Must be less than 150 years in the past. Must be less than 150 years in the future.
         type: string
         format: date
-        example: 2026-12-31
-  type:
+        description: "End date of time period, if known, in format `yyyy-mm-dd`. Must be less than 150 years in the past. Must be less than 150 years in the future."
+        example: "2030-12-31"
+    type:
     type: object
     description: The type of coverage this Coverage resource defines.
     properties:
