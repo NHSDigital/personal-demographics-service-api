@@ -7,15 +7,15 @@ steps:
       customCommand: 'install newman -g'
 
   - bash: |
-      newman run postman/patient-demographics-sandbox.postman_collection.json --env-var "base_url=https://$(ENVIRONMENT).api.service.nhs.uk/$(PDS_BASE_PATH)" -r cli,junit --insecure --reporter-junit-export newman-test-report.xml
+      newman run patient-demographics-sandbox.postman_collection.json --env-var "base_url=https://$(ENVIRONMENT).api.service.nhs.uk/$(PDS_BASE_PATH)" -r cli,junit --insecure --reporter-junit-export newman-test-report.xml
+    workingDirectory: "$(ARTIFACT_PATH)/postman"
     displayName: 'Run Postman collection tests'
 
   - task: PublishTestResults@2
     displayName: 'Publish Postman collection test results'
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/postman/newman-test-report.xml
+      testResultsFiles: $(ARTIFACT_PATH)/postman/newman-test-report.xml
       failTaskOnFailedTests: true
-
 
   - bash: |
       export CLIENT_ID="$(CLIENT_ID)"
