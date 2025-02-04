@@ -17,6 +17,13 @@ steps:
       testResultsFiles: $(ARTIFACT_PATH)/postman/newman-test-report.xml
       failTaskOnFailedTests: true
 
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Postman collection test report as an artifact'
+    condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
+    inputs:
+      pathToPublish: $(ARTIFACT_PATH)/postman/newman-test-report.xml
+      artifactName: PostmanTestReport
+
   - bash: |
       export CLIENT_ID="$(CLIENT_ID)"
       mvn clean test -Dtest=TestMockParallel
