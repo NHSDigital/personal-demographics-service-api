@@ -2,7 +2,43 @@ summary: Post coverage for a patient
 operationId: post-coverage
 description: |
   ## Overview
-  To be filled in later
+  Use this endpoint to update a patient's European Health Insurance Card (EHIC) details. A patient may have other financial coverage, like insurance, but this information cannot be added to PDS.  
+
+  There can only be one set of EHIC details on a patient's record at a time. If a patient already has an EHIC record in PDS, the update request will replace the existing EHIC record. When a user adds a new EHIC record to PDS, they must enter information for all the EHIC data fields.  
+
+  You can only update EHIC details using patient access mode (for specific use cases only). 
+
+  ## Patient resource versioning
+  To update a patient's details, use the `get a patient's coverage` operation to get a version number for the most up-to-date details. The version number is in the `ETag` response header in the form `W/"2"`.
+
+  You must then pass the patient's version number in the update request, in the `If-Match` response header. If the coverage details have been updated in PDS between your first retrieval and the update request, the update will fail.
+
+  When the update succeeds, you will get the updated coverage details. This will contain the new resource version number.
+
+  If you make a further update you must use the new version number.
+
+  ## Sandbox test scenarios
+
+  You can test the following scenarios in our sandbox environment.
+
+  | Scenario                            | Request                                                                   | Response                                         |
+  | ----------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------ |
+  | Successful update                   | `id`=`9000000009`<br><br>Body: One of the provided examples or your own combination of patches<br><br>Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json-patch+json` | HTTP Status 200 with updated patient resource. |
+  | Patient does not exist               | `id`=`9111231130` (or any other valid NHS number)                         | HTTP Status 404 with problem description         |
+  | Invalid NHS number                  | `id`=`9000000000` (or any invalid NHS number)                             | HTTP Status 400 with problem description         |
+  | Missing resource version identifier | `If-Match` header missing or set to format other than `W/"<version>"`     | HTTP Status 412 with problem description         |
+  | Incorrect resource version          | `If-Match`=`W/"1"`                                                        | HTTP Status 412 with problem description         |
+  | Wrong content type                  | `Content-Type` header missing or other than `application/json-patch+json` | HTTP Status 400 with problem description         |
+  | No patches sent                     | Send body with no `patches` attribute                                     | HTTP Status 400 with problem description         |
+  | Invalid patch operations            | Send body with invalid JSON patches in `patches` attribute                | HTTP Status 400 with problem description         |
+  | Missing X-Request-ID                | `id`=`9000000009` (or any other valid NHS number)                         | HTTP Status 400 with problem description         |
+
+  You can try out the sandbox by selecting the 'Try' button on this page.
+
+  Alternatively, you can try out the sandbox using our Postman collection:
+  
+  [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/32547823-005ebee4-7510-44c3-bb0e-58f26b2ba747)
+
 parameters:
   - $ref: '../../personal-demographics.yaml#/components/parameters/IfMatch'
 responses:
