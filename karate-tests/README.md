@@ -119,15 +119,6 @@ We have a Dockerfile set up for the sandbox. You can build the image from this D
     ```bash
     docker inspect <CONTAINER ID> | grep '"IPAddress":' | grep -oE '[0-9]+(\.[0-9]+){3}' | head -n 1
     ```
-1. You should now be able to run the sandbox tests against this container to show things are working, e.g. :
-    ```bash
-    export APIGEE_ENVIRONMENT=docker && poetry run -vv pytest tests/sandbox/test_sandbox.py::TestSandboxRelatedPersonSuite
-    ```
-
-- If you want a shortcut to set the environment variable and run all tests, there is the make command:
-    ```bash
-    make test-karate-sandbox
-    ```
 
 #### Option 2: Building your own jarfile and running the sandbox locally
 ##### Building a jarfile
@@ -145,11 +136,6 @@ To run the sandbox, go to your `src/test/java` folder and run the following comm
 ```bash
 java -cp $KARATE_JAR:. com.intuit.karate.Main -m mocks/sandbox/sandbox.js -p 9000:9000
 ```
-
-You'll see output in your terminal to suggest the sandbox is running properly (or not). Again, you can test things by running the sandbox tests:  
-  ```bash
-  export APIGEE_ENVIRONMENT=karate && poetry run -vv pytest tests/sandbox/test_sandbox.py::TestSandboxRelatedPersonSuite
-  ```
 
 ## CI Setup
 

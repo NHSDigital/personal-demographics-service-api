@@ -96,8 +96,5 @@ test-local-sandbox:
 test-sandbox:
 	cd karate-tests && mvn clean test -Dtest=TestMockParallel
 
-test-karate-sandbox: 
-	export APIGEE_ENVIRONMENT=karate && poetry run pytest -v tests/sandbox/test_sandbox.py
-
 validate-xml:
 	poetry run python scripts/xml_validator.py
