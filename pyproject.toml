@@ -1,11 +1,13 @@
 [project]
-python = "^3.8"
+python = "^3.9"
+name = "personal-demographics-service-api"
 
 
 [tool.poetry]
 name = "sandbox"
 version = "0.0.1-alpha"
 description = "PDS API Sandbox"
+package-mode = false
 
 license = "MIT"
 
@@ -24,7 +26,7 @@ keywords = ["healthcare", "uk", "nhs", "demographics"]
 
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 pyyaml = "^5.2"
 docopt = "^0.6.2"
 jsonpath-rw = "^1.4.0"

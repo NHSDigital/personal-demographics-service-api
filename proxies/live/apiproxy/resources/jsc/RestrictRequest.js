@@ -15,16 +15,19 @@ function is_request_restricted() {
         return true
     }
 
-    // If GET coverage
     var id_token_nhs_number = context.getVariable('jwt.DecodeJWT.DecodeIdToken.claim.nhs_number');
-    var coverageRegex = new RegExp(/Coverage\?beneficiary%3Aidentifier=[0-9]{10}$/)
+    var coverageRegex = new RegExp(/Coverage\?subscriber%3Aidentifier=[0-9]{10}$/)
     if (splitPathsuffix[1] == "Coverage"){
+        var httpVerb = context.getVariable('request.verb');
+        if (httpVerb === "POST") {
+            return false
+        }
         if (!coverageRegex.test(fullUrl)) {
             context.setVariable('apigee.invalid_coverage_search', true);
             return true
         }
         if (fullUrl.slice(-10) != id_token_nhs_number){
-            return true 
+            return true
         }
         return false
     }
@@ -33,7 +36,7 @@ function is_request_restricted() {
     if ((request_path_nhs_number != id_token_nhs_number)) {
         return true
     }
-    
+
     return false
 }
 

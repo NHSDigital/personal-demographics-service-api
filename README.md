@@ -48,17 +48,17 @@ exec $SHELL
 ```
 If the command isn't working you can also [try the instructions here.](https://www.liquidweb.com/kb/how-to-install-pyenv-on-ubuntu-18-04/)
 
-Install python 3.8.2
+Install python 3.9
 ```bash
-pyenv install 3.8.2
+pyenv install 3.9
 ```
 Either set this as your global python (if this is not incompatible with your other projects),
 ```bash
-pyenv global 3.8.2
+pyenv global 3.9
 ```
 or local to repository, if there is not a python-version file installed (you might have to raise a PR to add the file that's created).
 ```bash
-pyenv local 3.8.2
+pyenv local 3.9
 python --version
 ```
 
@@ -151,6 +151,13 @@ To run local tests, use:
 make test-sandbox
 ```
 If a lot of the tests fail and the sandbox crashes with the error `Cannot read properties of null (reading 'statusCode')`, you may not be using the correct version of node. Check the version being used by that instance of the terminal and run re-run '`nvm use lts/iron`' if required.
+
+#### Jest
+
+A short javascript file, RestrictRequests.js, handles restricting patient-access requests. Jest is use to unit test this file. To run these tests locally,
+```
+npm run jest
+```
 
 
 ### VS Code Plugins

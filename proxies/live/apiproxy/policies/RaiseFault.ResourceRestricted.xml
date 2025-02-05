@@ -1,27 +1,28 @@
-<RaiseFault async="false" continueOnError="false" enabled="true" name="RaiseFault.InvalidCoverageSearch">
+<RaiseFault async="false" continueOnError="false" enabled="true" name="RaiseFault.ResourceRestricted">
   <FaultResponse>
     <Set>
       <Headers />
       <Payload contentType="text/plain" />
-      <StatusCode>400</StatusCode>
-      <ReasonPhrase>Bad Request</ReasonPhrase>
+      <StatusCode>403</StatusCode>
+      <ReasonPhrase>Forbidden</ReasonPhrase>
     </Set>
     <AssignVariable>
       <Name>pds.error.code</Name>
-      <Value>value</Value>
+      <Value>forbidden</Value>
     </AssignVariable>
     <AssignVariable>
       <Name>pds.error.coding.code</Name>
-      <Value>INVALID_SEARCH_DATA</Value>
+      <Value>ACCESS_DENIED</Value>
     </AssignVariable>
     <AssignVariable>
       <Name>pds.error.coding.display</Name>
-      <Template>Search data is invalid</Template>
+      <Template>Cannot {request.verb} resource with {access-mode} access token</Template>
     </AssignVariable>
     <AssignVariable>
       <Name>pds.error.diagnostics</Name>
-      <Template>Invalid search data provided - 'Coverage search request must follow the format /Coverage?subscriber:identifier=NHS_NUMBER'</Template>
+      <Template>Your app has insufficient permissions to use this operation. Please contact support.</Template>
     </AssignVariable>
   </FaultResponse>
   <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
 </RaiseFault>
+
