@@ -40,7 +40,7 @@ if (request.pathMatches('/Coverage') && request.get) {
       const responseData = context.read(responsePath)
       buildResponse(request, responseData)
     }
-  } else if (invalidParams.length === 1 || paramKeys.length === 0) {
+  } else if (invalidParams.length > 0 || paramKeys.length === 0) {
     const diagnostics = "Invalid search data provided - 'Coverage search request must follow the format /Coverage?subscriber:identifier=NHS_NUMBER'"
     setInvalidSearchDataError(diagnostics)
   }
