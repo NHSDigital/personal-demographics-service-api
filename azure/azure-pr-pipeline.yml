@@ -65,8 +65,6 @@ extends:
            - template: templates/pds-tests-int.yml
         depends_on:
           - karate_tests
-          - pytest_bdd_tests
-          - pytest_v_node_sandbox
         jinja_templates:
           PDS_TARGET_SERVER: spine-demographics-int
           REQUIRE_ASID: false
