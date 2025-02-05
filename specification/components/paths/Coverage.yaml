@@ -114,9 +114,9 @@ post:
     operationId: post-coverage
     description: |
       ## Overview
-      Use this endpoint to update a patient's European Health Insurance Card (EHIC) details. A patient may have other financial coverage, like insurance, but this information cannot be added to PDS. 
+      Use this endpoint to update a patient's European Health Insurance Card (EHIC) details. A patient may have other financial coverage, like insurance, but this information cannot be added to PDS.  
 
-      There can only be one set of EHIC details on a patient's record at a time. If a patient already has an EHIC record in PDS, the update request will replace the existing EHIC record.
+      There can only be one set of EHIC details on a patient's record at a time. If a patient already has an EHIC record in PDS, the update request will replace the existing EHIC record. When a user adds a new EHIC record to PDS, they must enter information for all the EHIC data fields.  
     
       You can only update EHIC details using patient access mode (for specific use cases only). 
 
