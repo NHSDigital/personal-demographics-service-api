@@ -1,111 +1,275 @@
-description: Insurance or medical plan or a payment agreement
 type: object
 required:
-  - status
-  - beneficiary
-  - payor
+  - identifier
 properties:
-  status:
-    description: The status of the resource instance.
-    type: string
-    enum:
-      - active
-    example: active
-  subscriberId:
-    description: ID assigned to the subscriber
-    type: string
-    minLength: 1
-    maxLength: 25
-    pattern: ^[a-zA-Z0-9]{1,25}$
   identifier:
-    description: The primary identifier of the insurer
-    type: array
-    minItems: 1
-    maxItems: 1
-    items:
-      type: object
-      required:
-        - value
-        - assigner
-      properties:
-        value:
-          type: string
-          minLength: 1
-          maxLength: 25
-          pattern: ^[a-zA-Z0-9]{1,25}$
-        assigner:
-          $ref: CountryCode.json
-  payor:
-    description: Issuer of the policy
-    type: array
-    minItems: 1
-    maxItems: 1
-    items:
-      type: object
-      required:
-        - identifier
-      properties:
-        identifier:
-          description: Identification number of the institution
-          type: object
-          properties:
-            value:
-              description: The value that is unique
-              type: string
-              minLength: 1
-              maxLength: 30
-              pattern: ^[a-zA-Z0-9]{1,30}$
-  beneficiary:
-    description: The patient that is the beneficiary of the coverage.
     type: object
+    description: "Identifier for the country from which the Coverage originates."
+    required:
+      - system
+      - value
     properties:
-      identifier:
-        type: object
-        properties:
-          system:
-            type: string
-            description: URL for the Patient retrieval API.
-            format: url
-            default: https://fhir.nhs.uk/Id/nhs-number
-            enum:
-              - https://fhir.nhs.uk/Id/nhs-number
-          value:
-            type: string
-            description: NHS number for the beneficiary of the coverage.
-            example: 90000000009
-            pattern: ^\d{10}$
-  period:
-    description: Time period when coverage is valid
-    type: object
-    required: end
-    properties:
-      end:
-        description: End date of time period, if known, in format `yyyy-mm-dd`. Must be less than 150 years in the past. Must be less than 150 years in the future.
-        type: date
-        example: 2026-12-31
-  type:
-    type: object
-    description: The type of coverage this Coverage resource defines.
-    properties:
-      coding:
-        type: array
-        minItems: 1
-        maxItems: 1
-        items:
-          type: object
-          required:
-            - system
-            - code
-          properties:
-            system:
-              type: string
-              enum:
-                - http://terminology.hl7.eu/CodeSystem/v3-ActCode
-            code:
-              type: string
-              enum:
-                - EHIC
-            display:
-              type: string
-              enum:
-                - European Health Insurance Card
+      system:
+        type: string
+        enum: ["urn:iso:std:iso:3166"]
+      value:
+        type: string
+        description: "Three-letter country code that identifies the country from which the Coverage originates."
+        enum:
+          - "ABW"
+          - "AFG"
+          - "AGO"
+          - "AIA"
+          - "ALA"
+          - "ALB"
+          - "AND"
+          - "ANT"
+          - "ARE"
+          - "ARG"
+          - "ARM"
+          - "ASM"
+          - "ATA"
+          - "ATF"
+          - "ATG"
+          - "AUS"
+          - "AUT"
+          - "AZE"
+          - "BDI"
+          - "BEL"
+          - "BEN"
+          - "BES"
+          - "BFA"
+          - "BGD"
+          - "BGR"
+          - "BHR"
+          - "BHS"
+          - "BIH"
+          - "BLM"
+          - "BLR"
+          - "BLZ"
+          - "BMU"
+          - "BOL"
+          - "BRA"
+          - "BRB"
+          - "BRN"
+          - "BTN"
+          - "BVT"
+          - "BWA"
+          - "CAF"
+          - "CAN"
+          - "CCK"
+          - "CHE"
+          - "CHL"
+          - "CHN"
+          - "CIV"
+          - "CMR"
+          - "COD"
+          - "COG"
+          - "COK"
+          - "COL"
+          - "COM"
+          - "CPV"
+          - "CRI"
+          - "CUB"
+          - "CUW"
+          - "CXR"
+          - "CYM"
+          - "CYP"
+          - "CZE"
+          - "DEU"
+          - "DJI"
+          - "DMA"
+          - "DNK"
+          - "DOM"
+          - "DZA"
+          - "ECU"
+          - "EGY"
+          - "ERI"
+          - "ESH"
+          - "ESP"
+          - "EST"
+          - "ETH"
+          - "FIN"
+          - "FJI"
+          - "FLK"
+          - "FRA"
+          - "FRO"
+          - "FSM"
+          - "GAB"
+          - "GBR"
+          - "GEO"
+          - "GGY"
+          - "GHA"
+          - "GIB"
+          - "GIN"
+          - "GLP"
+          - "GMB"
+          - "GNB"
+          - "GNQ"
+          - "GRC"
+          - "GRD"
+          - "GRL"
+          - "GTM"
+          - "GUF"
+          - "GUM"
+          - "GUY"
+          - "HKG"
+          - "HMD"
+          - "HND"
+          - "HRV"
+          - "HTI"
+          - "HUN"
+          - "IDN"
+          - "IMN"
+          - "IND"
+          - "IOT"
+          - "IRL"
+          - "IRN"
+          - "IRQ"
+          - "ISL"
+          - "ISR"
+          - "ITA"
+          - "JAM"
+          - "JEY"
+          - "JOR"
+          - "JPN"
+          - "KAZ"
+          - "KEN"
+          - "KGZ"
+          - "KHM"
+          - "KIR"
+          - "KNA"
+          - "KOR"
+          - "KWT"
+          - "LAO"
+          - "LBN"
+          - "LBR"
+          - "LBY"
+          - "LCA"
+          - "LIE"
+          - "LKA"
+          - "LSO"
+          - "LTU"
+          - "LUX"
+          - "LVA"
+          - "MAC"
+          - "MAF"
+          - "MAR"
+          - "MCO"
+          - "MDA"
+          - "MDG"
+          - "MDV"
+          - "MEX"
+          - "MHL"
+          - "MKD"
+          - "MLI"
+          - "MLT"
+          - "MMR"
+          - "MNE"
+          - "MNG"
+          - "MNP"
+          - "MOZ"
+          - "MRT"
+          - "MSR"
+          - "MTQ"
+          - "MUS"
+          - "MWI"
+          - "MYS"
+          - "MYT"
+          - "NAM"
+          - "NCL"
+          - "NER"
+          - "NFK"
+          - "NGA"
+          - "NIC"
+          - "NIU"
+          - "NLD"
+          - "NOR"
+          - "NPL"
+          - "NRU"
+          - "NZL"
+          - "OMN"
+          - "PAK"
+          - "PAN"
+          - "PCN"
+          - "PER"
+          - "PHL"
+          - "PLW"
+          - "PNG"
+          - "POL"
+          - "PRI"
+          - "PRK"
+          - "PRT"
+          - "PRY"
+          - "PSE"
+          - "PYF"
+          - "QAT"
+          - "REU"
+          - "ROU"
+          - "RUS"
+          - "RWA"
+          - "SAU"
+          - "SDN"
+          - "SEN"
+          - "SGP"
+          - "SGS"
+          - "SHN"
+          - "SJM"
+          - "SLB"
+          - "SLE"
+          - "SLV"
+          - "SMR"
+          - "SOM"
+          - "SPM"
+          - "SRB"
+          - "SSD"
+          - "STP"
+          - "SUR"
+          - "SVK"
+          - "SVN"
+          - "SWE"
+          - "SWZ"
+          - "SXM"
+          - "SYC"
+          - "SYR"
+          - "TCA"
+          - "TCD"
+          - "TGO"
+          - "THA"
+          - "TJK"
+          - "TKL"
+          - "TKM"
+          - "TLS"
+          - "TON"
+          - "TTO"
+          - "TUN"
+          - "TUR"
+          - "TUV"
+          - "TWN"
+          - "TZA"
+          - "UGA"
+          - "UKR"
+          - "UMI"
+          - "URY"
+          - "USA"
+          - "UZB"
+          - "VAT"
+          - "VCT"
+          - "VEN"
+          - "VGB"
+          - "VIR"
+          - "VNM"
+          - "VUT"
+          - "WLF"
+          - "WSM"
+          - "XKX"
+          - "XXB"
+          - "YEM"
+          - "ZAF"
+          - "ZMB"
+          - "ZWE"
+  display:
+    type: string
+    description: "Display-friendly representation of the country code."
+    readonly: true
+    example: France

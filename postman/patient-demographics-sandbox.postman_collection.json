@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "13bc21ad-262f-4235-bfb8-965314509be1",
-		"name": "patient-demographics-sandbox",
+		"_postman_id": "64c4c17a-e9c2-44fe-814c-592e445ce4df",
+		"name": "Patient Demographics Sandbox",
 		"description": "Sandbox example requests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "32880910"
+		"_exporter_id": "37539493"
 	},
 	"item": [
 		{
@@ -3507,18 +3507,437 @@
 					}
 				}
 			]
+		},
+		{
+			"name": "Retrieve patient coverage details",
+			"item": [
+				{
+					"name": "Coverage details exists on patient",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/Coverage?subscriber:identifier=9000000009",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Coverage"
+							],
+							"query": [
+								{
+									"key": "subscriber:identifier",
+									"value": "9000000009"
+								}
+							]
+						},
+						"description": "Example of successful patient retrieval"
+					},
+					"response": []
+				},
+				{
+					"name": "Coverage details do not exists on patient",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/Coverage?subscriber:identifier=9000000033",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Coverage"
+							],
+							"query": [
+								{
+									"key": "subscriber:identifier",
+									"value": "9000000033"
+								}
+							]
+						},
+						"description": "Example of successful patient retrieval"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update patient coverage details",
+			"item": [
+				{
+					"name": "Valid Updates - PLEASE READ THE DESCRIPTION OF THIS FOLDER",
+					"item": [
+						{
+							"name": "Add Coverage",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Request-ID",
+										"value": "{{$guid}}",
+										"type": "text"
+									},
+									{
+										"key": "If-Match",
+										"value": "W/\"2\"",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }  \r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"value\": \"9876543218\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriber\": {\r\n      \"identifier\": {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    }\r\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/Coverage",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"Coverage"
+									]
+								},
+								"description": "Example of successful patient retrieval"
+							},
+							"response": []
+						},
+						{
+							"name": "Update Coverage",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Request-ID",
+										"value": "{{$guid}}",
+										"type": "text"
+									},
+									{
+										"key": "If-Match",
+										"value": "W/\"2\"",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"IT12345678901004\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"ITA\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"value\": \"876543217\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"IT98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriber\": {\r\n      \"identifier\": {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    }\r\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/Coverage",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"Coverage"
+									]
+								},
+								"description": "Example of successful patient retrieval"
+							},
+							"response": []
+						}
+					],
+					"description": "In this folder you will find examples of using the POST method to update a patient's Coverage details.\n\nWhen you execute a successful scenario the response will return an updated patient coverage that looks like the patient coverage details has been updated with the changes you made. However, your changes will not be persisted in the sandbox environment, meaning if you perform a subsequent retrieve on the patient the record returned will hold the original patient data.\n\nJSON POST operations themselves are validated, but the resulting resource is not validated for correctness, e.g business rules are not validated."
+				},
+				{
+					"name": "Invalid Updates",
+					"item": [
+						{
+							"name": "Incorrect resource version",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "If-Match",
+										"value": "W/\"1\"",
+										"type": "text"
+									},
+									{
+										"key": "X-Request-ID",
+										"value": "{{$guid}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"value\": \"9876543218\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriber\": {\r\n      \"identifier\": {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    }\r\n  }"
+								},
+								"url": {
+									"raw": "{{base_url}}/Coverage",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"Coverage"
+									]
+								},
+								"description": "Attempt to Patch where the If-Match Header contains the incorrect version of the patient record, results in an error response."
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid Request ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "If-Match",
+										"value": "W/\"2\"",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Request-ID",
+										"value": "12345",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"value\": \"9876543218\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriber\": {\r\n      \"identifier\": {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    }\r\n  }"
+								},
+								"url": {
+									"raw": "{{base_url}}/Coverage",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"Coverage"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Missing resource version",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Request-ID",
+										"value": "{{$guid}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"value\": \"9876543218\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriber\": {\r\n      \"identifier\": {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    }\r\n  }"
+								},
+								"url": {
+									"raw": "{{base_url}}/Coverage",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"Coverage"
+									]
+								},
+								"description": "Attempt to Patch where the If-Match Header is missing, results in an error response."
+							},
+							"response": []
+						},
+						{
+							"name": "Missing Request ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "If-Match",
+										"value": "W/\"2\"",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json-patch+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"value\": \"9876543218\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n     \"subscriber\": {\r\n      \"identifier\": {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    }\r\n  }"
+								},
+								"url": {
+									"raw": "{{base_url}}/Coverage",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"Coverage"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Missing ehic card number",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "If-Match",
+										"value": "W/\"2\"",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json-patch+json",
+										"type": "text"
+									},
+									{
+										"key": "X-Request-ID",
+										"value": "{{$guid}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"value\": \"9876543218\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n     \"subscriber\": {\r\n      \"identifier\": {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    }\r\n  }"
+								},
+								"url": {
+									"raw": "{{base_url}}/Coverage",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"Coverage"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Invalid status",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "If-Match",
+										"value": "W/\"2\"",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json-patch+json",
+										"type": "text"
+									},
+									{
+										"key": "X-Request-ID",
+										"value": "{{$guid}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"DE1234567890121234\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"FAU\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"Expired\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"value\": \"9876543218\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"DE98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriber\": {\r\n      \"identifier\": {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    }\r\n  }"
+								},
+								"url": {
+									"raw": "{{base_url}}/Coverage",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"Coverage"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
 		}
 	],
-	"auth": {
-		"type": "bearer",
-		"bearer": [
-			{
-				"key": "token",
-				"value": "HEALTHCARE_WORKER",
-				"type": "string"
-			}
-		]
-	},
 	"event": [
 		{
 			"listen": "prerequest",

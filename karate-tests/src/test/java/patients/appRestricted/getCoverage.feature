@@ -11,7 +11,7 @@ Feature: Get Coverage-not permitted for application-restricted users
   Scenario: Fail to retrieve a Coverage resource
     * configure headers = requestHeaders 
     * path "Coverage"
-    * param "beneficiary:identifier" = "9999999999"
+    * param "subscriber:identifier" = "9999999999"
     * method get
     * status 403
     * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)

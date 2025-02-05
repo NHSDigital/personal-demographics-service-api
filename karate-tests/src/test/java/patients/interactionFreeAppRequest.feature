@@ -20,7 +20,7 @@ Scenario: Make GET /Coverage request from app that does not have pdsquery:Covera
   * def requestHeaders = call read('classpath:auth/auth-headers.js')
   * configure headers = requestHeaders
   * path 'Coverage'
-  * param beneficiary:identifier = p9number
+  * param subscriber:identifier = p9number
   * method get
   * status 401
   * match response.issue[0].details.coding[0].display == "Access Denied - Unauthorised"

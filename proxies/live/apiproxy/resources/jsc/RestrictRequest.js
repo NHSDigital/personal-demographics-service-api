@@ -16,7 +16,7 @@ function is_request_restricted() {
     }
 
     var id_token_nhs_number = context.getVariable('jwt.DecodeJWT.DecodeIdToken.claim.nhs_number');
-    var coverageRegex = new RegExp(/Coverage\?beneficiary%3Aidentifier=[0-9]{10}$/)
+    var coverageRegex = new RegExp(/Coverage\?subscriber%3Aidentifier=[0-9]{10}$/)
     if (splitPathsuffix[1] == "Coverage"){
         var httpVerb = context.getVariable('request.verb');
         if (httpVerb === "POST") {

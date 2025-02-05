@@ -7,8 +7,7 @@
           "identifier": {
             "system":"urn:iso:std:iso:3166",
             "value":"DEU"
-          },
-          "display" : "Germany"
+          }
         }
       }
     ],
@@ -24,8 +23,7 @@
     },
     "beneficiary" : {
       "identifier" : {
-        "system":"https://fhir.nhs.uk/Id/nhs-number",
-        "value": "#(nhsNumber)"
+        "value": "1029384756"
       }
     },
     "period" : {
@@ -34,9 +32,14 @@
     "payor" : [
       {
         "identifier" : {
-          "value" :"DE98765"
+          "value" :""
         }
       }
     ],
-    "subscriberId": "1029384756"
+    "subscriber": {
+      "identifier": {
+        "system":"https://fhir.nhs.uk/Id/nhs-number",
+        "value": "#(nhsNumber)"
+      }
+    }
   }
