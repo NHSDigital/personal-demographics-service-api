@@ -35,5 +35,12 @@ steps:
     displayName: 'Publish smoke test results'
     condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports/*.xml
+      testResultsFiles: $(ARTIFACT_PATH)/karate-tests/target/karate-reports/*.xml
       failTaskOnFailedTests: true
+  
+  - task: PublishTestResults@1
+    displayName: 'Publish smoke test results as an artifact'
+    condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
+    inputs:
+      pathToPublish: $(ARTIFACT_PATH)/karate-tests/target/karate-reports
+      artifactName: KarateSandboxHTMLReports
