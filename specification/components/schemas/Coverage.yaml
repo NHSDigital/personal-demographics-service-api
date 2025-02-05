@@ -1,3 +1,4 @@
+description: Insurance or medical plan or a payment agreement
 type: object
 required:
   - status
