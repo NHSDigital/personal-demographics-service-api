@@ -113,7 +113,7 @@ We have a Dockerfile set up for the sandbox. You can build the image from this D
     ```
 1. If you run the container you'll see the Karate mockserver logs
     ```bash
-    docker run --name karate-sandbox -p 9000 nhs/pds-sandbox
+    docker run --name karate-sandbox -p 9000:9000 nhs/pds-sandbox
     ```
 1. Inspect the running container to discover its IP address:
     ```bash
@@ -143,7 +143,7 @@ export KARATE_JAR="/path/to/your/jarfile/karate-1.6.0-SNAPSHOT.jar"
 ##### Running the sandbox
 To run the sandbox, go to your `src/test/java` folder and run the following command (in this command we have the `-p` switch to specify a port; if you omit this switch, a free port will be chosen at random, which may be what you want sometimes):
 ```bash
-java -cp $KARATE_JAR:. com.intuit.karate.Main -m mocks/sandbox/sandbox.js -p 9000
+java -cp $KARATE_JAR:. com.intuit.karate.Main -m mocks/sandbox/sandbox.js -p 9000:9000
 ```
 
 You'll see output in your terminal to suggest the sandbox is running properly (or not). Again, you can test things by running the sandbox tests:  
