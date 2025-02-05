@@ -11,20 +11,17 @@ get:
       ## Overview
       Use this endpoint to get a patient's European Health Insurance Card (EHIC) details. Use the patient's NHS number as the identifier for coverage.
 
-      This endpoint only gives EHIC data in the coverage data field. A patient may have other financial coverage, like insurance, but this information will not be returned by PDS. 
+      This endpoint only gives EHIC data in the coverage data fields. A patient may have other financial coverage, like insurance, but this information will not be returned by PDS. 
 
-      You can only use this endpoint if you are using patient access mode. 
+      You can only use this endpoint if you are using patient access mode (for specific use cases only). 
         
       ## Superseded patients
       Some patients are marked as superseded. This means that the original patient details are no longer valid and have been replaced with different details.
 
       When PDS tries to get the EHIC details using the NHS number of a superseded record, it will return the EHIC details of the latest record. You can see this by comparing the value used in the query with the value returned in the response body.
 
-      ## Restricted patients
-      Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record) and are sometimes known as sensitive patients. 
-      
       ## Mandatory fields
-      The only mandatory EHIC field is the institution ID, `ehicDetails.InstitutionID`. If this field on the patient's record is empty, PDS will not return the patient's EHIC information. If any other EHIC field on the patient's record is empty, PDS will return the patient's EHIC information with the missing fields blank.
+      The only mandatory EHIC field is the institution ID, `Coverage.institutionID`. If this field on the patient's record is empty, PDS will not return the patient's EHIC information. If any other EHIC field on the patient's record is empty, PDS will return the patient's EHIC information with the missing fields blank.
 
       ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
@@ -117,11 +114,11 @@ post:
     operationId: post-coverage
     description: |
       ## Overview
-      Use this endpoint to get a patient's European Health Insurance Card (EHIC) details. You can only use this endpoint to update EHIC data. A patient may have other financial coverage, like insurance, but this information cannot be added to PDS. 
+      Use this endpoint to update a patient's European Health Insurance Card (EHIC) details. You can only use this endpoint to update EHIC data. A patient may have other financial coverage, like insurance, but this information cannot be added to PDS. 
 
       There can only be one set of EHIC details on a patient's record at a time. If a patient already has an EHIC record in PDS, the update request will replace the existing EHIC record.
     
-      You can only update EHIC details using patient access mode.
+      You can only update EHIC details using patient access mode (for specific use cases only).
 
       ## Patient resource versioning
       To update a patient's details, use the [get a patient's coverage](///link to get coverage endpoint info here//////) to get a version number for the most up-to-date record. The version number is in the `ETag` response header in the form `W/"2"`.
@@ -131,24 +128,6 @@ post:
       When the update succeeds, you will get the updated patient record. This will contain the new resource version number.
 
       If you make a further update you must use the new version number.
-      
-      ## JSON Patch
-      To update a patient record, a [JSON Patch](https://tools.ietf.org/html/rfc6902) should be sent. A JSON Patch consists of one or more patch objects within a list.
-
-      All updates should be sent together in a single request as a list of patches. This is the most efficient way. It also reduces the danger of race conditions occurring when updating the patient record multiple times in a short period of time.
-
-      When processing the list of patch objects, each patch must be valid and pass all the business rules against the data. If one patch object fails, none of the patch objects will be applied.
-
-      A patch object consists of:
-      * an operation, `op` - this is required.
-      * a path to the data that you want to change, `path` - this is required.
-      * the value that is assigned, `value` - this is required for `add`, `replace` and `test`; but should not be included for a `remove`.
-
-      The following operations are supported:
-      * `add` - to add a new value.
-      * `replace` - to replace an existing value.
-      * `remove` - to remove an existing value.
-      * `test` - to test the state of a value is as expected before continuing with the update.
 
       ## Sandbox test scenarios
 
