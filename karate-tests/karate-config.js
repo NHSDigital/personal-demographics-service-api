@@ -22,7 +22,7 @@ function fn() {
       internalServerURL: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4'
     };
   } else if (env == 'local-sandbox') {
-    var port = karate.properties['mockserver.port'] || '9090';
+    var port = karate.properties['mockserver.port'] || '9000';
     var config = {
       oauth2MockURL: `http://localhost:${port}`,
       baseURL: `http://localhost:${port}`,

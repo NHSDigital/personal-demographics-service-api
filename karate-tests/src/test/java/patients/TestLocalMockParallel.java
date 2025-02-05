@@ -18,7 +18,7 @@ public class TestLocalMockParallel {
 
     @BeforeAll
     static void beforeAll() {
-        server = MockRunner.start("src/test/java/mocks", 9090);
+        server = MockRunner.start("src/test/java/mocks", 9000);
     }
 
     @Test
