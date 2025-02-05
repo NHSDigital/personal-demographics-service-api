@@ -21,7 +21,7 @@ get:
       When PDS tries to get the EHIC details using the NHS number of a superseded record, it will return the EHIC details of the latest record. You can see this by comparing the value used in the query with the value returned in the response body.
 
       ## Mandatory fields
-      There are two mandatory EHIC fields. They are the patient's NHS Number and the unique ID of issuer of the policy. If either of these fields on the patient's record is empty, PDS will not return the patient's EHIC information. If any other EHIC field on the patient's record is empty, PDS will return the patient's EHIC information without those fields.
+      In a coverage get request, there are two mandatory EHIC fields. They are the patient's NHS Number and the unique ID of issuer of the policy. If either of these fields on the patient's record is empty, PDS will not return the patient's EHIC information. If any other EHIC field on the patient's record is empty, PDS will return the patient's EHIC information without those fields.
 
       ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
