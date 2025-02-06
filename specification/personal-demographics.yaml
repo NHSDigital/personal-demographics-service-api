@@ -98,8 +98,8 @@ info:
     * get the patient’s own details 
     * update the patient’s own details (limited)
     * get the patient's related people
-    * get patient coverage (GP registrations only)
-    * update patient coverage (GP registrations only)
+    * get patient coverage (for specific use cases only)
+    * update patient coverage (for specific use cases only)
 
     This access mode is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis), meaning an end user must be present, authenticated and authorised. 
     

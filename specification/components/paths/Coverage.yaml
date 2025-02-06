@@ -14,15 +14,14 @@ get:
       This endpoint only gives EHIC data in the coverage data fields. A patient may have other financial coverage, like insurance, but this information will not be returned by PDS. 
 
       You can only use this endpoint if you are using patient access mode (for specific use cases only). 
+
+      If EHIC details are stored on PDS but the personal ID or institution ID are missing then the entire EHIC record will not be returned. 
         
       ## Superseded patients
-      Some patients are marked as superseded. This means that the original patient details are no longer valid and have been replaced with different details.
+      Some patients are marked as superseded. This means that the original patient NHS number is no longer valid and has been replaced with a different NHS number.
 
-      When PDS tries to get the EHIC details using the NHS number of a superseded record, it will return the EHIC details of the latest record. You can see this by comparing the value used in the query with the value returned in the response body.
-
-      ## Mandatory fields
-      In a coverage get request, there are two mandatory EHIC fields. They are the patient's NHS Number and the unique ID of issuer of the policy. If either of these fields on the patient's record is empty, PDS will not return the patient's EHIC information. If any other EHIC field on the patient's record is empty, PDS will return the patient's EHIC information without those fields.
-
+      When PDS tries to get the EHIC details using the NHS number of a superseded record, it will return the EHIC details of the retained record. This can be seen by comparing the returned NHS number with the NHS number submitted in the request.
+      
       ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
 
