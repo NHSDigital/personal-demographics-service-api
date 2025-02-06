@@ -62,7 +62,7 @@ extends:
         service_base_path: ${{ variables.service_base_path }}-int
         stage_name: internal_dev_int
         post_deploy:
-           - template: templates/pds-tests-int.yml
+           - template: templates/pds-tests-dev-int.yml
         depends_on:
           - karate_tests
         jinja_templates:
