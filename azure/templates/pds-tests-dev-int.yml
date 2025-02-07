@@ -38,7 +38,7 @@ steps:
       testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports/*.xml
       failTaskOnFailedTests: true
   - bash: |
-      cho "Checking if report directory exists..."
+      echo "Checking if report directory exists..."
       if exist "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports" (
       echo "Directory exists"
       ) else (
