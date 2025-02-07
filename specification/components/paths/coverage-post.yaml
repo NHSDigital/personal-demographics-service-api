@@ -5,6 +5,21 @@ description: |
   To be filled in later
 parameters:
   - $ref: '../../personal-demographics.yaml#/components/parameters/IfMatch'
+requestBody:
+  required: true
+  content:
+    application/json-patch+json:
+      schema:
+        $ref: '../schemas/Coverage.yaml'
+      examples:
+        add-coverage-to-patient:
+          summary: Add a coverage to a patient
+          value:
+            $ref: '../examples/Coverage.json'
+        another-scenario:
+          summary: TODO
+          value:
+            $ref: '../examples/Coverage.json'
 responses:
   '2XX':
     description: |
