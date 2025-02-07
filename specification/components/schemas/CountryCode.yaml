@@ -273,5 +273,5 @@ properties:
   display:
     type: string
     description: "Display-friendly representation of the country code."
-    readonly: true
+    readOnly: true
     example: France
