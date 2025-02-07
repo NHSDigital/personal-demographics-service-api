@@ -12,3 +12,4 @@ jq -rM . <build/examples/resources/RelatedPersonBundle.json >specification/compo
 jq -rM . <build/examples/resources/Referenced_RelatedPersonBundle.json >specification/components/examples/Referenced_RelatedPersonBundle.json
 jq -rM . <build/examples/resources/Personal_Details_RelatedPersonBundle.json >specification/components/examples/Personal_Details_RelatedPersonBundle.json
 jq -rM . <build/examples/resources/PatientSearch-CompoundName.json >specification/components/examples/PatientCompoundName.json
+jq -rM . <build/examples/resources/CoverageSearch.json >specification/components/examples/CoverageSearch.json

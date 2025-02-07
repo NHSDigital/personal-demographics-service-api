@@ -18,6 +18,13 @@ responses:
         $ref: '../../personal-demographics.yaml#/components/headers/X-Correlation-Id'
       X-Request-Id:
         $ref: '../../personal-demographics.yaml#/components/headers/X-Request-Id'
+    
+    content:
+      application/fhir+json:
+        schema:
+          $ref: '../schemas/CoverageSearch.yaml'
+        example:
+          $ref: '../examples/CoverageSearch.json'
 
   '4XX':
     description: |
