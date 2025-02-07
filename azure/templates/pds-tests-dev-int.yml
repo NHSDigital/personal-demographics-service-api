@@ -29,18 +29,18 @@ steps:
       export INTERNAL_SERVER_BASE_URI="$(INTERNAL_SERVER_BASE_URI)"
       mvn clean test -Dtest=TestSmoke 
     displayName: 'Run Karate Smoke Tests'
-    workingDirectory: "$(ARTIFACT_PATH)/karate-tests"
+    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests"
     
   - task: PublishTestResults@2
     displayName: 'Publish smoke test results'
     condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
     inputs:
-      testResultsFiles: $(ARTIFACT_PATH)/karate-tests/target/karate-reports/*.xml
+      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports/*.xml
       failTaskOnFailedTests: true
   
   - task: PublishTestResults@1
     displayName: 'Publish smoke test results as an artifact'
     condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
     inputs:
-      pathToPublish: $(ARTIFACT_PATH)/karate-tests/target/karate-reports
+      pathToPublish: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports
       artifactName: SmokeTestsHTMLReports
