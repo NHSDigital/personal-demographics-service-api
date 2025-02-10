@@ -99,6 +99,10 @@ The sandbox is a fake FHIR API with functionality that allows us to use it in a 
 1. As a versioning aid - different iterations of the sandbox and their related tests can be tagged to represent different versions of the API.
 1. As documentation for the API. [Our public documentation page](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir) invites people to use the sandbox to explore some of our API functionality, and there is a collection of Postman requests to download too. The new Karate-based sandbox has been developed in a way so that the existing documentation and Postman collection are still valid.
 
+### Test a deployed sandbox
+
+If you wish to test a deployed sandbox, ensure your environment variables are setup to point at the desired deployment (see `karate-config.js`) and run `make test-sandbox`.
+
 ### Running the sandbox locally as a separate process
 
 If you want to run the sandbox locally to explore using Postman, for example, you can spin up an instance of the sandbox by running `make sandbox`.
