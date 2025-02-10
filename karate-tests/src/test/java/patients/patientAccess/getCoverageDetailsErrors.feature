@@ -44,7 +44,8 @@ Scenario Outline: Auth errors: patient coverage details
          |                            | Missing Authorization header   |      
          | Bearer                     | Missing access token           |
          | Bearer abcdef123456789     | Invalid Access Token           |
-         
+
+@sandbox          
 Scenario Outline: x-request-id errors: patient coverage details
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
@@ -75,6 +76,7 @@ Scenario: Identifier doesn't match nhs number of user
     * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
     * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
 
+@sandbox     
 Scenario: No search params provided
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
