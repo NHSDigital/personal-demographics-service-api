@@ -25,12 +25,13 @@ get:
       ## Sandbox test scenarios
         You can test the following scenarios in our sandbox environment:
 
-        | Scenario                        | Request                                       | Response                                                      |
-        | ------------------------------- | --------------------------------------------- | ------------------------------------------------------------- |
-        | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  | `id`=``                                       | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx |
-        | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  | `id`=``                                       | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx |
-        | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  | `id`=``                                       | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx |
-        | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  | `id`=``                                       | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx |
+        | Scenario                                      | Request                                       | Response                                                     |
+        | --------------------------------------------- | --------------------------------------------- | ------------------------------------------------------------ |
+        | Coverage details exist for the patient        | `id`=`9000000009`                             | HTTP Status 200 with patient coverage details in response    |
+        | Coverage details do not exist for the patient | `id`=`9000000033`                             | HTTP Status 200 with no patient coverage details in response |
+        | Invalid Search criteria                       | `id`=`9999999990`, `year`=`2003`              | HTTP Status 400 with problem description                     |
+        | Missing X-Request-ID                          | `id`=`9000000009`                             | HTTP Status 400 with problem description                     |
+        | Invalid X-Request-ID                          | `X-Request-ID` = `1234`                       | HTTP Status 400 with problem description                     |
 
         You can try out the sandbox by selecting the 'Try' button on this page.
 
