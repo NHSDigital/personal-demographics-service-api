@@ -4,10 +4,12 @@ properties:
     type: string
     description: FHIR Resource Type.
     enum: [Bundle]
+    default: "Bundle"
   type:
     type: string
     description: FHIR Bundle Type.
     enum: [searchset]
+    default: "searchset"
   timestamp:
     type: string
     description: Time the search was performed.
@@ -18,6 +20,7 @@ properties:
     description: Number of resources returned in search.
     minimum: 0
     maximum: 1
+    example: 1
   meta:
     type: object
     description: Metadata about this resource.

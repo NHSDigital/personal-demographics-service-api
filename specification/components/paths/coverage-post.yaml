@@ -39,6 +39,21 @@ description: |
 
 parameters:
   - $ref: '../../personal-demographics.yaml#/components/parameters/IfMatch'
+requestBody:
+  required: true
+  content:
+    application/json-patch+json:
+      schema:
+        $ref: '../schemas/Coverage.yaml'
+      examples:
+        add-coverage-to-patient:
+          summary: Add a coverage to a patient
+          value:
+            $ref: '../examples/Coverage.json'
+        another-scenario:
+          summary: TODO
+          value:
+            $ref: '../examples/Coverage.json'
 responses:
   '2XX':
     description: |
@@ -52,6 +67,13 @@ responses:
         $ref: '../../personal-demographics.yaml#/components/headers/X-Correlation-Id'
       X-Request-Id:
         $ref: '../../personal-demographics.yaml#/components/headers/X-Request-Id'
+    
+    content:
+      application/fhir+json:
+        schema:
+          $ref: '../schemas/CoverageSearch.yaml'
+        example:
+          $ref: '../examples/CoverageSearch.json'
 
   '4XX':
     description: |

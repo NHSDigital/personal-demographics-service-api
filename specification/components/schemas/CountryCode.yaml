@@ -12,9 +12,11 @@ properties:
       system:
         type: string
         enum: ["urn:iso:std:iso:3166"]
+        example: "urn:iso:std:iso:3166"
       value:
         type: string
         description: "Three-letter country code that identifies the country from which the Coverage originates."
+        example: "FRA"
         enum:
           - "ABW"
           - "AFG"
@@ -271,5 +273,5 @@ properties:
   display:
     type: string
     description: "Display-friendly representation of the country code."
-    readonly: true
+    readOnly: true
     example: France
