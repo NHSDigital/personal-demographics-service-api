@@ -1396,7 +1396,7 @@ paths:
         * cannot replace the use type on an existing name. For example, once a name is a nickname, it cannot be changed directly to an alias. You must instead remove the nickname and add the alias.
         * the first character of each `suffix` item must be `A-Z`.
         * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
-        * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
+        * the period `start` date is optional. It cannot be a future date. For `add` operations, if the period `start` date is not given then it defaults to the date of update.
         * supplied name data can only contain characters from the following ranges:
 
         | Character Code/Range | Examples      |
