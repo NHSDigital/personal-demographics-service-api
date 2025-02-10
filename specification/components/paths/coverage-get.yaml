@@ -30,7 +30,7 @@ description: |
 
     Alternatively, you can try out the sandbox using our Postman collection:
     
-    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/32547823-005ebee4-7510-44c3-bb0e-58f26b2ba747
+    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/32547823-005ebee4-7510-44c3-bb0e-58f26b2ba747)
 parameters:
   - $ref: '../../personal-demographics.yaml#/components/parameters/SubscriberIdentifier'
 responses:
