@@ -8,7 +8,9 @@
   },
   "entry": [
     {
+      "fullUrl": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Coverage?subscriber:identifier=9000000009",
       "resource": {
+        "resourceType": "Coverage",
         "status": "active",
         "subscriber": {
           "identifier": {
@@ -42,15 +44,6 @@
         },
         "period": {
           "end": "2030-12-31"
-        },
-        "type": {
-          "coding": [
-            {
-              "system": "http://terminology.hl7.eu/CodeSystem/v3-ActCode",
-              "code": "EHIC",
-              "display": "European Health Insurance Card"
-            }
-          ]
         }
       }
     }
