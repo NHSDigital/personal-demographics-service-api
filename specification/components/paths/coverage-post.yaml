@@ -105,7 +105,7 @@ responses:
         schema:
           $ref: '../../personal-demographics.yaml#/components/schemas/OperationOutcome'
         example:
-          resourceType: OperationOutcome
+          resourceType: forbidden
           issue:
             - severity: error
               code: forbidden
@@ -114,8 +114,8 @@ responses:
                   - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                     version: '1'
                     code: ACCESS_DENIED
-                    display: Cannot POST resource with user-restricted access token
-              diagnostics: "Your app has insufficient permissions to use this operation. Please contact support."
+                    display: Patient cannot perform this action
+              diagnostics: "Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir"
 
   '503':
     description: |
