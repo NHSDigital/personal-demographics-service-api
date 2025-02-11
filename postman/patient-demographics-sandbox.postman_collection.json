@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "64c4c17a-e9c2-44fe-814c-592e445ce4df",
+		"_postman_id": "39ee8747-9950-4a0e-89ab-dd77460cb921",
 		"name": "Patient Demographics Sandbox",
 		"description": "Sandbox example requests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -3512,7 +3512,32 @@
 			"name": "Retrieve patient coverage details",
 			"item": [
 				{
-					"name": "Coverage details exists on patient",
+					"name": "Coverage details exists for patient",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"EHIC details are returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(1);\r",
+									"\r",
+									"});\r",
+									"pm.test(\"Coverage response includes patient 9000000009\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.entry[0].resource.subscriber.identifier.value).to.equal(\"9000000009\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -3542,7 +3567,180 @@
 					"response": []
 				},
 				{
-					"name": "Coverage details do not exists on patient",
+					"name": "Invalid Request ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response should include diagnostics indicating an invalid request ID\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.issue[0].diagnostics).to.contains(\"Invalid value - '12345' in header 'X-Request-ID'\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "12345",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/Coverage?subscriber:identifier=9000000009",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Coverage"
+							],
+							"query": [
+								{
+									"key": "subscriber:identifier",
+									"value": "9000000009"
+								}
+							]
+						},
+						"description": "Example of successful patient retrieval"
+					},
+					"response": []
+				},
+				{
+					"name": "Missing x-Request ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response should include diagnostics indicating an missing request ID\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.issue[0].diagnostics).to.contains(\"Invalid request with error - X-Request-ID header must be supplied to access this resource\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/Coverage?subscriber:identifier=9000000009",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Coverage"
+							],
+							"query": [
+								{
+									"key": "subscriber:identifier",
+									"value": "9000000009"
+								}
+							]
+						},
+						"description": "Example of successful patient retrieval"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Search Criteria",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The response should include diagnostics indicating an invalid search criteria\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.issue[0].diagnostics).to.contains(\"Invalid search data provided - 'Coverage search request must follow the format /Coverage?subscriber:identifier=NHS_NUMBER'\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/Coverage?subscriber:identifier=9999999990&year=2003",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Coverage"
+							],
+							"query": [
+								{
+									"key": "subscriber:identifier",
+									"value": "9999999990"
+								},
+								{
+									"key": "year",
+									"value": "2003"
+								}
+							]
+						},
+						"description": "Example of successful patient retrieval"
+					},
+					"response": []
+				},
+				{
+					"name": "Coverage details do not exists for patient",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Searchset is not returned\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+									"  pm.expect(jsonData.total).to.equal(0);\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -3581,6 +3779,31 @@
 					"item": [
 						{
 							"name": "Add Coverage",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 201\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(201);\r",
+											"});\r",
+											"pm.test(\"EHIC details are returned\", function () {\r",
+											"  const jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");\r",
+											"  pm.expect(jsonData.type).to.equal(\"searchset\");\r",
+											"  pm.expect(jsonData.total).to.equal(1);\r",
+											"\r",
+											"});\r",
+											"pm.test(\"Coverage response includes patient 9000000009\", function () {\r",
+											"  const jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.entry[0].resource.subscriber.identifier.value).to.equal(\"9000000009\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [
@@ -3621,49 +3844,6 @@
 								"description": "Example of successful patient retrieval"
 							},
 							"response": []
-						},
-						{
-							"name": "Update Coverage",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-Request-ID",
-										"value": "{{$guid}}",
-										"type": "text"
-									},
-									{
-										"key": "If-Match",
-										"value": "W/\"2\"",
-										"type": "text"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"resourceType\" : \"Coverage\",\r\n    \"identifier\" : [\r\n      {\r\n        \"value\" : \"IT12345678901004\",\r\n        \"assigner\": {\r\n          \"identifier\": {\r\n            \"system\":\"urn:iso:std:iso:3166\",\r\n            \"value\":\"ITA\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"status\" : \"active\",\r\n    \"type\" : {\r\n      \"coding\" : [\r\n        {\r\n          \"system\" : \"http://terminology.hl7.eu/CodeSystem/v3-ActCode\",\r\n          \"code\" : \"EHIC\",\r\n          \"display\" : \"European Health Insurance Card\"\r\n        }\r\n      ]\r\n    },\r\n    \"beneficiary\" : {\r\n      \"identifier\" : {\r\n        \"value\": \"876543217\"\r\n      }\r\n    },\r\n    \"period\" : {\r\n      \"end\" : \"2026-08-20\"\r\n    },\r\n    \"payor\" : [\r\n      {\r\n        \"identifier\" : {\r\n          \"value\" :\"IT98735\"\r\n        }\r\n      }\r\n    ],\r\n    \"subscriber\": {\r\n      \"identifier\": {\r\n        \"system\":\"https://fhir.nhs.uk/Id/nhs-number\",\r\n        \"value\": \"9000000009\"\r\n      }\r\n    }\r\n  }",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{base_url}}/Coverage",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"Coverage"
-									]
-								},
-								"description": "Example of successful patient retrieval"
-							},
-							"response": []
 						}
 					],
 					"description": "In this folder you will find examples of using the POST method to update a patient's Coverage details.\n\nWhen you execute a successful scenario the response will return an updated patient coverage that looks like the patient coverage details has been updated with the changes you made. However, your changes will not be persisted in the sandbox environment, meaning if you perform a subsequent retrieve on the patient the record returned will hold the original patient data.\n\nJSON POST operations themselves are validated, but the resulting resource is not validated for correctness, e.g business rules are not validated."
@@ -3673,6 +3853,25 @@
 					"item": [
 						{
 							"name": "Incorrect resource version",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 409\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(409);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"The response should include diagnostics indicating incorrect resource version\", function () {\r",
+											"  const jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.issue[0].details.coding[0].code).to.contains(\"RESOURCE_VERSION_MISMATCH\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [
@@ -3716,7 +3915,14 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											""
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"The response should include diagnostics indicating an invalid request ID\", function () {\r",
+											"  const jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.issue[0].diagnostics).to.contains(\"Invalid value - '12345' in header 'X-Request-ID'\");\r",
+											"});"
 										],
 										"type": "text/javascript",
 										"packages": {}
@@ -3760,6 +3966,25 @@
 						},
 						{
 							"name": "Missing resource version",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 412\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(412);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"The response should include diagnostics indicating Missing resource version\", function () {\r",
+											"  const jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.issue[0].diagnostics).to.contains(\"Invalid request with error - If-Match header must be supplied to update this resource\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [
@@ -3798,7 +4023,14 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											""
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"The response should include diagnostics indicating Missing X-Request-ID header\", function () {\r",
+											"  const jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.issue[0].diagnostics).to.contains(\"Invalid request with error - X-Request-ID header must be supplied to access this resource\");\r",
+											"});"
 										],
 										"type": "text/javascript",
 										"packages": {}
@@ -3842,7 +4074,14 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											""
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"The response should include diagnostics indicating Missing ehic card number\", function () {\r",
+											"  const jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.issue[0].diagnostics).to.contains(\"Missing value - 'identifier/0/value'\");\r",
+											"});"
 										],
 										"type": "text/javascript",
 										"packages": {}
@@ -3891,7 +4130,14 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											""
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"The response should include diagnostics indicating invalid value in field status\", function () {\r",
+											"  const jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.issue[0].diagnostics).to.contains(\"Invalid value - 'Expired' in field 'status'\");\r",
+											"});"
 										],
 										"type": "text/javascript",
 										"packages": {}

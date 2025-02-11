@@ -6,7 +6,7 @@
 /* global request, response, context */
 
 /* Functions defined in supporting-functions.js */
-/* global validateHeaders, validateNHSNumber, basicResponseHeaders,timestampBody */
+/* global validateHeaders, validateNHSNumber, basicResponseHeaders,timestampBody,setInvalidSearchDataError */
 
 function buildResponseHeaders (request, patientCoverageDetails) {
   return {
@@ -25,14 +25,23 @@ function buildResponse (request, responseBody) {
 if (request.pathMatches('/Coverage') && request.get) {
   response.headers = basicResponseHeaders(request)
   const nhsNumber = request.param('subscriber:identifier')
+  const VALID_PARAMS = new Set(['subscriber:identifier'])
+  const paramKeys = Object.keys(request.params)
+  const validParams = paramKeys.filter(param => VALID_PARAMS.has(param))
+  const invalidParams = paramKeys.filter(param => !VALID_PARAMS.has(param))
 
-  if (validateHeaders(request) && validateNHSNumber(request, nhsNumber)) {
-    if (nhsNumber === '9000000009') {
-      const COVERAGE_9000000009 = context.read('classpath:mocks/stubs/coverageResponses/patient_with_coverage_9000000009.json')
-      buildResponse(request, COVERAGE_9000000009)
-    } else if (nhsNumber === '9000000033') {
-      const NO_COVERAGE_9000000033 = context.read('classpath:mocks/stubs/coverageResponses/patient_without_coverage.json')
-      buildResponse(request, NO_COVERAGE_9000000033)
+  if (validateHeaders(request) && validateNHSNumber(request, nhsNumber) && validParams.length === 1) {
+    const responseMap = {
+      9000000009: 'classpath:mocks/stubs/coverageResponses/patient_with_coverage_9000000009.json',
+      9000000033: 'classpath:mocks/stubs/coverageResponses/patient_without_coverage.json'
     }
+    const responsePath = responseMap[nhsNumber]
+    if (responsePath) {
+      const responseData = context.read(responsePath)
+      buildResponse(request, responseData)
+    }
+  } else if (invalidParams.length > 0 || paramKeys.length === 0) {
+    const diagnostics = "Invalid search data provided - 'Coverage search request must follow the format /Coverage?subscriber:identifier=NHS_NUMBER'"
+    setInvalidSearchDataError(diagnostics)
   }
 }

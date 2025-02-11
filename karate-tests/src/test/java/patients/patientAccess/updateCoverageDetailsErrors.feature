@@ -76,7 +76,7 @@ Feature: Patient Access (Update Coverage details) - error scenarios
 
   @sandbox
   Scenario: Incorrect resource version to update coverage 
-    * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9733162892'
+    * def nhsNumber = karate.env.includes('sandbox') ? '9000000009' : '9733162892'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -99,7 +99,7 @@ Feature: Patient Access (Update Coverage details) - error scenarios
   
   @sandbox   
   Scenario: Missing If-Match header to update coverage 
-    * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9733162892'
+    * def nhsNumber = karate.env.includes('sandbox') ? '9000000009' : '9733162892'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -115,7 +115,7 @@ Feature: Patient Access (Update Coverage details) - error scenarios
 
   @sandbox
   Scenario: Missing personal id number in the request body
-    * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9733162892'
+    * def nhsNumber = karate.env.includes('sandbox') ? '9000000009' : '9733162892'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -138,7 +138,7 @@ Feature: Patient Access (Update Coverage details) - error scenarios
 
   @sandbox  
   Scenario: Missing Identification number of the institution in the request body
-    * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9733162892'
+    * def nhsNumber = karate.env.includes('sandbox') ? '9000000009' : '9733162892'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -160,7 +160,7 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * match response == read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')    
 
   Scenario: Period end date must be less than 150 years in the past or in the future in the request body
-    * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9733162892'
+    * def nhsNumber = karate.env.includes('sandbox') ? '9000000009' : '9733162892'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders

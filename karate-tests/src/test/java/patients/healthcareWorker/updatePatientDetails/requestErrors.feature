@@ -9,7 +9,6 @@ Feature: Patch patient errors - Healthcare worker access mode
     * configure headers = requestHeaders 
     
     * url baseURL
-    # * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9693632109'
     * def nhsNumber = '5900059073'
     * path 'Patient', nhsNumber
     * method get

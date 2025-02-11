@@ -11,7 +11,7 @@ Feature: Patient Access (Update Coverage details)
 
    @sandbox
    Scenario: Happy path - update patient coverage details
-    * def nhsNumber = karate.env == 'mock' ? '9000000009' : '9733162892'
+    * def nhsNumber = karate.env.includes('sandbox') ? '9000000009' : '9733162892'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders

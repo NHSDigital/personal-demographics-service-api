@@ -1,0 +1,39 @@
+steps:
+
+  - template: "azure/components/aws-assume-role.yml@common"
+    parameters:
+     role: "auto-ops"
+     profile: "apm_ptl"
+
+  - template: "azure/components/get-aws-secrets-and-ssm-params.yml@common"
+    parameters:
+      secret_file_ids:
+        - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_PRIVATE_KEY
+      config_ids:
+        - /ptl/azure-devops/env-internal-dev/test-app/internal-testing-internal-dev/CLIENT_ID
+        - /ptl/azure-devops/env-internal-dev/test-app/internal-testing-internal-dev/CLIENT_SECRET
+        - /ptl/azure-devops/personal-demographics/TEST_PATIENT_ID
+        - /ptl/azure-devops/personal-demographics/INTERNAL_SERVER_BASE_URI
+      secret_ids:
+        - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_API_KEY
+       
+  - bash: |
+      export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
+      export APPLICATION_RESTRICTED_API_KEY="$(JWT_TESTING_API_KEY)"
+      export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
+      export KEY_ID="test-1"
+      export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
+      export OAUTH_PROXY="oauth2-mock"
+      export CLIENT_ID="$(CLIENT_ID)"
+      export CLIENT_SECRET="$(CLIENT_SECRET)"
+      export INTERNAL_SERVER_BASE_URI="$(INTERNAL_SERVER_BASE_URI)"
+      mvn clean test -Dtest=TestSmoke 
+    displayName: 'Run Karate Smoke Tests'
+    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests"
+    
+  - task: PublishTestResults@2
+    displayName: 'Publish smoke test results'
+    condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
+    inputs:
+      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports/*.xml
+      failTaskOnFailedTests: true
