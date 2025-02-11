@@ -105,7 +105,7 @@ responses:
         schema:
           $ref: '../../personal-demographics.yaml#/components/schemas/OperationOutcome'
         example:
-          resourceType: forbidden
+          resourceType: OperationOutcome
           issue:
             - severity: error
               code: forbidden
