@@ -6,7 +6,7 @@ properties:
   resourceType:
     type: string
     description: FHIR resource type.
-    default: "Patient"
+    example: "Patient"
   id:
     $ref: "NhsNumber.yaml"
   identifier:

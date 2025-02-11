@@ -11,12 +11,13 @@ properties:
   resourceType:
     type: string
     description: FHIR resource type.
-    default: RelatedPerson
+    example: RelatedPerson
+    enum: [RelatedPerson]
   patient:
     "$ref": PatientReference.yaml
   active:
     type: boolean
-    default: true
+    example: true
   period:
     "$ref": Period.yaml
   name:

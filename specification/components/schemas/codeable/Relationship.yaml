@@ -62,7 +62,7 @@ properties:
           type: string
           description: URI of the coding system specification.
           format: url
-          default: https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole
+          example: https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole
           enum:
             - http://hl7.org/fhir/ValueSet/relatedperson-relationshiptype
             - https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole

@@ -7,7 +7,7 @@ properties:
   url:
     type: string
     description: Definition of communication extension.
-    default: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication
+    example: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication
     enum:
       - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication
   extension:
@@ -29,7 +29,7 @@ properties:
             url:
               type: string
               description: Key of this object. Always `language`.
-              default: language
+              example: language
               enum:
                 - language
             valueCodeableConcept:
@@ -43,7 +43,7 @@ properties:
             url:
               type: string
               description: Key of this object. Always `interpreterRequired`.
-              default: interpreterRequired
+              example: interpreterRequired
               enum:
                 - interpreterRequired
             valueBoolean:

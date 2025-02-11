@@ -11,7 +11,7 @@ properties:
     type: string
     description: "The status of the resource instance."
     enum: ["active"]
-    default: "active"
+    example: "active"
   subscriber:
     type: object
     description: "Subscriber and patient covered by the policy"
