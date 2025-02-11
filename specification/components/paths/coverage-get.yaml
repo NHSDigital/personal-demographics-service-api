@@ -82,11 +82,11 @@ responses:
           resourceType: OperationOutcome
           issue:
             - severity: error
-              code: forbidden
+              code: value
               details:
                 coding:
                   - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
                     version: '1'
-                    code: ACCESS_DENIED
-                    display: Cannot GET resource with user-restricted access token
-              diagnostics: "Your app has insufficient permissions to use this operation. Please contact support."
+                    code: INVALID_SEARCH_DATA
+                    display: "Search data is invalid"
+              diagnostics: "Invalid search data provided - 'Coverage search request must follow the format /Coverage?subscriber:identifier=NHS_NUMBER'"
