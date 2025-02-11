@@ -37,5 +37,8 @@ properties:
     items:
       type: object
       properties:
+        fullUrl:
+          type: string
+          example: "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Coverage?subscriber:identifier=9000000009"
         resource:
           $ref: Coverage.yaml

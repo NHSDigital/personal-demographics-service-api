@@ -8,11 +8,15 @@ required:
   - identifier
   - period
 properties:
+  resourceType:
+    type: string
+    enum: ["Coverage"]
+    example: "Coverage"
   status:
     type: string
     description: "The status of the resource instance."
     enum: ["active"]
-    default: "active"
+    example: "active"
   subscriber:
     type: object
     description: "Subscriber and patient covered by the policy"
@@ -101,32 +105,3 @@ properties:
         format: date
         description: "End date of time period, if known, in format `yyyy-mm-dd`. Must be less than 150 years in the past. Must be less than 150 years in the future."
         example: "2030-12-31"
-  type:
-    type: object
-    description: The type of coverage this Coverage resource defines.
-    properties:
-      coding:
-        type: array
-        minItems: 1
-        maxItems: 1
-        items:
-          type: object
-          required:
-            - system
-            - code
-          properties:
-            system:
-              type: string
-              enum:
-                - http://terminology.hl7.eu/CodeSystem/v3-ActCode
-              example: "http://terminology.hl7.eu/CodeSystem/v3-ActCode"
-            code:
-              type: string
-              enum:
-                - EHIC
-              example: "EHIC"
-            display:
-              type: string
-              enum:
-                - European Health Insurance Card
-              example: "European Health Insurance Card"
