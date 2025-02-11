@@ -134,7 +134,8 @@ responses:
         example:
           resourceType: OperationOutcome
           issue:
-            - severity: timeout
+            - severity: error
+              code: timeout
               details:
                 coding:
                   - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
