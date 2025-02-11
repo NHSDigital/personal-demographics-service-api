@@ -710,10 +710,10 @@ components:
             The NHS number that identifies the holder/subscriber of the coverage.
           examples:
             ehic_holder:
-              value: 9733162868
+              value: 9000000009
               summary: Returns a bundle that contains a Coverage resource for the patient with NHS number 9733162868.
             no_ehic:
-              value: 9733162876
+              value: 9000000033
               summary: Returns an empty bundle, alongside a meta object that can be used to apply an update to the patient's coverage.
           in: query
           required: true
