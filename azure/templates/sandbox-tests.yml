@@ -1,20 +1,45 @@
 steps:
-  - bash: poetry install
-    workingDirectory: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)
-    displayName: Setup sandbox tests
+  - template: "expose-pds-variables-and-commands.yml"
+
+  - task: Npm@1
+    inputs:
+      command: 'custom'
+      customCommand: 'install newman -g'
 
   - bash: |
-      export SERVICE_BASE_PATH="$(SERVICE_BASE_PATH)"
-      export APIGEE_ENVIRONMENT="$(ENVIRONMENT)"
-      export SOURCE_COMMIT_ID=$(Build.SourceVersion)
-      export STATUS_ENDPOINT_API_KEY="$(status-endpoint-api-key)"
-
-      poetry run pytest -v tests/sandbox/test_sandbox.py --junitxml=tests/sandbox-test-report.xml --reruns 3 --reruns-delay 1
-    displayName: Run sandbox tests
-    workingDirectory: "$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)"
+      newman run patient-demographics-sandbox.postman_collection.json --env-var "base_url=https://$(ENVIRONMENT).api.service.nhs.uk/$(PDS_BASE_PATH)" -r cli,junit --insecure --reporter-junit-export newman-test-report.xml
+    workingDirectory: "$(ARTIFACT_PATH)/postman"
+    displayName: 'Run Postman collection tests'
 
   - task: PublishTestResults@2
-    displayName: 'Publish sandbox test results'
+    displayName: 'Publish Postman collection test results'
     inputs:
-      testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/tests/sandbox-test-report.xml
+      testResultsFiles: $(ARTIFACT_PATH)/postman/newman-test-report.xml
       failTaskOnFailedTests: true
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Postman collection test report as an artifact'
+    condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
+    inputs:
+      pathToPublish: $(ARTIFACT_PATH)/postman/newman-test-report.xml
+      artifactName: PostmanTestReport
+
+  - bash: |
+      export CLIENT_ID="$(CLIENT_ID)"
+      mvn clean test -Dtest=TestMockParallel
+    displayName: 'Run Karate Mock Tests'
+    workingDirectory: "$(ARTIFACT_PATH)/karate-tests"
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Karate sandbox test results'
+    condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
+    inputs:
+      testResultsFiles: $(ARTIFACT_PATH)/karate-tests/target/karate-reports/*.xml
+      failTaskOnFailedTests: true
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Karate Sandbox HTML test report as an artifact'
+    condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
+    inputs:
+      pathToPublish: $(ARTIFACT_PATH)/karate-tests/target/karate-reports
+      artifactName: KarateSandboxHTMLReports

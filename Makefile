@@ -8,7 +8,6 @@ install-python:
 install-node:
 	npm install
 	npm install nvm
-	cd sandbox && npm install
 
 install-hooks:
 	cp scripts/pre-commit .git/hooks/pre-commit
@@ -23,7 +22,6 @@ karate:
 lint:
 	npm run lint-oas
 	npm run lint-karate-js
-	npm run lint-node-sandbox
 	find . -name '*.py' | xargs poetry run flake8
 	find . -name '*.sh' | grep -v node_modules | xargs shellcheck
 
@@ -73,7 +71,7 @@ format:
 	poetry run black **/*.py
 
 sandbox: update-examples
-	cd sandbox && npm run start
+	cd karate-tests && docker build -t nhs/pds-sandbox . && docker run --rm --name karate-sandbox -p 9000:9000 nhs/pds-sandbox
 
 build-proxy:
 	scripts/build_proxy.sh
@@ -92,11 +90,11 @@ release: clean publish build-proxy
 
 	cp pyproject.toml dist/pyproject.toml
 
-test-sandbox: 
-	export APIGEE_ENVIRONMENT=node && poetry run pytest -v tests/sandbox/test_sandbox.py
+test-local-sandbox:
+	cd karate-tests && mvn clean test -Dtest=TestLocalMockParallel
 
-test-karate-sandbox: 
-	export APIGEE_ENVIRONMENT=karate && poetry run pytest -v tests/sandbox/test_sandbox.py
+test-sandbox:
+	cd karate-tests && mvn clean test -Dtest=TestMockParallel
 
 validate-xml:
 	poetry run python scripts/xml_validator.py

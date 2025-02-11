@@ -85,7 +85,7 @@ context.read('classpath:helpers/nhs-number-validator.js')
  * @returns {boolean} - Returns true if the string is a valid UUID, otherwise false.
  */
 function isValidUUID (uuid) {
-  const regex = /[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}/
+  const regex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
   return regex.test(uuid)
 }
 

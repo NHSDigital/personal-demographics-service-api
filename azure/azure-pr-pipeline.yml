@@ -52,7 +52,7 @@ extends:
       
       - environment: internal-dev-sandbox
         proxy_path: sandbox
-        stage_name: pytest_v_node_sandbox
+        stage_name: internal-dev-sandbox
         post_deploy:
           - template: templates/sandbox-tests.yml
           
