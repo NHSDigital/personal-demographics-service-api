@@ -352,22 +352,6 @@ components:
       schema:
         type: string
         example: "9000000009"
-    MessageId:
-      name: message_id
-      in: path
-      description: The message ID of the accepted update that needs to be submitted to confirm the resource a successfully updated.
-      required: true
-      schema:
-        type: string
-        example: '20200522091633363041_000001A'
-    ObjectId:
-      name: object_id
-      in: path
-      description: A resource Object ID. The primary identifier of a resource.
-      required: true
-      schema:
-        type: string
-        example: "507B7621"
     IfMatch:
       in: header
       name: If-Match
