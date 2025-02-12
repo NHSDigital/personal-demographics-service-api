@@ -1,0 +1,51 @@
+{
+  "resourceType": "Bundle",
+  "type": "searchset",
+  "timestamp": "2019-12-25T12:00:00+00:00",
+  "total": 1,
+  "meta": {
+    "versionId": "2"
+  },
+  "entry": [
+    {
+      "fullUrl": "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Coverage?subscriber:identifier=9000000009",
+      "resource": {
+        "resourceType": "Coverage",
+        "status": "active",
+        "subscriber": {
+          "identifier": {
+            "system": "https://fhir.nhs.uk/Id/nhs-number",
+            "value": "9000000009"
+          }
+        },
+        "identifier": [
+          {
+            "value": "29401395498043123948",
+            "assigner": {
+              "identifier": {
+                "system": "urn:iso:std:iso:3166",
+                "value": "FRA"
+              },
+              "display": "France"
+            }
+          }
+        ],
+        "payor": [
+          {
+            "identifier": {
+              "value": "92847ADGJL"
+            }
+          }
+        ],
+        "beneficiary": {
+          "identifier": {
+            "value": "178705ABC"
+          }
+        },
+        "period": {
+          "end": "2030-12-31"
+        }
+      }
+    }
+  ]
+}

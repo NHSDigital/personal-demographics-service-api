@@ -1,0 +1,81 @@
+parameters:
+- $ref: '../../personal-demographics.yaml#/components/parameters/Id'
+- $ref: '../../personal-demographics.yaml#/components/parameters/BearerAuthorization'
+- $ref: '../../personal-demographics.yaml#/components/parameters/RoleId'
+- $ref: '../../personal-demographics.yaml#/components/parameters/RequestID'
+- $ref: '../../personal-demographics.yaml#/components/parameters/CorrelationID'
+- $ref: '../../personal-demographics.yaml#/components/parameters/NHSD-End-User-Organisation-ODS'
+description: |
+  ## Overview
+  Use this endpoint to get a patient's related people details from PDS for a given NHS number. This is a list of people who can be contacted, and how, regarding the patient. These details may be useful for a practitioner to get in contact with a next of kin or guardian.
+  
+  ## Restricted patients
+  Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record) and are sometimes known as sensitive patients. Related people are not returned for a restricted patient and an empty bundle is returned.
+
+  If a related person only contains a patient reference, and when the patient is retrieved, it is restricted; location sensitive fields such as `address` and `telecom` are removed.
+
+  ## Sandbox test scenarios
+  You can test the following scenarios in our sandbox environment:
+
+  | Scenario                        | Request                                       | Response                                                      |
+  | ------------------------------- | --------------------------------------------- | ------------------------------------------------------------- |
+  | Multiple related people exists  | `id`=`9000000009`                             | HTTP Status 200 with related person data in a response Bundle |
+  | Single related person exists    | `id`=`9000000017`                             | HTTP Status 200 with related person data in a response Bundle |
+  | Related people do not exist     | `id`=`9000000025`                             | HTTP Status 200 with an empty bundle                          |
+  | Missing X-Request-ID            | `id`=`9000000009` (or any other valid NHS number) | HTTP Status 400 with problem description                  |
+
+  You can try out the sandbox by selecting the 'Try' button on this page.
+
+  Alternatively, you can try out the sandbox using our Postman collection:
+  
+  [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/32547823-005ebee4-7510-44c3-bb0e-58f26b2ba747)
+  
+summary: "Get a patient's related people"
+operationId: get-related-people
+responses:
+  '200':
+    description: Information successfully returned.
+    headers:
+      ETag:
+        $ref: '../../personal-demographics.yaml#/components/headers/ETag'
+      X-Correlation-Id:
+        $ref: '../../personal-demographics.yaml#/components/headers/X-Correlation-Id'
+      X-Request-Id:
+        $ref: '../../personal-demographics.yaml#/components/headers/X-Request-Id'
+    content:
+      application/fhir+json:
+        schema:
+          $ref: '../../personal-demographics.yaml#/components/schemas/RelatedPersonBundle'
+        example:
+          $ref: ../examples/RelatedPersonBundle.json
+  '4XX':
+    description: |
+      An error occurred as follows:
+      
+      | HTTP status | Error code                 | Description |
+      | ----------- | -------------------------- | --------------------------------------------- |
+      | 400         | INVALID_RESOURCE_ID        | Invalid NHS number. |
+      | 400         | MISSING_VALUE              | Missing header parameter. For details, see the `diagnostics` field. |
+      | 400         | INVALID_VALUE              | Invalid header parameter. For details, see the `diagnostics` field. |
+      | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation. |
+      | 404         | RESOURCE_NOT_FOUND         | No related people exist for given NHS number. |
+      | 404         | INVALIDATED_RESOURCE       | Patient record for given NHS number has been invalidated and not superseded by another NHS number. |
+      | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period. |
+      | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
+
+    content:
+      application/fhir+json:
+        schema:
+          $ref: '../../personal-demographics.yaml#/components/schemas/OperationOutcome'
+        example:
+          resourceType: OperationOutcome
+          issue:
+            - severity: error
+              code: required
+              details:
+                coding:
+                  - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                    version: '1'
+                    code: MISSING_VALUE
+                    display: Required value is missing
+              diagnostics: "Invalid request with error - X-Request-ID header must be supplied to access this resource"

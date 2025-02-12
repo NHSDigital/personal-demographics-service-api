@@ -50,6 +50,12 @@ EXAMPLE_TYPES = {
             related_person_no_reference
         ]}
     ],
+    "Coverage": [
+        {"type": "post", "file_prefix": "", "slim_func": []}
+    ],
+    "CoverageSearch": [
+        {"type": "search", "file_prefix": "", "slim_func": []}
+    ],
     "OperationOutcome": [
         {"type": "error", "file_prefix": "", "slim_func": []},
     ]

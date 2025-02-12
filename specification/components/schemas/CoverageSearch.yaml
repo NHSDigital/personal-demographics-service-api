@@ -4,10 +4,12 @@ properties:
     type: string
     description: FHIR Resource Type.
     enum: [Bundle]
+    default: "Bundle"
   type:
     type: string
     description: FHIR Bundle Type.
     enum: [searchset]
+    default: "searchset"
   timestamp:
     type: string
     description: Time the search was performed.
@@ -18,13 +20,14 @@ properties:
     description: Number of resources returned in search.
     minimum: 0
     maximum: 1
+    example: 1
   meta:
     type: object
     description: Metadata about this resource.
     properties:
       versionId:
         type: string
-        description: The NHS England assigned version of the coverage.
+        description: The current version number of the coverage details.
         pattern: "^\\d+$"
         example: "2"
   entry:
@@ -34,5 +37,8 @@ properties:
     items:
       type: object
       properties:
+        fullUrl:
+          type: string
+          example: "https://api.service.nhs.uk/personal-demographics/FHIR/R4/Coverage?subscriber:identifier=9000000009"
         resource:
           $ref: Coverage.yaml

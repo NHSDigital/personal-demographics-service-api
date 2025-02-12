@@ -1,0 +1,37 @@
+{
+  "resourceType": "Coverage",
+  "status": "active",
+  "subscriber": {
+    "identifier": {
+      "system": "https://fhir.nhs.uk/Id/nhs-number",
+      "value": "9000000009"
+    }
+  },
+  "identifier": [
+    {
+      "value": "29401395498043123948",
+      "assigner": {
+        "identifier": {
+          "system": "urn:iso:std:iso:3166",
+          "value": "FRA"
+        },
+        "display": "France"
+      }
+    }
+  ],
+  "payor": [
+    {
+      "identifier": {
+        "value": "92847ADGJL"
+      }
+    }
+  ],
+  "beneficiary": {
+    "identifier": {
+      "value": "178705ABC"
+    }
+  },
+  "period": {
+    "end": "2030-12-31"
+  }
+}

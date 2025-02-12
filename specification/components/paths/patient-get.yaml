@@ -1,0 +1,88 @@
+description: |
+  ## Overview
+  Use this endpoint to get patient details from PDS for a given NHS number.
+  
+  You cannot get a patient's related people details, use the RelatedPerson endpoint instead.
+
+  ## Superseded patients
+  Some patients are marked as superseded. This means that the original patient details are no longer valid and have been replaced with different details.
+
+  On retrieval of a superseded patient's details, the new details are automatically returned in place of the requested details. You can spot a superseded patient when the `id` is not the same as the one requested.
+
+  When retrieving superseding patient details you must update your system with the new patient details and remove the superseded patient details, ensuring that the same `id` does not exist against another patient in your system.
+
+  ## Restricted patients
+  Some patients are tagged as [restricted](https://digital.nhs.uk/services/demographics/restricting-access-to-a-patients-demographic-record) and are sometimes known as sensitive patients. Restricted patients can be retrieved; however, location-sensitive fields such as `address`, `telecom` and `generalPractitioner` are removed.
+
+  The restricted flag can be found in the data under `meta/security` on the patient resource.
+
+  ## Sandbox test scenarios
+  You can test the following scenarios in our sandbox environment:
+
+  | Scenario                         | Request                                           | Response                                                                                                                                      |
+  | -------------------------------- | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+  | Patient exists                   | `id`=`9000000009`                                 | HTTP Status 200 with patient data in response                                                                                                 |
+  | Sensitive patient exists         | `id`=`9000000025`                                 | HTTP Status 200 with patient data in response with the restricted data removed                                                                |
+  | Patient exists with minimal data | `id`=`9000000033`                                 | HTTP Status 200 with patient data in response, there will be very little data so can be used as an example of a patient with bad data quality |
+  | Patient does not exist           | `id`=`9111231130` (or any other valid NHS number) | HTTP Status 404 with problem description                                                                                                      |
+  | Invalid NHS number               | `id`=`9000000000` (or any invalid NHS number)     | HTTP Status 400 with problem description                                                                                                      |
+  | Missing X-Request-ID             | `id`=`9000000009` (or any other valid NHS number) | HTTP Status 400 with problem description                                                                                                      |
+
+  You can try out the sandbox by selecting the 'Try' button at the end of the schema.
+
+  Alternatively, you can try out the sandbox using our Postman collection:
+  
+  [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/32547823-005ebee4-7510-44c3-bb0e-58f26b2ba747)
+        
+    
+summary: "Get patient details"
+operationId: get-patient
+responses:
+  '200':
+    description: Information successfully returned.
+    headers:
+      ETag:
+        $ref: '../../personal-demographics.yaml#/components/headers/ETag'
+      X-Correlation-Id:
+        $ref: '../../personal-demographics.yaml#/components/headers/X-Correlation-Id'
+      X-Request-Id:
+        $ref: '../../personal-demographics.yaml#/components/headers/X-Request-Id'     
+    content:
+      application/fhir+json:
+        schema:
+          $ref: '../schemas/Patient.yaml'
+        example:
+          $ref: '../examples/Patient.json'
+  '4XX':
+    description: |
+      An error occurred as follows:
+      
+      | HTTP status | Error code                 | Description |
+      | ----------- | -------------------------- | --------------------------------------------- |
+      | 400         | INVALID_RESOURCE_ID        | Invalid NHS number. |
+      | 400         | UNSUPPORTED_SERVICE        | Missing NHS number. |
+      | 400         | MISSING_VALUE              | Missing header parameter. For details, see the `diagnostics` field. |
+      | 400         | INVALID_VALUE              | Invalid header parameter. For details, see the `diagnostics` field. |
+      | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation. |
+      | 403         | ACCESS_DENIED              | Patient cannot perform this action. |
+      | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS number. |
+      | 404         | INVALIDATED_RESOURCE       | Patient did exist for given NHS number, but has been invalidated and not superseded by another NHS number. |
+      | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period. |
+      | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
+
+    content:
+      application/fhir+json:
+        schema:
+          $ref: '../../personal-demographics.yaml#/components/schemas/OperationOutcome'
+        example:
+          resourceType: OperationOutcome
+          issue:
+            - severity: error
+              code: structure
+              details:
+                coding:
+                  - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                    version: '1'
+                    code: MISSING_VALUE
+                    display: Required value is missing
+              diagnostics: "Missing value - 'birth_date/birth_date_range_start/birth_date_range_end'"   

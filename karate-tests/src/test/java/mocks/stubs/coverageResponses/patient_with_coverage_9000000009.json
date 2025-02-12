@@ -12,10 +12,10 @@
                 "identifier": [
                     {
                         "assigner": {
-                            "display": "Spain",
+                            "display": "France",
                             "identifier": {
                                 "system": "urn:iso:std:iso:3166",
-                                "value": "ESP"
+                                "value": "FRA"
                             }
                         },
                         "value": "ES456789012345"
