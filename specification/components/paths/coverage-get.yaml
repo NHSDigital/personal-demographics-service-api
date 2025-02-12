@@ -1,0 +1,92 @@
+summary: Get a patients coverage
+operationId: get-coverage
+description: |
+  ## Overview
+  Use this endpoint to get a patient's European Health Insurance Card (EHIC) details. Use the patient's NHS number as the identifier for coverage.
+
+  This endpoint only gives EHIC data in the coverage data fields. A patient may have other financial coverage, like insurance, but this information will not be returned by PDS. 
+
+  You can only use this endpoint if you are using patient access mode (for specific use cases only). 
+
+  If EHIC details are stored on PDS but the personal ID or institution ID are missing then the entire EHIC record will not be returned. 
+    
+  ## Superseded patients
+  Some patients are marked as superseded. This means that the original patient NHS number is no longer valid and has been replaced with a different NHS number.
+
+  When PDS tries to get the EHIC details using the NHS number of a superseded record, it will return the EHIC details of the retained record. This can be seen by comparing the returned NHS number with the NHS number submitted in the request.
+
+  ## Sandbox test scenarios
+    You can test the following scenarios in our sandbox environment:
+
+    | Scenario                                      | Request                                       | Response                                                     |
+    | --------------------------------------------- | --------------------------------------------- | ------------------------------------------------------------ |
+    | Coverage details exist for the patient        | `id`=`9000000009`                             | HTTP Status 200 with patient coverage details in response    |
+    | Coverage details do not exist for the patient | `id`=`9000000033`                             | HTTP Status 200 with no patient coverage details in response |
+    | Invalid Search criteria                       | `id`=`9999999990`, `year`=`2003`              | HTTP Status 400 with problem description                     |
+    | Missing X-Request-ID                          | `id`=`9000000009`                             | HTTP Status 400 with problem description                     |
+    | Invalid X-Request-ID                          | X-Request-ID = 1234                           | HTTP Status 400 with problem description                     |
+
+    You can try out the sandbox by selecting the 'Try' button on this page.
+
+    Alternatively, you can try out the sandbox using our Postman collection:
+    
+    [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/32547823-005ebee4-7510-44c3-bb0e-58f26b2ba747)
+parameters:
+  - $ref: '../../personal-demographics.yaml#/components/parameters/SubscriberIdentifier'
+responses:
+  '200':
+    description: |
+      A completed search for coverage. This will contain zero or one Coverage resources in the Bundle.
+
+    headers:
+      X-Correlation-Id:
+        $ref: '../../personal-demographics.yaml#//components/headers/X-Correlation-Id'
+      X-Request-Id:
+        $ref: '../../personal-demographics.yaml#//components/headers/X-Request-Id'
+
+    content:
+      application/fhir+json:
+        schema:
+          $ref: '../schemas/CoverageSearch.yaml'
+        example:
+          $ref: '../examples/CoverageSearch.json'
+
+  '4XX':
+    description: |
+        An error occurred as follows:
+
+        | HTTP status | Error code                 | Description                                                                                                                                |
+        | ----------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+        | 400         | INVALID_RESOURCE_ID        | Invalid NHS number.
+        | 400         | INVALID_SEARCH_DATA	       | Invalid combination of search parameters. For details, see the `diagnostics` field.
+        | 400         | MISSING_VALUE              | Missing header or query parameter. For details, see the `diagnostics` field.
+        | 400         | INVALID_VALUE              | Invalid header or query parameter. For details, see the `diagnostics` field.
+        | 401         | ACCESS_DENIED     	       | Access token missing, invalid or expired, or calling application not configured for this operation.
+        | 403         | ACCESS_DENIED     	       | User cannot perform this operation.
+        | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS number.
+        | 404         | INVALIDATED_RESOURCE       | Patient did exist for given NHS number, but has been invalidated and not superseded by another NHS number.
+        | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period.
+        | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits).
+
+    headers:
+      X-Correlation-Id:
+        $ref: '../../personal-demographics.yaml#//components/headers/X-Correlation-Id'
+      X-Request-Id:
+        $ref: '../../personal-demographics.yaml#//components/headers/X-Request-Id'
+
+    content:
+      application/fhir+json:
+        schema:
+          $ref: '../../personal-demographics.yaml#//components/schemas/OperationOutcome'
+        example:
+          resourceType: OperationOutcome
+          issue:
+            - severity: error
+              code: value
+              details:
+                coding:
+                  - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                    version: '1'
+                    code: INVALID_SEARCH_DATA
+                    display: "Search data is invalid"
+              diagnostics: "Invalid search data provided - 'Coverage search request must follow the format /Coverage?subscriber:identifier=NHS_NUMBER'"

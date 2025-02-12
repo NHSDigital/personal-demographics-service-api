@@ -223,12 +223,12 @@ const matchCases = [
   // Search with limited results inc phone
   {
     condition: (params) => ['Sm*', 'sm*'].includes(params.family) && params.phone && !params.email && parseInt(params.maxResults) < 2,
-    action: () => TOO_MANY_MATCHES
+    action: () => timestampBody(janeSmithSearchsetWithScore(1))
   },
   // Search with limited results inc email
   {
     condition: (params) => ['Sm*', 'sm*'].includes(params.family) && !params.phone && params.email && parseInt(params.maxResults) < 2,
-    action: () => TOO_MANY_MATCHES
+    action: () => timestampBody(janeSmithSearchsetWithScore(1))
   },
   // wildcard search including phone
   {

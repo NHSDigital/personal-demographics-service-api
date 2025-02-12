@@ -1,3 +1,4 @@
+description: Insurance or medical plan or a payment agreement
 type: object
 required:
   - status
@@ -7,6 +8,10 @@ required:
   - identifier
   - period
 properties:
+  resourceType:
+    type: string
+    enum: ["Coverage"]
+    example: "Coverage"
   status:
     type: string
     description: "The status of the resource instance."
@@ -27,6 +32,7 @@ properties:
             type: string
             format: url
             enum: ["https://fhir.nhs.uk/Id/nhs-number"]
+            example: "https://fhir.nhs.uk/Id/nhs-number"
           value:
             $ref: NhsNumber.yaml
   identifier:
@@ -45,6 +51,7 @@ properties:
           minLength: 1
           maxLength: 25
           pattern: "^[a-zA-Z0-9]{1,25}$"
+          example: "29401395498043123948"
         assigner:
           $ref: CountryCode.yaml
   payor:
@@ -68,6 +75,7 @@ properties:
               minLength: 1
               maxLength: 30
               pattern: "^[a-zA-Z0-9]{1,30}$"
+              example: "92847ADGJL"
   beneficiary:
     type: object
     description: "Plan beneficiary"
@@ -80,10 +88,12 @@ properties:
           - value
         properties:
           value:
+            type: string
             description: "The personal ID number identifying the beneficiary."
             minLength: 1
             maxLength: 25
             pattern: "^[a-zA-Z0-9]{1,25}$"
+            example: "178705ABC"
   period:
     type: object
     description: "Time period when coverage is valid"

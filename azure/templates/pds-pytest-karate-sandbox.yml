@@ -7,7 +7,7 @@ steps:
   - bash: |
       cd karate-tests
       bash build-sandbox.sh
-      docker run -d --name karate-sandbox -p 9090:9090 nhs/pds-sandbox:latest 
+      docker run -d --name karate-sandbox -p 9000:9000 nhs/pds-sandbox:latest
       export APIGEE_ENVIRONMENT=karate
       cd ..
       poetry run pytest -v tests/sandbox/test_sandbox.py --junitxml=tests/sandbox-test-report.xml

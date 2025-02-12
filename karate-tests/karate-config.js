@@ -9,8 +9,20 @@ function fn() {
     // https://github.com/karatelabs/karate#report-verbosity
     var LM = Java.type('demo.headers.DemoLogModifier');
     karate.configure('logModifier', new LM());
-  } else if (env == 'mock') {
-    var port = karate.properties['mockserver.port'] || '8080';      
+  } else if (env == 'sandbox') {
+    var config = {
+      oauth2MockURL: `${java.lang.System.getenv('OAUTH_BASE_URI')}/${java.lang.System.getenv('OAUTH_PROXY')}`,
+      pdsBasePath: `${java.lang.System.getenv('PDS_BASE_PATH')}`,
+      baseURL: `https://${java.lang.System.getenv('APIGEE_ENVIRONMENT')}.api.service.nhs.uk/${java.lang.System.getenv('PDS_BASE_PATH')}`,
+      clientID: java.lang.System.getenv('CLIENT_ID'),
+      clientSecret: java.lang.System.getenv('CLIENT_SECRET'),
+      signingKey: java.lang.System.getenv('APPLICATION_RESTRICTED_SIGNING_KEY_PATH'),
+      apiKey: java.lang.System.getenv('APPLICATION_RESTRICTED_API_KEY'),
+      keyID: java.lang.System.getenv('KEY_ID'),
+      internalServerURL: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4'
+    };
+  } else if (env == 'local-sandbox') {
+    var port = karate.properties['mockserver.port'] || '9000';
     var config = {
       oauth2MockURL: `http://localhost:${port}`,
       baseURL: `http://localhost:${port}`,

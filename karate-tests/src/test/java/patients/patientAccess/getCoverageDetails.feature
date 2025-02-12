@@ -11,7 +11,7 @@ Feature: Patient Access (Retrieve Coverage details)
 
   @sandbox
    Scenario: Happy path - Retrieve patient coverage details
-    * def p9number = karate.env == 'mock' ? '9000000009' : '9733162868'
+    * def p9number = karate.env.includes('sandbox') ? '9000000009' : '9733162868'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -26,7 +26,7 @@ Feature: Patient Access (Retrieve Coverage details)
 
   @sandbox
   Scenario: Happy path - patient has no coverage details
-    * def P9WithNoCoverage = karate.env == 'mock' ? '9000000033' : '9733162876'
+    * def P9WithNoCoverage = karate.env.includes('sandbox') ? '9000000033' : '9733162876'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: P9WithNoCoverage, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
