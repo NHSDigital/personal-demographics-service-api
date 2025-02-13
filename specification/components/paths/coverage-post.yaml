@@ -50,10 +50,6 @@ requestBody:
           summary: Add a coverage to a patient
           value:
             $ref: '../examples/Coverage.json'
-        another-scenario:
-          summary: TODO
-          value:
-            $ref: '../examples/Coverage.json'
 responses:
   '2XX':
     description: |
