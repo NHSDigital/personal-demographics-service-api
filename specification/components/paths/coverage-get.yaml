@@ -33,12 +33,19 @@ description: |
     [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/32547823-005ebee4-7510-44c3-bb0e-58f26b2ba747)
 parameters:
   - $ref: '../../personal-demographics.yaml#/components/parameters/SubscriberIdentifier'
+
+  - $ref: '../../personal-demographics.yaml#/components/parameters/BearerAuthorization'
+  - $ref: '../../personal-demographics.yaml#/components/parameters/RequestID'
+  - $ref: '../../personal-demographics.yaml#/components/parameters/CorrelationID'
+  - $ref: '../../personal-demographics.yaml#/components/parameters/NHSD-End-User-Organisation-ODS'
 responses:
   '200':
     description: |
       A completed search for coverage. This will contain zero or one Coverage resources in the Bundle.
 
     headers:
+      ETag:
+        $ref: '../../personal-demographics.yaml#/components/headers/ETag'
       X-Correlation-Id:
         $ref: '../../personal-demographics.yaml#/components/headers/X-Correlation-Id'
       X-Request-Id:

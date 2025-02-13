@@ -39,6 +39,10 @@ description: |
 
 parameters:
   - $ref: '../../personal-demographics.yaml#/components/parameters/IfMatch'
+  - $ref: '../../personal-demographics.yaml#/components/parameters/BearerAuthorization'
+  - $ref: '../../personal-demographics.yaml#/components/parameters/RequestID'
+  - $ref: '../../personal-demographics.yaml#/components/parameters/CorrelationID'
+  - $ref: '../../personal-demographics.yaml#/components/parameters/NHSD-End-User-Organisation-ODS'
 requestBody:
   required: true
   content:
