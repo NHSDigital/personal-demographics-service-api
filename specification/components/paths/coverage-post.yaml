@@ -86,7 +86,7 @@ responses:
         | 400         | MISSING_VALUE              | Missing header or value in the body. For details, see the `diagnostics` field. |
         | 400         | INVALID_VALUE              | Invalid header or value in the body. For details, see the `diagnostics` field. 
         | 400         | INVALID_UPDATE             | Malformed request body or client error after the update was accepted and patient was not updated. |
-        | 400         | INVALID_RESOURCE_ID        | Invalid NHS number.
+        | 400         | INVALID_RESOURCE_ID        | Invalid NHS number. |
         | 400         | VALIDATION_ERROR           | This is the "default" error thrown when no others are applicable. |
         | 400	        | TOO_FEW_VALUES_SUBMITTED	 | The field in question has a minimum number of items and the user sent too few. |
         | 400	        | TOO_MANY_VALUES_SUBMITTED	 | The field in question has a maximum number of items and the user sent too many. |
