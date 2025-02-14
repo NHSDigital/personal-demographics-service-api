@@ -4,12 +4,10 @@ properties:
     type: string
     description: FHIR Resource Type.
     example: Bundle
-    enum: [Bundle]
   type:
     type: string
     description: FHIR Bundle Type.
     example: searchset
-    enum: [searchset]
   timestamp:
     type: string
     description: Time the search was performed.
@@ -47,7 +45,6 @@ properties:
               type: string
               description: FHIR resource type.
               example: "Patient"
-              enum: ["Patient"]
             id:
               $ref: "NhsNumber.yaml"
             identifier:

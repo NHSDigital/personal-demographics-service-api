@@ -4,12 +4,10 @@ properties:
     type: string
     description: FHIR Resource Type.
     example: Bundle
-    enum: [Bundle]
   type:
     type: string
     description: FHIR Bundle Type.
     example: searchset
-    enum: [searchset]
   timestamp:
     type: string
     description: Time the search was performed, including the year, month, date, time and timezone, in the format YYYY-MM-DDThh:mm:ss+hh:mm.

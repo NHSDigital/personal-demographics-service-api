@@ -12,7 +12,6 @@ properties:
     type: string
     description: FHIR resource type.
     example: RelatedPerson
-    enum: [RelatedPerson]
   patient:
     "$ref": PatientReference.yaml
   active:
