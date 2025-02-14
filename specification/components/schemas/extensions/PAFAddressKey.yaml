@@ -24,7 +24,6 @@ properties:
               type: string
               description: Always 'type'.
               example: type
-              enum: [type]
             valueCoding:
               type: object
               description: URL of specification of address key format.
@@ -36,7 +35,6 @@ properties:
                   type: string
                   description: URL of Code System that describes available Address Key formats.
                   example: https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType
-                  enum: [https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType]
                 code:
                   type: string
                   description: Address Key system. Always 'PAF'.
@@ -52,7 +50,6 @@ properties:
               type: string
               description: Always 'value'.
               example: value
-              enum: [value]
             valueString:
               type: string
               description: Address key in PAF format. An 8 digit number including leading zeroes, formatted as a string.
