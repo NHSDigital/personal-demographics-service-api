@@ -307,4 +307,4 @@ responses:
                     version: '1'
                     code: INVALID_VALUE
                     display: Provided value is invalid
-              diagnostics: "Invalid value - 'mal' in field 'gender'"   
+              diagnostics: "Invalid value - 'male' in field 'gender'"   
