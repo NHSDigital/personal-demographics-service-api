@@ -3,11 +3,11 @@ properties:
   resourceType:
     type: string
     description: FHIR Resource Type.
-    example: Bundle
+    default: Bundle
   type:
     type: string
     description: FHIR Bundle Type.
-    example: searchset
+    default: searchset
   timestamp:
     type: string
     description: Time the search was performed, including the year, month, date, time and timezone, in the format YYYY-MM-DDThh:mm:ss+hh:mm.

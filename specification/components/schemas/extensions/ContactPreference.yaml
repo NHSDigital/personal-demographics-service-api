@@ -45,7 +45,7 @@ properties:
                         type: string
                         format: url
                         description: Definition of the preferred written communication extension.
-                        example: https://fhir.hl7.org.uk/CodeSystem/UKCore-PreferredWrittenCommunicationFormat
+                        default: https://fhir.hl7.org.uk/CodeSystem/UKCore-PreferredWrittenCommunicationFormat
                         enum:
                           - https://fhir.hl7.org.uk/CodeSystem/UKCore-PreferredWrittenCommunicationFormat
                       code:
@@ -91,7 +91,7 @@ properties:
                         type: string
                         format: url
                         description: Definition of the preferred contact method extension.
-                        example: https://fhir.hl7.org.uk/CodeSystem/UKCore-PreferredContactMethod
+                        default: https://fhir.hl7.org.uk/CodeSystem/UKCore-PreferredContactMethod
                         enum:
                           - https://fhir.hl7.org.uk/CodeSystem/UKCore-PreferredContactMethod
                       code:

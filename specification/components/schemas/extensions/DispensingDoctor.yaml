@@ -25,7 +25,7 @@ properties:
           system:
             type: string
             description: URL for the FHIR code system for the ODS organisation code.
-            example: https://fhir.nhs.uk/Id/ods-organization-code
+            default: https://fhir.nhs.uk/Id/ods-organization-code
           value:
             type: string
             description: Organisation code for the dispensing doctor, as held in the [Organisation Data Service](https://developer.nhs.uk/apis/ods/).

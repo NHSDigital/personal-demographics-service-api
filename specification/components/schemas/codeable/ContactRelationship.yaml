@@ -16,7 +16,7 @@ properties:
           type: string
           description: URL of Code System that describes available contact relationships.
           format: url
-          example: http://terminology.hl7.org/CodeSystem/v2-0131
+          default: http://terminology.hl7.org/CodeSystem/v2-0131
         code:
           type: string
           description: Coded value for contact relationship.

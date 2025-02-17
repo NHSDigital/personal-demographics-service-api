@@ -9,7 +9,7 @@ properties:
     properties:
       system:
         type: string
-        example: https://fhir.nhs.uk/Id/nhs-number
+        default: https://fhir.nhs.uk/Id/nhs-number
         description: URL for the Patient retrieval API.
         format: url
         enum:

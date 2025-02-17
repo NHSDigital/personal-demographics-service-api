@@ -4,7 +4,7 @@ properties:
   url:
     type: string
     description: URL of the extension definition.
-    example: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus
+    default: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus
     enum:
       - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus
   valueCodeableConcept:

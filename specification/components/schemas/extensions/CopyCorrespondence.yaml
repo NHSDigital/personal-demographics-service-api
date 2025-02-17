@@ -6,7 +6,7 @@ properties:
     type: string
     format: url
     description: URL to FHIR Extension Specification.
-    example: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-CopyCorrespondenceIndicator
+    default: https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-CopyCorrespondenceIndicator
     enum:
       - https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-CopyCorrespondenceIndicator
   valueBoolean:

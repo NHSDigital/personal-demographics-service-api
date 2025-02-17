@@ -10,7 +10,7 @@ items:
       type: string
       format: url
       description: System identifier belongs to.
-      example: https://fhir.nhs.uk/Id/nhs-number
+      default: https://fhir.nhs.uk/Id/nhs-number
     value:
       $ref: "NhsNumber.yaml"
     extension:

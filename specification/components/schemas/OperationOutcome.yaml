@@ -6,7 +6,7 @@ properties:
   resourceType:
     type: string
     description: FHIR Resource Type.
-    example: OperationOutcome
+    default: OperationOutcome
   issue:
     type: array
     description: List of issues that have occurred.

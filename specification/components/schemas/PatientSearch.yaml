@@ -3,11 +3,11 @@ properties:
   resourceType:
     type: string
     description: FHIR Resource Type.
-    example: Bundle
+    default: Bundle
   type:
     type: string
     description: FHIR Bundle Type.
-    example: searchset
+    default: searchset
   timestamp:
     type: string
     description: Time the search was performed.
@@ -44,7 +44,7 @@ properties:
             resourceType:
               type: string
               description: FHIR resource type.
-              example: "Patient"
+              default: "Patient"
             id:
               $ref: "NhsNumber.yaml"
             identifier:
