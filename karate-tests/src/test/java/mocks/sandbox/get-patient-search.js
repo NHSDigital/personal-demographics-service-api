@@ -36,7 +36,7 @@ const FUZZY_SINGLE_SEARCHSET = context.read('classpath:mocks/stubs/searchRespons
 const FUZZY_MULTI_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/fuzzy_multimatch_searchset.json')
 const HISTORIC_DATA_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/med_rowenad_searchset.json')
 const TOO_MANY_MATCHES = context.read('classpath:mocks/stubs/searchResponses/TOO_MANY_MATCHES.json')
-const NOT_SUPPORTED_WARNING = context.read('classpath:mocks/stubs/errorResponses/NOT_SUPPORTED_SEARCH.json')
+const UNSUPPORTED_OPERATION_RESPONSE = context.read('classpath:mocks/stubs/errorResponses/NOT_SUPPORTED_SEARCH.json')
 
 function janeSmithSearchsetWithScore (score) {
   return {
@@ -367,11 +367,13 @@ const matchCases = [
     params.phone === '01632960587' && params.gp === 'Y12345' && params.postalCode === 'LS1 6AE',
     action: () => timestampBody(SEARCH_PATIENT_9000000009)
   },
+  // Basic search with phone & email negativ
   {
     condition: (params) => params.family === 'Smith' && params.gender === 'female' && (params.birthDate[0]) === 'eq2010-10-22' && params.email === 'deb.trotter@example.com' &&
     params.phone === '0121111111',
     action: () => timestampBody(EMPTY_SEARCHSET)
   },
+  // Unsuccessful search
   {
     condition: (params) => (params.family === 'Spiderman' || params.family === 'Bingham') && (params.birthDate[0] === '1962-07-31' || params.birthDate[0] === '1934-12-18'),
     action: () => timestampBody(EMPTY_SEARCHSET)
@@ -402,7 +404,7 @@ if (request.pathMatches('/Patient') && request.get) {
     if (matchedCase) {
       response.body = matchedCase.action()
     } else {
-      response.body = timestampBody(NOT_SUPPORTED_WARNING)
+      response.body = timestampBody(UNSUPPORTED_OPERATION_RESPONSE)
     }
   }
 }
