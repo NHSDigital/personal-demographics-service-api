@@ -38,13 +38,13 @@ jobs:
         run: pip install poetry
 
       - name: Cache poetry packages
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pypoetry
           key: ${{ runner.os }}-build-cache-poetry-packages-${{ hashFiles('**/poetry.lock') }}
 
       - name: Cache node modules
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-build-cache-npm-packages-${{ hashFiles('**/package-lock.json') }}
