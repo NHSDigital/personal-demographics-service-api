@@ -36,6 +36,7 @@ const FUZZY_SINGLE_SEARCHSET = context.read('classpath:mocks/stubs/searchRespons
 const FUZZY_MULTI_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/fuzzy_multimatch_searchset.json')
 const HISTORIC_DATA_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/med_rowenad_searchset.json')
 const TOO_MANY_MATCHES = context.read('classpath:mocks/stubs/searchResponses/TOO_MANY_MATCHES.json')
+const NOT_SUPPORTED_WARNING = context.read('classpath:mocks/stubs/errorResponses/NOT_SUPPORTED_SEARCH.json')
 
 function janeSmithSearchsetWithScore (score) {
   return {
@@ -200,6 +201,18 @@ const matchCases = [
     (params.birthDate[0]) === 'eq2000-05-05' && params.email === 'Historic@historic.com',
     action: () => timestampBody(HISTORIC_EMAIL_SEARCHSET)
   },
+  // Exclude history flag for non fuzzy search
+  {
+    condition: (params) => ['Smith', 'smith'].includes(params.family) && ['Male', 'male'].includes(params.gender) &&
+    (params.birthDate[0]) === 'eq2000-05-05' && (params.email === 'Historic@historic.com'),
+    action: () => timestampBody(EMPTY_SEARCHSET)
+  },
+  // Simple and Alphanumeric search with email and phone number - no results
+  {
+    condition: (params) => ['Smith', 'smith', 'Sm*', 'sm*'].includes(params.family) && ['Male', 'male'].includes(params.gender) &&
+    (params.birthDate[0]) === 'eq2000-05-05' && params.email === 'rubbish@test.com' && params.phone === '01234123123',
+    action: () => timestampBody(EMPTY_SEARCHSET)
+  },
   // Search for a PDS record based on historic DOB, family name, gender
   {
     condition: (params) => params.historyMatch && ['HUME'].includes(params.family) && (params.birthDate[0]) === '1999-09-09',
@@ -207,7 +220,8 @@ const matchCases = [
   },
   // Search for a PDS record based on historic DOB, family name, gender
   {
-    condition: (params) => params.historyMatch && params.family === 'MED' && (params.birthDate[0]) === '2024-01-12',
+    condition: (params) => (params.family === 'MED' || ['HUME'].includes(params.family)) && (params.birthDate[0] === '2024-01-12' || params.birthDate[0] === '1999-09-09') &&
+    (params.gender === 'male' || params.gender === 'female'),
     action: () => timestampBody(EMPTY_SEARCHSET)
   },
   // Wildcard search
@@ -352,6 +366,15 @@ const matchCases = [
     (params.birthDate[0]) === 'eq2010-10-22' && params.deathDate === 'eq2010-10-22' && params.email === 'jane.smith@example.com' &&
     params.phone === '01632960587' && params.gp === 'Y12345' && params.postalCode === 'LS1 6AE',
     action: () => timestampBody(SEARCH_PATIENT_9000000009)
+  },
+  {
+    condition: (params) => params.family === 'Smith' && params.gender === 'female' && (params.birthDate[0]) === 'eq2010-10-22' && params.email === 'deb.trotter@example.com' &&
+    params.phone === '0121111111',
+    action: () => timestampBody(EMPTY_SEARCHSET)
+  },
+  {
+    condition: (params) => (params.family === 'Spiderman' || params.family === 'Bingham') && (params.birthDate[0] === '1962-07-31' || params.birthDate[0] === '1934-12-18'),
+    action: () => timestampBody(EMPTY_SEARCHSET)
   }
   // Add additional match cases for other conditions
 ]
@@ -379,7 +402,7 @@ if (request.pathMatches('/Patient') && request.get) {
     if (matchedCase) {
       response.body = matchedCase.action()
     } else {
-      response.body = timestampBody(EMPTY_SEARCHSET)
+      response.body = timestampBody(NOT_SUPPORTED_WARNING)
     }
   }
 }
