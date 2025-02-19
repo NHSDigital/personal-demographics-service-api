@@ -1,4 +1,4 @@
-@no-oas
+
 Feature: Patient Access (Retrieve Coverage details)
     Retrieve a chargeable snippet for a patient
 

@@ -1,4 +1,4 @@
-@no-oas
+
 Feature: Update Coverage-not permitted for healthcare worker
 
   Background:
