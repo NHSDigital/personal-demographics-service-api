@@ -367,13 +367,13 @@ const matchCases = [
     params.phone === '01632960587' && params.gp === 'Y12345' && params.postalCode === 'LS1 6AE',
     action: () => timestampBody(SEARCH_PATIENT_9000000009)
   },
-  // Basic search with phone & email negativ
+  // Basic search with phone & email negative
   {
     condition: (params) => params.family === 'Smith' && params.gender === 'female' && (params.birthDate[0]) === 'eq2010-10-22' && params.email === 'deb.trotter@example.com' &&
     params.phone === '0121111111',
     action: () => timestampBody(EMPTY_SEARCHSET)
   },
-  // Unsuccessful search
+  // Search on family name and DoB - No results
   {
     condition: (params) => (params.family === 'Spiderman' || params.family === 'Bingham') && (params.birthDate[0] === '1962-07-31' || params.birthDate[0] === '1934-12-18'),
     action: () => timestampBody(EMPTY_SEARCHSET)
