@@ -83,7 +83,7 @@ Feature: Search for a patient - OAS file examples
     * status 200
     * match response.total == 1
   
-  Scenario: Unsuccessful search
+  Scenario: Search on family name and DoB - No results
     * path 'Patient'
     * params { family: "Spiderman", birthdate: "1962-07-31" }
     * method get
