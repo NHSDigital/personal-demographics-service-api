@@ -7,7 +7,7 @@ properties:
   url:
     type: string
     description: URL of specification of UKCore-MedicalApplianceSupplier FHIR extension.
-    default: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-MedicalApplianceSupplier
+    example: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-MedicalApplianceSupplier
     enum:
       - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-MedicalApplianceSupplier
   valueReference:

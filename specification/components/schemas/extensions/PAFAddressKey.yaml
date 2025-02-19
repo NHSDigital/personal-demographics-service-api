@@ -4,7 +4,7 @@ properties:
   url:
     type: string
     description: URL of specification of the AddressKey extension.
-    default: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey
+    example: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey
     enum:
       - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey
   extension:
@@ -23,7 +23,7 @@ properties:
             url:
               type: string
               description: Always 'type'.
-              default: type
+              example: type
             valueCoding:
               type: object
               description: URL of specification of address key format.
@@ -34,7 +34,7 @@ properties:
                 system:
                   type: string
                   description: URL of Code System that describes available Address Key formats.
-                  default: https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType
+                  example: https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType
                 code:
                   type: string
                   description: Address Key system. Always 'PAF'.
@@ -49,7 +49,6 @@ properties:
             url:
               type: string
               description: Always 'value'.
-              default: value
               example: value
             valueString:
               type: string

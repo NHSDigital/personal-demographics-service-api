@@ -7,7 +7,7 @@ properties:
   url:
     type: string
     description: Definition of death notification extension.
-    default: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus
+    example: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus
     enum:
       - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus
   extension:
@@ -26,7 +26,7 @@ properties:
             url:
               type: string
               description: Key of this object. Always `deathNotificationStatus`.
-              default: deathNotificationStatus
+              example: deathNotificationStatus
               enum:
                 - deathNotificationStatus
             valueCodeableConcept:
@@ -40,7 +40,7 @@ properties:
             url:
               type: string
               description: Key of this object. Always `systemEffectiveDate`.
-              default: systemEffectiveDate
+              example: systemEffectiveDate
               enum:
                 - systemEffectiveDate
             valueDateTime:

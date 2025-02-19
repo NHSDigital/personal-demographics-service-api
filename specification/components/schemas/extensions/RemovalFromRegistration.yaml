@@ -7,7 +7,7 @@ properties:
   url:
     type: string
     description: Definition of the removal from registration extension.
-    default: https://fhir.nhs.uk/StructureDefinition/Extension-PDS-RemovalFromRegistration
+    example: https://fhir.nhs.uk/StructureDefinition/Extension-PDS-RemovalFromRegistration
     enum:
       - https://fhir.nhs.uk/StructureDefinition/Extension-PDS-RemovalFromRegistration
     readOnly: true
@@ -27,7 +27,7 @@ properties:
             url:
               type: string
               description: To identify the removal reason code.
-              default: removalFromRegistrationCode
+              example: removalFromRegistrationCode
               enum:
                 - removalFromRegistrationCode
               readOnly: true
@@ -42,7 +42,7 @@ properties:
             url:
               type: string
               description: Key of this object. Always `effectiveTime`.
-              default: effectiveTime
+              example: effectiveTime
               enum:
                 - effectiveTime
               readOnly: true

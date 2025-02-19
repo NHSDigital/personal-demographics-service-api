@@ -7,7 +7,7 @@ properties:
   url:
     type: string
     description: Definition of the contact preference extension.
-    default: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-ContactPreference
+    example: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-ContactPreference
     enum:
       - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-ContactPreference
   extension:
@@ -25,7 +25,7 @@ properties:
             url:
               type: string
               description: Key of this object. Always `PreferredWrittenCommunicationFormat`.
-              default: PreferredWrittenCommunicationFormat
+              example: PreferredWrittenCommunicationFormat
             valueCodeableConcept:
               type: object
               description: Preferred Written Communication Format.
@@ -69,7 +69,7 @@ properties:
             url:
               type: string
               description: Key of this object. Always `PreferredContactMethod`.
-              default: PreferredContactMethod
+              example: PreferredContactMethod
               enum:
                 - PreferredContactMethod
             valueCodeableConcept:
@@ -120,7 +120,7 @@ properties:
             url:
               type: string
               description: Key of this object. Always `PreferredContactTimes`.
-              default: PreferredContactTimes
+              example: PreferredContactTimes
               enum:
                 - PreferredContactTimes
             valueString:

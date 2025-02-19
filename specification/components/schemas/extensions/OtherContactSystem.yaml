@@ -4,7 +4,7 @@ properties:
   url:
     type: string
     description: Definition of other contact system extension.
-    default: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-OtherContactSystem
+    example: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-OtherContactSystem
     enum:
       - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-OtherContactSystem
   valueCoding:
