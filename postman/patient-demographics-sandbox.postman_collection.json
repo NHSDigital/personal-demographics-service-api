@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "39ee8747-9950-4a0e-89ab-dd77460cb921",
+		"_postman_id": "1b71fec3-aa34-4ffb-ad9d-ada5a90a3027",
 		"name": "Patient Demographics Sandbox",
 		"description": "Sandbox example requests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -1438,7 +1438,7 @@
 					"response": []
 				},
 				{
-					"name": "Unsuccessful search",
+					"name": "Search on family name, given name and DoB - No results",
 					"event": [
 						{
 							"listen": "test",
