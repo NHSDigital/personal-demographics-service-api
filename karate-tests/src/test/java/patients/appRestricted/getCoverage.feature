@@ -1,4 +1,4 @@
-@no-oas
+
 Feature: Get Coverage-not permitted for application-restricted users
 
   Background:

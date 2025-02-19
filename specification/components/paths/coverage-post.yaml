@@ -29,7 +29,7 @@ description: |
   | Missing Ehic card number            | `id`=`9000000009`<br><br>Body: One of the provided examples or your own combination<br><br>Headers: `If-Match`=`W/"2"`, `Content-Type`=`application/json` | HTTP Status 400 with problem description         |
   | Invalid NHS number                  | `id`=`9000000000` (or any invalid NHS number)                             | HTTP Status 400 with problem description         |
   | Missing X-Request-ID                | X-Request-ID header missing                                               | HTTP Status 400 with problem description         |
-  | Invalid X-Request-ID                | X-Request-ID = 1234                                                       | HTTP Status 400 with problem description         |
+  | Invalid X-Request-ID                | `X-Request-ID`= `1234`                                                     | HTTP Status 400 with problem description         |
 
   You can try out the sandbox by selecting the 'Try' button on this page.
 
@@ -39,6 +39,10 @@ description: |
 
 parameters:
   - $ref: '../../personal-demographics.yaml#/components/parameters/IfMatch'
+  - $ref: '../../personal-demographics.yaml#/components/parameters/BearerAuthorization'
+  - $ref: '../../personal-demographics.yaml#/components/parameters/RequestID'
+  - $ref: '../../personal-demographics.yaml#/components/parameters/CorrelationID'
+  - $ref: '../../personal-demographics.yaml#/components/parameters/NHSD-End-User-Organisation-ODS'
 requestBody:
   required: true
   content:
@@ -50,10 +54,6 @@ requestBody:
           summary: Add a coverage to a patient
           value:
             $ref: '../examples/Coverage.json'
-        another-scenario:
-          summary: TODO
-          value:
-            $ref: '../examples/Coverage.json'
 responses:
   '2XX':
     description: |
@@ -63,6 +63,8 @@ responses:
         | 201         |                            | Coverage successfully added
 
     headers:
+      ETag:
+        $ref: '../../personal-demographics.yaml#/components/headers/ETag'
       X-Correlation-Id:
         $ref: '../../personal-demographics.yaml#/components/headers/X-Correlation-Id'
       X-Request-Id:
@@ -81,24 +83,20 @@ responses:
 
         | HTTP status | Error code                 | Description                                                                                                                                |
         | ----------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-        | 400         | MISSING_VALUE              | Missing header or value in the body. For details, see the `diagnostics` field.
-        | 400         | INVALID_VALUE              | Invalid header or value in the body. For details, see the `diagnostics` field.
-        | 400         | INVALID_UPDATE             | Malformed request body or client error after the update was accepted and patient was not updated.
-        | 400         | INVALID_RESOURCE_ID        | Invalid NHS number.
-        | 400         | VALIDATION_ERROR           | This is the "default" error thrown when no others are applicable.
-        | 400	        | TOO_FEW_VALUES_SUBMITTED	 | The field in question has a minimum number of items and the user sent too few.
-        | 400	        | TOO_MANY_VALUES_SUBMITTED	 | The field in question has a maximum number of items and the user sent too many.
-        | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation (ASID not set for interaction)
-        | 403	        | FORBIDDEN_UPDATE	         | The user is not permitted to update certain resources or elements, for example most users are not allowed to update the date of death once it has been set. A detailed description will be added to the display. For example - updating a sensitive patient or adding a formal death notification is only permitted from certain systems.
-        | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS number.
-        | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period.
-        | 409         | RESOURCE_VERSION_MISMATCH  | The resource version in the If-Match header of the update request did not match the current version of the resource. See Patient resource versioning.
-        | 412	        | PRECONDITION_FAILED	       | Problem with request, for example missing If-Match header. For details, see the diagnostics field.
-        | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits).
-
-    headers:
-      X-Request-Id:
-        $ref: '../../personal-demographics.yaml#/components/headers/X-Request-Id'
+        | 400         | MISSING_VALUE              | Missing header or value in the body. For details, see the `diagnostics` field. |
+        | 400         | INVALID_VALUE              | Invalid header or value in the body. For details, see the `diagnostics` field. 
+        | 400         | INVALID_UPDATE             | Malformed request body or client error after the update was accepted and patient was not updated. |
+        | 400         | INVALID_RESOURCE_ID        | Invalid NHS number. |
+        | 400         | VALIDATION_ERROR           | This is the "default" error thrown when no others are applicable. |
+        | 400	        | TOO_FEW_VALUES_SUBMITTED	 | The field in question has a minimum number of items and the user sent too few. |
+        | 400	        | TOO_MANY_VALUES_SUBMITTED	 | The field in question has a maximum number of items and the user sent too many. |
+        | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation (ASID not set for interaction) |
+        | 403	        | FORBIDDEN_UPDATE	         | The user is not permitted to update certain resources or elements, for example most users are not allowed to update the date of death once it has been set. A detailed description will be added to the display. For example - updating a sensitive patient or adding a formal death notification is only permitted from certain systems. |
+        | 404         | RESOURCE_NOT_FOUND         | Patient does not exist for given NHS number. |
+        | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period. |
+        | 409         | RESOURCE_VERSION_MISMATCH  | The resource version in the If-Match header of the update request did not match the current version of the resource. See Patient resource versioning. |
+        | 412	        | PRECONDITION_FAILED	       | Problem with request, for example missing If-Match header. For details, see the diagnostics field. |
+        | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
 
     content:
       application/fhir+json:
