@@ -26,6 +26,8 @@ def _format_telecom(resource, key, add_textphone_extension=True, whitelist=None)
         for key_to_delete in whitelist:
             # Removing certain fields - for example extension is not needed when
             # a use field is present.
+            if key_to_delete not in telecom:
+                continue
             del telecom[key_to_delete]
         resource[key].append(telecom)
 

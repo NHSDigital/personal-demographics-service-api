@@ -1,0 +1,27 @@
+type: object
+required:
+  - system
+  - value
+properties:
+  id:
+    type: string
+    description: Unique object identifier for this contact point.
+    example: '789'
+  system:
+    description: Means of communication, such as phone or email.
+    type: string
+    enum: [phone, email, other]
+    example: phone
+  value:
+    description: Phone number, email address, or other identifier for use with contact system.
+    type: string
+    example: '01632960587'
+  extension:
+    type: array
+    maxItems: 1
+    description: |
+      Extension that is returned when the communication type is `textphone`. The only code returned is `textphone`, which means `Minicom (Textphone)`.
+
+      The `system` is `other` when the extension is included.
+    items:
+      $ref: 'extensions/OtherContactSystem.yaml'
