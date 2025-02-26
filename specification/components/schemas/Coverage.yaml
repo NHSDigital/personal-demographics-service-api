@@ -37,7 +37,6 @@ properties:
             $ref: NhsNumber.yaml
   identifier:
     type: array
-    description: "The primary identifier of the insurer. For EHIC, this is the identification number of the card."
     minItems: 1
     maxItems: 1
     items:
@@ -48,6 +47,7 @@ properties:
       properties:
         value:
           type: string
+          description: "The primary identifier of the insurer. For EHIC, this is the identification number of the card."
           minLength: 1
           maxLength: 25
           pattern: "^[a-zA-Z0-9]{1,25}$"
