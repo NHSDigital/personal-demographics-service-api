@@ -4,7 +4,6 @@ required:
 properties:
   identifier:
     type: object
-    description: "Identifier for the country from which the Coverage originates."
     required:
       - system
       - value
