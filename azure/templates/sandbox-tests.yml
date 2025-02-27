@@ -7,6 +7,39 @@ steps:
       customCommand: 'install newman -g'
 
   - bash: |
+
+      url="https://$(APIGEE_ENVIRONMENT).api.service.nhs.uk/$(SERVICE_BASE_PATH)/_status"
+      interval_in_seconds=5
+      releaseCommit="$(Build.SourceVersion)"
+
+      printf "\nPolling %s every %s seconds, until commit is: %s\n" "$url" "$interval_in_seconds" "$releaseCommit"
+
+      attempts=0
+      max_attempts=60
+      success=0
+      until [ $attempts -eq $max_attempts ]
+      do
+      echo "attempt: ${attempts}"
+      responseData=$(curl -H "apiKey: $(status-endpoint-api-key)" "$url" -s)
+      deployedCommit=$(echo "$responseData" | jq -r ".commitId" || echo "not_found")
+      sandboxStatus=$(echo "$responseData" | jq -r ".status" || echo "not_found")
+      if [ "$deployedCommit" == "$releaseCommit" ] && [ "$sandboxStatus" == "pass" ]; then
+          success=1
+          break;
+      fi;
+      ((attempts=attempts+1))
+      echo "Sleeping ${interval_in_seconds} seconds"
+      sleep $interval_in_seconds;
+      done
+
+      if [ $success == 0 ]
+      then
+          echo "Sandbox did not deploy after %s attempts, using %s-second intervals" "$max_attempts" "$interval_in_seconds"
+          exit 255
+      fi
+    displayName: Wait for sandbox to deploy
+
+  - bash: |
       newman run patient-demographics-sandbox.postman_collection.json --env-var "base_url=https://$(ENVIRONMENT).api.service.nhs.uk/$(PDS_BASE_PATH)" -r cli,junit --insecure --reporter-junit-export newman-test-report.xml
     workingDirectory: "$(ARTIFACT_PATH)/postman"
     displayName: 'Run Postman collection tests'
