@@ -19,7 +19,7 @@ properties:
     example: "active"
   subscriber:
     type: object
-    description: "Subscriber and patient covered by the policy"
+    description: "Subscriber and patient covered by the policy. For EHIC, this is the patient's NHS number."
     required:
       - identifier
     properties:
@@ -37,7 +37,6 @@ properties:
             $ref: NhsNumber.yaml
   identifier:
     type: array
-    description: "The primary identifier of the insurer"
     minItems: 1
     maxItems: 1
     items:
@@ -48,15 +47,17 @@ properties:
       properties:
         value:
           type: string
+          description: "The primary identifier of the insurer. For EHIC, this is the identification number of the card."
           minLength: 1
           maxLength: 25
           pattern: "^[a-zA-Z0-9]{1,25}$"
           example: "29401395498043123948"
         assigner:
+          description: "Identifier for the country from which the Coverage originates. For EHIC, this is the country of issue."
           $ref: CountryCode.yaml
   payor:
     type: array
-    description: "Issuer of the policy"
+    description: "Issuer of the policy. For EHIC, this is the identification number of the institution."
     minItems: 1
     maxItems: 1
     items:
@@ -78,7 +79,7 @@ properties:
               example: "92847ADGJL"
   beneficiary:
     type: object
-    description: "Plan beneficiary"
+    description: "Plan beneficiary. For EHIC, this is the personal identification number."
     required:
       - identifier
     properties:
@@ -96,7 +97,7 @@ properties:
             example: "178705ABC"
   period:
     type: object
-    description: "Time period when coverage is valid"
+    description: "Time period when coverage is valid. For EHIC, this is the expiry date."
     required:
       - end
     properties:
