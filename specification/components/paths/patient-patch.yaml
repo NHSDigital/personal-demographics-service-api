@@ -410,6 +410,15 @@ description: |
 
   Which is incorrect, as Irwin and Sharpe were removed instead of Irwin and Bruce.
 
+  ###  Business rules for period
+
+  Except where stated in the data fields below, the following rules apply for the `period` object:
+  * A `period` object is optional.
+  * If a period is not provided, today's date will be applied as the `start` date.
+  * If a `period` object is supplied, a `start` date must also be provided.
+  * A `start` date must not be in the future.
+  * An `end` date must not be before the `start` date.
+
 
   ## Patient data fields
 
@@ -490,8 +499,8 @@ description: |
   Where multiple instances already exist for the patient it is not expected that local systems should manage those, but should choose the most appropriate one to maintain (for example by examining period dates).
 
   A `home` address is the patient's main residential address and should normally be used for all clinical and demographic purposes, including clinical and appointment correspondence. However additionally, `temp` and `billing` addresses may be provided by a patient when there is a requirement to record an alternative location for the purposes of unbroken care. When sending correspondence to a patient:
-  * a present and valid `billing` address may take precedence over `home` and `temp` addresses. A patient should have only a single current `billing` address. An address is considered 'valid' according to its period start and to dates.
-  * if no current `billing` address is provided, a `temp` address may take precedence over the `home` address, again if it is valid according to its period start and to dates.
+  * a present and valid `billing` address may take precedence over `home` and `temp` addresses. A patient should have only a single current `billing` address. An address is considered 'valid' according to its period start and end dates.
+  * if no current `billing` address is provided, a `temp` address may take precedence over the `home` address, again if it is valid according to its period start and end dates.
 
   Not all local systems support `temp` and `billing` addresses, so these are not uniformly maintained. Therefore, where the patient contact has clinical or business significance, the precedence of these addresses over the `home` address should be determined by a user wherever possible.
   When the end date for a `temp` or `billing` address passes, local systems should use the patient’s `home` address. It is extremely rare that no `home` address is present on a patient record.
@@ -499,10 +508,7 @@ description: |
   Be aware of the following business rules:
   * you cannot add more than one of each address use types; `home`, `temp` or `billing`
   * `work` address `use` type is a valid response but cannot be added or replaced as it is a legacy value. An address with the `work` type can be removed though
-  * any `temp` address must have both a `period start` and a `period end` date. The provision of a period end date has particular importance in order to avoid temporary addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 3 months.
-  * any `billing` address must have both a `period start` and a `period end` date. The provision of a period end date has particular importance in order to avoid correspondence addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 12 months.
-  * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date
-  * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update
+  * any `temp` or `billing` address must have both a `period start` and a `period end` date. The provision of a period end date has particular importance in order to avoid temporary or correspondence addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 3 months for `temp` and 12 months for `billing`.
   * where a `temp` address is provided a description must be sent using the `text` field, the list of possible values are:
     * `Second Home` - a patient's second home
     * `Student Accommodation` - a patient's place of residence while at university
@@ -606,9 +612,6 @@ description: |
   There are a number of business rules that should be taken into account:
   * in any telecom child object the `use` key should not be present.
   * in any telecom child object the system cannot be `fax`.
-  * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
-  * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
-  * the date period, if present, should be on the parent `contact` object and not any `telecom` child objects.
   * if the system is email, the value must be a valid email format, for example john.smith@example.com; and must be more than 6 characters and less than 90 characters
   * the relationship can only be `C` meaning `Emergency Contact`
 
@@ -636,7 +639,6 @@ description: |
 
   There are a number of business rules that should be taken into account:
   * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes.
-  * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
   * do not provide a period `end` date.
   * the general practice should only be updated by primary care systems, [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
   * removal of a general practice can only be done by [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
@@ -650,7 +652,6 @@ description: |
 
   The following business rules should be observed:
   * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes.
-  * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
   * only a single general practice is supported; emergency, temporary and additional practices must be maintained in the local system only.
 
   ### Multiple birth order
@@ -679,8 +680,6 @@ description: |
   * can have multiple instances of all other name use types.
   * cannot replace the use type on an existing name. For example, once a name is a nickname, it cannot be changed directly to an alias. You must instead remove the nickname and add the alias.
   * the first character of each `suffix` item must be `A-Z`.
-  * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
-  * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
   * supplied name data can only contain characters from the following ranges:
 
   | Character Code/Range | Examples      |
@@ -696,7 +695,7 @@ description: |
   | 46                   | Full-stop     |
   | 48-57	               | Numbers       |
 
-  * the `period` is optional, but if included the `end` date cannot be before the `start` date. They can however be in the past, present or future.
+  * when replacing an entire name object, you must provide a `period start` date.
   * the full available range of generally recognised titles are permitted, however, if any of the following are used then the value input must conform to the following format:
       * Mr
       * Mrs
@@ -761,8 +760,6 @@ description: |
   Emergency contact details should not be added to the `telecom` field, instead they should be added to the `contact` field.
 
   There are a number of business rules that should be taken into account:
-  * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date
-  * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
   * if using the `replace` operation, the use and system must be the same as the telecom you're modifying. Otherwise use a delete and add instead.
   * if the telecom system is email, the value must be a valid email format, for example john.smith@example.com; and must be more than 6 characters and less than 90 characters
 

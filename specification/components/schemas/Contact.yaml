@@ -25,4 +25,4 @@ properties:
     description: |
       List of Telecom objects on the contact only contains `system` and `value`.
     items:
-      "$ref": ContactPoint.yaml
+      "$ref": EmergencyContactPoint.yaml
