@@ -503,7 +503,7 @@ description: |
   * any `billing` address must have both a `period start` and a `period end` date. The provision of a period end date has particular importance in order to avoid correspondence addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 12 months.
   * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date
   * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update
-  * where a `temp` address is provided a description must be sent using the `text` field, the list of possible values are:
+  * where a `temp` address is provided a description must be sent using the `text` field, the list of allowed values are:
     * `Second Home` - a patient's second home
     * `Student Accommodation` - a patient's place of residence while at university
     * `Respite Care Address` - where the patient resides during respite care
@@ -511,6 +511,7 @@ description: |
     * `Convalescence Home` - the address for a patient during a period of recovery
     * `Mobile Home` - the address of a patient's mobile home, parked for a specific period of time, e.g. the address of a caravan park
     * `Holiday Home` - the address for a patient during a holiday
+    In rare circumstances, an existing temporary address may be returned with a value outside of this list.
 
   ### Communication
 
