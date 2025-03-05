@@ -1,4 +1,4 @@
-summary: Get a patients coverage
+summary: Get a patient's coverage
 operationId: get-coverage
 description: |
   ## Overview
