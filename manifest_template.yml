@@ -137,7 +137,7 @@ ACCESS_MODES:
   - name: privileged-application-restricted
     nameSuffix: -privileged-application-restricted
     displayName: Privileged-Application-Restricted
-    scopes: ['urn:nhsd:apim:app:level3-privileged:personal-demographics-service']
+    scopes: ['urn:nhsd:apim:app:level3:privileged-personal-demographics-service']
     requireCallbackUrl: false
     description: Privileged Application Restricted
   - name: patient-access
