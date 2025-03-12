@@ -501,8 +501,6 @@ description: |
   * `work` address `use` type is a valid response but cannot be added or replaced as it is a legacy value. An address with the `work` type can be removed though
   * any `temp` address must have both a `period start` and a `period end` date. The end date is required so that consumers know when to remove data that is no longer relevant to the patient. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 90 days.
   * any `billing` address must have both a `period start` and a `period end` date. The end date is required so that consumers know when to remove data that is no longer relevant to the patient. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 366 days.
-  * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date
-  * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update
   * where a `temp` address is provided a description must be sent using the `text` field, the list of allowed values are:
     * `Second Home` - a patient's second home
     * `Student Accommodation` - a patient's place of residence while at university
@@ -608,7 +606,6 @@ description: |
   * in any telecom child object the `use` key should not be present.
   * in any telecom child object the system cannot be `fax`.
   * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
-  * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
   * the date period, if present, should be on the parent `contact` object and not any `telecom` child objects.
   * if the system is email, the value must be a valid email format, for example john.smith@example.com; and must be more than 6 characters and less than 90 characters
   * the relationship can only be `C` meaning `Emergency Contact`
@@ -637,7 +634,6 @@ description: |
 
   There are a number of business rules that should be taken into account:
   * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes.
-  * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
   * do not provide a period `end` date.
   * the general practice should only be updated by primary care systems, [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
   * removal of a general practice can only be done by [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
@@ -651,7 +647,6 @@ description: |
 
   The following business rules should be observed:
   * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes.
-  * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
   * only a single general practice is supported; emergency, temporary and additional practices must be maintained in the local system only.
 
   ### Multiple birth order
@@ -680,8 +675,6 @@ description: |
   * can have multiple instances of all other name use types.
   * cannot replace the use type on an existing name. For example, once a name is a nickname, it cannot be changed directly to an alias. You must instead remove the nickname and add the alias.
   * the first character of each `suffix` item must be `A-Z`.
-  * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
-  * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
   * supplied name data can only contain characters from the following ranges:
 
   | Character Code/Range | Examples      |
@@ -697,7 +690,6 @@ description: |
   | 46                   | Full-stop     |
   | 48-57	               | Numbers       |
 
-  * the `period` is optional, but if included the `end` date cannot be before the `start` date. They can however be in the past, present or future.
   * the full available range of generally recognised titles are permitted, however, if any of the following are used then the value input must conform to the following format:
       * Mr
       * Mrs
