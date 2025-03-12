@@ -410,6 +410,16 @@ description: |
 
   Which is incorrect, as Irwin and Sharpe were removed instead of Irwin and Bruce.
 
+  ### Business rules for period
+
+  Except where stated in the data fields, these rules apply for the `period` object:
+  * a `period` object is optional
+  * when adding a new value or replacing a whole object, if a period is not provided, today's date will be applied as the `start` date.
+  * when replacing a specific value (for example, the second line of the address only) the original period.start date is kept.
+  * if a `period` object is supplied, a `start` date must also be provided.
+  * a `start` date must not be in the future.
+  * an `end` date must not be before the `start` date.
+
 
   ## Patient data fields
 
