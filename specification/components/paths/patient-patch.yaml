@@ -277,7 +277,9 @@ description: |
   
   See the [Patient access section](#patient-access) for information on updating fields in Patient access mode. 
 
-  Special care should also be taken when performing multiple removals in the same list; as removing a particular index could affect all subsequent index positions. The next two examples perform **<u>exactly</u>** the same operation.
+  You should take special care when performing multiple removals in the same list. Removing a particular index could affect all subsequent index positions. We recommend sorting those snippets in descending order of their index. For example, for removing multiple "family" values from index 1, 2 and 4 from the "name" snippet, you should test and remove them from the highest to lowest, from 4 to 2 to 1. This will prevent update failures caused by values re-indexing after each update.
+  
+  The next two examples perform **<u>exactly</u>** the same operation.
 
   Using the following initial (simplified) data, with the intention of removing the names in index 1 (Irwin) and 2 (Bruce):
 
