@@ -34,5 +34,5 @@ properties:
           example: fr
         display:
           type: string
-          description: Display-friendly representation of the language code (such as English). If there is a language code with no defined mapping, `Unknown` will be returned.
+          description: Even though the [code list]("https://simplifier.net/packages/fhir.r4.ukcore.stu3.currentbuild/0.0.3-pre-release/files/1950414") contains a value for English (en), preferred language must not contain this value.
           example: French

@@ -1,4 +1,4 @@
-summary: Post coverage for a patient
+summary: Update a patient's coverage
 operationId: post-coverage
 description: |
   ## Overview

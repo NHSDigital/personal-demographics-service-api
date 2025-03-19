@@ -277,7 +277,9 @@ description: |
   
   See the [Patient access section](#patient-access) for information on updating fields in Patient access mode. 
 
-  Special care should also be taken when performing multiple removals in the same list; as removing a particular index could affect all subsequent index positions. The next two examples perform **<u>exactly</u>** the same operation.
+  You should take special care when performing multiple removals in the same list. Removing a particular index could affect all subsequent index positions. We recommend sorting those snippets in descending order of their index. For example, for removing multiple "family" values from index 1, 2 and 4 from the "name" snippet, you should test and remove them from the highest to lowest, from 4 to 2 to 1. This will prevent update failures caused by values re-indexing after each update.
+  
+  The next two examples perform **<u>exactly</u>** the same operation.
 
   Using the following initial (simplified) data, with the intention of removing the names in index 1 (Irwin) and 2 (Bruce):
 
@@ -410,6 +412,16 @@ description: |
 
   Which is incorrect, as Irwin and Sharpe were removed instead of Irwin and Bruce.
 
+  ### Business rules for period
+
+  Except where stated in the data fields, these rules apply for the `period` object:
+  * a `period` object is optional
+  * when adding a new value or replacing a whole object, if a period is not provided, today's date will be applied as the `start` date.
+  * when replacing a specific value (for example, the second line of the address only) the original period.start date is kept.
+  * if a `period` object is supplied, a `start` date must also be provided.
+  * a `start` date must not be in the future.
+  * an `end` date must not be before the `start` date.
+
 
   ## Patient data fields
 
@@ -499,11 +511,10 @@ description: |
   Be aware of the following business rules:
   * you cannot add more than one of each address use types; `home`, `temp` or `billing`
   * `work` address `use` type is a valid response but cannot be added or replaced as it is a legacy value. An address with the `work` type can be removed though
-  * any `temp` address must have both a `period start` and a `period end` date. The provision of a period end date has particular importance in order to avoid temporary addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 3 months.
-  * any `billing` address must have both a `period start` and a `period end` date. The provision of a period end date has particular importance in order to avoid correspondence addresses that are no longer relevant to the patient still being held as current data available to any system retrieving the patient record. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 12 months.
-  * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date
-  * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update
-  * where a `temp` address is provided a description must be sent using the `text` field, the list of possible values are:
+  * any `temp` address must have both a `period start` and a `period end` date. The end date is required so that consumers know when to remove data that is no longer relevant to the patient. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 90 days.
+  * period object is mandatory when adding or replacing a temporary or billing address. The provided period object must contain a start and end date.
+  * any `billing` address must have both a `period start` and a `period end` date. The end date is required so that consumers know when to remove data that is no longer relevant to the patient. A suggested default where no actual period end is known is 30 days later than the period start, up to a maximum of 366 days.
+  * where a `temp` address is provided a description must be sent using the `text` field, the list of allowed values are:
     * `Second Home` - a patient's second home
     * `Student Accommodation` - a patient's place of residence while at university
     * `Respite Care Address` - where the patient resides during respite care
@@ -511,6 +522,7 @@ description: |
     * `Convalescence Home` - the address for a patient during a period of recovery
     * `Mobile Home` - the address of a patient's mobile home, parked for a specific period of time, e.g. the address of a caravan park
     * `Holiday Home` - the address for a patient during a holiday
+    In rare circumstances, an existing temporary address may be returned with a value outside of this list.
 
   ### Communication
 
@@ -607,7 +619,6 @@ description: |
   * in any telecom child object the `use` key should not be present.
   * in any telecom child object the system cannot be `fax`.
   * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
-  * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
   * the date period, if present, should be on the parent `contact` object and not any `telecom` child objects.
   * if the system is email, the value must be a valid email format, for example john.smith@example.com; and must be more than 6 characters and less than 90 characters
   * the relationship can only be `C` meaning `Emergency Contact`
@@ -636,7 +647,6 @@ description: |
 
   There are a number of business rules that should be taken into account:
   * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes.
-  * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
   * do not provide a period `end` date.
   * the general practice should only be updated by primary care systems, [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
   * removal of a general practice can only be done by [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
@@ -650,7 +660,6 @@ description: |
 
   The following business rules should be observed:
   * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes.
-  * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
   * only a single general practice is supported; emergency, temporary and additional practices must be maintained in the local system only.
 
   ### Multiple birth order
@@ -679,8 +688,6 @@ description: |
   * can have multiple instances of all other name use types.
   * cannot replace the use type on an existing name. For example, once a name is a nickname, it cannot be changed directly to an alias. You must instead remove the nickname and add the alias.
   * the first character of each `suffix` item must be `A-Z`.
-  * the date period is optional; where present they must be valid dates and the `end` date cannot be before the `start` date.
-  * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
   * supplied name data can only contain characters from the following ranges:
 
   | Character Code/Range | Examples      |
@@ -696,7 +703,6 @@ description: |
   | 46                   | Full-stop     |
   | 48-57	               | Numbers       |
 
-  * the `period` is optional, but if included the `end` date cannot be before the `start` date. They can however be in the past, present or future.
   * the full available range of generally recognised titles are permitted, however, if any of the following are used then the value input must conform to the following format:
       * Mr
       * Mrs
@@ -818,7 +824,7 @@ description: |
   | Patient does not exist               | `id`=`9111231130` (or any other valid NHS number)                         | HTTP Status 404 with problem description         |
   | Invalid NHS number                  | `id`=`9000000000` (or any invalid NHS number)                             | HTTP Status 400 with problem description         |
   | Missing resource version identifier | `If-Match` header missing or set to format other than `W/"<version>"`     | HTTP Status 412 with problem description         |
-  | Incorrect resource version          | `If-Match`=`W/"1"`                                                        | HTTP Status 412 with problem description         |
+  | Incorrect resource version          | `If-Match`=`W/"1"`                                                        | HTTP Status 409 with problem description         |
   | Wrong content type                  | `Content-Type` header missing or other than `application/json-patch+json` | HTTP Status 400 with problem description         |
   | No patches sent                     | Send body with no `patches` attribute                                     | HTTP Status 400 with problem description         |
   | Invalid patch operations            | Send body with invalid JSON patches in `patches` attribute                | HTTP Status 400 with problem description         |

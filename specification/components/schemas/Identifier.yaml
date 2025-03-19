@@ -1,8 +1,8 @@
 type: array
 description: Identifier and system of identification used for this Patient.
+maxItems: 1
 items:
   type: object
-  maxItems: 1
   required:
     - value
   properties:
