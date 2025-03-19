@@ -8,6 +8,8 @@ properties:
   id:
     type: string
     example: C123
+  period:
+    "$ref": Period.yaml
   relationship:
     type: array
     description: |
