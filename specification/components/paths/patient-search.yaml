@@ -72,7 +72,7 @@ description: |
 
   Ensure that you design your software to minimise the following risks:
   * an end user selects the wrong patient from the results presented, so there is a risk of clinical harm; for example due to retrieval of the wrong clinical data
-  * the end user has access to patients’ personal data, so there is a risk to patient privacy
+  * the end user has access to patients' personal data, so there is a risk to patient privacy
 
   Note that:
   * we record an access request in our audit trail for all patients matched in a PDS search
@@ -146,7 +146,7 @@ description: |
 
   A fuzzy search always includes history. For a non-fuzzy search, you can request to include history.
 
-  Searching history can match patients when only a previous name or address is known, or if a patient provides a previous name or address on the assumption that their record hasn’t been updated. When a search done on historic data results in a match, the patient's current data will be returned in the response message, not the historic data used to identify the match.
+  Searching history can match patients when only a previous name or address is known, or if a patient provides a previous name or address on the assumption that their record hasn't been updated. When a search done on historic data results in a match, the patient's current data will be returned in the response message, not the historic data used to identify the match.
 
   ### Exact match
   You can request an exact match.

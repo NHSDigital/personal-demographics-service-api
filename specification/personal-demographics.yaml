@@ -48,9 +48,9 @@ info:
     All patients in PDS have an NHS number which is unique. The 10-digit NHS number is used in England, Wales, the Isle of Man, Scotland and Northern Ireland, but not the Channel Islands. Scotland and Northern Ireland have their own distinct number ranges.
     
     ## Who can use this API
-    This API can only be used where there is a [legal basis](http://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) to do so. Make sure you have a valid use case before you go too far with your development.  You must demonstrate you have a [valid use case](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) as part of digital onboarding. 
+    This API can only be used where there is a [legal basis](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) to do so. Make sure you have a valid use case before you go too far with your development.  You must demonstrate you have a [valid use case](https://digital.nhs.uk/services/demographics/access-data-on-the-personal-demographics-service) as part of digital onboarding. 
     
-    You must do this before you can go live (see ‘Onboarding’ below).
+    [You must do this before you can go live](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir#overview--onboarding).
 
     ### Who can access PDS records
     Health and care organisations in England and the Isle of Man can access PDS records. Legitimate direct care examples include NHS organisations delivering healthcare, local authorities delivering care, third sector and private sector health and care organisations, and developers delivering systems to health and care organisations. 
@@ -72,7 +72,7 @@ info:
 
     ### Healthcare worker access 
     If the end user is a healthcare worker then you must use this access mode. Use this access mode to: 
-    * search for patients – and be able to present a list of matches for the user to choose from 
+    * search for patients and be able to present a list of matches for the user to choose from 
     * get patient details 
     * update patient details 
     * get a patient's related people
@@ -95,8 +95,8 @@ info:
 
     ### Patient access 
     If the end user is a patient then you must use this access mode. Use this access mode to: 
-    * get the patient’s own details 
-    * update the patient’s own details (limited)
+    * get the patient's own details 
+    * update the patient's own details (limited)
     * get the patient's related people
     * get patient coverage (for specific use cases only)
     * update patient coverage (for specific use cases only)
@@ -132,7 +132,7 @@ info:
     This access mode is not designed to be accessed by an end user. You might use this access mode as part of a back-end process to: 
     * retrieve NHS numbers for data flowing from one system to another
     *	verify an NHS number
-    *	get a patient’s registered GP practice or contact details
+    *	get a patient's registered GP practice or contact details
 
     To use this access mode, use this security pattern:
     * [Application-restricted RESTful API - signed JWT authentication](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/application-restricted-restful-apis-signed-jwt-authentication)
@@ -241,7 +241,7 @@ info:
     Rather, use our [production test patient](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-api-test-data#production-smoke-testing).
 
     ## Onboarding
-    You need to get your software approved by us before it can go live with this API. We call this onboarding. The onboarding process can sometimes be quite long, so it’s worth planning well ahead.
+    You need to get your software approved by us before it can go live with this API. We call this onboarding. The onboarding process can sometimes be quite long, so it's worth planning well ahead.
     
     As part of this process, you need to demonstrate your technical conformance to the requirements for this API. For more details according to your access mode, see:
     * [PDS FHIR API technical conformance - application-restricted access mode](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/pds-fhir-technical-conformance---application-restricted-access-mode)
@@ -593,7 +593,7 @@ components:
     AddressPostalcode:
       name: address-postalcode
       description: |
-        The postcode of any of the patient’s known addresses.
+        The postcode of any of the patient's known addresses.
 
         Not case sensitive.
         Spaces are ignored, for example `LS16AE` and `LS1 6AE` both match `LS1 6AE`.
@@ -615,7 +615,7 @@ components:
       description: |
         **N.B. that address-postcode will be deprecated in the future, address-postalcode should be used instead. 
         If both address-postcode and address-postalcode are provided, an INVALID_SEARCH_DATA error will be returned.**
-        The postcode of any of the patient’s known addresses.
+        The postcode of any of the patient's known addresses.
 
         Not case sensitive.
         Spaces are ignored, for example `LS16AE` and `LS1 6AE` both match `LS1 6AE`.
