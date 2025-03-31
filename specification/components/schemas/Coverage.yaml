@@ -53,7 +53,7 @@ properties:
           pattern: "^[a-zA-Z0-9]{1,25}$"
           example: "29401395498043123948"
         assigner:
-          description: "Identifier for the country from which the Coverage originates. For EHIC, this is the country of issue."
+          description: "Identifier for the country that the coverage is from, in the format of the [International Organization for Standardization (ISO) three digital letter combination](https://www.gov.uk/government/publications/iso-country-codes--2) (ISO alpha-3). For EHIC, this is the country of issue."
           $ref: CountryCode.yaml
   payor:
     type: array
