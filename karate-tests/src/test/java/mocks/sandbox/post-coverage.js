@@ -80,7 +80,7 @@ function postCoverageRequestIsValid (request) {
       condition: request.body?.beneficiary.identifier.value &&
       (!/^[a-zA-Z0-9\-,/:'. ]+$/.test(request.body?.beneficiary.identifier.value.trim()) ||
       request.body?.beneficiary.identifier.value.trim().length > 25),
-      diagnostics: `Invalid value - '${request.body?.beneficiary.identifier.value}' in field \'beneficiary/identifier/value\'`,
+      diagnostics: `Invalid value - '${request.body?.beneficiary.identifier.value}' in field 'beneficiary/identifier/value'`,
       type: 'invalid'
     },
     {
