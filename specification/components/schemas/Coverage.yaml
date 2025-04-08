@@ -50,7 +50,7 @@ properties:
           description: "The primary identifier of the insurer. For EHIC, this is the identification number of the card."
           minLength: 1
           maxLength: 25
-          pattern: "^[a-zA-Z0-9]{1,25}$"
+          pattern: "^[a-zA-Z0-9\\-,/:'. ]{1,25}$"
           example: "29401395498043123948"
         assigner:
           description: "Identifier for the country that the coverage is from, in the format of the [International Organization for Standardization (ISO) three digital letter combination](https://www.gov.uk/government/publications/iso-country-codes--2) (ISO alpha-3). For EHIC, this is the country of issue."
@@ -75,7 +75,7 @@ properties:
               description: "The value that is unique"
               minLength: 1
               maxLength: 30
-              pattern: "^[a-zA-Z0-9]{1,30}$"
+              pattern: "^[a-zA-Z0-9\\-,/:'. ]{1,30}$"
               example: "92847ADGJL"
   beneficiary:
     type: object
@@ -93,7 +93,7 @@ properties:
             description: "The personal ID number identifying the beneficiary."
             minLength: 1
             maxLength: 25
-            pattern: "^[a-zA-Z0-9]{1,25}$"
+            pattern: "^[a-zA-Z0-9\\-,/:'. ]{1,25}$"
             example: "178705ABC"
   period:
     type: object

@@ -51,7 +51,7 @@ function postCoverageRequestIsValid (request) {
     },
     {
       condition: !request.body?.subscriber.identifier.value,
-      diagnostics: 'Missing value - \'beneficiary\'',
+      diagnostics: 'Missing value - \'subscriber/identifier/value\'',
       type: 'missing'
     },
     {
@@ -71,21 +71,21 @@ function postCoverageRequestIsValid (request) {
     },
     {
       condition: request.body?.identifier?.[0]?.value &&
-      (!/^[a-zA-Z0-9]+$/.test(request.body?.identifier[0].value.trim()) ||
-      request.body.identifier[0].value.trim().length > 30),
+      (!/^[a-zA-Z0-9\-,/:'. ]+$/.test(request.body?.identifier[0].value.trim()) ||
+      request.body.identifier[0].value.trim().length > 25),
       diagnostics: `Invalid value - '${request.body?.identifier[0].value}' in field 'identifier/value'`,
       type: 'invalid'
     },
     {
-      condition: request.body?.subscriberId &&
-      (!/^[a-zA-Z0-9]+$/.test(request.body?.subscriberId.trim()) ||
-      request.body?.subscriberId.trim().length > 30),
-      diagnostics: `Invalid value - '${request.body?.subscriberId}' in field 'subscriberId'`,
+      condition: request.body?.beneficiary.identifier.value &&
+      (!/^[a-zA-Z0-9\-,/:'. ]+$/.test(request.body?.beneficiary.identifier.value.trim()) ||
+      request.body?.beneficiary.identifier.value.trim().length > 25),
+      diagnostics: `Invalid value - '${request.body?.beneficiary.identifier.value}' in field \'beneficiary/identifier/value\'`,
       type: 'invalid'
     },
     {
       condition: request.body?.payor[0].identifier?.value &&
-      (!/^[a-zA-Z0-9]+$/.test(request.body?.payor[0].identifier?.value.trim()) ||
+      (!/^[a-zA-Z0-9\-,/:'. ]+$/.test(request.body?.payor[0].identifier?.value.trim()) ||
       request.body?.payor[0].identifier?.value.trim().length > 30),
       diagnostics: `Invalid value - '${request.body?.payor[0].identifier}' in field 'Institution id'`,
       type: 'invalid'
