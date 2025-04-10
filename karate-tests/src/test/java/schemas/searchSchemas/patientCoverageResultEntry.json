@@ -3,7 +3,7 @@
     "resource": {
         "beneficiary": {
             "identifier": {
-                "value": "#regex([0-9a-zA-Z-,/:'. ]{1,25})"
+                "value": "#regex([0-9a-zA-Z\\-,/:'. ]{1,25})"
             },
             "type": "#string"
         },
@@ -16,13 +16,13 @@
                         "value": "#regex([A-Z]{3})"
                     }
                 },
-                "value": "#regex([0-9a-zA-Z-,/:'. ]{1,25})"
+                "value": "#regex([0-9a-zA-Z\\-,/:'. ]{1,25})"
             }
         ],
         "payor": [
             {
                 "identifier": {
-                    "value": "#regex([0-9a-zA-Z-,/:'. ]{1,30})"
+                    "value": "#regex([0-9a-zA-Z\\-,/:'. ]{1,30})"
                 }
             }
         ],
