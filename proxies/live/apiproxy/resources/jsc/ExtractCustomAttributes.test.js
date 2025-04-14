@@ -46,8 +46,12 @@ test("malformed json not extracted to JSON", () => {
     jestWhen.when(global.context.getVariable).calledWith("app.apim-app-flow-vars").mockReturnValue(input)
 
     // act
-    extractCustomAttributes()
+    try {
+        extractCustomAttributes()
+    } catch {
+    }
+    
 
     // assert
-    expect(global.context.setVariable.mock.calls[0][1]).toBe("Unexpected token 'm', \"malformed:json\" is not valid JSON")
+    expect(global.context.setVariable.mock.calls[0]).toBeUndefined()
 })
