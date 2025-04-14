@@ -274,3 +274,27 @@ Scenario:
       throw new Error('Test data in wrong state: no mobile phone on patient')
     }
     """
+
+    * def checkNullsHaveExtensions =
+    """
+    function(addresses) {
+         /*
+        Takes a patient address array, and returns true if
+        address has null in the list and same nulls have corresponding
+        _lines extensions.
+      */
+      for (var i = 0; i < addresses.length; i++) {
+        var lines = addresses[i].line;
+        var _lines = addresses[i]._line;
+    
+        for (var j = 0; j < lines.length; j++) {
+          if (lines[j] === null) {
+            if (!_lines[j] || !_lines[j].extension || !_lines[j].extension.length) {
+              return false;
+            }
+          }
+        }
+      }
+      return true;
+    }
+    """ 

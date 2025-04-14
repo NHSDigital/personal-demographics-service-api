@@ -25,5 +25,5 @@ Scenario: Patient has one related person
     * status 200
     * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
     * match response == RelatedPersonSearchBundle
-    * match response.total == 1 
-    # Add validation stuff for empty address lines and extensions checks
+    * def addresses = response.address
+    * match checkNullsHaveExtensions(addresses) == true

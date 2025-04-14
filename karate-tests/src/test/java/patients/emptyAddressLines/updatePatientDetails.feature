@@ -40,7 +40,8 @@ Scenario: Updating temporary address response should show empty address lines
     * method patch
     * status 200 
     * def idAfterTempAddress = response.meta.versionId
-   # Check validation to address in the response shows 5 lines
+    * def addresses = response.address
+    * match checkNullsHaveExtensions(addresses) == true
 
    # Test fails if the patient's temp address details are not present in the record
   
@@ -73,7 +74,8 @@ Scenario: Updating temporary address response should show empty address lines
    * method patch
    * status 200
    * match parseInt(response.meta.versionId) == parseInt(idAfterTempAddress)+ 1
-  # Check validation to address in the response shows 5 lines
+   * def addresses = response.address
+   * match checkNullsHaveExtensions(addresses) == true
 
 Scenario: Updating contact details response should show empty address lines
     * def nhsNumber = '9733162868'
@@ -97,4 +99,5 @@ Scenario: Updating contact details response should show empty address lines
     * method patch
     * status 200
     * assert originalTelecom.length == response.telecom.length
-    # Check validation to address in the response shows 5 lines
+    * def addresses = response.address
+    * match checkNullsHaveExtensions(addresses) == true

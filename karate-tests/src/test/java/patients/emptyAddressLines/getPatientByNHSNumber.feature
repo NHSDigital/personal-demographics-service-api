@@ -30,5 +30,6 @@ Scenario: Get a patient details
     * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
     * match response.id == nhsNumber
     * match response == Patient
-    # Add validation stuff for empty address lines and extensions checks
-
+    * def addresses = response.address
+    * match checkNullsHaveExtensions(addresses) == true
+    #add validation for custom attribute header

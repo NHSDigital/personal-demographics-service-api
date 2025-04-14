@@ -32,4 +32,5 @@ Scenario:  Post patient and check response shows all
   * def nhsNumber = response.id
   * def expectedResponse = read('classpath:patients/healthcareWorker/new-nhs-number-response-template.json')
   * match response == expectedResponse
-  #check address line includes 5 lines with null values
+  * def addresses = response.address
+  * match checkNullsHaveExtensions(addresses) == true
