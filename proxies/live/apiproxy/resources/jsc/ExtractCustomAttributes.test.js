@@ -1,5 +1,11 @@
+var jestWhen = require('jest-when');
+
 setup();
-const { extractCustomAttributes } = require("./ExtractCustomAttributes.js");
+
+const extractCustomAttributes = () => {
+    jest.resetModules();
+    return require("./ExtractCustomAttributes.js")
+}
 
 function setup() {
     global.context = {};
@@ -13,9 +19,10 @@ beforeEach(() => {
 test("custom-attributes extracted to JSON", () => {
     // arrange
     const input = '{"pds": {"custom-attributes": {"custom-attr-1": "true", "custom-attr-2": "xyz", "custom-attr-3": "123"}}}';
-
+    jestWhen.when(global.context.getVariable).calledWith("app.apim-app-flow-vars").mockReturnValue(input)
+    
     // act
-    extractCustomAttributes(input)
+    extractCustomAttributes()
 
     // assert
     expect(global.context.setVariable.mock.calls[0][1]).toBe('{"custom-attr-1":"true","custom-attr-2":"xyz","custom-attr-3":"123"}')
@@ -24,9 +31,10 @@ test("custom-attributes extracted to JSON", () => {
 test("missing pds attribute not extracted to JSON", () => {
     // arrange
     const input = '{"custom-attributes": {"custom-attr-1": "true", "custom-attr-2": "xyz", "custom-attr-3": "123"}}';
+    jestWhen.when(global.context.getVariable).calledWith("app.apim-app-flow-vars").mockReturnValue(input)
 
     // act
-    extractCustomAttributes(input)
+    extractCustomAttributes()
 
     // assert
     expect(global.context.setVariable.mock.calls[0]).toBeUndefined()
@@ -35,9 +43,10 @@ test("missing pds attribute not extracted to JSON", () => {
 test("malformed json not extracted to JSON", () => {
     // arrange
     const input = 'malformed:json';
+    jestWhen.when(global.context.getVariable).calledWith("app.apim-app-flow-vars").mockReturnValue(input)
 
     // act
-    extractCustomAttributes(input)
+    extractCustomAttributes()
 
     // assert
     expect(global.context.setVariable.mock.calls[0]).toBeUndefined()

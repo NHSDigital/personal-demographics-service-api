@@ -12,5 +12,3 @@ function extractCustomAttributes(json) {
 }
 
 extractCustomAttributes(context.getVariable("app.apim-app-flow-vars"))
-
-module.exports = { extractCustomAttributes };
