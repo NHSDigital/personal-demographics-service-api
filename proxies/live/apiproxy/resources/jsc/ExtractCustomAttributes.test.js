@@ -49,5 +49,5 @@ test("malformed json not extracted to JSON", () => {
     extractCustomAttributes()
 
     // assert
-    expect(global.context.setVariable.mock.calls[0]).toBeUndefined()
+    expect(global.context.setVariable.mock.calls[0][1]).toBe("Unexpected token 'm', \"malformed:json\" is not valid JSON")
 })

@@ -6,7 +6,7 @@ function extractCustomAttributes(json) {
                 context.setVariable("extractedCustomAttributes", JSON.stringify(parsed.pds["custom-attributes"]))
             }
         } catch (e) {
-            context.setVariable("extractedCustomAttributesException", e)
+            context.setVariable("extractedCustomAttributesException", e.message)
         }
     }
 }
