@@ -274,3 +274,38 @@ Scenario:
       throw new Error('Test data in wrong state: no mobile phone on patient')
     }
     """
+
+    * def checkNullsHaveExtensions =
+    """
+    function(addresses) {
+      /*
+        * Validates a patient address array by checking if it contains null values.
+        * It returns true if the address contains null entries and each null entry 
+        * has a corresponding extension in the `_line` field.
+      */
+      for (var i = 0; i < addresses.length; i++) {
+        var lines = addresses[i].line;
+        var _lines = addresses[i]._line;
+    
+        for (var j = 0; j < lines.length; j++) {
+          if (lines[j] === null) {
+            if (!_lines[j] || !_lines[j].extension || !_lines[j].extension.length) {
+              return false;
+            }
+          }
+        }
+      }
+      return true;
+    }
+    """ 
+   
+   * def removeNullsFromAddress =
+   """
+   function(address) {
+    // Remove the "_line" property
+    delete address._line
+    // Remove null values from the "line" array
+    address.line = address.line.filter(value => value!==null)
+    return address
+   }
+   """ 

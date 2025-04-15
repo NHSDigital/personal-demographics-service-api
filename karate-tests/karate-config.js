@@ -63,6 +63,8 @@ function fn() {
       clientSecret: java.lang.System.getenv('CLIENT_SECRET'),
       interactionFreeClientID: java.lang.System.getenv('INTERACTION_FREE_CLIENT_ID'),
       interactionFreeClientSecret: java.lang.System.getenv('INTERACTION_FREE_CLIENT_SECRET'),
+      emptyAddressLinesClientID: java.lang.System.getenv('EMPTY_ADDRESS_LINES_CLIENT_ID'),
+      emptyAddressLinesClientSecret: java.lang.System.getenv('EMPTY_ADDRESS_LINES_CLIENT_SECRET'),
       signingKey: java.lang.System.getenv('APPLICATION_RESTRICTED_SIGNING_KEY_PATH'),
       apiKey: java.lang.System.getenv('APPLICATION_RESTRICTED_API_KEY'),
       keyID: java.lang.System.getenv('KEY_ID'),
