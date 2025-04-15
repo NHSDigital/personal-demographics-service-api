@@ -1,20 +1,20 @@
-Feature: Updating Patient's details - empty address lines
+Feature: Updating Patient's details(Healthcare worker access) - empty address lines
 Background:
     # auth
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {clientID: karate.get('emptyAddressLinesClientID'), clientSecret:karate.get('emptyAddressLinesClientSecret')}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders 
-
     * url baseURL
+    * def utils = call read('classpath:helpers/utils.feature')
+    * def faker = Java.type('helpers.FakerWrapper')       
 Scenario: Updating temporary address response should show empty address lines
-    #Change NHS number
-    * def nhsNumber = '9733162868'
+    * def nhsNumber = '9733162256'
     * path 'Patient', nhsNumber
     * method get
     * status 200
     * def originalVersion = parseInt(response.meta.versionId)
     * def originalEtag = karate.response.header('etag')
-    * def utils = call read('classpath:helpers/utils.feature')
+    * def istempAddressOnRecord = response.address.find(x => x.use == "temp")
     * def randomAddress = utils.randomTempAddress()
     * def tempAddress = randomAddress
     # add temp address
@@ -40,21 +40,22 @@ Scenario: Updating temporary address response should show empty address lines
     * method patch
     * status 200 
     * def idAfterTempAddress = response.meta.versionId
+    * def tempAddressDetails = utils.removeNullsFromAddress(response.address.find(x => x.use == "temp"))
     * def addresses = response.address
-    * match checkNullsHaveExtensions(addresses) == true
+    * match utils.checkNullsHaveExtensions(addresses) == true
 
+    
    # Test fails if the patient's temp address details are not present in the record
   
    * if (tempAddressDetails == null) {karate.fail('No value found for temporary address, stopping the test.')}
    * def addressIndex = response.address.findIndex(x => x.use == "temp")
    * def tempAddressPath =  "/address/" + addressIndex
-   
     # remove temp address details
 
    * configure headers = call read('classpath:auth/auth-headers.js') 
    * header Content-Type = "application/json-patch+json"
    * header If-Match = karate.response.header('etag')
-   * path 'Patient',p9numberForAddress
+   * path 'Patient',nhsNumber
    * request 
    """
      {
@@ -75,10 +76,10 @@ Scenario: Updating temporary address response should show empty address lines
    * status 200
    * match parseInt(response.meta.versionId) == parseInt(idAfterTempAddress)+ 1
    * def addresses = response.address
-   * match checkNullsHaveExtensions(addresses) == true
-
+   * match utils.checkNullsHaveExtensions(addresses) == true
+ 
 Scenario: Updating contact details response should show empty address lines
-    * def nhsNumber = '9733162868'
+    * def nhsNumber = '9733162264'
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Patient', nhsNumber
@@ -100,4 +101,4 @@ Scenario: Updating contact details response should show empty address lines
     * status 200
     * assert originalTelecom.length == response.telecom.length
     * def addresses = response.address
-    * match checkNullsHaveExtensions(addresses) == true
+    * match utils.checkNullsHaveExtensions(addresses) == true

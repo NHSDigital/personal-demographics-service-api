@@ -12,18 +12,16 @@ Background:
   * json RelatedPersonSearchBundle = karate.readAsString('classpath:schemas/searchSchemas/relatedPersonSearchBundle.json')
 
   # auth
-  * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
+  * url baseURL
+  * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {clientID: karate.get('emptyAddressLinesClientID'), clientSecret:karate.get('emptyAddressLinesClientSecret')}).accessToken
   * def requestHeaders = call read('classpath:auth/auth-headers.js')
   * configure headers = requestHeaders 
-
-  * url baseURL
-
 Scenario: Patient has one related person
-    * def nhsNumber = '9693633679'
-    * path 'Patient', nhsNumber, 'RelatedPerson'
-    * method get
-    * status 200
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
-    * match response == RelatedPersonSearchBundle
-    * def addresses = response.address
-    * match checkNullsHaveExtensions(addresses) == true
+  * def nhsNumber = '9733162213'
+  * path 'Patient', nhsNumber, 'RelatedPerson'
+  * method get
+  * status 200
+  * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+  * match response == RelatedPersonSearchBundle
+  * def addresses = response.entry[0].resource.address
+  * match utils.checkNullsHaveExtensions(addresses) == true

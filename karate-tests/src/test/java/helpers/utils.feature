@@ -278,10 +278,10 @@ Scenario:
     * def checkNullsHaveExtensions =
     """
     function(addresses) {
-         /*
-        Takes a patient address array, and returns true if
-        address has null in the list and same nulls have corresponding
-        _lines extensions.
+      /*
+        * Validates a patient address array by checking if it contains null values.
+        * It returns true if the address contains null entries and each null entry 
+        * has a corresponding extension in the `_line` field.
       */
       for (var i = 0; i < addresses.length; i++) {
         var lines = addresses[i].line;
@@ -298,3 +298,14 @@ Scenario:
       return true;
     }
     """ 
+   
+   * def removeNullsFromAddress =
+   """
+   function(address) {
+    // Remove the "_line" property
+    delete address._line
+    // Remove null values from the "line" array
+    address.line = address.line.filter(value => value!==null)
+    return address
+   }
+   """ 
