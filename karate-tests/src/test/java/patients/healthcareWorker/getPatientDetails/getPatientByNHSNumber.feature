@@ -41,6 +41,8 @@ Scenario: Get an "unrestricted" patient
       "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
     }
     """
+  * def addresses = response.address
+  * match utils.checkNullsHaveExtensions(addresses) == false
 
 @sensitive
 Scenario: Get a "restricted" (sensitive) patient
