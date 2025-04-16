@@ -283,19 +283,20 @@ Scenario:
         * It returns true if the address contains null entries and each null entry 
         * has a corresponding extension in the `_line` field.
       */
+     let hasNull = false
       for (var i = 0; i < addresses.length; i++) {
-        var lines = addresses[i].line;
-        var _lines = addresses[i]._line;
-    
+        var lines = addresses[i].line
+        var _lines = addresses[i]._line
         for (var j = 0; j < lines.length; j++) {
           if (lines[j] === null) {
+            hasNull = true
             if (!_lines[j] || !_lines[j].extension || !_lines[j].extension.length) {
-              return false;
+              return false
             }
           }
         }
       }
-      return true;
+      return hasNull
     }
     """ 
    
