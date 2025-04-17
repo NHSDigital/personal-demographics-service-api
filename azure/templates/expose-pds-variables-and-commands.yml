@@ -33,6 +33,7 @@ steps:
       echo '##vso[task.setvariable variable=CLIENT_SECRET]$(CLIENT_SECRET)'
       echo '##vso[task.setvariable variable=INTERACTION_FREE_CLIENT_ID]$(INTERACTION_FREE_CLIENT_ID)'
       echo '##vso[task.setvariable variable=INTERACTION_FREE_CLIENT_SECRET]$(INTERACTION_FREE_CLIENT_SECRET)'
+      echo '##vso[task.setvariable variable=KEY_ID]test-1'
       echo '##vso[task.setvariable variable=EMPTY_ADDRESS_LINES_CLIENT_ID]$(EMPTY_ADDRESS_LINES_CLIENT_ID)'
       echo '##vso[task.setvariable variable=EMPTY_ADDRESS_LINES_CLIENT_SECRET]$(EMPTY_ADDRESS_LINES_CLIENT_SECRET)'
       echo '##vso[task.setvariable variable=TEST_PATIENT_ID]$(TEST_PATIENT_ID)'
