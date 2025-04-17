@@ -12,6 +12,7 @@ venv
 .direnv
 .#*
 .env
+*.code-workspace
 
 __pycache__/
 .envrc

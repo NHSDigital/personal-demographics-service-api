@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.AddCustomAttributesHeader">
+    <DisplayName>AssignMessage.AddCustomAttributesHeader</DisplayName>
+    <!-- Add custom attributes header -->
+    <Add>
+        <Headers>
+            <Header name="NHSE-PDS-Custom-Attributes">{extractedCustomAttributes}</Header>
+        </Headers>
+    </Add>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+    <AssignTo createNew="false" transport="http" type="request"/>
+</AssignMessage>
