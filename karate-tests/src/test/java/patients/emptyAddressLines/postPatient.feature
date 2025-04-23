@@ -7,7 +7,7 @@ Background:
   * json Period = karate.readAsString('classpath:schemas/Period.json')
   * json addressSchema = karate.readAsString('classpath:schemas/Address.json') 
     
-  * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature', {clientID: karate.get('emptyAddressLinesClientID'), clientSecret:karate.get('emptyAddressLinesClientSecret')}).accessToken
+  * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {clientID: karate.get('emptyAddressLinesClientID'), clientSecret:karate.get('emptyAddressLinesClientSecret')}).accessToken
   * def requestHeaders = call read('classpath:auth/auth-headers.js')
   * configure headers = requestHeaders  
   * url baseURL
