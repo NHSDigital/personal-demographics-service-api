@@ -2,7 +2,6 @@ Feature: Search for a patient(Healthcare worker access)- Empty address lines
 
 Background:
     * def utils = call read('classpath:helpers/utils.feature')
-    * print ("Secret details for debug, will delete it",karate.get('emptyAddressLinesClientSecret'))
     # auth
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {clientID: karate.get('emptyAddressLinesClientID'), clientSecret:karate.get('emptyAddressLinesClientSecret')}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
