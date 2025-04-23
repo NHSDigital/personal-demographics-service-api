@@ -1,3 +1,4 @@
+@no-oas
 Feature: Search for a patient(Healthcare worker access)- Empty address lines
 
 Background:

@@ -1,3 +1,4 @@
+@no-oas
 Feature: Get a patient(patient access)- Empty address lines
 
 Background:

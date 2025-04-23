@@ -1,3 +1,4 @@
+@no-oas
 Feature: Updating Patient's details(Healthcare worker access) - empty address lines
 Background:
     # auth

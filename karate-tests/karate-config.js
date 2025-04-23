@@ -37,8 +37,6 @@ function fn() {
       baseURL: `${prismURL}`,
       clientID: java.lang.System.getenv('CLIENT_ID'),
       clientSecret: java.lang.System.getenv('CLIENT_SECRET'),
-      emptyAddressLinesClientID: java.lang.System.getenv('EMPTY_ADDRESS_LINES_CLIENT_ID'),
-      emptyAddressLinesClientSecret: java.lang.System.getenv('EMPTY_ADDRESS_LINES_CLIENT_SECRET'),
       signingKey: java.lang.System.getenv('APPLICATION_RESTRICTED_SIGNING_KEY_PATH'),
       apiKey: java.lang.System.getenv('APPLICATION_RESTRICTED_API_KEY'),
       keyID: java.lang.System.getenv('KEY_ID'),

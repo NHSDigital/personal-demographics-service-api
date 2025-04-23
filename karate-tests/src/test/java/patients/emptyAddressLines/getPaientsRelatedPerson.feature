@@ -1,3 +1,4 @@
+@no-oas
 Feature: Get related person details (Healthcare worker access)- Empty address lines
 
 Background:
