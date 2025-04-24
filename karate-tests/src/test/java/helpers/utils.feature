@@ -279,18 +279,24 @@ Scenario:
     """
     function(addresses) {
       /*
-        * Validates a patient address array by checking if it contains null values.
-        * It returns true if the address contains null entries and each null entry 
-        * has a corresponding extension in the `_line` field.
+          * Validates a patient address array by checking:
+          * - If it contains null entries in the `line` field.
+          * - Each null entry must have a corresponding `_line` entry with a non-empty `extension`.
+          * - Each non-null `line` must have a corresponding null `_line` entry.
+          * Returns true only if all these conditions are met
       */
      let hasNull = false
       for (var i = 0; i < addresses.length; i++) {
         var lines = addresses[i].line
-        var _lines = addresses[i]._line
+        var _lines = addresses[i]._line || []
         for (var j = 0; j < lines.length; j++) {
           if (lines[j] === null) {
             hasNull = true
             if (!_lines[j] || !_lines[j].extension || !_lines[j].extension.length) {
+              return false
+            }
+          } else {
+            if (_lines[j] !== undefined && _lines[j] !== null) {
               return false
             }
           }

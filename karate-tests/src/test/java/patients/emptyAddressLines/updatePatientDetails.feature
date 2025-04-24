@@ -13,9 +13,7 @@ Scenario: Updating temporary address response should show empty address lines
     * path 'Patient', nhsNumber
     * method get
     * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
     * def originalEtag = karate.response.header('etag')
-    * def istempAddressOnRecord = response.address.find(x => x.use == "temp")
     * def randomAddress = utils.randomTempAddress()
     * def tempAddress = randomAddress
     # add temp address
@@ -41,13 +39,13 @@ Scenario: Updating temporary address response should show empty address lines
     * method patch
     * status 200 
     * def idAfterTempAddress = response.meta.versionId
-    * def tempAddressDetails = utils.removeNullsFromAddress(response.address.find(x => x.use == "temp"))
     * def addresses = response.address
     * match utils.checkNullsHaveExtensions(addresses) == true
 
     
    # Test fails if the patient's temp address details are not present in the record
-  
+
+   * def tempAddressDetails = utils.removeNullsFromAddress(response.address.find(x => x.use == "temp"))
    * if (tempAddressDetails == null) {karate.fail('No value found for temporary address, stopping the test.')}
    * def addressIndex = response.address.findIndex(x => x.use == "temp")
    * def tempAddressPath =  "/address/" + addressIndex
@@ -86,7 +84,6 @@ Scenario: Updating contact details response should show empty address lines
     * path 'Patient', nhsNumber
     * method get
     * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
     * def originalEtag = karate.response.header('etag')
     * def originalTelecom = response.telecom
 

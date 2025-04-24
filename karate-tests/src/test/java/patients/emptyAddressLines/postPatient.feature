@@ -12,7 +12,7 @@ Background:
   * configure headers = requestHeaders  
   * url baseURL
 
-  # Use this family name if the test is going to create patients - this is used by a batch job that cleans up the system database
+  # Use this family name if the test is going to create patients - this is used by a cron job that cleans up the system database
   * def familyName = "ToRemove"
 
 Scenario:  Post patient and check response shows all 

@@ -26,3 +26,4 @@ Scenario: Patient has one related person
   * match response == RelatedPersonSearchBundle
   * def addresses = response.entry[0].resource.address
   * match utils.checkNullsHaveExtensions(addresses) == true
+  * match responseHeaders['Nhse-Pds-Custom-Attributes'] == '#notpresent'
