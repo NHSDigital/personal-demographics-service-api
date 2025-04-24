@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.RemoveCustomAttributesHeader">
+    <DisplayName>AssignMessage.RemoveCustomAttributesHeader</DisplayName>
+    <!-- Remove this header if it already exists so that it cannot be used by malicious users -->
+    <Remove>
+        <Headers>
+            <Header name="NHSE-PDS-Custom-Attributes"/>
+        </Headers>
+    </Remove>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+    <AssignTo createNew="false" transport="http" type="request"/>
+</AssignMessage>
