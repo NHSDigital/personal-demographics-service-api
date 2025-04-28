@@ -53,7 +53,7 @@ Scenario: Search for a "restricted" (sensitive) patient
   # - generalPractitioner
   # this is reflected in the patientSearchBundleSensitive.json schema file
   * path 'Patient'
-  * params { family: "Godsoe", gender: "male", birthdate: "eq1936-02-24" }
+  * params { family: "Godsoe", gender: "male", birthdate: "1936-02-24" }
   * method get
   * status 200
   * match response.entry[0].resource.id == "9693632125"
