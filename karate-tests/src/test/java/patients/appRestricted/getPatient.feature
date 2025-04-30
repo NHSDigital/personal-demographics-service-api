@@ -60,7 +60,7 @@ Feature: get /Patient - Application-restricted access mode
     * path "Patient"
     * param family = "Smith" 
     * param gender = "female"
-    * param birthdate = "eq2010-10-22" 
+    * param birthdate = "2010-10-22" 
     * method get
     * status 200
     * match response ==
@@ -81,7 +81,7 @@ Feature: get /Patient - Application-restricted access mode
     * path "Patient"
     * param family = "Magin" 
     * param gender = "female"
-    * param birthdate = "eq1957-07-23" 
+    * param birthdate = "1957-07-23" 
     * param _max-results = 2
     * method get
     * status 403
@@ -92,7 +92,7 @@ Feature: get /Patient - Application-restricted access mode
     * path "Patient"
     * param family = "Smith" 
     * param gender = "female"
-    * param birthdate = "eq2010-10-22" 
+    * param birthdate = "2010-10-22" 
     * param email = "jane.smith@example.com" 
     * param phone = "01632960587"
     * param _max-results = 1
