@@ -39,6 +39,8 @@ Scenario: Add empty address lines custom attribute for default test app - respon
 
 @smoke-only
 Scenario:Search for a patient using parameters and validate empty address lines(INT smoke test)
+    * print 'client details on int1:' karate.get('emptyAddressLinesClientID')
+    * print 'client details on int2:' karate.get('emptyAddressLinesClientSecret')
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {clientID: karate.get('emptyAddressLinesClientID'), clientSecret:karate.get('emptyAddressLinesClientSecret')}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders  
