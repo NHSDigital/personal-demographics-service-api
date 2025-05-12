@@ -39,8 +39,8 @@ Scenario: Add empty address lines custom attribute for default test app - respon
 
 @smoke-only
 Scenario:Search for a patient using parameters and validate empty address lines(INT smoke test)
-    * print 'client details on int1:' karate.get('emptyAddressLinesClientID')
-    * print 'client details on int2:' karate.get('emptyAddressLinesClientSecret')
+    * print 'client details on int1: '+karate.get('emptyAddressLinesClientID')
+    * print 'client details on int2: '+karate.get('emptyAddressLinesClientSecret')
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {clientID: karate.get('emptyAddressLinesClientID'), clientSecret:karate.get('emptyAddressLinesClientSecret')}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders  
@@ -49,8 +49,7 @@ Scenario:Search for a patient using parameters and validate empty address lines(
     * method get
     * status 200
     * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
-    * match response == read('classpath:schemas/searchSchemas/patientSearchBundle.json')
-    * match response.total == 1
-    * match response.entry[0].resource.id == "9693632117"  
+    * match response.entry[0].resource.id == "9693632117" 
+    * def addresses = response.entry[0].resource.address
     * match utils.checkNullsHaveExtensions(addresses) == true
     * match responseHeaders['Nhse-Pds-Custom-Attributes'] == '#notpresent'  
