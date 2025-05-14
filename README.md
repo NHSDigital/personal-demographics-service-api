@@ -68,7 +68,7 @@ curl -sSL https://install.python-poetry.org | python3
 poetry install
 ```
 
-Install nvm & npn
+Install nvm & npm
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
 # Close and reopen your terminal window, or use 'exec $SHELL'
