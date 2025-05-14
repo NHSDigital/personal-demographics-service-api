@@ -41,6 +41,7 @@ steps:
     inputs:
       testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports/*.xml
       failTaskOnFailedTests: true
+      
   - task: PublishBuildArtifacts@1
     displayName: 'Publish dev-int smoke test report as an artifact'
     condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
