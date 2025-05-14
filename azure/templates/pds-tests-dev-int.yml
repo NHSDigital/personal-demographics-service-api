@@ -12,6 +12,8 @@ steps:
       config_ids:
         - /ptl/azure-devops/env-internal-dev/test-app/internal-testing-internal-dev/CLIENT_ID
         - /ptl/azure-devops/env-internal-dev/test-app/internal-testing-internal-dev/CLIENT_SECRET
+        - /ptl/azure-devops/env-internal-dev/test-app/internal-testing-internal-dev/EMPTY_ADDRESS_LINES_CLIENT_ID
+        - /ptl/azure-devops/env-internal-dev/test-app/internal-testing-internal-dev/EMPTY_ADDRESS_LINES_CLIENT_SECRET
         - /ptl/azure-devops/personal-demographics/TEST_PATIENT_ID
         - /ptl/azure-devops/personal-demographics/INTERNAL_SERVER_BASE_URI
       secret_ids:
@@ -26,6 +28,8 @@ steps:
       export OAUTH_PROXY="oauth2-mock"
       export CLIENT_ID="$(CLIENT_ID)"
       export CLIENT_SECRET="$(CLIENT_SECRET)"
+      export EMPTY_ADDRESS_LINES_CLIENT_ID="$EMPTY_ADDRESS_LINES_CLIENT_ID"
+      export EMPTY_ADDRESS_LINES_CLIENT_SECRET="$EMPTY_ADDRESS_LINES_CLIENT_SECRET"
       export INTERNAL_SERVER_BASE_URI="$(INTERNAL_SERVER_BASE_URI)"
       mvn clean test -Dtest=TestSmoke 
     displayName: 'Run Karate Smoke Tests'
@@ -37,3 +41,9 @@ steps:
     inputs:
       testResultsFiles: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports/*.xml
       failTaskOnFailedTests: true
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish dev-int smoke test report as an artifact'
+    condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
+    inputs:
+      pathToPublish: $(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/karate-tests/target/karate-reports
+      artifactName: KarateSmokeTestsHTMLReports    
