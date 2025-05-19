@@ -42,6 +42,39 @@ properties:
             - enum:
               - ORR
               description: Other reason
+            - enum:
+              - AFL
+              description: Armed forces enlistment (notified locally)
+            - enum:
+              - AFN
+              description: Armed forces enlistment (notified by AF)
+            - enum:
+              - CGA
+              description: Gone away
+            - enum:
+              - DIS
+              description: Practice dissolution
+            - enum:
+              - OPA
+              description: Address out of practice area
+            - enum:
+              - RDI
+              description: Removed at doctor's request - immediate
+            - enum:
+              - RDR
+              description: Removed at doctor's request
+            - enum:
+              - RFI
+              description: Removal from residential institute
+            - enum:
+              - RPR
+              description: Removed at patient's request
+            - enum:
+              - SDL
+              description: Services dependant (notified locally)
+            - enum:
+              - SDN
+              description: Services dependent (notified by SMO)
         display:
           type: string
           description: Display-friendly representation of the removal reason exit code.
