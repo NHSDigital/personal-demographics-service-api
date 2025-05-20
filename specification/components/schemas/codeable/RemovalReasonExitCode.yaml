@@ -44,13 +44,13 @@ properties:
               description: Other reason
             - enum:
               - AFL
-              description: Armed Forces (notified locally)
+              description: Armed forces enlistment (notified locally)
             - enum:
               - AFN
-              description: Armed Forces (notified by Armed Forces)
+              description: Armed forces enlistment (notified by AF)
             - enum:
               - CGA
-              description: Confirmed gone away
+              description: Gone away
             - enum:
               - DIS
               description: Practice dissolution
