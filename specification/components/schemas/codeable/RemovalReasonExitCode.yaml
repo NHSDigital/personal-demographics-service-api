@@ -29,7 +29,7 @@ properties:
             - NIT
             - TRA
             - ORR
-          description: >
+          description: |
             A CodeSystem that identifies the reason a PDS record has been removed:
             * `DEA` - Death
             * `EMB` - Embarkation
