@@ -20,11 +20,24 @@ import os.path
 import itertools
 import git
 import semver
+from enum import Enum
 
 
 SCRIPT_LOCATION = os.path.join(os.path.dirname(os.path.abspath(__file__)))
 REPO_ROOT = os.path.abspath(os.path.join(SCRIPT_LOCATION, ".."))
 REPO = git.Repo(REPO_ROOT)
+
+
+class CommitFlag(Enum):
+    """
+    A list of valid commit flags that can be used for modifying the
+    semver-compliant version tag.
+    """
+    START_VERSIONING = "+startversioning"
+    INCREMENT_MAJOR = "+major"
+    INCREMENT_MINOR = "+minor"
+    SET_PRE_REL_STATUS = "+setstatus"
+    CLEAR_PRE_REL_STATUS = "+clearstatus"
 
 
 def get_versionable_commits(repo):
@@ -34,23 +47,24 @@ def get_versionable_commits(repo):
 
     # If there is a marker to start versioning from, use it. Else, start from the first commit
     return list(
-        itertools.takewhile(lambda c: "+startversioning" not in c.message, commits)
+        itertools.takewhile(lambda c: CommitFlag.START_VERSIONING.value not in c.message, commits)
     )
 
 
 def is_status_set_command(commit):
-    """Returns true if commit.message is a status setting command"""
-    return ("+setstatus" in commit.message) or ("+clearstatus" in commit.message)
+    """Returns true if commit.message is a pre-release status setting command"""
+    return (CommitFlag.SET_PRE_REL_STATUS.value in commit.message) or (
+        CommitFlag.CLEAR_PRE_REL_STATUS.value in commit.message)
 
 
 def is_major_inc(commit):
     """Returns true if commit.message contains a major inc command"""
-    return "+major" in commit.message
+    return CommitFlag.INCREMENT_MAJOR.value in commit.message
 
 
 def is_minor_inc(commit):
     """Returns true if commit.message contains a minor inc command"""
-    return "+minor" in commit.message
+    return CommitFlag.INCREMENT_MINOR.value in commit.message
 
 
 def without_empty(commits):
@@ -82,12 +96,12 @@ def calculate_version(base_major=1, base_minor=0, base_revision=0, base_pre="alp
     if status_sets:
         most_recent_message = status_sets[0].message.strip()
 
-        if most_recent_message.startswith("+setstatus "):
+        if most_recent_message.startswith(f"{CommitFlag.SET_PRE_REL_STATUS.value} "):
             pre = most_recent_message.split(" ")[
                 1
             ]  # Take the first string after the command
 
-        if most_recent_message == "+clearstatus":
+        if most_recent_message == CommitFlag.CLEAR_PRE_REL_STATUS.value:
             pre = None
 
     # If there are any +major in commit messages, increment the counter
