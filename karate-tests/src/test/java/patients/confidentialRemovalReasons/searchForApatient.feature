@@ -31,4 +31,3 @@ Scenario:Search for a patient using parameters response should not include reaso
     * match response.entry[0].resource.id == "9733163074"
     * match response.entry[0].resource.extension[0].url == "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus" 
     * match response.entry[0].resource.extension[1] == '#notpresent'    
-    
