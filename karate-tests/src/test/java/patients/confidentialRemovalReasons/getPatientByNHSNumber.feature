@@ -1,15 +1,24 @@
-@no-oas
-Feature: Get a patient(patient access)- confidential reasons for removal
+@no-oas 
+Feature: Get a patient(Healthcare access)- confidential reasons for removal
 
 Background:
     * def utils = call read('classpath:helpers/utils.feature')
     # auth
     * url baseURL
     * def removalURL = "https://fhir.nhs.uk/StructureDefinition/Extension-PDS-RemovalFromRegistration"
-      
+    * def confidentialRemovalReasonsToken =
+    """
+    function() {
+    var result = karate.call('classpath:auth/auth-redirect.feature', {
+        clientID: karate.get('confidentialRemovalReasonsClientID'),
+        clientSecret: karate.get('confidentialRemovalReasonsClientSecret')
+    });
+    return result.accessToken
+    }
+    """
 Scenario: Get a patient details- RemovalReasonExitCode should be Armed Forces (notified by Armed Forces) AFN
     * def nhsNumber = '9733162981'
-    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {clientID: karate.get('confidentialRemovalReasonsClientID'), clientSecret:karate.get('confidentialRemovalReasonsClientSecret')}).accessToken
+    * def accessToken = confidentialRemovalReasonsToken()
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders  
     * path 'Patient', nhsNumber
@@ -21,7 +30,7 @@ Scenario: Get a patient details- RemovalReasonExitCode should be Armed Forces (n
     * match responseHeaders['Nhse-Pds-Custom-Attributes'] == '#notpresent'
 Scenario: Get a patient details- RemovalReasonExitCode should be Services dependant (notified by SMO) SDN
     * def nhsNumber = '9733163023'
-    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {clientID: karate.get('confidentialRemovalReasonsClientID'), clientSecret:karate.get('confidentialRemovalReasonsClientSecret')}).accessToken
+    * def accessToken = confidentialRemovalReasonsToken()
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders  
     * path 'Patient', nhsNumber
@@ -32,7 +41,7 @@ Scenario: Get a patient details- RemovalReasonExitCode should be Services depend
     * match response.extension[0].url == removalURL
 Scenario: Get a patient details- RemovalReasonExitCode should be SCT - Transferred to Scotland
     * def nhsNumber = '9733163058'
-    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {clientID: karate.get('confidentialRemovalReasonsClientID'), clientSecret:karate.get('confidentialRemovalReasonsClientSecret')}).accessToken
+    * def accessToken = confidentialRemovalReasonsToken()
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders  
     * path 'Patient', nhsNumber
@@ -43,7 +52,7 @@ Scenario: Get a patient details- RemovalReasonExitCode should be SCT - Transferr
     * match response.extension[0].url == removalURL    
 Scenario: Get a patient details- RemovalReasonExitCode should be converted from 'Logical deletion' (LDN) to 'Other Reason' (ORR)"
     * def nhsNumber = '9733163015'
-    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {clientID: karate.get('confidentialRemovalReasonsClientID'), clientSecret:karate.get('confidentialRemovalReasonsClientSecret')}).accessToken
+    * def accessToken = confidentialRemovalReasonsToken()
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders  
     * path 'Patient', nhsNumber
@@ -82,4 +91,4 @@ Scenario: Response should not include confidential reasons when default test app
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].code == "ORR"
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].display == "Other Reason"
     * match response.extension[0].url == removalURL  
-    * match responseHeaders['Nhse-Pds-Custom-Attributes'] == '#notpresent'    
+    * match responseHeaders['Nhse-Pds-Custom-Attributes'] == '#notpresent'  
