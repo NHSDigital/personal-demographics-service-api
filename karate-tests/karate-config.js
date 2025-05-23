@@ -54,7 +54,9 @@ function fn() {
       keyID: java.lang.System.getenv('KEY_ID'),
       internalServerURL: 'https://int.api.service.nhs.uk/personal-demographics/FHIR/R4',
       emptyAddressLinesClientID: java.lang.System.getenv('EMPTY_ADDRESS_LINES_CLIENT_ID'),
-      emptyAddressLinesClientSecret: java.lang.System.getenv('EMPTY_ADDRESS_LINES_CLIENT_SECRET')
+      emptyAddressLinesClientSecret: java.lang.System.getenv('EMPTY_ADDRESS_LINES_CLIENT_SECRET'),
+      confidentialRemovalReasonsClientID: java.lang.System.getenv('CONFIDENTIAL_REMOVAL_REASONS_CLIENT_ID'),
+      confidentialRemovalReasonsClientSecret: java.lang.System.getenv('CONFIDENTIAL_REMOVAL_REASONS_CLIENT_SECRET'),
     };
   } else {
     var config = { 
@@ -67,6 +69,8 @@ function fn() {
       interactionFreeClientSecret: java.lang.System.getenv('INTERACTION_FREE_CLIENT_SECRET'),
       emptyAddressLinesClientID: java.lang.System.getenv('EMPTY_ADDRESS_LINES_CLIENT_ID'),
       emptyAddressLinesClientSecret: java.lang.System.getenv('EMPTY_ADDRESS_LINES_CLIENT_SECRET'),
+      confidentialRemovalReasonsClientID: java.lang.System.getenv('CONFIDENTIAL_REMOVAL_REASONS_CLIENT_ID'),
+      confidentialRemovalReasonsClientSecret: java.lang.System.getenv('CONFIDENTIAL_REMOVAL_REASONS_CLIENT_SECRET'),
       signingKey: java.lang.System.getenv('APPLICATION_RESTRICTED_SIGNING_KEY_PATH'),
       apiKey: java.lang.System.getenv('APPLICATION_RESTRICTED_API_KEY'),
       keyID: java.lang.System.getenv('KEY_ID'),
