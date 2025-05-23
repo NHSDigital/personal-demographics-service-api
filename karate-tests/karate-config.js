@@ -1,7 +1,7 @@
 function fn() {
   // https://github.com/karatelabs/karate#configure for all the options
-  karate.configure('connectTimeout', 5000);
-  karate.configure('readTimeout', 20000);
+  karate.configure('connectTimeout', 10000);
+  karate.configure('readTimeout', 25000);
   var env = karate.env; // get java system property 'karate.env'
 
   if (env == 'ci') {
