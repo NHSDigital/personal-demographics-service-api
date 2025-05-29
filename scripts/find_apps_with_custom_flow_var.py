@@ -1,11 +1,11 @@
 """
-Find the value of a particular custom attribute on the apps that are associated with a given Apigee product.
+Find the apps that are associated with a given Apigee product which have a particular custom flow var set.
 """
 import os
 from argparse import ArgumentParser
 
 from custom_attribute_reporter.ApigeeApiHandler import ApigeeApiHandler
-
+from custom_attribute_reporter.ApigeeApp import ApigeeApp
 
 if __name__ == "__main__":
     parser = ArgumentParser(
@@ -26,7 +26,18 @@ if __name__ == "__main__":
 
     apigee_api_handler = ApigeeApiHandler(args.apigee_organisation, access_token)
     associated_app_ids = apigee_api_handler.get_app_ids_for_product(args.product_name)
+    apps_with_requested_flow_var: list[ApigeeApp] = []
 
     for app_id in associated_app_ids:
-        print(f"Checking {app_id}")
-        print(apigee_api_handler.get_custom_attributes_for_app(app_id, args.requested_flow_var_key))
+        custom_attr = apigee_api_handler.get_value_for_custom_flow_var(app_id, args.requested_flow_var_key)
+
+        if not custom_attr:
+            continue
+
+        apps_with_requested_flow_var.append(ApigeeApp(id=app_id, requested_flow_vars=custom_attr))
+
+    print(f"Total apps found with the requested flow var ({args.requested_flow_var_key}) = "
+          f"{len(apps_with_requested_flow_var)}")
+
+    for app in apps_with_requested_flow_var:
+        print(str(app))

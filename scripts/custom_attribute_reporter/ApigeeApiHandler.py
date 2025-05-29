@@ -1,9 +1,11 @@
 """
-Handler class for managing
+Handler class for managing interactions with the Apigee API
 """
 import http.client
 import json
 from typing import Union
+
+from requests import HTTPError
 
 from .ApigeeApiSession import ApigeeApiSession
 
@@ -16,7 +18,7 @@ class ApigeeApiHandler:
 
     def __init__(self, apigee_org: str, auth_token: str):
         self._api_session = ApigeeApiSession(
-            f"https://api.enterprise.apigee.com/v1/organizations/{apigee_org}/",
+            apigee_org,
             auth_token
         )
 
@@ -30,32 +32,25 @@ class ApigeeApiHandler:
         response = self._api_session.get(product_path, params=apps_query)
 
         if response.status_code != http.client.OK:
-            print(f'Something went wrong:\n {response.status_code}\n {response.text}')
-            raise Exception
+            raise HTTPError(f'Something went wrong:\n{response.status_code}\n{response.text}')
 
-        return [app_id for app_id in response.json()]
+        return response.json()
 
-    def get_custom_attributes_for_app(self, app_id: str, requested_key_in_flow_vars: str) -> Union[dict, None]:
+    def get_value_for_custom_flow_var(self, app_id: str, requested_key_in_flow_vars: str) -> Union[dict, None]:
         app_path = f"{self.APP_ENDPOINT}/{app_id}"
         response = self._api_session.get(app_path)
 
         if response.status_code != http.client.OK:
-            raise Exception(f'Bad response for {app_path}:\n{response.status_code}\n{response.text}')
+            raise HTTPError(f'Something went wrong for {app_path}:\n{response.status_code}\n{response.text}')
 
         attributes = response.json().get(self.ATTRIBUTES_KEY)
+        apim_flow_var_attribute = next(
+            (attribute for attribute in attributes if attribute.get('name') == self.APIM_FLOW_VARS_ATTR_NAME),
+            None
+        )
 
-        if not attributes:
-            raise Exception(f'No attributes for app {app_id}')
+        if not apim_flow_var_attribute:
+            return None
 
-        for attribute in attributes:
-            if attribute.get('name') != self.APIM_FLOW_VARS_ATTR_NAME:
-                continue
-
-            apim_app_flow_vars = json.loads(attribute.get('value'))
-
-            if requested_key_in_flow_vars not in apim_app_flow_vars:
-                continue
-
-            return apim_app_flow_vars.get(requested_key_in_flow_vars)
-
-        return None
+        apim_flow_vars = json.loads(apim_flow_var_attribute.get('value'))
+        return apim_flow_vars.get(requested_key_in_flow_vars)
