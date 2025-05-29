@@ -524,6 +524,8 @@ description: |
     * `Holiday Home` - the address for a patient during a holiday
     In rare circumstances, an existing temporary address may be returned with a value outside of this list.
 
+  For more information on how this data is used, see [Get and update contact details in PDS](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/get-and-update-contact-details-in-pds#address-information)
+
   ### Communication
 
   Single item found under `extension` with the extension URL `https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication`.
@@ -771,6 +773,8 @@ description: |
   * the period `start` date is optional, however if provided cannot be a future date. If it is not provided it defaults to the date of update.
   * if using the `replace` operation, the use and system must be the same as the telecom you're modifying. Otherwise use a delete and add instead.
   * if the telecom system is email, the value must be a valid email format, for example john.smith@example.com; and must be more than 6 characters and less than 90 characters
+
+  For more information on how this data is used, see [Get and update contact details in PDS](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir/get-and-update-contact-details-in-pds#telecom-information)
 
   ## Access Mode
 
