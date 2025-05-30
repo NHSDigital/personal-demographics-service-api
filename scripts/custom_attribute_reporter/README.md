@@ -48,5 +48,5 @@ export SSO_LOGIN_URL=https://login.apigee.com
 export APIGEE_ACCESS_TOKEN="$(get_token)"
 ```
 
-- From the root directory run `poetry run python3 scripts/find_apps_with_custom_flow_var.py -e {ADD_YOUR_APIGEE_ENV} -p {ADD_YOUR_PRODUCT_NAME} -k {ADD_YOUR_FLOW_VAR_KEY}`
-- e.g. `poetry run python3 scripts/find_apps_with_custom_flow_var.py -e nhsd-nonprod -p personal-demographics-internal-dev -k pds`
+- From the root directory run `poetry run python scripts/find_apps_with_custom_flow_var.py -e {ADD_YOUR_APIGEE_ENV} -p {ADD_YOUR_PRODUCT_NAME} -k {ADD_YOUR_FLOW_VAR_KEY}`
+- e.g. `poetry run python scripts/find_apps_with_custom_flow_var.py -e nhsd-nonprod -p personal-demographics-internal-dev -k pds`
