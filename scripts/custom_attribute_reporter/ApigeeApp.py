@@ -1,11 +1,12 @@
 from dataclasses import dataclass
-from typing import Union
+
+from .ApigeeAppCustomAttributes import ApigeeAppCustomAttributes
 
 
 @dataclass
 class ApigeeApp:
     id: str
-    requested_flow_vars: Union[dict, None]
+    requested_custom_attributes: ApigeeAppCustomAttributes
 
     def __str__(self):
-        return f'App ID: {self.id} Requested APIM flow var key/values: {self.requested_flow_vars}'
+        return f"###\nApp ID: {self.id}\nCustom attributes: {str(self.requested_custom_attributes)}\n###\n"

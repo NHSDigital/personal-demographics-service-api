@@ -2,13 +2,14 @@
 
 ## Purpose
 This small application is used for retrieving apps associated with your Apigee API Product based on whether they have a
-particular key within their `apim-app-flow-vars` custom attribute.
+particular key within their `apim-app-flow-vars` custom attribute or product-specific rate limits in place.
 
 This is useful for automating a process which would otherwise require manual overhead to search and view the custom
 attributes of each associated application on the Apigee platform.
 
 For a bit of additional context, the `apim-app-flow-vars` are a named custom attribute used by many APIM Producers. The
-value is a JSON object containing keys/values which will affect the API behaviour for the given app.
+value is a JSON object containing keys/values which will affect the API behaviour for the given app. While there is also
+a `ratelimiting` custom attribute which may have rate limits set specifically for your product.
 
 e.g. ```{"pds": {"one-attribute": {"canDoSomething": "true"}, "another-attribute": {"canDoAnotherThing": "false"}}```
 
@@ -32,9 +33,9 @@ apigee_api_handler = ApigeeApiHandler({YOUR_APIGEE_ORG}, {YOUR_ACCESS_TOKEN})
 # Firstly, this retrieves the app IDs associated with your product
 associated_app_ids = apigee_api_handler.get_app_ids_for_product({YOUR_PRODUCT_NAME})
 
-# Finally, this method will retrieve the value for the requested custom flow var if it exists
+# Finally, this method will retrieve the values of the ratelimiting and apim-app-flow var custom attributes
 # You may want to iterate through the above list to find all the apps which have the requested key present
-requested_flow_var_value = apigee_api_handler.get_value_for_custom_flow_var(app_id, requested_flow_var_key)
+requested_custom_attributes = apigee_api_handler.get_custom_attributes_for_app(app_id, requested_flow_var_key)
 ```
 
 It is up to you how you want to orchestrate the management of the application. In the case of the PDS FHIR API, we are

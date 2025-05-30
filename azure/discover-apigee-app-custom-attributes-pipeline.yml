@@ -28,14 +28,14 @@ variables:
     value: internal-dev
   - name: FULLY_QUALIFIED_SERVICE_NAME
     value: personal-demographics-internal-dev
-    
+
 steps:
   - task: UsePythonVersion@0
     inputs:
       versionSpec: '3.9'
       addToPath: true
-      architecture: 'x64' 
-      
+      architecture: 'x64'
+
   - bash: poetry install
     workingDirectory: $(Pipeline.Workspace)/s
     displayName: Install poetry
@@ -43,7 +43,7 @@ steps:
   - template: "azure/components/aws-assume-role.yml@common"
     parameters:
      role: "auto-ops"
-     profile: "apm_ptl"    
+     profile: "apm_ptl"
 
   # TODO - need to test with apigee-prod env such as INT to check if different secret paths are required
   # and, moreover, whether it's possible to get a token for Apigee prod
@@ -56,12 +56,12 @@ steps:
      secret_ids:
      - ptl/azure-devops/apigee-nonprod/APIGEE_OTP_KEY
      - ptl/azure-devops/apigee-nonprod/APIGEE_PASSWORD
-        
-  - template: azure/components/get-mfa-code.yml@common  
+
+  - template: azure/components/get-mfa-code.yml@common
     parameters:
      apigee_otp_key: $(APIGEE_OTP_KEY)
-    
-  - template: azure/components/get-access-token.yml@common 
+
+  - template: azure/components/get-access-token.yml@common
     parameters:
      apigee_username: $(APIGEE_USERNAME)
      apigee_password: $(APIGEE_PASSWORD)
@@ -71,4 +71,4 @@ steps:
 
       poetry run python scripts/find_apps_with_custom_flow_var.py -e nhsd-nonprod -p "$(FULLY_QUALIFIED_SERVICE_NAME)" -k pds
     workingDirectory: $(Pipeline.Workspace)/s
-    displayName: Discover Apigee apps that have a value set for the pds apim flow variable
+    displayName: Discover Apigee apps that have a value set for the pds apim flow variable or ratelimiting
