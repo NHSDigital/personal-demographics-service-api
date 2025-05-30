@@ -13,6 +13,7 @@ venv
 .#*
 .env
 *.code-workspace
+.tool-versions
 
 __pycache__/
 .envrc

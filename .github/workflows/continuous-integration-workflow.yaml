@@ -61,6 +61,9 @@ jobs:
       - name: Run Jest
         run: npm run jest
 
+      - name: Run custom attribute reporter pytests
+        run: make test-custom-attribute-reporter
+
       - name: Check resources are valid FHIR 4.0.1
         run: make validate
 

@@ -57,4 +57,3 @@ steps:
         echo '##vso[task.setvariable variable=ARTIFACT_PATH]$(Pipeline.Workspace)/s/$(SERVICE_NAME)/$(SERVICE_ARTIFACT_NAME)/'
       fi
     displayName: Expose common variables
-
