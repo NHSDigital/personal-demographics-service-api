@@ -14,6 +14,6 @@ class ApigeeApiSession(Session):
         self._base_url = f"https://api.enterprise.apigee.com/v1/organizations/{apigee_org}/"
         self.headers.update({"Authorization": f"Bearer {auth_token}"})
 
-    def request(self, method, url, *args, **kwargs):
+    def request(self, method: str, url: str, *args, **kwargs):
         joined_url = urljoin(self._base_url, url)
         return super().request(method, joined_url, *args, **kwargs)
