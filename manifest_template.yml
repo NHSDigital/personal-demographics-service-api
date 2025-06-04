@@ -14,9 +14,13 @@ APIGEE_ENVIRONMENTS:
           ratelimit: 600pm # 10 requests per second
       app:
         quota:
-          enabled: false
+          enabled: true
+          limit: 900
+          interval: 1
+          timeunit: minute
         spikeArrest:
-          enabled: false
+          enabled: true
+          ratelimit: 300pm
   # TODO: Remove as we don't want this included in an actual release
   - name: internal-dev-sandbox
     display_name_suffix: Internal Development Sandbox
