@@ -71,3 +71,4 @@ if __name__ == "__main__":
           f"{len(apps_with_requested_flow_var)}")
 
     write_results_to_csv(apps_with_requested_flow_var)
+    print(f"Contents written to: {OUTPUT_DIR}/{OUTPUT_FILENAME}")

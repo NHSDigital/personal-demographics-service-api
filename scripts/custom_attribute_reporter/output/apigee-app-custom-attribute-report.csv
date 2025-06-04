@@ -1,4 +1,0 @@
-app_id,display_name,url,rate_limit,requested_apim_flow_vars
-04ea981b-3b3e-477e-a7a5-0e7567e3c1ea,gurdeep-app-2,https://apigee.com/organizations/nhsd-nonprod/apps/details/04ea981b-3b3e-477e-a7a5-0e7567e3c1ea,,"{'app-restricted': {'update': 'true'}, 'another-param': {'something': 'yes'}}"
-4517a0d9-fc79-4eb9-8fd4-af7973885a89,dom-test-app,https://apigee.com/organizations/nhsd-nonprod/apps/details/4517a0d9-fc79-4eb9-8fd4-af7973885a89,"{'quota': {'limit': 1, 'interval': 1, 'timeunit': 'minute', 'enabled': True}, 'spikeArrest': {'ratelimit': '1ps', 'enabled': True}}",
-ad409f0f-64cb-47f3-b020-6bb46e75dab9,DEMO-101-app-restricted-empty-address-lines,https://apigee.com/organizations/nhsd-nonprod/apps/details/ad409f0f-64cb-47f3-b020-6bb46e75dab9,,"{'custom-attributes': {'return-empty-address-lines': 'true', 'return-confidential-reason-for-removal': 'true'}}"

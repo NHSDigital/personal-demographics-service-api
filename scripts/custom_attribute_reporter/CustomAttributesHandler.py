@@ -15,7 +15,7 @@ class CustomAttributesHandler:
     def _parse_custom_attributes(self, app_meta_data: dict) -> list[ApigeeAppCustomAttribute]:
         custom_attributes: list[ApigeeAppCustomAttribute] = []
 
-        for attribute in app_meta_data.get(self.CUSTOM_ATTRIBUTES_KEY):
+        for attribute in app_meta_data.get(self.CUSTOM_ATTRIBUTES_KEY, []):
             custom_attributes.append(
                 ApigeeAppCustomAttribute(attribute.get("name"), attribute.get("value"))
             )

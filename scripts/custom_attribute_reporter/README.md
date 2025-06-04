@@ -8,12 +8,17 @@ This is useful for automating a process which would otherwise require manual ove
 attributes of each associated application on the Apigee platform.
 
 For a bit of additional context, the `apim-app-flow-vars` are a named custom attribute used by many APIM Producers. The
-value is a JSON object containing keys/values which will affect the API behaviour for the given app. While there is also
+value is a JSON object containing keys/values which will affect the API behaviour for the given app. There is also
 a `ratelimiting` custom attribute which may have rate limits set specifically for your product.
 
-e.g. ```{"pds": {"one-attribute": {"canDoSomething": "true"}, "another-attribute": {"canDoAnotherThing": "false"}}```
+e.g. the apim-app-flow-vars may look something like this:
+```{"pds": {"one-attribute": {"canDoSomething": "true"}, "another-attribute": {"canDoAnotherThing": "false"}}```
 
-In the PDS use case, we want to identify any apps that contain the `pds` key in this object.
+while the ratelimiting attribute value may look something like this:
+```{"personal-demographics-internal-dev: {"quota": {"someRateLimitingParams": 100}}}```
+
+In the PDS use case, we want to identify any apps that contain the `pds` key in this object or reference the relevant
+PDS product for the requested environment in the rate limit custom attribute.
 
 ## How to use
 You will need to have the following values before using this app:
@@ -33,15 +38,25 @@ apigee_api_handler = ApigeeApiHandler({YOUR_APIGEE_ORG}, {YOUR_ACCESS_TOKEN})
 # Firstly, this retrieves the app IDs associated with your product
 associated_app_ids = apigee_api_handler.get_app_ids_for_product({YOUR_PRODUCT_NAME})
 
-# Finally, this method will retrieve the values of the ratelimiting and apim-app-flow var custom attributes
-# You may want to iterate through the above list to find all the apps which have the requested key present
-requested_custom_attributes = apigee_api_handler.get_custom_attributes_for_app(app_id, requested_flow_var_key)
+# Next, this method will retrieve app meta data including the app custom attributes
+# You may want to iterate through the above list to find the meta data for all the relevant apps
+app_meta_data = apigee_api_handler.get_app_metadata(app_id)
+```
+
+Then, to handle retrieving your required custom attribute data you will need to do the following
+```python
+# You will need to initialise a Custom Attributes Handler object
+custom_attr_handler = CustomAttributesHandler(app_meta_data)
+
+# This then exposes methods for retrieving the related rate limiting and apim-flow-var custom attributes
+rate_limit = custom_attr_handler.find_rate_limit_for_product(product_name)
+requested_flow_vars = custom_attr_handler.find_apim_flow_var(requested_flow_var_key)
 ```
 
 It is up to you how you want to orchestrate the management of the application. In the case of the PDS FHIR API, we are
 using Python's `ArgumentParser` to create a basic command line entrypoint in `find_apps_with_custom_flow_var.py`
 
-## How to run in this repo
+## How to run in this repo (PDS)
 - Ensure you have exported the APIGEE_ACCESS_TOKEN variable
 
 ```bash
@@ -50,4 +65,5 @@ export APIGEE_ACCESS_TOKEN="$(get_token)"
 ```
 
 - From the root directory run `poetry run python scripts/find_apps_with_custom_flow_var.py -e {ADD_YOUR_APIGEE_ENV} -p {ADD_YOUR_PRODUCT_NAME} -k {ADD_YOUR_FLOW_VAR_KEY}`
-- e.g. `poetry run python scripts/find_apps_with_custom_flow_var.py -e nhsd-nonprod -p personal-demographics-internal-dev -k pds`
+- e.g. `poetry run python scripts/find_apps_with_custom_flow_var.py -e nhsd-nonprod -p personal-demographics-internal-dev-application-restricted -k pds`
+- This will output a CSV file to `scripts/custom_attribute_reporter/output` which will contain the information you need
