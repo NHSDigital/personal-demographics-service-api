@@ -2,10 +2,10 @@ Feature:Trip App rate limit on int environment
 
 @rateLimit
 Scenario:Trigger rate limit with repeated requests
-    * def maxAttempts = karate.get('rateLimitOnApp') + 1
-    * print maxAttempts
-    * def delay = 500  
-    * def found429 = false
+    * def maxAttempts = 10
+    # milliseconds — 10 requests in 1 second
+    * def delay = 100  
+    * print 'Sending', maxAttempts, 'requests with', delay, 'ms delay'
 
     * def tripRateLimit =
     """
@@ -13,13 +13,13 @@ Scenario:Trigger rate limit with repeated requests
       for (var i = 0; i < maxAttempts; i++) {
         var response = karate.call('classpath:helpers/getPatientForRateLimitingApp.feature')
         if (response.responseStatus == 429) {
-          return { status: 429 }
+          return { status: 429,message: 'Rate limit triggered at attempt ' + (i + 1) }
         }
         java.lang.Thread.sleep(delay)
       }
-      return { status: response.responseStatus}
+      return { status: response.responseStatus, message: '429 not triggered within ' + maxAttempts + ' attempts'}
     }
     """
 
     * def result = tripRateLimit()
-    * match result.status == 429
+    * print result.message

@@ -1,4 +1,4 @@
-@ignore
+
 Feature: Get a patient - Healthcare worker access mode
 
 Background:
@@ -9,8 +9,11 @@ Background:
   * configure headers = requestHeaders 
   * url baseURL
 
-Scenario: Get an "unrestricted" patient
+Scenario: Get patient details
   * def nhsNumber = '9693632109'
   * path 'Patient', nhsNumber
   * method get
-  
+  * def is429 = responseStatus == 429
+  * karate.set('is429', is429)
+  * print '>>>>>>>>>>>>>>>>>>>>>>>>>>> Status:', responseStatus
+
