@@ -56,7 +56,10 @@ jobs:
         run: make check-licenses
 
       - name: Scan secrets
-        run: make scan-secrets
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }} 
 
       - name: Lint
         run: make lint
