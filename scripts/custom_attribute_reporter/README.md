@@ -57,10 +57,15 @@ It is up to you how you want to orchestrate the management of the application. I
 using Python's `ArgumentParser` to create a basic command line entrypoint in `find_apps_with_custom_flow_var.py`
 
 ## How to run in this repo (PDS)
-- Ensure you have exported the APIGEE_ACCESS_TOKEN variable
+- Ensure you have exported the APIGEE_ACCESS_TOKEN variable relevant to the Apigee organisation you want to query
 
 ```bash
+# Either the below for non-prod
 export SSO_LOGIN_URL=https://login.apigee.com
+# Or for prod
+export SSO_LOGIN_URL=https://nhs-digital-prod.login.apigee.com
+
+# And finally
 export APIGEE_ACCESS_TOKEN="$(get_token)"
 ```
 

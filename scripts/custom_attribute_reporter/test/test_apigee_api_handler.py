@@ -1,4 +1,4 @@
-from unittest.mock import patch, Mock
+from unittest.mock import patch, Mock, call
 
 import pytest
 import requests
@@ -42,13 +42,48 @@ def test_get_app_ids_for_products_returns_app_id_list(mock_request, mock_get_app
 
     response = apigee_api_handler.get_app_ids_for_product("test-product")
 
-    assert response == [MOCK_APP_ID_ONE, MOCK_APP_ID_TWO]
+    assert response == {MOCK_APP_ID_ONE, MOCK_APP_ID_TWO}
     mock_request.assert_called_once()
     args, kwargs = mock_request.call_args
 
     assert args[0] == "GET"
     assert args[1] == "https://api.enterprise.apigee.com/v1/organizations/nhsd-test/apiproducts/test-product"
-    assert kwargs["params"] == {"query": "list", "entity": "apps"}
+    assert kwargs["params"] == {"query": "list", "entity": "apps", "count": 100}
+    assert apigee_api_handler._api_session.headers["Authorization"] == "Bearer 1234AccessToken"
+
+
+@patch("requests.Session.request")
+def test_get_app_ids_for_products_returns_app_id_list_with_multiple_pages(mock_request):
+    mock_request.side_effect = [
+        Mock(
+            status_code=200,
+            json=Mock(return_value=["id_1", "id_2", "id_3"]),
+        ),
+        Mock(
+            status_code=200,
+            json=Mock(return_value=["id_3", "id_4", "id_5"]),
+        ),
+        Mock(
+            status_code=200,
+            json=Mock(return_value=["id_5", "id_6"]),
+        )
+    ]
+    apigee_api_handler = ApigeeApiHandler("nhsd-test", "1234AccessToken")
+
+    response = apigee_api_handler.get_app_ids_for_product("test-product", 3)
+
+    assert len(response) == 6
+
+    expected_url = "https://api.enterprise.apigee.com/v1/organizations/nhsd-test/apiproducts/test-product"
+    expected_http_method = "GET"
+    expected_params = {"query": "list", "entity": "apps", "count": 3}
+    mock_request.assert_has_calls([
+        call(expected_http_method, expected_url, params=expected_params, allow_redirects=True),
+        call(expected_http_method, expected_url, params=expected_params | {"startkey": "id_3"},
+             allow_redirects=True),
+        call(expected_http_method, expected_url, params=expected_params | {"startkey": "id_5"},
+             allow_redirects=True)
+    ])
     assert apigee_api_handler._api_session.headers["Authorization"] == "Bearer 1234AccessToken"
 
 
@@ -67,7 +102,7 @@ def test_get_app_ids_for_throws_error_for_non_success_status_code(mock_request):
 
     assert args[0] == "GET"
     assert args[1] == "https://api.enterprise.apigee.com/v1/organizations/nhsd-test/apiproducts/test-product"
-    assert kwargs["params"] == {"query": "list", "entity": "apps"}
+    assert kwargs["params"] == {"query": "list", "entity": "apps", "count": 100}
     assert apigee_api_handler._api_session.headers["Authorization"] == "Bearer 1234AccessToken"
 
 
