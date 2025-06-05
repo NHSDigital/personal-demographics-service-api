@@ -47,7 +47,7 @@ if __name__ == "__main__":
         raise EnvironmentError("The environment variable APIGEE_ACCESS_TOKEN must be set")
 
     apigee_api_handler = ApigeeApiHandler(args.apigee_organisation, access_token)
-    associated_app_ids = apigee_api_handler.get_app_ids_for_product(args.product_name, 2)
+    associated_app_ids = apigee_api_handler.get_app_ids_for_product(args.product_name)
     apps_with_requested_flow_var: list[ApigeeApp] = []
 
     for app_id in associated_app_ids:
