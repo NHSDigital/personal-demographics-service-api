@@ -2,3 +2,4 @@
 make lint
 make validate
 make validate-xml
+make scan-secrets

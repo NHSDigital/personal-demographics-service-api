@@ -55,6 +55,9 @@ jobs:
       - name: Check licenses
         run: make check-licenses
 
+      - name: Scan secrets
+        run: make scan-secrets
+
       - name: Lint
         run: make lint
 

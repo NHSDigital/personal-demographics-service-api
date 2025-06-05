@@ -98,3 +98,7 @@ test-sandbox:
 
 validate-xml:
 	poetry run python scripts/xml_validator.py
+
+scan-secrets:
+	# Please do not change this `check=whole-history` setting, as new patterns may be added or history may be rewritten.
+	./scripts/githooks/scan-secrets.sh check=whole-history
