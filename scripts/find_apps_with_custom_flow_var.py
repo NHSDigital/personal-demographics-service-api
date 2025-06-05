@@ -50,7 +50,11 @@ if __name__ == "__main__":
     associated_app_ids = apigee_api_handler.get_app_ids_for_product(args.product_name)
     apps_with_requested_flow_var: list[ApigeeApp] = []
 
-    for app_id in associated_app_ids:
+    print(f"Number of associated apps: {len(associated_app_ids)}")
+
+    for count, app_id in enumerate(associated_app_ids):
+        if count % 10 == 0:
+            print(f"processed: {count}")
         app_meta_data = apigee_api_handler.get_app_metadata(app_id)
         custom_attr_handler = CustomAttributesHandler(app_meta_data)
         rate_limit = custom_attr_handler.find_rate_limit_for_product(args.product_name)
