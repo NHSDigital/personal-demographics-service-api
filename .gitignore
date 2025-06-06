@@ -17,7 +17,6 @@ venv
 
 __pycache__/
 .envrc
-.tool-versions
 .vscode
 .mypy_cache
 
