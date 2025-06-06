@@ -22,7 +22,8 @@ Background:
 @mock
 Scenario: Mock authentication
     # We don't authenticate on sandbox. We set a example value that follows bearer token format
-    * def accessToken = "g1112R_ccQ1Ebbb4gtHBP1aaaNM" # gitleaks:allow
+    * def accessToken = "g1112R_ccQ1Ebbb4gtHBP1aaaNM"
+    # gitleaks:allow
 
 @real
 Scenario: Call the real oauth2 authentication mock service
