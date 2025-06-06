@@ -46,9 +46,6 @@ function get-cmd-to-run() {
     "whole-history")
       cmd="detect --source $dir --verbose --redact"
       ;;
-    "no-git-history")
-      cmd="detect --no-git --source $dir --verbose --redact"
-      ;;
     "last-commit")
       cmd="detect --source $dir --verbose --redact --log-opts -1"
       ;;

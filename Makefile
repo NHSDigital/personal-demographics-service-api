@@ -100,5 +100,5 @@ validate-xml:
 	poetry run python scripts/xml_validator.py
 
 scan-secrets:
-	# Currently git history is ignored on the basis that the process for removing these involves a lot of risk
-	./scripts/githooks/scan-secrets.sh check=no-git-history
+	# Currently only check staged changes when running locally (pre-commit)
+	./scripts/githooks/scan-secrets.sh check=staged-changes
