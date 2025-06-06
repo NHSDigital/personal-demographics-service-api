@@ -5,7 +5,7 @@ import io.gatling.core.Predef._
 import scala.concurrent.duration._
 
 class GetPatientByDefaultTestAppSimulation extends Simulation {
-  var users = 6
+  var users = 31
   var duration = 1
   
   val protocol = karateProtocol()
@@ -30,7 +30,7 @@ class GetPatientByDefaultTestAppSimulation extends Simulation {
     }
     
     setUp(
-      scn.inject(constantUsersPerSec(users) during (duration second)).protocols(protocol)
+      scn.inject(rampUsers(users) during (duration minute)).protocols(protocol)
     )
   
   // hook to run after simulation ends

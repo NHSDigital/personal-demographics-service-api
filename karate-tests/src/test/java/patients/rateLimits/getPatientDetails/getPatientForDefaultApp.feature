@@ -15,5 +15,5 @@ Scenario: Get patient details
   * method get
   * def is429 = responseStatus == 429
   * karate.set('is429', is429)
-  * print '>>>>>>>>>>>>>>>>>>>>>>>>>>> Status:', responseStatus
+  * if (is429) karate.set('timestamp429', java.time.ZonedDateTime.now(java.time.ZoneOffset.UTC).toString())
   
