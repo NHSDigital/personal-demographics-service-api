@@ -90,6 +90,9 @@ release: clean publish build-proxy
 
 	cp pyproject.toml dist/pyproject.toml
 
+test-custom-attribute-reporter:
+	poetry run pytest scripts/custom_attribute_reporter/
+
 test-local-sandbox:
 	cd karate-tests && mvn clean test -Dtest=TestLocalMockParallel
 

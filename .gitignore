@@ -13,6 +13,7 @@ venv
 .#*
 .env
 *.code-workspace
+.tool-versions
 
 __pycache__/
 .envrc
@@ -26,11 +27,12 @@ tests/docker.env
 tests/*.key
 tests/.pytest_cache
 
+scripts/custom_attribute_reporter/output/
+
 ID_TOKEN_NHS_LOGIN_PRIVATE_KEY
 JWT_TESTING_PRIVATE_KEY
 JWT_TESTING_WITH_ASID_PRIVATE_KEY
 keys/
-
 
 # Karate ignores
 **/target/**
