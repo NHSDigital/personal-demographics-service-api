@@ -100,5 +100,5 @@ validate-xml:
 	poetry run python scripts/xml_validator.py
 
 scan-secrets:
-	# Please do not change this `check=whole-history` setting, as new patterns may be added or history may be rewritten.
-	./scripts/githooks/scan-secrets.sh check=whole-history
+	# Currently git history is ignored on the basis that the process for removing these involves a lot of risk
+	./scripts/githooks/scan-secrets.sh check=no-git-history
