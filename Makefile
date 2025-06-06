@@ -101,3 +101,7 @@ test-sandbox:
 
 validate-xml:
 	poetry run python scripts/xml_validator.py
+
+scan-secrets:
+	# Currently only check staged changes when running locally (pre-commit)
+	./scripts/githooks/scan-secrets.sh check=staged-changes

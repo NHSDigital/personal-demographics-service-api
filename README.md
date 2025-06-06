@@ -95,6 +95,23 @@ Install shellcheck (we use this for linting .sh files)
 sudo apt install shellcheck
 ```
 
+Install gitleaks (we use this for scanning for secrets)
+* Extract gitleaks tarball to /usr/local/bin
+```bash
+cd ~/Downloads
+curl -LO https://github.com/gitleaks/gitleaks/releases/download/v8.27.0/gitleaks_8.27.0_linux_x64.tar.gz
+sudo tar -xvzf gitleaks_8.27.0_linux_x64.tar.gz -C /usr/local/bin gitleaks
+```
+* Ensure that /usr/local/bin is part of your $PATH environment variable
+```bash
+echo $PATH
+```
+* If it does not exist in the output, then add the following line to .bashrc file
+```bash
+export PATH="/usr/local/bin:$PATH"
+```
+* You may need to open a new terminal/vscode for these changes to take affect
+
 Next open powershell and get the wsl ip (make sure wsl is running)
 The purpose of the following instructions is to enable you to use postman if you wish against the sandbox.
 ```bash
