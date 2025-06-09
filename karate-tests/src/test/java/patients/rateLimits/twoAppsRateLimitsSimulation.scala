@@ -7,10 +7,9 @@ import scala.concurrent.duration._
 
 class GetPatientByTwoAppsSimulation extends Simulation {
  // === Configuration ===
-  val app1Users = 300
-  val app2Users = 20
-  val duration = 1 // in minutes
-
+  val rateLimitAppRequests = Integer.getInteger("rateLimitAppRequests")
+  val proxyRateLimit = Integer.getInteger("proxyRateLimitAppRequests")
+  val duration = Integer.getInteger("duration")
   val protocol = karateProtocol()
   protocol.runner.karateEnv("veit07")
 
@@ -68,15 +67,15 @@ class GetPatientByTwoAppsSimulation extends Simulation {
 
   // === Simulation Setup ===
   setUp(
-    scn1.inject(rampUsers(app1Users) during (duration minute)).protocols(protocol),
-    scn2.inject(nothingFor(90 seconds), rampUsers(app2Users) during (duration minute)).protocols(protocol)
+    scn1.inject(rampUsers(rateLimitAppRequests) during (duration.seconds)).protocols(protocol),
+    scn2.inject(nothingFor(120 seconds), rampUsers(proxyRateLimit) during (duration.seconds)).protocols(protocol)
   )
 
   // === Report Output ===
   after {
     println("=== Simulation Complete ===")
-    println(s"Total requests from App1Test: $app1Users")
-    println(s"Total requests from App2Test: $app2Users")
+    println(s"Total requests from App1Test: $rateLimitAppRequests")
+    println(s"Total requests from App2Test: $proxyRateLimit")
 
     def print429s(appLabel: String, count: Int, timestamps: Seq[String]) = {
       println(s"Total 429 responses from $appLabel: $count")

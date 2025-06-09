@@ -5,9 +5,8 @@ import io.gatling.core.Predef._
 import scala.concurrent.duration._
 
 class GetPatientByDefaultTestAppSimulation extends Simulation {
-  var users = 31
-  var duration = 1
-  
+  val proxyRateLimit = Integer.getInteger("proxyRateLimitAppRequests")
+  val duration = Integer.getInteger("duration") 
   val protocol = karateProtocol()
   
     protocol.runner.karateEnv("veit07")
@@ -30,13 +29,13 @@ class GetPatientByDefaultTestAppSimulation extends Simulation {
     }
     
     setUp(
-      scn.inject(rampUsers(users) during (duration minute)).protocols(protocol)
+      scn.inject(rampUsers(proxyRateLimit) during (duration.seconds)).protocols(protocol)
     )
   
   // hook to run after simulation ends
   after {
     println("=== Simulation Complete ===")
-    println(s"Total requests from default Test app: ${users}")
+    println(s"Total requests from default Test app: ${proxyRateLimit}")
     if (all429s.nonEmpty) {
       println(s"Total 429 responses: ${all429s.size}")
     }else {
