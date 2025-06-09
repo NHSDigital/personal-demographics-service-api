@@ -6,7 +6,7 @@ APIGEE_ENVIRONMENTS:
       personal-demographics-internal-dev:
         quota:
           enabled: true
-          limit: 60
+          limit: 300
           interval: 1
           timeunit: minute
         spikeArrest:
