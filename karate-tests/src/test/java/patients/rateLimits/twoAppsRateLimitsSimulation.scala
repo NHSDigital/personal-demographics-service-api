@@ -7,15 +7,16 @@ import scala.concurrent.duration._
 
 class GetPatientByTwoAppsSimulation extends Simulation {
  // === Configuration ===
-  val app1Users = 41
-  val app2Users = 30
+  val app1Users = 300
+  val app2Users = 20
   val duration = 1 // in minutes
 
   val protocol = karateProtocol()
   protocol.runner.karateEnv("veit07")
 
   // === State Tracking ===
-  var requestCounter = 0
+  var app1Counter = 0
+  var app2Counter = 0
   var app1_429s, app2_429s = Seq[Int]()
   var app1_429Timestamps, app2_429Timestamps = Seq[String]()
 
@@ -42,8 +43,21 @@ class GetPatientByTwoAppsSimulation extends Simulation {
   def scenarioForApp(appLabel: String, featurePath: String) = {
     scenario(s"${appLabel}Test")
       .exec(session => {
-        requestCounter += 1
-        session.set("requestIndex", requestCounter).set("appName", appLabel)
+        val index = appLabel match {
+          case "App1" => app1Counter += 1; app1Counter
+          case "App2" => app2Counter += 1; app2Counter
+        }
+        session
+          .set("requestIndex", index)
+          .set("appName", appLabel)
+      })
+      // Optional: Log each request for debugging
+      .exec(session => {
+        val app = session("appName").as[String]
+        val idx = session("requestIndex").as[Int]
+        val now = java.time.Instant.now.toString
+        println(s"[DEBUG] $app - Request $idx at $now")
+        session
       })
       .exec(karateFeature(featurePath))
       .exec(session => track429(session, appLabel))
@@ -55,7 +69,7 @@ class GetPatientByTwoAppsSimulation extends Simulation {
   // === Simulation Setup ===
   setUp(
     scn1.inject(rampUsers(app1Users) during (duration minute)).protocols(protocol),
-    scn2.inject(rampUsers(app2Users) during (duration minute)).protocols(protocol)
+    scn2.inject(nothingFor(90 seconds), rampUsers(app2Users) during (duration minute)).protocols(protocol)
   )
 
   // === Report Output ===
