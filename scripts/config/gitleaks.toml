@@ -21,9 +21,9 @@ paths = ['''.terraform.lock.hcl''', '''poetry.lock''', '''yarn.lock''']
 [[allowlists]]
 regexTarget = "secret"
 regexes = [
-    '''ZWRnZWNsaTplZGdlY2xpc2VjcmV0''', # This is a publicly available bearer token available here: https://docs.apigee.com/api-platform/system-administration/management-api-tokens
-    '''g1112R_ccQ1Ebbb4gtHBP1aaaNM''', # This is a dummy access token
-    '''0.0.0.0''' # dummy IP
+    '''ZWRnZWNsaTplZGdlY2xpc2VjcmV0''', # Publicly available bearer token available here: https://docs.apigee.com/api-platform/system-administration/management-api-tokens
+    '''g1112R_ccQ1Ebbb4gtHBP1aaaNM''', # Dummy access token
+    '''0.0.0.0''', # Dummy IP
 ]
 
 [[allowlists]]
@@ -31,6 +31,13 @@ description = "Apigee application IDs are non-sensitive"
 regexTarget = "match"
 regexes = [
     '''--apigee-app-id=*''',
+]
+
+[[allowlists]]
+description = "Hl7 UK Issued OIDs publicly available here: https://www.hl7.org.uk/standards/object-identifiers-oids/hl7-uk-issued-oids/"
+regexTarget = "line"
+regexes = [
+    '''2.16.840.1.113883.2.1'''
 ]
 
 [[allowlists]]
