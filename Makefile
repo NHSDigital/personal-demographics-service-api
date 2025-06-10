@@ -103,5 +103,5 @@ validate-xml:
 	poetry run python scripts/xml_validator.py
 
 scan-secrets:
-	# Currently only check staged changes when running locally (pre-commit)
-	./scripts/githooks/scan-secrets.sh check=staged-changes
+	# Please do not change this `check=whole-history` setting, as new patterns may be added or history may be rewritten.
+	check=whole-history ./scripts/githooks/scan-secrets.sh
