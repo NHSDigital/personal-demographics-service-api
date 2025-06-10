@@ -42,10 +42,9 @@ function main() {
 function get-cmd-to-run() {
 
   check=${check:-staged-changes}
-
   case $check in
     "whole-history")
-      cmd="detect --source $dir --verbose -r gitleaks-report.json"
+      cmd="detect --source $dir --verbose --redact"
       ;;
     "last-commit")
       cmd="detect --source $dir --verbose --redact --log-opts -1"
@@ -68,7 +67,6 @@ function get-cmd-to-run() {
 # Arguments (provided as environment variables):
 #   cmd=[command to run]
 function run-gitleaks-natively() {
-    echo RUNNING gitleaks $cmd
 
   # shellcheck disable=SC2086
   gitleaks $cmd
