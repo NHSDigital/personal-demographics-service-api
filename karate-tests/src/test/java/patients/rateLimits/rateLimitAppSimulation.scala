@@ -6,8 +6,8 @@ import scala.concurrent.duration._
 
 
 class GetPatientByRateLimitAppSimulation extends Simulation {
-val rateLimitAppRequests = Integer.getInteger("rateLimitAppRequests")
-val duration = Integer.getInteger("duration")  
+  val rateLimitAppRequests = Integer.getInteger("rateLimitAppRequests")
+  val duration = Integer.getInteger("duration")  
   val protocol = karateProtocol()
   
     protocol.runner.karateEnv("veit07")
