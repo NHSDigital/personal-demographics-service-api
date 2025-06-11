@@ -61,6 +61,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
           GITLEAKS_CONFIG: ./scripts/config/gitleaks.toml
+          GITLEAKS_VERSION: 8.27.0
 
       - name: Lint
         run: make lint

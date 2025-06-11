@@ -1,6 +1,7 @@
 # personal-demographics-service-api
 
 ![Build](https://github.com/NHSDigital/personal-demographics-service-api/workflows/Build/badge.svg?branch=master)
+<img alt="gitleaks badge" src="https://img.shields.io/badge/protected%20by-gitleaks-blue">
 
 This is a RESTful HL7® FHIR® API for the *Personal Demographics Service*.
 
