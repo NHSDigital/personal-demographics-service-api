@@ -92,10 +92,10 @@
         <Name>AssignMessage.AddCustomAttributesHeader</Name>
       </Step>
       <Step>
-        <Name>AssignMessage.RemovePrivilegedAccessHeader</Name>
+        <Name>AssignMessage.RemovePrivilegedAccessModeHeader</Name>
       </Step>
       <Step>
-        <Name>AssignMessage.AddPrivilegedAccessHeader</Name>
+        <Name>AssignMessage.AddPrivilegedAccessModeHeader</Name>
         <Condition>access-mode Equals "privileged-application-restricted"</Condition>
       </Step>
       <Step>
