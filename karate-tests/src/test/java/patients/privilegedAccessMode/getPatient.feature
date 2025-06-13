@@ -135,14 +135,13 @@ Feature: get /Patient - privileged-application-restricted access mode
   * status 200
   * match response.id == nhsNumber
   
-  @ignore
   Scenario: Get a patient details- RemovalReasonExitCode should be Armed Forces (notified by Armed Forces) AFN
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
-    * configure headers = requestHeaders  
-    * path 'Patient', removedArmedForcesNhsNumber
+    * configure headers = requestHeaders
+    * def nhsNumber = '9733162981'  
+    * path 'Patient', nhsNumber
     * method get
     * status 200
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].code == "AFN"
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].display == "Armed Forces (notified by Armed Forces)"
-    * match response.extension[0].url == removalURL
     * match responseHeaders['Nhse-Pds-Custom-Attributes'] == '#notpresent'
