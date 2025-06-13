@@ -21,6 +21,6 @@ Scenario: Invalid Method error should be raised when app restricted user try to 
     * request read('classpath:patients/requestDetails/add/emergencyContact.json')
     * method patch
     * status 403
-    * def display = "Cannot update resource with Application-Restricted access token"
+    * def display = "Cannot update resource with application-restricted access token"
     * def expectedResponse = read('classpath:mocks/stubs/errorResponses/INVALID_METHOD.json')
     * match response == expectedResponse
