@@ -8,6 +8,9 @@ Background:
     * def utils = call read('classpath:helpers/utils.feature')
     * def randomUUID = function(){ return java.util.UUID.randomUUID() + '' }
     * url oauth2MockURL
+    * def signingKey = karate.get('signingKey')
+    * def apiKey = karate.get('apiKey')
+    * def keyID = karate.get('keyID')
 
 @mock
 Scenario: Mock authentication
