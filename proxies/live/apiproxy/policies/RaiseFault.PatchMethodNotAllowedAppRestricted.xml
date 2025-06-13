@@ -16,7 +16,7 @@
     </AssignVariable>
     <AssignVariable>
       <Name>pds.error.coding.display</Name>
-      <Value>Cannot update resource with {access-mode} access token</Value>
+      <Template>Cannot update resource with {access-mode} access token</Template>
     </AssignVariable>
     <AssignVariable>
       <Name>pds.error.diagnostics</Name>
