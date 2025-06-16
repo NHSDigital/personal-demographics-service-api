@@ -7,7 +7,5 @@ Scenario:
     * header If-Match = etag
     * path endpoint
     * request requestBody
-    * print ("requestBody?")
-    * print (requestBody)
     * method patch
     * status 200

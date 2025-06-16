@@ -211,10 +211,9 @@ Feature: Patch patient - Add and remove data
     * status 200
     * match parseInt(response.meta.versionId) == originalVersion + 1
 
-    @jack
   Scenario:  Healthcare worker can add and remove place of birth details(city and district)
 
-    * def placeOfBirthNhsNumber = '9732110430'
+    * def placeOfBirthNhsNumber = '5900077810'
     * def requestBody = read('classpath:patients/requestDetails/add/placeOfBirth.json')
     * def placeOBirthUrl = requestBody.patches[0].value.url
 
@@ -256,11 +255,11 @@ Feature: Patch patient - Add and remove data
     * method get
     * status 200
     
+    # Remove place of birth if already exists. Failed pipelines can leave data in an incorrect state
     * def originalVersion = parseInt(response.meta.versionId)
     * def pobIndex = response.extension ? response.extension.findIndex(x => x.url == placeOBirthUrl) : null
     * def pobPath =  "/extension/" + pobIndex
     * def pobDetails = response.extension ? response.extension.find(x => x.url == placeOBirthUrl) : null
-
     * def body = buildPatchBody(pobPath, pobDetails)
     * def response = (pobDetails == null) ? { body: response, responseHeaders: responseHeaders } : removePlaceOfBirth(body)
 

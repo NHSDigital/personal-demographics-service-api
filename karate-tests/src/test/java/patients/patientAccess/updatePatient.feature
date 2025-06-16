@@ -221,77 +221,138 @@ Feature: Patient updates their details
     * def p9numberForPharmacy = '9446041481'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9numberForPharmacy, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * def requestBody = read('classpath:patients/requestDetails/add/nominatedPharmacy.json')
+    * def nominatedPharmacyUrl = requestBody.patches[0].value.url
+
+    * def buildPatchBody =
+    """
+    function(pharmacyPath, pharmacyDetails) {
+    return {
+        patches: [
+          {
+            op: "test",
+            path: pharmacyPath,
+            value: pharmacyDetails     
+          },
+          {
+           op: "remove",
+            path: pharmacyPath 
+          }
+        ]
+    };
+    }
+    """
+    
+    * def removeNominatedPharmacy =
+    """
+    function(body) {
+    var result = karate.call('classpath:helpers/patchRequest.feature', {
+        baseURL: baseURL,
+        requestBody: body,
+        endpoint: 'Patient/' + p9numberForPharmacy,
+        etag: karate.response.header('Etag')
+    });
+    return result
+    }
+    """
+
     * configure headers = requestHeaders
     * path 'Patient', p9numberForPharmacy
     * method get
     * status 200
     * def originalVersion = parseInt(response.meta.versionId)
-    * def originalEtag = karate.response.header('etag')
-    # add nominated pharmacy
 
+    # Remove nominated pharmacy if already exists. Failed pipelines can leave data in an incorrect state
+    * def pharmacyIndex = response.extension ? response.extension.findIndex(x => x.url == nominatedPharmacyUrl) : null
+    * def pharmacyPath =  "/extension/" + pharmacyIndex
+    * def pharmacyDetails = response.extension ? response.extension.find(x => x.url == nominatedPharmacyUrl) : null
+    * def body = buildPatchBody(pharmacyPath, pharmacyDetails)
+    * def response = (pharmacyDetails == null) ? { body: response, responseHeaders: responseHeaders } : removeNominatedPharmacy(body)
+    
+    # add nominated pharmacy
     * configure headers = call read('classpath:auth/auth-headers.js') 
     * header Content-Type = "application/json-patch+json"
-    * header If-Match = originalEtag
+    * def etagKey = Object.keys(response.responseHeaders).find(k => k.toLowerCase() === 'etag')
+    * header If-Match = etagKey ? response.responseHeaders[etagKey][0] : null
     * path 'Patient', p9numberForPharmacy
-    * def requestBody = read('classpath:patients/requestDetails/add/nominatedPharmacy.json')
-    * def nominatedPharmacyUrl = requestBody.patches[0].value.url
     * request requestBody
     * method patch
     * status 200 
     * def idAfterPharmacyAdd = response.meta.versionId
     * def pharmacyDetails = response.extension.find(x => x.url == nominatedPharmacyUrl)
+    
     # Test fails if the patient's nominated pharmacy is not present in the record
-  
     * if (pharmacyDetails == null) {karate.fail('No value found for Nominated Pharmacy, stopping the test.')}
     * def pharmacyIndex = response.extension.findIndex(x => x.url == nominatedPharmacyUrl)
     * def pharmacyPath =  "/extension/" + pharmacyIndex
     
      # remove nominated pharmacy details
+    * def body = buildPatchBody(pharmacyPath, pharmacyDetails)
+    * def response = removeNominatedPharmacy(body)
+    * match parseInt(response.response.meta.versionId) == parseInt(idAfterPharmacyAdd)+ 1
+    * match response.response.extension[0] == '#notpresent'
 
-    * configure headers = call read('classpath:auth/auth-headers.js') 
-    * header Content-Type = "application/json-patch+json"
-    * header If-Match = karate.response.header('etag')
-    * path 'Patient',p9numberForPharmacy
-    * request 
-    """
-      {
-        "patches": [
-          {
-            "op": "test",
-            "path": "#(pharmacyPath)",
-            "value": "#(pharmacyDetails)"     
-          },
-          {
-           "op": "remove",
-            "path": "#(pharmacyPath)" 
-          }
-        ]
-      }
-      """ 
-    * method patch
-    * status 200
-    * match parseInt(response.meta.versionId) == parseInt(idAfterPharmacyAdd)+ 1
-    * match response.extension[0] == '#notpresent'
-
+    @jack
   Scenario: Patient can add temporary address and remove it
 
     * def p9numberForAddress = '9733162868'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9numberForAddress, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
+    
+    * def buildPatchBody =
+    """
+    function(tempAddressPath, tempAddressDetails) {
+    return {
+        patches: [
+          {
+            op: "test",
+            path: tempAddressPath,
+            value: tempAddressDetails     
+          },
+          {
+           op: "remove",
+            path: tempAddressPath 
+          }
+        ]
+    };
+    }
+    """
+    
+    * def removeTemporaryAddress =
+    """
+    function(body) {
+    var result = karate.call('classpath:helpers/patchRequest.feature', {
+        baseURL: baseURL,
+        requestBody: body,
+        endpoint: 'Patient/' + p9numberForAddress,
+        etag: karate.response.header('Etag')
+    });
+    return result
+    }
+    """
+    
     * path 'Patient', p9numberForAddress
     * method get
     * status 200
     * def originalVersion = parseInt(response.meta.versionId)
-    * def originalEtag = karate.response.header('etag')
+
+    # Remove temporary address if already exists. Failed pipelines can leave data in an incorrect state
+    * def tempAddressIndex = response.address ? response.address.findIndex(x => x.use == "temp") : null
+    * def tempAddressPath =  "/address/" + tempAddressIndex
+    * def tempAddressDetails = response.address ? response.address.find(x => x.use == "temp") : null
+    * def body = buildPatchBody(tempAddressPath, tempAddressDetails)
+    * def response = (tempAddressDetails == null) ? { body: response, responseHeaders: responseHeaders } : removeTemporaryAddress(body)
+
     * def utils = call read('classpath:helpers/utils.feature')
     * def randomAddress = utils.randomTempAddress()
     * def tempAddress = randomAddress
+   
     # add temp address
-
     * configure headers = call read('classpath:auth/auth-headers.js') 
     * header Content-Type = "application/json-patch+json"
-    * header If-Match = originalEtag
+    * def etagKey = Object.keys(response.responseHeaders).find(k => k.toLowerCase() === 'etag')
+    * header If-Match = etagKey ? response.responseHeaders[etagKey][0] : null
     * path 'Patient', p9numberForAddress
     * def requestBody = 
     """
@@ -313,36 +374,12 @@ Feature: Patient updates their details
     * def tempAddressDetails = response.address.find(x => x.use == "temp")
    
     # Test fails if the patient's temp address details are not present in the record
-  
     * if (tempAddressDetails == null) {karate.fail('No value found for temporary address, stopping the test.')}
     * def addressIndex = response.address.findIndex(x => x.use == "temp")
     * def tempAddressPath =  "/address/" + addressIndex
     
      # remove temp address details
-
-    * configure headers = call read('classpath:auth/auth-headers.js') 
-    * header Content-Type = "application/json-patch+json"
-    * header If-Match = karate.response.header('etag')
-    * path 'Patient',p9numberForAddress
-    * request 
-    """
-      {
-        "patches": [
-          {
-            "op": "test",
-            "path": "#(tempAddressPath)",
-            "value": "#(tempAddressDetails)"     
-          },
-          {
-           "op": "remove",
-            "path": "#(tempAddressPath)" 
-          }
-        ]
-      }
-      """ 
-    * method patch
-    * status 200
-    * match parseInt(response.meta.versionId) == parseInt(idAfterTempAddress)+ 1
-    * match response.address[1] == '#notpresent'
-
-    
+    * def body = buildPatchBody(tempAddressPath, tempAddressDetails)
+    * def response = removeTemporaryAddress(body)
+    * match parseInt(response.response.meta.versionId) == parseInt(idAfterTempAddress)+ 1
+    * match response.response.address[1] == '#notpresent'
