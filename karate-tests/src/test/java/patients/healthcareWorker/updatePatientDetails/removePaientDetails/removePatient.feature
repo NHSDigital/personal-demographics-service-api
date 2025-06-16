@@ -3,7 +3,7 @@ Feature: Remove patient details
   Scenario: Remove place of birth
 
     * url baseURL
-    * def placeOfBirthNhsNumber = '5900077810'
+    * def placeOfBirthNhsNumber = '9732110430'
     * def placeOBirthUrl = 'http://hl7.org/fhir/StructureDefinition/patient-birthPlace'
    
     * path 'Patient', placeOfBirthNhsNumber
