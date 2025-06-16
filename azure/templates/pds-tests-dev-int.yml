@@ -9,6 +9,7 @@ steps:
     parameters:
       secret_file_ids:
         - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_PRIVATE_KEY
+        - ptl/app-credentials/jwt_testing/non-prod/PRIVILEGED_ACCESS_TESTING_SIGNING_KEY
       config_ids:
         - /ptl/azure-devops/env-internal-dev/test-app/internal-testing-internal-dev/CLIENT_ID
         - /ptl/azure-devops/env-internal-dev/test-app/internal-testing-internal-dev/CLIENT_SECRET
@@ -18,10 +19,13 @@ steps:
         - /ptl/azure-devops/personal-demographics/INTERNAL_SERVER_BASE_URI
       secret_ids:
         - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_API_KEY
+        - ptl/app-credentials/jwt_testing/non-prod/PRIVILEGED_ACCESS_API_KEY
        
   - bash: |
       export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
+      export PRIVILEGED_ACCESS_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(PRIVILEGED_ACCESS_TESTING_SIGNING_KEY)"
       export APPLICATION_RESTRICTED_API_KEY="$(JWT_TESTING_API_KEY)"
+      export PRIVILEGED_ACCESS_API_KEY="$(PRIVILEGED_ACCESS_API_KEY)"
       export PDS_BASE_PATH="$(SERVICE_BASE_PATH)"
       export KEY_ID="test-1"
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
