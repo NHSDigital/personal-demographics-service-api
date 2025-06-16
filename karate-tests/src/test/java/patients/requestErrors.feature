@@ -43,7 +43,7 @@ Scenario: Make request to invalid endpoint that is similar to valid endpoint
   * status 400
   * match response.issue[0].details.coding[0].display == "Unsupported Service"
 
- Scenario: Make invalid Options request to get patient endpoint 
+ Scenario: Make invalid options request to get patient endpoint 
   * def nhsNumber = '9693632109'
   * path 'Patient', nhsNumber
   * method options
