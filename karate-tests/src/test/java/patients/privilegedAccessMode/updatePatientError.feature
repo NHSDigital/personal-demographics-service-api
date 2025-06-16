@@ -22,6 +22,6 @@ Scenario: Invalid Method error should be raised when privileged-application-rest
     * request read('classpath:patients/requestDetails/add/emergencyContact.json')
     * method patch
     * status 403
-    * def display = "Cannot update resource with privileged-application-restricted token"
+    * def display = "Cannot update resource with privileged-application-restricted access token"
     * def expectedResponse = read('classpath:mocks/stubs/errorResponses/INVALID_METHOD.json')
     * match response == expectedResponse
