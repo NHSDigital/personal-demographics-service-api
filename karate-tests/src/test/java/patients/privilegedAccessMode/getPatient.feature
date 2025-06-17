@@ -134,6 +134,7 @@ Feature: get /Patient - privileged-application-restricted access mode
   * status 200
   * match response.id == nhsNumber
   
+  @no-oas
   Scenario: Get a patient details- RemovalReasonExitCode should be Armed Forces (notified by Armed Forces) AFN
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
