@@ -1,4 +1,3 @@
-@ignore
 Feature: get /Patient - privileged-application-restricted access mode
 
   Background:
