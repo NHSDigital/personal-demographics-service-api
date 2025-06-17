@@ -292,7 +292,6 @@ Feature: Patient updates their details
     * match parseInt(response.response.meta.versionId) == parseInt(idAfterPharmacyAdd)+ 1
     * match response.response.extension[0] == '#notpresent'
 
-    @jack
   Scenario: Patient can add temporary address and remove it
 
     * def p9numberForAddress = '9733162868'
