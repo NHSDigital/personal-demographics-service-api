@@ -38,8 +38,9 @@ function fn() {
       clientID: java.lang.System.getenv('CLIENT_ID'),
       clientSecret: java.lang.System.getenv('CLIENT_SECRET'),
       signingKey: java.lang.System.getenv('APPLICATION_RESTRICTED_SIGNING_KEY_PATH'),
-      privilegedAccessSigningKey: java.lang.System.getenv('PRIVILEGED_ACCESS_SIGNING_KEY_PATH'),
       apiKey: java.lang.System.getenv('APPLICATION_RESTRICTED_API_KEY'),
+      privilegedAccessSigningKey: java.lang.System.getenv('PRIVILEGED_ACCESS_SIGNING_KEY_PATH'),
+      privilegedAccessApiKey: java.lang.System.getenv('PRIVILEGED_ACCESS_API_KEY'),
       keyID: java.lang.System.getenv('KEY_ID'),
       internalServerURL: `${java.lang.System.getenv('INTERNAL_SERVER_BASE_URI')}/personal-demographics/FHIR/R4`
     };
