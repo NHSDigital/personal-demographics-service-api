@@ -223,25 +223,7 @@ Feature: Patient updates their details
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * def requestBody = read('classpath:patients/requestDetails/add/nominatedPharmacy.json')
     * def nominatedPharmacyUrl = requestBody.patches[0].value.url
-
-    * def buildPatchBody =
-    """
-    function(pharmacyPath, pharmacyDetails) {
-    return {
-        patches: [
-          {
-            op: "test",
-            path: pharmacyPath,
-            value: pharmacyDetails     
-          },
-          {
-           op: "remove",
-            path: pharmacyPath 
-          }
-        ]
-    };
-    }
-    """
+    * def utils = call read('classpath:helpers/utils.feature')
     
     * def removeNominatedPharmacy =
     """
@@ -266,7 +248,7 @@ Feature: Patient updates their details
     * def pharmacyIndex = response.extension ? response.extension.findIndex(x => x.url == nominatedPharmacyUrl) : null
     * def pharmacyPath =  "/extension/" + pharmacyIndex
     * def pharmacyDetails = response.extension ? response.extension.find(x => x.url == nominatedPharmacyUrl) : null
-    * def body = buildPatchBody(pharmacyPath, pharmacyDetails)
+    * def body = utils.buildPatchBody(pharmacyPath, pharmacyDetails)
     * def response = (pharmacyDetails == null) ? { body: response, responseHeaders: responseHeaders } : removeNominatedPharmacy(body)
     
     # add nominated pharmacy
@@ -287,7 +269,7 @@ Feature: Patient updates their details
     * def pharmacyPath =  "/extension/" + pharmacyIndex
     
      # remove nominated pharmacy details
-    * def body = buildPatchBody(pharmacyPath, pharmacyDetails)
+    * def body = utils.buildPatchBody(pharmacyPath, pharmacyDetails)
     * def response = removeNominatedPharmacy(body)
     * match parseInt(response.response.meta.versionId) == parseInt(idAfterPharmacyAdd)+ 1
     * match response.response.extension[0] == '#notpresent'
@@ -298,25 +280,7 @@ Feature: Patient updates their details
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9numberForAddress, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    
-    * def buildPatchBody =
-    """
-    function(tempAddressPath, tempAddressDetails) {
-    return {
-        patches: [
-          {
-            op: "test",
-            path: tempAddressPath,
-            value: tempAddressDetails     
-          },
-          {
-           op: "remove",
-            path: tempAddressPath 
-          }
-        ]
-    };
-    }
-    """
+    * def utils = call read('classpath:helpers/utils.feature')
     
     * def removeTemporaryAddress =
     """
@@ -340,10 +304,9 @@ Feature: Patient updates their details
     * def tempAddressIndex = response.address ? response.address.findIndex(x => x.use == "temp") : null
     * def tempAddressPath =  "/address/" + tempAddressIndex
     * def tempAddressDetails = response.address ? response.address.find(x => x.use == "temp") : null
-    * def body = buildPatchBody(tempAddressPath, tempAddressDetails)
+    * def body = utils.buildPatchBody(tempAddressPath, tempAddressDetails)
     * def response = (tempAddressDetails == null) ? { body: response, responseHeaders: responseHeaders } : removeTemporaryAddress(body)
 
-    * def utils = call read('classpath:helpers/utils.feature')
     * def randomAddress = utils.randomTempAddress()
     * def tempAddress = randomAddress
    
@@ -378,7 +341,7 @@ Feature: Patient updates their details
     * def tempAddressPath =  "/address/" + addressIndex
     
      # remove temp address details
-    * def body = buildPatchBody(tempAddressPath, tempAddressDetails)
+    * def body = utils.buildPatchBody(tempAddressPath, tempAddressDetails)
     * def response = removeTemporaryAddress(body)
     * match parseInt(response.response.meta.versionId) == parseInt(idAfterTempAddress)+ 1
     * match response.response.address[1] == '#notpresent'

@@ -211,30 +211,13 @@ Feature: Patch patient - Add and remove data
     * status 200
     * match parseInt(response.meta.versionId) == originalVersion + 1
 
+  @jack
   Scenario:  Healthcare worker can add and remove place of birth details(city and district)
 
     * def placeOfBirthNhsNumber = '5900077810'
     * def requestBody = read('classpath:patients/requestDetails/add/placeOfBirth.json')
     * def placeOBirthUrl = requestBody.patches[0].value.url
-
-    * def buildPatchBody =
-    """
-    function(pobPath, pobDetails) {
-    return {
-      patches: [
-        {
-          op: 'test',
-          path: pobPath,
-          value: pobDetails
-        },
-        {
-          op: 'remove',
-          path: pobPath
-        }
-      ]
-    };
-    }
-    """
+    * def utils = call read('classpath:helpers/utils.feature')
     
     * def removePlaceOfBirth =
     """
@@ -260,7 +243,7 @@ Feature: Patch patient - Add and remove data
     * def pobIndex = response.extension ? response.extension.findIndex(x => x.url == placeOBirthUrl) : null
     * def pobPath =  "/extension/" + pobIndex
     * def pobDetails = response.extension ? response.extension.find(x => x.url == placeOBirthUrl) : null
-    * def body = buildPatchBody(pobPath, pobDetails)
+    * def body = utils.buildPatchBody(pobPath, pobDetails)
     * def response = (pobDetails == null) ? { body: response, responseHeaders: responseHeaders } : removePlaceOfBirth(body)
 
     #add place of birth details
@@ -280,7 +263,7 @@ Feature: Patch patient - Add and remove data
     * def pobPath =  "/extension/" + pobIndex
 
     #  remove place of birth details
-    * def body = buildPatchBody(pobPath, pobDetails)
+    * def body = utils.buildPatchBody(pobPath, pobDetails)
     * def response = removePlaceOfBirth(body)
     * match parseInt(response.response.meta.versionId) == parseInt(idAftPod)+ 1
     * match response.response.extension[1] == '#notpresent'

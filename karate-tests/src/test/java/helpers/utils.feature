@@ -316,3 +316,22 @@ Scenario:
     return address
    }
    """ 
+
+  * def buildPatchBody =
+    """
+    function(path, details) {
+    return {
+      patches: [
+        {
+          op: 'test',
+          path: path,
+          value: details
+        },
+        {
+          op: 'remove',
+          path: path
+        }
+      ]
+    };
+    }
+    """
