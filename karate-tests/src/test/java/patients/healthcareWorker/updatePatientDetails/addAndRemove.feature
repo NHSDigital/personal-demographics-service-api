@@ -211,7 +211,6 @@ Feature: Patch patient - Add and remove data
     * status 200
     * match parseInt(response.meta.versionId) == originalVersion + 1
 
-  @jack
   Scenario:  Healthcare worker can add and remove place of birth details(city and district)
 
     * def placeOfBirthNhsNumber = '5900077810'
