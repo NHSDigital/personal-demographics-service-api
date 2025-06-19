@@ -242,7 +242,7 @@ Feature: Patch patient - Add and remove data
     * def pobIndex = response.extension ? response.extension.findIndex(x => x.url == placeOBirthUrl) : null
     * def pobPath =  "/extension/" + pobIndex
     * def pobDetails = response.extension ? response.extension.find(x => x.url == placeOBirthUrl) : null
-    * def body = utils.buildPatchBody(pobPath, pobDetails)
+    * def body = utils.buildRemovePatchBody(pobPath, pobDetails)
     * def response = (pobDetails == null) ? { body: response, responseHeaders: responseHeaders } : removePlaceOfBirth(body)
 
     #add place of birth details
@@ -253,7 +253,7 @@ Feature: Patch patient - Add and remove data
     * request requestBody
     * method patch
     * status 200 
-    * def idAftPod = response.meta.versionId
+    * def idAfterPlaceOfBirthUpdate = response.meta.versionId
     * def pobDetails = response.extension.find(x => x.url == placeOBirthUrl)
 
     # Test fails if the patient's place of birth details are not present in the record
@@ -262,7 +262,7 @@ Feature: Patch patient - Add and remove data
     * def pobPath =  "/extension/" + pobIndex
 
     #  remove place of birth details
-    * def body = utils.buildPatchBody(pobPath, pobDetails)
+    * def body = utils.buildRemovePatchBody(pobPath, pobDetails)
     * def response = removePlaceOfBirth(body)
-    * match parseInt(response.response.meta.versionId) == parseInt(idAftPod)+ 1
+    * match parseInt(response.response.meta.versionId) == parseInt(idAfterPlaceOfBirthUpdate)+ 1
     * match response.response.extension[1] == '#notpresent'

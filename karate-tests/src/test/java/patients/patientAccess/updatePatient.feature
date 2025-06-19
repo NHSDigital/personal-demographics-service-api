@@ -242,13 +242,12 @@ Feature: Patient updates their details
     * path 'Patient', p9numberForPharmacy
     * method get
     * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
 
     # Remove nominated pharmacy if already exists. Failed pipelines can leave data in an incorrect state
     * def pharmacyIndex = response.extension ? response.extension.findIndex(x => x.url == nominatedPharmacyUrl) : null
     * def pharmacyPath =  "/extension/" + pharmacyIndex
     * def pharmacyDetails = response.extension ? response.extension.find(x => x.url == nominatedPharmacyUrl) : null
-    * def body = utils.buildPatchBody(pharmacyPath, pharmacyDetails)
+    * def body = utils.buildRemovePatchBody(pharmacyPath, pharmacyDetails)
     * def response = (pharmacyDetails == null) ? { body: response, responseHeaders: responseHeaders } : removeNominatedPharmacy(body)
     
     # add nominated pharmacy
@@ -269,7 +268,7 @@ Feature: Patient updates their details
     * def pharmacyPath =  "/extension/" + pharmacyIndex
     
      # remove nominated pharmacy details
-    * def body = utils.buildPatchBody(pharmacyPath, pharmacyDetails)
+    * def body = utils.buildRemovePatchBody(pharmacyPath, pharmacyDetails)
     * def response = removeNominatedPharmacy(body)
     * match parseInt(response.response.meta.versionId) == parseInt(idAfterPharmacyAdd)+ 1
     * match response.response.extension[0] == '#notpresent'
@@ -304,7 +303,7 @@ Feature: Patient updates their details
     * def tempAddressIndex = response.address ? response.address.findIndex(x => x.use == "temp") : null
     * def tempAddressPath =  "/address/" + tempAddressIndex
     * def tempAddressDetails = response.address ? response.address.find(x => x.use == "temp") : null
-    * def body = utils.buildPatchBody(tempAddressPath, tempAddressDetails)
+    * def body = utils.buildRemovePatchBody(tempAddressPath, tempAddressDetails)
     * def response = (tempAddressDetails == null) ? { body: response, responseHeaders: responseHeaders } : removeTemporaryAddress(body)
 
     * def randomAddress = utils.randomTempAddress()
@@ -341,7 +340,7 @@ Feature: Patient updates their details
     * def tempAddressPath =  "/address/" + addressIndex
     
      # remove temp address details
-    * def body = utils.buildPatchBody(tempAddressPath, tempAddressDetails)
+    * def body = utils.buildRemovePatchBody(tempAddressPath, tempAddressDetails)
     * def response = removeTemporaryAddress(body)
     * match parseInt(response.response.meta.versionId) == parseInt(idAfterTempAddress)+ 1
     * match response.response.address[1] == '#notpresent'

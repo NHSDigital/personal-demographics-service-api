@@ -317,7 +317,7 @@ Scenario:
    }
    """ 
 
-  * def buildPatchBody =
+  * def buildRemovePatchBody =
     """
     function(path, details) {
     return {
