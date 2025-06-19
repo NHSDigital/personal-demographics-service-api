@@ -27,3 +27,25 @@ Scenario: Make request to invalid endpoint that is similar to valid endpoint
   * status 400
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
   * match response.issue[0].diagnostics == "Unsupported path - '/Patient!'"
+
+ Scenario: Make invalid put request to get patient endpoint 
+  * def nhsNumber = '9693632109'
+  * path 'Patient', nhsNumber
+  * request 
+  """
+    {
+    "id": 123,
+    "name": "John Smith",
+    "email": "john.smith@example.com"
+    }
+  """
+  * method put
+  * status 400
+  * match response.issue[0].details.coding[0].display == "Unsupported Service"
+
+ Scenario: Make invalid options request to get patient endpoint 
+  * def nhsNumber = '9693632109'
+  * path 'Patient', nhsNumber
+  * method options
+  * status 502
+  * match response.issue[0].details.coding[0].display == "Unknown Error"
