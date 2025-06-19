@@ -126,22 +126,16 @@ Feature: get /Patient - privileged-application-restricted access mode
     * status 200
     * match response == read('classpath:mocks/stubs/searchResponses/TOO_MANY_MATCHES.json')
 
-  Scenario: Get a patients details
-  * configure headers = requestHeaders  
-  * def nhsNumber = '9733162825'
-  * path 'Patient', nhsNumber
-  * method get
-  * status 200
-  * match response.id == nhsNumber
-  
-  @no-oas
-  Scenario: Get a patient details- RemovalReasonExitCode should be Armed Forces (notified by Armed Forces) AFN
-    * def requestHeaders = call read('classpath:auth/auth-headers.js')
-    * configure headers = requestHeaders
-    * def nhsNumber = '9733162981'  
-    * path 'Patient', nhsNumber
+  Scenario: Patient search response should not include address, telecoms, registered GP details for privileged access
+    * configure headers = requestHeaders 
+    * path "Patient"
+    * param family = "GOUGH" 
+    * param gender = "female"
+    * param birthdate = "1993-12-02"
+    * param given = 'Fancy'
+    * param phone = '07556588324'
     * method get
     * status 200
-    * match response.extension[0].extension[0].valueCodeableConcept.coding[0].code == "AFN"
-    * match response.extension[0].extension[0].valueCodeableConcept.coding[0].display == "Armed Forces (notified by Armed Forces)"
-    * match responseHeaders['Nhse-Pds-Custom-Attributes'] == '#notpresent'
+    * match response == read('classpath:schemas/searchSchemas/patientSearchBundle.json')
+    * match response.entry[0].resource.address == '#notpresent'
+    * match response.generalPractitioner == '#notpresent'

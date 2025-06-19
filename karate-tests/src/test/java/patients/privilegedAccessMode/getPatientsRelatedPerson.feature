@@ -25,17 +25,29 @@ Scenario: Patient has one related person
   * match response == RelatedPersonSearchBundle
   * match response.total == 1
 Scenario: Patient doesn't have a related person
-    * def nhsNumber = '9693632109'
-    * path 'Patient', nhsNumber, 'RelatedPerson'
-    * method get
-    * status 200
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
-    * match response == 
-      """
-      {
-        "resourceType": "Bundle",
-        "type": "searchset",
-        "timestamp": "#? utils.isValidTimestamp(_)",
-        "total": 0
-      } 
-      """    
+  * def nhsNumber = '9693632109'
+  * path 'Patient', nhsNumber, 'RelatedPerson'
+  * method get
+  * status 200
+  * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+  * match response == 
+    """
+    {
+      "resourceType": "Bundle",
+      "type": "searchset",
+      "timestamp": "#? utils.isValidTimestamp(_)",
+      "total": 0
+    } 
+    """  
+@ignore
+# The related sensitive patient record is currently displaying address and telecom details
+# which should not be visible. An incident has been raised to address this issue. The ignore tag will be removed once the fix has been applied   
+Scenario: Patient has sensitive related person - response should not include address or telecom details with privileged access
+  * def nhsNumber = '9733162426'
+  * path 'Patient', nhsNumber, 'RelatedPerson'
+  * method get
+  * status 200
+  * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+  * match response == RelatedPersonSearchBundle
+  * match response.entry[0].resource.address == '#notpresent'
+  * match response.entry[0].resource.telecom == '#notpresent'   
