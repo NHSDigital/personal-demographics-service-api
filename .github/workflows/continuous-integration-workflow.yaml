@@ -56,9 +56,10 @@ jobs:
         run: make check-licenses
 
       - name: Scan secrets
-        uses: gitleaks/gitleaks-action@v1.6.0
-        with:
-          config-path: ./scripts/config/gitleaks.toml
+        shell: bash
+        run: |
+          # Please do not change this `check=whole-history` setting, as new patterns may be added or history may be rewritten.
+          check=whole-history ./scripts/githooks/scan-secrets.sh
 
       - name: Lint
         run: make lint
