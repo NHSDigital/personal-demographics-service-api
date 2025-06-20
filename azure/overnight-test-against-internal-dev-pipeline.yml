@@ -56,6 +56,7 @@ steps:
     parameters:
      secret_file_ids:
       - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_PRIVATE_KEY
+      - ptl/app-credentials/jwt_testing/non-prod/PRIVILEGED_ACCESS_TESTING_SIGNING_KEY
      config_ids:
       - /ptl/azure-devops/apigee-nonprod/APIGEE_USERNAME
      secret_ids:
