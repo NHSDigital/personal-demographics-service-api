@@ -24,7 +24,6 @@ regexes = [
     '''ZWRnZWNsaTplZGdlY2xpc2VjcmV0''', # Publicly available bearer token available here: https://docs.apigee.com/api-platform/system-administration/management-api-tokens
     '''g1112R_ccQ1Ebbb4gtHBP1aaaNM''', # Dummy access token
     '''0.0.0.0''', # Dummy IP
-    '''-----BEGIN RSA PRIVATE KEY-----''' # RSA key header, not a secret
 ]
 
 [[allowlists]]
