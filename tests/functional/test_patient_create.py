@@ -30,9 +30,9 @@ def test_post_patient_rate_limit():
 @pytest.fixture(scope='function')
 def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
     """Authenticates as a healthcare worker and returns valid request headers"""
-    sesh = requests.session()
+    session = requests.session()
 
-    form_request = sesh.get(
+    form_request = session.get(
         url=f"{identity_service_base_url}/authorize",
         params={
             "response_type": "code",
@@ -45,7 +45,7 @@ def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
     tree = html.fromstring(form_request.text)
     form = tree.forms[0]
 
-    login_request = sesh.post(
+    login_request = session.post(
         url=form.action,
         data={
             'username': '656005750107',
@@ -56,7 +56,7 @@ def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
 
     code = re.findall('.*code=(.*)&', login_location)[0]
 
-    token_request = sesh.post(
+    token_request = session.post(
         url=f"{identity_service_base_url}/token",
         data={
             'grant_type': 'authorization_code',
