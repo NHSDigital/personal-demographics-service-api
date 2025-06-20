@@ -56,8 +56,7 @@ jobs:
         run: make check-licenses
 
       - name: Scan secrets
-        uses: 
-          - gitleaks/gitleaks-action@v1.6.0
+        uses: gitleaks/gitleaks-action@v1.6.0
         with:
           config_path: ./scripts/config/gitleaks.toml
 
