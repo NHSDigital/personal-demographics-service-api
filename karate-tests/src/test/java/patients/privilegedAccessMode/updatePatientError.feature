@@ -1,12 +1,13 @@
-Feature: Update patient details - not permitted for application-restricted users
+@no-oas
+Feature: Update patient details - not permitted for privileged-application-restricted users
 
 Background:
   * def utils = karate.callSingle('classpath:helpers/utils.feature')
-  * def accessToken = karate.callSingle('classpath:auth-jwt/auth-redirect.feature').accessToken
+  * def accessToken = karate.call('classpath:auth-jwt/auth-redirect.feature', {signingKey: karate.get('privilegedAccessSigningKey'), apiKey: karate.get('privilegedAccessApiKey')}).accessToken
   * def requestHeaders = call read('classpath:auth-jwt/app-restricted-headers.js')
   * configure headers = requestHeaders 
   * url baseURL
-Scenario: Invalid Method error should be raised when app restricted user try to update patient details
+Scenario: Invalid Method error should be raised when privileged-application-restricted user try to update patient details
     * def nhsNumber = '9733162817'
     * path 'Patient', nhsNumber
     * method get
@@ -21,6 +22,6 @@ Scenario: Invalid Method error should be raised when app restricted user try to 
     * request read('classpath:patients/requestDetails/add/emergencyContact.json')
     * method patch
     * status 403
-    * def display = "Cannot update resource with application-restricted access token"
+    * def display = "Cannot update resource with privileged-application-restricted access token"
     * def expectedResponse = read('classpath:mocks/stubs/errorResponses/INVALID_METHOD.json')
     * match response == expectedResponse

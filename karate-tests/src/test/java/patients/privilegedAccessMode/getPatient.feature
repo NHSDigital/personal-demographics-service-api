@@ -1,8 +1,9 @@
-Feature: get /Patient - Application-restricted access mode
+@no-oas
+Feature: get /Patient - privileged-application-restricted access mode
 
   Background:
     * def utils = karate.callSingle('classpath:helpers/utils.feature')
-    * def accessToken = karate.callSingle('classpath:auth-jwt/auth-redirect.feature').accessToken
+    * def accessToken = karate.call('classpath:auth-jwt/auth-redirect.feature', {signingKey: karate.get('privilegedAccessSigningKey'), apiKey: karate.get('privilegedAccessApiKey')}).accessToken
     * def requestHeaders = call read('classpath:auth-jwt/app-restricted-headers.js')
     * def noAuthHeaders = call read('classpath:auth-jwt/no-auth-headers.js')
 
@@ -15,7 +16,7 @@ Feature: get /Patient - Application-restricted access mode
     * json patientSearchResultEntry = karate.readAsString('classpath:schemas/searchSchemas/patientSearchResultEntry.json')
     * url baseURL
 
-  Scenario: All headers provided - app restricted user can search for a patient and get a single match result returned
+  Scenario: All headers provided - privileged-application-restricted user can search for a patient and get a single match result returned
     * configure headers = requestHeaders 
     * path "Patient"
     * param family = "Smith" 
@@ -134,3 +135,14 @@ Feature: get /Patient - Application-restricted access mode
   * status 200
   * match response.id == nhsNumber
   
+  @no-oas
+  Scenario: Get a patient details- RemovalReasonExitCode should be Armed Forces (notified by Armed Forces) AFN
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders
+    * def nhsNumber = '9733162981'  
+    * path 'Patient', nhsNumber
+    * method get
+    * status 200
+    * match response.extension[0].extension[0].valueCodeableConcept.coding[0].code == "AFN"
+    * match response.extension[0].extension[0].valueCodeableConcept.coding[0].display == "Armed Forces (notified by Armed Forces)"
+    * match responseHeaders['Nhse-Pds-Custom-Attributes'] == '#notpresent'
