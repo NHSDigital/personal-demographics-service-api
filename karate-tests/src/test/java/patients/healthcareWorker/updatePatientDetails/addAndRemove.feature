@@ -14,7 +14,7 @@ Feature: Patch patient - Add and remove data
     
     * url baseURL
   
-  @sandbox
+    @sandbox
   Scenario: Add and remove patient data
     * def nhsNumber = '5900056449'
     * path 'Patient', nhsNumber
@@ -152,7 +152,7 @@ Feature: Patch patient - Add and remove data
     * match response.name[0].suffix == '#notpresent'
     * match parseInt(response.meta.versionId) == originalVersion + 1
  
-  @sandbox
+    @sandbox
   Scenario: Add suffix to the existing array of suffixes and then remove the same 
     # 1. Add new suffix to the array
     # ==============================
@@ -211,57 +211,58 @@ Feature: Patch patient - Add and remove data
     * status 200
     * match parseInt(response.meta.versionId) == originalVersion + 1
 
-
   Scenario:  Healthcare worker can add and remove place of birth details(city and district)
+
     * def placeOfBirthNhsNumber = '5900077810'
+    * def requestBody = read('classpath:patients/requestDetails/add/placeOfBirth.json')
+    * def placeOBirthUrl = requestBody.patches[0].value.url
+    * def utils = call read('classpath:helpers/utils.feature')
+    
+    * def removePlaceOfBirth =
+    """
+    function(body) {
+    var result = karate.call('classpath:helpers/patchRequest.feature', {
+        baseURL: baseURL,
+        requestBody: body,
+        endpoint: 'Patient/' + placeOfBirthNhsNumber,
+        etag: karate.response.header('Etag')
+    });
+    return result
+    }
+    """
+
+    # Check if place of birth exists and remove
     * configure headers = call read('classpath:auth/auth-headers.js') 
     * path 'Patient', placeOfBirthNhsNumber
     * method get
     * status 200
+    
+    # Remove place of birth if already exists. Failed pipelines can leave data in an incorrect state
     * def originalVersion = parseInt(response.meta.versionId)
+    * def pobIndex = response.extension ? response.extension.findIndex(x => x.url == placeOBirthUrl) : null
+    * def pobPath =  "/extension/" + pobIndex
+    * def pobDetails = response.extension ? response.extension.find(x => x.url == placeOBirthUrl) : null
+    * def body = utils.buildRemovePatchBody(pobPath, pobDetails)
+    * def response = (pobDetails == null) ? { body: response, responseHeaders: responseHeaders } : removePlaceOfBirth(body)
 
     #add place of birth details
-
-    * configure headers = call read('classpath:auth/auth-headers.js') 
     * header Content-Type = "application/json-patch+json"
-    * header If-Match = karate.response.header('etag')
+    * def etagKey = Object.keys(response.responseHeaders).find(k => k.toLowerCase() === 'etag')
+    * header If-Match = etagKey ? response.responseHeaders[etagKey][0] : null
     * path 'Patient', placeOfBirthNhsNumber
-    * def requestBody = read('classpath:patients/requestDetails/add/placeOfBirth.json')
-    * def placeOBirthUrl = requestBody.patches[0].value.url
     * request requestBody
     * method patch
     * status 200 
-    * def idAftPod = response.meta.versionId
+    * def idAfterPlaceOfBirthUpdate = response.meta.versionId
     * def pobDetails = response.extension.find(x => x.url == placeOBirthUrl)
+
     # Test fails if the patient's place of birth details are not present in the record
-  
     * if (pobDetails == null) {karate.fail('No value found for place of Birth, stopping the test.')}
     * def pobIndex = response.extension.findIndex(x => x.url == placeOBirthUrl)
     * def pobPath =  "/extension/" + pobIndex
-    
-     # remove place of birth details
 
-    * configure headers = call read('classpath:auth/auth-headers.js') 
-    * header Content-Type = "application/json-patch+json"
-    * header If-Match = karate.response.header('etag')
-    * path 'Patient', placeOfBirthNhsNumber
-    * request 
-    """
-      {
-        "patches": [
-          {
-            "op": "test",
-            "path": "#(pobPath)",
-            "value": "#(pobDetails)"     
-          },
-          {
-           "op": "remove",
-            "path": "#(pobPath)" 
-          }
-        ]
-      }
-      """ 
-    * method patch
-    * status 200
-    * match parseInt(response.meta.versionId) == parseInt(idAftPod)+ 1
-    * match response.extension[1] == '#notpresent'
+    #  remove place of birth details
+    * def body = utils.buildRemovePatchBody(pobPath, pobDetails)
+    * def response = removePlaceOfBirth(body)
+    * match parseInt(response.response.meta.versionId) == parseInt(idAfterPlaceOfBirthUpdate)+ 1
+    * match response.response.extension[1] == '#notpresent'
