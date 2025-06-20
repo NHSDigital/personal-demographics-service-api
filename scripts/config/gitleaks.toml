@@ -50,7 +50,7 @@ regexes = [
 
 [[allowlists]]
 description = "RSA private key header is non-sensitive"
-regexTarget = "line"
+regexTarget = "match"
 regexes = [
     '''String PRIVATE_HEADER = "-----BEGIN RSA PRIVATE KEY-----";''' # RSA key header, not a secret
 ]
