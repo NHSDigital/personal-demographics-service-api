@@ -58,7 +58,7 @@ jobs:
       - name: Scan secrets
         uses: gitleaks/gitleaks-action@v1.6.0
         with:
-          config_path: ./scripts/config/gitleaks.toml
+          config-path: ./scripts/config/gitleaks.toml
 
       - name: Lint
         run: make lint
