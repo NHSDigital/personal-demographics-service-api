@@ -1,3 +1,4 @@
+@no-oas
 Feature: Get related person details - privileged-application-restricted access mode
 
 Background:

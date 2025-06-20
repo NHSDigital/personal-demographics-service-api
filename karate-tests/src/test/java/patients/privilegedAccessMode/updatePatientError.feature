@@ -1,3 +1,4 @@
+@no-oas
 Feature: Update patient details - not permitted for privileged-application-restricted users
 
 Background:
