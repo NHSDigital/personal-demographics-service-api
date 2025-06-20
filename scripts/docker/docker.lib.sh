@@ -49,7 +49,7 @@ function docker-build() {
 
   # Tag the image with all the stated versions, see the documentation for more details
   for version in $(_get-all-effective-versions) latest; do
-    if [ ! -z "$version" ]; then
+    if [ -n "$version" ]; then
       docker tag "${tag}" "${DOCKER_IMAGE}:${version}"
     fi
   done
@@ -312,7 +312,7 @@ function _get-effective-tag() {
 
   local tag=$DOCKER_IMAGE
   version=$(_get-effective-version)
-  if [ ! -z "$version" ]; then
+  if [ -n "$version" ]; then
     tag="${tag}:${version}"
   fi
   echo "$tag"
