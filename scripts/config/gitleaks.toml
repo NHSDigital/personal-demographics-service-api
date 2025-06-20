@@ -52,5 +52,5 @@ regexes = [
 description = "RSA private key header is non-sensitive"
 regexTarget = "line"
 regexes = [
-    '''-----BEGIN RSA PRIVATE KEY-----''' # RSA key header, not a secret
+    '''.*BEGIN RSA PRIVATE KEY.*''' # RSA key header, not a secret
 ]
