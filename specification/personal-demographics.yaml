@@ -142,10 +142,6 @@ info:
     ## Roadmap
     The [Personal Demographics Service (PDS) ](https://digital.nhs.uk/services/personal-demographics-service/pds-roadmap-and-strategy) roadmap shows the planned changes for PDS products, including the PDS FHIR API. 
 
-    To see our roadmap, or to suggest, comment or vote on features for this API, see our [interactive product backlog](https://nhs-digital-api-management.featureupvote.com/?order=popular&filter=allexceptdone&tag=pds-fhir-api).
-    
-    If you have any other queries, please [contact us](https://digital.nhs.uk/developer/help-and-support).
-
     ## Service level
     
     This API is a platinum service, meaning it is operational and supported 24 hours a day, 365 days a year.
@@ -198,9 +194,7 @@ info:
     | FHIR libraries and SDKs   | Various open source libraries for integrating with FHIR APIs.        | [FHIR libraries and SDKs](https://digital.nhs.uk/developer/guides-and-documentation/api-technologies-at-nhs-digital#fhir-libraries-and-sdks) |
     | nhs-number                | Python package containing utilities for NHS numbers including validity checks, normalisation and generation. | [GitHub repo](https://github.com/uk-fci/nhs-number) \| [Python Package index](https://pypi.org/project/nhs-number/) \| [Docs](https://nhs-number.uk-fci.tech/) |
 
-    We currently don't have any open source client libraries or sample code for this API. If you think this would be useful, you can [upvote the suggestion on our Interactive Product Backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/107439/client-libraries-and-reference-implementations).
-
-    The source code for the PDS FHIR back end (the Core Spine source code) is not currently in the open. If you think this would be useful, you can [upvote the suggestion on our Interactive Product Backlog](https://nhs-digital-api-management.featureupvote.com/suggestions/466692/open-source-core-spine-including-pds-eps-scr-and-more).
+    We currently don't have any open source client libraries or sample code for this API and the source code for the PDS FHIR back end (the Core Spine source code) is not currently in the open. If you think this would be useful [contact us](https://digital.nhs.uk/developer/help-and-support).
 
     ## Environments and testing
 
@@ -283,6 +277,9 @@ info:
     
     ### Ordnance Survey (OS Places) API  
     Use [Ordnance Survey (OS Places) API](https://digital.nhs.uk/developer/api-catalogue/ordnance-survey-places-api) to identify, look up and verify addresses prior to a PDS update.
+
+    ## Contact us
+    For help and support connecting to our APIs and to join our developer community, see [Help and support building healthcare software](https://digital.nhs.uk/developer/help-and-support).
 
     <div class="nhsd-m-emphasis-box nhsd-m-emphasis-box--emphasis nhsd-!t-margin-bottom-6" aria-label="Highlighted Information">
         <div class="nhsd-a-box nhsd-a-box--border-blue">
