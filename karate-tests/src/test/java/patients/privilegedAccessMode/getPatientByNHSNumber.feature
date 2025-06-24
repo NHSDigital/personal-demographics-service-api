@@ -81,10 +81,17 @@ Scenario: Get a non sensitive patient details
   Scenario: Get a patient details- RemovalReasonExitCode should be Armed Forces (notified by Armed Forces) AFN
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * def nhsNumber = '9733162981'  
+    * def nhsNumber = '9733162507'  
     * path 'Patient', nhsNumber
     * method get
     * status 200
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].code == "AFN"
-    * match response.extension[0].extension[0].valueCodeableConcept.coding[0].display == "Armed Forces (notified by Armed Forces)"
-    * match responseHeaders['Nhse-Pds-Custom-Attributes'] == '#notpresent'  
+    * match response.extension[0].extension[0].valueCodeableConcept.coding[0].display == "Armed Forces (notified by Armed Forces)" 
+    * match response.meta.security[0] == 
+    """
+    {
+      "code": "R",
+      "display": "restricted",
+      "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+    }
+    """
