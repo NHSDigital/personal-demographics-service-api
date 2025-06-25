@@ -1,9 +1,9 @@
-
-Feature:  Update Coverage details - not permitted for application-restricted users
+@no-oas
+Feature:  Update Coverage details - not permitted for privileged-application-restricted users
 
   Background:
     * def utils = karate.callSingle('classpath:helpers/utils.feature')
-    * def accessToken = karate.callSingle('classpath:auth-jwt/auth-redirect.feature').accessToken
+    * def accessToken = karate.call('classpath:auth-jwt/auth-redirect.feature', {signingKey: karate.get('privilegedAccessSigningKey'), apiKey: karate.get('privilegedAccessApiKey')}).accessToken
     * def requestHeaders = call read('classpath:auth-jwt/app-restricted-headers.js')
     * configure headers = requestHeaders 
 
@@ -22,7 +22,7 @@ Feature:  Update Coverage details - not permitted for application-restricted use
     * method post
     * status 403
     * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
-    * def display = "Cannot POST resource with application-restricted access token"
+    * def display = "Cannot POST resource with privileged-application-restricted access token"
     * def diagnostics = "Your app has insufficient permissions to use this operation. Please contact support."
     * def expectedResponse = read(`classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json`)
     * match response == expectedResponse
