@@ -216,7 +216,6 @@ Feature: Patch patient - Add and remove data
     * def placeOfBirthNhsNumber = '5900077810'
     * def requestBody = read('classpath:patients/requestDetails/add/placeOfBirth.json')
     * def placeOBirthUrl = requestBody.patches[0].value.url
-    * def utils = call read('classpath:helpers/utils.feature')
     
     * def removePlaceOfBirth =
     """
@@ -266,3 +265,37 @@ Feature: Patch patient - Add and remove data
     * def response = removePlaceOfBirth(body)
     * match parseInt(response.response.meta.versionId) == parseInt(idAfterPlaceOfBirthUpdate)+ 1
     * match response.response.extension[1] == '#notpresent'
+
+Scenario:  Add an address to a PDS record that already contains a bad address- a temporary without an end without an end date
+
+    * def addressUpdateNhsNumber = '9733162515'
+    * def address = "2 LAUREL LANE, THORNTON CURTIS, ULCEBY, S HUMBERSIDE"
+    * def postalCode = "DN39 6XJ"
+    * def addressType = "home"
+    * def requestBody = read('classpath:patients/requestDetails/add/homeAddressRemoveAndAdd.json')
+    
+    * def removeAddress =
+    """
+    function(body) {
+    var result = karate.call('classpath:helpers/patchRequest.feature', {
+        baseURL: baseURL,
+        requestBody: body,
+        endpoint: 'Patient/' + addressUpdateNhsNumber,
+        etag: karate.response.header('Etag')
+    });
+    return result
+    }
+    """
+    * path 'Patient', addressUpdateNhsNumber
+    * method get
+    * status 200 
+    * def originalVersion = response.meta.versionId 
+    
+    * header Content-Type = "application/json-patch+json"
+    * def etagKey = Object.keys(response.responseHeaders).find(k => k.toLowerCase() === 'etag')
+    * header If-Match = etagKey ? response.responseHeaders[etagKey][0] : null
+    * path 'Patient', addressUpdateNhsNumber
+    * request requestBody
+    * method patch
+    * status 200 
+    * match response.meta.versionId == parseInt(originalVersion)+ 1
