@@ -56,12 +56,10 @@ jobs:
         run: make check-licenses
 
       - name: Scan secrets
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
-          GITLEAKS_CONFIG: ./scripts/config/gitleaks.toml
-          GITLEAKS_VERSION: 8.27.0
+        shell: bash
+        run: |
+          # Please do not change this `check=whole-history` setting, as new patterns may be added or history may be rewritten.
+          check=whole-history ./scripts/githooks/scan-secrets.sh
 
       - name: Lint
         run: make lint
