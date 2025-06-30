@@ -19,21 +19,28 @@
       <!-- Set flow variable 'access-mode' by inspecting the token's scopes.
       First set to least-privilege (application restricted) then look for scopes indicating higher privilege, overwriting as appropriate.
       'scope' is a space-separated string of scopes, determined by the Application's API Product assignments.
-      Follow pattern used in AssignMessage.SetAccessModeUserRestricted condition. See Apigee docs for JavaRegex gotchas (uses '.match()' behaviour matching whole string only). -->
+      Follow the pattern used in AssignMessage.SetAccessModeUserRestricted condition. See Apigee docs for JavaRegex gotchas (uses '.matches()' behaviour matching whole string only). -->
       <Step>
           <Name>AssignMessage.SetAccessModeApplicationRestricted</Name>
       </Step>
       <Step>
         <Name>AssignMessage.SetAccessModeUserRestricted</Name>
-        <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service$|^urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service$|.+\ urn:nhsd:apim:user-nhs-cis2:aal3:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-cis2:aal3:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-cis2:aal3:personal-demographics-service$|^urn:nhsd:apim:user-nhs-cis2:aal3:personal-demographics-service$|.+\ personal-demographics-service:USER-RESTRICTED\ .+|^personal-demographics-service:USER-RESTRICTED\ .+|.+\ personal-demographics-service:USER-RESTRICTED$|^personal-demographics-service:USER-RESTRICTED$)") or ((scope JavaRegex "(.+\ urn:nhsd:apim:app:level3:personal-demographics-service\ .+|^urn:nhsd:apim:app:level3:personal-demographics-service\ .+|.+\ urn:nhsd:apim:app:level3:personal-demographics-service$|^urn:nhsd:apim:app:level3:personal-demographics-service$)" and apim-app-flow-vars.pds.app-restricted.update Is "true")</Condition>
+        <Condition>(scope JavaRegex ".*(^| )(urn:nhsd:apim:user-nhs-id:aal3:personal-demographics-service|urn:nhsd:apim:user-nhs-cis2:aal3:personal-demographics-service|personal-demographics-service:USER-RESTRICTED)( |$).*") or ((scope JavaRegex ".*(^| )urn:nhsd:apim:app:level3:personal-demographics-service( |$).*" and apim-app-flow-vars.pds.app-restricted.update Is "true")</Condition>
       </Step>
       <Step>
         <Name>AssignMessage.SetAccessModePatientAccess</Name>
-        <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service$|^urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service$)")</Condition>
+        <Condition>(scope JavaRegex ".*(^| )urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service( |$).*")</Condition>
+      </Step>
+      <Step>
+        <!-- Privileged app-restricted access mode cannot currently be used alongside apim-app-flow-vars.pds.app-restricted.update.
+        This step will overwrite any previous access mode if the app has this scope. There is SPINEDEM-5500 to look into both this
+        and refactoring the way that app-restricted updates are implemented. -->
+        <Name>AssignMessage.SetAccessModePrivilegedApplicationRestricted</Name>
+        <Condition>(scope JavaRegex ".*(^| )urn:nhsd:apim:app:level3:privileged-personal-demographics-service( |$).*")</Condition>
       </Step>
       <Step>
         <Name>RaiseFault.InvalidUserNHSlogin</Name>
-        <Condition>(scope JavaRegex "(.+\ urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service$|^urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service$|.+\ urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service\ .+|^urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service\ .+|.+\ urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service$|^urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service$)")</Condition>
+        <Condition>(scope JavaRegex ".*(^| )(urn:nhsd:apim:user-nhs-login:P5:personal-demographics-service|urn:nhsd:apim:user-nhs-login:P0:personal-demographics-service)( |$).*")</Condition>
       </Step>
       <Step>
         <Name>RaiseFault.400BadRequest</Name>
@@ -88,6 +95,13 @@
         <Name>AssignMessage.AddCustomAttributesHeader</Name>
       </Step>
       <Step>
+        <Name>AssignMessage.RemovePrivilegedAccessModeHeader</Name>
+      </Step>
+      <Step>
+        <Name>AssignMessage.AddPrivilegedAccessModeHeader</Name>
+        <Condition>access-mode Equals "privileged-application-restricted"</Condition>
+      </Step>
+      <Step>
         <!--This should always be the last Step - as it is just before the message is sent - so the initial request stays intact for as long as possible.
                     The Swapping of the Request Headers converts X-Request-ID and X-Correlation-ID to NHSD-Request-ID and NHSD-Correlation-ID before sending to backend. -->
         <Name>AssignMessage.Swap.RequestHeaders</Name>
@@ -126,7 +140,7 @@
       </Request>
     </Flow>
     <Flow name="application_restricted">
-      <Condition>(access-mode Equals "application-restricted")</Condition>
+      <Condition>(access-mode Equals "application-restricted") or (access-mode Equals "privileged-application-restricted")</Condition>
       <Request>
         <!-- Prevent use of PATCH method in application restricted mode -->
         <Step>

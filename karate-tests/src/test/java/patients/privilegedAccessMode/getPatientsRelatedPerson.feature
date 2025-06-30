@@ -1,8 +1,9 @@
-Feature: Get related person details - Application-restricted access mode
+@no-oas
+Feature: Get related person details - privileged-application-restricted access mode
 
 Background:
   * def utils = karate.callSingle('classpath:helpers/utils.feature')
-  * def accessToken = karate.callSingle('classpath:auth-jwt/auth-redirect.feature').accessToken
+  * def accessToken = karate.call('classpath:auth-jwt/auth-redirect.feature', {signingKey: karate.get('privilegedAccessSigningKey'), apiKey: karate.get('privilegedAccessApiKey')}).accessToken
   * def requestHeaders = call read('classpath:auth-jwt/app-restricted-headers.js')
   * configure headers = requestHeaders 
 
