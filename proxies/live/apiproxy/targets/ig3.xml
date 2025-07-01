@@ -32,7 +32,7 @@
         <Condition>(scope JavaRegex ".*(^| )urn:nhsd:apim:user-nhs-login:P9:personal-demographics-service( |$).*")</Condition>
       </Step>
       <Step>
-      <!-- Privileged app-restricted access mode cannot currently be used alongside apim-app-flow-vars.pds.app-restricted.update.
+        <!-- Privileged app-restricted access mode cannot currently be used alongside apim-app-flow-vars.pds.app-restricted.update.
         This step will overwrite any previous access mode if the app has this scope. There is SPINEDEM-5500 to look into both this
         and refactoring the way that app-restricted updates are implemented. -->
         <Name>AssignMessage.SetAccessModePrivilegedApplicationRestricted</Name>

@@ -40,6 +40,21 @@ Scenario: Patient doesn't have a related person
       "total": 0
     } 
     """  
+Scenario: Related people are not returned for a restricted/sensitive patient and an empty bundle is returned
+  * def nhsNumber = '9733162507'
+  * path 'Patient', nhsNumber, 'RelatedPerson'
+  * method get
+  * status 200
+  * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+  * match response == 
+  """
+  {
+    "resourceType": "Bundle",
+    "type": "searchset",
+    "timestamp": "#? utils.isValidTimestamp(_)",
+    "total": 0
+  } 
+    """      
 @ignore
 # The related sensitive patient record is currently displaying address and telecom details
 # which should not be visible. An incident has been raised to address this issue. The ignore tag will be removed once the fix has been applied   
