@@ -53,6 +53,8 @@ Scenario: Get a "restricted" (sensitive) patient
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
   * match response.id == nhsNumber
   * match response == Patient
+  * match response.address == '#notpresent'
+  * match response.generalPractitioner == '#notpresent'
   * match response.meta.security[0] == 
     """
     {
