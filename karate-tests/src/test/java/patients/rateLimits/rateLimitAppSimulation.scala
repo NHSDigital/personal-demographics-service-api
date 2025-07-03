@@ -6,9 +6,8 @@ import scala.concurrent.duration._
 
 
 class GetPatientByRateLimitAppSimulation extends Simulation {
-  var users = 41
-  var duration = 1
-  
+val rateLimitAppRequests = Integer.getInteger("rateLimitAppRequests")
+val duration = Integer.getInteger("duration")  
   val protocol = karateProtocol()
   
     protocol.runner.karateEnv("veit07")
@@ -31,13 +30,13 @@ class GetPatientByRateLimitAppSimulation extends Simulation {
     }
     
     setUp(
-      scn.inject(rampUsers(users) during (duration minute)).protocols(protocol)
+      scn.inject(rampUsers(rateLimitAppRequests) during (duration.seconds)).protocols(protocol)
     )
   
   // hook to run after simulation ends
   after {
     println("=== Simulation Complete ===")
-    println(s"Total requests from ratelimit Test app: ${users}")
+    println(s"Total requests from ratelimit Test app: ${rateLimitAppRequests}")
     if (all429s.nonEmpty) {
       println(s"Total 429 responses: ${all429s.size}")
     }else {
