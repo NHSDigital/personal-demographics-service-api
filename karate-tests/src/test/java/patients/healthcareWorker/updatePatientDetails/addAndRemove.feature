@@ -266,36 +266,28 @@ Feature: Patch patient - Add and remove data
     * match parseInt(response.response.meta.versionId) == parseInt(idAfterPlaceOfBirthUpdate)+ 1
     * match response.response.extension[1] == '#notpresent'
 
-Scenario:  Add an address to a PDS record that already contains a bad address- a temporary without an end without an end date
+ @editAddress 
+Scenario:  Add an address to a PDS record that already contains a bad address- a temporary address without an end date
 
     * def addressUpdateNhsNumber = '9733162515'
-    * def address = "2 LAUREL LANE, THORNTON CURTIS, ULCEBY, S HUMBERSIDE"
-    * def postalCode = "DN39 6XJ"
     * def addressType = "home"
-    * def requestBody = read('classpath:patients/requestDetails/add/homeAddressRemoveAndAdd.json')
-    
-    * def removeAddress =
-    """
-    function(body) {
-    var result = karate.call('classpath:helpers/patchRequest.feature', {
-        baseURL: baseURL,
-        requestBody: body,
-        endpoint: 'Patient/' + addressUpdateNhsNumber,
-        etag: karate.response.header('Etag')
-    });
-    return result
-    }
-    """
+    * def randomAddress = utils.randomAddress("2020-01-10")
+    * def address = randomAddress
+
     * path 'Patient', addressUpdateNhsNumber
     * method get
     * status 200 
     * def originalVersion = response.meta.versionId 
-    
-    * header Content-Type = "application/json-patch+json"
-    * def etagKey = Object.keys(response.responseHeaders).find(k => k.toLowerCase() === 'etag')
-    * header If-Match = etagKey ? response.responseHeaders[etagKey][0] : null
+    * def homeAddressIndex = response.address.findIndex(x => x.use == addressType)
+    * def path = "/address/" + homeAddressIndex
+    * def testOpValue = response.address[homeAddressIndex]
+  
+    * header Content-Type = "application/json-patch+json"  
+    * header If-Match = karate.response.header('etag')
     * path 'Patient', addressUpdateNhsNumber
-    * request requestBody
+    * request read('classpath:patients/requestDetails/add/addressUpdate.json')
     * method patch
-    * status 200 
-    * match response.meta.versionId == parseInt(originalVersion)+ 1
+    * status 200
+    * def postcode = response.address[homeAddressIndex].postalCode
+    * match parseInt(response.meta.versionId) == parseInt(originalVersion)+ 1
+    * match postcode == randomAddress.postalCode
