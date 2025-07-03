@@ -55,11 +55,20 @@ jobs:
       - name: Check licenses
         run: make check-licenses
 
+      - name: Scan secrets
+        shell: bash
+        run: |
+          # Please do not change this `check=whole-history` setting, as new patterns may be added or history may be rewritten.
+          check=whole-history ./scripts/githooks/scan-secrets.sh
+
       - name: Lint
         run: make lint
 
       - name: Run Jest
         run: npm run jest
+
+      - name: Run custom attribute reporter pytests
+        run: make test-custom-attribute-reporter
 
       - name: Check resources are valid FHIR 4.0.1
         run: make validate

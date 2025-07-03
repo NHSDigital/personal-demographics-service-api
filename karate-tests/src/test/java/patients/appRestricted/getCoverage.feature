@@ -3,8 +3,8 @@ Feature: Get Coverage-not permitted for application-restricted users
 
   Background:
     * def utils = karate.callSingle('classpath:helpers/utils.feature')
-    * def accessToken = karate.callSingle('classpath:patients/appRestricted/auth-redirect.feature').accessToken
-    * def requestHeaders = call read('classpath:patients/appRestricted/app-restricted-headers.js')
+    * def accessToken = karate.callSingle('classpath:auth-jwt/auth-redirect.feature').accessToken
+    * def requestHeaders = call read('classpath:auth-jwt/app-restricted-headers.js')
 
     * url baseURL
 

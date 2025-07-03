@@ -2,9 +2,9 @@ Feature: get /Patient - Application-restricted access mode
 
   Background:
     * def utils = karate.callSingle('classpath:helpers/utils.feature')
-    * def accessToken = karate.callSingle('classpath:patients/appRestricted/auth-redirect.feature').accessToken
-    * def requestHeaders = call read('classpath:patients/appRestricted/app-restricted-headers.js')
-    * def noAuthHeaders = call read('classpath:patients/appRestricted/no-auth-headers.js')
+    * def accessToken = karate.callSingle('classpath:auth-jwt/auth-redirect.feature').accessToken
+    * def requestHeaders = call read('classpath:auth-jwt/app-restricted-headers.js')
+    * def noAuthHeaders = call read('classpath:auth-jwt/no-auth-headers.js')
 
     * def utils = call read('classpath:helpers/utils.feature')
     * json GeneralPractitionerReference = karate.readAsString('classpath:schemas/GeneralPractitionerReference.json')

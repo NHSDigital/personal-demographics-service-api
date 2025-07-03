@@ -90,6 +90,9 @@ release: clean publish build-proxy
 
 	cp pyproject.toml dist/pyproject.toml
 
+test-custom-attribute-reporter:
+	poetry run pytest scripts/custom_attribute_reporter/
+
 test-local-sandbox:
 	cd karate-tests && mvn clean test -Dtest=TestLocalMockParallel
 
@@ -98,3 +101,7 @@ test-sandbox:
 
 validate-xml:
 	poetry run python scripts/xml_validator.py
+
+scan-secrets:
+	# Please do not change this `check=whole-history` setting, as new patterns may be added or history may be rewritten.
+	check=whole-history ./scripts/githooks/scan-secrets.sh

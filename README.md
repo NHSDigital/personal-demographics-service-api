@@ -1,6 +1,7 @@
 # personal-demographics-service-api
 
 ![Build](https://github.com/NHSDigital/personal-demographics-service-api/workflows/Build/badge.svg?branch=master)
+<img alt="gitleaks badge" src="https://img.shields.io/badge/protected%20by-gitleaks-blue">
 
 This is a RESTful HL7® FHIR® API for the *Personal Demographics Service*.
 
@@ -68,7 +69,7 @@ curl -sSL https://install.python-poetry.org | python3
 poetry install
 ```
 
-Install nvm & npn
+Install nvm & npm
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
 # Close and reopen your terminal window, or use 'exec $SHELL'
@@ -94,6 +95,23 @@ Install shellcheck (we use this for linting .sh files)
 ```bash
 sudo apt install shellcheck
 ```
+
+Install gitleaks (we use this for scanning for secrets)
+* Extract gitleaks tarball to /usr/local/bin
+```bash
+cd ~/Downloads
+curl -LO https://github.com/gitleaks/gitleaks/releases/download/v8.27.0/gitleaks_8.27.0_linux_x64.tar.gz
+sudo tar -xvzf gitleaks_8.27.0_linux_x64.tar.gz -C /usr/local/bin gitleaks
+```
+* Ensure that /usr/local/bin is part of your $PATH environment variable
+```bash
+echo $PATH
+```
+* If it does not exist in the output, then add the following line to .bashrc file
+```bash
+export PATH="/usr/local/bin:$PATH"
+```
+* You may need to open a new terminal/vscode for these changes to take affect
 
 Next open powershell and get the wsl ip (make sure wsl is running)
 The purpose of the following instructions is to enable you to use postman if you wish against the sandbox.

@@ -8,11 +8,15 @@ Background:
     * def utils = call read('classpath:helpers/utils.feature')
     * def randomUUID = function(){ return java.util.UUID.randomUUID() + '' }
     * url oauth2MockURL
+    * def signingKey = karate.get('signingKey')
+    * def apiKey = karate.get('apiKey')
+    * def keyID = karate.get('keyID')
 
 @mock
 Scenario: Mock authentication
     # We don't authenticate. We set a value that isn't a UUID, that the mock accepts
     * def accessToken = "g1112R_ccQ1Ebbb4gtHBP1aaaNM"
+    # gitleaks:allow
 
 @real
 Scenario: Authentication for application-restricted access - signed JWT authentication
