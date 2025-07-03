@@ -266,7 +266,6 @@ Feature: Patch patient - Add and remove data
     * match parseInt(response.response.meta.versionId) == parseInt(idAfterPlaceOfBirthUpdate)+ 1
     * match response.response.extension[1] == '#notpresent'
 
- @editAddress 
 Scenario:  Add an address to a PDS record that already contains a bad address- a temporary address without an end date
 
     * def addressUpdateNhsNumber = '9733162515'
