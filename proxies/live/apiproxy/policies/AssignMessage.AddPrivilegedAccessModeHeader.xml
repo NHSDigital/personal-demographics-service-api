@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AssignMessage.AddPrivilegedAccessModeHeader">
+    <DisplayName>AssignMessage.AddPrivilegedAccessModeHeader</DisplayName>
+    <!-- Add privileged access header -->
+    <Add>
+        <Headers>
+            <Header name="NHSE-PDS-Privileged-Access">true</Header>
+        </Headers>
+    </Add>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+    <AssignTo createNew="false" transport="http" type="request"/>
+</AssignMessage>
