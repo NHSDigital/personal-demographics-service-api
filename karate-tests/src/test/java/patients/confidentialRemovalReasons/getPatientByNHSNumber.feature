@@ -71,16 +71,14 @@ Scenario: Get a patient details- RemovalReasonExitCode should be converted from 
     * status 200
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].code == "ORR"
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].display == "Other Reason"
-    * match response.extension[0].url == removalURL    
+    * match response.extension[0].url == removalURL 
+ 
 Scenario: Response should not include confidential reasons when default test app include the confidential reasons custom attribute
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature').accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * def customAttributeHeader = {'Nhse-Pds-Custom-Attributes': '{"return-confidential-reason-for-removal":"true"}'}
     * def mergeHeaders = karate.merge(requestHeaders, customAttributeHeader)
-    * configure headers = mergeHeaders 
-    * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
-    * def requestHeaders = call read('classpath:auth/auth-headers.js')
-    * configure headers = requestHeaders  
+    * configure headers = mergeHeaders  
     * path 'Patient', removedArmedForcesNhsNumber
     * method get
     * status 200

@@ -58,7 +58,7 @@ function fn() {
       emptyAddressLinesClientID: java.lang.System.getenv('EMPTY_ADDRESS_LINES_CLIENT_ID'),
       emptyAddressLinesClientSecret: java.lang.System.getenv('EMPTY_ADDRESS_LINES_CLIENT_SECRET'),
       confidentialRemovalReasonsClientID: java.lang.System.getenv('CONFIDENTIAL_REMOVAL_REASONS_CLIENT_ID'),
-      confidentialRemovalReasonsClientSecret: java.lang.System.getenv('CONFIDENTIAL_REMOVAL_REASONS_CLIENT_SECRET'),
+      confidentialRemovalReasonsClientSecret: java.lang.System.getenv('CONFIDENTIAL_REMOVAL_REASONS_CLIENT_SECRET')
     };
   } else {
     var config = { 
@@ -73,6 +73,8 @@ function fn() {
       emptyAddressLinesClientSecret: java.lang.System.getenv('EMPTY_ADDRESS_LINES_CLIENT_SECRET'),
       confidentialRemovalReasonsClientID: java.lang.System.getenv('CONFIDENTIAL_REMOVAL_REASONS_CLIENT_ID'),
       confidentialRemovalReasonsClientSecret: java.lang.System.getenv('CONFIDENTIAL_REMOVAL_REASONS_CLIENT_SECRET'),
+      recordSharingConsentClientID: java.lang.System.getenv('RECORD_SHARING_CONSENT_APP_CLIENT_ID'),
+      recordSharingConsentClientSecret: java.lang.System.getenv('RECORD_SHARING_CONSENT_APP_CLIENT_SECRET'),
       signingKey: java.lang.System.getenv('APPLICATION_RESTRICTED_SIGNING_KEY_PATH'),
       apiKey: java.lang.System.getenv('APPLICATION_RESTRICTED_API_KEY'),
       privilegedAccessSigningKey: java.lang.System.getenv('PRIVILEGED_ACCESS_SIGNING_KEY_PATH'),
