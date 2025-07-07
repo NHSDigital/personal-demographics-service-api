@@ -9,6 +9,7 @@ Background:
   * configure headers = requestHeaders 
   * url baseURL
 
+@rateLimit
 Scenario: Get patient details
   * def nhsNumber = '9727022820'
   * path 'Patient', nhsNumber
