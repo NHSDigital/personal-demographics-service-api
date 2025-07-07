@@ -84,4 +84,26 @@ Scenario: Response should not include consent sharing extension when default tes
     * status 200
     * def hasConsentType = karate.filter(response.extension, x => x.url == 'consentType')
     * match hasConsentType == [] 
-    * match responseHeaders['Nhse-Pds-Custom-Attributes'] == '#notpresent'  
+    * match responseHeaders['Nhse-Pds-Custom-Attributes'] == '#notpresent' 
+
+Scenario: Get a patient details- App has multiple custom attributes(return-empty-address-lines,return-confidential-reason-for-removal,return-nhs-record-sharing-consent)
+    * def nhsNumber = "9733163082"
+    * def accessToken = consentSharingToken()
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders  
+    * path 'Patient', nhsNumber
+    * method get
+    * status 200
+    # consent sharing validations
+    * match response.extension[1].extension[0].valueCodeableConcept.coding[0].code == "4"
+    * match response.extension[1].extension[0].valueCodeableConcept.coding[0].display == "ncrs"
+    * match response.extension[1].extension[0].url == "consentType"
+    * match response.extension[1].extension[1].valueCodeableConcept.coding[0].code == "1"
+    * match response.extension[1].extension[1].valueCodeableConcept.coding[0].display == "consent"
+    # RFR validations
+    * match response.extension[0].extension[0].valueCodeableConcept.coding[0].code == "AFN"
+    * match response.extension[0].extension[0].valueCodeableConcept.coding[0].display == "Armed Forces (notified by Armed Forces)"  
+    # Empty address lines validations
+    * def addresses = response.address
+    * match utils.checkNullsHaveExtensions(addresses) == true
+    * match responseHeaders['Nhse-Pds-Custom-Attributes'] == '#notpresent'
