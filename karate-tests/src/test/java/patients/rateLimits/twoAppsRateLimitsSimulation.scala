@@ -39,7 +39,7 @@ class GetPatientByTwoAppsSimulation extends Simulation {
   }
 
   // === Scenario Definitions ===
-  def scenarioForApp(appLabel: String, featurePath: String) = {
+  def scenarioForApp(appLabel: String, requestingApp: String) = {
     scenario(s"${appLabel}Test")
       .exec(session => {
         val index = appLabel match {
@@ -50,6 +50,7 @@ class GetPatientByTwoAppsSimulation extends Simulation {
           .set("requestIndex", index)
           .set("appName", appLabel)
       })
+      .exec(karateSet("requestingApp", session => requestingApp))
       // Optional: Log each request for debugging
       .exec(session => {
         val app = session("appName").as[String]
@@ -58,17 +59,17 @@ class GetPatientByTwoAppsSimulation extends Simulation {
         println(s"[DEBUG] $app - Request $idx at $now")
         session
       })
-      .exec(karateFeature(featurePath))
+      .exec(karateFeature("classpath:patients/rateLimits/getPatientDetails/getPatientDetails.feature"))
       .exec(session => track429(session, appLabel))
   }
 
-  val scn1 = scenarioForApp("App1", "classpath:patients/rateLimits/getPatientDetails/getPatientForRateLimitingApp.feature")
-  val scn2 = scenarioForApp("App2", "classpath:patients/rateLimits/getPatientDetails/getPatientForDefaultApp.feature")
+  val rateLimitingAppScenario = scenarioForApp("App1", "rateLimitingApp")
+  val proxyRateLimitingAppScenario = scenarioForApp("App2", "proxyRateLimitingApp")
 
   // === Simulation Setup ===
   setUp(
-    scn1.inject(rampUsers(rateLimitAppRequests) during (duration.seconds)).protocols(protocol),
-    scn2.inject(nothingFor(120 seconds), rampUsers(proxyRateLimit) during (duration.seconds)).protocols(protocol)
+    rateLimitingAppScenario.inject(rampUsers(rateLimitAppRequests) during (duration.seconds)).protocols(protocol),
+    proxyRateLimitingAppScenario.inject(nothingFor(120 seconds), rampUsers(proxyRateLimit) during (duration.seconds)).protocols(protocol)
   )
 
   // === Report Output ===
