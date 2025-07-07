@@ -5,14 +5,15 @@ import io.gatling.core.Predef._
 import scala.concurrent.duration._
 
 
-class GetPatientByRateLimitAppSimulation extends Simulation {
-  val rateLimitAppRequests = Integer.getInteger("rateLimitAppRequests")
+class GetPatientRateLimitSimulation extends Simulation {
+  val requestingApp = System.getProperty("requestingApp")
+
+  val numberOfRequests = Integer.getInteger("numberOfRequests")
   val duration = Integer.getInteger("duration")  
+
   val protocol = karateProtocol()
-  
-    protocol.runner.karateEnv("veit07")
-    
-    // track the index of the request that returns 429
+  protocol.runner.karateEnv("veit07")
+
   var requestCounter = 0
   var all429s: Seq[Int] = Seq()
 
@@ -21,7 +22,8 @@ class GetPatientByRateLimitAppSimulation extends Simulation {
       requestCounter += 1
       session.set("requestIndex", requestCounter)
     })
-    .exec(karateFeature("classpath:patients/rateLimits/getPatientDetails/getPatientForRateLimitingApp.feature"))
+    .exec(karateSet("requestingApp", session => requestingApp))
+    .exec(karateFeature(s"classpath:patients/rateLimits/getPatientDetails.feature"))
     .exec { session =>
       if (session.contains("is429") && session("is429").as[Boolean]) {
       all429s = all429s :+ session("requestIndex").as[Int]
@@ -30,13 +32,12 @@ class GetPatientByRateLimitAppSimulation extends Simulation {
     }
     
     setUp(
-      scn.inject(rampUsers(rateLimitAppRequests) during (duration.seconds)).protocols(protocol)
+      scn.inject(rampUsers(numberOfRequests) during (duration.seconds)).protocols(protocol)
     )
   
-  // hook to run after simulation ends
   after {
     println("=== Simulation Complete ===")
-    println(s"Total requests from ratelimit Test app: ${rateLimitAppRequests}")
+    println(s"Total requests from $requestingApp: $numberOfRequests")
     if (all429s.nonEmpty) {
       println(s"Total 429 responses: ${all429s.size}")
     }else {
