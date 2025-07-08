@@ -1,0 +1,18 @@
+{
+    "patches": [
+        {
+          "op": "test",
+          "path": "#(path)",
+          "value": "#(testOpValue)"
+        },
+        {
+          "op": "remove",
+          "path":"#(path)" 
+        },
+        {
+          "op": "add",
+          "path": "/address/-",
+            "value":"#(address)"
+        }
+    ]
+  }
