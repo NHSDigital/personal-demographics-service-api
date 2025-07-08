@@ -68,8 +68,9 @@ class GetPatientByTwoAppsSimulation extends Simulation {
 
   // === Simulation Setup ===
   setUp(
-    rateLimitingAppScenario.inject(rampUsers(rateLimitAppRequests) during (duration.seconds)).protocols(protocol),
-    proxyRateLimitingAppScenario.inject(nothingFor(120 seconds), rampUsers(proxyRateLimit) during (duration.seconds)).protocols(protocol)
+    rateLimitingAppScenario.inject(rampUsers(rateLimitAppRequests) during (duration.seconds)).protocols(protocol).andThen(
+      proxyRateLimitingAppScenario.inject(rampUsers(proxyRateLimit) during (duration.seconds)).protocols(protocol)
+    )
   )
 
   // === Report Output ===
