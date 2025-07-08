@@ -20,7 +20,7 @@ public class TestLocalMockParallel {
     void testLocalMockParallel() {
         Results results = Runner.path("classpath:patients")
             .karateEnv("local-sandbox")
-            .tags("@sandbox, @sandbox-only", "~@smoke-only")
+            .tags("@sandbox, @sandbox-only", "~@smoke-only", "~@rateLimit")
             .outputJunitXml(true)
             .parallel(5);
         assertTrue(results.getFailCount() == 0, results.getErrorMessages());

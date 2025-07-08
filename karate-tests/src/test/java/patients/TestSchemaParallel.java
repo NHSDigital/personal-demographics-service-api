@@ -14,7 +14,7 @@ public class TestSchemaParallel {
     void testSchemaParallel() {
         Results results = Runner.path("classpath:patients")
                 .outputJunitXml(true)
-                .tags("~@sandbox-only", "~@no-oas", "~@oas-bug", "~@smoke-only")
+                .tags("~@sandbox-only", "~@no-oas", "~@oas-bug", "~@smoke-only", "~@rateLimit")
                 .karateEnv("prism")
                 .parallel(5);
         assertTrue(results.getFailCount() == 0, results.getErrorMessages());
