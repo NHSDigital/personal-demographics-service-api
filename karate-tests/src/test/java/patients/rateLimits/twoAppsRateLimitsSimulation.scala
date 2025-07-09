@@ -59,7 +59,7 @@ class GetPatientByTwoAppsSimulation extends Simulation {
         println(s"[DEBUG] $app - Request $idx at $now")
         session
       })
-      .exec(karateFeature("classpath:patients/rateLimits/getPatientDetails/getPatientDetails.feature"))
+      .exec(karateFeature("classpath:patients/rateLimits/getPatientDetails.feature"))
       .exec(session => track429(session, appLabel))
   }
 
