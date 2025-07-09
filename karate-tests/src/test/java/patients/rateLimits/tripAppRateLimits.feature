@@ -11,7 +11,7 @@ Scenario:Trigger rate limit with repeated requests
     """
     function() {
       for (var i = 0; i < maxAttempts; i++) {
-        var response = karate.call('classpath:helpers/getPatientForRateLimitingApp.feature')
+        var response = karate.call('classpath:patients/rateLimits/getPatientDetails/getPatientForRateLimitingApp.feature')
         if (response.responseStatus == 429) {
           return { status: 429,message: 'Rate limit triggered at attempt ' + (i + 1) }
         }
