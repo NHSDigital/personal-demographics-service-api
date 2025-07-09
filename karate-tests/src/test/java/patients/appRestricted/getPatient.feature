@@ -15,6 +15,7 @@ Feature: get /Patient - Application-restricted access mode
     * json patientSearchResultEntry = karate.readAsString('classpath:schemas/searchSchemas/patientSearchResultEntry.json')
     * url baseURL
 
+  @smoke
   Scenario: All headers provided - app restricted user can search for a patient and get a single match result returned
     * configure headers = requestHeaders 
     * path "Patient"
@@ -132,5 +133,4 @@ Feature: get /Patient - Application-restricted access mode
   * path 'Patient', nhsNumber
   * method get
   * status 200
-  * match response.id == nhsNumber
-  
+  * match response.id == nhsNumber  
