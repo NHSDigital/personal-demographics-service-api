@@ -1,11 +1,10 @@
-
 Feature: Get a patient - Healthcare worker access mode
  # By default, the test application uses the proxy rate limits. These rate limits vary across the internal-dev, int, and ref environments.
  # As a precondition, the appropriate proxy must be assigned to the test application based on the specific testing requirements.
+ 
 Background:
  
-  # auth
-  * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature', { clientID: karate.get('proxyRateLimitingAppClientID'),clientSecret: karate.get('proxyRateLimitingAppClientSecret')}).accessToken
+  * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature', { clientID: karate.get(requestingApp + 'ClientID'),clientSecret: karate.get(requestingApp + 'ClientSecret')}).accessToken
   * def requestHeaders = call read('classpath:auth/auth-headers.js')
   * configure headers = requestHeaders 
   * url baseURL
