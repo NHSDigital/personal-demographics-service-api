@@ -216,7 +216,6 @@ Feature: Patch patient - Add and remove data
     * def placeOfBirthNhsNumber = '5900077810'
     * def requestBody = read('classpath:patients/requestDetails/add/placeOfBirth.json')
     * def placeOBirthUrl = requestBody.patches[0].value.url
-    * def utils = call read('classpath:helpers/utils.feature')
     
     * def removePlaceOfBirth =
     """
@@ -266,3 +265,28 @@ Feature: Patch patient - Add and remove data
     * def response = removePlaceOfBirth(body)
     * match parseInt(response.response.meta.versionId) == parseInt(idAfterPlaceOfBirthUpdate)+ 1
     * match response.response.extension[1] == '#notpresent'
+
+Scenario:  Add an address to a PDS record that already contains a bad address- a temporary address without an end date
+
+    * def addressUpdateNhsNumber = '9733162515'
+    * def addressType = "home"
+    * def randomAddress = utils.randomAddress("2020-01-10")
+    * def address = randomAddress
+
+    * path 'Patient', addressUpdateNhsNumber
+    * method get
+    * status 200 
+    * def originalVersion = response.meta.versionId 
+    * def homeAddressIndex = response.address.findIndex(x => x.use == addressType)
+    * def path = "/address/" + homeAddressIndex
+    * def testOpValue = response.address[homeAddressIndex]
+  
+    * header Content-Type = "application/json-patch+json"  
+    * header If-Match = karate.response.header('etag')
+    * path 'Patient', addressUpdateNhsNumber
+    * request read('classpath:patients/requestDetails/add/addressUpdate.json')
+    * method patch
+    * status 200
+    * def postcode = response.address[homeAddressIndex].postalCode
+    * match parseInt(response.meta.versionId) == parseInt(originalVersion)+ 1
+    * match postcode == randomAddress.postalCode

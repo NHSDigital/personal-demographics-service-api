@@ -80,6 +80,10 @@ function fn() {
       privilegedAccessSigningKey: java.lang.System.getenv('PRIVILEGED_ACCESS_SIGNING_KEY_PATH'),
       privilegedAccessApiKey: java.lang.System.getenv('PRIVILEGED_ACCESS_API_KEY'),
       keyID: java.lang.System.getenv('KEY_ID'),
+      rateLimitingAppClientID: java.lang.System.getenv('RATE_LIMITING_APP_CLIENT_ID'),
+      rateLimitingAppClientSecret: java.lang.System.getenv('RATE_LIMITING_APP_CLIENT_SECRET'),
+      proxyRateLimitingAppClientID: java.lang.System.getenv('PROXY_RATE_LIMITING_APP_CLIENT_ID'),
+      proxyRateLimitingAppClientSecret: java.lang.System.getenv('PROXY_RATE_LIMITING_APP_CLIENT_SECRET'),
       internalServerURL: `${java.lang.System.getenv('INTERNAL_SERVER_BASE_URI')}/personal-demographics/FHIR/R4`
     };
   } 
