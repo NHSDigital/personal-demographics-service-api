@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1b71fec3-aa34-4ffb-ad9d-ada5a90a3027",
+		"_postman_id": "af324ef1-2d20-40d2-9595-6c45146bce8d",
 		"name": "Patient Demographics Sandbox",
 		"description": "Sandbox example requests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -4180,6 +4180,391 @@
 							"response": []
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "Allocate NHS number",
+			"item": [
+				{
+					"name": "Allocate NHS number",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 201\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(201);\r",
+									"});\r",
+									"pm.test(\"Response includes patient 5182663366\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.id).to.equal(\"5182663366\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": [\r\n    {\r\n      \"use\": \"usual\",\r\n      \"given\": [\"Jane\"],\r\n      \"family\": \"Edwards\",\r\n      \"prefix\": [\"Mrs\"],\r\n      \"period\": {\"start\": \"1986-07-01\"}\r\n    }\r\n  ],\r\n  \"address\": [{\r\n            \"line\": [\r\n                \"1 Trevelyan Square\",\r\n                \"Boar Lane\",\r\n                \"City Centre\",\r\n                \"Leeds\",\r\n                \"West Yorkshire\"\r\n\t\t\t\t\r\n            ],\r\n            \"period\": {\r\n                \"start\": \"2020-01-01\"\r\n            },\r\n            \"postalCode\": \"LS1 6AE\",\r\n            \"use\": \"home\",\r\n            \"extension\": [\r\n                {\r\n                    \"extension\": [\r\n                        {\r\n                            \"url\": \"type\",\r\n                            \"valueCoding\": {\r\n                                \"code\": \"UPRN\",\r\n                                \"system\": \"https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType\"\r\n                            }\r\n                        },\r\n                        {\r\n                            \"url\": \"value\",\r\n                            \"valueString\": \"203700882517\"\r\n                        }\r\n                    ],\r\n                    \"url\": \"https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey\"\r\n                }\r\n            ]\r\n            \r\n        }],\r\n  \"gender\": \"female\",\r\n  \"birthDate\": \"1982-07-10\",\r\n   \"telecom\": [\r\n        {\r\n            \"use\": \"home\",\r\n            \"system\": \"phone\",\r\n            \"value\": \"123342\",\r\n            \"period\": {\r\n                \"start\": \"2020-01-02\",\r\n                \"end\": \"2021-01-02\"\r\n            }\r\n        }\r\n    ],\r\n  \"extension\": [\r\n    {\r\n      \"url\": \"https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RegisteringAuthority\",\r\n      \"extension\": [\r\n        {\r\n          \"url\": \"registeringAuthorityType\",\r\n          \"valueCodeableConcept\": {\r\n            \"coding\": [\r\n              {\r\n                \"system\": \"https://fhir.nhs.uk/CodeSystem/UKCore-RegisteringAuthorityType\",\r\n                \"code\": \"x\"\r\n              }\r\n            ]\r\n          }\r\n        },\r\n        { \"url\": \"organisationIdentifier\", \"valueString\": \"RGS\" }\r\n      ]\r\n    }\r\n  ],\r\n  \"resourceType\": \"Patient\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/Patient",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Request Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(400);\r",
+									"});\r",
+									"pm.test(\"The response should include diagnostics indicating an invalid request ID\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.issue[0].diagnostics).to.contains(\"Invalid value - '123456' in header 'X-Request-ID'\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "123456",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": [\r\n    {\r\n      \"use\": \"usual\",\r\n      \"given\": [\"Jane\"],\r\n      \"family\": \"Edwards\",\r\n      \"prefix\": [\"Mrs\"],\r\n      \"period\": {\"start\": \"1986-07-01\"}\r\n    }\r\n  ],\r\n  \"address\": [{\r\n            \"line\": [\r\n                \"1 Trevelyan Square\",\r\n                \"Boar Lane\",\r\n                \"City Centre\",\r\n                \"Leeds\",\r\n                \"West Yorkshire\"\r\n\t\t\t\t\r\n            ],\r\n            \"period\": {\r\n                \"start\": \"2020-01-01\"\r\n            },\r\n            \"postalCode\": \"LS1 6AE\",\r\n            \"use\": \"home\",\r\n            \"extension\": [\r\n                {\r\n                    \"extension\": [\r\n                        {\r\n                            \"url\": \"type\",\r\n                            \"valueCoding\": {\r\n                                \"code\": \"UPRN\",\r\n                                \"system\": \"https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType\"\r\n                            }\r\n                        },\r\n                        {\r\n                            \"url\": \"value\",\r\n                            \"valueString\": \"203700882517\"\r\n                        }\r\n                    ],\r\n                    \"url\": \"https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey\"\r\n                }\r\n            ]\r\n            \r\n        }],\r\n  \"gender\": \"female\",\r\n  \"birthDate\": \"1982-07-10\",\r\n   \"telecom\": [\r\n        {\r\n            \"use\": \"home\",\r\n            \"system\": \"phone\",\r\n            \"value\": \"123342\",\r\n            \"period\": {\r\n                \"start\": \"2020-01-02\",\r\n                \"end\": \"2021-01-02\"\r\n            }\r\n        }\r\n    ],\r\n  \"extension\": [\r\n    {\r\n      \"url\": \"https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RegisteringAuthority\",\r\n      \"extension\": [\r\n        {\r\n          \"url\": \"registeringAuthorityType\",\r\n          \"valueCodeableConcept\": {\r\n            \"coding\": [\r\n              {\r\n                \"system\": \"https://fhir.nhs.uk/CodeSystem/UKCore-RegisteringAuthorityType\",\r\n                \"code\": \"x\"\r\n              }\r\n            ]\r\n          }\r\n        },\r\n        { \"url\": \"organisationIdentifier\", \"valueString\": \"RGS\" }\r\n      ]\r\n    }\r\n  ],\r\n  \"resourceType\": \"Patient\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/Patient",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Missing Request ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(400);\r",
+									"});\r",
+									"pm.test(\"The response should include diagnostics indicating Missing X-Request-ID header\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.issue[0].diagnostics).to.contains(\"Invalid request with error - X-Request-ID header must be supplied to access this resource\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": [\r\n    {\r\n      \"use\": \"usual\",\r\n      \"given\": [\"Jane\"],\r\n      \"family\": \"Edwards\",\r\n      \"prefix\": [\"Mrs\"],\r\n      \"period\": {\"start\": \"1986-07-01\"}\r\n    }\r\n  ],\r\n  \"address\": [{\r\n            \"line\": [\r\n                \"1 Trevelyan Square\",\r\n                \"Boar Lane\",\r\n                \"City Centre\",\r\n                \"Leeds\",\r\n                \"West Yorkshire\"\r\n\t\t\t\t\r\n            ],\r\n            \"period\": {\r\n                \"start\": \"2020-01-01\"\r\n            },\r\n            \"postalCode\": \"LS1 6AE\",\r\n            \"use\": \"home\",\r\n            \"extension\": [\r\n                {\r\n                    \"extension\": [\r\n                        {\r\n                            \"url\": \"type\",\r\n                            \"valueCoding\": {\r\n                                \"code\": \"UPRN\",\r\n                                \"system\": \"https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType\"\r\n                            }\r\n                        },\r\n                        {\r\n                            \"url\": \"value\",\r\n                            \"valueString\": \"203700882517\"\r\n                        }\r\n                    ],\r\n                    \"url\": \"https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey\"\r\n                }\r\n            ]\r\n            \r\n        }],\r\n  \"gender\": \"female\",\r\n  \"birthDate\": \"1982-07-10\",\r\n   \"telecom\": [\r\n        {\r\n            \"use\": \"home\",\r\n            \"system\": \"phone\",\r\n            \"value\": \"123342\",\r\n            \"period\": {\r\n                \"start\": \"2020-01-02\",\r\n                \"end\": \"2021-01-02\"\r\n            }\r\n        }\r\n    ],\r\n  \"extension\": [\r\n    {\r\n      \"url\": \"https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RegisteringAuthority\",\r\n      \"extension\": [\r\n        {\r\n          \"url\": \"registeringAuthorityType\",\r\n          \"valueCodeableConcept\": {\r\n            \"coding\": [\r\n              {\r\n                \"system\": \"https://fhir.nhs.uk/CodeSystem/UKCore-RegisteringAuthorityType\",\r\n                \"code\": \"x\"\r\n              }\r\n            ]\r\n          }\r\n        },\r\n        { \"url\": \"organisationIdentifier\", \"valueString\": \"RGS\" }\r\n      ]\r\n    }\r\n  ],\r\n  \"resourceType\": \"Patient\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/Patient",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Single match found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Response includes SINGLE_MATCH\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.issue[0].details.coding[0].code).to.equal(\"SINGLE_MATCH\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": [\r\n    {\r\n      \"use\": \"usual\",\r\n      \"given\": [\"Jane\"],\r\n      \"family\": \"McMatch-Single\",\r\n      \"prefix\": [\"Mrs\"],\r\n      \"period\": {\"start\": \"1986-07-01\"}\r\n    }\r\n  ],\r\n  \"address\": [{\r\n            \"line\": [\r\n                \"1 Trevelyan Square\",\r\n                \"Boar Lane\",\r\n                \"City Centre\",\r\n                \"Leeds\",\r\n                \"West Yorkshire\"\r\n\t\t\t\t\r\n            ],\r\n            \"period\": {\r\n                \"start\": \"2020-01-01\"\r\n            },\r\n            \"postalCode\": \"BAP 4WG\",\r\n            \"use\": \"home\",\r\n            \"extension\": [\r\n                {\r\n                    \"extension\": [\r\n                        {\r\n                            \"url\": \"type\",\r\n                            \"valueCoding\": {\r\n                                \"code\": \"UPRN\",\r\n                                \"system\": \"https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType\"\r\n                            }\r\n                        },\r\n                        {\r\n                            \"url\": \"value\",\r\n                            \"valueString\": \"203700882517\"\r\n                        }\r\n                    ],\r\n                    \"url\": \"https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey\"\r\n                }\r\n            ]\r\n            \r\n        }],\r\n  \"gender\": \"female\",\r\n  \"birthDate\": \"1982-07-10\",\r\n   \"telecom\": [\r\n        {\r\n            \"use\": \"home\",\r\n            \"system\": \"phone\",\r\n            \"value\": \"123342\",\r\n            \"period\": {\r\n                \"start\": \"2020-01-02\",\r\n                \"end\": \"2021-01-02\"\r\n            }\r\n        }\r\n    ],\r\n  \"extension\": [\r\n    {\r\n      \"url\": \"https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RegisteringAuthority\",\r\n      \"extension\": [\r\n        {\r\n          \"url\": \"registeringAuthorityType\",\r\n          \"valueCodeableConcept\": {\r\n            \"coding\": [\r\n              {\r\n                \"system\": \"https://fhir.nhs.uk/CodeSystem/UKCore-RegisteringAuthorityType\",\r\n                \"code\": \"x\"\r\n              }\r\n            ]\r\n          }\r\n        },\r\n        { \"url\": \"organisationIdentifier\", \"valueString\": \"RGS\" }\r\n      ]\r\n    }\r\n  ],\r\n  \"resourceType\": \"Patient\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/Patient",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Multi match found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(200);\r",
+									"});\r",
+									"pm.test(\"Response includes MULTIPLE_MATCHES\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.issue[0].details.coding[0].code).to.equal(\"MULTIPLE_MATCHES\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": [\r\n    {\r\n      \"use\": \"usual\",\r\n      \"given\": [\"Louisa\"],\r\n      \"family\": \"McMatch-Multiple\",\r\n      \"prefix\": [\"Mrs\"],\r\n      \"period\": {\"start\": \"1986-07-01\"}\r\n    }\r\n  ],\r\n  \"address\": [{\r\n            \"line\": [\r\n                \"1 Trevelyan Square\",\r\n                \"Boar Lane\",\r\n                \"City Centre\",\r\n                \"Leeds\",\r\n                \"West Yorkshire\"\r\n\t\t\t\t\r\n            ],\r\n            \"period\": {\r\n                \"start\": \"2020-01-01\"\r\n            },\r\n            \"postalCode\": \"DN19 7UD\",\r\n            \"use\": \"home\",\r\n            \"extension\": [\r\n                {\r\n                    \"extension\": [\r\n                        {\r\n                            \"url\": \"type\",\r\n                            \"valueCoding\": {\r\n                                \"code\": \"UPRN\",\r\n                                \"system\": \"https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType\"\r\n                            }\r\n                        },\r\n                        {\r\n                            \"url\": \"value\",\r\n                            \"valueString\": \"203700882517\"\r\n                        }\r\n                    ],\r\n                    \"url\": \"https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey\"\r\n                }\r\n            ]\r\n            \r\n        }],\r\n  \"gender\": \"female\",\r\n  \"birthDate\": \"1982-07-10\",\r\n   \"telecom\": [\r\n        {\r\n            \"use\": \"home\",\r\n            \"system\": \"phone\",\r\n            \"value\": \"123342\",\r\n            \"period\": {\r\n                \"start\": \"2020-01-02\",\r\n                \"end\": \"2021-01-02\"\r\n            }\r\n        }\r\n    ],\r\n  \"extension\": [\r\n    {\r\n      \"url\": \"https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RegisteringAuthority\",\r\n      \"extension\": [\r\n        {\r\n          \"url\": \"registeringAuthorityType\",\r\n          \"valueCodeableConcept\": {\r\n            \"coding\": [\r\n              {\r\n                \"system\": \"https://fhir.nhs.uk/CodeSystem/UKCore-RegisteringAuthorityType\",\r\n                \"code\": \"x\"\r\n              }\r\n            ]\r\n          }\r\n        },\r\n        { \"url\": \"organisationIdentifier\", \"valueString\": \"RGS\" }\r\n      ]\r\n    }\r\n  ],\r\n  \"resourceType\": \"Patient\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/Patient",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Allocate NHS number - Missing address",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(400);\r",
+									"});\r",
+									"pm.test(\"Response includes Missing value - 'address'\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.issue[0].diagnostics).to.equal(\"Missing value - 'address'\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": [\r\n    {\r\n      \"use\": \"usual\",\r\n      \"given\": [\"Louisa\"],\r\n      \"family\": \"McMatch-Multiple\",\r\n      \"prefix\": [\"Mrs\"],\r\n      \"period\": {\"start\": \"1986-07-01\"}\r\n    }\r\n  ],\r\n  \"gender\": \"female\",\r\n  \"birthDate\": \"1982-07-10\",\r\n   \"telecom\": [\r\n        {\r\n            \"use\": \"home\",\r\n            \"system\": \"phone\",\r\n            \"value\": \"123342\",\r\n            \"period\": {\r\n                \"start\": \"2020-01-02\",\r\n                \"end\": \"2021-01-02\"\r\n            }\r\n        }\r\n    ],\r\n  \"extension\": [\r\n    {\r\n      \"url\": \"https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RegisteringAuthority\",\r\n      \"extension\": [\r\n        {\r\n          \"url\": \"registeringAuthorityType\",\r\n          \"valueCodeableConcept\": {\r\n            \"coding\": [\r\n              {\r\n                \"system\": \"https://fhir.nhs.uk/CodeSystem/UKCore-RegisteringAuthorityType\",\r\n                \"code\": \"x\"\r\n              }\r\n            ]\r\n          }\r\n        },\r\n        { \"url\": \"organisationIdentifier\", \"valueString\": \"RGS\" }\r\n      ]\r\n    }\r\n  ],\r\n  \"resourceType\": \"Patient\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/Patient",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Allocate NHS number - Invalid value",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(400);\r",
+									"});\r",
+									"pm.test(\"Response includes Invalid value - 'other' in field 'gender'\", function () {\r",
+									"  const jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.issue[0].diagnostics).to.equal(\"Invalid value - 'other' in field 'gender'\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": [\r\n    {\r\n      \"use\": \"usual\",\r\n      \"given\": [\"Jane\"],\r\n      \"family\": \"Edwards\",\r\n      \"prefix\": [\"Mrs\"],\r\n      \"period\": {\"start\": \"1986-07-01\"}\r\n    }\r\n  ],\r\n  \"address\": [{\r\n            \"line\": [\r\n                \"1 Trevelyan Square\",\r\n                \"Boar Lane\",\r\n                \"City Centre\",\r\n                \"Leeds\",\r\n                \"West Yorkshire\"\r\n\t\t\t\t\r\n            ],\r\n            \"period\": {\r\n                \"start\": \"2020-01-01\"\r\n            },\r\n            \"postalCode\": \"LS1 6AE\",\r\n            \"use\": \"home\",\r\n            \"extension\": [\r\n                {\r\n                    \"extension\": [\r\n                        {\r\n                            \"url\": \"type\",\r\n                            \"valueCoding\": {\r\n                                \"code\": \"UPRN\",\r\n                                \"system\": \"https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType\"\r\n                            }\r\n                        },\r\n                        {\r\n                            \"url\": \"value\",\r\n                            \"valueString\": \"203700882517\"\r\n                        }\r\n                    ],\r\n                    \"url\": \"https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey\"\r\n                }\r\n            ]\r\n            \r\n        }],\r\n  \"gender\": \"other\",\r\n  \"birthDate\": \"1982-07-10\",\r\n   \"telecom\": [\r\n        {\r\n            \"use\": \"home\",\r\n            \"system\": \"phone\",\r\n            \"value\": \"123342\",\r\n            \"period\": {\r\n                \"start\": \"2020-01-02\",\r\n                \"end\": \"2021-01-02\"\r\n            }\r\n        }\r\n    ],\r\n  \"extension\": [\r\n    {\r\n      \"url\": \"https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RegisteringAuthority\",\r\n      \"extension\": [\r\n        {\r\n          \"url\": \"registeringAuthorityType\",\r\n          \"valueCodeableConcept\": {\r\n            \"coding\": [\r\n              {\r\n                \"system\": \"https://fhir.nhs.uk/CodeSystem/UKCore-RegisteringAuthorityType\",\r\n                \"code\": \"x\"\r\n              }\r\n            ]\r\n          }\r\n        },\r\n        { \"url\": \"organisationIdentifier\", \"valueString\": \"RGS\" }\r\n      ]\r\n    }\r\n  ],\r\n  \"resourceType\": \"Patient\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/Patient",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
