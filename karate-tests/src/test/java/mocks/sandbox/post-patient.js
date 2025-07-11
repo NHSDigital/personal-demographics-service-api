@@ -2,7 +2,7 @@
 /* global context, request, response */
 
 /* functions defined in supporting-functions.js */
-/* global basicResponseHeaders */
+/* global basicResponseHeaders,validateHeaders */
 
 /*
  * Generating valid NHS numbers on the fly isn't so easy, so we just have an array of valid numbers
@@ -153,11 +153,14 @@ function initializePatientData (request) {
 function handlePatientCreationRequest (request) {
   response.headers = basicResponseHeaders(request)
   response.contentType = 'application/fhir+json'
-  if (postPatientRequestIsValid(request)) {
-    if (!requestMatchesErrorScenario(request)) {
-      const patient = initializePatientData(request)
-      response.body = patient
-      response.status = 201
+  const isRequestHeadersValid = validateHeaders(request)
+  if (isRequestHeadersValid) {
+    if (postPatientRequestIsValid(request)) {
+      if (!requestMatchesErrorScenario(request)) {
+        const patient = initializePatientData(request)
+        response.body = patient
+        response.status = 201
+      }
     }
   }
 }
