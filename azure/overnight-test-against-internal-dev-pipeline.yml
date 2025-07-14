@@ -18,60 +18,81 @@ resources:
       ref: refs/heads/edge
       endpoint: NHSDigital
 
-pool:
-  name: 'AWS-ECS'
-
 variables:
   - template: project.yml
-  - name: environment
-    value: internal-dev
-  - name: SERVICE_ARTIFACT_NAME
-    value: ''
-  - name: FULLY_QUALIFIED_SERVICE_NAME
-    value: personal-demographics-internal-dev
-    
-steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '3.9'
-      addToPath: true
-      architecture: 'x64' 
+
+jobs:
+  - job: nightly_tests
+    displayName: Run Overnight Tests
+
+    pool:
+      name: 'AWS-ECS'
+    variables:
+      - template: project.yml
+      - name: environment
+        value: internal-dev
+      - name: SERVICE_ARTIFACT_NAME
+        value: ''
+      - name: FULLY_QUALIFIED_SERVICE_NAME
+        value: personal-demographics-internal-dev
+
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '3.9'
+          addToPath: true
+          architecture: 'x64' 
+          
+      - bash: poetry install
+        workingDirectory: $(Pipeline.Workspace)/s
+        displayName: Setup tests
       
-  - bash: poetry install
-    workingDirectory: $(Pipeline.Workspace)/s
-    displayName: Setup tests
-  
-  - task: Npm@1
-    displayName: Install node packages
-    inputs:
-      command: 'install'
-      workingDir: '$(Pipeline.Workspace)/s'
+      - task: Npm@1
+        displayName: Install node packages
+        inputs:
+          command: 'install'
+          workingDir: '$(Pipeline.Workspace)/s'
 
-  - template: "azure/components/aws-assume-role.yml@common"
-    parameters:
-     role: "auto-ops"
-     profile: "apm_ptl"    
+      - template: "azure/components/aws-assume-role.yml@common"
+        parameters:
+          role: "auto-ops"
+          profile: "apm_ptl"    
 
-  - template: azure/components/get-aws-secrets-and-ssm-params.yml@common
-    parameters:
-     secret_file_ids:
-      - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_PRIVATE_KEY
-      - ptl/app-credentials/jwt_testing/non-prod/PRIVILEGED_ACCESS_TESTING_SIGNING_KEY
-     config_ids:
-      - /ptl/azure-devops/apigee-nonprod/APIGEE_USERNAME
-     secret_ids:
-     - ptl/azure-devops/apigee-nonprod/APIGEE_OTP_KEY
-     - ptl/azure-devops/apigee-nonprod/APIGEE_PASSWORD
+      - template: azure/components/get-aws-secrets-and-ssm-params.yml@common
+        parameters:
+          secret_file_ids:
+            - ptl/app-credentials/jwt_testing/non-prod/JWT_TESTING_PRIVATE_KEY
+            - ptl/app-credentials/jwt_testing/non-prod/PRIVILEGED_ACCESS_TESTING_SIGNING_KEY
+          config_ids:
+            - /ptl/azure-devops/apigee-nonprod/APIGEE_USERNAME
+          secret_ids:
+            - ptl/azure-devops/apigee-nonprod/APIGEE_OTP_KEY
+            - ptl/azure-devops/apigee-nonprod/APIGEE_PASSWORD
+            
+      - template: azure/components/get-mfa-code.yml@common  
+        parameters:
+          apigee_otp_key: $(APIGEE_OTP_KEY)
         
-  - template: azure/components/get-mfa-code.yml@common  
-    parameters:
-     apigee_otp_key: $(APIGEE_OTP_KEY)
-    
-  - template: azure/components/get-access-token.yml@common 
-    parameters:
-     apigee_username: $(APIGEE_USERNAME)
-     apigee_password: $(APIGEE_PASSWORD)
+      - template: azure/components/get-access-token.yml@common 
+        parameters:
+          apigee_username: $(APIGEE_USERNAME)
+          apigee_password: $(APIGEE_PASSWORD)
 
-  - template: templates/pds-tests-karate.yml
+      - template: templates/pds-tests-karate.yml
 
-  - template: templates/pds-tests.yml
+      - template: templates/pds-tests.yml
+
+  - template: azure/common/apigee-build.yml@common
+    parameters:
+      service_name: $(service_name)
+      short_service_name: $(short_service_name)
+      python_version: '3.9'
+      variables:
+        PIP_CACHE_DIR: ".poetry"
+      test_steps:
+        - bash: "make sandbox &"
+          displayName: Start Sandbox Server
+          workingDirectory: "$(service_name)"
+        - bash: "make validate"
+          displayName: Validate FHIR
+          workingDirectory: "$(service_name)"
