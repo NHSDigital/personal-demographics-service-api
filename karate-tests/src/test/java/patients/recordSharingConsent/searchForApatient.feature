@@ -1,33 +1,32 @@
-@no-oas 
-Feature: Search for a patient(Healthcare worker access)- confidential reasons for removal
+@no-oas
+Feature: Search for a patient(Healthcare worker access)- nhs record sharing consent
 
 Background:
     * def utils = call read('classpath:helpers/utils.feature')
     * url baseURL
 
-Scenario:Search for a patient using parameters response should not include reason for removal details
+Scenario:Search for a patient using parameters response should not include consent sharing details
     # auth
-    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {clientID: karate.get('confidentialRemovalReasonsClientID'), clientSecret:karate.get('confidentialRemovalReasonsClientSecret')}).accessToken
+    * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {clientID: karate.get('recordSharingConsentClientID'), clientSecret:karate.get('recordSharingConsentClientSecret')}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders 
     * path "Patient"
-    * params  { family: "KELLET", gender: "female", birthdate: "1972-06-01" }
+    * params  { family: "SEGAR", gender: "female", birthdate: "1995-07-03" }
     * method get
     * status 200
     * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
-    * match response.entry[0].resource.id == "9733163023"
+    * match response.entry[0].resource.id == "9733163767"
     * match response.entry[0].resource.extension == '#notpresent'
 
-Scenario:Search for a patient using parameters response should not include reason for removal details for default test app
+Scenario:Search for a patient using parameters response should not include consent sharing details for default test app
     # auth
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature').accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders 
     * path "Patient"
-    * params  { family: "COLE", gender: "female", birthdate: "1964-08-28" }
+    * params  { family: "SUTTER", gender: "female", birthdate: "1987-02-05" }
     * method get
     * status 200
     * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
-    * match response.entry[0].resource.id == "9733163074"
-    * match response.entry[0].resource.extension[0].url == "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus" 
-    * match response.entry[0].resource.extension[1] == '#notpresent'    
+    * match response.entry[0].resource.id == "9733163759"
+    * match response.entry[0].resource.extension == '#notpresent'    
