@@ -10,7 +10,15 @@ trigger:
 
 pr:
   branches:
-    include: ['*']
+    include: ["*"]
+
+schedules:
+  - cron: "0 0 * * *"
+    displayName: Daily Midnight Build
+    branches:
+      include:
+        - master
+    always: true # Run even if no recent changes
 
 resources:
   repositories:
