@@ -17,7 +17,6 @@ resources:
         branches:
           include:
             - refs/tags/v*
-            - feature/famc2-SPINEDEM-5306-add-overnight-build
 
 pool:
   name: "AWS-ECS"

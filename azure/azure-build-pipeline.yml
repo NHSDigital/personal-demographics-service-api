@@ -12,13 +12,12 @@ pr:
   branches:
     include: ["*"]
 
-# TESTING 3
 schedules:
-  - cron: "05 10 * * *"
+  - cron: "0 0 * * *"
     displayName: Daily Midnight Build
     branches:
       include:
-        - feature/famc2-SPINEDEM-5306-add-overnight-build
+        - master
     always: true # Run even if no recent changes
 
 resources:
