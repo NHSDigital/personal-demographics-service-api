@@ -319,8 +319,8 @@ Scenario:
 
   * def buildRemovePatchBody =
     """
-    function(path, details, secondPath) {
-    if (!secondPath) secondPath = path; 
+    function(path, details, removalPath) {
+    if (!removalPath) removalPath = path; 
     return {
       patches: [
         {
@@ -330,7 +330,7 @@ Scenario:
         },
         {
           op: 'remove',
-          path: secondPath
+          path: removalPath
         }
       ]
     };
