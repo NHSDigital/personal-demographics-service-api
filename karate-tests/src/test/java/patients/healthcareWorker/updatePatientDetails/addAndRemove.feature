@@ -158,6 +158,22 @@ Feature: Patch patient - Add and remove data
     # ==============================
     # You can also add a new suffix to an existing array of suffixes
     * def nhsNumber = '9733162051'
+    * def suffix = "Esquire"
+
+    * def removeSuffix =
+    """
+    function(body) {
+      var result = karate.call('classpath:helpers/patchRequest.feature', {
+          baseURL: baseURL,
+          requestBody: body,
+          endpoint: 'Patient/' + nhsNumber,
+          etag: karate.response.header('Etag')
+      });
+      originalVersion += 1
+      return result
+    }
+    """
+
     * path 'Patient', nhsNumber
     * method get
     * status 200
@@ -165,11 +181,18 @@ Feature: Patch patient - Add and remove data
     * def firstNameIndexWithSuffix = response.name.findIndex(x => x.suffix != null)
     * def namePath = "/name/"+ firstNameIndexWithSuffix + "/id" 
     * def nameId = response.name.find(x => x.suffix != null).id
-    * def suffix = "Esquire"
+    * def suffixPath = "/name/"+ firstNameIndexWithSuffix + "/suffix/0"
+
+    # Remove suffix if already exists. Failed pipelines can leave data in an incorrect state
+    * def body = utils.buildRemovePatchBody(namePath, nameId, suffixPath)
+    * print "Hello world"
+    * print (body)
+    * def response = (response.name[0].suffix.includes(suffix)) ? removeSuffix(body) : { body: response, responseHeaders: responseHeaders }
    
     * configure headers = call read('classpath:auth/auth-headers.js')     
     * header Content-Type = "application/json-patch+json"
-    * header If-Match = karate.response.header('etag')
+    * def etagKey = Object.keys(response.responseHeaders).find(k => k.toLowerCase() === 'etag')
+    * header If-Match = etagKey ? response.responseHeaders[etagKey][0] : null
     * path 'Patient', nhsNumber
     * request
       """
@@ -183,7 +206,7 @@ Feature: Patch patient - Add and remove data
     * match response.name[0].suffix contains suffix
     * match parseInt(response.meta.versionId) == originalVersion + 1
     
-    # 2. Remove one of the suffixes we just added
+    # 2. Remove one of the suffixes we just added 4904
     # ===========================================
     # We added an array of suffixes; now we're going to remove one of the suffixes in the
     # array.
@@ -191,26 +214,12 @@ Feature: Patch patient - Add and remove data
     * method get
     * status 200
     * def originalVersion = parseInt(response.meta.versionId)
-    * def firstNameIndexWithSuffix = response.name.findIndex(x => x.suffix != null)
-    * def namePath = "/name/"+ firstNameIndexWithSuffix + "/id" 
-    * def nameId = response.name.find(x => x.suffix != null).id
-    * def suffixPath = "/name/"+ firstNameIndexWithSuffix + "/suffix/0"
   
-    * configure headers = call read('classpath:auth/auth-headers.js')     
-    * header Content-Type = "application/json-patch+json"
-    * header If-Match = karate.response.header('etag')      
-    * path 'Patient', nhsNumber
-    * request 
-      """
-      {"patches":[
-        { "op": "test", "path": "#(namePath)", "value": "#(nameId)" },
-        { "op": "remove","path": "#(suffixPath)" }
-      ]}
-      """ 
-    * method patch
-    * status 200
-    * match parseInt(response.meta.versionId) == originalVersion + 1
+    * def body = utils.buildRemovePatchBody(namePath, nameId, suffixPath)
+    * def response = removeSuffix(body)
+    * match parseInt(response.response.meta.versionId) == originalVersion
 
+     @jack
   Scenario:  Healthcare worker can add and remove place of birth details(city and district)
 
     * def placeOfBirthNhsNumber = '5900077810'
