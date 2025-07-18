@@ -185,8 +185,6 @@ Feature: Patch patient - Add and remove data
 
     # Remove suffix if already exists. Failed pipelines can leave data in an incorrect state
     * def body = utils.buildRemovePatchBody(namePath, nameId, suffixPath)
-    * print "Hello world"
-    * print (body)
     * def response = (response.name[0].suffix.includes(suffix)) ? removeSuffix(body) : { body: response, responseHeaders: responseHeaders }
    
     * configure headers = call read('classpath:auth/auth-headers.js')     
@@ -219,7 +217,6 @@ Feature: Patch patient - Add and remove data
     * def response = removeSuffix(body)
     * match parseInt(response.response.meta.versionId) == originalVersion
 
-     @jack
   Scenario:  Healthcare worker can add and remove place of birth details(city and district)
 
     * def placeOfBirthNhsNumber = '5900077810'
