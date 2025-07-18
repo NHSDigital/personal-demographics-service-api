@@ -12,9 +12,9 @@ pr:
   branches:
     include: ["*"]
 
-# TESTING 2
+# TESTING 3
 schedules:
-  - cron: "30 15 * * *"
+  - cron: "05 10 * * *"
     displayName: Daily Midnight Build
     branches:
       include:
