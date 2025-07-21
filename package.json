@@ -14,7 +14,7 @@
   "license": "MIT",
   "homepage": "https://github.com/NHSDigital/personal-demographics-service-api",
   "dependencies": {
-    "@redocly/cli": "^1.34.2",
+    "@redocly/cli": "^1.34.5",
     "jest-cli": "^29.7.0",
     "jest-when": "^3.7.0",
     "nvm": "0.0.4",
