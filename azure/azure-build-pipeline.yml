@@ -13,7 +13,7 @@ pr:
     include: ["*"]
 
 schedules:
-  - cron: "0 0 * * *"
+  - cron: "0 2 * * *"
     displayName: Daily Midnight Build
     branches:
       include:
