@@ -41,7 +41,7 @@ extends:
     apigee_deployments:
       - environment: internal-dev
         post_deploy:
-          - template: azure/templates/pds-tests-dev.yml
+          - template: templates/pds-tests-dev.yml
       # only deploy to other environments if the build was NOT a daily midnight build
       - ${{ if ne(variables['resources.pipeline.build_pipeline.triggerReason'], 'Schedule') }}:
           - environment: internal-qa-sandbox
