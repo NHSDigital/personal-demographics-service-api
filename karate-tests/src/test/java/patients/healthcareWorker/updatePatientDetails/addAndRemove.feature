@@ -14,7 +14,7 @@ Feature: Patch patient - Add and remove data
     
     * url baseURL
   
-    @sandbox @jack
+    @sandbox
   Scenario: Add and remove patient name
     * def nhsNumber = '5900056449'
     * path 'Patient', nhsNumber
@@ -137,6 +137,7 @@ Feature: Patch patient - Add and remove data
       * def namePath = "/name/0/id" 
       * def nameId = response.name[0].id
       * def suffixPath = "/name/0/suffix"
+      * def suffixArray = ["PhD", "MBBS"]
 
       * def removePatientSuffix =
       """
@@ -158,11 +159,7 @@ Feature: Patch patient - Add and remove data
       
       # 3. Add a suffix array 
       # =====================
-
-      * def patientObject = response
       * match response.name[0].suffix == "#notpresent"
-
-      * def suffixArray = ["PhD", "MBBS"]
       
       * configure headers = call read('classpath:auth/auth-headers.js')     
       * header Content-Type = "application/json-patch+json"
