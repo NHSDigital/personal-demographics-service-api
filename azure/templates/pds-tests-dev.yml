@@ -1,0 +1,3 @@
+steps:
+  - template: templates/pds-tests.yml
+  - template: templates/pds-tests-karate.yml
