@@ -16,7 +16,7 @@ Feature: Patch patient - Add and remove data
   
     @sandbox
   Scenario: Add and remove patient name
-    * def nhsNumber = '5900056449'
+    * def nhsNumber = '9732110317'
     * path 'Patient', nhsNumber
     * method get
     * status 200
