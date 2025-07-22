@@ -41,7 +41,16 @@ extends:
     apigee_deployments:
       - environment: internal-dev
         post_deploy:
-          - template: templates/pds-tests-dev.yml
+          - environment: internal-dev
+            stage_name: karate_tests
+            post_deploy:
+              - template: templates/pds-tests-karate.yml
+          - environment: internal-dev
+            stage_name: pytest_bdd_tests
+            post_deploy:
+              - template: templates/pds-tests.yml
+            depends_on:
+              - karate_tests
       # only deploy to other environments if the build was NOT a daily midnight build
       - ${{ if ne(variables['resources.pipeline.build_pipeline.triggerReason'], 'Schedule') }}:
           - environment: internal-qa-sandbox
