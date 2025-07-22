@@ -13,6 +13,9 @@ Feature: Patch patient - Add and remove data
     * configure headers = call read('classpath:auth/auth-headers.js')
     
     * url baseURL
+    # Adding re-try when "sync-wrap failed to connect to spine"
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503
   
     @sandbox
   Scenario: Add and remove patient name

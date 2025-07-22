@@ -4,6 +4,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
   Background:
     * def utils = call read('classpath:helpers/utils.feature') 
     * configure url = baseURL
+    # Adding re-try when "sync-wrap failed to connect to spine"
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503
   
    Scenario Outline: Patient can't retrieve coverage details when <patientType> 
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken

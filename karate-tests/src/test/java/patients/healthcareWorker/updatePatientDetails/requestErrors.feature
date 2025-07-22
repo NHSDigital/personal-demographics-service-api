@@ -7,6 +7,9 @@ Feature: Patch patient errors - Healthcare worker access mode
     * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders 
+    # Adding re-try when "sync-wrap failed to connect to spine"
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503
     
     * url baseURL
     * def nhsNumber = '5900059073'

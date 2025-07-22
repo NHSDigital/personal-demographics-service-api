@@ -7,7 +7,10 @@ Background:
     * configure headers = requestHeaders 
     * url baseURL
     * def utils = call read('classpath:helpers/utils.feature')
-    * def faker = Java.type('helpers.FakerWrapper')    
+    * def faker = Java.type('helpers.FakerWrapper')
+    # Adding re-try when "sync-wrap failed to connect to spine"
+    * configure retry = { count: 2, interval: 5000 }
+    * retry until responseStatus != 503    
     
 Scenario: Updating temporary address response should show empty address lines
     * def nhsNumber = '9733162256'

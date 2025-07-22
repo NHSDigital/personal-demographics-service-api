@@ -8,6 +8,9 @@ Feature: Update Coverage-not permitted for healthcare worker
     * configure headers = requestHeaders 
 
     * url baseURL
+    # Adding re-try when "sync-wrap failed to connect to spine"
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503
 
   Scenario: Fail to update a Coverage resource
     * def nhsNumber = '9733163031'

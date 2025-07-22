@@ -7,6 +7,9 @@ Feature: Patch patient - Remove data errors
     * def utils = call read('classpath:helpers/utils.feature')
     * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
     * url baseURL
+    # Adding re-try when "sync-wrap failed to connect to spine"
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503
 
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders

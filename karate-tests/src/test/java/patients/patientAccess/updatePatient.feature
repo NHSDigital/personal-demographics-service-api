@@ -6,6 +6,9 @@ Feature: Patient updates their details
     * url baseURL
     * def p9number = '9912003071'
     * def p5number = '9912003072'
+    # Adding re-try when "sync-wrap failed to connect to spine"
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503
 
   Scenario: Patient cannot update their gender
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken

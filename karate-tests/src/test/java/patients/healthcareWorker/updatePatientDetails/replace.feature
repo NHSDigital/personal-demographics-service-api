@@ -6,6 +6,9 @@ Feature: Patch patient - Replace data
     * def faker = Java.type('helpers.FakerWrapper')
     * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
     * url baseURL
+    # Adding re-try when "sync-wrap failed to connect to spine"
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503
 
   @sandbox
   Scenario: Replace attribute of an object
