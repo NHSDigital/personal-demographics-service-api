@@ -9,7 +9,7 @@ Background:
     * url baseURL
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
     * configure retry = { count: 2, interval: 6000 }
-    * retry until responseStatus != 503
+    * retry until responseStatus != 503 && responseStatus != 502  
 
     * configure headers = call read('classpath:auth/auth-headers.js') 
     * def nhsNumber = '5900059332'

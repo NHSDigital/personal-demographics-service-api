@@ -9,7 +9,7 @@ Background:
   * url baseURL
   # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
   * configure retry = { count: 2, interval: 6000 }
-  * retry until responseStatus != 503
+  * retry until responseStatus != 503 && responseStatus != 502  
 
 Scenario: Invalid patch - no address ID
   * def nhsNumber = '5900046192'

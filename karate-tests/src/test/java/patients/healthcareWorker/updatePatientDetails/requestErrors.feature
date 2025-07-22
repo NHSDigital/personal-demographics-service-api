@@ -9,7 +9,7 @@ Feature: Patch patient errors - Healthcare worker access mode
     * configure headers = requestHeaders 
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
     * configure retry = { count: 2, interval: 6000 }
-    * retry until responseStatus != 503
+    * retry until responseStatus != 503 && responseStatus != 502   
     
     * url baseURL
     * def nhsNumber = '5900059073'

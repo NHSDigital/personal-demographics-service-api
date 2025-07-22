@@ -9,7 +9,7 @@ Feature: Patch patient - Remove data errors
     * url baseURL
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
     * configure retry = { count: 2, interval: 6000 }
-    * retry until responseStatus != 503
+    * retry until responseStatus != 503 && responseStatus != 502  
 
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders

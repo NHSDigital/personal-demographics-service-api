@@ -9,7 +9,7 @@ Background:
   * url baseURL
   # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
   * configure retry = { count: 2, interval: 6000 }
-  * retry until responseStatus != 503
+  * retry until responseStatus != 503 && responseStatus != 502  
 Scenario: Invalid Method error should be raised when privileged-application-restricted user try to update patient details
     * def nhsNumber = '9733162817'
     * path 'Patient', nhsNumber

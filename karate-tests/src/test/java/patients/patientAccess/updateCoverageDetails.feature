@@ -9,7 +9,7 @@ Feature: Patient Access (Update Coverage details)
     * configure url = baseURL
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
     * configure retry = { count: 1, interval: 5000 }
-    * retry until responseStatus != 503
+    * retry until responseStatus != 503 && responseStatus != 502   
 
    @sandbox
    Scenario: Happy path - update patient coverage details

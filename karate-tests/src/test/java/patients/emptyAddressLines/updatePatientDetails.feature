@@ -10,7 +10,7 @@ Background:
     * def faker = Java.type('helpers.FakerWrapper')
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
     * configure retry = { count: 2, interval: 5000 }
-    * retry until responseStatus != 503    
+    * retry until responseStatus != 503 && responseStatus != 502  
     
 Scenario: Updating temporary address response should show empty address lines
     * def nhsNumber = '9733162256'

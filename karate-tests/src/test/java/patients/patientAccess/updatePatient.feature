@@ -8,7 +8,7 @@ Feature: Patient updates their details
     * def p5number = '9912003072'
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
     * configure retry = { count: 2, interval: 6000 }
-    * retry until responseStatus != 503
+    * retry until responseStatus != 503 && responseStatus != 502   
 
   Scenario: Patient cannot update their gender
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
