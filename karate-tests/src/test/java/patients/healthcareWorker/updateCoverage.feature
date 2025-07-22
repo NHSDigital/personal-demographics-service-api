@@ -8,7 +8,7 @@ Feature: Update Coverage-not permitted for healthcare worker
     * configure headers = requestHeaders 
 
     * url baseURL
-    # Adding re-try when "sync-wrap failed to connect to spine"
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
     * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503
 

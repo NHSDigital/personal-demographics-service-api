@@ -8,7 +8,7 @@ Background:
     * url baseURL
     * def utils = call read('classpath:helpers/utils.feature')
     * def faker = Java.type('helpers.FakerWrapper')
-    # Adding re-try when "sync-wrap failed to connect to spine"
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
     * configure retry = { count: 2, interval: 5000 }
     * retry until responseStatus != 503    
     

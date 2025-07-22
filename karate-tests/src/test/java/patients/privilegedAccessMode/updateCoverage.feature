@@ -6,7 +6,7 @@ Feature:  Update Coverage details - not permitted for privileged-application-res
     * def accessToken = karate.call('classpath:auth-jwt/auth-redirect.feature', {signingKey: karate.get('privilegedAccessSigningKey'), apiKey: karate.get('privilegedAccessApiKey')}).accessToken
     * def requestHeaders = call read('classpath:auth-jwt/app-restricted-headers.js')
     * configure headers = requestHeaders 
-    # Adding re-try when "sync-wrap failed to connect to spine"
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
     * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503
 

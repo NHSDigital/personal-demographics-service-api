@@ -7,7 +7,7 @@ Feature: Patient Access (Update Coverage details)
     * json coverageBundle = karate.readAsString('classpath:schemas/searchSchemas/patientCoverageBundle.json')
     
     * configure url = baseURL
-    # Adding re-try when "sync-wrap failed to connect to spine"
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
     * configure retry = { count: 1, interval: 5000 }
     * retry until responseStatus != 503
 

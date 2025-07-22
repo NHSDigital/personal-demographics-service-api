@@ -6,7 +6,7 @@ Feature: Patient updates their details
     * url baseURL
     * def p9number = '9912003071'
     * def p5number = '9912003072'
-    # Adding re-try when "sync-wrap failed to connect to spine"
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
     * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503
 

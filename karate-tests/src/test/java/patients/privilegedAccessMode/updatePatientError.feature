@@ -7,7 +7,7 @@ Background:
   * def requestHeaders = call read('classpath:auth-jwt/app-restricted-headers.js')
   * configure headers = requestHeaders 
   * url baseURL
-  # Adding re-try when "sync-wrap failed to connect to spine"
+  # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
   * configure retry = { count: 2, interval: 6000 }
   * retry until responseStatus != 503
 Scenario: Invalid Method error should be raised when privileged-application-restricted user try to update patient details
