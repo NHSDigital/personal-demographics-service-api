@@ -8,10 +8,7 @@ Feature: Update Coverage-not permitted for healthcare worker
     * configure headers = requestHeaders 
 
     * url baseURL
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
-    * retry until responseStatus != 503 && responseStatus != 502  
-
+ 
   Scenario: Fail to update a Coverage resource
     * def nhsNumber = '9733163031'
     * path 'Patient', nhsNumber
@@ -22,6 +19,9 @@ Feature: Update Coverage-not permitted for healthcare worker
     * def periodEndDate = utils.randomDateWithInYears(2)
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 403
     * def display = "Cannot POST resource with user-restricted access token"

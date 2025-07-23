@@ -7,9 +7,6 @@ Background:
     * def utils = call read('classpath:helpers/utils.feature')    
     * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
     * url baseURL
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
-    * retry until responseStatus != 503 && responseStatus != 502  
 
     * configure headers = call read('classpath:auth/auth-headers.js') 
     * def nhsNumber = '5900059332'
@@ -40,6 +37,9 @@ Scenario: Forbidden update example - multiple usual names cannot be added
     """
     * path 'Patient', nhsNumber
     * request {"patches": [{ "op": "add", "path": "/name/-", "value": "#(newName)" }]}
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503 && responseStatus != 502  
     * method patch
     * status 403
     * match response == expectedResponse

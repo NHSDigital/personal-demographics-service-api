@@ -7,9 +7,6 @@ Feature: Patch patient - Remove data errors
     * def utils = call read('classpath:helpers/utils.feature')
     * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
     * url baseURL
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
-    * retry until responseStatus != 503 && responseStatus != 502  
 
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
@@ -32,6 +29,9 @@ Feature: Patch patient - Remove data errors
     * header If-Match = etag
     * path 'Patient', nhsNumber
     * request {"patches":[{"op":"remove","path":"/name/1"}]}
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503 && responseStatus != 502  
     * method patch
     * status 400
     * match response == expectedBody
@@ -54,6 +54,9 @@ Feature: Patch patient - Remove data errors
         {"op":"remove","path":"/name/1"}
       ]}
       """
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503 && responseStatus != 502   
     * method patch
     * status 400
     * match response == expectedBody
@@ -76,6 +79,9 @@ Feature: Patch patient - Remove data errors
         {"op":"remove","path":"/name/0/suffix/0"}
       ]}
       """
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503 && responseStatus != 502   
     * method patch
     * status 400
     * match response == expectedBody

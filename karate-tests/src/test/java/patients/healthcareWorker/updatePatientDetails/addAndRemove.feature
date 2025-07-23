@@ -13,12 +13,12 @@ Feature: Patch patient - Add and remove data
     * configure headers = call read('classpath:auth/auth-headers.js')
     
     * url baseURL
+
+    @sandbox
+  Scenario: Add and remove patient name
     # Adding re-try when "sync-wrap failed to connect to spine"
     * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503
-  
-    @sandbox
-  Scenario: Add and remove patient name
     * def nhsNumber = '9732110317'
     * path 'Patient', nhsNumber
     * method get
@@ -176,6 +176,9 @@ Feature: Patch patient - Add and remove data
           { "op": "add", "path": "#(suffixPath)", "value": "#(suffixArray)" }
         ]}
         """
+      # Adding re-try when "sync-wrap failed to connect to spine"
+      * configure retry = { count: 2, interval: 6000 }
+      * retry until responseStatus != 503 
       * method patch
       * status 200
       * match response.name[0].suffix == suffixArray
@@ -239,6 +242,9 @@ Feature: Patch patient - Add and remove data
         { "op": "add", "path": "/name/0/suffix/0", "value": "#(suffix)" }
       ]}
       """
+    # Adding re-try when "sync-wrap failed to connect to spine"
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503 
     * method patch
     * status 200
     * match response.name[0].suffix contains suffix
@@ -296,6 +302,9 @@ Feature: Patch patient - Add and remove data
     * header If-Match = etagKey ? response.responseHeaders[etagKey][0] : null
     * path 'Patient', placeOfBirthNhsNumber
     * request requestBody
+    # Adding re-try when "sync-wrap failed to connect to spine"
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503
     * method patch
     * status 200 
     * def idAfterPlaceOfBirthUpdate = response.meta.versionId
@@ -331,6 +340,9 @@ Scenario:  Add an address to a PDS record that already contains a bad address- a
     * header If-Match = karate.response.header('etag')
     * path 'Patient', addressUpdateNhsNumber
     * request read('classpath:patients/requestDetails/add/addressUpdate.json')
+    # Adding re-try when "sync-wrap failed to connect to spine"
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503
     * method patch
     * status 200
     * def postcode = response.address[homeAddressIndex].postalCode

@@ -1,12 +1,8 @@
-
 Feature: Patient Access (Update Coverage details) - error scenarios
 
   Background:
     * def utils = call read('classpath:helpers/utils.feature') 
     * configure url = baseURL
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
-    * retry until responseStatus != 503 && responseStatus != 502  
   
    Scenario Outline: Patient can't retrieve coverage details when <patientType> 
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
@@ -17,6 +13,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def periodEndDate = utils.randomDateWithInYears(4)
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 403
     * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
@@ -40,6 +39,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def periodEndDate = utils.randomDateWithInYears(4)
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 401
     * assert utils.validateResponseHeaders(requestHeaders, responseHeaders) 
@@ -65,6 +67,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def periodEndDate = utils.randomDateWithInYears(4)
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 400
     * assert utils.validateResponseHeaders(requestHeaders, responseHeaders) 
@@ -95,6 +100,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def periodEndDate = utils.randomDateWithInYears(4)
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 409
     * match response == read('classpath:mocks/stubs/errorResponses/RESOURCE_VERSION_MISMATCH.json') 
@@ -109,6 +117,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def periodEndDate = utils.randomDateWithInYears(4)
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 412
     * def diagnostics = "Invalid request with error - If-Match header must be supplied to update this resource"
@@ -133,6 +144,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def periodEndDate = utils.randomDateWithInYears(4)
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request-missing-beneficiary-identifier-value.json')
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 400
     * def diagnostics = `Missing value - 'beneficiary/identifier/value'`
@@ -156,6 +170,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def periodEndDate = utils.randomDateWithInYears(4)
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request-missing-cardnumber.json')
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 400
     * def diagnostics = `Missing value - 'identifier/0/value'`
@@ -178,6 +195,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def periodEndDate = '1860-12-15'
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 400
     * def diagnostics = `Invalid value - '1860-12-15' in field 'period/end'`
@@ -200,6 +220,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def periodEndDate = utils.randomDateWithInYears(4)
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-reques-empty-value-institution-id.json')
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 400
     * def diagnostics = `Invalid value - '' in field 'payor/0/identifier/value'`
@@ -216,6 +239,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def nhsNumber = p9WithoutPatientObject
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 404
     * match response == read('classpath:mocks/stubs/errorResponses/RESOURCE_NOT_FOUND.json')   
@@ -238,6 +264,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def periodEndDate = utils.randomDateWithInYears(4)
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 403
     * def diagnostics = `Forbidden update with error - Update Failed - NHS No. supplied has been superseded in a merge`
@@ -265,6 +294,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def periodEndDate = utils.randomDateWithInYears(4)
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 403
     * def display = 'Patient cannot perform this action'
@@ -288,6 +320,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def periodEndDate = utils.randomDateWithInYears(4)
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request-too-many-payors.json')
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * configure retry = { count: 2, interval: 6000 }
+    * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 400
     * def diagnostics = `Too many values submitted - [{'identifier': {'value': 'DE98765'}}, {'identifier': {'value': 'FR98765'}}] in field 'payor'`
