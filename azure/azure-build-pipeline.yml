@@ -14,7 +14,7 @@ pr:
 
 schedules:
   - cron: "0 2 * * *"
-    displayName: Daily Midnight Build
+    displayName: Daily Overnight Build
     branches:
       include:
         - master
