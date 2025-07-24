@@ -17,6 +17,7 @@ resources:
         branches:
           include:
             - refs/tags/v*
+            - master
 
 pool:
   name: "AWS-ECS"
