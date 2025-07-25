@@ -35,7 +35,6 @@ Scenario: Replace attribute of an object
     ]}
     """
   # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-  * configure retry = { count: 2, interval: 6000 }
   * retry until responseStatus != 503 && responseStatus != 502    
   * method patch
   * status 200
@@ -61,7 +60,6 @@ Scenario Outline: Replace the <property> property
   * path 'Patient', nhsNumber
   * request {"patches": [{ "op": "replace", "path": "#('/' + property)", "value": "#(targetValue)" }]}
   # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-  * configure retry = { count: 2, interval: 6000 }
   * retry until responseStatus != 503 && responseStatus != 502  
   * method patch
   * status 200
@@ -90,7 +88,6 @@ Scenario: Healthcare worker can add, update and remove patient's emergency conta
   * def mobileNumber = '0788548987'
   * request read('classpath:patients/requestDetails/add/emergencyContact.json')
   # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-  * configure retry = { count: 2, interval: 6000 }
   * retry until responseStatus != 503 && responseStatus != 502  
   * method patch
   * status 200
@@ -127,7 +124,6 @@ Scenario: Healthcare worker can add, update and remove patient's emergency conta
           ]}}]}
     """    
   # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-  * configure retry = { count: 2, interval: 6000 }
   * retry until responseStatus != 503 && responseStatus != 502          
   * method patch
   * status 200
@@ -168,7 +164,6 @@ Scenario: Healthcare worker can add, update and remove patient's emergency conta
     }
   """
   # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-  * configure retry = { count: 2, interval: 6000 }
   * retry until responseStatus != 503 && responseStatus != 502  
   * request patchRequest
   * method patch
@@ -212,7 +207,6 @@ Scenario: Healthcare worker can update communication language-interpreter detail
       }]}
     """     
   # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-  * configure retry = { count: 2, interval: 6000 }
   * retry until responseStatus != 503 && responseStatus != 502          
   * method patch
   * status 200
@@ -254,7 +248,6 @@ Scenario: Send empty field on the update - interpreterRequired url is empty
       }]}
     """    
   # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-  * configure retry = { count: 2, interval: 6000 }
   * retry until responseStatus != 503 && responseStatus != 502          
   * method patch
   * status 400
@@ -300,7 +293,6 @@ Scenario: Healthcare worker can't remove usual name and DOB
     }
   """
   # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-  * configure retry = { count: 2, interval: 6000 }
   * retry until responseStatus != 503 && responseStatus != 502  
   * request patchRequest
   * method patch
@@ -330,7 +322,6 @@ Scenario: Healthcare worker can't remove usual name and DOB
     }
   """
   # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-  * configure retry = { count: 2, interval: 6000 }
   * retry until responseStatus != 503 && responseStatus != 502  
   * request patchRequest
   * method patch

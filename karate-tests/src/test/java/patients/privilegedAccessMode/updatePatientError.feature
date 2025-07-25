@@ -22,7 +22,6 @@ Scenario: Invalid Method error should be raised when privileged-application-rest
     * def mobileNumber = '0788848687'
     * request read('classpath:patients/requestDetails/add/emergencyContact.json')
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502
     * method patch
     * status 403

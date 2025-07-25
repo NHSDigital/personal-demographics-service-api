@@ -16,9 +16,6 @@ Feature: Patch patient - Add and remove data
 
     @sandbox
   Scenario: Add and remove patient name
-    # Adding re-try when "sync-wrap failed to connect to spine"
-    * configure retry = { count: 2, interval: 6000 }
-    * retry until responseStatus != 503
     * def nhsNumber = '9732110317'
     * path 'Patient', nhsNumber
     * method get
@@ -73,6 +70,8 @@ Feature: Patch patient - Add and remove data
     * header If-Match = etagKey ? response.responseHeaders[etagKey][0] : null
     * path 'Patient', nhsNumber
     * request {"patches": [{ "op": "add", "path": "/name/-", "value": "#(newName)" }]}
+    # Adding re-try when "sync-wrap failed to connect to spine"
+    * retry until responseStatus != 503 && responseStatus != 502
     * method patch
     * status 200
     * def addedName = response.name.find(x => x.family == "Bloggs")
@@ -99,6 +98,8 @@ Feature: Patch patient - Add and remove data
     * header If-Match = karate.response.header('etag')
     * path 'Patient', nhsNumber
     * request {"patches":[{"op":"remove","path":"/name/1"}]}
+    # Adding re-try when "sync-wrap failed to connect to spine"
+    * retry until responseStatus != 503 && responseStatus != 502
     * method patch
     * status 400
     * match response == expectedBody
@@ -177,8 +178,7 @@ Feature: Patch patient - Add and remove data
         ]}
         """
       # Adding re-try when "sync-wrap failed to connect to spine"
-      * configure retry = { count: 2, interval: 6000 }
-      * retry until responseStatus != 503 
+      * retry until responseStatus != 503 && responseStatus != 502
       * method patch
       * status 200
       * match response.name[0].suffix == suffixArray
@@ -243,8 +243,7 @@ Feature: Patch patient - Add and remove data
       ]}
       """
     # Adding re-try when "sync-wrap failed to connect to spine"
-    * configure retry = { count: 2, interval: 6000 }
-    * retry until responseStatus != 503 
+    * retry until responseStatus != 503 && responseStatus != 502
     * method patch
     * status 200
     * match response.name[0].suffix contains suffix
@@ -303,8 +302,7 @@ Feature: Patch patient - Add and remove data
     * path 'Patient', placeOfBirthNhsNumber
     * request requestBody
     # Adding re-try when "sync-wrap failed to connect to spine"
-    * configure retry = { count: 2, interval: 6000 }
-    * retry until responseStatus != 503
+    * retry until responseStatus != 503 && responseStatus != 502
     * method patch
     * status 200 
     * def idAfterPlaceOfBirthUpdate = response.meta.versionId
@@ -341,8 +339,7 @@ Scenario:  Add an address to a PDS record that already contains a bad address- a
     * path 'Patient', addressUpdateNhsNumber
     * request read('classpath:patients/requestDetails/add/addressUpdate.json')
     # Adding re-try when "sync-wrap failed to connect to spine"
-    * configure retry = { count: 2, interval: 6000 }
-    * retry until responseStatus != 503
+    * retry until responseStatus != 503 && responseStatus != 502
     * method patch
     * status 200
     * def postcode = response.address[homeAddressIndex].postalCode

@@ -29,7 +29,6 @@ Scenario: Updating temporary address response should show empty address lines
     * path 'Patient', nhsNumber
     * request read('classpath:patients/requestDetails/add/addressUpdate.json')
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 5000 }
     * retry until responseStatus != 503 && responseStatus != 502  
     * method patch
     * status 200 
@@ -56,7 +55,6 @@ Scenario: Updating contact details response should show empty address lines
     * def newTelecom = { "id": "#(originalTelecom[mobileIndex].id)", "period": { "start": "#(utils.todaysDate())" }, "system": "phone", "use": "mobile", "value": "#(faker.phoneNumber())" }
     * request { "patches": [{ "op": "replace", "path": "#('/telecom/' + mobileIndex)", "value": "#(newTelecom)" }]}
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 5000 }
     * retry until responseStatus != 503 && responseStatus != 502  
     * path 'Patient', nhsNumber
     * method patch

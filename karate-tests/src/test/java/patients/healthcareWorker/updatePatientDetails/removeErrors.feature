@@ -30,7 +30,6 @@ Feature: Patch patient - Remove data errors
     * path 'Patient', nhsNumber
     * request {"patches":[{"op":"remove","path":"/name/1"}]}
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502  
     * method patch
     * status 400
@@ -55,7 +54,6 @@ Feature: Patch patient - Remove data errors
       ]}
       """
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502   
     * method patch
     * status 400
@@ -80,7 +78,6 @@ Feature: Patch patient - Remove data errors
       ]}
       """
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502   
     * method patch
     * status 400

@@ -14,7 +14,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 403
@@ -40,7 +39,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 401
@@ -68,7 +66,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 400
@@ -101,7 +98,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 409
@@ -118,7 +114,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 412
@@ -145,7 +140,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request-missing-beneficiary-identifier-value.json')
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 400
@@ -171,7 +165,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request-missing-cardnumber.json')
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 400
@@ -196,7 +189,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 400
@@ -221,7 +213,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-reques-empty-value-institution-id.json')
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 400
@@ -240,7 +231,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 404
@@ -265,7 +255,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 403
@@ -295,7 +284,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 403
@@ -321,7 +309,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request-too-many-payors.json')
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 400

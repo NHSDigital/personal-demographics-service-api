@@ -30,7 +30,6 @@ Scenario: Invalid patch - no address ID
     ]}
     """
   # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-  * configure retry = { count: 2, interval: 6000 }
   * retry until responseStatus != 503 && responseStatus != 502   
   * method patch
   * status 400
@@ -59,7 +58,6 @@ Scenario: Invalid patch - attempt to replace non-existent object
     ]}
     """
   # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-  * configure retry = { count: 2, interval: 6000 }
   * retry until responseStatus != 503 && responseStatus != 502   
   * method patch
   * status 400
@@ -89,7 +87,6 @@ Scenario: Invalid patch - invalid address ID
     ]}
     """  
   # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-  * configure retry = { count: 2, interval: 6000 }
   * retry until responseStatus != 503 && responseStatus != 502     
   * method patch
   * status 400
@@ -112,7 +109,6 @@ Scenario: Invalid patch - invalid address ID only
   * path 'Patient', nhsNumber
   * request {"patches":[{"op":"replace","path":"/address/0/id","value":"123456"}]}
   # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-  * configure retry = { count: 2, interval: 6000 }
   * retry until responseStatus != 503 && responseStatus != 502 
   * method patch
   * status 400
@@ -144,7 +140,6 @@ Scenario: Invalid patch - patient with no address
   }
   """
   # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-  * configure retry = { count: 2, interval: 6000 }
   * retry until responseStatus != 503 && responseStatus != 502 
   * method patch
   * status 400
@@ -168,7 +163,6 @@ Scenario: Invalid patch - Patient with no address / Request without address ID
   * path 'Patient', nhsNumber
   * request {"patches":[{"op":"replace","path":"/address/0/line/0","value":"2 Whitehall Quay"},{"op":"replace","path":"/address/0/postalCode","value":"LS1 4BU"}]}
   # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-  * configure retry = { count: 2, interval: 6000 }
   * retry until responseStatus != 503 && responseStatus != 502 
   * method patch
   * status 400

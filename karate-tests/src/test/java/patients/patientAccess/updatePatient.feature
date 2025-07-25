@@ -25,7 +25,6 @@ Feature: Patient updates their details
     * path 'Patient', p9number
     * request {"patches": [{ "op": "replace", "path": "/gender", "value": "#(targetValue)" }]}
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502   
     * method patch
     * status 400
@@ -50,7 +49,6 @@ Feature: Patient updates their details
     * path 'Patient', p9number
     * request { "patches": [{ "op": "test", "path": "/telecom/0/id", "value": "#(response.telecom[0].id)" }, { "op": "remove", "path": "/telecom/0"} ]}
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502   
     * method patch
     * status 400
@@ -63,7 +61,6 @@ Feature: Patient updates their details
     * def newTelecom = { "id": "#(originalTelecom[mobileIndex].id)", "period": { "start": "#(utils.todaysDate())" }, "system": "phone", "use": "mobile", "value": "#(faker.phoneNumber())" }
     * request { "patches": [{ "op": "replace", "path": "#('/telecom/' + mobileIndex)", "value": "#(newTelecom)" }]}
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502   
     * path 'Patient', p9number
     * method patch
@@ -84,7 +81,6 @@ Feature: Patient updates their details
     * def newTelecom = { "id": "#(originalTelecom[0].id)", "period": { "start": "#(utils.todaysDate())" }, "system": "phone", "use": "mobile", "value": "#(faker.phoneNumber())" }
     * request { "patches": [{ "op": "replace", "path": "/telecom/0", "value": "#(newTelecom)" }]}
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502   
     * path 'Patient', p5number
     * method patch
@@ -147,7 +143,6 @@ Feature: Patient updates their details
         """
       * request requestbody  
       # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-      * configure retry = { count: 2, interval: 6000 }
       * retry until responseStatus != 503 && responseStatus != 502   
       * method patch
       * status 400 
@@ -198,7 +193,6 @@ Feature: Patient updates their details
             ]}}]}
      """ 
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502    
     * request requestbody      
     * method patch
@@ -229,7 +223,6 @@ Feature: Patient updates their details
         }}]}
      """  
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502      
     * method patch
     * status 200  
@@ -279,7 +272,6 @@ Feature: Patient updates their details
     * path 'Patient', p9numberForPharmacy
     * request requestBody
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502   
     * method patch
     * status 200 
@@ -353,7 +345,6 @@ Feature: Patient updates their details
     }
     """
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502   
     * request requestBody
     * method patch

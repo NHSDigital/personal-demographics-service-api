@@ -20,7 +20,6 @@ Feature: Update Coverage-not permitted for healthcare worker
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 403

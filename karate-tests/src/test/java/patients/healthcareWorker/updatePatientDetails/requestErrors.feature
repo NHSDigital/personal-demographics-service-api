@@ -27,7 +27,6 @@ Feature: Patch patient errors - Healthcare worker access mode
     * path 'Patient', nhsNumber
     * request {}
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502   
     * method patch
     * status 400
@@ -49,7 +48,6 @@ Feature: Patch patient errors - Healthcare worker access mode
     ]}
     """
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502   
     * method patch
     * status 409
@@ -70,7 +68,6 @@ Feature: Patch patient errors - Healthcare worker access mode
     * path 'Patient', nhsNumber
     * request {"patches":[{"op":"remove","path":"/name/0/suffix/0"}]}
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502   
     * method patch
     * status 400
@@ -91,7 +88,6 @@ Feature: Patch patient errors - Healthcare worker access mode
       ]}
       """
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502    
     * method patch
     * status 412
@@ -106,7 +102,6 @@ Feature: Patch patient errors - Healthcare worker access mode
     * path 'Patient', nhsNumber
     * request {"patches":[{"op":"remove","path":"/name/0/suffix/0"}]}
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502   
     * method patch
     * status 400
@@ -122,7 +117,6 @@ Feature: Patch patient errors - Healthcare worker access mode
     * path 'Patient', nhsNumber
     * request {"patches":[{"op":"bad_value","path":"not a path"}]}
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502   
     * method patch
     * status 400
@@ -143,7 +137,6 @@ Feature: Patch patient errors - Healthcare worker access mode
       ]}
       """
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502     
     * method patch
     * status 400
@@ -164,7 +157,6 @@ Feature: Patch patient errors - Healthcare worker access mode
       ]}
       """
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502     
     * method patch
     * status 404
@@ -184,7 +176,6 @@ Feature: Patch patient errors - Healthcare worker access mode
     * path 'Patient', nhsNumber
     * request {"patches":[{"op":"remove","path":"/name/0/suffix/0"}]}
     # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * configure retry = { count: 2, interval: 6000 }
     * retry until responseStatus != 503 && responseStatus != 502   
     * method patch
     * status 400
