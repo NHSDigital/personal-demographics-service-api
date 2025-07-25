@@ -11,6 +11,7 @@ Feature: Patch patient errors - Healthcare worker access mode
     * url baseURL
     * def nhsNumber = '5900059073'
     * path 'Patient', nhsNumber
+    * retry until responseStatus != 503 && responseStatus != 502   
     * method get
     * status 200
     
