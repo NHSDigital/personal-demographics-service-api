@@ -6,7 +6,7 @@ Demonstrates invalid "replace" operations on a patient resource.
 Background:
   * def utils = call read('classpath:helpers/utils.feature')
   * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
-  * url baseURL
+  * url baseURL 
 
 Scenario: Invalid patch - no address ID
   * def nhsNumber = '5900046192'
@@ -29,6 +29,8 @@ Scenario: Invalid patch - no address ID
       {"op":"replace","path":"/address/0/postalCode","value":"LS1 4BU"}
     ]}
     """
+  # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+  * retry until responseStatus != 503 && responseStatus != 502   
   * method patch
   * status 400
   * match response == expectedBody
@@ -55,6 +57,8 @@ Scenario: Invalid patch - attempt to replace non-existent object
       {"op":"replace","path":"/address/0/postalCode","value":"LS1 4BU"}
     ]}
     """
+  # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+  * retry until responseStatus != 503 && responseStatus != 502   
   * method patch
   * status 400
   * match response == expectedBody
@@ -82,6 +86,8 @@ Scenario: Invalid patch - invalid address ID
       {"op":"replace","path":"/address/0/postalCode","value":"LS1 4BU"}
     ]}
     """  
+  # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+  * retry until responseStatus != 503 && responseStatus != 502     
   * method patch
   * status 400
   * match response == expectedBody
@@ -102,6 +108,8 @@ Scenario: Invalid patch - invalid address ID only
   * header If-Match = karate.response.header('etag')     
   * path 'Patient', nhsNumber
   * request {"patches":[{"op":"replace","path":"/address/0/id","value":"123456"}]}
+  # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+  * retry until responseStatus != 503 && responseStatus != 502 
   * method patch
   * status 400
   * match response == expectedBody
@@ -131,6 +139,8 @@ Scenario: Invalid patch - patient with no address
     ]
   }
   """
+  # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+  * retry until responseStatus != 503 && responseStatus != 502 
   * method patch
   * status 400
   * match response == expectedBody
@@ -152,6 +162,8 @@ Scenario: Invalid patch - Patient with no address / Request without address ID
 
   * path 'Patient', nhsNumber
   * request {"patches":[{"op":"replace","path":"/address/0/line/0","value":"2 Whitehall Quay"},{"op":"replace","path":"/address/0/postalCode","value":"LS1 4BU"}]}
+  # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+  * retry until responseStatus != 503 && responseStatus != 502 
   * method patch
   * status 400
   * match response == expectedBody

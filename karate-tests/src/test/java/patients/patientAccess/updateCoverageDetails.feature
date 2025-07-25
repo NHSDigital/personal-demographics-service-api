@@ -7,7 +7,7 @@ Feature: Patient Access (Update Coverage details)
     * json coverageBundle = karate.readAsString('classpath:schemas/searchSchemas/patientCoverageBundle.json')
     
     * configure url = baseURL
-
+ 
    @sandbox
    Scenario: Happy path - update patient coverage details
     * def nhsNumber = karate.env.includes('sandbox') ? '9000000009' : '9733162892'
@@ -27,6 +27,8 @@ Feature: Patient Access (Update Coverage details)
     * def periodEndDate = utils.randomDateWithInYears(4)
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * retry until responseStatus != 503 && responseStatus != 502  
     * method post
     * status 201
     * match parseInt(response.meta.versionId) == originalVersion + 1
