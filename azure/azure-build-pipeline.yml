@@ -39,6 +39,11 @@ extends:
     variables:
       PIP_CACHE_DIR: ".poetry"
     test_steps:
+      - task: UseJava@1
+        displayName: 'Use Java 17'
+        inputs:
+          versionSpec: '17'
+          distribution: 'Temurin'
       - bash: "make sandbox &"
         displayName: Start Sandbox Server
         workingDirectory: "${{ variables.service_name }}"
