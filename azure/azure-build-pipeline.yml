@@ -48,6 +48,8 @@ extends:
       - bash: "make sandbox &"
         displayName: Start Sandbox Server
         workingDirectory: "${{ variables.service_name }}"
-      - bash: "make validate"
+      - bash: |
+          java -version
+          make validate
         displayName: Validate FHIR
         workingDirectory: "${{ variables.service_name }}"
