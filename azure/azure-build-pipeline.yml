@@ -39,12 +39,12 @@ extends:
     variables:
       PIP_CACHE_DIR: ".poetry"
     test_steps:
-      - bash: |
-          echo "Setting JAVA_HOME to Java 17..."
-          export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-          export PATH=$JAVA_HOME/bin:$PATH
-          java -version
-        displayName: 'Manually set Java 17'
+      - task: JavaToolInstaller@0
+        inputs:
+          versionSpec: '17'
+          jdkArchitecture: 'x64'
+          jdkSourceOption: 'PreInstalled'
+        displayName: 'Set up Java 17'
       - bash: "make sandbox &"
         displayName: Start Sandbox Server
         workingDirectory: "${{ variables.service_name }}"
