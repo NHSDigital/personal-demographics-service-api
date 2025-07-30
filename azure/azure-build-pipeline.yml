@@ -39,12 +39,14 @@ extends:
     variables:
       PIP_CACHE_DIR: ".poetry"
     test_steps:
-      - task: UseJava@1
-        displayName: Use Java 17
+      - task: JavaToolInstaller@0
+        displayName: Install JRE & JDK v17 x64
         inputs:
           versionSpec: "17"
-          distribution: "Temurin"
           jdkArchitectureOption: "x64"
+          jdkSourceOption: "LocalDirectory"
+          jdkFile: "/tmp/openjdk/JAVA_HOME_17_X64_openjdk_tar.gz"
+          jdkDestinationDirectory: "/tmp/openjdk"
       - bash: "make sandbox &"
         displayName: Start Sandbox Server
         workingDirectory: "${{ variables.service_name }}"
