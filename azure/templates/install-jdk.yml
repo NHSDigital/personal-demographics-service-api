@@ -1,10 +1,7 @@
-steps:
-  - bash: |
-      echo "Files in working directory:"
-      ls -la
-    workingDirectory: "${{ variables.service_name }}"
-    displayName: Debug working directory
+variables:
+  - template: project.yml
 
+steps:
   - bash: "make download-openjdk"
     displayName: Download OpenJDK
     workingDirectory: "${{ variables.service_name }}"

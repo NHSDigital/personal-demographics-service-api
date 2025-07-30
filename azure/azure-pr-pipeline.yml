@@ -43,8 +43,6 @@ extends:
         stage_name: karate_tests
         post_deploy:
           - template: templates/install-jdk.yml
-            parameters: 
-              service_name: ${{ variables.service_name }}
           - template: templates/pds-tests-karate.yml
 
       - environment: internal-dev
