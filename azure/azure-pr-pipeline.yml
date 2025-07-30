@@ -41,10 +41,11 @@ extends:
     apigee_deployments:
       - environment: internal-dev
         stage_name: karate_tests
-        post_deploy:
+        pre_deploy:
           - template: templates/install-jdk.yml
             parameters:
               service_name: ${{ variables.service_name }}
+        post_deploy:
           - template: templates/pds-tests-karate.yml
 
       - environment: internal-dev
