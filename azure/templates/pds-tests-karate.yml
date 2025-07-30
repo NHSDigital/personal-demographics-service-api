@@ -5,6 +5,15 @@ steps:
       command: 'custom'
       customCommand: 'install -g @stoplight/prism-cli'
 
+  - task: JavaToolInstaller@0
+    displayName: Install JRE & JDK v17 x64
+    inputs:
+      versionSpec: "17"
+      jdkArchitectureOption: "x64"
+      jdkSourceOption: "LocalDirectory"
+      jdkFile: "/tmp/openjdk.tar.gz"
+      jdkDestinationDirectory: "/tmp/openjdk"
+
   - template: "expose-pds-variables-and-commands.yml"
 
   # Run the tests against veit07
@@ -28,6 +37,12 @@ steps:
       export PRIVILEGED_ACCESS_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(PRIVILEGED_ACCESS_TESTING_SIGNING_KEY)"
       export INTERNAL_SERVER_BASE_URI="$(INTERNAL_SERVER_BASE_URI)"
       export KEY_ID="$(KEY_ID)"
+
+      export JAVA_HOME=/tmp/openjdk
+      export PATH=$JAVA_HOME/bin:$PATH
+
+      java -version
+
       mvn clean test -Dtest=TestParallel 
     displayName: 'Run Karate Tests'
     workingDirectory: "$(ARTIFACT_PATH)/karate-tests"
