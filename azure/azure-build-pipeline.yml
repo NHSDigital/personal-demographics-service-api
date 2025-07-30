@@ -40,6 +40,8 @@ extends:
       PIP_CACHE_DIR: ".poetry"
     test_steps:
       - template: templates/install-jdk.yml
+        parameters:
+          service_name: ${{ variables.service_name }}
 
       - bash: "make sandbox &"
         displayName: Start Sandbox Server

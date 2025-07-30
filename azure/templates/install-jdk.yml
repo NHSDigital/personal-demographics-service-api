@@ -1,10 +1,11 @@
-variables:
-  - template: project.yml
+parameters:
+  - name: service_name
+    type: string
 
 steps:
   - bash: "make download-openjdk"
     displayName: Download OpenJDK
-    workingDirectory: "${{ variables.service_name }}"
+    workingDirectory: "${{ parameters.service_name }}"
 
   - task: JavaToolInstaller@0
     displayName: Install JRE & JDK v20 x64
