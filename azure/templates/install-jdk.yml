@@ -3,11 +3,11 @@ parameters:
     type: string
 
 steps:
-  - bash: "echo ${{ parameters.service_name }}"
-    displayName: DEBUG
-
-  - bash: "pwd"
-    displayName: DEBUG
+  - bash: |
+      echo "Files in working directory:"
+      ls -la
+    workingDirectory: "${{ parameters.service_name }}"
+    displayName: Debug working directory
 
   - bash: "make download-openjdk"
     displayName: Download OpenJDK
