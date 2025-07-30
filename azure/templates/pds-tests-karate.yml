@@ -5,19 +5,6 @@ steps:
       command: 'custom'
       customCommand: 'install -g @stoplight/prism-cli'
 
-  - bash: "make download-openjdk"
-    displayName: Download OpenJDK
-    workingDirectory: "${{ variables.service_name }}"
-
-  - task: JavaToolInstaller@0
-    displayName: Install JRE & JDK v17 x64
-    inputs:
-      versionSpec: "17"
-      jdkArchitectureOption: "x64"
-      jdkSourceOption: "LocalDirectory"
-      jdkFile: "/tmp/openjdk.tar.gz"
-      jdkDestinationDirectory: "/tmp/openjdk"
-
   - template: "expose-pds-variables-and-commands.yml"
 
   # Run the tests against veit07
