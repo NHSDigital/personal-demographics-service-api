@@ -39,23 +39,12 @@ extends:
     variables:
       PIP_CACHE_DIR: ".poetry"
     test_steps:
-      - bash: "make download-openjdk"
-        displayName: Download OpenJDK
-        workingDirectory: "${{ variables.service_name }}"
-
-      - task: JavaToolInstaller@0
-        displayName: Install JRE & JDK v17 x64
-        inputs:
-          versionSpec: "17"
-          jdkArchitectureOption: "x64"
-          jdkSourceOption: "LocalDirectory"
-          jdkFile: "/tmp/openjdk.tar.gz"
-          jdkDestinationDirectory: "/tmp/openjdk"
+      - template: templates/install-jdk.yml
 
       - bash: "make sandbox &"
         displayName: Start Sandbox Server
         workingDirectory: "${{ variables.service_name }}"
-        
+
       - bash: |
           java -version
           make validate

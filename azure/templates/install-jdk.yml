@@ -1,0 +1,13 @@
+steps:
+  - bash: "make download-openjdk"
+    displayName: Download OpenJDK
+    workingDirectory: "${{ variables.service_name }}"
+
+  - task: JavaToolInstaller@0
+    displayName: Install JRE & JDK v20 x64
+    inputs:
+      versionSpec: "20"
+      jdkArchitectureOption: "x64"
+      jdkSourceOption: "LocalDirectory"
+      jdkFile: "/tmp/openjdk.tar.gz"
+      jdkDestinationDirectory: "/tmp/openjdk"
