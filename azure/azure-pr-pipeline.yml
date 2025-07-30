@@ -44,7 +44,7 @@ extends:
         pre_deploy:
           - template: templates/install-jdk.yml
             parameters:
-              service_name: ${{ variables.service_name }}
+              service_name: ${{ format('{0}-{1}', variables.service_name, format('{0}+{1}', variables['Build.SourceBranchName'], variables['Build.BuildId'])) }}
         post_deploy:
           - template: templates/pds-tests-karate.yml
 
