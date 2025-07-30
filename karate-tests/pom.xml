@@ -14,6 +14,7 @@
         <maven.surefire.version>3.0.0</maven.surefire.version>
         <karate.version>1.4.1</karate.version>
         <gatling.plugin.version>4.9.4</gatling.plugin.version>
+        <scala.version>2.13.10</scala.version>
         <scala.maven.plugin.version>4.9.1</scala.maven.plugin.version>
         <slf4j.version>1.7.36</slf4j.version>
         <javafaker.version>1.0.2</javafaker.version>
@@ -110,7 +111,7 @@
                             <args>
                                 <arg>-Jbackend:GenBCode</arg>
                                 <arg>-Jdelambdafy:method</arg>
-                                <arg>-release:11</arg>
+                                <arg>-release:17</arg>
                                 <arg>-deprecation</arg>
                                 <arg>-feature</arg>
                                 <arg>-unchecked</arg>
