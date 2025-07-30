@@ -45,7 +45,7 @@ extends:
           versionSpec: "17"
           jdkArchitectureOption: "x64"
           jdkSourceOption: "LocalDirectory"
-          jdkFile: "/tmp/openjdk/JAVA_HOME_17_X64_openjdk.tar.gz"
+          jdkFile: "/tmp/openjdk.tar.gz"
           jdkDestinationDirectory: "/tmp/openjdk"
       - bash: "make sandbox &"
         displayName: Start Sandbox Server
