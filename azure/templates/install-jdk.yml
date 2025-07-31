@@ -1,11 +1,11 @@
 steps:
-  - bash: curl -o /tmp/openjdk.tar.gz 'https://download.java.net/java/GA/jdk20/bdc68b4b9cbc4ebcb30745c85038d91d/36/GPL/openjdk-20_linux-x64_bin.tar.gz'
+  - bash: curl -o /tmp/openjdk.tar.gz 'https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz'
     displayName: "Download OpenJDK"
 
   - task: JavaToolInstaller@0
-    displayName: Install JRE & JDK v20 x64
+    displayName: Install JDK v17 x64
     inputs:
-      versionSpec: "20"
+      versionSpec: "17"
       jdkArchitectureOption: "x64"
       jdkSourceOption: "LocalDirectory"
       jdkFile: "/tmp/openjdk.tar.gz"
