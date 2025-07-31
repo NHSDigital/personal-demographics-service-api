@@ -37,6 +37,8 @@ Scenario: Forbidden update example - multiple usual names cannot be added
     """
     * path 'Patient', nhsNumber
     * request {"patches": [{ "op": "add", "path": "/name/-", "value": "#(newName)" }]}
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * retry until responseStatus != 503 && responseStatus != 502  
     * method patch
     * status 403
     * match response == expectedResponse

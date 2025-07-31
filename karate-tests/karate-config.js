@@ -2,6 +2,7 @@ function fn() {
   // https://github.com/karatelabs/karate#configure for all the options
   karate.configure('connectTimeout', 5000);
   karate.configure('readTimeout', 20000);
+  karate.configure('retry',{ count: 2, interval: 5000 });
   var env = karate.env; // get java system property 'karate.env'
 
   if (env == 'ci') {
