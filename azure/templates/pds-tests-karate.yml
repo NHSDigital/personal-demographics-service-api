@@ -29,16 +29,6 @@ steps:
       export INTERNAL_SERVER_BASE_URI="$(INTERNAL_SERVER_BASE_URI)"
       export KEY_ID="$(KEY_ID)"
 
-      if [ ! -x /tmp/openjdk/bin/java ]; then
-        echo "Java not found at /tmp/openjdk/bin/java"
-        exit 1
-      fi
-
-      export JAVA_HOME=/tmp/openjdk
-      export PATH=$JAVA_HOME/bin:$PATH
-
-      echo "JAVA_HOME set to $JAVA_HOME"
-
       java -version
 
       mvn clean test -Dtest=TestParallel 
