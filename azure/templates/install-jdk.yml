@@ -4,14 +4,9 @@ parameters:
 
 steps:
   - bash: |
-      echo "Files in working directory:"
-      ls -la
-    workingDirectory: "${{ parameters.service_name }}"
-    displayName: Debug working directory
-
-  - bash: "make download-openjdk"
+      cd "$(find . -maxdepth 1 -type d -name 'personal-demographics-*' | head -n 1)"
+      make download-openjdk
     displayName: Download OpenJDK
-    workingDirectory: "${{ parameters.service_name }}"
 
   - task: JavaToolInstaller@0
     displayName: Install JRE & JDK v20 x64
