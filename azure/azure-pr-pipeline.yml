@@ -45,6 +45,8 @@ extends:
         stage_name: karate_tests
         pre_deploy:
           - template: templates/install-jdk.yml
+            parameters:
+              service_name: ${{ variables.proxies_dir }}
         post_deploy:
           - template: templates/pds-tests-karate.yml
 

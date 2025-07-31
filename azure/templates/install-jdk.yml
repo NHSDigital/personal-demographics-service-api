@@ -1,8 +1,17 @@
+parameters:
+  - name: service_name
+    type: string
+
 steps:
   - bash: |
-      cd $PROXIES_DIR
-      make download-openjdk
+      echo "Files in working directory:"
+      ls -la
+    workingDirectory: "${{ parameters.service_name }}"
+    displayName: Debug working directory
+
+  - bash: "make download-openjdk"
     displayName: Download OpenJDK
+    workingDirectory: "${{ parameters.service_name }}"
 
   - task: JavaToolInstaller@0
     displayName: Install JRE & JDK v20 x64
