@@ -4,9 +4,23 @@ parameters:
 
 steps:
   - bash: |
-      cd "$(find . -maxdepth 1 -type d -name 'personal-demographics-*' | head -n 1)"
+      set -e
+      
+      dir=$(find . -maxdepth 1 -type d -name 'personal-demographics*' | head -n 1)
+      echo "Found directory: $dir"
+      ls -la "$dir"
+
+      if [ -f "$dir/Makefile" ]; then
+        echo "Makefile found. Contents:"
+        cat "$dir/Makefile"
+      else
+        echo "No Makefile found in $dir"
+        exit 1
+      fi
+      
+      cd "$dir"
       make download-openjdk
-    displayName: Download OpenJDK
+    displayName: "Download OpenJDK"
 
   - task: JavaToolInstaller@0
     displayName: Install JRE & JDK v20 x64
