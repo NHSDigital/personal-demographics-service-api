@@ -6,14 +6,16 @@ steps:
   - bash: |
       set -e
 
-      dir=$(find . -maxdepth 1 -type d -name 'personal-demographics-*+*' | head -n 1)
+      # Try to find the versioned subfolder inside personal-demographics/
+      versioned_dir=$(find personal-demographics -maxdepth 1 -type d -name 'personal-demographics-*+*' | head -n 1)
 
-      if [ -z "$dir" ]; then
-        echo "No versioned folder found. Falling back to base directory."
-        dir="./personal-demographics"
+      if [ -n "$versioned_dir" ]; then
+        dir="$versioned_dir"
+        echo "Using nested versioned directory: $dir"
+      else
+        dir="personal-demographics"
+        echo "Falling back to base directory: $dir"
       fi
-
-      echo "Using directory: $dir"
 
       if [ -f "$dir/Makefile" ]; then
         echo "Makefile found."
