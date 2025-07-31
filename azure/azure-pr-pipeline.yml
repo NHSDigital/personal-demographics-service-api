@@ -56,6 +56,8 @@ extends:
       - environment: internal-dev-sandbox
         proxy_path: sandbox
         stage_name: internal-dev-sandbox
+        pre_deploy:
+          - template: templates/install-jdk.yml
         post_deploy:
           - template: templates/sandbox-tests.yml
           
@@ -64,6 +66,8 @@ extends:
         short_service_name: ${{ variables.short_service_name }}-int
         service_base_path: ${{ variables.service_base_path }}-int
         stage_name: internal_dev_int
+        pre_deploy:
+          - template: templates/install-jdk.yml
         post_deploy:
            - template: templates/pds-tests-dev-int.yml  
         jinja_templates:
