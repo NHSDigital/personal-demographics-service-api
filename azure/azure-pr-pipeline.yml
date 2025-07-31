@@ -44,7 +44,7 @@ extends:
         pre_deploy:
           - template: templates/install-jdk.yml
             parameters:
-              service_name: ${{ variables.service_base_path }}
+              service_name: ${{ variables.proxies_dir }}
         post_deploy:
           - template: templates/pds-tests-karate.yml
 

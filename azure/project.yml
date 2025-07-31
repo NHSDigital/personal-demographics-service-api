@@ -6,3 +6,4 @@ variables:
   product_description: " "
   spec_file: personal-demographics.json
   python_version: 3.9
+  proxies_dir: $[env.PROXIES_DIR]
