@@ -1,31 +1,5 @@
-parameters:
-  - name: service_name
-    type: string
-
 steps:
-  - bash: |
-      set -e
-
-      # Try to find the versioned subfolder inside personal-demographics/
-      versioned_dir=$(find personal-demographics -maxdepth 1 -type d -name 'personal-demographics-*+*' | head -n 1)
-
-      if [ -n "$versioned_dir" ]; then
-        dir="$versioned_dir"
-        echo "Using nested versioned directory: $dir"
-      else
-        dir="personal-demographics"
-        echo "Falling back to base directory: $dir"
-      fi
-
-      if [ -f "$dir/Makefile" ]; then
-        echo "Makefile found."
-      else
-        echo "No Makefile found in $dir"
-        exit 1
-      fi
-
-      cd "$dir"
-      make download-openjdk
+  - bash: curl -o /tmp/openjdk.tar.gz 'https://download.java.net/java/GA/jdk20/bdc68b4b9cbc4ebcb30745c85038d91d/36/GPL/openjdk-20_linux-x64_bin.tar.gz'
     displayName: "Download OpenJDK"
 
   - task: JavaToolInstaller@0
