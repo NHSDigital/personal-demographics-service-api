@@ -5,19 +5,23 @@ parameters:
 steps:
   - bash: |
       set -e
-      
-      dir=$(find . -maxdepth 1 -type d -name 'personal-demographics*' | head -n 1)
-      echo "Found directory: $dir"
-      ls -la "$dir"
+
+      dir=$(find . -maxdepth 1 -type d -name 'personal-demographics-*+*' | head -n 1)
+
+      if [ -z "$dir" ]; then
+        echo "No versioned folder found. Falling back to base directory."
+        dir="./personal-demographics"
+      fi
+
+      echo "Using directory: $dir"
 
       if [ -f "$dir/Makefile" ]; then
-        echo "Makefile found. Contents:"
-        cat "$dir/Makefile"
+        echo "Makefile found."
       else
         echo "No Makefile found in $dir"
         exit 1
       fi
-      
+
       cd "$dir"
       make download-openjdk
     displayName: "Download OpenJDK"
