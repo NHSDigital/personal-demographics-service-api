@@ -25,6 +25,8 @@ pool:
 
 variables:
   - template: project.yml
+  - name: proxies_dir
+    value: $[env.PROXIES_DIR]
 
 extends:
   template: azure/common/apigee-deployment.yml@common
