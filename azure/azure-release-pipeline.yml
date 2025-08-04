@@ -41,6 +41,8 @@ extends:
       RATE_LIMIT_POST: true
     apigee_deployments:
       - environment: internal-dev
+        pre_deploy:
+          - template: templates/install-jdk.yml
         post_deploy:
           - template: templates/pds-tests-dev.yml
       # only deploy to other environments if the build was NOT a daily overnight build
@@ -48,6 +50,8 @@ extends:
           - environment: internal-qa-sandbox
             enable_status_monitoring: false
             proxy_path: sandbox
+            pre_deploy:
+              - template: templates/install-jdk.yml
             post_deploy:
               - template: templates/sandbox-tests.yml
           - environment: int
