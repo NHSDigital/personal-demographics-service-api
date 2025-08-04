@@ -7,7 +7,7 @@ Background:
     * configure headers = requestHeaders 
     * url baseURL
     * def utils = call read('classpath:helpers/utils.feature')
-    * def faker = Java.type('helpers.FakerWrapper')    
+    * def faker = Java.type('helpers.FakerWrapper')
     
 Scenario: Updating temporary address response should show empty address lines
     * def nhsNumber = '9733162256'
@@ -28,6 +28,8 @@ Scenario: Updating temporary address response should show empty address lines
     * header If-Match = originalEtag
     * path 'Patient', nhsNumber
     * request read('classpath:patients/requestDetails/add/addressUpdate.json')
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * retry until responseStatus != 503 && responseStatus != 502  
     * method patch
     * status 200 
     * match parseInt(response.meta.versionId) == parseInt(originalVersion)+ 1
@@ -52,6 +54,8 @@ Scenario: Updating contact details response should show empty address lines
     * def mobileIndex = utils.getIndexOfFirstMobile(originalTelecom)
     * def newTelecom = { "id": "#(originalTelecom[mobileIndex].id)", "period": { "start": "#(utils.todaysDate())" }, "system": "phone", "use": "mobile", "value": "#(faker.phoneNumber())" }
     * request { "patches": [{ "op": "replace", "path": "#('/telecom/' + mobileIndex)", "value": "#(newTelecom)" }]}
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * retry until responseStatus != 503 && responseStatus != 502  
     * path 'Patient', nhsNumber
     * method patch
     * status 200

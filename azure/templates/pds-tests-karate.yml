@@ -28,6 +28,9 @@ steps:
       export PRIVILEGED_ACCESS_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(PRIVILEGED_ACCESS_TESTING_SIGNING_KEY)"
       export INTERNAL_SERVER_BASE_URI="$(INTERNAL_SERVER_BASE_URI)"
       export KEY_ID="$(KEY_ID)"
+
+      java -version
+
       mvn clean test -Dtest=TestParallel 
     displayName: 'Run Karate Tests'
     workingDirectory: "$(ARTIFACT_PATH)/karate-tests"
