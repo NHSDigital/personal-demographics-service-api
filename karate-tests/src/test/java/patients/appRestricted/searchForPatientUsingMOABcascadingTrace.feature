@@ -49,7 +49,8 @@ Scenario: Search for a patient - incorrect DOB format and correct family name an
   * method get
   * status 400
   * def diagnostics = "Invalid value - '19570723' in field 'birthdate'"
-  * def expectedResponse = read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')  
+  * def expectedResponse = read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')
+  * match response == expectedResponse  
 
 Scenario: Search for a patient - include other name in the given name - joseph damien vs damien joseph
   * path "Patient"
@@ -73,6 +74,7 @@ Scenario: Search for a patient - fuzzy search with wild cards
   * status 400
   * def diagnostics = "Invalid search data provided - 'A fuzzy search was requested however the data given did not meet the fuzzy search criteria'"
   * def expectedResponse = read('classpath:mocks/stubs/errorResponses/INVALID_SEARCH_DATA.json')
+  * match response == expectedResponse
 
 Scenario: Search for a patient - matching gp code
   * path "Patient"
