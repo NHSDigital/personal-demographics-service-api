@@ -150,7 +150,7 @@ Scenario: Search for a patient - unicode
   * match response.total == 1
   * match response.entry[0].resource.id == "9693633148" 
 
-Scenario: Search for a sensitive patient - unicode 
+Scenario: Search for a sensitive patient
   * path "Patient"
   * params  { _fuzzy-match: true, family: "Godsoe", gender: "male",given:"Rodney", birthdate: "1936-02-24"}
   * method get
