@@ -41,6 +41,8 @@ extends:
       RATE_LIMIT_POST: true
     apigee_deployments:
       - environment: internal-dev
+        pre_deploy:
+          - template: templates/install-jdk.yml
         post_deploy:
           - template: templates/pds-tests-dev.yml
       # only deploy to other environments if the build was NOT a daily overnight build
@@ -48,14 +50,20 @@ extends:
           - environment: internal-qa-sandbox
             enable_status_monitoring: false
             proxy_path: sandbox
+            pre_deploy:
+              - template: templates/install-jdk.yml
             post_deploy:
               - template: templates/sandbox-tests.yml
+
           - environment: int
+            pre_deploy:
+              - template: templates/install-jdk.yml
             post_deploy:
               - template: templates/pds-tests-int.yml
             depends_on:
               - internal_dev
               - internal_qa_sandbox
+
           - environment: ref
             enable_status_monitoring: false # revert when /_status implemented or endpoint updated
             depends_on:
@@ -65,14 +73,18 @@ extends:
               REQUIRE_ASID: false
               PDS_TARGET_SERVER: spine-demographics
               RATE_LIMIT_POST: false
+
           - environment: sandbox
             proxy_path: sandbox
             enable_status_monitoring: false
+            pre_deploy:
+              - template: templates/install-jdk.yml
             post_deploy:
               - template: templates/sandbox-tests.yml
             depends_on:
               - internal_dev
               - internal_qa_sandbox
+              
           - environment: prod
             depends_on:
               - internal_dev
