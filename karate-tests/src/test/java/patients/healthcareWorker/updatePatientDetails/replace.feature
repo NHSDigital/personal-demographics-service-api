@@ -171,6 +171,7 @@ Scenario: Healthcare worker can add, update and remove patient's emergency conta
   * def versionIdAftRemove = response.meta.versionId
   * match parseInt(versionIdAftRemove) == originalVersion + 1
   * match response.contact !contains contactValue
+  
 Scenario: Healthcare worker can update communication language-interpreter details
   * def nhsNumber = '5900071413'
   * configure headers = call read('classpath:auth/auth-headers.js') 
