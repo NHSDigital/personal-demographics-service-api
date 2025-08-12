@@ -132,17 +132,18 @@ Scenario: Search for a patient - single match based on email - typos in email ad
 
 Scenario: Search for a patient - search based on historic details- historic given name
   * path "Patient"
-  * params  { _fuzzy-match: true, family: "Gwen", given:"Austin", birthdate: "2020-01-06", gender:"female"}
+  * params  { _fuzzy-match: true, family: "Gwin", given:"Austin", birthdate: "2020-01-06", gender:"female"}
   * method get
   * status 200
-  * match response.total == 0
+  * match response.entry[0].resource.id == "9733163708" 
 
 Scenario: Search for a patient - Typo error in given name - Justen vs justin
   * path "Patient"
-  * params  { _fuzzy-match: true, family: "Gwen", given:"Justen", birthdate: "2020-01-06", gender:"female"}
+  * params  { _fuzzy-match: true, family: "Gwin", given:"Justen", birthdate: "2020-01-06", gender:"female"}
   * method get
   * status 200
-  * match response.total == 0  
+  * match response.total == 1
+  * match response.entry[0].resource.id == "9733163708"  
 
 Scenario: Search for a patient - unicode 
   * path "Patient"
