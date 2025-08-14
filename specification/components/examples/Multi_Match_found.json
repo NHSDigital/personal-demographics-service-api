@@ -1,0 +1,78 @@
+{
+  "name": [
+    {
+      "use": "usual",
+      "given": ["Louisa"],
+      "family": "McMatch-Multiple",
+      "prefix": ["Mrs"],
+      "period": {"start": "1986-07-01"}
+    }
+  ],
+  "address": [{
+            "line": [
+                "1 Trevelyan Square",
+                "Boar Lane",
+                "City Centre",
+                "Leeds",
+                "West Yorkshire"
+				
+            ],
+            "period": {
+                "start": "2020-01-01"
+            },
+            "postalCode": "DN19 7UD",
+            "use": "home",
+            "extension": [
+                {
+                    "extension": [
+                        {
+                            "url": "type",
+                            "valueCoding": {
+                                "code": "UPRN",
+                                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType"
+                            }
+                        },
+                        {
+                            "url": "value",
+                            "valueString": "203700882517"
+                        }
+                    ],
+                    "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey"
+                }
+            ]
+            
+        }],
+  "gender": "female",
+  "birthDate": "1982-07-10",
+   "telecom": [
+        {
+            "use": "home",
+            "system": "phone",
+            "value": "123342",
+            "period": {
+                "start": "2020-01-02",
+                "end": "2021-01-02"
+            }
+        }
+    ],
+  "extension": [
+    {
+      "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RegisteringAuthority",
+      "extension": [
+        {
+          "url": "registeringAuthorityType",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://fhir.nhs.uk/CodeSystem/UKCore-RegisteringAuthorityType",
+                "code": "x"
+              }
+            ]
+          }
+        },
+        { "url": "organisationIdentifier", "valueString": "RGS" }
+      ]
+    }
+  ],
+  "resourceType": "Patient"
+}
