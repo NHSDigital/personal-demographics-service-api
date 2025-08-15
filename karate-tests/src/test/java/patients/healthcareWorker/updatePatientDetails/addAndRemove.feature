@@ -1,4 +1,3 @@
-
 Feature: Patch patient - Add and remove data
   
     This feature tests adding data to a patient and then remove it.
@@ -132,7 +131,7 @@ Feature: Patch patient - Add and remove data
 
     @sandbox
     Scenario: Add and remove patient suffix array
-      * def nhsNumber = '5900056449'
+      * def nhsNumber = '9736363023'
       * path 'Patient', nhsNumber
       * method get
       * status 200
@@ -196,11 +195,12 @@ Feature: Patch patient - Add and remove data
       * match parseInt(response.response.meta.versionId) == originalVersion
  
     @sandbox
-  Scenario: Add suffix to the existing array of suffixes and then remove the same 
+
+    Scenario: Add suffix to the existing array of suffixes and then remove the same 
     # 1. Add new suffix to the array
     # ==============================
     # You can also add a new suffix to an existing array of suffixes
-    * def nhsNumber = '9733162051'
+    * def nhsNumber = '9736363015'
     * def suffix = "Esquire"
 
     * def removeSuffix =
@@ -264,7 +264,7 @@ Feature: Patch patient - Add and remove data
 
   Scenario:  Healthcare worker can add and remove place of birth details(city and district)
 
-    * def placeOfBirthNhsNumber = '5900077810'
+    * def placeOfBirthNhsNumber = '9736363031'
     * def requestBody = read('classpath:patients/requestDetails/add/placeOfBirth.json')
     * def placeOBirthUrl = requestBody.patches[0].value.url
     
