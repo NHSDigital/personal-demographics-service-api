@@ -1,4 +1,3 @@
-
 Feature: Patient Access (Update Coverage details)
 
   Background:
@@ -35,6 +34,3 @@ Feature: Patient Access (Update Coverage details)
     * match response == coverageBundle
     * match response.entry[0].resource.status == 'active'
     * match response.entry[0].resource.period.end == periodEndDate
-    
-
-  

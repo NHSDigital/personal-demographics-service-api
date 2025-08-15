@@ -1,4 +1,3 @@
-
 Feature: Patch patient - Replace data
 
 Background:
@@ -12,7 +11,7 @@ Scenario: Replace attribute of an object
   # To replace the attribute of an object, you need to provide the id of the object you want to replace
   # in a preceding operation. (This is simlar to, but different from removing an object - we call 
   # "replace" instead of "test")
-  * def nhsNumber = karate.env.includes('sandbox') ? '9000000009' : '5900056597'
+  * def nhsNumber = karate.env.includes('sandbox') ? '9000000009' : '9736363058'
   * configure headers = call read('classpath:auth/auth-headers.js') 
   * path 'Patient', nhsNumber
   * method get
@@ -69,11 +68,11 @@ Scenario Outline: Replace the <property> property
 
   Examples:
     | nhsNumber     | property      | options!                             |  
-    | 5900059243    | gender        | ['male', 'female', 'unknown']        |
-    | 5900043320    | birthDate     | ["1985-10-26", "1955-11-05"]         |
+    | 9736363066    | gender        | ['male', 'female', 'unknown']        |
+    | 9736363074    | birthDate     | ["1985-10-26", "1955-11-05"]         |
 
 Scenario: Healthcare worker can add, update and remove patient's emergency contact details
-  * def nhsNumber = '5900079066'
+  * def nhsNumber = '9736363082'
   * configure headers = call read('classpath:auth/auth-headers.js') 
   * path 'Patient', nhsNumber
   * method get
@@ -173,7 +172,7 @@ Scenario: Healthcare worker can add, update and remove patient's emergency conta
   * match response.contact !contains contactValue
   
 Scenario: Healthcare worker can update communication language-interpreter details
-  * def nhsNumber = '5900071413'
+  * def nhsNumber = '9736363090'
   * configure headers = call read('classpath:auth/auth-headers.js') 
   * path 'Patient', nhsNumber
   * method get

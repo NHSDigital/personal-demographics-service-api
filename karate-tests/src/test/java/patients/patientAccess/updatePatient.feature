@@ -90,8 +90,6 @@ Feature: Patient updates their details
     * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
     * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
 
-
-
   Scenario: Send empty field on the update - communication Language code
     * def p9number = '9733162930'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
@@ -150,7 +148,6 @@ Feature: Patient updates their details
       * def diagnostics = "Invalid update with error - Invalid patch - {'url': 'https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication', 'extension': [{'url': 'language', 'valueCodeableConcept': {'coding': [{'system': 'https://fhir.hl7.org.uk/CodeSystem/UKCore-HumanLanguage', 'version': '1.0.0', 'code': 'fr', 'display': 'French'}]}}, {'url': 'interpreterRequired', 'valueBoolean': True}]} (<class 'dict'>) is not equal to tested value {'url': 'https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication', 'extension': [{'url': 'language', 'valueCodeableConcept': {'coding': ' '}}, {'url': 'interpreterRequired', 'valueBoolean': False}]} (<class 'dict'>)"
       * match response == read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')     
   
-
   Scenario: Patient can update their emergency contact details and place of birth
     * def p9number = '5900069176'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
