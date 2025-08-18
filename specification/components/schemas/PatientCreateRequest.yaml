@@ -1,0 +1,49 @@
+description: Request to create a record for a new patient
+type: object
+required:
+  - id
+  - name
+  - gender
+  - birthDate
+  - address
+  - extension
+properties:
+  resourceType:
+    type: string
+    description: FHIR resource type.
+    enum: ["Patient"]
+    example: "Patient"
+  id:
+    $ref: "NhsNumber.yaml"
+  name:
+    type: array
+    description: | 
+      List of names associated with the patient.
+    minItems: 1
+    items:
+      $ref: "HumanName.yaml"
+  gender:
+    $ref: "Gender.yaml"
+  birthDate:
+    $ref: "BirthDate.yaml"
+  address:
+    type: array
+    description: | 
+      List of addresses associated with the patient.
+    items:
+      $ref: "Address.yaml"
+  telecom:
+    type: array
+    description: |
+      List of contact points for the patient, like phone numbers or email addresses. A patient should only have one instance of each telecom system and use combination on their record at a time. For example, the patient request should not contain multiple work email values in this array.
+    items:
+      $ref: "ContactPoint.yaml"
+  extension:
+    type: array
+    description: |
+      Wrapper array for the registering authority, this will be the only item in the array.
+    minItems: 1
+    maxItems: 1
+    items:
+      oneOf:
+        - $ref: extensions/RegisteringAuthority.yaml
