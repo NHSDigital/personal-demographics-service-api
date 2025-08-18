@@ -10,7 +10,7 @@ Background:
     * def faker = Java.type('helpers.FakerWrapper')
     
 Scenario: Updating temporary address response should show empty address lines
-    * def nhsNumber = '9733162256'
+    * def nhsNumber = '9736363104'
     * path 'Patient', nhsNumber
     * method get
     * status 200
@@ -38,7 +38,7 @@ Scenario: Updating temporary address response should show empty address lines
 
  
 Scenario: Updating contact details response should show empty address lines
-    * def nhsNumber = '9733162264'
+    * def nhsNumber = '9736363112'
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * path 'Patient', nhsNumber
