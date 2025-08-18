@@ -1,0 +1,13 @@
+type: object
+description:
+  Wrapper object for cadaveric donor details. This is accepted in a create patient request body but will not be persisted to PDS.
+required:
+  - url
+properties:
+  url:
+    type: string
+    description: Definition of cadaveric donor extension.
+    example: http://hl7.org/fhir/StructureDefinition/patient-cadavericDonor
+    enum:
+      - http://hl7.org/fhir/StructureDefinition/patient-cadavericDonor
+    readOnly: true

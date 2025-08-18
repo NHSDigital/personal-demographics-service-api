@@ -1,5 +1,5 @@
 type: object
-description: Wrapper object for the patient's dispensing doctor. This will only be populated on a retrieval and not a search.
+description: Definition of registering authority extension.
 required:
   - url
   - extension
@@ -7,63 +7,50 @@ properties:
   url:
     type: string
     description: URL of specification of UKCore-RegisteringAuthority FHIR extension.
-    enum: ["https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RegisteringAuthority"]
     example: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RegisteringAuthority
+    enum:
+      - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RegisteringAuthority
+    readOnly: true
   extension:
     type: array
-    description: "Specification of registering authority. Contains exactly two items: one describing the registering authority type, and the other specifying the value organisation identifier."
+    description:
+      Array containing exactly one registering authority type object, exactly
+      one organization identifier object, and may include a person identifier object.
     minItems: 2
     maxItems: 2
     items:
-      anyOf:
+      oneOf:
         - type: object
-          description: Coding system of the registering authority.
+          description: Wrapper object for registering authority type code.
           required:
             - url
             - valueCodeableConcept
           properties:
             url:
               type: string
-              description: URL of specification of UKCore-RegisteringAuthority FHIR extension.
-              enum: ["https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RegisteringAuthority"]
-              example: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RegisteringAuthority
+              description: Key of this object. Always `registeringAuthorityType`.
+              example: registeringAuthorityType
+              enum:
+                - registeringAuthorityType
+              readOnly: true
             valueCodeableConcept:
-              type: object
-              description: Value codeable concept representing registering authority type.
-              required:
-                - coding
-              properties:
-                coding:
-                  type: array
-                  minItems: 1
-                  maxItems: 1
-                  items:
-                    type: object
-                    required:
-                      - system
-                      - code
-                    properties:
-                      system:
-                        type: string
-                        description: URL of Code System that describes registering authority type.
-                        enum: ["https://fhir.nhs.uk/CodeSystem/UKCore-RegisteringAuthorityType"]
-                        example: https://fhir.nhs.uk/CodeSystem/UKCore-RegisteringAuthorityType
-                      code:
-                        type: string
-                        description: Value that represents type of registering authority.
-                        example: "x"                            
+              "$ref": "../codeable/RegisteringAuthorityType.json"
         - type: object
-          description: Value of organisation identifier.
+          description: Wrapper object for registering authority organization identifier.
           required:
             - url
             - valueString
+          readOnly: true
           properties:
             url:
               type: string
-              description: Always 'organisationIdentifier'.
-              enum: ["organisationIdentifier"]
+              description: Key of this object. Always `organisationIdentifier`.
               example: organisationIdentifier
+              enum:
+                - organisationIdentifier
+              readOnly: true
             valueString:
               type: string
-              description: Idenitifier of the registering authority organisation.
-              example: 'RGS'
+              description: Wrapper for the registering authority organization identifier.
+              minLength: 2
+              maxLength: 15

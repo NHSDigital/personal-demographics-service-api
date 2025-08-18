@@ -1,18 +1,18 @@
 description: Request to create a record for a new patient
 type: object
 required:
-  - id
   - name
   - gender
   - birthDate
   - address
   - extension
+additionalProperties: false
 properties:
   resourceType:
     type: string
     description: FHIR resource type.
-    enum: ["Patient"]
-    example: "Patient"
+    default: "Patient"
+    readOnly: true
   id:
     $ref: "NhsNumber.yaml"
   name:
@@ -20,6 +20,7 @@ properties:
     description: | 
       List of names associated with the patient.
     minItems: 1
+    maxItems: 1
     items:
       $ref: "HumanName.yaml"
   gender:
@@ -41,9 +42,21 @@ properties:
   extension:
     type: array
     description: |
-      Wrapper array for the registering authority, this will be the only item in the array.
+      Wrapper array primarily for persisting registering authority (required).
+      
+      Note that the majority of other extensions listed are purely to allow requests that may contain these extensions, but do not however persist that data.
     minItems: 1
-    maxItems: 1
     items:
-      oneOf:
+      anyOf:
         - $ref: extensions/RegisteringAuthority.yaml
+        - $ref: extensions/Communication.yaml
+        - $ref: extensions/BirthPlace.yaml
+        - $ref: extensions/BirthSex.yaml
+        - $ref: extensions/CadavericDonor.yaml
+        - $ref: extensions/ContactPreference.yaml
+        - $ref: extensions/DeathNotificationStatus.yaml
+        - $ref: extensions/EthnicCategory.yaml
+        - $ref: extensions/ResidentialStatus.yaml
+        - $ref: extensions/PatientInterpreterRequired.yaml
+        - $ref: extensions/NhsNumberUnavailableReason.yaml
+
