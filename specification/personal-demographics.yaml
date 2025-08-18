@@ -16,12 +16,13 @@ info:
     * get a patient's related people
     * get patient coverage
     * update patient coverage
+    * create a record for a new patient (except for GPs - see below)
+      * You should not use this API to create a new record when registering a new patient at a GP Practice. Instead, use  the Primary Care Registration Management - NHS Digital (PCRM) system.
 
 
     You cannot currently use this API to:
     * create a new record for a birth - use [PDS HL7 V3 API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3)
     * receive birth notifications - use [PDS HL7 V3 API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3) or [PDS Notifications FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir) 
-    * create a record for a new patient - use [PDS HL7 V3 API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3)
     * register a new patient at a GP Practice - use [NHAIS GP Links API](https://digital.nhs.uk/developer/api-catalogue/nhais-gp-links)
     * receive patient death notifications - use [PDS Notifications FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir) 
     * receive notifications about a patient's change of address - use [PDS Notifications FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir) 
@@ -76,6 +77,7 @@ info:
     * get patient details 
     * update patient details 
     * get a patient's related people
+    * create a record for a new patient (except for GPs)
 
     This access mode is [user-restricted](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation#user-restricted-apis), meaning an end user must be present, authenticated and authorised. 
 
@@ -265,7 +267,7 @@ info:
     The following APIs are related to this API:
 
     ### Personal Demographics Service (PDS) HL7 V3 API
-    Use [PDS HL7 V3 API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3) if you want to use functions that are not yet available on the FHIR API, such as creating a new record for a birth, receiving birth notifications, or creating a record for a new patient (except when registering a new patient at a GP Practice, use [Primary Care Registration Management (PCRM)](https://digital.nhs.uk/services/primary-care-registration-management)). For birth notifications, another option is [PDS Notifications - FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir).
+    Use [PDS HL7 V3 API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-hl7-v3) if you want to use functions that are not yet available on the FHIR API, such as creating a new record for a birth or receiving birth notifications. For birth notifications, another option is [PDS Notifications - FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir).
 
     Once our roadmap is complete, PDS HL7 V3 API will become redundant. 
     
@@ -310,6 +312,8 @@ paths:
     - $ref: '#/components/parameters/NHSD-End-User-Organisation-ODS'
     get:
       $ref: 'components/paths/patient-search.yaml'
+    post:
+      $ref: 'components/paths/patient-create.yaml'
   '/Patient/{id}':
     parameters:
       - $ref: '#/components/parameters/Id'
