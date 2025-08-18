@@ -1,0 +1,93 @@
+{
+    "resourceType": "Patient",
+    "name": [
+        {
+            "use": "usual",
+            "given": [
+                "Jane"
+            ],
+            "family": "Smith",
+            "prefix": "Mrs",
+            "suffix": "MBE",
+            "period": {
+                "start": "2024-01-01"
+            }
+        }
+    ],
+    "address": [
+        {
+            "id": "456",
+            "period": {
+                "start": "2024-01-01",
+                "end": "2025-12-31"
+            },
+            "use": "home",
+            "line": [
+                "1 Trevelyan Square",
+                "Boar Lane",
+                "City Centre",
+                "Leeds",
+                "West Yorkshire"
+            ],
+            "postalCode": "LS1 6AE",
+            "extension": [
+                {
+                    "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey",
+                    "extension": [
+                        {
+                            "url": "type",
+                            "valueCoding": {
+                                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType",
+                                "code": "PAF"
+                            }
+                        },
+                        {
+                            "url": "value",
+                            "valueString": "12345678"
+                        }
+                    ]
+                },
+                {
+                    "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-AddressKey",
+                    "extension": [
+                        {
+                            "url": "type",
+                            "valueCoding": {
+                                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-AddressKeyType",
+                                "code": "UPRN"
+                            }
+                        },
+                        {
+                            "url": "value",
+                            "valueString": "123456789012"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "gender": "female",
+    "birthDate": "2010-10-22",
+    "extension": [
+        {
+            "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RegisteringAuthority",
+            "extension": [
+                {
+                    "url": "registeringAuthorityType",
+                    "valueCodeableConcept": {
+                        "coding": [
+                            {
+                                "system": "https://fhir.nhs.uk/CodeSystem/UKCore-RegisteringAuthorityType",
+                                "code": "x"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "url": "organisationIdentifier",
+                    "valueString": "RGS"
+                }
+            ]
+        }
+    ]
+}

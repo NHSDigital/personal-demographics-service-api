@@ -6,7 +6,19 @@ description: |
 
   You should not use this API to create a new record when registering a new patient at a GP Practice. Instead, use the Primary Care Registration Management - NHS Digital (PCRM) system.
 
-  This endpoint is only available to users with Healthcare worker access.                                                                                                              | HTTP Status 400 with problem description.                                                 |
+  This endpoint is only available to users with Healthcare worker access.
+
+requestBody:
+  required: true
+  content:
+    application/json-patch+json:
+      schema:
+        $ref: '../schemas/PatientCreateRequest.yaml'
+      examples:
+        create-patient:
+          summary: Create a patient
+          value:
+            $ref: '../examples/requests/PatientCreate/create-patient.json'
 
 responses:
   '201':
@@ -69,7 +81,7 @@ responses:
       | 400         | VALIDATION_ERROR           | This is the "default" error thrown when no others are applicable. |
       | 400         | UNSUPPORTED_CHARACTERS_IN_FIELD | Invalid value in body of post request. For details, see the `diagnostics` field. |
       | 400         | ADDITIONAL_PROPERTIES      | The user sent additional properties within the dictionary. For example sending a patient post and attempting to include 'pets', which is not an allowed field within the patient resource. |
-      | 400         | UNSUPPORTED_VALUE          | There was an unsupported value in the request. The value may be valid in the schema - however it could be a legacy value that we do not allow to be set anymore. For example - setting the death notification status to 'removed'. The invalid value and field will be presented in the display. |
+      | 400         | UNSUPPORTED_VALUE          | There was an unsupported value in the request. The value may be valid in the schema - however it could be a legacy value that we do not allow to be set anymore. The invalid value and field will be presented in the display. |
       | 400         | TOO_FEW_VALUES_SUBMITTED   | The field in question has a minimum number of items and the user sent too few. |
       | 400         | TOO_MANY_VALUES_SUBMITTED  | The field in question has a maximum number of items and the user sent too many. |
       | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation. |
