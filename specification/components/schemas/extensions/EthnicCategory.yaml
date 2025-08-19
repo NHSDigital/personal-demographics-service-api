@@ -9,4 +9,3 @@ properties:
     example: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-EthnicCategory
     enum:
       - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-EthnicCategory
-    readOnly: true

@@ -11,7 +11,7 @@ description: |
 requestBody:
   required: true
   content:
-    application/json-patch+json:
+    application/json:
       schema:
         $ref: '../schemas/PatientCreateRequest.yaml'
       examples:

@@ -9,4 +9,3 @@ properties:
     example: http://hl7.org/fhir/StructureDefinition/patient-interpreterRequired
     enum:
       - http://hl7.org/fhir/StructureDefinition/patient-interpreterRequired
-    readOnly: true

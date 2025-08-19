@@ -10,4 +10,3 @@ properties:
     example: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-BirthSex
     enum:
       - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-BirthSex
-    readOnly: true

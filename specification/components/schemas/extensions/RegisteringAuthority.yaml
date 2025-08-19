@@ -10,7 +10,6 @@ properties:
     example: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RegisteringAuthority
     enum:
       - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RegisteringAuthority
-    readOnly: true
   extension:
     type: array
     description:
@@ -32,7 +31,6 @@ properties:
               example: registeringAuthorityType
               enum:
                 - registeringAuthorityType
-              readOnly: true
             valueCodeableConcept:
               "$ref": "../codeable/RegisteringAuthorityType.yaml"
         - type: object
@@ -40,7 +38,6 @@ properties:
           required:
             - url
             - valueString
-          readOnly: true
           properties:
             url:
               type: string
@@ -48,7 +45,6 @@ properties:
               example: organisationIdentifier
               enum:
                 - organisationIdentifier
-              readOnly: true
             valueString:
               type: string
               description: Wrapper for the registering authority organization identifier.

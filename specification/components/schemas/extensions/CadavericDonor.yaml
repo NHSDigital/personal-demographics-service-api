@@ -10,4 +10,3 @@ properties:
     example: http://hl7.org/fhir/StructureDefinition/patient-cadavericDonor
     enum:
       - http://hl7.org/fhir/StructureDefinition/patient-cadavericDonor
-    readOnly: true

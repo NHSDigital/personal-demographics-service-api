@@ -42,9 +42,19 @@ properties:
   extension:
     type: array
     description: |
-      Wrapper array primarily for persisting registering authority (required).
-      
-      Note that the majority of other extensions listed are purely to allow requests that may contain these extensions, but do not however persist that data.
+      Wrapper array for inclusion of the following extensions, some will not actually persist data to PDS at this time (labelled not persisted):
+      * Registering Authority (required)
+      * Communication
+      * Contact Preference
+      * Birth Place (not persisted)
+      * Birth Sex (not persisted)
+      * Cadaveric Donor (not persisted)
+      * Death Notification Status (not persisted)
+      * Ethnic Category (not persisted)
+      * Residential Status (not persisted)
+      * Patient Interpreter Required (not persisted)
+      * NHS Number Unavailable Reason (not persisted)
+
     minItems: 1
     items:
       anyOf:
