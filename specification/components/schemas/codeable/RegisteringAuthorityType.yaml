@@ -49,7 +49,7 @@ properties:
             - v
             - w
             - x
-            - 1
+            - "1"
         display:
           type: string
           description: Display-friendly representation of the registering authority type.

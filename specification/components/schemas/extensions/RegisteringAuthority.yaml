@@ -34,7 +34,7 @@ properties:
                 - registeringAuthorityType
               readOnly: true
             valueCodeableConcept:
-              "$ref": "../codeable/RegisteringAuthorityType.json"
+              "$ref": "../codeable/RegisteringAuthorityType.yaml"
         - type: object
           description: Wrapper object for registering authority organization identifier.
           required:
