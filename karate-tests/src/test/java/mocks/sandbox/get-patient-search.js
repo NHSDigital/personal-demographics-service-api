@@ -63,24 +63,35 @@ function validateQueryParams (request) {
     'address-postcode', 'address-postalcode', 'general-practitioner', 'email', 'phone'
   ]
 
+  const params = Object.keys(request.params || {})
   // check that params were actually provided
-  if (Object.keys(request.params).length === 0) {
-    return setUnsupportedServiceError()
-  }
+  if (params.length === 0) return setUnsupportedServiceError()
 
-  // reject any invalid params
+  const { validParams, invalidParams } = splitValidAndInvalid(params, VALID_PARAMS)
+
+  const invalidCheck = validateInvalidParams(invalidParams)
+  if (invalidCheck) return invalidCheck
+
+  const dateCheck = validateDateFields(request.params)
+  if (dateCheck) return dateCheck
+
+  const requiredCheck = validateRequiredFields(validParams)
+  if (requiredCheck) return requiredCheck
+
+  return true
+}
+
+function splitValidAndInvalid (params, validList) {
   const validParams = []
   const invalidParams = []
-  for (const paramName in request.params) {
-    if (VALID_PARAMS.includes(paramName)) {
-      validParams.push(paramName)
-    } else {
-      invalidParams.push(paramName)
-    }
+  for (const paramName of params) {
+    (validList.includes(paramName) ? validParams : invalidParams).push(paramName)
   }
+  return { validParams, invalidParams }
+}
+
+function validateInvalidParams (invalidParams) {
   if (invalidParams.length === 3) {
-    // the diagnostics message isn't built dynamically, because the order of properties doesn't correspond to the order of the params
-    // instead, this is a dumb rule that just assumes the three invalid params are the ones our test uses
     const diagnostics = "Invalid request with error - Additional properties are not allowed ('model', 'manufacturer', 'year' were unexpected)"
     return setAdditionalPropertiesError(diagnostics)
   }
@@ -88,41 +99,41 @@ function validateQueryParams (request) {
     const diagnostics = `Invalid request with error - Additional properties are not allowed ('${invalidParams[0]}' was unexpected)`
     return setAdditionalPropertiesError(diagnostics)
   }
+  return null
+}
 
-  // check the validity of any date params first
-  const birthDateArray = request.params.birthdate
-  if (birthDateArray) {
-    for (const index in birthDateArray) {
-      const birthDate = birthDateArray[index]
-      if (!birthDate || !birthDate.match(/^(eq|ge|le)?[0-9]{4}-[0-9]{2}-[0-9]{2}$/)) {
-        const diagnostics = `Invalid value - '${birthDate}' in field 'birthdate'`
-        return setInvalidValueError(diagnostics)
+function validateDateFields (params) {
+  if (params.birthdate) {
+    for (const date of params.birthdate) {
+      if (!isValidDate(date)) {
+        return setInvalidValueError(`Invalid value - '${date}' in field 'birthdate'`)
       }
     }
   }
-  const deathDateArray = request.params['death-date']
-  if (deathDateArray) {
-    for (const index in deathDateArray) {
-      const deathDate = deathDateArray[index]
-      if (!deathDate || !deathDate.match(/^(eq|ge|le)?[0-9]{4}-[0-9]{2}-[0-9]{2}$/)) {
-        const diagnostics = `Invalid value - '${deathDate}' in field 'death-date'`
-        return setInvalidValueError(diagnostics)
+  if (params['death-date']) {
+    for (const date of params['death-date']) {
+      if (!isValidDate(date)) {
+        return setInvalidValueError(`Invalid value - '${date}' in field 'death-date'`)
       }
     }
   }
+  return null
+}
 
-  // check that the birthdate was provided
+function isValidDate (date) {
+  return date && date.match(/^(eq|ge|le)?\d{4}-\d{2}-\d{2}$/)
+}
+
+function validateRequiredFields (validParams) {
   if (!validParams.includes('birthdate')) {
-    const diagnostics = "Missing value - 'birth_date/birth_date_range_start/birth_date_range_end'"
-    return setMissingValueError(diagnostics)
+    return setMissingValueError("Missing value - 'birth_date/birth_date_range_start/birth_date_range_end'")
   }
-  // check that the family name was provided
   if (!validParams.includes('family')) {
-    const diagnostics = "Invalid search data provided - 'No searches were performed as the search criteria did not meet the minimum requirements'"
-    return setInvalidSearchDataError(diagnostics)
+    return setInvalidSearchDataError(
+      "Invalid search data provided - 'No searches were performed as the search criteria did not meet the minimum requirements'"
+    )
   }
-
-  return true
+  return null
 }
 
 function otherJaneSmithParamsAreValid (request) {
