@@ -8,6 +8,24 @@ description: |
 
   This endpoint is only available to users with Healthcare worker access.
 
+  ## Sandbox test scenarios
+
+  You can test the following scenarios in our sandbox environment.
+
+  | Scenario                  | Request                                                                                                      | Response                                            |
+  | ------------------------- | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------- |
+  | New NHS number allocated	| Body: One of the provided examples or your own combination<br><br>Headers: `Content-Type`=`application/json` | HTTP Status 201 with patient data in response       |
+  | Single match found	      | Body: Provided example<br><br>Headers: `Content-Type`=`application/json`                                     | HTTP Status 200 with matched NHS number in response |
+  | Multiple matches found	  | Body: Provided example<br><br>Headers: `Content-Type`=`application/json`                                     | HTTP Status 200 with problem description            |
+  | Missing X-Request-ID      | X-Request-ID header missing                                                                                  | HTTP Status 400 with problem description            |
+  | Invalid X-Request-ID      | `X-Request-ID`= `1234`                                                                                       | HTTP Status 400 with problem description            |
+
+  You can try out the sandbox by selecting the 'Try' button at the end of the schema.
+
+  Alternatively, you can try out the sandbox using our Postman collection:
+
+  [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/32547823-005ebee4-7510-44c3-bb0e-58f26b2ba747)
+
 requestBody:
   required: true
   content:
