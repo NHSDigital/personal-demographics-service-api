@@ -63,7 +63,7 @@ function validateQueryParams (request) {
     'address-postcode', 'address-postalcode', 'general-practitioner', 'email', 'phone'
   ]
 
-  const params = Object.keys(request.params || {})
+  const params = Object.keys(request?.params ?? {})
 
   // check that params were actually provided
   if (params.length === 0) {
@@ -75,7 +75,7 @@ function validateQueryParams (request) {
 
   if (validateInvalidParams(invalidParams)) return false
 
-  if (validateDateFields(request.params)) return false
+  if (validateDateFields(request?.params)) return false
 
   if (validateRequiredFields(validParams)) return false
 
@@ -98,7 +98,6 @@ function validateInvalidParams (invalidParams) {
     return true
   }
   if (invalidParams.length === 1) {
-    console.log('inside second loop')
     const diagnostics = `Invalid request with error - Additional properties are not allowed ('${invalidParams[0]}' was unexpected)`
     setAdditionalPropertiesError(diagnostics)
     return true
@@ -107,22 +106,20 @@ function validateInvalidParams (invalidParams) {
 }
 
 function validateDateFields (params) {
-  if (params.birthdate) {
-    for (const date of params.birthdate) {
-      if (!isValidDate(date)) {
-        setInvalidValueError(`Invalid value - '${date}' in field 'birthdate'`)
-        return true
-      }
+  for (const date of params?.birthdate ?? []) {
+    if (!isValidDate(date)) {
+      setInvalidValueError(`Invalid value - '${date}' in field 'birthdate'`)
+      return true
     }
   }
-  if (params['death-date']) {
-    for (const date of params['death-date']) {
-      if (!isValidDate(date)) {
-        setInvalidValueError(`Invalid value - '${date}' in field 'death-date'`)
-        return true
-      }
+
+  for (const date of params?.['death-date'] ?? []) {
+    if (!isValidDate(date)) {
+      setInvalidValueError(`Invalid value - '${date}' in field 'death-date'`)
+      return true
     }
   }
+
   return false
 }
 
@@ -131,11 +128,11 @@ function isValidDate (date) {
 }
 
 function validateRequiredFields (validParams) {
-  if (!validParams.includes('birthdate')) {
+  if (!validParams?.includes('birthdate')) {
     setMissingValueError("Missing value - 'birth_date/birth_date_range_start/birth_date_range_end'")
     return true
   }
-  if (!validParams.includes('family')) {
+  if (!validParams?.includes('family')) {
     setInvalidSearchDataError(
       "Invalid search data provided - 'No searches were performed as the search criteria did not meet the minimum requirements'"
     )
@@ -424,7 +421,6 @@ if (request.pathMatches('/Patient') && request.get) {
   }
 
   if (validateHeaders(request) && validateQueryParams(request)) {
-    console.log('Inside positive loop')
     const matchedCase = matchCases.find(caseObj => caseObj.condition(params))
 
     if (matchedCase) {

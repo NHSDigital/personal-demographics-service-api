@@ -115,24 +115,19 @@ function isValidBearerToken (token, validateTokenPart = false) {
  * @returns {boolean} - Returns true if the headers are valid, false otherwise.
  */
 function validateAuthHeader (request) {
-  let valid = true
-  let diagnostics = ''
   // Check if the Authorization header is present and correct
   const authorization = request.header('Authorization')
-  if (authorization === null) {
+  if (!authorization) {
     // authorization is not mandatory on sandbox
-    valid = true
+    return true
   } else if (!isValidBearerToken(authorization)) {
-    diagnostics = 'Missing access token'
-    valid = false
+    setAccessDeniedError('Missing access token')
+    return false
   } else if (!isValidBearerToken(authorization, true)) {
-    diagnostics = 'Invalid Access Token'
-    valid = false
+    setAccessDeniedError('Invalid Access Token')
+    return false
   }
-  if (!valid) {
-    setAccessDeniedError(diagnostics)
-  }
-  return valid
+  return true
 }
 
 function validateRequestIDHeader (request) {
@@ -153,9 +148,7 @@ function validateRequestIDHeader (request) {
 
 // eslint-disable-next-line no-unused-vars
 function validateHeaders (request) {
-  if (!validateRequestIDHeader(request)) {
-    return false
-  } else if (!validateAuthHeader(request)) {
+  if (!validateRequestIDHeader(request) || !validateAuthHeader(request)) {
     return false
   }
   return true
