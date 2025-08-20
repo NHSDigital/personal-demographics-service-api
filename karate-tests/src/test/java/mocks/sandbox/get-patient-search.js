@@ -64,19 +64,20 @@ function validateQueryParams (request) {
   ]
 
   const params = Object.keys(request.params || {})
+
   // check that params were actually provided
-  if (params.length === 0) return setUnsupportedServiceError()
+  if (params.length === 0) {
+    setUnsupportedServiceError()
+    return false
+  }
 
   const { validParams, invalidParams } = splitValidAndInvalid(params, VALID_PARAMS)
 
-  const invalidCheck = validateInvalidParams(invalidParams)
-  if (invalidCheck) return invalidCheck
+  if (validateInvalidParams(invalidParams)) return false
 
-  const dateCheck = validateDateFields(request.params)
-  if (dateCheck) return dateCheck
+  if (validateDateFields(request.params)) return false
 
-  const requiredCheck = validateRequiredFields(validParams)
-  if (requiredCheck) return requiredCheck
+  if (validateRequiredFields(validParams)) return false
 
   return true
 }
@@ -93,47 +94,54 @@ function splitValidAndInvalid (params, validList) {
 function validateInvalidParams (invalidParams) {
   if (invalidParams.length === 3) {
     const diagnostics = "Invalid request with error - Additional properties are not allowed ('model', 'manufacturer', 'year' were unexpected)"
-    return setAdditionalPropertiesError(diagnostics)
+    setAdditionalPropertiesError(diagnostics)
+    return true
   }
   if (invalidParams.length === 1) {
+    console.log('inside second loop')
     const diagnostics = `Invalid request with error - Additional properties are not allowed ('${invalidParams[0]}' was unexpected)`
-    return setAdditionalPropertiesError(diagnostics)
+    setAdditionalPropertiesError(diagnostics)
+    return true
   }
-  return null
+  return false
 }
 
 function validateDateFields (params) {
   if (params.birthdate) {
     for (const date of params.birthdate) {
       if (!isValidDate(date)) {
-        return setInvalidValueError(`Invalid value - '${date}' in field 'birthdate'`)
+        setInvalidValueError(`Invalid value - '${date}' in field 'birthdate'`)
+        return true
       }
     }
   }
   if (params['death-date']) {
     for (const date of params['death-date']) {
       if (!isValidDate(date)) {
-        return setInvalidValueError(`Invalid value - '${date}' in field 'death-date'`)
+        setInvalidValueError(`Invalid value - '${date}' in field 'death-date'`)
+        return true
       }
     }
   }
-  return null
+  return false
 }
 
 function isValidDate (date) {
-  return date && date.match(/^(eq|ge|le)?\d{4}-\d{2}-\d{2}$/)
+  return date?.match(/^(eq|ge|le)?\d{4}-\d{2}-\d{2}$/)
 }
 
 function validateRequiredFields (validParams) {
   if (!validParams.includes('birthdate')) {
-    return setMissingValueError("Missing value - 'birth_date/birth_date_range_start/birth_date_range_end'")
+    setMissingValueError("Missing value - 'birth_date/birth_date_range_start/birth_date_range_end'")
+    return true
   }
   if (!validParams.includes('family')) {
-    return setInvalidSearchDataError(
+    setInvalidSearchDataError(
       "Invalid search data provided - 'No searches were performed as the search criteria did not meet the minimum requirements'"
     )
+    return true
   }
-  return null
+  return false
 }
 
 function otherJaneSmithParamsAreValid (request) {
@@ -416,6 +424,7 @@ if (request.pathMatches('/Patient') && request.get) {
   }
 
   if (validateHeaders(request) && validateQueryParams(request)) {
+    console.log('Inside positive loop')
     const matchedCase = matchCases.find(caseObj => caseObj.condition(params))
 
     if (matchedCase) {
