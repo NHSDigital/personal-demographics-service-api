@@ -148,10 +148,7 @@ function validateRequestIDHeader (request) {
 
 // eslint-disable-next-line no-unused-vars
 function validateHeaders (request) {
-  if (!validateRequestIDHeader(request) || !validateAuthHeader(request)) {
-    return false
-  }
-  return true
+  return validateRequestIDHeader(request) && validateAuthHeader(request)
 }
 
 /**
