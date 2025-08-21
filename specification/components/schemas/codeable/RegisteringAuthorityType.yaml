@@ -16,10 +16,10 @@ properties:
       properties:
         system:
           type: string
-          format: url
           description: URL of the Registering Authority Type. Always uses the 'UKCore-RegisteringAuthorityType' Code System.
           example: https://fhir.nhs.uk/CodeSystem/UKCore-RegisteringAuthorityType
-          readOnly: true
+          enum:
+            - https://fhir.nhs.uk/CodeSystem/UKCore-RegisteringAuthorityType
         code:
           type: string
           description: A CodeSystem that identifies the type of the registering authority.

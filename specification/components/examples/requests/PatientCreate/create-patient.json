@@ -1,5 +1,4 @@
 {
-    "resourceType": "Patient",
     "name": [
         {
             "use": "usual",
@@ -7,8 +6,8 @@
                 "Jane"
             ],
             "family": "Smith",
-            "prefix": "Mrs",
-            "suffix": "MBE",
+            "prefix": ["Mrs"],
+            "suffix": ["MBE"],
             "period": {
                 "start": "2024-01-01"
             }

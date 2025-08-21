@@ -32,7 +32,7 @@ properties:
               enum:
                 - registeringAuthorityType
             valueCodeableConcept:
-              "$ref": "../codeable/RegisteringAuthorityType.yaml"
+              $ref: ../codeable/RegisteringAuthorityType.yaml
         - type: object
           description: Wrapper object for registering authority organization identifier.
           required:
