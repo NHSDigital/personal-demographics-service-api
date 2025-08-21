@@ -12,9 +12,6 @@ properties:
     type: string
     description: FHIR resource type.
     default: "Patient"
-    readOnly: true
-  id:
-    $ref: "NhsNumber.yaml"
   name:
     type: array
     description: | 
