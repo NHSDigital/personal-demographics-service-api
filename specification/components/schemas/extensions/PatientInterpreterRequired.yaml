@@ -1,0 +1,11 @@
+type: object
+description: Wrapper object for patient interpreter required details. This is accepted in a create patient request body but will not be persisted to PDS.
+required:
+  - url
+properties:
+  url:
+    type: string
+    description: Definition of patient interpreter required extension.
+    example: http://hl7.org/fhir/StructureDefinition/patient-interpreterRequired
+    enum:
+      - http://hl7.org/fhir/StructureDefinition/patient-interpreterRequired

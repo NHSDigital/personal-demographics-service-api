@@ -31,7 +31,7 @@ description: |
   | Missing X-Request-ID                | X-Request-ID header missing                                               | HTTP Status 400 with problem description         |
   | Invalid X-Request-ID                | `X-Request-ID`= `1234`                                                     | HTTP Status 400 with problem description         |
 
-  You can try out the sandbox by selecting the 'Try' button on this page.
+  You can try out the sandbox by selecting the 'Try' button at the end of the schema.
 
   Alternatively, you can try out the sandbox using our Postman collection:
 
