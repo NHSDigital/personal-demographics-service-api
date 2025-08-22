@@ -436,7 +436,6 @@ if (request.pathMatches('/Patient') && request.get) {
 
   if (validateHeaders(request) && validateQueryParams(request)) {
     const matchedCase = matchCases.find(caseObj => caseObj.condition(params))
-    console.log('exact parameter values', params.exactMatch)
 
     if (matchedCase) {
       response.body = matchedCase.action()
