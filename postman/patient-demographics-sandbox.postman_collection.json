@@ -1722,9 +1722,9 @@
 									"  pm.expect(jsonData.total).to.equal(1);",
 									"",
 									"});",
-									"pm.test(\"Searchset includes patient 9000000009\", function () {",
+									"pm.test(\"Searchset includes patient 9736363120\", function () {",
 									"  const jsonData = pm.response.json();",
-									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9736363120\");",
 									"});"
 								],
 								"type": "text/javascript",
@@ -1788,9 +1788,9 @@
 									"  pm.expect(jsonData.total).to.equal(1);",
 									"",
 									"});",
-									"pm.test(\"Searchset includes patient 9000000009\", function () {",
+									"pm.test(\"Searchset includes patient 5900020584\", function () {",
 									"  const jsonData = pm.response.json();",
-									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9000000009\");",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"5900020584\");",
 									"});"
 								],
 								"type": "text/javascript",
