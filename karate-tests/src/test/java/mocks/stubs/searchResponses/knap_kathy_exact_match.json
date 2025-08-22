@@ -1,0 +1,95 @@
+{
+    "entry": [
+        {
+            "fullUrl": "https://veit07.api.service.nhs.uk/personal-demographics/FHIR/R4/Patient/9736363120",
+            "resource": {
+                "address": [
+                    {
+                        "id": "QiCes",
+                        "line": [
+                            "44 NEWLAND AVENUE",
+                            "SCUNTHORPE"
+                        ],
+                        "period": {
+                            "start": "1990-02-05"
+                        },
+                        "postalCode": "DN15 7HQ",
+                        "use": "home"
+                    }
+                ],
+                "birthDate": "1943-07-03",
+                "gender": "female",
+                "generalPractitioner": [
+                    {
+                        "id": "XFbrV",
+                        "identifier": {
+                            "period": {
+                                "start": "1971-04-06"
+                            },
+                            "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+                            "value": "A20047"
+                        },
+                        "type": "Organization"
+                    }
+                ],
+                "id": "9736363120",
+                "identifier": [
+                    {
+                        "extension": [
+                            {
+                                "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                                "valueCodeableConcept": {
+                                    "coding": [
+                                        {
+                                            "code": "01",
+                                            "display": "Number present and verified",
+                                            "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                            "version": "1.0.0"
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "9736363120"
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "code": "U",
+                            "display": "unrestricted",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ],
+                    "versionId": "1"
+                },
+                "name": [
+                    {
+                        "family": "KNAPP",
+                        "given": [
+                            "Kathy",
+                            "Megan"
+                        ],
+                        "id": "znQNN",
+                        "period": {
+                            "start": "2005-10-30"
+                        },
+                        "prefix": [
+                            "MISS"
+                        ],
+                        "use": "usual"
+                    }
+                ],
+                "resourceType": "Patient"
+            },
+            "search": {
+                "score": 1
+            }
+        }
+    ],
+    "resourceType": "Bundle",
+    "timestamp": "2025-08-22T10:14:53+00:00",
+    "total": 1,
+    "type": "searchset"
+}
