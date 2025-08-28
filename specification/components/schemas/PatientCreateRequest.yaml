@@ -52,6 +52,7 @@ properties:
       * Patient Interpreter Required (not persisted)
       * NHS Number Unavailable Reason (not persisted)
 
+    minItems: 1
     items:
       anyOf:
         - $ref: extensions/RegisteringAuthority.yaml
@@ -65,5 +66,4 @@ properties:
         - $ref: extensions/ResidentialStatus.yaml
         - $ref: extensions/PatientInterpreterRequired.yaml
         - $ref: extensions/NhsNumberUnavailableReason.yaml
-    contains:
-      $ref: extensions/RegisteringAuthority.yaml
+
