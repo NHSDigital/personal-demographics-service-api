@@ -2,7 +2,7 @@ summary: Create a record for a new patient
 operationId: create-patient
 description: |
   ## Overview
-  Use this endpoint to request an NHS number. Only use this if a search for the patient has been done and no NHS number can be found.
+  Use this endpoint to create a record for a new patient, this involves the allocation of a new NHS number. Only use this if a search for the patient has been done and no NHS number can be found.
 
   You should not use this API to create a new record when registering a new patient at a GP Practice. Instead, use the Primary Care Registration Management - NHS Digital (PCRM) system.
 
@@ -12,13 +12,13 @@ description: |
 
   You can test the following scenarios in our sandbox environment.
 
-  | Scenario                  | Request                                                                                                      | Response                                            |
-  | ------------------------- | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------- |
-  | New NHS number allocated	| Body: One of the provided examples or your own combination<br><br>Headers: `Content-Type`=`application/json` | HTTP Status 201 with patient data in response       |
-  | Single match found	      | Body: Provided example<br><br>Headers: `Content-Type`=`application/json`                                     | HTTP Status 200 with matched NHS number in response |
-  | Multiple matches found	  | Body: Provided example<br><br>Headers: `Content-Type`=`application/json`                                     | HTTP Status 200 with problem description            |
-  | Missing X-Request-ID      | X-Request-ID header missing                                                                                  | HTTP Status 400 with problem description            |
-  | Invalid X-Request-ID      | `X-Request-ID`= `1234`                                                                                       | HTTP Status 400 with problem description            |
+  | Scenario                                              | Request                                                                                                      | Response                                            |
+  | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------- |
+  | Patient record created with new allocated NHS number	| Body: One of the provided examples or your own combination<br><br>Headers: `Content-Type`=`application/json` | HTTP Status 201 with patient data in response       |
+  | Single match found	                                  | Body: Provided example<br><br>Headers: `Content-Type`=`application/json`                                     | HTTP Status 200 with matched NHS number in response |
+  | Multiple matches found	                              | Body: Provided example<br><br>Headers: `Content-Type`=`application/json`                                     | HTTP Status 200 with problem description            |
+  | Missing X-Request-ID                                  | X-Request-ID header missing                                                                                  | HTTP Status 400 with problem description            |
+  | Invalid X-Request-ID                                  | `X-Request-ID`= `1234`                                                                                       | HTTP Status 400 with problem description            |
 
   You can try out the sandbox by selecting the 'Try' button at the end of the schema.
 
@@ -61,8 +61,8 @@ responses:
 
       | HTTP status | Error code                 | Description                                                                            |
       | ----------- | -------------------------- | -------------------------------------------------------------------------------------- |
-      | 200         | SINGLE_MATCH               | Unable to create new patient. Singular NHS number found for supplied demographic data.	|
-      | 200         | MULTIPLE_MATCHES           | Unable to create new patient. Multiple matches found for supplied demographic data.	  |
+      | 200         | SINGLE_MATCH               | Unable to create new patient record. Singular NHS number found for supplied demographic data.	|
+      | 200         | MULTIPLE_MATCHES           | Unable to create new patient record. Multiple matches found for supplied demographic data.	  |
 
     headers:
       X-Correlation-Id:
@@ -90,22 +90,21 @@ responses:
     description: |
       An error occurred as follows:
       
-      | HTTP status | Error code                 | Description |
-      | ----------- | -------------------------- | --------------------------------------------- |
-      | 400         | UNSUPPORTED_SERVICE        | Missing NHS number. |
-      | 400         | MISSING_VALUE              | Missing header parameter. For details, see the `diagnostics` field. |
-      | 400         | INVALID_VALUE              | Invalid header parameter or invalid value in body of post request. For details, see the `diagnostics` field. |
-      | 400         | INVALID_RESOURCE_ID        | Invalid NHS number. |
-      | 400         | VALIDATION_ERROR           | This is the "default" error thrown when no others are applicable. |
+      | HTTP status | Error code                      | Description |
+      | ----------- | ------------------------------- | --------------------------------------------- |
+      | 400         | MISSING_VALUE                   | Missing header parameter. For details, see the `diagnostics` field. |
+      | 400         | INVALID_VALUE                   | Invalid header parameter or invalid value in body of post request. For details, see the `diagnostics` field. |
+      | 400         | INVALID_RESOURCE_ID             | Invalid NHS number. |
+      | 400         | VALIDATION_ERROR                | This is the "default" error thrown when no others are applicable. |
       | 400         | UNSUPPORTED_CHARACTERS_IN_FIELD | Invalid value in body of post request. For details, see the `diagnostics` field. |
-      | 400         | ADDITIONAL_PROPERTIES      | The user sent additional properties within the dictionary. For example sending a patient post and attempting to include 'pets', which is not an allowed field within the patient resource. |
-      | 400         | UNSUPPORTED_VALUE          | There was an unsupported value in the request. The value may be valid in the schema - however it could be a legacy value that we do not allow to be set anymore. The invalid value and field will be presented in the display. |
-      | 400         | TOO_FEW_VALUES_SUBMITTED   | The field in question has a minimum number of items and the user sent too few. |
-      | 400         | TOO_MANY_VALUES_SUBMITTED  | The field in question has a maximum number of items and the user sent too many. |
-      | 401         | ACCESS_DENIED              | Access token missing, invalid or expired, or calling application not configured for this operation. |
-      | 403         | ACCESS_DENIED              | Patient cannot perform this action. |
-      | 408         | UNABLE_TO_CALL_SERVICE     | The downstream domain processing has not completed within the configured timeout period. |
-      | 429         | TOO_MANY_REQUESTS          | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
+      | 400         | ADDITIONAL_PROPERTIES           | The user sent additional properties within the dictionary. For example sending a patient post and attempting to include 'pets', which is not an allowed field within the patient resource. |
+      | 400         | UNSUPPORTED_VALUE               | There was an unsupported value in the request. The value may be valid in the schema - however it could be a legacy value that we do not allow to be set anymore. The invalid value and field will be presented in the display. |
+      | 400         | TOO_FEW_VALUES_SUBMITTED        | The field in question has a minimum number of items and the user sent too few. |
+      | 400         | TOO_MANY_VALUES_SUBMITTED       | The field in question has a maximum number of items and the user sent too many. |
+      | 401         | ACCESS_DENIED                   | Access token missing, invalid or expired, or calling application not configured for this operation. |
+      | 403         | ACCESS_DENIED                   | Patient cannot perform this action. |
+      | 408         | UNABLE_TO_CALL_SERVICE          | The downstream domain processing has not completed within the configured timeout period. |
+      | 429         | TOO_MANY_REQUESTS               | You have exceeded your application's [rate limit](https://digital.nhs.uk/developer/guides-and-documentation/reference-guide#rate-limits). |
     
     headers:
       X-Correlation-Id:

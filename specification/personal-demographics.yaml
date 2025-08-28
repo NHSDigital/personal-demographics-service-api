@@ -17,7 +17,7 @@ info:
     * get patient coverage
     * update patient coverage
     * create a record for a new patient (except for GPs - see below)
-      * You should not use this API to create a new record when registering a new patient at a GP Practice. Instead, use  the Primary Care Registration Management - NHS Digital (PCRM) system.
+      * You should not use this API to create a new record when registering a new patient at a GP Practice. Instead, use the Primary Care Registration Management - NHS Digital (PCRM) system.
 
 
     You cannot currently use this API to:

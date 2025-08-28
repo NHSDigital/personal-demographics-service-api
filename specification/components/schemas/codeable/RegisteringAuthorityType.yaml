@@ -23,7 +23,7 @@ properties:
         code:
           type: string
           description: A CodeSystem that identifies the type of the registering authority.
-          example: "y"
+          example: "x"
           enum:
             - a
             - b
