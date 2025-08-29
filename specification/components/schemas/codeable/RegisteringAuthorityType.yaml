@@ -1,0 +1,56 @@
+type: object
+description: Registering Authority Type
+required:
+  - coding
+properties:
+  coding:
+    type: array
+    description: Array containing exactly one registering authority type
+    minItems: 1
+    maxItems: 1
+    items:
+      type: object
+      required:
+        - system
+        - code
+      properties:
+        system:
+          type: string
+          description: URL of the Registering Authority Type. Always uses the 'UKCore-RegisteringAuthorityType' Code System.
+          example: https://fhir.nhs.uk/CodeSystem/UKCore-RegisteringAuthorityType
+          enum:
+            - https://fhir.nhs.uk/CodeSystem/UKCore-RegisteringAuthorityType
+        code:
+          type: string
+          description: A CodeSystem that identifies the type of the registering authority.
+          example: "x"
+          enum:
+            - a
+            - b
+            - c
+            - d
+            - e
+            - f
+            - g
+            - h
+            - i
+            - j
+            - k
+            - l
+            - m
+            - "n"
+            - o
+            - p
+            - q
+            - r
+            - s
+            - t
+            - u
+            - v
+            - w
+            - x
+            - "1"
+        display:
+          type: string
+          description: Display-friendly representation of the registering authority type.
+          example: NHAIS
