@@ -2,9 +2,11 @@ summary: Create a record for a new patient
 operationId: create-patient
 description: |
   ## Overview
-  Use this endpoint to create a record for a new patient, this involves the allocation of a new NHS number. Only use this if a search for the patient has been done and no NHS number can be found.
+  Use this endpoint to create a record for a new patient, which involves allocating them a new NHS number. Only use this if a search for the patient has been done and no NHS number can be found.
 
   You should not use this API to create a new record when registering a new patient at a GP Practice. Instead, use the Primary Care Registration Management - NHS Digital (PCRM) system.
+
+  You should not use this API to create a new record at birth.
 
   This endpoint is only available to users with Healthcare worker access.
 
@@ -12,13 +14,13 @@ description: |
 
   You can test the following scenarios in our sandbox environment.
 
-  | Scenario                                              | Request                                                                                                      | Response                                            |
-  | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------- |
-  | Patient record created with new allocated NHS number	| Body: One of the provided examples or your own combination<br><br>Headers: `Content-Type`=`application/json` | HTTP Status 201 with patient data in response       |
-  | Single match found	                                  | Body: Provided example<br><br>Headers: `Content-Type`=`application/json`                                     | HTTP Status 200 with matched NHS number in response |
-  | Multiple matches found	                              | Body: Provided example<br><br>Headers: `Content-Type`=`application/json`                                     | HTTP Status 200 with problem description            |
-  | Missing X-Request-ID                                  | X-Request-ID header missing                                                                                  | HTTP Status 400 with problem description            |
-  | Invalid X-Request-ID                                  | `X-Request-ID`= `1234`                                                                                       | HTTP Status 400 with problem description            |
+  | Scenario                                                  | Request                                                                                                      | Response                                            |
+  | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------- |
+  | Patient record is created and allocated a new NHS number	| Body: One of the provided examples or your own combination<br><br>Headers: `Content-Type`=`application/json` | HTTP Status 201 with patient data in response       |
+  | Single match found	                                      | Body: Provided example<br><br>Headers: `Content-Type`=`application/json`                                     | HTTP Status 200 with matched NHS number in response |
+  | Multiple matches found	                                  | Body: Provided example<br><br>Headers: `Content-Type`=`application/json`                                     | HTTP Status 200 with problem description            |
+  | Missing X-Request-ID                                      | X-Request-ID header missing                                                                                  | HTTP Status 400 with problem description            |
+  | Invalid X-Request-ID                                      | `X-Request-ID`= `1234`                                                                                       | HTTP Status 400 with problem description            |
 
   You can try out the sandbox by selecting the 'Try' button at the end of the schema.
 
@@ -41,7 +43,7 @@ requestBody:
 responses:
   '201':
     description: |
-      New NHS number allocated as no matches were found, patient data returned in response.
+      New record successfully created. Patient data, including newly allocated NHS number, returned in response.
 
     headers:
       X-Correlation-Id:
@@ -57,12 +59,12 @@ responses:
 
   '200':
     description: |
-      NHS number match found, this could be a single match or multiple matches as defined below.
+      New record not created. Single or multiple matches found for supplied demographic data.
 
-      | HTTP status | Error code                 | Description                                                                            |
-      | ----------- | -------------------------- | -------------------------------------------------------------------------------------- |
-      | 200         | SINGLE_MATCH               | Unable to create new patient record. Singular NHS number found for supplied demographic data.	|
-      | 200         | MULTIPLE_MATCHES           | Unable to create new patient record. Multiple matches found for supplied demographic data.	  |
+      | HTTP status | Error code                 | Description                                                                                         |
+      | ----------- | -------------------------- | --------------------------------------------------------------------------------------------------- |
+      | 200         | SINGLE_MATCH               | Unable to create new patient record. A single matching record found for supplied demographic data.           |
+      | 200         | MULTIPLE_MATCHES           | Unable to create new patient record. Multiple matching records found for supplied demographic data. |
 
     headers:
       X-Correlation-Id:
@@ -94,7 +96,6 @@ responses:
       | ----------- | ------------------------------- | --------------------------------------------- |
       | 400         | MISSING_VALUE                   | Missing header parameter. For details, see the `diagnostics` field. |
       | 400         | INVALID_VALUE                   | Invalid header parameter or invalid value in body of post request. For details, see the `diagnostics` field. |
-      | 400         | INVALID_RESOURCE_ID             | Invalid NHS number. |
       | 400         | VALIDATION_ERROR                | This is the "default" error thrown when no others are applicable. |
       | 400         | UNSUPPORTED_CHARACTERS_IN_FIELD | Invalid value in body of post request. For details, see the `diagnostics` field. |
       | 400         | ADDITIONAL_PROPERTIES           | The user sent additional properties within the dictionary. For example sending a patient post and attempting to include 'pets', which is not an allowed field within the patient resource. |

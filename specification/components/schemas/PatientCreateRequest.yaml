@@ -33,7 +33,7 @@ properties:
   telecom:
     type: array
     description: |
-      List of contact points for the patient, like phone numbers or email addresses. A patient should only have one instance of each telecom system and use combination on their record at a time. For example, the patient request should not contain multiple work email values in this array.
+      List of contact points for the patient, such as phone numbers or email addresses. A patient should only have one instance of each telecom system and use combination on their record at a time. For example, the patient request should not contain multiple work email values in this array.
     items:
       $ref: "ContactPoint.yaml"
   extension:
