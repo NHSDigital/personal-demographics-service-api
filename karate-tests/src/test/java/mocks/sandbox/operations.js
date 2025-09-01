@@ -15,9 +15,16 @@ function updateAddressDetails (value, originalPatient, updateErrors) {
 }
 
 function handleNameRemovalError (request, updateErrors, patient) {
-  if (!request.body.patches[0]?.op === 'test' || !request.body.patches[0].path.startsWith('/name/1/id')) {
+  const firstPatch = request.body.patches?.[0]
+
+  if (!firstPatch) {
+    updateErrors.push('Invalid update with error - missing patch operation')
+    return
+  }
+
+  if (firstPatch.op !== 'test' || !firstPatch.path.startsWith('/name/1/id')) {
     updateErrors.push("Invalid update with error - removal '/name/1' is not immediately preceded by equivalent test - instead it is the first item")
-  } else if (request.body.patches[0].path === '/name/1/id' && request.body.patches[0].value === '123456') {
+  } else if (firstPatch.path === '/name/1/id' && firstPatch.value === '123456') {
     updateErrors.push("Invalid update with error - Invalid patch - index '1' is out of bounds")
   } else {
     patient.name.splice(1, 1)
