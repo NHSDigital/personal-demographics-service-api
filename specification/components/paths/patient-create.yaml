@@ -36,9 +36,17 @@ requestBody:
         $ref: '../schemas/PatientCreateRequest.yaml'
       examples:
         create-patient:
-          summary: Create a patient
+          summary: Create a patient, no matching records for supplied demographic data
           value:
-            $ref: '../examples/requests/PatientCreate/create-patient.json'
+            $ref: '../examples/requests/PatientCreate/Allocate_NHS_Number.json'
+        single-match:
+          summary: Single matching record found for supplied demographic data
+          value: 
+            $ref: '../examples/requests/PatientCreate/Single_Match_found.json'
+        multiple-matches:
+          summary: Multiple matching records found for supplied demographic data
+          value:
+            $ref: '../examples/requests/PatientCreate/Multi_Match_found.json'
 
 responses:
   '201':
