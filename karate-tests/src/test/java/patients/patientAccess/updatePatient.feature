@@ -24,6 +24,8 @@ Feature: Patient updates their details
     * header If-Match = karate.response.header('etag')
     * path 'Patient', p9number
     * request {"patches": [{ "op": "replace", "path": "/gender", "value": "#(targetValue)" }]}
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * retry until responseStatus != 503 && responseStatus != 502   
     * method patch
     * status 400
     * def diagnostics = 'Invalid update with error - This user does not have permission to update the fields in the patches provided.'
@@ -46,6 +48,8 @@ Feature: Patient updates their details
     * header If-Match = originalEtag
     * path 'Patient', p9number
     * request { "patches": [{ "op": "test", "path": "/telecom/0/id", "value": "#(response.telecom[0].id)" }, { "op": "remove", "path": "/telecom/0"} ]}
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * retry until responseStatus != 503 && responseStatus != 502   
     * method patch
     * status 400
     
@@ -56,6 +60,8 @@ Feature: Patient updates their details
     * def mobileIndex = utils.getIndexOfFirstMobile(originalTelecom)
     * def newTelecom = { "id": "#(originalTelecom[mobileIndex].id)", "period": { "start": "#(utils.todaysDate())" }, "system": "phone", "use": "mobile", "value": "#(faker.phoneNumber())" }
     * request { "patches": [{ "op": "replace", "path": "#('/telecom/' + mobileIndex)", "value": "#(newTelecom)" }]}
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * retry until responseStatus != 503 && responseStatus != 502   
     * path 'Patient', p9number
     * method patch
     * status 200
@@ -74,6 +80,8 @@ Feature: Patient updates their details
     * header If-Match = "W/\"1\""
     * def newTelecom = { "id": "#(originalTelecom[0].id)", "period": { "start": "#(utils.todaysDate())" }, "system": "phone", "use": "mobile", "value": "#(faker.phoneNumber())" }
     * request { "patches": [{ "op": "replace", "path": "/telecom/0", "value": "#(newTelecom)" }]}
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * retry until responseStatus != 503 && responseStatus != 502   
     * path 'Patient', p5number
     * method patch
     * status 403
@@ -81,8 +89,6 @@ Feature: Patient updates their details
     * def display = 'Patient cannot perform this action'
     * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
     * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
-
-
 
   Scenario: Send empty field on the update - communication Language code
     * def p9number = '9733162930'
@@ -134,13 +140,14 @@ Feature: Patient updates their details
       }
         """
       * request requestbody  
+      # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+      * retry until responseStatus != 503 && responseStatus != 502   
       * method patch
       * status 400 
       * def display = 'Patient cannot perform this action'
       * def diagnostics = "Invalid update with error - Invalid patch - {'url': 'https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication', 'extension': [{'url': 'language', 'valueCodeableConcept': {'coding': [{'system': 'https://fhir.hl7.org.uk/CodeSystem/UKCore-HumanLanguage', 'version': '1.0.0', 'code': 'fr', 'display': 'French'}]}}, {'url': 'interpreterRequired', 'valueBoolean': True}]} (<class 'dict'>) is not equal to tested value {'url': 'https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication', 'extension': [{'url': 'language', 'valueCodeableConcept': {'coding': ' '}}, {'url': 'interpreterRequired', 'valueBoolean': False}]} (<class 'dict'>)"
       * match response == read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')     
   
-
   Scenario: Patient can update their emergency contact details and place of birth
     * def p9number = '5900069176'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
@@ -182,6 +189,8 @@ Feature: Patient updates their details
             "value":"#(newMobileNumber)"}
             ]}}]}
      """ 
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * retry until responseStatus != 503 && responseStatus != 502    
     * request requestbody      
     * method patch
     * status 200
@@ -210,6 +219,8 @@ Feature: Patient updates their details
             }
         }}]}
      """  
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * retry until responseStatus != 503 && responseStatus != 502      
     * method patch
     * status 200  
     * def updatedPobCity = response.extension[pobIndex].valueAddress.city
@@ -257,6 +268,8 @@ Feature: Patient updates their details
     * header If-Match = etagKey ? response.responseHeaders[etagKey][0] : null
     * path 'Patient', p9numberForPharmacy
     * request requestBody
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * retry until responseStatus != 503 && responseStatus != 502   
     * method patch
     * status 200 
     * def idAfterPharmacyAdd = response.meta.versionId
@@ -328,6 +341,8 @@ Feature: Patient updates their details
         ]
     }
     """
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * retry until responseStatus != 503 && responseStatus != 502   
     * request requestBody
     * method patch
     * status 200 

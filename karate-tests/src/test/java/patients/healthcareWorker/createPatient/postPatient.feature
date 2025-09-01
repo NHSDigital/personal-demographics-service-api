@@ -31,7 +31,7 @@ Background:
   * def familyName = "ToRemove"
 
   
-@sandbox 
+@sandbox
 Scenario: Post patient - new patient
   * def givenName = ["#(faker.givenName())", "#(faker.givenName())"]
   * def prefix = ["#(utils.randomPrefix())"]
@@ -357,4 +357,39 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
     * def diagnostics = "Invalid patient create data provided - 'An end date can not be provided on usual name'"
     * match response == read('classpath:mocks/stubs/errorResponses/INVALID_CREATE.json')
   
-  
+  Scenario: Post patient with null prefix and suffix
+    * def givenName = ["#(faker.givenName())", "#(faker.givenName())"]
+    * def gender = utils.randomGender()
+    * def birthDate = utils.randomBirthDate()
+    * def randomAddress = utils.randomAddress(birthDate)
+    * def address = randomAddress
+    * def patientPayload = read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
+    * def nameWithNullSuffix = 
+    """
+      {
+          "family": "#(familyName)",
+          "given": "#(givenName)",
+          "prefix": [""],
+          "suffix": [""],
+          "use": "usual",
+          "period": {"start": "2020-01-01"}
+      }
+
+    """
+    * patientPayload.name[0] = nameWithNullSuffix
+    
+    * path "Patient"
+    * request patientPayload
+    * configure retry = { count: 5, interval: 5000 }
+    * retry until responseStatus != 429 && responseStatus != 503
+    * method post
+    * status 201
+    * def nhsNumber = response.id
+    * def expectedResponse = read('classpath:patients/healthcareWorker/new-nhs-number-response-template.json')
+    * match response == expectedResponse
+    # In our request body, we send an array of address lines that include blank lines (" ") - but in the response, blank lines are removed,
+    # so the array is shorter. We need to account for this in our match statement.
+    * match response.address[0].line[0] == address.line[1]
+    # the city may or may not get capitalised...
+    * match response.address[0].line[1].toUpperCase() == address.line[3].toUpperCase()
+    * match response.address[0].postalCode == address.postalCode  

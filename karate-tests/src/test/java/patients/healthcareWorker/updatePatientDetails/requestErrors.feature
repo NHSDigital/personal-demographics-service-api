@@ -7,10 +7,11 @@ Feature: Patch patient errors - Healthcare worker access mode
     * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders 
-    
+ 
     * url baseURL
     * def nhsNumber = '5900059073'
     * path 'Patient', nhsNumber
+    * retry until responseStatus != 503 && responseStatus != 502   
     * method get
     * status 200
     
@@ -26,6 +27,8 @@ Feature: Patch patient errors - Healthcare worker access mode
 
     * path 'Patient', nhsNumber
     * request {}
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * retry until responseStatus != 503 && responseStatus != 502   
     * method patch
     * status 400
     * match response == expectedBody
@@ -45,6 +48,8 @@ Feature: Patch patient errors - Healthcare worker access mode
       {"op":"remove","path":"/name/0/suffix/0"}
     ]}
     """
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * retry until responseStatus != 503 && responseStatus != 502   
     * method patch
     * status 409
     * match response == read('classpath:mocks/stubs/errorResponses/RESOURCE_VERSION_MISMATCH.json')
@@ -63,6 +68,8 @@ Feature: Patch patient errors - Healthcare worker access mode
     
     * path 'Patient', nhsNumber
     * request {"patches":[{"op":"remove","path":"/name/0/suffix/0"}]}
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * retry until responseStatus != 503 && responseStatus != 502   
     * method patch
     * status 400
     * match response == expectedBody
@@ -81,6 +88,8 @@ Feature: Patch patient errors - Healthcare worker access mode
         {"op":"remove","path":"/name/0/suffix/0"}
       ]}
       """
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * retry until responseStatus != 503 && responseStatus != 502    
     * method patch
     * status 412
     * match response == expectedBody
@@ -93,6 +102,8 @@ Feature: Patch patient errors - Healthcare worker access mode
 
     * path 'Patient', nhsNumber
     * request {"patches":[{"op":"remove","path":"/name/0/suffix/0"}]}
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * retry until responseStatus != 503 && responseStatus != 502   
     * method patch
     * status 400
     * match response == expectedBody
@@ -106,6 +117,8 @@ Feature: Patch patient errors - Healthcare worker access mode
 
     * path 'Patient', nhsNumber
     * request {"patches":[{"op":"bad_value","path":"not a path"}]}
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * retry until responseStatus != 503 && responseStatus != 502   
     * method patch
     * status 400
     * match response == expectedBody
@@ -124,6 +137,8 @@ Feature: Patch patient errors - Healthcare worker access mode
         {"op":"remove","path":"/name/0/suffix/0"}
       ]}
       """
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * retry until responseStatus != 503 && responseStatus != 502     
     * method patch
     * status 400
     * match response == expectedBody
@@ -142,6 +157,8 @@ Feature: Patch patient errors - Healthcare worker access mode
         {"op":"remove","path":"/name/0/suffix/0"}
       ]}
       """
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * retry until responseStatus != 503 && responseStatus != 502     
     * method patch
     * status 404
     * match response == expectedBody
@@ -159,6 +176,8 @@ Feature: Patch patient errors - Healthcare worker access mode
     
     * path 'Patient', nhsNumber
     * request {"patches":[{"op":"remove","path":"/name/0/suffix/0"}]}
+    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+    * retry until responseStatus != 503 && responseStatus != 502   
     * method patch
     * status 400
     * match response == expectedBody

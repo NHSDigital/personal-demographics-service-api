@@ -37,6 +37,7 @@ const FUZZY_MULTI_SEARCHSET = context.read('classpath:mocks/stubs/searchResponse
 const HISTORIC_DATA_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/med_rowenad_searchset.json')
 const TOO_MANY_MATCHES = context.read('classpath:mocks/stubs/searchResponses/TOO_MANY_MATCHES.json')
 const UNSUPPORTED_OPERATION_RESPONSE = context.read('classpath:mocks/stubs/errorResponses/NOT_SUPPORTED_SEARCH.json')
+const EXACT_MATCH_SEARCHSET = context.read('classpath:mocks/stubs/searchResponses/knap_kathy_exact_match.json')
 
 function janeSmithSearchsetWithScore (score) {
   return {
@@ -63,66 +64,82 @@ function validateQueryParams (request) {
     'address-postcode', 'address-postalcode', 'general-practitioner', 'email', 'phone'
   ]
 
+  const params = Object.keys(request?.params ?? {})
+
   // check that params were actually provided
-  if (Object.keys(request.params).length === 0) {
-    return setUnsupportedServiceError()
+  if (params.length === 0) {
+    setUnsupportedServiceError()
+    return false
   }
 
-  // reject any invalid params
+  const { validParams, invalidParams } = splitValidAndInvalid(params, VALID_PARAMS)
+
+  if (validateInvalidParams(invalidParams)) return false
+
+  if (validateDateFields(request?.params)) return false
+
+  if (validateRequiredFields(validParams)) return false
+
+  return true
+}
+
+function splitValidAndInvalid (params, validList) {
   const validParams = []
   const invalidParams = []
-  for (const paramName in request.params) {
-    if (VALID_PARAMS.includes(paramName)) {
-      validParams.push(paramName)
-    } else {
-      invalidParams.push(paramName)
-    }
+  for (const paramName of params) {
+    (validList.includes(paramName) ? validParams : invalidParams).push(paramName)
   }
+  return { validParams, invalidParams }
+}
+
+function validateInvalidParams (invalidParams) {
   if (invalidParams.length === 3) {
-    // the diagnostics message isn't built dynamically, because the order of properties doesn't correspond to the order of the params
-    // instead, this is a dumb rule that just assumes the three invalid params are the ones our test uses
     const diagnostics = "Invalid request with error - Additional properties are not allowed ('model', 'manufacturer', 'year' were unexpected)"
-    return setAdditionalPropertiesError(diagnostics)
+    setAdditionalPropertiesError(diagnostics)
+    return true
   }
   if (invalidParams.length === 1) {
     const diagnostics = `Invalid request with error - Additional properties are not allowed ('${invalidParams[0]}' was unexpected)`
-    return setAdditionalPropertiesError(diagnostics)
+    setAdditionalPropertiesError(diagnostics)
+    return true
   }
+  return false
+}
 
-  // check the validity of any date params first
-  const birthDateArray = request.params.birthdate
-  if (birthDateArray) {
-    for (const index in birthDateArray) {
-      const birthDate = birthDateArray[index]
-      if (!birthDate || !birthDate.match(/^(eq|ge|le)?[0-9]{4}-[0-9]{2}-[0-9]{2}$/)) {
-        const diagnostics = `Invalid value - '${birthDate}' in field 'birthdate'`
-        return setInvalidValueError(diagnostics)
-      }
-    }
-  }
-  const deathDateArray = request.params['death-date']
-  if (deathDateArray) {
-    for (const index in deathDateArray) {
-      const deathDate = deathDateArray[index]
-      if (!deathDate || !deathDate.match(/^(eq|ge|le)?[0-9]{4}-[0-9]{2}-[0-9]{2}$/)) {
-        const diagnostics = `Invalid value - '${deathDate}' in field 'death-date'`
-        return setInvalidValueError(diagnostics)
-      }
+function validateDateFields (params) {
+  for (const date of params?.birthdate ?? []) {
+    if (!isValidDate(date)) {
+      setInvalidValueError(`Invalid value - '${date}' in field 'birthdate'`)
+      return true
     }
   }
 
-  // check that the birthdate was provided
-  if (!validParams.includes('birthdate')) {
-    const diagnostics = "Missing value - 'birth_date/birth_date_range_start/birth_date_range_end'"
-    return setMissingValueError(diagnostics)
-  }
-  // check that the family name was provided
-  if (!validParams.includes('family')) {
-    const diagnostics = "Invalid search data provided - 'No searches were performed as the search criteria did not meet the minimum requirements'"
-    return setInvalidSearchDataError(diagnostics)
+  for (const date of params?.['death-date'] ?? []) {
+    if (!isValidDate(date)) {
+      setInvalidValueError(`Invalid value - '${date}' in field 'death-date'`)
+      return true
+    }
   }
 
-  return true
+  return false
+}
+
+function isValidDate (date) {
+  return date?.match(/^(eq|ge|le)?\d{4}-\d{2}-\d{2}$/)
+}
+
+function validateRequiredFields (validParams) {
+  if (!validParams?.includes('birthdate')) {
+    setMissingValueError("Missing value - 'birth_date/birth_date_range_start/birth_date_range_end'")
+    return true
+  }
+  if (!validParams?.includes('family')) {
+    setInvalidSearchDataError(
+      "Invalid search data provided - 'No searches were performed as the search criteria did not meet the minimum requirements'"
+    )
+    return true
+  }
+  return false
 }
 
 function otherJaneSmithParamsAreValid (request) {
@@ -383,6 +400,18 @@ const matchCases = [
   {
     condition: (params) => (params.family === 'Spiderman' || params.family === 'Bingham') && (extractBirthDate(params) === '1962-07-31' || extractBirthDate(params) === '1934-12-18'),
     action: () => timestampBody(EMPTY_SEARCHSET)
+  },
+  // Include exact match flag for non fuzzy search
+  {
+    condition: (params) => params.exactMatch && ['KNAPP', 'Knapp', 'knapp'].includes(params.family) && ['Female', 'female'].includes(params.gender) &&
+    (extractBirthDate(params)) === '1943-07-03',
+    action: () => timestampBody(EXACT_MATCH_SEARCHSET)
+  },
+  // Exclude exact match flag for non fuzzy search
+  {
+    condition: (params) => ['KNAPP', 'Knapp', 'knap'].includes(params.family) && ['Female', 'female'].includes(params.gender) &&
+    (extractBirthDate(params)) === '1943-07-03',
+    action: () => timestampBody(EMPTY_SEARCHSET)
   }
   // Add additional match cases for other conditions
 ]
@@ -401,7 +430,8 @@ if (request.pathMatches('/Patient') && request.get) {
     maxResults: request.param('_max-results'),
     historyMatch: request.param('_history'),
     gp: request.param('general-practitioner'),
-    deathDate: request.param('death-date')
+    deathDate: request.param('death-date'),
+    exactMatch: request.param('_exact-match')
   }
 
   if (validateHeaders(request) && validateQueryParams(request)) {

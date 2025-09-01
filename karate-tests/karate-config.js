@@ -2,15 +2,18 @@ function fn() {
   // https://github.com/karatelabs/karate#configure for all the options
   karate.configure('connectTimeout', 5000);
   karate.configure('readTimeout', 20000);
-  var env = karate.env; // get java system property 'karate.env'
+  karate.configure('retry',{ count: 2, interval: 5000 });
+  const env = karate.env; // get java system property 'karate.env'
+
+  let config ={}
 
   if (env == 'ci') {
     // this hides sensitive details from the logs:
     // https://github.com/karatelabs/karate#report-verbosity
-    var LM = Java.type('demo.headers.DemoLogModifier');
+    const LM = Java.type('demo.headers.DemoLogModifier');
     karate.configure('logModifier', new LM());
   } else if (env == 'sandbox') {
-    var config = {
+     config = {
       oauth2MockURL: `${java.lang.System.getenv('OAUTH_BASE_URI')}/${java.lang.System.getenv('OAUTH_PROXY')}`,
       pdsBasePath: `${java.lang.System.getenv('PDS_BASE_PATH')}`,
       baseURL: `https://${java.lang.System.getenv('APIGEE_ENVIRONMENT')}.api.service.nhs.uk/${java.lang.System.getenv('PDS_BASE_PATH')}`,
@@ -22,8 +25,8 @@ function fn() {
       internalServerURL: 'https://api.service.nhs.uk/personal-demographics/FHIR/R4'
     };
   } else if (env == 'local-sandbox') {
-    var port = karate.properties['mockserver.port'] || '9000';
-    var config = {
+    const port = karate.properties['mockserver.port'] || '9000';
+    config = {
       oauth2MockURL: `http://localhost:${port}`,
       baseURL: `http://localhost:${port}`,
       clientID: java.lang.System.getenv('CLIENT_ID'),
@@ -31,7 +34,7 @@ function fn() {
     };
   } else if (env == 'prism') {
     const prismURL = 'http://127.0.0.1:4010'
-    var config = { 
+    config = { 
       oauth2MockURL: `${java.lang.System.getenv('OAUTH_BASE_URI')}/${java.lang.System.getenv('OAUTH_PROXY')}`,
       pdsBasePath: `${java.lang.System.getenv('PDS_BASE_PATH')}`,      
       baseURL: `${prismURL}`,
@@ -45,7 +48,7 @@ function fn() {
       internalServerURL: `${java.lang.System.getenv('INTERNAL_SERVER_BASE_URI')}/personal-demographics/FHIR/R4`
     };
   } else if (env == 'int') {
-    var config = { 
+    config = { 
       oauth2MockURL: `${java.lang.System.getenv('OAUTH_BASE_URI')}/${java.lang.System.getenv('OAUTH_PROXY')}`,
       pdsBasePath: 'https://int.api.service.nhs.uk/personal-demographics/FHIR/R4',      
       baseURL: `${java.lang.System.getenv('OAUTH_BASE_URI')}/${java.lang.System.getenv('PDS_BASE_PATH')}`,
@@ -58,10 +61,10 @@ function fn() {
       emptyAddressLinesClientID: java.lang.System.getenv('EMPTY_ADDRESS_LINES_CLIENT_ID'),
       emptyAddressLinesClientSecret: java.lang.System.getenv('EMPTY_ADDRESS_LINES_CLIENT_SECRET'),
       confidentialRemovalReasonsClientID: java.lang.System.getenv('CONFIDENTIAL_REMOVAL_REASONS_CLIENT_ID'),
-      confidentialRemovalReasonsClientSecret: java.lang.System.getenv('CONFIDENTIAL_REMOVAL_REASONS_CLIENT_SECRET'),
+      confidentialRemovalReasonsClientSecret: java.lang.System.getenv('CONFIDENTIAL_REMOVAL_REASONS_CLIENT_SECRET')
     };
   } else {
-    var config = { 
+    config = { 
       oauth2MockURL: `${java.lang.System.getenv('OAUTH_BASE_URI')}/${java.lang.System.getenv('OAUTH_PROXY')}`,
       pdsBasePath: `${java.lang.System.getenv('PDS_BASE_PATH')}`,
       baseURL: `${java.lang.System.getenv('OAUTH_BASE_URI')}/${java.lang.System.getenv('PDS_BASE_PATH')}`,
@@ -73,6 +76,8 @@ function fn() {
       emptyAddressLinesClientSecret: java.lang.System.getenv('EMPTY_ADDRESS_LINES_CLIENT_SECRET'),
       confidentialRemovalReasonsClientID: java.lang.System.getenv('CONFIDENTIAL_REMOVAL_REASONS_CLIENT_ID'),
       confidentialRemovalReasonsClientSecret: java.lang.System.getenv('CONFIDENTIAL_REMOVAL_REASONS_CLIENT_SECRET'),
+      recordSharingConsentClientID: java.lang.System.getenv('RECORD_SHARING_CONSENT_APP_CLIENT_ID'),
+      recordSharingConsentClientSecret: java.lang.System.getenv('RECORD_SHARING_CONSENT_APP_CLIENT_SECRET'),
       signingKey: java.lang.System.getenv('APPLICATION_RESTRICTED_SIGNING_KEY_PATH'),
       apiKey: java.lang.System.getenv('APPLICATION_RESTRICTED_API_KEY'),
       privilegedAccessSigningKey: java.lang.System.getenv('PRIVILEGED_ACCESS_SIGNING_KEY_PATH'),

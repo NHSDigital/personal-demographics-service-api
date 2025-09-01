@@ -1704,6 +1704,142 @@
 						"description": "Example of a search for a patient with restricted data - will return a patient with restricted data, e.g. address & telecom will not be returned and the meta.security.code object will be \"R\", representing a restricted patient."
 					},
 					"response": []
+				},
+				{
+					"name": "Basic search with exact match flag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"pm.test(\"Searchset is returned\", function () {",
+									"  const jsonData = pm.response.json();",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");",
+									"  pm.expect(jsonData.total).to.equal(1);",
+									"",
+									"});",
+									"pm.test(\"Searchset includes patient 9736363120\", function () {",
+									"  const jsonData = pm.response.json();",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"9736363120\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/Patient?family=KNAPP&gender=female&birthdate=1943-07-03&_exact-match=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							],
+							"query": [
+								{
+									"key": "family",
+									"value": "KNAPP"
+								},
+								{
+									"key": "gender",
+									"value": "female"
+								},
+								{
+									"key": "birthdate",
+									"value": "1943-07-03"
+								},
+								{
+									"key": "_exact-match",
+									"value": "true"
+								}
+							]
+						},
+						"description": "Example of a simple search using minimum search parameters (\"family\" name, \"gender\" & \"date of birth\") will return a single result."
+					},
+					"response": []
+				},
+				{
+					"name": "Basic search including history flag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"pm.test(\"Searchset is returned\", function () {",
+									"  const jsonData = pm.response.json();",
+									"  pm.expect(jsonData.resourceType).to.equal(\"Bundle\");",
+									"  pm.expect(jsonData.type).to.equal(\"searchset\");",
+									"  pm.expect(jsonData.total).to.equal(1);",
+									"",
+									"});",
+									"pm.test(\"Searchset includes patient 5900020584\", function () {",
+									"  const jsonData = pm.response.json();",
+									"  pm.expect(jsonData.entry[0].resource.id).to.equal(\"5900020584\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Request-ID",
+								"value": "{{$guid}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/Patient?family=Smith&gender=male&birthdate=2000-05-05&_history=true&email=Historic@historic.com",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Patient"
+							],
+							"query": [
+								{
+									"key": "family",
+									"value": "Smith"
+								},
+								{
+									"key": "gender",
+									"value": "male"
+								},
+								{
+									"key": "birthdate",
+									"value": "2000-05-05"
+								},
+								{
+									"key": "_history",
+									"value": "true"
+								},
+								{
+									"key": "email",
+									"value": "Historic@historic.com"
+								}
+							]
+						},
+						"description": "Example of a simple search using minimum search parameters (\"family\" name, \"gender\" & \"date of birth\") will return a single result."
+					},
+					"response": []
 				}
 			],
 			"description": "Example requests that relate to the Search Patient endpoint, as described under:\n\nhttps://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir#api-Default-search-patient",

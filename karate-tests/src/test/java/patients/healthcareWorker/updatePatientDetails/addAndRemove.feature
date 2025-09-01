@@ -1,4 +1,3 @@
-
 Feature: Patch patient - Add and remove data
   
     This feature tests adding data to a patient and then remove it.
@@ -13,14 +12,37 @@ Feature: Patch patient - Add and remove data
     * configure headers = call read('classpath:auth/auth-headers.js')
     
     * url baseURL
-  
+
     @sandbox
-  Scenario: Add and remove patient data
-    * def nhsNumber = '5900056449'
+  Scenario: Add and remove patient name
+    * def nhsNumber = '9732110317'
     * path 'Patient', nhsNumber
     * method get
     * status 200
     * def originalVersion = parseInt(response.meta.versionId)
+    * def nameAlreadyExists = response.name.find(x => x.family == "Bloggs") != null
+    * def firstNameIndex = nameAlreadyExists ? response.name.findIndex(x => x.family == "Bloggs") : null
+    * def nameIdPath = "/name/"+ firstNameIndex + "/id"
+    * def nameId = nameAlreadyExists ? response.name[firstNameIndex].id : null
+    * def namePath = "/name/"+ firstNameIndex 
+
+    * def removePatientName =
+    """
+    function(body) {
+      var result = karate.call('classpath:helpers/patchRequest.feature', {
+          baseURL: baseURL,
+          requestBody: body,
+          endpoint: 'Patient/' + nhsNumber,
+          etag: karate.response.header('Etag')
+      });
+      originalVersion += 1
+      return result
+    }
+    """
+
+    # Remove patient name if already exists. Failed pipelines can leave data in an incorrect state
+    * def body = utils.buildRemovePatchBody(nameIdPath, nameId, namePath)
+    * def response = (nameAlreadyExists) ? removePatientName(body) : { body: response, responseHeaders: responseHeaders }
     
     # 1. Add a new name to the array of patient names
     # ===============================================
@@ -43,9 +65,12 @@ Feature: Patch patient - Add and remove data
 
     * configure headers = call read('classpath:auth/auth-headers.js')     
     * header Content-Type = "application/json-patch+json"
-    * header If-Match = karate.response.header('etag')
+    * def etagKey = Object.keys(response.responseHeaders).find(k => k.toLowerCase() === 'etag')
+    * header If-Match = etagKey ? response.responseHeaders[etagKey][0] : null
     * path 'Patient', nhsNumber
     * request {"patches": [{ "op": "add", "path": "/name/-", "value": "#(newName)" }]}
+    # Adding re-try when "sync-wrap failed to connect to spine"
+    * retry until responseStatus != 503 && responseStatus != 502
     * method patch
     * status 200
     * def addedName = response.name.find(x => x.family == "Bloggs")
@@ -72,6 +97,8 @@ Feature: Patch patient - Add and remove data
     * header If-Match = karate.response.header('etag')
     * path 'Patient', nhsNumber
     * request {"patches":[{"op":"remove","path":"/name/1"}]}
+    # Adding re-try when "sync-wrap failed to connect to spine"
+    * retry until responseStatus != 503 && responseStatus != 502
     * method patch
     * status 400
     * match response == expectedBody
@@ -100,28 +127,55 @@ Feature: Patch patient - Add and remove data
     * match response.name !contains { id: '#(nameID)' }
     * match parseInt(response.meta.versionId) == originalVersion + 1
 
-    # 3. Add a suffix array 
-    # =====================
+  @sandbox
+  Scenario: Add and remove patient suffix array
+    * def nhsNumber = '9736363023'
     * path 'Patient', nhsNumber
     * method get
     * status 200
-    * def patientObject = response
     * def originalVersion = parseInt(response.meta.versionId)
-    * match response.name[0].suffix == "#notpresent"
 
+    * def namePath = "/name/0/id" 
+    * def nameId = response.name[0].id
+    * def suffixPath = "/name/0/suffix"
     * def suffixArray = ["PhD", "MBBS"]
+
+    * def removePatientSuffix =
+    """
+    function(body) {
+      var result = karate.call('classpath:helpers/patchRequest.feature', {
+          baseURL: baseURL,
+          requestBody: body,
+          endpoint: 'Patient/' + nhsNumber,
+          etag: karate.response.header('Etag')
+      });
+      originalVersion += 1
+      return result
+    }
+    """
+
+    # Remove patient name if already exists. Failed pipelines can leave data in an incorrect state
+    * def body = utils.buildRemovePatchBody(namePath, nameId, suffixPath)
+    * def response = (response.name[0].suffix == null) ? { body: response, responseHeaders: responseHeaders } : removePatientSuffix(body)
+    
+    # 3. Add a suffix array 
+    # =====================
+    * match response.name[0].suffix == "#notpresent"
     
     * configure headers = call read('classpath:auth/auth-headers.js')     
     * header Content-Type = "application/json-patch+json"
-    * header If-Match = karate.response.header('etag')
+    * def etagKey = Object.keys(response.responseHeaders).find(k => k.toLowerCase() === 'etag')
+    * header If-Match = etagKey ? response.responseHeaders[etagKey][0] : null
     * path 'Patient', nhsNumber
     * request 
       """
       {"patches": [
-        { "op": "add", "path": "/name/0/id", "value": "#(patientObject.name[0].id)" },
-        { "op": "add", "path": "/name/0/suffix", "value": "#(suffixArray)" }
+        { "op": "add", "path": "#(namePath)", "value": "#(nameId)" },
+        { "op": "add", "path": "#(suffixPath)", "value": "#(suffixArray)" }
       ]}
       """
+    # Adding re-try when "sync-wrap failed to connect to spine"
+    * retry until responseStatus != 503 && responseStatus != 502
     * method patch
     * status 200
     * match response.name[0].suffix == suffixArray
@@ -133,31 +187,33 @@ Feature: Patch patient - Add and remove data
     * path 'Patient', nhsNumber
     * method get
     * status 200
-    * def originalVersion = parseInt(response.meta.versionId)
-    * def patientObject = response
-   
-    * configure headers = call read('classpath:auth/auth-headers.js')     
-    * header Content-Type = "application/json-patch+json"
-    * header If-Match = karate.response.header('etag')
-    * path 'Patient', nhsNumber
-    * request 
-      """
-      {"patches":[
-        { "op": "test", "path": "/name/0/id", "value": "#(patientObject.name[0].id)" },
-        { "op": "remove", "path": "/name/0/suffix" }
-      ]}
-      """
-    * method patch
-    * status 200
-    * match response.name[0].suffix == '#notpresent'
-    * match parseInt(response.meta.versionId) == originalVersion + 1
+    * def originalVersion = parseInt(response.meta.versionId)    
+    * def response = removePatientSuffix(body)
+    * match response.response.name[0].suffix == '#notpresent'
+    * match parseInt(response.response.meta.versionId) == originalVersion
  
-    @sandbox
+  @sandbox
   Scenario: Add suffix to the existing array of suffixes and then remove the same 
     # 1. Add new suffix to the array
     # ==============================
     # You can also add a new suffix to an existing array of suffixes
-    * def nhsNumber = '9733162051'
+    * def nhsNumber = '9736363015'
+    * def suffix = "Esquire"
+
+    * def removeSuffix =
+    """
+    function(body) {
+      var result = karate.call('classpath:helpers/patchRequest.feature', {
+          baseURL: baseURL,
+          requestBody: body,
+          endpoint: 'Patient/' + nhsNumber,
+          etag: karate.response.header('Etag')
+      });
+      originalVersion += 1
+      return result
+    }
+    """
+
     * path 'Patient', nhsNumber
     * method get
     * status 200
@@ -165,11 +221,16 @@ Feature: Patch patient - Add and remove data
     * def firstNameIndexWithSuffix = response.name.findIndex(x => x.suffix != null)
     * def namePath = "/name/"+ firstNameIndexWithSuffix + "/id" 
     * def nameId = response.name.find(x => x.suffix != null).id
-    * def suffix = "Esquire"
+    * def suffixPath = "/name/"+ firstNameIndexWithSuffix + "/suffix/0"
+
+    # Remove suffix if already exists. Failed pipelines can leave data in an incorrect state
+    * def body = utils.buildRemovePatchBody(namePath, nameId, suffixPath)
+    * def response = (response.name[0].suffix.includes(suffix)) ? removeSuffix(body) : { body: response, responseHeaders: responseHeaders }
    
     * configure headers = call read('classpath:auth/auth-headers.js')     
     * header Content-Type = "application/json-patch+json"
-    * header If-Match = karate.response.header('etag')
+    * def etagKey = Object.keys(response.responseHeaders).find(k => k.toLowerCase() === 'etag')
+    * header If-Match = etagKey ? response.responseHeaders[etagKey][0] : null
     * path 'Patient', nhsNumber
     * request
       """
@@ -178,6 +239,8 @@ Feature: Patch patient - Add and remove data
         { "op": "add", "path": "/name/0/suffix/0", "value": "#(suffix)" }
       ]}
       """
+    # Adding re-try when "sync-wrap failed to connect to spine"
+    * retry until responseStatus != 503 && responseStatus != 502
     * method patch
     * status 200
     * match response.name[0].suffix contains suffix
@@ -191,29 +254,14 @@ Feature: Patch patient - Add and remove data
     * method get
     * status 200
     * def originalVersion = parseInt(response.meta.versionId)
-    * def firstNameIndexWithSuffix = response.name.findIndex(x => x.suffix != null)
-    * def namePath = "/name/"+ firstNameIndexWithSuffix + "/id" 
-    * def nameId = response.name.find(x => x.suffix != null).id
-    * def suffixPath = "/name/"+ firstNameIndexWithSuffix + "/suffix/0"
   
-    * configure headers = call read('classpath:auth/auth-headers.js')     
-    * header Content-Type = "application/json-patch+json"
-    * header If-Match = karate.response.header('etag')      
-    * path 'Patient', nhsNumber
-    * request 
-      """
-      {"patches":[
-        { "op": "test", "path": "#(namePath)", "value": "#(nameId)" },
-        { "op": "remove","path": "#(suffixPath)" }
-      ]}
-      """ 
-    * method patch
-    * status 200
-    * match parseInt(response.meta.versionId) == originalVersion + 1
+    * def body = utils.buildRemovePatchBody(namePath, nameId, suffixPath)
+    * def response = removeSuffix(body)
+    * match parseInt(response.response.meta.versionId) == originalVersion
 
   Scenario:  Healthcare worker can add and remove place of birth details(city and district)
 
-    * def placeOfBirthNhsNumber = '5900077810'
+    * def placeOfBirthNhsNumber = '9736363031'
     * def requestBody = read('classpath:patients/requestDetails/add/placeOfBirth.json')
     * def placeOBirthUrl = requestBody.patches[0].value.url
     
@@ -250,6 +298,8 @@ Feature: Patch patient - Add and remove data
     * header If-Match = etagKey ? response.responseHeaders[etagKey][0] : null
     * path 'Patient', placeOfBirthNhsNumber
     * request requestBody
+    # Adding re-try when "sync-wrap failed to connect to spine"
+    * retry until responseStatus != 503 && responseStatus != 502
     * method patch
     * status 200 
     * def idAfterPlaceOfBirthUpdate = response.meta.versionId
@@ -285,6 +335,8 @@ Scenario:  Add an address to a PDS record that already contains a bad address- a
     * header If-Match = karate.response.header('etag')
     * path 'Patient', addressUpdateNhsNumber
     * request read('classpath:patients/requestDetails/add/addressUpdate.json')
+    # Adding re-try when "sync-wrap failed to connect to spine"
+    * retry until responseStatus != 503 && responseStatus != 502
     * method patch
     * status 200
     * def postcode = response.address[homeAddressIndex].postalCode
