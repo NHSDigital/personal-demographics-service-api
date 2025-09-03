@@ -1,0 +1,52 @@
+type: object
+description: Definition of registering authority extension.
+required:
+  - url
+  - extension
+properties:
+  url:
+    type: string
+    description: URL of specification of UKCore-RegisteringAuthority FHIR extension.
+    example: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RegisteringAuthority
+    enum:
+      - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RegisteringAuthority
+  extension:
+    type: array
+    description:
+      Array containing exactly one registering authority type object, exactly
+      one organization identifier object, and may include a person identifier object.
+    minItems: 2
+    maxItems: 2
+    items:
+      oneOf:
+        - type: object
+          description: Wrapper object for registering authority type code.
+          required:
+            - url
+            - valueCodeableConcept
+          properties:
+            url:
+              type: string
+              description: Key of this object. Always `registeringAuthorityType`.
+              example: registeringAuthorityType
+              enum:
+                - registeringAuthorityType
+            valueCodeableConcept:
+              $ref: ../codeable/RegisteringAuthorityType.yaml
+        - type: object
+          description: Wrapper object for registering authority organization identifier.
+          required:
+            - url
+            - valueString
+          properties:
+            url:
+              type: string
+              description: Key of this object. Always `organisationIdentifier`.
+              example: organisationIdentifier
+              enum:
+                - organisationIdentifier
+            valueString:
+              type: string
+              description: Wrapper for the registering authority organization identifier.
+              minLength: 2
+              maxLength: 15

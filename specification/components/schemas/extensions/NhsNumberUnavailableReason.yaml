@@ -1,0 +1,11 @@
+type: object
+description: Wrapper object for nhs number unavailable reason details. This is accepted in a create patient request body but will not be persisted to PDS.
+required:
+  - url
+properties:
+  url:
+    type: string
+    description: Definition of nhs number unavailable reason extension.
+    example: https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberUnavailableReason
+    enum:
+      - https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberUnavailableReason

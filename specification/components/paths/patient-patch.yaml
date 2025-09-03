@@ -834,7 +834,7 @@ description: |
   | Invalid patch operations            | Send body with invalid JSON patches in `patches` attribute                | HTTP Status 400 with problem description         |
   | Missing X-Request-ID                | `id`=`9000000009` (or any other valid NHS number)                         | HTTP Status 400 with problem description         |
 
-  You can try out the sandbox by selecting the 'Try' button on this page.
+  You can try out the sandbox by selecting the 'Try' button at the end of the schema.
 
   Alternatively, you can try out the sandbox using our Postman collection:
   

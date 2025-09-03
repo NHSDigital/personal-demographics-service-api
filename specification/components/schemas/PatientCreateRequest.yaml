@@ -1,0 +1,67 @@
+description: Request to create a record for a new patient
+type: object
+required:
+  - name
+  - gender
+  - birthDate
+  - address
+  - extension
+additionalProperties: false
+properties:
+  resourceType:
+    type: string
+    description: FHIR resource type.
+    default: "Patient"
+  name:
+    type: array
+    description: | 
+      List of names associated with the patient.
+    minItems: 1
+    maxItems: 1
+    items:
+      $ref: "HumanName.yaml"
+  gender:
+    $ref: "Gender.yaml"
+  birthDate:
+    $ref: "BirthDate.yaml"
+  address:
+    type: array
+    description: | 
+      List of addresses associated with the patient.
+    items:
+      $ref: "Address.yaml"
+  telecom:
+    type: array
+    description: |
+      List of contact points for the patient, such as phone numbers or email addresses. A patient should only have one instance of each telecom system and use combination on their record at a time. For example, the patient request should not contain multiple work email values in this array.
+    items:
+      $ref: "ContactPoint.yaml"
+  extension:
+    type: array
+    description: |
+      Wrapper array for inclusion of the following extensions, some will not actually persist data to PDS at this time (labelled not persisted):
+      * Registering Authority (required)
+      * Communication
+      * Contact Preference
+      * Birth Place (not persisted)
+      * Birth Sex (not persisted)
+      * Cadaveric Donor (not persisted)
+      * Death Notification Status (not persisted)
+      * Ethnic Category (not persisted)
+      * Residential Status (not persisted)
+      * Patient Interpreter Required (not persisted)
+      * NHS Number Unavailable Reason (not persisted)
+
+    items:
+      anyOf:
+        - $ref: extensions/RegisteringAuthority.yaml
+        - $ref: extensions/Communication.yaml
+        - $ref: extensions/BirthPlace.yaml
+        - $ref: extensions/BirthSex.yaml
+        - $ref: extensions/CadavericDonor.yaml
+        - $ref: extensions/ContactPreference.yaml
+        - $ref: extensions/DeathNotificationStatus.yaml
+        - $ref: extensions/EthnicCategory.yaml
+        - $ref: extensions/ResidentialStatus.yaml
+        - $ref: extensions/PatientInterpreterRequired.yaml
+        - $ref: extensions/NhsNumberUnavailableReason.yaml

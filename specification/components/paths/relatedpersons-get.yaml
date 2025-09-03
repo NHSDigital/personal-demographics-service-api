@@ -24,7 +24,7 @@ description: |
   | Related people do not exist     | `id`=`9000000025`                             | HTTP Status 200 with an empty bundle                          |
   | Missing X-Request-ID            | `id`=`9000000009` (or any other valid NHS number) | HTTP Status 400 with problem description                  |
 
-  You can try out the sandbox by selecting the 'Try' button on this page.
+  You can try out the sandbox by selecting the 'Try' button at the end of the schema.
 
   Alternatively, you can try out the sandbox using our Postman collection:
   
