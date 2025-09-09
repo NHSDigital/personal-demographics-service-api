@@ -581,7 +581,7 @@ description: |
 
   In a JSON Patch request the path should be `/deceasedDateTime`.
 
-  When adding or updating the deceased date time, the update should be in the format `yyyy-mm-ddTHH:MM:SS+HH:MM`.
+  When adding or updating the deceased date time, the time should be UTC and formatted as `yyyy-mm-ddTHH:MM:SS+00:00`, with a zero UTC offset.
 
   There are a number of business rules that should be taken into account:
   * cannot be removed.
