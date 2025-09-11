@@ -1,4 +1,3 @@
-@sandbox
 Feature: Patch patient - add errors
 
 Covers error scenarios that can arise when trying to add data to a patient resource.
@@ -11,6 +10,7 @@ Background:
 
   * configure headers = call read('classpath:auth/auth-headers.js')
 
+@sandbox
 Scenario: Forbidden update example - multiple usual names cannot be added
   * def nhsNumber = '5900059332'
   * path 'Patient', nhsNumber
