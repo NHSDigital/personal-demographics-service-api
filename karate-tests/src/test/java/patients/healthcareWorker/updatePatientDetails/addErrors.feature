@@ -63,7 +63,7 @@ Scenario: Invalid Value - Add deceasedTime in yyyy-mm-ddTHH:MM:SS+01:00 format(P
   * def expectedResponse = read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')
   * match response == expectedResponse
    
-Scenario: Invalid Value - Add deceasedTime in yyyy-mm-ddTHH:MM:SS+00:00 format(PDS FHIR accepts Zero UTC offset)
+Scenario: Add deceasedTime in yyyy-mm-ddTHH:MM:SS+00:00 format and then replace it to yyyy-mm-dd
   # Create Patient
   * def familyName = "ToRemove"
   * def givenName = ["#(faker.givenName())", "#(faker.givenName())"]
