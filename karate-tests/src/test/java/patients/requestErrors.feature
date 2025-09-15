@@ -50,11 +50,10 @@ Scenario: Make request to invalid endpoint that is similar to valid endpoint
   * status 502
   * match response.issue[0].details.coding[0].display == "Unknown Error"
 
- @testrun
-  Scenario: Make a request to invalid url
+  Scenario: Make a request to invalid url - /Patient/<valid nhs number>?<query param>
   * def nhsNumber = '9693632109'
   * params  { family: "Jones", gender: "male", birthdate: "ge1992-01-01", _max-results: "6" }
   * path "Patient", nhsNumber
   * method get
-  * status 200
-  // * match response == read('classpath:mocks/stubs/errorResponses/UNSUPPORTED_SERVICE.json')
+  * status 400
+  * match response == read('classpath:mocks/stubs/errorResponses/UNSUPPORTED_SERVICE.json')
