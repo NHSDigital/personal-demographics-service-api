@@ -59,7 +59,6 @@ Scenario:
     """
       function() {
         const today = new Date()
-        const start = new Date(today.getFullYear(), today.getMonth() - 1, 1)
         const end = new Date(today.getFullYear(), today.getMonth(), 0)
         const randomDay = Math.floor(Math.random() * end.getDate()) + 1
         const randomDate = new Date(today.getFullYear(), today.getMonth() - 1, randomDay)
