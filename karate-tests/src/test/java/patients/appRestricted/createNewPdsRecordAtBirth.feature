@@ -7,7 +7,7 @@ Background:
   * configure headers = requestHeaders  
   * url baseURL
   
-Scenario: Invalid Method error should be raised
+Scenario: Invalid Method error should be raised for creat a new record at birth
   * path "Patient/$process-birth-details"
   * request {any: "request", should: "fail"}
   * configure retry = { count: 5, interval: 5000 }
