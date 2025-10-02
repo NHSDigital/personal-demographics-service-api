@@ -55,6 +55,17 @@ Scenario:
         return randomDate.toISOString().split('T')[0]
       }
     """
+    * def randomDateFromPreviousMonth =
+    """
+      function() {
+        const today = new Date()
+        const end = new Date(today.getFullYear(), today.getMonth(), 0)
+        const randomDay = Math.floor(Math.random() * end.getDate()) + 1
+        const randomDate = new Date(today.getFullYear(), today.getMonth() - 1, randomDay)
+        return randomDate.toISOString().split('T')[0]
+      }
+    """
+  
 
   * def randomAddress =
   """

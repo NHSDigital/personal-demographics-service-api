@@ -8,6 +8,7 @@ Feature: Patch patient - Add and remove data
   Background:
     * def utils = call read('classpath:helpers/utils.feature')
     * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
+    * def faker = Java.type('helpers.FakerWrapper') 
     
     * configure headers = call read('classpath:auth/auth-headers.js')
     
@@ -342,3 +343,68 @@ Scenario:  Add an address to a PDS record that already contains a bad address- a
     * def postcode = response.address[homeAddressIndex].postalCode
     * match parseInt(response.meta.versionId) == parseInt(originalVersion)+ 1
     * match postcode == randomAddress.postalCode
+
+@no-oas
+Scenario: Add deceasedTime in yyyy-mm-ddTHH:MM:SS+00:00 format and then replace it to yyyy-mm-dd
+  # Create Patient
+  * def familyName = "ToRemove"
+  * def givenName = ["#(faker.givenName())", "#(faker.givenName())"]
+  * def prefix = ["#(utils.randomPrefix())"]
+  * def gender = utils.randomGender()
+  * def birthDate = utils.randomBirthDate()
+  * def randomAddress = utils.randomAddress(birthDate)
+  * def address = randomAddress
+  
+  * path "Patient"
+  * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
+  * configure retry = { count: 5, interval: 5000 }
+  * retry until responseStatus != 429 && responseStatus != 503
+  * method post
+  * status 201
+  * def nhsNumber = response.id
+
+  # Retrieve SCN number
+  * configure headers = call read('classpath:auth/auth-headers.js')
+  * path 'Patient', nhsNumber
+  * retry until responseStatus != 503 && responseStatus != 502  
+  * method get
+  * status 200
+  * def originalEtag = karate.response.header('etag')
+
+  # Add deceased date - yyyy-mm-ddTHH:MM:SS+00:00 format
+  * configure headers = call read('classpath:auth/auth-headers.js')
+  * header Content-Type = "application/json-patch+json"
+  * header If-Match = originalEtag
+  * def deceasedDate = utils.randomDateFromPreviousMonth() +"T00:00:00+00:00"
+  * path 'Patient', nhsNumber
+  * request read('classpath:patients/requestDetails/add/deceasedDateTime.json')
+  # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
+  * retry until responseStatus != 503 && responseStatus != 502  
+  * method patch
+  * status 200 
+  * match response.deceasedDateTime == deceasedDate
+  * def etagAfterUpdate1 = karate.response.header('etag')
+
+  # Replace deceased date - yyyy-mm-ddTHH:MM:SS format
+  * configure headers = call read('classpath:auth/auth-headers.js')
+  * header Content-Type = "application/json-patch+json"
+  * header If-Match = etagAfterUpdate1
+  * def deceasedDate = utils.randomDateFromPreviousMonth() +"T00:00:00"
+  * path 'Patient', nhsNumber
+  * request {"patches": [{ "op": "replace", "path": "/deceasedDateTime", "value": "#(deceasedDate)" }]}
+  * method patch
+  * status 200 
+  # Response shows deceased time in yyyy-mm-ddTHH:MM:SS+00:00
+  * match response.deceasedDateTime contains deceasedDate
+  * def etagAfterUpdate2 = karate.response.header('etag')
+
+   # Replace deceased date - yyyy-mm-dd format  
+  * configure headers = call read('classpath:auth/auth-headers.js')
+  * header Content-Type = "application/json-patch+json"
+  * header If-Match = etagAfterUpdate2
+  * def deceasedDate = utils.randomDateFromPreviousMonth()
+  * path 'Patient', nhsNumber
+  * request {"patches": [{ "op": "replace", "path": "/deceasedDateTime", "value": "#(deceasedDate)" }]}
+  * method patch
+  * status 200 
+  * match response.deceasedDateTime contains deceasedDate    
