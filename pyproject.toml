@@ -41,7 +41,7 @@ semver = "^2.10.2"
 # dev only dependencies (testing, linting etc.)
 [tool.poetry.group.dev.dependencies]
 aiohttp = "^3.11.0b0"
-authlib = "^1.3.1"
+authlib = "^1.6.5"
 black = "^24.3"
 flake8 = "^3.8.3"
 gitpython = "^3.1.41"
