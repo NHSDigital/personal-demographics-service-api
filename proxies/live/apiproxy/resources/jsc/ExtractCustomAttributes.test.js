@@ -1,4 +1,4 @@
-var jestWhen = require('jest-when');
+const jestWhen = require('jest-when');
 
 setup();
 
