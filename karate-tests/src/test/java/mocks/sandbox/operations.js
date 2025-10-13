@@ -1,5 +1,5 @@
 function updateAddressDetails (value, originalPatient, updateErrors) {
-  if (!Object.prototype.hasOwnProperty.call(originalPatient, 'address')) {
+  if (!Object.hasOwn(originalPatient, 'address')) {
     updateErrors.push("Invalid update with error - Invalid patch - index '0' is out of bounds")
   } else if (value === '123456') {
     updateErrors.push("Invalid update with error - no 'address' resources with object id '123456'")

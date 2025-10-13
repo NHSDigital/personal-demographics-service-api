@@ -1,4 +1,4 @@
-var jestWhen = require('jest-when');
+const jestWhen = require('jest-when');
 
 const restrictRequestjs = './RestrictRequest.js'
 
@@ -8,7 +8,7 @@ const restrictRequest = () => {
 }
 
 function setupEmptyContext() {
-    fields = [
+    const fields = [
         "proxy.pathsuffix",
         "request.header.x-sync-wrapped",
         "jwt.DecodeJWT.DecodeIdToken.claim.vot",
