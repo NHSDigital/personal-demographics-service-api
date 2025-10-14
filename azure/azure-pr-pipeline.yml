@@ -40,18 +40,17 @@ extends:
       RATE_LIMIT_POST: true
     apigee_deployments:
       - environment: internal-dev
+        stage_name: pytest_bdd_tests
+        post_deploy:
+          - template: templates/pds-tests.yml
+      - environment: internal-dev
         stage_name: karate_tests
         pre_deploy:
           - template: templates/install-jdk.yml
         post_deploy:
           - template: templates/pds-tests-karate.yml
-
-      - environment: internal-dev
-        stage_name: pytest_bdd_tests
-        post_deploy:
-          - template: templates/pds-tests.yml
         depends_on:
-          - karate_tests
+          - pytest_bdd_tests
       
       - environment: internal-dev-sandbox
         proxy_path: sandbox
