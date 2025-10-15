@@ -22,7 +22,7 @@ steps:
       testResultsFiles: $(ARTIFACT_PATH)/tests/functional-test-report.xml
       failTaskOnFailedTests: true
 
-  - task: PublishBuildArtifacts@1
+  - task: PublishPipelineArtifact@1
     displayName: 'Publish application restricted test results as an artifact'
     condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
     inputs:
@@ -45,7 +45,7 @@ steps:
       testResultsFiles: $(ARTIFACT_PATH)/tests/proxy-behaviour-test-report.xml
       failTaskOnFailedTests: true
 
-  - task: PublishBuildArtifacts@1
+  - task: PublishPipelineArtifact@1
     displayName: 'Publish proxy behaviour test results as an artifact'
     condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
     inputs:
@@ -67,7 +67,7 @@ steps:
     inputs:
       testResultsFiles: $(ARTIFACT_PATH)/tests/sync-wrap-test-report.xml
       failTaskOnFailedTests: true
-  - task: PublishBuildArtifacts@1
+  - task: PublishPipelineArtifact@1
     displayName: 'Publish sync wrap test results as an artifact'
     condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
     inputs:
@@ -92,7 +92,7 @@ steps:
       testResultsFiles: $(ARTIFACT_PATH)/tests/patient-create-test-report.xml
       failTaskOnFailedTests: true
    
-  - task: PublishBuildArtifacts@1
+  - task: PublishPipelineArtifact@1
     displayName: 'Publish post patient test results as an artifact'
     condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
     inputs:
@@ -117,7 +117,7 @@ steps:
       testResultsFiles: $(ARTIFACT_PATH)/tests/patient-access-test-report.xml
       failTaskOnFailedTests: true
 
-  - task: PublishBuildArtifacts@1
+  - task: PublishPipelineArtifact@1
     displayName: 'Publish patient access test results as an artifact'
     condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
     inputs:
