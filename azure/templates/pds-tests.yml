@@ -26,8 +26,8 @@ steps:
     displayName: 'Publish application restricted test results as an artifact'
     condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
     inputs:
-      pathToPublish: $(ARTIFACT_PATH)/tests/functional-test-report.xml
-      artifactName: pytestFunctionalTestReport    
+      targetPath: $(ARTIFACT_PATH)/tests/functional-test-report.xml
+      artifact: pytestFunctionalTestReport    
 
   - bash: |
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
@@ -49,8 +49,8 @@ steps:
     displayName: 'Publish proxy behaviour test results as an artifact'
     condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
     inputs:
-      pathToPublish: $(ARTIFACT_PATH)/tests/proxy-behaviour-test-report.xml
-      artifactName: proxyBehaviourTestReport       
+      targetPath: $(ARTIFACT_PATH)/tests/proxy-behaviour-test-report.xml
+      artifact: proxyBehaviourTestReport       
 
   - bash: |
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
@@ -71,8 +71,8 @@ steps:
     displayName: 'Publish sync wrap test results as an artifact'
     condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
     inputs:
-      pathToPublish: $(ARTIFACT_PATH)/tests/sync-wrap-test-report.xml
-      artifactName: syncwrapTestReport      
+      targetPath: $(ARTIFACT_PATH)/tests/sync-wrap-test-report.xml
+      artifact: syncwrapTestReport      
 
   - bash: |
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
@@ -96,8 +96,8 @@ steps:
     displayName: 'Publish post patient test results as an artifact'
     condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
     inputs:
-      pathToPublish: $(ARTIFACT_PATH)/tests/patient-create-test-report.xml
-      artifactName: postPatientTestReport     
+      targetPath: $(ARTIFACT_PATH)/tests/patient-create-test-report.xml
+      artifact: postPatientTestReport     
 
   - bash: |
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
@@ -121,5 +121,5 @@ steps:
     displayName: 'Publish patient access test results as an artifact'
     condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
     inputs:
-      pathToPublish: $(ARTIFACT_PATH)/tests/patient-access-test-report.xml
-      artifactName: patientAccessTestReport     
+      targetPath: $(ARTIFACT_PATH)/tests/patient-access-test-report.xml
+      artifact: patientAccessTestReport     
