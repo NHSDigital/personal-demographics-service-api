@@ -10,13 +10,6 @@ Background:
   * configure headers = requestHeaders  
   * url baseURL
 
-Scenario: Invalid Method error should be raised
-  * path "Patient"
-  * request {any: "request", should: "fail"}
-  * configure retry = { count: 5, interval: 5000 }
-  * retry until responseStatus != 429 && responseStatus != 503
-  * method post
-  * status 403
+Scenario: Invalid Method error should be raised for nhs number allocation with privileged access
   * def display = "Cannot create resource with privileged-application-restricted access token"
-  * def expectedResponse = read('classpath:mocks/stubs/errorResponses/INVALID_METHOD.json')
-  * match response == expectedResponse
+  * call read('classpath:patients/common/appRestrictedAndPriviledgedAccess/createPatientError.feature@invalidMethodCode')

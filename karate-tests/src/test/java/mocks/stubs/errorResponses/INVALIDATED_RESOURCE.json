@@ -1,0 +1,19 @@
+{
+    "issue": [
+        {
+            "code": "processing",
+            "details": {
+                "coding": [
+                    {
+                        "code": "INVALIDATED_RESOURCE",
+                        "display": "Resource that has been marked as invalid was requested - invalid resources cannot be retrieved",
+                        "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+                        "version": "1"
+                    }
+                ]
+            },
+            "severity": "error"
+        }
+    ],
+    "resourceType": "OperationOutcome"
+}
