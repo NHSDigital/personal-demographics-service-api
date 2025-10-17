@@ -1,18 +1,17 @@
-Feature: Update patient details - not permitted for application-restricted users
+    @ignore
+Feature: Update patient details
 
-Background:
-  * def utils = karate.callSingle('classpath:helpers/utils.feature')
-  * def accessToken = karate.callSingle('classpath:auth-jwt/auth-redirect.feature').accessToken
-  * def requestHeaders = call read('classpath:auth-jwt/app-restricted-headers.js')
-  * configure headers = requestHeaders 
-  * url baseURL
-Scenario: Invalid Method error should be raised when app restricted user try to update patient details
+  Background:
+    * url baseURL
+
+  @invalidMethodCode 
+  Scenario: Invalid Method error should be raised for restricted users
     * def nhsNumber = '9733162817'
     * path 'Patient', nhsNumber
     * method get
     * status 200
 
-  # add emergency contact details
+    # add emergency contact details
     * configure headers = call read('classpath:auth-jwt/app-restricted-headers.js')
     * header Content-Type = "application/json-patch+json"
     * header If-Match = karate.response.header('etag')
@@ -21,6 +20,5 @@ Scenario: Invalid Method error should be raised when app restricted user try to 
     * request read('classpath:patients/requestDetails/add/emergencyContact.json')
     * method patch
     * status 403
-    * def display = "Cannot update resource with application-restricted access token"
     * def expectedResponse = read('classpath:mocks/stubs/errorResponses/INVALID_METHOD.json')
     * match response == expectedResponse
