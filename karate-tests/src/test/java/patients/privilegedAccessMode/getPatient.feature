@@ -1,4 +1,4 @@
-@no-oas
+    @no-oas @test_luck
 Feature: get /Patient - privileged-application-restricted access mode
 
   Background:
@@ -7,7 +7,6 @@ Feature: get /Patient - privileged-application-restricted access mode
     * def requestHeaders = call read('classpath:auth-jwt/app-restricted-headers.js')
     * def noAuthHeaders = call read('classpath:auth-jwt/no-auth-headers.js')
 
-    * def utils = call read('classpath:helpers/utils.feature')
     * json GeneralPractitionerReference = karate.readAsString('classpath:schemas/GeneralPractitionerReference.json')
     * json Period = karate.readAsString('classpath:schemas/Period.json')
     * json Address = karate.readAsString('classpath:schemas/Address.json')
@@ -17,31 +16,13 @@ Feature: get /Patient - privileged-application-restricted access mode
     * url baseURL
 
   Scenario: All headers provided - privileged-application-restricted user can search for a patient and get a single match result returned
-    * configure headers = requestHeaders 
-    * path "Patient"
-    * param family = "Smith" 
-    * param gender = "female"
-    * param birthdate = "eq2018-06-08" 
-    * method get
-    * status 200
-    * match response == read('classpath:schemas/searchSchemas/patientSearchBundle.json')
-    * match response.total == 1
+    * call read('classpath:patients/common/appRestrictedAndPriviledgedAccess/getPatient.feature@singleMatch')
 
-  Scenario: Missing Authorization header
-    * configure headers = noAuthHeaders
-    * path "Patient"
-    * method get
-    * status 401
-    * match response.issue[0].diagnostics == "Missing Authorization header"
+  Scenario: Missing Authorization header with privileged application restricted access
+    * call read('classpath:patients/common/getPatient.feature@missingAuthHeader')
     
-  Scenario Outline: Authorization header issues
-    # nb "expired header" isn't here...
-    * configure headers = noAuthHeaders
-    * header Authorization = authorization_header
-    * path "Patient"
-    * method get
-    * status 401
-    * match response.issue[0].diagnostics == expected_diagnostics
+  Scenario Outline: Authorization header issues with privileged application restricted access - <expected_diagnostics>
+     * call read('classpath:patients/common/getPatient.feature@invalidAuthHeader')
     
     Examples:
       | authorization_header                | expected_diagnostics            |
@@ -49,83 +30,20 @@ Feature: get /Patient - privileged-application-restricted access mode
       | Bearer INVALID_TOKEN!!!             | Invalid Access Token            |
       | Bearer                              | Missing access token            |
     
-  Scenario: NHSD-SESSION-URID header is not required
-    * configure headers =       
-      """
-      {
-        "authorization": "#(requestHeaders['authorization'])",
-        "x-request-id": "#(utils.randomUUID())",
-        "x-correlation-id": "#(utils.randomUUID())",
-      }
-      """
-    * path "Patient"
-    * param family = "Smith" 
-    * param gender = "female"
-    * param birthdate = "2010-10-22" 
-    * method get
-    * status 200
-    * match response ==
-      """
-      {
-        "resourceType": "Bundle",
-        "timestamp": "#? utils.isValidTimestamp(_)",
-        "total": "#number",
-        "type": "searchset"
-      }  
-      """  
+  Scenario: NHSD-SESSION-URID header is not required - privileged-application-restricted access mode
+    * call read('classpath:patients/common/appRestrictedAndPriviledgedAccess/getPatient.feature@noSessionHeader')
 
-  @oas-bug
-  Scenario: PDS FHIR API rejects request for more than one result
+    @oas-bug
+  Scenario: PDS FHIR API rejects request for more than one result - privileged-application-restricted access mode
     # This test is expected to fail due to a discrepancy between the OAS definition and the implementation:
     # https://nhsd-jira.digital.nhs.uk/browse/SPINEDEM-3187
-    * configure headers = requestHeaders
-    * path "Patient"
-    * param family = "Magin" 
-    * param gender = "female"
-    * param birthdate = "1957-07-23" 
-    * param _max-results = 2
-    * method get
-    * status 403
-    * match response.issue[0].diagnostics == "Your app has insufficient permissions to perform this search. Please contact support."
+    * call read('classpath:patients/common/appRestrictedAndPriviledgedAccess/getPatient.feature@multiMatchError')
 
-  Scenario: PDS FHIR API accepts request for one result
-    * configure headers = requestHeaders 
-    * path "Patient"
-    * param family = "Smith" 
-    * param gender = "female"
-    * param birthdate = "2010-10-22" 
-    * param email = "jane.smith@example.com" 
-    * param phone = "01632960587"
-    * param _max-results = 1
-    * method get
-    * status 200
-    * match response ==
-    """
-    {
-      "resourceType": "Bundle",
-      "timestamp": "#? utils.isValidTimestamp(_)",
-      "total": "#number",
-      "type": "searchset"
-    }  
-    """
-  
-  Scenario: Too many matches message when search result return more than one match
-    * configure headers = requestHeaders 
-    * path "Patient"
-    * param family = "Ma*" 
-    * param gender = "female"
-    * param birthdate = "eq1957-07-23" 
-    * method get
-    * status 200
-    * match response == read('classpath:schemas/searchSchemas/patientSearchBundle.json')
-    * match response.total == 1
-    * path "Patient"
-    * param family = "Ma*" 
-    * param gender = "female"
-    * param birthdate = "ge1957-07-23" 
-    * method get
-    * status 200
-    * match response == read('classpath:mocks/stubs/searchResponses/TOO_MANY_MATCHES.json')
+  Scenario: PDS FHIR API accepts request for one result - privileged-application-restricted access mode
+     * call read('classpath:patients/common/appRestrictedAndPriviledgedAccess/getPatient.feature@maxResultSet')
+    
+  Scenario: Too many matches message when search result return more than one match - privileged-application-restricted access mode
+    * call read('classpath:patients/common/getPatient.feature@tooManyMatches')
 
   Scenario: Patient search response should not include address, telecoms, registered GP details for privileged access
     * configure headers = requestHeaders 

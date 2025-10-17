@@ -1,4 +1,4 @@
-@no-oas
+@no-oas @test_luck
 Feature: Update patient details - not permitted for privileged-application-restricted users
 
 Background:
@@ -9,4 +9,4 @@ Background:
   
 Scenario: Invalid Method error should be raised when privileged-application-restricted user try to update patient details
   * def display = "Cannot update resource with privileged-application-restricted access token"
-  * call read('classpath:patients/common/appRestrictedAndPriviledgedAccess/updatePatientError.feature@invalidMethodCode') 
+  * call read('classpath:patients/common/updatePatient.feature@invalidMethodCode') 

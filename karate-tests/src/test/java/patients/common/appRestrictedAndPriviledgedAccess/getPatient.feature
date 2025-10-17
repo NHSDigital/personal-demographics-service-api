@@ -1,8 +1,14 @@
 @ignore
 Feature: Get Patient 
+# This feature validates patient search behavior for various conditions
+# including single match, missing headers, and permission errors.
 
-  @smoke
-  Scenario: All headers provided - app restricted user can search for a patient and get a single match result returned
+ Background:
+    * url baseURL
+    * def utils = karate.callSingle('classpath:helpers/utils.feature')
+
+  @singleMatch
+  Scenario: All headers provided - restricted user can search for a patient and get a single match result returned
     * configure headers = requestHeaders 
     * path "Patient"
     * param family = "Smith" 
@@ -12,29 +18,8 @@ Feature: Get Patient
     * status 200
     * match response == read('classpath:schemas/searchSchemas/patientSearchBundle.json')
     * match response.total == 1
-
-  Scenario: Missing Authorization header
-    * configure headers = noAuthHeaders
-    * path "Patient"
-    * method get
-    * status 401
-    * match response.issue[0].diagnostics == "Missing Authorization header"
-    
-  Scenario Outline: Authorization header issues
-    # nb "expired header" isn't here...
-    * configure headers = noAuthHeaders
-    * header Authorization = authorization_header
-    * path "Patient"
-    * method get
-    * status 401
-    * match response.issue[0].diagnostics == expected_diagnostics
-    
-    Examples:
-      | authorization_header                | expected_diagnostics            |
-      |                                     | Empty Authorization header      |
-      | Bearer INVALID_TOKEN!!!             | Invalid Access Token            |
-      | Bearer                              | Missing access token            |
-    
+  
+ @noSessionHeader
   Scenario: NHSD-SESSION-URID header is not required
     * configure headers =       
       """
@@ -60,7 +45,7 @@ Feature: Get Patient
       }  
       """  
 
-  @oas-bug
+  @multiMatchError
   Scenario: PDS FHIR API rejects request for more than one result
     # This test is expected to fail due to a discrepancy between the OAS definition and the implementation:
     # https://nhsd-jira.digital.nhs.uk/browse/SPINEDEM-3187
@@ -73,7 +58,8 @@ Feature: Get Patient
     * method get
     * status 403
     * match response.issue[0].diagnostics == "Your app has insufficient permissions to perform this search. Please contact support."
-
+   
+  @maxResultSet
   Scenario: PDS FHIR API accepts request for one result
     * configure headers = requestHeaders 
     * path "Patient"
@@ -94,29 +80,3 @@ Feature: Get Patient
       "type": "searchset"
     }  
     """
-  
-  Scenario: Too many matches message when search result return more than one match
-    * configure headers = requestHeaders 
-    * path "Patient"
-    * param family = "Ma*" 
-    * param gender = "female"
-    * param birthdate = "eq1957-07-23" 
-    * method get
-    * status 200
-    * match response == read('classpath:schemas/searchSchemas/patientSearchBundle.json')
-    * match response.total == 1
-    * path "Patient"
-    * param family = "Ma*" 
-    * param gender = "female"
-    * param birthdate = "ge1957-07-23" 
-    * method get
-    * status 200
-    * match response == read('classpath:mocks/stubs/searchResponses/TOO_MANY_MATCHES.json')
-
-  Scenario: Get a patients details
-  * configure headers = requestHeaders  
-  * def nhsNumber = '9733162825'
-  * path 'Patient', nhsNumber
-  * method get
-  * status 200
-  * match response.id == nhsNumber  

@@ -10,6 +10,8 @@ Feature: Get related person details
     * json RelatedPersonSearchResultEntry = karate.readAsString('classpath:schemas/searchSchemas/relatedPersonSearchResultEntry.json')
     * json RelatedPersonSearchBundle = karate.readAsString('classpath:schemas/searchSchemas/relatedPersonSearchBundle.json')
     * url baseURL
+
+  @patientWithOneRelatedPerson  
   Scenario: Patient has one related person
     * def nhsNumber = '9693633679'
     * path 'Patient', nhsNumber, 'RelatedPerson'
@@ -18,6 +20,8 @@ Feature: Get related person details
     * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
     * match response == RelatedPersonSearchBundle
     * match response.total == 1
+
+  @patientWithNoRelatedPerson    
   Scenario: Patient doesn't have a related person
     * def nhsNumber = '9693632109'
     * path 'Patient', nhsNumber, 'RelatedPerson'

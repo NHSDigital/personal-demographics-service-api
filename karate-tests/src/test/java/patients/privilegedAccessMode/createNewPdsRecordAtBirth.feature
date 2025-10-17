@@ -1,4 +1,4 @@
-@no-oas
+@no-oas @test_luck
 Feature: Create a new PDS record at birth- privileged access
 
 Background:
@@ -7,4 +7,4 @@ Background:
   * configure headers = requestHeaders 
   Scenario: Invalid Method error should be raised for creat a new record at birth with privileged access
     * def display = "Cannot create resource with privileged-application-restricted access token"
-    * call read('classpath:patients/common/appRestrictedAndPriviledgedAccess/createNewPdsRecordAtBirth.feature@invalidMethodCode')
+    * call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@invalidMethodCode')

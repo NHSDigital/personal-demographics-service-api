@@ -19,15 +19,6 @@ Feature:Get a patient By NHS number
 
     * url baseURL
 
-  @getPatient
-  Scenario: Get a patients details
-    * configure headers = requestHeaders  
-    * def nhsNumber = '9733162825'
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
-    * match response.id == nhsNumber 
-
   @invalidResource  
   Scenario: Retrieve a patient with an invalid NHS number format should return 'invalid resource'
     * def nhsNumber = '9000000000'

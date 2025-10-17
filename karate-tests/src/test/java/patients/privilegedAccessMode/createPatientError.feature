@@ -1,4 +1,4 @@
-@no-oas
+@no-oas @test_luck
 Feature: Create patient - not permitted for privileged-application-restricted users
   A spike arrest policy is in a place for this endpoint, and the spike arrest policy 
   takes priority over the authentication rules. Even though we can't create a patient
@@ -12,4 +12,4 @@ Background:
 
 Scenario: Invalid Method error should be raised for nhs number allocation with privileged access
   * def display = "Cannot create resource with privileged-application-restricted access token"
-  * call read('classpath:patients/common/appRestrictedAndPriviledgedAccess/createPatientError.feature@invalidMethodCode')
+  * call read('classpath:patients/common/createPatient.feature@invalidMethodCode')

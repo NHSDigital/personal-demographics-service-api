@@ -1,4 +1,4 @@
-@no-oas
+@no-oas @test_luck
 Feature: Get a patient - privileged-application-restricted access mode
 
   Background:
@@ -97,10 +97,10 @@ Feature: Get a patient - privileged-application-restricted access mode
     """ 
   
   Scenario: Retrieve a patient with an invalid NHS number format should return 'invalid resource' with privileged access
-    * call read('classpath:patients/common/appRestrictedAndPriviledgedAccess/getPatientByNHSNumber.feature@invalidResource')
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@invalidResource')
 
   Scenario: Retrieve a patient with non-existent records should return 'RESOURCE_NOT_FOUND' with privileged access
-    * call read('classpath:patients/common/appRestrictedAndPriviledgedAccess/getPatientByNHSNumber.feature@resourceNotFound')
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@resourceNotFound')
 
   Scenario: Retrieve a patient with invalidated records should return 'INVALIDATED_RESOURCE' with privileged access
-    * call read('classpath:patients/common/appRestrictedAndPriviledgedAccess/getPatientByNHSNumber.feature@invalidatedResource')
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@invalidatedResource')
