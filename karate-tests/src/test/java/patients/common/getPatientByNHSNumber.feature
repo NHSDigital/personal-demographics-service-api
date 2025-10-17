@@ -1,4 +1,4 @@
-@inore
+@ignore
 Feature:Get a patient By NHS number
 
   Background:
