@@ -1,4 +1,4 @@
-    @no-oas @test_luck
+    @no-oas
 Feature: Get related person details - privileged-application-restricted access mode
 
   Background:
@@ -18,7 +18,7 @@ Feature: Get related person details - privileged-application-restricted access m
   Scenario: Patient has one related person - privileged-application-restricted access mode
     * call read('classpath:patients/common/getPatientsRelatedPerson.feature@patientWithOneRelatedPerson') 
   Scenario: Patient doesn't have a related person- privileged-application-restricted access mode
-    * call read('classpath:patients/common/getPatientsRelatedPerson.feature@patientWithNoRelatedPerson  ')
+    * call read('classpath:patients/common/getPatientsRelatedPerson.feature@patientWithNoRelatedPerson')
   Scenario: Related people are not returned for a restricted/sensitive patient and an empty bundle is returned
     * def nhsNumber = '9733162507'
     * path 'Patient', nhsNumber, 'RelatedPerson'
