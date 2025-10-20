@@ -2,7 +2,6 @@
 Feature:Get a patient By NHS number
 
   Background:
-    # schemas and validators that are required by the schema checks
     * def utils = call read('classpath:helpers/utils.feature')
     * url baseURL
 
