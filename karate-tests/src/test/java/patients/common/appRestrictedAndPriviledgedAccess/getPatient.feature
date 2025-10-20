@@ -19,7 +19,7 @@ Feature: Get Patient
     * match response == read('classpath:schemas/searchSchemas/patientSearchBundle.json')
     * match response.total == 1
   
- @noSessionHeader
+  @noSessionHeader
   Scenario: NHSD-SESSION-URID header is not required
     * configure headers =       
       """
