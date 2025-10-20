@@ -1,4 +1,4 @@
-    @no-oas
+@no-oas
 Feature:  Update Coverage details - not permitted for privileged-application-restricted users
 
   Background:
