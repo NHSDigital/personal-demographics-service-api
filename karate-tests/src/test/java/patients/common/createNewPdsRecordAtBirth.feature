@@ -4,8 +4,8 @@ Feature: Create a new PDS record at birth
   Background:
     * url baseURL
   
-@invalidMethodCode  
-  Scenario: Invalid Method error should be raised for creat a new record at birth
+  @invalidMethodCode  
+  Scenario: Invalid Method error should be raised for create a new record at birth
     * path "Patient/$process-birth-details"
     * request {any: "request", should: "fail"}
     * configure retry = { count: 5, interval: 5000 }
