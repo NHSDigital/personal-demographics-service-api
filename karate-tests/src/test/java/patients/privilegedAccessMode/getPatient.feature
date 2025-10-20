@@ -1,4 +1,4 @@
-    @no-oas
+@no-oas
 Feature: get /Patient - privileged-application-restricted access mode
 
   Background:
