@@ -1,4 +1,4 @@
-    @no-oas
+@no-oas
 Feature: Get a patient - Application-restricted access
 
   Background:
