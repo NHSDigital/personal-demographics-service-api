@@ -36,9 +36,9 @@ Feature: Get related person details - privileged-application-restricted access m
     "total": 0
     } 
     """      
-    @ignore
-    # The related sensitive patient record is currently displaying address and telecom details
-    # which should not be visible. An incident has been raised to address this issue. The ignore tag will be removed once the fix has been applied   
+@ignore
+  # The related sensitive patient record is currently displaying address and telecom details
+  # which should not be visible. An incident has been raised to address this issue. The ignore tag will be removed once the fix has been applied   
   Scenario: Patient has sensitive related person - response should not include address or telecom details with privileged access
     * def nhsNumber = '9733162426'
     * path 'Patient', nhsNumber, 'RelatedPerson'
