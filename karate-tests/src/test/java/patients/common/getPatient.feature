@@ -23,7 +23,7 @@ Feature: Get Patient
     * match response.issue[0].diagnostics == expected_diagnostics
     
    
-  @tooManyMatches
+    @tooManyMatches
     Scenario: Too many matches message when search result return more than one match
     * configure headers = requestHeaders 
     * path "Patient"
