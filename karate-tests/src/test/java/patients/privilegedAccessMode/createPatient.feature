@@ -1,4 +1,4 @@
-    @no-oas
+@no-oas
 Feature: Create patient - not permitted for privileged-application-restricted users
     A spike arrest policy is in a place for this endpoint, and the spike arrest policy 
     takes priority over the authentication rules. Even though we can't create a patient
