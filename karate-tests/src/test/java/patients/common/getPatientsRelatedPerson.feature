@@ -1,4 +1,4 @@
-    @ignore
+@ignore
 Feature: Get related person details
 
   Background:
