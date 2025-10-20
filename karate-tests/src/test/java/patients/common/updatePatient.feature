@@ -1,4 +1,4 @@
-    @ignore
+@ignore
 Feature: Update patient details
 
   Background:
