@@ -1,4 +1,4 @@
-  @ignore
+@ignore
 Feature:  Update Coverage details
   Background:
     * url baseURL
