@@ -9,5 +9,6 @@ Feature: Get related person details - Application-restricted access mode
 
   Scenario: Patient has one related person with application-restricted access
     * call read('classpath:patients/common/getPatientsRelatedPerson.feature@patientWithOneRelatedPerson') 
+
   Scenario: Patient doesn't have a related person with application-restricted access
     * call read('classpath:patients/common/getPatientsRelatedPerson.feature@patientWithNoRelatedPerson')    
