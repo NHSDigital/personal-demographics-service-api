@@ -4,7 +4,7 @@ Feature: Get Patient
  Background:
     * url baseURL
 
-@missingAuthHeader
+  @missingAuthHeader
   Scenario: Missing Authorization header
     * configure headers = noAuthHeaders
     * path "Patient"
