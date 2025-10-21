@@ -36,10 +36,10 @@ function removeNameSuffix (patient) {
 }
 
 function removeSuffixIfExists (patient, updateErrors, suffixIndex) {
-  if (!patient.name[0].suffix) {
-    updateErrors.push("Invalid update with error - Invalid patch - can't remove non-existent object '0'")
-  } else {
+  if (patient.name[0].suffix) {
     patient.name[0].suffix.splice(suffixIndex, 1)
+  } else {
+    updateErrors.push("Invalid update with error - Invalid patch - can't remove non-existent object '0'")
   }
 }
 
@@ -108,10 +108,10 @@ function updateSingleItemInExtension (patient, index, childIndex, value) {
 }
 
 function removeExtensionIfExists (patient, updateErrors, index) {
-  if (!patient.extension[index]) {
-    updateErrors.push("Invalid update with error - Invalid patch - can't remove non-existent object '0'")
-  } else {
+  if (patient.extension[index]) {
     delete patient.extension[index]
+  } else {
+    updateErrors.push("Invalid update with error - Invalid patch - can't remove non-existent object '0'")
   }
 }
 
