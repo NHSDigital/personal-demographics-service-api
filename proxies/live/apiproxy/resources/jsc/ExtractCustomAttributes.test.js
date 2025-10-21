@@ -8,42 +8,42 @@ const extractCustomAttributes = () => {
 }
 
 function setup() {
-    global.context = {};
-    global.context.getVariable = jest.fn()
+    globalThis.context = {};
+    globalThis.context.getVariable = jest.fn()
 }
 
 beforeEach(() => {
-    global.context.setVariable = jest.fn()
+    globalThis.context.setVariable = jest.fn()
 })
 
 test("custom-attributes extracted to extractedCustomAttributes", () => {
     // arrange
     const input = '{"pds": {"custom-attributes": {"custom-attr-1": "true", "custom-attr-2": "xyz", "custom-attr-3": "123"}}}';
-    jestWhen.when(global.context.getVariable).calledWith("app.apim-app-flow-vars").mockReturnValue(input)
+    jestWhen.when(globalThis.context.getVariable).calledWith("app.apim-app-flow-vars").mockReturnValue(input)
     
     // act
     extractCustomAttributes()
 
     // assert
-    expect(global.context.setVariable.mock.calls[0][1]).toBe('{"custom-attr-1":"true","custom-attr-2":"xyz","custom-attr-3":"123"}')
+    expect(globalThis.context.setVariable.mock.calls[0][1]).toBe('{"custom-attr-1":"true","custom-attr-2":"xyz","custom-attr-3":"123"}')
 })
 
 test("missing pds attribute does not set extractedCustomAttributes", () => {
     // arrange
     const input = '{"custom-attributes": {"custom-attr-1": "true", "custom-attr-2": "xyz", "custom-attr-3": "123"}}';
-    jestWhen.when(global.context.getVariable).calledWith("app.apim-app-flow-vars").mockReturnValue(input)
+    jestWhen.when(globalThis.context.getVariable).calledWith("app.apim-app-flow-vars").mockReturnValue(input)
 
     // act
     extractCustomAttributes()
 
     // assert
-    expect(global.context.setVariable.mock.calls[0]).toBeUndefined()
+    expect(globalThis.context.setVariable.mock.calls[0]).toBeUndefined()
 })
 
 test("malformed json does not set extractedCustomAttributes", () => {
     // arrange
     const input = 'malformed:json';
-    jestWhen.when(global.context.getVariable).calledWith("app.apim-app-flow-vars").mockReturnValue(input)
+    jestWhen.when(globalThis.context.getVariable).calledWith("app.apim-app-flow-vars").mockReturnValue(input)
 
     // act
     try {
@@ -52,17 +52,17 @@ test("malformed json does not set extractedCustomAttributes", () => {
     }
      
     // assert
-    expect(global.context.setVariable.mock.calls[0]).toBeUndefined()
+    expect(globalThis.context.setVariable.mock.calls[0]).toBeUndefined()
 })
 
 test("empty json does not set extractedCustomAttributes", () => {
     // arrange
     const input = '';
-    jestWhen.when(global.context.getVariable).calledWith("app.apim-app-flow-vars").mockReturnValue(input)
+    jestWhen.when(globalThis.context.getVariable).calledWith("app.apim-app-flow-vars").mockReturnValue(input)
 
     // act
     extractCustomAttributes()
      
     // assert
-    expect(global.context.setVariable.mock.calls[0]).toBeUndefined()
+    expect(globalThis.context.setVariable.mock.calls[0]).toBeUndefined()
 })
