@@ -11,7 +11,7 @@ function is_request_restricted() {
     // Ensure correct vector of trust
     const allowed_vots = ["P9.Cp.Cd","P9.Cm","P9.Cp.Ck"];
     const vot_on_request = context.getVariable('jwt.DecodeJWT.DecodeIdToken.claim.vot');
-    if (allowed_vots.indexOf(vot_on_request) == -1) {
+    if (allowed_vots.includes(vot_on_request)) {
         return true
     }
 
