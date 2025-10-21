@@ -32,7 +32,7 @@ function requestMatchesErrorScenario (request) {
     {
       condition: family === 'McMatch-Single' && postalCode === 'BAP 4WG',
       responseBody: () => {
-        const body = JSON.parse(JSON.stringify(SINGLE_MATCH))
+        const body = structuredClone(SINGLE_MATCH)
         body.issue[0].diagnostics = 'Unable to create new patient. NHS number 5900054586 found for supplied demographic data.'
         return body
       }
@@ -80,8 +80,8 @@ function postPatientRequestIsValid (request) {
     {
       condition: Array.isArray(request.body?.address?.[0]),
       diagnostics: `Invalid value - '${JSON.stringify(request.body?.address?.[0] || {})
-  .replace(/"/g, "'")
-  .replace(/','/g, "', '")}' in field 'address/0'`,
+  .replaceAll(/"/g, "'")
+  .replaceAll(/','/g, "', '")}' in field 'address/0'`,
       type: 'invalid'
     },
     {
@@ -125,7 +125,7 @@ function postPatientRequestIsValid (request) {
 }
 
 function initializePatientData (request) {
-  const patient = JSON.parse(JSON.stringify(NEW_PATIENT))
+  const patient = structuredClone(NEW_PATIENT)
 
   // set a new NHS number for the patient
 
