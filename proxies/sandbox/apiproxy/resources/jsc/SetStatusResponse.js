@@ -1,17 +1,17 @@
-var apiproxy_revision = context.getVariable('apiproxy.revision');
+const apiproxy_revision = context.getVariable('apiproxy.revision');
 
-var sandbox_response_code = context.getVariable('sandboxHealthcheckResponse.status.code');
-var sandbox_request_url = context.getVariable('sandboxHealthcheckRequest.url');
+const sandbox_response_code = context.getVariable('sandboxHealthcheckResponse.status.code');
+const sandbox_request_url = context.getVariable('sandboxHealthcheckRequest.url');
 
-var sandbox_request_has_failed = context.getVariable("servicecallout.ServiceCallout.CallSandboxHealthcheck.failed");
+const sandbox_request_has_failed = context.getVariable("servicecallout.ServiceCallout.CallSandboxHealthcheck.failed");
 
-var sandbox_status = "fail";
+let sandbox_status = "fail";
 
 if (sandbox_response_code / 100 == 2) {
   sandbox_status = "pass";
 }
 
-timeout = "false";
+let timeout = "false";
 
 if (sandbox_response_code === null && sandbox_request_has_failed) {
   timeout = "true";
@@ -26,9 +26,9 @@ function json_tryparse(raw) {
   }
 }
 
-var sanbox_response = json_tryparse(context.getVariable('sandboxHealthcheckResponse.content'));
+const sanbox_response = json_tryparse(context.getVariable('sandboxHealthcheckResponse.content'));
 
-var sandbox_service = {
+const sandbox_service = {
   "sandbox:status": [{
     "status": sandbox_status,
     "timeout": timeout,
@@ -38,7 +38,7 @@ var sandbox_service = {
   }]
 };
 
-var apigee_status = "pass";
+let apigee_status = "pass";
 
 if (sandbox_status != "pass") {
   apigee_status = "fail";
@@ -46,7 +46,7 @@ if (sandbox_status != "pass") {
 
 
 
-var response = {
+const response = {
   "status": apigee_status,
   "version": "{{ DEPLOYED_VERSION }}",
   "revision": apiproxy_revision,
