@@ -8,7 +8,7 @@ Feature: Update patient details for restricted users
   Scenario: Invalid Method error should be raised for restricted users
     * def nhsNumber = '9733162817'
     * def patientResource = call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ expectedStatus: 200, nhsNumber:"#(nhsNumber)"}
-    * def originalEtag = patientResource.responseHeaders.Etag[0]
+    * def originalEtag = patientResource.responseHeaders['Etag'] ? patientResource.responseHeaders['Etag'][0] : patientResource.responseHeaders['etag'][0] 
 
     # add emergency contact details
     * configure headers = call read('classpath:auth-jwt/app-restricted-headers.js')

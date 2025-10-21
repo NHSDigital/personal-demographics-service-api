@@ -39,4 +39,4 @@ Feature: Get Patient
     * param birthdate = "ge1957-07-23" 
     * method get
     * status 200
-    * match response == read('classpath:mocks/stubs/searchResponses/TOO_MANY_MATCHES.json')    
+    * match response == read('classpath:mocks/stubs/searchResponses/TOO_MANY_MATCHES.json') 
