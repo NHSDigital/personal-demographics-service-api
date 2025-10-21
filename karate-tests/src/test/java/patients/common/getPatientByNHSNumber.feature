@@ -31,3 +31,10 @@ Feature:Get a patient By NHS number
     * method get
     * status 404
     * match response == expectedBody
+
+  @getPatientByNhsNumber
+  Scenario: Retrieve patient details
+    * path 'Patient', nhsNumber
+    * method get
+    * match responseStatus == expectedStatus
+    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)  

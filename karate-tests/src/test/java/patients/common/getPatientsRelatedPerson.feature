@@ -36,4 +36,11 @@ Feature: Get related person details
         "timestamp": "#? utils.isValidTimestamp(_)",
         "total": 0
       } 
-      """    
+      """
+      
+  @getRelatedPersonDetails
+  Scenario: Retrieve patient related person details
+    * path 'Patient', nhsNumber, 'RelatedPerson'
+    * method get
+    * match responseStatus == expectedStatus
+    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)   

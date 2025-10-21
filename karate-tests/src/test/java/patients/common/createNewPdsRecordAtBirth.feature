@@ -14,3 +14,12 @@ Feature: Create a new PDS record at birth
     * status 403
     * def expectedResponse = read('classpath:mocks/stubs/errorResponses/INVALID_METHOD.json')
     * match response == expectedResponse
+
+  @createRecordAtBirth  
+  Scenario: create PDS record at birth
+    * path "Patient/$process-birth-details"
+    * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
+    * configure retry = { count: 5, interval: 5000 }
+    * retry until responseStatus != 429 && responseStatus != 503
+    * method post
+    * match responseStatus == expectedStatus

@@ -14,7 +14,6 @@ Feature: Get Patient
    
   @invalidAuthHeader 
   Scenario: Authorization header issues
-    # nb "expired header" isn't here...
     * configure headers = noAuthHeaders
     * header Authorization = authorization_header
     * path "Patient"

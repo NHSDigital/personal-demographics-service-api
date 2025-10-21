@@ -19,9 +19,7 @@ Feature: Get a patient - Application-restricted access
     * call read('classpath:patients/common/getPatientByNHSNumber.feature@invalidatedResource')
   
   Scenario: Get a patients details
-    * configure headers = requestHeaders  
+    * configure headers = requestHeaders
     * def nhsNumber = '9733162825'
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ expectedStatus: 200, nhsNumber:"#(nhsNumber)"}
     * match response.id == nhsNumber     

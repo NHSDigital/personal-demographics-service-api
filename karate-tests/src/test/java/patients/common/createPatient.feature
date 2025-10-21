@@ -4,13 +4,11 @@ Feature: Create patient
 Background:
   * url baseURL
 
-@invalidMethodCode   
-Scenario: Invalid Method error should be raised
+@createPatient  
+Scenario: Create patient
   * path "Patient"
-  * request {any: "request", should: "fail"}
+  * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
   * configure retry = { count: 5, interval: 5000 }
   * retry until responseStatus != 429 && responseStatus != 503
   * method post
-  * status 403
-  * def expectedResponse = read('classpath:mocks/stubs/errorResponses/INVALID_METHOD.json')
-  * match response == expectedResponse
+  * match responseStatus == expectedStatus

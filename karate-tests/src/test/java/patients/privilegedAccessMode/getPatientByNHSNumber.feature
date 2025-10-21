@@ -25,10 +25,7 @@ Feature: Get a patient - privileged-application-restricted access mode
 
   Scenario: Get a "restricted" (sensitive) patient response should include address, telecoms, registered GP and nominated pharmacy details for privileged access
     * def nhsNumber = '9727022820'
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ expectedStatus: 200, nhsNumber:"#(nhsNumber)"}
     * match response.id == nhsNumber
     * match response == Patient
     * match response.address != null
@@ -46,13 +43,8 @@ Feature: Get a patient - privileged-application-restricted access mode
  
   Scenario: Get a "very restricted" patient response should not include address, telecoms, registered GP and nominated pharmacy details for privileged access
     * def nhsNumber = '9727024610'
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
-    * match response.id == nhsNumber
-
-  
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ expectedStatus: 200, nhsNumber:"#(nhsNumber)"}
+    * match response.id == nhsNumber 
     * match response.name == '#notpresent'
     * match response.birthDate == '#notpresent'
     * match response.address == '#notpresent'
@@ -71,9 +63,7 @@ Feature: Get a patient - privileged-application-restricted access mode
   Scenario: Get a non sensitive patient details with privileged access
     * configure headers = requestHeaders  
     * def nhsNumber = '9733162825'
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ expectedStatus: 200, nhsNumber:"#(nhsNumber)"}
     * match response.id == nhsNumber
     * match response == Patient
 
@@ -82,9 +72,7 @@ Feature: Get a patient - privileged-application-restricted access mode
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * def nhsNumber = '9733162507'  
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ expectedStatus: 200, nhsNumber:"#(nhsNumber)"}
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].code == "AFN"
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].display == "Armed Forces (notified by Armed Forces)" 
     * match response.meta.security[0] == 

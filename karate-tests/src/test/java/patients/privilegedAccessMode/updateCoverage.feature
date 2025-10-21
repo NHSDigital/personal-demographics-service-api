@@ -9,4 +9,4 @@ Feature:  Update Coverage details - not permitted for privileged-application-res
 
   Scenario: Fail to update a Coverage resource with privileged access    
     * def display = "Cannot POST resource with privileged-application-restricted access token"
-    * call read('classpath:patients/common/updateCoverage.feature@accessDenied') 
+    * call read('classpath:patients/common/appRestrictedAndPriviledgedAccess/updateCoverage.feature@accessDenied') 

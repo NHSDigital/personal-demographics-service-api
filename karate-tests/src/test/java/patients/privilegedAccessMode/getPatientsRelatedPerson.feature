@@ -23,10 +23,7 @@ Feature: Get related person details - privileged-application-restricted access m
 
   Scenario: Related people are not returned for a restricted/sensitive patient and an empty bundle is returned
     * def nhsNumber = '9733162507'
-    * path 'Patient', nhsNumber, 'RelatedPerson'
-    * method get
-    * status 200
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+    * call read('classpath:patients/common/getPatientsRelatedPerson.feature@getRelatedPersonDetails'){ expectedStatus: 200, nhsNumber:"#(nhsNumber)"}
     * match response == 
     """
     {
@@ -41,10 +38,7 @@ Feature: Get related person details - privileged-application-restricted access m
   # which should not be visible. An incident has been raised to address this issue. The ignore tag will be removed once the fix has been applied   
   Scenario: Patient has sensitive related person - response should not include address or telecom details with privileged access
     * def nhsNumber = '9733162426'
-    * path 'Patient', nhsNumber, 'RelatedPerson'
-    * method get
-    * status 200
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+    * call read('classpath:patients/common/getPatientsRelatedPerson.feature@getRelatedPersonDetails'){ expectedStatus: 200, nhsNumber:"#(nhsNumber)"}
     * match response == RelatedPersonSearchBundle
     * match response.entry[0].resource.address == '#notpresent'
     * match response.entry[0].resource.telecom == '#notpresent'   
