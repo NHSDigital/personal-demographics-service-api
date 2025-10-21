@@ -1,3 +1,4 @@
+@no-oas
 Feature: Create a new PDS record at birth- privileged access
 
   Background:
