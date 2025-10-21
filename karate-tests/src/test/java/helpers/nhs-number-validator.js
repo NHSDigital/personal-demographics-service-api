@@ -1,3 +1,25 @@
+
+/**
+ * Multiply a value by its position, using the NHS number strategy
+ * @param {Number} digit the single-digit portion of the number
+ * @param {Number} index The 0-indexed position of `digit` within the NHS number
+ * @returns {Number} the result of the 'multiply by (11-position)' calculation
+ **/
+function multiplyByPosition(digit, index) {
+    // multiple each digit by 11  minus its position (indexed from 1)
+    return digit * (11 - (index+1));
+}
+
+/**
+ * Add two values together. Useful for use in `reduce` calls
+ * @param {Number} previousValue the initial value
+ * @param {Number} currentValue the value to add to the initial value
+ * @returns {Number} the sum of the two parameters
+ **/
+function addTogether(previousValue, currentValue){
+    return previousValue + currentValue;
+}
+
 /**
  * Validate an NHS number
  * https://github.com/spikeheap/nhs-number-validator/blob/develop/index.js
@@ -6,34 +28,11 @@
  * @returns {Boolean} `true` IFF the NHS number validates, else `false`
  **/
 function validate(nhsNumber){
-
-    /**
-     * Multiply a value by its position, using the NHS number strategy
-     * @param {Number} digit the single-digit portion of the number
-     * @param {Number} index The 0-indexed position of `digit` within the NHS number
-     * @returns {Number} the result of the 'multiply by (11-position)' calculation
-     **/
-    function multiplyByPosition(digit, index) {
-        // multiple each digit by 11  minus its position (indexed from 1)
-        return digit * (11 - (index+1));
-    }
-    
-    /**
-     * Add two values together. Useful for use in `reduce` calls
-     * @param {Number} previousValue the initial value
-     * @param {Number} currentValue the value to add to the initial value
-     * @returns {Number} the sum of the two parameters
-     **/
-    function addTogether(previousValue, currentValue){
-        return previousValue + currentValue;
-    }
-
-    
     // pre-flight checks
     if(
       nhsNumber === undefined ||
       nhsNumber === null ||
-      isNaN(Number(nhsNumber)) ||
+      Number.isNaN(Number(nhsNumber)) ||
       nhsNumber.toString().length !== 10
     ){
       return false;
