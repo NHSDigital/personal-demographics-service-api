@@ -57,7 +57,7 @@ function patchPatient (originalPatient, request) {
     return setInvalidValueError(`Invalid value - '${patches[0].op}' in field '0/op'`)
   }
 
-  const updatedPatient = JSON.parse(JSON.stringify(originalPatient))
+  const updatedPatient = structuredClone(originalPatient)
 
   for (const patch of patches) {
     applyPatch(patch, updatedPatient, originalPatient, updateErrors, request)
@@ -72,7 +72,7 @@ function patchPatient (originalPatient, request) {
   }
 
   updatedPatient.meta.versionId = (
-    parseInt(originalPatient.meta.versionId) + 1
+    Number.parseInt(originalPatient.meta.versionId) + 1
   ).toString()
 
   return updatedPatient
@@ -89,8 +89,8 @@ function validateAddressPatches (patches, updateErrors) {
 }
 
 function validatePatchOperations (patches) {
-  const validOperations = ['add', 'replace', 'remove', 'test']
-  return patches.every(patch => validOperations.includes(patch.op))
+  const validOperations = new Set(['add', 'replace', 'remove', 'test'])
+  return patches.every(patch => validOperations.has(patch.op))
 }
 
 function applyPatch (patch, updatedPatient, originalPatient, updateErrors, request) {
