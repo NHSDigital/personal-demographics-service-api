@@ -119,7 +119,7 @@ function initializePatientCoverageData (request, patient) {
   patient.entry[0].resource.payor[0].identifier.value = request.body.payor[0].identifier.value
   patient.entry[0].resource.period.end = request.body.period.end
   patient.entry[0].resource.subscriber.identifier.value = request.body.subscriber.identifier.value
-  patient.meta.versionId = (parseInt(patient.meta.versionId) + 1).toString()
+  patient.meta.versionId = (Number.parseInt(patient.meta.versionId) + 1).toString()
   return patient
 }
 
@@ -129,7 +129,7 @@ function handlePatientCoverageRequest (request) {
   const isRequestHeadersValid = validatePostCoverageHeaders(request) && validateHeaders(request)
   if (isRequestHeadersValid) {
     if (postCoverageRequestIsValid(request)) {
-      const originalPatient = JSON.parse(JSON.stringify(PATIENT_WITH_COVERAGE))
+      const originalPatient = structuredClone(PATIENT_WITH_COVERAGE)
       if (request.header('if-match') !== `W/"${originalPatient.meta.versionId}"`) {
         return setResourceVersionMismatchError(request)
       }
