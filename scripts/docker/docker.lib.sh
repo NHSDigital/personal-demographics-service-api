@@ -53,6 +53,8 @@ function docker-build() {
       docker tag "${tag}" "${DOCKER_IMAGE}:${version}"
     fi
   done
+
+  return $?
 }
 
 # Create the Dockerfile.effective file to bake in version info
