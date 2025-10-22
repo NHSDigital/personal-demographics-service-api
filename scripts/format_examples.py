@@ -296,6 +296,22 @@ def _remove_list_id(resource):
     return resource
 
 
+def loop_dict_and_clean_mapping(obj, allowed_empty_fields, new_obj):
+    for key, value in obj.items():
+        if key in allowed_empty_fields:
+            continue
+        sub_value = remove_empty_elements(value)
+        if not sub_value and sub_value is not False:
+            del new_obj[key]
+        else:
+            new_obj[key] = sub_value
+
+def loop_list_and_clean_sequence(obj, new_obj):
+    for value in obj:
+        sub_value = remove_empty_elements(value)
+        if sub_value or sub_value == "":
+            new_obj.append(sub_value)
+
 def remove_empty_elements(obj):
     """
     Recursively traverse the dictionary removing any empty elements (eg. [] or {}).
@@ -303,19 +319,9 @@ def remove_empty_elements(obj):
     allowed_empty_fields = ['patient']
     new_obj = deepcopy(obj)
     if isinstance(obj, dict):
-        for key, value in obj.items():
-            if key in allowed_empty_fields:
-                continue
-            sub_value = remove_empty_elements(value)
-            if not sub_value and sub_value is not False:
-                del new_obj[key]
-            else:
-                new_obj[key] = sub_value
+        loop_dict_and_clean_mapping(obj, allowed_empty_fields, new_obj)
     elif isinstance(obj, list):
         new_obj = []
-        for value in obj:
-            sub_value = remove_empty_elements(value)
-            if sub_value or sub_value == "":
-                new_obj.append(sub_value)
+        loop_list_and_clean_sequence(obj, new_obj)
 
     return new_obj
