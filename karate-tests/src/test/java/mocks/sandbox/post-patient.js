@@ -80,8 +80,8 @@ function postPatientRequestIsValid (request) {
     {
       condition: Array.isArray(request.body?.address?.[0]),
       diagnostics: `Invalid value - '${JSON.stringify(request.body?.address?.[0] || {})
-  .replaceAll(/"/g, "'")
-  .replaceAll(/','/g, "', '")}' in field 'address/0'`,
+  .replaceAll('"', "'")
+  .replaceAll("','", "', '")}' in field 'address/0'`,
       type: 'invalid'
     },
     {
