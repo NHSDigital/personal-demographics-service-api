@@ -35,7 +35,7 @@ from pytest_nhsd_apim.apigee_apis import (
 
 FILE_DIR = os.path.dirname(__file__)
 RESPONSES_DIR = os.path.join(FILE_DIR, 'data', 'responses')
-
+CALLBACK_URL = "https://example.org/callback"
 
 @pytest.fixture()
 def developer_email() -> str:
@@ -158,7 +158,7 @@ def setup_session(request, _jwt_keys, apigee_environment, developer_apps_api, pr
 
     app = ApigeeApiDeveloperApps()
     app.create_new_app(
-        callback_url="https://example.org/callback",
+        callback_url=CALLBACK_URL,
         status="approved",
         jwks_resource_url=config.JWKS_RESOURCE_URL,
         products=[product.name],
@@ -355,7 +355,7 @@ def nhs_login_sign_in(_test_app_credentials, apigee_environment, nhs_number, dev
     authorizationCodeConfig = AuthorizationCodeConfig(
         environment=apigee_environment,
         identity_service_base_url=f"https://{apigee_environment}.api.service.nhs.uk/{config.OAUTH_PROXY}",
-        callback_url="https://example.org/callback",
+        callback_url=CALLBACK_URL,
         client_id=test_app.get_client_id(),
         client_secret=test_app.get_client_secret(),
         scope="nhs-login",
