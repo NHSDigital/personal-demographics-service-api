@@ -5,38 +5,39 @@ Background:
   * def faker = Java.type('helpers.FakerWrapper')
   * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
   * url baseURL
+  * def requestHeaders = call read('classpath:auth-jwt/app-restricted-headers.js')
+  * configure headers = requestHeaders 
+  * def familyName = "ToRemove"
+  * def givenName = ["#(faker.givenName())", "#(faker.givenName())"]
+  * def prefix = ["#(utils.randomPrefix())"]
+  * def gender = utils.randomGender()
+  * def birthDate = utils.randomBirthDate()
+  * def randomAddress = utils.randomAddress(birthDate)
+  * def address = randomAddress
+  * def createPatientResponse = call read('classpath:patients/common/createPatient.feature@createPatient') { expectedStatus: 201 }
 
-@sandbox
+@sandbox @testluck
 Scenario: Replace attribute of an object
   # To replace the attribute of an object, you need to provide the id of the object you want to replace
   # in a preceding operation. (This is simlar to, but different from removing an object - we call 
   # "replace" instead of "test")
-  * def nhsNumber = karate.env.includes('sandbox') ? '9000000009' : '9736363058'
-  * configure headers = call read('classpath:auth/auth-headers.js') 
-  * path 'Patient', nhsNumber
-  * method get
-  * status 200
-  * def originalVersion = parseInt(response.meta.versionId)
-  * def givenName = response.name[0].given[0]
-
+  * def nhsNumber = karate.env.includes('sandbox') ? '9000000009' : createPatientResponse.response.id 
+  * def patientDetails = call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
+  * def originalVersion = parseInt(patientDetails.response.meta.versionId)
+  * def givenName = patientDetails.response.name[0].given[0]
+  * def originalEtag = patientDetails.responseHeaders['Etag'] ? patientDetails.responseHeaders['Etag'][0] : patientDetails.responseHeaders['etag'][0] 
   * def options = ["Anne", "Mary", "Jane"]
   * def newGivenName = utils.pickDifferentOption(options, givenName)
-
-  * configure headers = call read('classpath:auth/auth-headers.js') 
-  * header Content-Type = "application/json-patch+json"
-  * header If-Match = karate.response.header('etag')
-  * path 'Patient', nhsNumber
-  * request 
-    """
+  
+  * def requestBody = 
+  """
     {"patches":[
-      {"op":"replace","path":"/name/0/id","value":"#(response.name[0].id)"}
+      {"op":"replace","path":"/name/0/id","value":"#(patientDetails.response.name[0].id)"}
       {"op":"replace","path":"/name/0/given/0","value":"#(newGivenName)"}
     ]}
     """
-  # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-  * retry until responseStatus != 503 && responseStatus != 502    
-  * method patch
-  * status 200
+  * configure headers = call read('classpath:auth/auth-headers.js')   
+  * call read('classpath:patients/common/updatePatient.feature@updatePatientDetails'){ expectedStatus: 200, nhsNumber:"#(nhsNumber)", requestBody:"#(requestBody)", originalEtag:"#(originalEtag)"}
   * match response.name[0].given[0] == newGivenName
   * match parseInt(response.meta.versionId) == originalVersion + 1
 
