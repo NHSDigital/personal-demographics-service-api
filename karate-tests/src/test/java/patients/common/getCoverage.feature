@@ -6,9 +6,10 @@ Background:
 
 @getCoverageDetails
 Scenario: Retrieve a Coverage resource
-  * configure headers = requestHeaders 
-  * path "Coverage"
-  * param "subscriber:identifier" = nhsNumber
+  * configure headers = requestHeaders
+  * path 'Coverage'
+  * param subscriber:identifier = nhsNumber
   * method get
   * match responseStatus == expectedStatus
+  * def originalEtag = responseHeaders['Etag'] ? responseHeaders['Etag'][0] : responseHeaders['etag'][0]
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)

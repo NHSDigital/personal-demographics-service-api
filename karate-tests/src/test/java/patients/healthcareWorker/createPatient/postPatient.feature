@@ -39,12 +39,7 @@ Scenario: Post patient - new patient
   * def randomAddress = utils.randomAddress(birthDate)
   * def address = randomAddress
   
-  * path "Patient"
-  * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
-  * configure retry = { count: 5, interval: 5000 }
-  * retry until responseStatus != 429 && responseStatus != 503
-  * method post
-  * status 201
+  * call read('classpath:patients/common/createPatient.feature@createPatient') { expectedStatus: 201 }
   * def nhsNumber = response.id
   * def expectedResponse = read('classpath:patients/healthcareWorker/new-nhs-number-response-template.json')
   * match response == expectedResponse
@@ -82,12 +77,7 @@ Scenario: Fail to create a record for a new patient, single demographics match f
   # so when we try to create a new patient using the same demographics, we get the single_match_found error
   * def requestHeaders = call read('classpath:auth/auth-headers.js')
   * configure headers = requestHeaders
-  * path "Patient"
-  * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
-  * configure retry = { count: 5, interval: 6000 }
-  * retry until responseStatus != 429 && responseStatus != 503
-  * method post
-  * status 200
+  * call read('classpath:patients/common/createPatient.feature@createPatient') { expectedStatus: 200 }
   * match response == read('classpath:mocks/stubs/postPatientResponses/SINGLE_MATCH_FOUND.json')
 
 @sandbox 
@@ -117,22 +107,12 @@ Scenario: Fail to create a record for a new patient, multiple demographics match
   
   * def requestHeaders = call read('classpath:auth/auth-headers.js')
   * configure headers = requestHeaders
-  * path "Patient"
-  * request requestBody
-  * configure retry = { count: 5, interval: 7000 }
-  * retry until responseStatus != 429 && responseStatus != 503
-  * method post
-  * status 200
+  * call read('classpath:patients/common/createPatient.feature@createPatient') {patientPayload:"#(requestBody)", expectedStatus: 200 }
   * match response == read('classpath:mocks/stubs/postPatientResponses/MULTIPLE_MATCHES_FOUND.json')
 
 @sandbox
 Scenario Outline: Negative path: missing value in request body - missing <missingValue>
-  * path "Patient"
-  * request payload
-  * configure retry = { count: 5, interval: 10000 }
-  * retry until responseStatus != 429 && responseStatus != 503
-  * method post
-  * status 400
+  * call read('classpath:patients/common/createPatient.feature@createPatient') { patientPayload:"#(payload)",expectedStatus: 400 }
   * def diagnostics = `Missing value - '${missingValue}'`
   * match response == read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')
 
@@ -164,14 +144,7 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
     * def birthDate = property == "birthDate" ? jsonValue : validBirthDate
     * def address = property == "address" ? jsonValue : validAddress
     
-    * path "Patient"
-    * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
-
-    * configure retry = { count: 5, interval: 10000 }
-
-    * retry until responseStatus != 429 && responseStatus != 503
-    * method post
-    * status 400
+    * call read('classpath:patients/common/createPatient.feature@createPatient') { expectedStatus: 400 }
     * match response == read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')
   
     Examples:
@@ -198,12 +171,7 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
     * def address = invalidAddress
     
     # you can't create a new patient if the line property doesn't match the spec
-    * path "Patient"
-    * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
-    * configure retry = { count: 5, interval: 5000 }
-    * retry until responseStatus != 429 && responseStatus != 503
-    * method post
-    * status 400
+    * call read('classpath:patients/common/createPatient.feature@createPatient') { expectedStatus: 400 }
     * def diagnostics = "Invalid patient create data provided - 'address lines 1 and 4 or 2 and 4 must be completed as a minimum'"
     * match response == read('classpath:mocks/stubs/errorResponses/INVALID_CREATE.json')
 
@@ -251,12 +219,7 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
                   ]
               }
               """
-    * path "Patient"
-    * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
-    * configure retry = { count: 5, interval: 5000 }
-    * retry until responseStatus != 429 && responseStatus != 503
-    * method post
-    * status 400
+    * call read('classpath:patients/common/createPatient.feature@createPatient') { expectedStatus: 400 }
     * def diagnostics = `Missing value - 'address/0/extension/0/extension'`
     * match response == read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')
   
@@ -284,12 +247,7 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
     """
     * patientPayload.telecom = telecom
     
-    * path "Patient"
-    * request patientPayload
-    * configure retry = { count: 5, interval: 5000 }
-    * retry until responseStatus != 429 && responseStatus != 503
-    * method post
-    * status 400
+    * call read('classpath:patients/common/createPatient.feature@createPatient') {patientPayload:"#(patientPayload)", expectedStatus: 400 }
     * def diagnostics = "Invalid patient create data provided - 'email format is invalid'"
     * match response == read('classpath:mocks/stubs/errorResponses/INVALID_CREATE.json')
    
@@ -312,13 +270,7 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
     * def birthDate = property == "birthDate" ? jsonValue : validBirthDate
     * def address = property == "address" ? jsonValue : validAddress
     
-    * path "Patient"
-    * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
-
-    * configure retry = { count: 5, interval: 10000 }
-    * retry until responseStatus != 429 && responseStatus != 503
-    * method post
-    * status 400
+    * call read('classpath:patients/common/createPatient.feature@createPatient') { expectedStatus: 400 }
     * match response == read('classpath:mocks/stubs/errorResponses/TOO_MANY_VALUES_SUBMITTED.json')
   
     Examples:
@@ -346,13 +298,8 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
 
     """
     * patientPayload.name[0] = nameWithEndDate
-    
-    * path "Patient"
-    * request patientPayload
-    * configure retry = { count: 5, interval: 5000 }
-    * retry until responseStatus != 429 && responseStatus != 503
-    * method post
-    * status 400
+
+    * call read('classpath:patients/common/createPatient.feature@createPatient') { patientPayload:"#(patientPayload)",expectedStatus: 400 }
     * def diagnostics = "Invalid patient create data provided - 'An end date can not be provided on usual name'"
     * match response == read('classpath:mocks/stubs/errorResponses/INVALID_CREATE.json')
   
@@ -377,12 +324,7 @@ Scenario Outline: Negative path: missing value in request body - missing <missin
     """
     * patientPayload.name[0] = nameWithNullSuffix
     
-    * path "Patient"
-    * request patientPayload
-    * configure retry = { count: 5, interval: 5000 }
-    * retry until responseStatus != 429 && responseStatus != 503
-    * method post
-    * status 201
+    * call read('classpath:patients/common/createPatient.feature@createPatient') { patientPayload:"#(patientPayload)",expectedStatus: 201 }
     * def nhsNumber = response.id
     * def expectedResponse = read('classpath:patients/healthcareWorker/new-nhs-number-response-template.json')
     * match response == expectedResponse

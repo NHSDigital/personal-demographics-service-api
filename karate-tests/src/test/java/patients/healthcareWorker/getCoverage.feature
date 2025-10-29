@@ -1,4 +1,3 @@
-
 Feature: Get Coverage-not permitted for healthcare worker
 
   Background:
@@ -11,11 +10,7 @@ Feature: Get Coverage-not permitted for healthcare worker
 
   Scenario: Fail to retrieve a Coverage resource
     * configure headers = requestHeaders 
-    * path "Coverage"
-    * param "subscriber:identifier" = "9693632109"
-    * method get
-    * status 403
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+    * call read('classpath:patients/common/getCoverage.feature@getCoverageDetails'){ nhsNumber:9693632109, expectedStatus: 403 }
     * def display = "Cannot GET resource with user-restricted access token"
     * def diagnostics = "Your app has insufficient permissions to use this operation. Please contact support."
     * def expectedResponse = read(`classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json`)

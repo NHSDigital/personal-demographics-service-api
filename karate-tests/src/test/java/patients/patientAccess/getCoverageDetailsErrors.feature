@@ -1,4 +1,3 @@
-
 Feature: Patient Access (Retrieve Coverage)
     Retrieve EHIC details error scenarios
 
@@ -12,11 +11,7 @@ Scenario Outline: Patient can't retrieve coverage details when <patientType>
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * path 'Coverage'
-    * param subscriber:identifier = nhsNumber
-    * method get
-    * status 403
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+    * call read('classpath:patients/common/getCoverage.feature@getCoverageDetails'){ nhsNumber:"#(nhsNumber)", expectedStatus: 403 }
     * def display = 'Patient cannot perform this action'
     * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
     * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
@@ -30,11 +25,7 @@ Scenario Outline: Auth errors: patient coverage details
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * requestHeaders.authorization = headerValue
     * configure headers = requestHeaders
-    * path 'Coverage'
-    * param subscriber:identifier = p9number
-    * method get
-    * status 401
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders) 
+    * call read('classpath:patients/common/getCoverage.feature@getCoverageDetails'){ nhsNumber:"#(p9number)", expectedStatus: 401 }
     * def display = 'Access Denied - Unauthorised'
     * def expectedResponse = read(`classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json`)
     * match response == expectedResponse
@@ -51,11 +42,7 @@ Scenario Outline: x-request-id errors: patient coverage details
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * requestHeaders['x-request-id'] = headerValue
     * configure headers = requestHeaders
-    * path 'Coverage'
-    * param subscriber:identifier = p9number
-    * method get
-    * status 400
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders) 
+    * call read('classpath:patients/common/getCoverage.feature@getCoverageDetails'){ nhsNumber:"#(p9number)", expectedStatus: 400 }
     * def expectedResponse = read(`classpath:mocks/stubs/errorResponses/${errorResponse}.json`)
     * match response == expectedResponse
     
@@ -68,10 +55,7 @@ Scenario: Identifier doesn't match nhs number of user
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * path 'Coverage'
-    * param subscriber:identifier = "9999999990"
-    * method get
-    * status 403
+    * call read('classpath:patients/common/getCoverage.feature@getCoverageDetails'){ nhsNumber:"9999999990", expectedStatus: 403 }
     * def display = 'Patient cannot perform this action'
     * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
     * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
@@ -103,9 +87,6 @@ Scenario: Patient that don't have corresponding patient objects
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9WithoutPatientObject, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * path 'Coverage'
-    * param subscriber:identifier = p9WithoutPatientObject
-    * method get
-    * status 404
+    * call read('classpath:patients/common/getCoverage.feature@getCoverageDetails'){ nhsNumber:"#(p9WithoutPatientObject)", expectedStatus: 404 }
     * match response == read('classpath:mocks/stubs/errorResponses/RESOURCE_NOT_FOUND.json')    
     

@@ -11,9 +11,6 @@ Background:
     * configure headers = requestHeaders  
        
 Scenario: Get a patient details
-    * path 'Patient', p9number
-    * method get
-    * status 200
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
-    * def addresses = response.address
-    * match utils.checkNullsHaveExtensions(addresses) == true
+   * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(p9number)", expectedStatus: 200 }
+   * def addresses = response.address
+   * match utils.checkNullsHaveExtensions(addresses) == true
