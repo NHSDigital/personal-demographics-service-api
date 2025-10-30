@@ -29,8 +29,6 @@ Scenario: Patient has one related person
 Scenario: Patient has one related person (INT smoke test)
   * def nhsNumber = '9693633679'
   * call read('classpath:patients/common/getPatientsRelatedPerson.feature@getRelatedPersonDetails') { nhsNumber: "#(nhsNumber)",expectedStatus:200 }
-  * status 200
-  * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
   * match response == RelatedPersonSearchBundle
   * match response.total == 1
 
