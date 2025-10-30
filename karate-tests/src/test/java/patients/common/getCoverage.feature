@@ -11,5 +11,5 @@ Scenario: Retrieve a Coverage resource
   * param subscriber:identifier = nhsNumber
   * method get
   * match responseStatus == expectedStatus
-  * def originalEtag = responseHeaders['Etag'] ? responseHeaders['Etag'][0] : responseHeaders['etag'][0]
+  * if (responseStatus == 200) {karate.set('originalEtag', responseHeaders['Etag'] ? responseHeaders['Etag'][0] : responseHeaders['etag'][0])}
   * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)

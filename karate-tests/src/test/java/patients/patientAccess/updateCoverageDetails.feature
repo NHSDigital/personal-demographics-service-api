@@ -15,7 +15,6 @@ Feature: Patient Access (Update Coverage details)
     * configure headers = requestHeaders
     * call read('classpath:patients/common/getCoverage.feature@getCoverageDetails'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
     * def originalVersion = parseInt(response.meta.versionId)
-    * def originalEtag = responseHeaders['Etag'] ? responseHeaders['Etag'][0] : responseHeaders['etag'][0]
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * def periodEndDate = utils.randomDateWithInYears(4)
