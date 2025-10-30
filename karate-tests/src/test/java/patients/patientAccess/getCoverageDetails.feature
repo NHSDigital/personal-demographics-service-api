@@ -29,7 +29,7 @@ Feature: Patient Access (Retrieve Coverage details)
     * call read('classpath:patients/common/getCoverage.feature@getCoverageDetails'){ nhsNumber:"#(P9WithNoCoverage)", expectedStatus: 200 }
     * match response.entry[0] == '#notpresent'
     * match response.meta contains {versionId: '#notnull'}
-    * match responseHeaders.Etag != null
+    * match originalEtag != null
    
     # 9732019735 is displayed in retained record 9732019638
   Scenario: Retrieve patient current coverage details when superseded NHS number is sent
@@ -51,7 +51,7 @@ Feature: Patient Access (Retrieve Coverage details)
     * call read('classpath:patients/common/getCoverage.feature@getCoverageDetails'){ nhsNumber:"#(personal_id_p9)", expectedStatus: 200 }
     * match response.entry[0] == '#notpresent'
     * match response.meta contains {versionId: '#notnull'}
-    * match responseHeaders.Etag != null
+    * match originalEtag != null
 
   Scenario: Patient has no coverage details when Ehic details are hidden
     * def P9number = '9733162906'
