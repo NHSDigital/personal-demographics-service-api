@@ -37,7 +37,7 @@ Scenario: Replace attribute of an object
     ]}
     """
   * configure headers = call read('classpath:auth/auth-headers.js')   
-  * call read('classpath:patients/common/updatePatient.feature@updatePatientDetails'){ expectedStatus: 200, nhsNumber:"#(nhsNumber)", requestBody:"#(requestBody)", originalEtag:"#(originalEtag)"}
+  * call read('classpath:patients/common/updatePatient.feature@updatePatientDetails'){ nhsNumber:"#(nhsNumber)", requestBody:"#(requestBody)", originalEtag:"#(originalEtag)",expectedStatus: 200}
   * match response.name[0].given[0] == newGivenName
   * match parseInt(response.meta.versionId) == originalVersion + 1
 
