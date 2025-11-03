@@ -181,7 +181,7 @@ function validateNHSNumber (request, nhsNumber) {
 function validatePatientExists (request) {
   const nhsNumber = request.pathParams.nhsNumber
   let valid = true
-  if (typeof session.patients[nhsNumber] === 'undefined') {
+  if (session.patients[nhsNumber] === undefined) {
     response.body = context.read('classpath:mocks/stubs/errorResponses/RESOURCE_NOT_FOUND.json')
     response.headers = basicResponseHeaders(request)
     response.status = 404
