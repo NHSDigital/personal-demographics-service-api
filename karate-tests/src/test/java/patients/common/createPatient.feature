@@ -1,5 +1,5 @@
 @ignore
-Feature: Create patient 
+Feature: Create patient - Reusable feature to be used when we need create a patient
 
 Background:
   * url baseURL

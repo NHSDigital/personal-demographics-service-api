@@ -22,18 +22,17 @@ Background:
   * configure headers = requestHeaders 
   * url baseURL
 
-@sandbox 
+@sandbox
 Scenario:Search for a patient using parameters
   * def searchParams =
-  """
-   {
-      family: "Jones",
-      gender: "male",
-      birthdate: "ge1992-01-01",
-      _maxResults: "6",
-      expectedStatus: 200
-    }
-  """
+    """
+    {
+        family: "Jones",
+        gender: "male",
+        birthdate: "ge1992-01-01",
+        _maxResults: "6"
+      }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * match response == read('classpath:schemas/searchSchemas/patientSearchBundle.json')
   * match response.total == 1
@@ -43,9 +42,9 @@ Scenario:Search for a patient using parameters
 @smoke-only
 Scenario:Search for a patient using parameters (INT smoke test)
   * def searchParams =
-  """
-   { family: "Capon", gender: "male", birthdate: "eq1953-05-29",expectedStatus: 200 }
-  """
+    """
+    { family: "Capon", gender: "male", birthdate: "eq1953-05-29"}
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * match response == read('classpath:schemas/searchSchemas/patientSearchBundle.json')
   * match response.total == 1
@@ -59,9 +58,9 @@ Scenario: Search for a "restricted" (sensitive) patient
   # - generalPractitioner
   # this is reflected in the patientSearchBundleSensitive.json schema file
   * def searchParams =
-  """
-   { family: "Godsoe", gender: "male", birthdate: "1936-02-24", expectedStatus: 200 }
-  """
+    """
+    { family: "Godsoe", gender: "male", birthdate: "1936-02-24"}
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * match response.entry[0].resource.id == "9693632125"
   * match response == read('classpath:schemas/searchSchemas/sensitivePatientSearchBundle.json')
@@ -77,9 +76,9 @@ Scenario: Search for a "restricted" (sensitive) patient
 @sandbox
 Scenario: Search without specifying gender
   * def searchParams =
-  """
-   { family: "Massam", birthdate: "eq1920-08-11", expectedStatus: 200 }
-  """
+    """
+    { family: "Massam", birthdate: "eq1920-08-11" }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * match response == read('classpath:schemas/searchSchemas/patientSearchBundle.json')
   * match response.entry[0].resource.id == "9693632966"
@@ -88,9 +87,9 @@ Scenario: Search without specifying gender
 @sandbox
 Scenario: Search using a range for date of birth
   * def searchParams =
-  """
-   { family: "Massam", birthdate: "le1920-08-11", expectedStatus: 200 }
-  """
+    """
+    { family: "Massam", birthdate: "le1920-08-11"}
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * match response == read('classpath:schemas/searchSchemas/patientSearchBundle.json')
   * match response.entry[0].resource.id == "9693632966"
@@ -99,9 +98,9 @@ Scenario: Search using a range for date of birth
 @sandbox
 Scenario: Wide search, multiple results
   * def searchParams =
-  """
-   { family: "YOUDS", birthdate: "1970-01-24", expectedStatus: 200 }
-  """
+    """
+    { family: "YOUDS", birthdate: "1970-01-24"}
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * match response == read('classpath:schemas/searchSchemas/patientSearchBundle.json')
   * match response.total == 4
@@ -113,9 +112,9 @@ Scenario: Wide search, multiple results
 @sandbox
 Scenario: Fuzzy match search - Family name is homophone of actual historic family name
   * def searchParams =
-  """
-   { _fuzzy-match: true, family: "Blogs", given: "Joe", birthdate: "1955-11-05", expectedStatus: 200 }
-  """
+    """
+    { _fuzzy-match: true, family: "Blogs", given: "Joe", birthdate: "1955-11-05" }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * match response == read('classpath:schemas/searchSchemas/patientSearchBundle.json')
   * match response.total == 1
@@ -126,9 +125,9 @@ Scenario: Fuzzy match search - Family name is homophone of actual historic famil
 @sandbox
 Scenario: Unicode search
   * def searchParams =
-  """
-   { _fuzzy-match: true, family: "ATTSÖN", given: "PÀULINÉ", birthdate: "1960-07-14", expectedStatus: 200 }
-  """
+    """
+    { _fuzzy-match: true, family: "ATTSÖN", given: "PÀULINÉ", birthdate: "1960-07-14" }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * match response == read('classpath:schemas/searchSchemas/patientSearchBundle.json')
   * match response.total == 2
@@ -151,16 +150,16 @@ Scenario: Too many matches
   # if you set _max-results to a number lower than the total number of matches for a query
   # then you get a Too Many Matches response...
   * def searchParams =
-  """
-   { family: "YOUDS", birthdate: "1970-01-24", expectedStatus: 200 }
-  """
+    """
+    { family: "YOUDS", birthdate: "1970-01-24" }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * match response.total == 4
 
   * def searchParams =
-  """
-   { family: "YOUDS", birthdate: "1970-01-24", _max-results: 1, expectedStatus: 200 }
-  """
+    """
+    { family: "YOUDS", birthdate: "1970-01-24", _max-results: 1}
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * match response == read('classpath:mocks/stubs/searchResponses/TOO_MANY_MATCHES.json')
 
@@ -170,9 +169,9 @@ Scenario: Search should not return superseded patients record
   * path 'Patient'
   * def supersededRecord = '5900053636'
   * def searchParams =
-  """
-   { family: "CUFF", birthdate: "eq1926-01-07",gender: "female", expectedStatus: 200 }
-  """
+    """
+    { family: "CUFF", birthdate: "eq1926-01-07",gender: "female" }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * match response.total == 2
   * def idList = karate.jsonPath(response, "$.entry[*].resource.id")
@@ -181,9 +180,9 @@ Scenario: Search should not return superseded patients record
 @sandbox
 Scenario: Simple search with other given name - Single match
   * def searchParams =
-  """
-   { family: "Smith", gender: "male", birthdate: "eq2000-05-05", given: ["Sam","Bob" ], expectedStatus: 200 }
-  """
+    """
+    { family: "Smith", gender: "male", birthdate: "eq2000-05-05", given: ["Sam","Bob" ] }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * assert response.total == 1
   * def givenNames = karate.jsonPath(response, "$.entry[*].resource.name[*].given[*]") 
@@ -196,9 +195,9 @@ Scenario: Simple and Alphanumeric search with email and phone number - Multi mat
   * def phoneValue = "01234123123"
   * def genderValue =  "male"
   * def searchParams =
-  """
-   { family: "Smith", gender: '#(genderValue)', birthdate: '#(birthDateValue)', email: '#(emailValue)', phone: '#(phoneValue)', expectedStatus: 200 }
-  """
+    """
+    { family: "Smith", gender: '#(genderValue)', birthdate: '#(birthDateValue)', email: '#(emailValue)', phone: '#(phoneValue)'}
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * assert response.total > 1
   * def telecomValueList = karate.jsonPath(response, "$.entry[*].resource.telecom[*].value") 
@@ -206,9 +205,9 @@ Scenario: Simple and Alphanumeric search with email and phone number - Multi mat
    # alphanumeric serach 
   
   * def searchParams =
-  """
-   { family: "Sm*", gender: "male", birthdate: "eq2000-05-05", email: "test@test.com", phone: "01234123123", expectedStatus: 200 }
-  """
+    """
+    { family: "Sm*", gender: "male", birthdate: "eq2000-05-05", email: "test@test.com", phone: "01234123123" }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams 
   * assert response.total > 1
   * def telecomValueList = karate.jsonPath(response, "$.entry[*].resource.telecom[*].value") 
@@ -221,16 +220,16 @@ Scenario: Simple and Alphanumeric search with email and phone number - no result
   * def phoneValue = "01234123123"
   * def genderValue =  "male"
   * def searchParams =
-  """
-   { family: "Smith", gender: '#(genderValue)', birthdate: '#(birthDateValue)', email: '#(emailValue)', phone: '#(phoneValue)', expectedStatus: 200 }
-  """
+    """
+    { family: "Smith", gender: '#(genderValue)', birthdate: '#(birthDateValue)', email: '#(emailValue)', phone: '#(phoneValue)'}
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * match response.total == 0
   # alphanumeric serach 
   * def searchParams =
-  """
-   { family: "Sm*",gender: '#(genderValue)', birthdate: '#(birthDateValue)', email: '#(emailValue)', phone: '#(phoneValue)', expectedStatus: 200 }
-  """
+    """
+    { family: "Sm*",gender: '#(genderValue)', birthdate: '#(birthDateValue)', email: '#(emailValue)', phone: '#(phoneValue)'}
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * match response.total == 0
 
@@ -241,9 +240,9 @@ Scenario: Simple search with phone number including country code
   * def phoneValue = "00917855986859"
   * def genderValue =  "male"
   * def searchParams =
-  """
-   { family: '#(familyValue)', gender: '#(genderValue)', birthdate: '#(birthDateValue)', phone: '#(phoneValue)', expectedStatus: 200 }
-  """
+    """
+    { family: '#(familyValue)', gender: '#(genderValue)', birthdate: '#(birthDateValue)', phone: '#(phoneValue)' }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * match response.total == 1
   * def telecomValueList = karate.jsonPath(response, "$.entry[*].resource.telecom[*].value") 
@@ -257,16 +256,16 @@ Scenario: Include history flag for non fuzzy search
   * def genderValue = "male"
   * def familyValue = "Smith"
   * def searchParams =
-  """
-   { family: '#(familyValue)', gender: '#(genderValue)', email: '#(previousEmail)', birthdate: '#(birthDateValue)', expectedStatus: 200 }
-  """
+    """
+    { family: '#(familyValue)', gender: '#(genderValue)', email: '#(previousEmail)', birthdate: '#(birthDateValue)'}
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * match response.total == 0
   # include history flag
   * def searchParams =
-  """
-   { family: '#(familyValue)', gender: '#(genderValue)', birthdate: '#(birthDateValue)', email: '#(previousEmail)', _history: true, expectedStatus: 200 }
-  """
+    """
+    { family: '#(familyValue)', gender: '#(genderValue)', birthdate: '#(birthDateValue)', email: '#(previousEmail)', _history: true }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * def emailValues = karate.jsonPath(response, "$.entry[*].resource.telecom[?(@.system == 'email')].value") 
   * match emailValues !contains previousEmail
@@ -280,9 +279,9 @@ Scenario: Simple search with phone number including country code
   * def phoneValue = "00917855986859"
   * def genderValue =  "male"
   * def searchParams =
-  """
-   { family: '#(familyValue)', gender: '#(genderValue)', birthdate: '#(birthDateValue)', phone: '#(phoneValue)',expectedStatus: 200 }
-  """
+    """
+    { family: '#(familyValue)', gender: '#(genderValue)', birthdate: '#(birthDateValue)', phone: '#(phoneValue)' }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * match response.total == 1
   * def telecomValueList = karate.jsonPath(response, "$.entry[*].resource.telecom[*].value") 
@@ -295,9 +294,9 @@ Scenario: wildcard search on postcode
   * def family = "Smith"
   * def postcode = "DN17*"
   * def searchParams =
-  """
-   { family: '#(family)', birthdate: '#(birthDate)',gender: '#(gender)', address-postalcode: '#(postcode)',expectedStatus: 200 }
-  """
+    """
+    { family: '#(family)', birthdate: '#(birthDate)',gender: '#(gender)', address-postalcode: '#(postcode)' }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * assert response.total >= 2
   * def postcodeList = karate.jsonPath(response, "$.entry[*].resource.address[*].postalCode")
@@ -310,9 +309,9 @@ Scenario: Alphanumeric search with registered GP practice
   * def family = "Me*"
   * def gp = "A20047"
   * def searchParams =
-  """
-   { family: '#(family)', birthdate: '#(birthDate)', general-practitioner: '#(gp)',expectedStatus: 200 }
-  """
+    """
+    { family: '#(family)', birthdate: '#(birthDate)', general-practitioner: '#(gp)' }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * assert response.total == 1
   * def gpList = karate.jsonPath(response, "$.entry[*].resource.generalPractitioner[*].identifier.value")
@@ -324,9 +323,9 @@ Scenario: Simple search with date of death parameter
   * def family = "TUNNEY"
   * def deathDate = "le2019-02-28"
   * def searchParams =
-  """
-   { family: '#(family)', birthdate: '#(birthDate)', death-date: '#(deathDate)',expectedStatus: 200 }
-  """
+    """
+    { family: '#(family)', birthdate: '#(birthDate)', death-date: '#(deathDate)' }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * assert response.total == 1
   * def deceasedDate = karate.jsonPath(response, "$.entry[*].resource.deceasedDateTime")
@@ -343,26 +342,26 @@ Scenario: Algorithm search with basic(given name, gender, date of birth and post
   * def phone = "01222111111"  
   # no search results 
   * def searchParams =
-  """
-   { family: '#(family)', birthdate: '#(birthDate)', gender: '#(gender)', given: '#(given)', address-postalcode:'#(postcode)', email: '#(email)', phone: '#(phone)', _fuzzy-match: true ,expectedStatus: 200 }
-  """
+    """
+    { family: '#(family)', birthdate: '#(birthDate)', gender: '#(gender)', given: '#(given)', address-postalcode:'#(postcode)', email: '#(email)', phone: '#(phone)', _fuzzy-match: true }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * assert response.total == 0
   # single search result
   * def email = "test@test.com"
   * def nhsNumber = '5900022366' 
   * def searchParams =
-  """
-   { family: '#(family)', birthdate: '#(birthDate)', gender: '#(gender)', given: '#(given)', address-postalcode:'#(postcode)', email: '#(email)', phone: '#(phone)', _fuzzy-match: true,expectedStatus: 200 }
-  """
+    """
+    { family: '#(family)', birthdate: '#(birthDate)', gender: '#(gender)', given: '#(given)', address-postalcode:'#(postcode)', email: '#(email)', phone: '#(phone)', _fuzzy-match: true }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * assert response.total == 1 
   * match response.entry[0].resource.id == nhsNumber
   # Multi match
   * def searchParams =
-  """
-   { family: '#(family)', birthdate: '#(birthDate)', gender: '#(gender)', given: '#(given)', address-postalcode:'#(postcode)', _fuzzy-match: true ,expectedStatus: 200 }
-  """
+    """
+    { family: '#(family)', birthdate: '#(birthDate)', gender: '#(gender)', given: '#(given)', address-postalcode:'#(postcode)', _fuzzy-match: true }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * assert response.total >= 1 
   * def postcodeList = karate.jsonPath(response, "$.entry[*].resource.address[*].postalCode")
@@ -380,77 +379,78 @@ Scenario: Search for a PDS record based on historic DOB, family name, gender
   * def expectedNhsNumber = "9733162450"
   # no pds records for non fuzzy search when historic dob is sent as query parameter
   * def searchParams =
-  """
-   { family: '#(currentFamilyName)', birthdate: '#(historicDob)', gender: '#(currentGender)',expectedStatus: 200 }
-  """
+    """
+    { family: '#(currentFamilyName)', birthdate: '#(historicDob)', gender: '#(currentGender)' }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * assert response.total == 0
   # no pds records for non fuzzy search when historic gender is sent as query parameter
   * def searchParams =
-  """
-   { family: '#(currentFamilyName)', birthdate: '#(currentDob)', gender: '#(historicGender)',expectedStatus: 200 }
-  """
+    """
+    { family: '#(currentFamilyName)', birthdate: '#(currentDob)', gender: '#(historicGender)' }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * assert response.total == 0
   # no pds records for non fuzzy search when historic family name is sent as query parameter
   * def searchParams =
-  """
-   { family: '#(historicfamilyName)', birthdate: '#(currentDob)', gender: '#(currentGender)',expectedStatus: 200 }
-  """
+    """
+    { family: '#(historicfamilyName)', birthdate: '#(currentDob)', gender: '#(currentGender)' }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * assert response.total == 0
   #  Fuzzy matching should not return historic matches when historic dob is sent as query parameter
   * def searchParams =
-  """
-   { family: '#(currentFamilyName)', birthdate: '#(historicDob)', gender: '#(currentGender)', given: '#(givenName)', _fuzzy-match: true ,expectedStatus: 200 }
-  """
+    """
+    { family: '#(currentFamilyName)', birthdate: '#(historicDob)', gender: '#(currentGender)', given: '#(givenName)', _fuzzy-match: true}
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * assert response.total == 0
   # Fuzzy matching should return historic matches when historic gender is sent as query parameter
   * def searchParams =
-  """
-   { family: '#(currentFamilyName)', birthdate: '#(currentDob)', gender: '#(historicGender)', given: '#(givenName)', _fuzzy-match: true,expectedStatus: 200 }
-  """
+    """
+    { family: '#(currentFamilyName)', birthdate: '#(currentDob)', gender: '#(historicGender)', given: '#(givenName)', _fuzzy-match: true}
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * assert response.total == 1
   * match response.entry[0].resource.id == expectedNhsNumber
   * match response.entry[0].resource.gender == currentGender
   #  Fuzzy matching should return historic matches when historic family name is sent as query parameter
   * def searchParams =
-  """
-   { family: '#(historicfamilyName)', birthdate: '#(currentDob)', gender: '#(currentGender)', given: '#(givenName)', _fuzzy-match: true ,expectedStatus: 200 }
-  """
+    """
+    { family: '#(historicfamilyName)', birthdate: '#(currentDob)', gender: '#(currentGender)', given: '#(givenName)', _fuzzy-match: true }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * assert response.total == 1
   * match response.entry[0].resource.id == expectedNhsNumber
   * match response.entry[0].resource.name[0].family == currentFamilyName
   # Include history search should not return historic matches when historic dob is sent as query parameter
   * def searchParams =
-  """
-   { family: '#(currentFamilyName)', birthdate: '#(historicDob)', gender: '#(currentGender)', _history: true,expectedStatus: 200 }
-  """
+    """
+    { family: '#(currentFamilyName)', birthdate: '#(historicDob)', gender: '#(currentGender)', _history: true }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * assert response.total == 0
   #  Include history search should return historic matches when historic family name is sent as query parameter
   * def searchParams =
-  """
-   { family: '#(historicfamilyName)', birthdate: '#(currentDob)', gender: '#(currentGender)', _history: true, expectedStatus: 200 }
-  """
+    """
+    { family: '#(historicfamilyName)', birthdate: '#(currentDob)', gender: '#(currentGender)', _history: true }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * assert response.total == 1
   * match response.entry[0].resource.id == expectedNhsNumber
   * match response.entry[0].resource.name[0].family == currentFamilyName
 
-Scenario: Historic matching shouldn't return hidden matches
+Scenario: Historic matching shouldn not return hidden matches
   # Expect a record to exist with current given=Horace, dob=1956-05-02, family=LEEKE, postalcode=DN15 0AD, and hidden postalcode=DN16 3SS.
   * def hiddenPostalcode = "DN16 3SS"
   * def givenName = "Horace"
   * def currentDob = "1956-05-02"
   * def currentFamilyName = "LEEKE"
   # The query param postalcode should match the hidden postalcode, but not included in the result as the snippet is hidden instead of historic.
+
   * def searchParams =
-  """
-   { family: '#(currentFamilyName)', birthdate: '#(currentDob)', given: '#(givenName)', address-postalcode: '#(hiddenPostalcode)', _history: true , expectedStatus: 200 }
-  """
+    """
+    { family: '#(currentFamilyName)', birthdate: '#(currentDob)', given: '#(givenName)', address-postalcode: '#(hiddenPostalcode)', _history: true }
+    """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * assert response.total == 0

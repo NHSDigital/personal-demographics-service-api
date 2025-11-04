@@ -1,5 +1,5 @@
 @ignore
-Feature:Get a patient By NHS number
+Feature:Get a patient By NHS number - Reusable feature to be used when we need to search for patients by NHS number
 
   Background:
     * def utils = call read('classpath:helpers/utils.feature')

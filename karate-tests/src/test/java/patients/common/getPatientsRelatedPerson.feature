@@ -1,5 +1,5 @@
 @ignore
-Feature: Get related person details
+Feature: Get related person details - Reusable feature to be used when we need to get related person details
 
   Background:
 

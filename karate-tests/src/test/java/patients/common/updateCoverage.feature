@@ -1,5 +1,5 @@
 @ignore
-Feature:  Update Coverage details
+Feature:  Update Coverage details - Reusable feature to be used when we need to update coverage details
   Background:
     * url baseURL
 

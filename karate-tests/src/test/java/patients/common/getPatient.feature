@@ -1,5 +1,5 @@
 @ignore
-Feature: Get Patient 
+Feature: Get Patient - Reusable feature to be used when we need to search for patients
 
  Background:
     * url baseURL
@@ -61,5 +61,5 @@ Feature: Get Patient
     * path 'Patient'
     * params queryParams
     * method get
-    * match responseStatus == searchParams.expectedStatus
+    * match responseStatus ==  karate.get('expectedResponseStatus', 200)
     * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
