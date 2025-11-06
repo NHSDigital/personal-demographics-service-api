@@ -1,5 +1,5 @@
 @ignore
-Feature: Get Coverage-not permitted for restricted users
+Feature: Get Coverage-Reusable feature to be used when we need to get coverage details
 
 Background:
   * url baseURL

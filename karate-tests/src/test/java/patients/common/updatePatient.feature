@@ -1,5 +1,5 @@
 @ignore
-Feature: Update patient details
+Feature: Update patient details - Reusable feature to be used when we need to update patient details
 
   Background:
     * url baseURL
