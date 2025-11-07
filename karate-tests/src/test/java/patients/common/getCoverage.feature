@@ -8,6 +8,7 @@ Background:
 Scenario: Retrieve a Coverage resource
   * configure headers = requestHeaders
   * path 'Coverage'
+  * retry until responseStatus != 429 && responseStatus != 503
   * param subscriber:identifier = nhsNumber
   * method get
   * match responseStatus == expectedStatus
