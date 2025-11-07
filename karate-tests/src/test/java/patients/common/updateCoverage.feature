@@ -8,6 +8,7 @@ Feature:  Update Coverage details - Reusable feature to be used when we need to 
     * header Content-Type = "application/json"
     * header If-Match = originalEtag 
     * path "Coverage"
+    * retry until responseStatus != 429 && responseStatus != 503
     * request requestBody
     * method post
     * match responseStatus == expectedStatus
