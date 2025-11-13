@@ -44,13 +44,13 @@ extends:
       - bash: |
           make sandbox &
           echo "Waiting for sandbox to be ready..."
-          for i in {1..30}; do
+          for i in {1..60}; do
             if curl -f http://localhost:9000/health 2>/dev/null || curl -f http://localhost:9000 2>/dev/null; then
               echo "Sandbox is ready after $i attempts"
               break
             fi
-            if [ $i -eq 30 ]; then
-              echo "Sandbox failed to start within 30 seconds"
+            if [ $i -eq 60 ]; then
+              echo "Sandbox failed to start within 60 seconds"
               exit 1
             fi
             sleep 1

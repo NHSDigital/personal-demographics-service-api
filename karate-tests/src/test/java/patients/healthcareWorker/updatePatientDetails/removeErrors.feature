@@ -1,4 +1,4 @@
-@sandbox @test_luck
+@sandbox
 Feature: Patch patient - Remove data errors
 
   # Tests more of the error scenarios that can arise when trying to remove data from a patient resource

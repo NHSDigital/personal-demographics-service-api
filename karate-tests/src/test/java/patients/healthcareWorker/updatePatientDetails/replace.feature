@@ -5,38 +5,41 @@ Background:
   * def faker = Java.type('helpers.FakerWrapper')
   * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
   * url baseURL
-
+  * def requestHeaders = call read('classpath:auth/auth-headers.js')
+  * configure headers = requestHeaders 
+  * def birthDate = utils.randomBirthDate()
+  * def familyName = "ToRemove"
+  * def givenName = ["#(faker.givenName())", "#(faker.givenName())"]
+  * def prefix = ["#(utils.randomPrefix())"]
+  * def gender = utils.randomGender()
+  * def telecomValue = faker.mobileNumber()
+  * def telecomUse = "mobile"
+  * def address = utils.randomAddress(birthDate)
+  * def createPatientResponse = call read('classpath:patients/common/createPatient.feature@createPatient') { expectedStatus: 201 }
+ 
 @sandbox
 Scenario: Replace attribute of an object
   # To replace the attribute of an object, you need to provide the id of the object you want to replace
   # in a preceding operation. (This is simlar to, but different from removing an object - we call 
   # "replace" instead of "test")
-  * def nhsNumber = karate.env.includes('sandbox') ? '9000000009' : '9736363058'
-  * configure headers = call read('classpath:auth/auth-headers.js') 
-  * path 'Patient', nhsNumber
-  * method get
-  * status 200
-  * def originalVersion = parseInt(response.meta.versionId)
-  * def givenName = response.name[0].given[0]
+  * def nhsNumber = karate.env.includes('sandbox') ? '9000000009' : createPatientResponse.response.id
+  * def patientDetails = call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
+  * def originalVersion = parseInt(patientDetails.response.meta.versionId)
+  * def originalEtag = patientDetails.responseHeaders['Etag'] ? patientDetails.responseHeaders['Etag'][0] : patientDetails.responseHeaders['etag'][0]
+  * def givenName = patientDetails.response.name[0].given[0]
 
   * def options = ["Anne", "Mary", "Jane"]
   * def newGivenName = utils.pickDifferentOption(options, givenName)
 
   * configure headers = call read('classpath:auth/auth-headers.js') 
-  * header Content-Type = "application/json-patch+json"
-  * header If-Match = karate.response.header('etag')
-  * path 'Patient', nhsNumber
-  * request 
+  * def requestBody =
     """
     {"patches":[
-      {"op":"replace","path":"/name/0/id","value":"#(response.name[0].id)"}
+      {"op":"replace","path":"/name/0/id","value":"#(patientDetails.response.name[0].id)"}
       {"op":"replace","path":"/name/0/given/0","value":"#(newGivenName)"}
     ]}
     """
-  # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-  * retry until responseStatus != 503 && responseStatus != 502    
-  * method patch
-  * status 200
+  * call read('classpath:patients/common/updatePatient.feature@updatePatientDetails'){ nhsNumber:"#(nhsNumber)", requestBody:"#(requestBody)", originalEtag:"#(originalEtag)",expectedStatus: 200}   
   * match response.name[0].given[0] == newGivenName
   * match parseInt(response.meta.versionId) == originalVersion + 1
 
@@ -44,71 +47,50 @@ Scenario: Replace attribute of an object
 Scenario Outline: Replace the <property> property
   # Unlike replacing a property that is an object, there's no need to make a 
   # preceding test operation
-  * configure headers = call read('classpath:auth/auth-headers.js') 
-  * path 'Patient', nhsNumber
-  * method get
-  * status 200
-  * def originalVersion = parseInt(response.meta.versionId)
+  * def nhsNumber = createPatientResponse.response.id
+  * def patientDetails = call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
+  * def originalVersion = parseInt(patientDetails.response.meta.versionId)
+  * def originalEtag = patientDetails.responseHeaders['Etag'] ? patientDetails.responseHeaders['Etag'][0] : patientDetails.responseHeaders['etag'][0]
 
-  * def currentValue = response[property]
+  * def currentValue = patientDetails.response[property]
   * def targetValue = utils.pickDifferentOption(options, currentValue)
 
   * configure headers = call read('classpath:auth/auth-headers.js') 
-  * header Content-Type = "application/json-patch+json"
-  * header If-Match = karate.response.header('etag')
-  * path 'Patient', nhsNumber
-  * request {"patches": [{ "op": "replace", "path": "#('/' + property)", "value": "#(targetValue)" }]}
-  # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-  * retry until responseStatus != 503 && responseStatus != 502  
-  * method patch
-  * status 200
+  * def requestBody = {"patches": [{ "op": "replace", "path": "#('/' + property)", "value": "#(targetValue)" }]}
+  * call read('classpath:patients/common/updatePatient.feature@updatePatientDetails'){ nhsNumber:"#(nhsNumber)", requestBody:"#(requestBody)", originalEtag:"#(originalEtag)",expectedStatus: 200}   
   * def newValue = response[property]
   * match newValue == targetValue
   * match parseInt(response.meta.versionId) == originalVersion + 1
 
   Examples:
-    | nhsNumber     | property      | options!                             |  
-    | 9736363066    | gender        | ['male', 'female', 'unknown']        |
-    | 9736363074    | birthDate     | ["1985-10-26", "1955-11-05"]         |
+    | property      | options!                             |  
+    | gender        | ['male', 'female', 'unknown']        |
+    | birthDate     | ["1985-10-26", "1955-11-05"]         |
 
 Scenario: Healthcare worker can add, update and remove patient's emergency contact details
-  * def nhsNumber = '9736363082'
-  * configure headers = call read('classpath:auth/auth-headers.js') 
-  * path 'Patient', nhsNumber
-  * method get
-  * status 200
-  * def originalVersion = parseInt(response.meta.versionId)
+  * def nhsNumber = createPatientResponse.response.id
+  * def patientDetails = call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
+  * def originalVersion = parseInt(patientDetails.response.meta.versionId)
+  * def originalEtag = patientDetails.responseHeaders['Etag'] ? patientDetails.responseHeaders['Etag'][0] : patientDetails.responseHeaders['etag'][0]
 
 # add emergency contact details
   * configure headers = call read('classpath:auth/auth-headers.js') 
-  * header Content-Type = "application/json-patch+json"
-  * header If-Match = karate.response.header('etag')
-  * path 'Patient', nhsNumber
   * def mobileNumber = '0788548987'
-  * request read('classpath:patients/requestDetails/add/emergencyContact.json')
-  # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-  * retry until responseStatus != 503 && responseStatus != 502  
-  * method patch
-  * status 200
-  * match response contains {contact: '#notnull' }
-  * match response.contact[*].telecom[*].value contains mobileNumber
+  * def requestBody = read('classpath:patients/requestDetails/add/emergencyContact.json')
+  * def addContactDetailsResponse = call read('classpath:patients/common/updatePatient.feature@updatePatientDetails'){ nhsNumber:"#(nhsNumber)", requestBody:"#(requestBody)", originalEtag:"#(originalEtag)",expectedStatus: 200}   
+  * match addContactDetailsResponse.response contains {contact: '#notnull' }
+  * match addContactDetailsResponse.response.contact[*].telecom[*].value contains mobileNumber
+  * def originalVersion = parseInt(addContactDetailsResponse.response.meta.versionId)
+  * def relationshipDetails = addContactDetailsResponse.response.contact.find(c => c.telecom.some(t => t.value == mobileNumber && t.system == 'phone'))?.relationship
+  * def contactId = addContactDetailsResponse.response.contact.find(c => c.telecom.some(t => t.value == mobileNumber && t.system == 'phone'))?.id
+  * def indexToUpdate = addContactDetailsResponse.response.contact.findIndex(x => x.id == contactId)
+  * def contactPathToUpdate = "/contact/" + indexToUpdate
+  * def eTagAfterAddingContactDetails = addContactDetailsResponse.responseHeaders['Etag'] ? addContactDetailsResponse.responseHeaders['Etag'][0] : addContactDetailsResponse.responseHeaders['etag'][0]
 
   # update emergency contact
   * configure headers = call read('classpath:auth/auth-headers.js') 
-  * path 'Patient', nhsNumber
-  * method get
-  * status 200
-  * def originalVersion = parseInt(response.meta.versionId)
-  * def relationshipDetails = response.contact.find(c => c.telecom.some(t => t.value == mobileNumber && t.system == 'phone'))?.relationship
-  * def contactId = response.contact.find(c => c.telecom.some(t => t.value == mobileNumber && t.system == 'phone'))?.id
-  * def indexToUpdate = response.contact.findIndex(x => x.id == contactId)
-  * def contactPathToUpdate = "/contact/" + indexToUpdate
-  * configure headers = call read('classpath:auth/auth-headers.js') 
-  * header Content-Type = "application/json-patch+json"
-  * header If-Match = karate.response.header('etag')
   * def newMobileNumber = faker.phoneNumber()
-  * path 'Patient', nhsNumber
-  * request 
+  * def requestBodyForUpdateContact = 
   """
   {
     "patches":[
@@ -122,30 +104,22 @@ Scenario: Healthcare worker can add, update and remove patient's emergency conta
           "value":"#(newMobileNumber)"}
           ]}}]}
     """    
-  # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-  * retry until responseStatus != 503 && responseStatus != 502          
-  * method patch
-  * status 200
-  * def versionIdAftUpdate = response.meta.versionId
+  * def updateContactDetailsResponse = call read('classpath:patients/common/updatePatient.feature@updatePatientDetails'){ nhsNumber:"#(nhsNumber)", requestBody:"#(requestBodyForUpdateContact)", originalEtag:"#(eTagAfterAddingContactDetails)",expectedStatus: 200}
+  * def versionIdAftUpdate = updateContactDetailsResponse.response.meta.versionId
   * match parseInt(versionIdAftUpdate) == originalVersion + 1
-  * match response.contact[*].telecom[*].value contains newMobileNumber
+  * match updateContactDetailsResponse.response.contact[*].telecom[*].value contains newMobileNumber
     
     
   # remove emergency contact details
-  * configure headers = call read('classpath:auth/auth-headers.js') 
-  * path 'Patient', nhsNumber
-  * method get
-  * status 200
-  * def originalVersion = parseInt(response.meta.versionId)
-  * def contactId = response.contact.find(c => c.telecom.some(t => t.value == newMobileNumber && t.system == 'phone'))?.id || 'Not Found'
-  * def indexToRemove = response.contact.findIndex(x => x.id == contactId)
+  * def requestHeaders = call read('classpath:auth/auth-headers.js')
+  * configure headers = requestHeaders 
+  * def patientDetails = call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
+  * def originalVersion = parseInt(patientDetails.response.meta.versionId)
+  * def originalEtag = patientDetails.responseHeaders['Etag'] ? patientDetails.responseHeaders['Etag'][0] : patientDetails.responseHeaders['etag'][0]
+  * def contactId = patientDetails.response.contact.find(c => c.telecom.some(t => t.value == newMobileNumber && t.system == 'phone'))?.id || 'Not Found'
+  * def indexToRemove = patientDetails.response.contact.findIndex(x => x.id == contactId)
   * def contactPathToRemove = "/contact/" + indexToRemove
-  * def contactValue = response.contact.find(x => x.id == contactId)
-  * configure headers = call read('classpath:auth/auth-headers.js') 
-  * header Content-Type = "application/json-patch+json"
-  * header If-Match = karate.response.header('etag')
-  * path 'Patient', nhsNumber
-
+  * def contactValue = patientDetails.response.contact.find(x => x.id == contactId)
   * def patchRequest = 
   """
     {
@@ -162,14 +136,13 @@ Scenario: Healthcare worker can add, update and remove patient's emergency conta
       ]
     }
   """
-  # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-  * retry until responseStatus != 503 && responseStatus != 502  
-  * request patchRequest
-  * method patch
-  * status 200
-  * def versionIdAftRemove = response.meta.versionId
+  * def removeContactDetailsResponse = call read('classpath:patients/common/updatePatient.feature@updatePatientDetails'){ nhsNumber:"#(nhsNumber)", requestBody:"#(patchRequest)", originalEtag:"#(originalEtag)",expectedStatus: 200}
+  * def versionIdAftRemove = removeContactDetailsResponse.response.meta.versionId
   * match parseInt(versionIdAftRemove) == originalVersion + 1
-  * match response.contact !contains contactValue
+  # Verify the specific contact with the contactId no longer exists
+  * def remainingContacts = removeContactDetailsResponse.response.contact || []
+  * def contactStillExists = remainingContacts.find(c => c.id == contactId)
+  * match contactStillExists == null
   
 Scenario: Healthcare worker can update communication language-interpreter details
   * def nhsNumber = '9736363090'
