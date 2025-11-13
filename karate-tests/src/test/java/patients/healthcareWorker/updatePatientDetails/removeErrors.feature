@@ -56,7 +56,7 @@ Feature: Patch patient - Remove data errors
     * def requestBody = 
       """
       {"patches":[
-        {"op":"test","path":"/name/0/id", "value": "#(response.name[0].id)"},
+        {"op":"test","path":"/name/0/id", "value": "#(patientDetails.response.name[0].id)"},
         {"op":"remove","path":"/name/0/suffix/0"}
       ]}
       """
