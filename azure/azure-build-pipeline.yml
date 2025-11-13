@@ -42,20 +42,20 @@ extends:
       - template: templates/install-jdk.yml
 
       - bash: |
-          make sandbox &
-          echo "Waiting for sandbox to be ready..."
-          for i in {1..60}; do
-            if curl -f http://localhost:9000/health 2>/dev/null || curl -f http://localhost:9000 2>/dev/null; then
-              echo "Sandbox is ready after $i attempts"
-              break
-            fi
-            if [ $i -eq 60 ]; then
-              echo "Sandbox failed to start within 60 seconds"
-              exit 1
-            fi
-            sleep 1
-          done
-        displayName: Start Sandbox Server
+          echo "=== Debugging make sandbox failure ==="
+          echo "Checking npm and poetry installations..."
+          npm --version || echo "npm not found"
+          poetry --version || echo "poetry not found"
+          
+          echo "=== Trying npm run publish directly ==="
+          npm run publish || echo "npm run publish failed with exit code: $?"
+          
+          echo "=== Checking build directory ==="
+          ls -la build/ 2>/dev/null || echo "build directory does not exist"
+          
+          echo "=== Running make sandbox with verbose output ==="
+          make sandbox 2>&1 || echo "make sandbox failed with exit code: $?"
+        displayName: Debug Sandbox Startup Issues
         workingDirectory: "${{ variables.service_name }}"
 
       - bash: |
