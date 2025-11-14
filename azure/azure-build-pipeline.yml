@@ -41,33 +41,8 @@ extends:
     test_steps:
       - template: templates/install-jdk.yml
 
-      - bash: |
-          echo "=== Checking environment ==="
-          echo "Node version: $(node --version)"
-          echo "NPM version: $(npm --version)"
-          echo "Poetry version: $(poetry --version)"
-          echo "Python version: $(python --version)"
-          echo "Working directory: $(pwd)"
-          echo "Directory contents:"
-          ls -la
-          
-          echo "=== Checking Makefile targets ==="
-          make --version
-          echo "Available make targets:"
-          make -n sandbox || echo "Make sandbox failed in dry run"
-          
-          echo "=== Starting sandbox server ==="
-          make sandbox &
-          SANDBOX_PID=$!
-          echo "Sandbox server started in background"
-          sleep 5
-          echo "Checking if sandbox process is still running..."
-          if ps -p $SANDBOX_PID > /dev/null 2>&1; then
-            echo "Sandbox process is running successfully"
-          else
-            echo "Sandbox process has terminated unexpectedly"
-          fi
-        displayName: Debug and start Sandbox Server
+      - bash: "make sandbox &"
+        displayName: Start Sandbox Server
         workingDirectory: "${{ variables.service_name }}"
 
       - bash: |
