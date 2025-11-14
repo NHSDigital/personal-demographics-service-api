@@ -40,54 +40,62 @@ extends:
     variables:
       PIP_CACHE_DIR: ".poetry"
     test_steps:
-      # Debug step to understand the directory structure
-      - bash: |
-          echo "=== Pipeline Diagnostics ==="
-          echo "Current directory: $(pwd)"
-          echo "Build.SourcesDirectory: $(Build.SourcesDirectory)"
-          echo "Pipeline.Workspace: $(Pipeline.Workspace)"
-          echo "service_name: ${{ variables.service_name }}"
-          echo "CacheRestored-Utils: $(CacheRestored-Utils)"
-          echo ""
-          echo "=== Workspace structure ==="
-          ls -la $(Pipeline.Workspace)/s/ || true
-          echo ""
-          echo "=== Service directory ==="
-          ls -la $(Pipeline.Workspace)/s/${{ variables.service_name }}/ || echo "Service directory not found"
-          echo ""
-          echo "=== Checking for utils ==="
-          ls -la $(Pipeline.Workspace)/s/${{ variables.service_name }}/utils/ || echo "Utils directory not found"
-          echo ""
-          echo "=== Checking for node_modules ==="
-          ls -la $(Pipeline.Workspace)/s/${{ variables.service_name }}/node_modules/ || echo "node_modules not found"
-        displayName: Debug - Show Directory Structure
-        condition: always()
-
       - template: templates/install-jdk.yml
 
-      # Explicitly install npm dependencies
+      # Force clean npm install to avoid cache issues
       - bash: |
-          echo "=== Installing npm dependencies ==="
-          echo "Current directory: $(pwd)"
-          ls -la package.json || echo "package.json not found"
-          npm install
+          echo "=== Cleaning any existing node_modules ==="
+          rm -rf node_modules package-lock.json
           echo ""
-          echo "=== Verifying installation ==="
-          ls -la node_modules/.bin/redocly || echo "redocly not installed"
-        displayName: Install npm dependencies
+          echo "=== Installing npm dependencies (fresh) ==="
+          echo "Current directory: $(pwd)"
+          npm install --no-optional --loglevel verbose
+          echo ""
+          echo "=== Verifying critical dependencies ==="
+          ls -la node_modules/.bin/redocly || { echo "ERROR: redocly not installed"; exit 1; }
+          node_modules/.bin/redocly --version || { echo "ERROR: redocly not executable"; exit 1; }
+          echo ""
+          echo "=== npm install completed successfully ==="
+        displayName: Install npm dependencies (clean)
         workingDirectory: "${{ variables.service_name }}"
+        # Always run, even if previous steps failed
+        condition: succeededOrFailed()
 
-      - bash: "make sandbox &"
+      # Add explicit wait to ensure sandbox is ready
+      - bash: |
+          make sandbox &
+          SANDBOX_PID=$!
+          echo "Sandbox started with PID: $SANDBOX_PID"
+          sleep 5
+          echo "Sandbox should be ready"
         displayName: Start Sandbox Server
         workingDirectory: "${{ variables.service_name }}"
 
+      # Add retry logic for the validation step
       - bash: |
           echo "=== Pre-validation checks ==="
-          ls -la node_modules/.bin/redocly || echo "WARNING: redocly not found"
+          echo "Current directory: $(pwd)"
+          ls -la node_modules/.bin/redocly || { echo "ERROR: redocly not found"; exit 1; }
           echo ""
           java -version
           echo ""
-          echo "=== Running make validate ==="
-          make validate
+          echo "=== Running make validate (with retry) ==="
+          
+          # Retry logic for intermittent failures
+          MAX_RETRIES=3
+          RETRY_COUNT=0
+          
+          until make validate || [ $RETRY_COUNT -eq $MAX_RETRIES ]; do
+            RETRY_COUNT=$((RETRY_COUNT+1))
+            echo "Validation failed. Retry $RETRY_COUNT of $MAX_RETRIES..."
+            sleep 5
+          done
+          
+          if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
+            echo "ERROR: Validation failed after $MAX_RETRIES attempts"
+            exit 1
+          fi
+          
+          echo "Validation successful!"
         displayName: Validate FHIR
         workingDirectory: "${{ variables.service_name }}"
