@@ -18,7 +18,7 @@ schedules:
     branches:
       include:
         - master
-    always: true # Run even if no recent changes
+    always: true
 
 resources:
   repositories:
@@ -30,6 +30,7 @@ resources:
 
 variables:
   - template: project.yml
+
 extends:
   template: azure/common/apigee-build.yml@common
   parameters:
@@ -39,14 +40,54 @@ extends:
     variables:
       PIP_CACHE_DIR: ".poetry"
     test_steps:
+      # Debug step to understand the directory structure
+      - bash: |
+          echo "=== Pipeline Diagnostics ==="
+          echo "Current directory: $(pwd)"
+          echo "Build.SourcesDirectory: $(Build.SourcesDirectory)"
+          echo "Pipeline.Workspace: $(Pipeline.Workspace)"
+          echo "service_name: ${{ variables.service_name }}"
+          echo "CacheRestored-Utils: $(CacheRestored-Utils)"
+          echo ""
+          echo "=== Workspace structure ==="
+          ls -la $(Pipeline.Workspace)/s/ || true
+          echo ""
+          echo "=== Service directory ==="
+          ls -la $(Pipeline.Workspace)/s/${{ variables.service_name }}/ || echo "Service directory not found"
+          echo ""
+          echo "=== Checking for utils ==="
+          ls -la $(Pipeline.Workspace)/s/${{ variables.service_name }}/utils/ || echo "Utils directory not found"
+          echo ""
+          echo "=== Checking for node_modules ==="
+          ls -la $(Pipeline.Workspace)/s/${{ variables.service_name }}/node_modules/ || echo "node_modules not found"
+        displayName: Debug - Show Directory Structure
+        condition: always()
+
       - template: templates/install-jdk.yml
+
+      # Explicitly install npm dependencies
+      - bash: |
+          echo "=== Installing npm dependencies ==="
+          echo "Current directory: $(pwd)"
+          ls -la package.json || echo "package.json not found"
+          npm install
+          echo ""
+          echo "=== Verifying installation ==="
+          ls -la node_modules/.bin/redocly || echo "redocly not installed"
+        displayName: Install npm dependencies
+        workingDirectory: "${{ variables.service_name }}"
 
       - bash: "make sandbox &"
         displayName: Start Sandbox Server
         workingDirectory: "${{ variables.service_name }}"
 
       - bash: |
+          echo "=== Pre-validation checks ==="
+          ls -la node_modules/.bin/redocly || echo "WARNING: redocly not found"
+          echo ""
           java -version
+          echo ""
+          echo "=== Running make validate ==="
           make validate
         displayName: Validate FHIR
         workingDirectory: "${{ variables.service_name }}"
