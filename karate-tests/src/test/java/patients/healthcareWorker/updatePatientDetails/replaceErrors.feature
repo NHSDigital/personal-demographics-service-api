@@ -21,7 +21,7 @@ Background:
   * def createPatientResponse = call read('classpath:patients/common/createPatient.feature@createPatient') { expectedStatus: 201 } 
 
 Scenario: Invalid patch - no address ID
-  * def nhsNumber = createPatientResponse.response.id
+  * def nhsNumber = karate.env.includes('sandbox') ?'5900046192':createPatientResponse.response.id
   * def patientDetails = call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
   * def originalEtag = patientDetails.responseHeaders['Etag'] ? patientDetails.responseHeaders['Etag'][0] : patientDetails.responseHeaders['etag'][0]
 
@@ -40,7 +40,7 @@ Scenario: Invalid patch - no address ID
   * match response == expectedBody
 
 Scenario: Invalid patch - attempt to replace non-existent object
-  * def nhsNumber = createPatientResponse.response.id
+  * def nhsNumber = karate.env.includes('sandbox') ?'5900046192':createPatientResponse.response.id
   * def patientDetails = call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
   * def originalEtag = patientDetails.responseHeaders['Etag'] ? patientDetails.responseHeaders['Etag'][0] : patientDetails.responseHeaders['etag'][0]
 
@@ -60,7 +60,7 @@ Scenario: Invalid patch - attempt to replace non-existent object
   * match response == expectedBody
 
 Scenario: Invalid patch - invalid address ID
-  * def nhsNumber = createPatientResponse.response.id
+  * def nhsNumber = karate.env.includes('sandbox') ?'5900046192':createPatientResponse.response.id
   * def patientDetails = call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
   * def originalEtag = patientDetails.responseHeaders['Etag'] ? patientDetails.responseHeaders['Etag'][0] : patientDetails.responseHeaders['etag'][0]
   * def diagnostics = "Invalid update with error - no 'address' resources with object id '123456'"
@@ -79,7 +79,7 @@ Scenario: Invalid patch - invalid address ID
   * match response == expectedBody
 
 Scenario: Invalid patch - invalid address ID only
-  * def nhsNumber = createPatientResponse.response.id
+  * def nhsNumber = karate.env.includes('sandbox') ?'5900046192':createPatientResponse.response.id
   * def patientDetails = call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
   * def originalEtag = patientDetails.responseHeaders['Etag'] ? patientDetails.responseHeaders['Etag'][0] : patientDetails.responseHeaders['etag'][0]
 
@@ -113,7 +113,7 @@ Scenario: Invalid patch - patient with no address
   * match response == expectedBody
 
 Scenario: Invalid patch - Patient with no address / Request without address ID
-  * def nhsNumber = createPatientResponse.response.id
+  * def nhsNumber = karate.env.includes('sandbox') ?'5900059073':createPatientResponse.response.id
   * def patientDetails = call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
   * def originalEtag = patientDetails.responseHeaders['Etag'] ? patientDetails.responseHeaders['Etag'][0] : patientDetails.responseHeaders['etag'][0]  
   
