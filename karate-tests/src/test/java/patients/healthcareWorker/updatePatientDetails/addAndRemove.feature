@@ -58,7 +58,7 @@ Feature: Patch patient - Add and remove data
    
     * match addedName == expectedName
     * match parseInt(addedNameResponse.response.meta.versionId) == originalVersion + 1
-    * def etagAfterNameAddition = addedNameResponse.responseHeaders['Etag'] ? addedNameResponse.responseHeaders['Etag'][0] : addedNameResponse.responseHeaders['etag'][0] 
+    
     # 2. Remove the name we just added
     # ================================
     #
@@ -67,6 +67,12 @@ Feature: Patch patient - Add and remove data
     # 2. We test for the name and then remove it, which should succeed
 
     # 2.1. You can't call a "remove" operation without first calling a "test" operation
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders
+    * def patientDetails = call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
+    * def originalVersion = parseInt(patientDetails.response.meta.versionId)
+    * def etagAfterNameAddition = patientDetails.responseHeaders['Etag'] ? patientDetails.responseHeaders['Etag'][0] : patientDetails.responseHeaders['etag'][0] 
+    * def nameID = patientDetails.response.name[1].id
     * def diagnostics = "Invalid update with error - removal '/name/1' is not immediately preceded by equivalent test - instead it is the first item"
     * def expectedBody = read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
 
@@ -77,12 +83,6 @@ Feature: Patch patient - Add and remove data
 
     # 2.2. How to remove the name object correctly - define the id of the object 
     # you want to remove in the "test" operation
-    * def requestHeaders = call read('classpath:auth/auth-headers.js')
-    * configure headers = requestHeaders
-    * def patientDetails = call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
-    * def originalVersion = parseInt(patientDetails.response.meta.versionId)
-    * def originalEtag = patientDetails.responseHeaders['Etag'] ? patientDetails.responseHeaders['Etag'][0] : patientDetails.responseHeaders['etag'][0] 
-    * def nameID = patientDetails.response.name[1].id
     * def patchBody = 
       """
       {"patches":[
@@ -131,7 +131,12 @@ Feature: Patch patient - Add and remove data
     * match addSuffixResponse.response.name[0].suffix == suffixArray
     * def scnAfterSuffixAddition = parseInt(addSuffixResponse.response.meta.versionId)
     * match scnAfterSuffixAddition == originalVersion + 1
-    * def etagAfterSuffix = addSuffixResponse.responseHeaders['Etag'] ? addSuffixResponse.responseHeaders['Etag'][0] : addSuffixResponse.responseHeaders['etag'][0] 
+    
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders
+    * def patientDetails = call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
+    * def originalVersion = parseInt(patientDetails.response.meta.versionId)
+    * def etagAfterSuffix = patientDetails.responseHeaders['Etag'] ? patientDetails.responseHeaders['Etag'][0] : patientDetails.responseHeaders['etag'][0] 
 
     # 4. Remove the whole suffix array
     # ================================
