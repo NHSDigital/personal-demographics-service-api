@@ -5,7 +5,8 @@
       "family": "#(familyName)",
       "use": "usual",
       "period": {"start": "#(birthDate)"},
-      "prefix": "#(prefix)"
+      "prefix": "#(prefix)",
+      "suffix": "#(suffix)"
     }
   ], 
   "address": "#(address)",
