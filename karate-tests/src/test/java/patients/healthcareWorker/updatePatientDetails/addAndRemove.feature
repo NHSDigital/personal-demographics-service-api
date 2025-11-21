@@ -129,13 +129,12 @@ Feature: Patch patient - Add and remove data
       """
     * def addSuffixResponse = call read('classpath:patients/common/updatePatient.feature@updatePatientDetails'){ nhsNumber:"#(nhsNumber)", requestBody:"#(requestBody)", originalEtag:"#(originalEtag)",expectedStatus: 200}
     * match addSuffixResponse.response.name[0].suffix == suffixArray
-    * def scnAfterSuffixAddition = parseInt(addSuffixResponse.response.meta.versionId)
-    * match scnAfterSuffixAddition == originalVersion + 1
+    * match parseInt(addSuffixResponse.response.meta.versionId) == originalVersion + 1
     
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * def patientDetails = call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
-    * def originalVersion = parseInt(patientDetails.response.meta.versionId)
+    * def scnVersionAfterSuffix = parseInt(patientDetails.response.meta.versionId)
     * def etagAfterSuffix = patientDetails.responseHeaders['Etag'] ? patientDetails.responseHeaders['Etag'][0] : patientDetails.responseHeaders['etag'][0] 
 
     # 4. Remove the whole suffix array
@@ -148,7 +147,7 @@ Feature: Patch patient - Add and remove data
     """
     * call read('classpath:patients/common/updatePatient.feature@updatePatientDetails'){ nhsNumber:"#(nhsNumber)", requestBody:"#(requestBodyToRemoveSuffix)", originalEtag:"#(etagAfterSuffix)",expectedStatus: 200}
     * match response.name[0].suffix == '#notpresent'
-    * match parseInt(response.meta.versionId) == scnAfterSuffixAddition + 1
+    * match parseInt(response.meta.versionId) == scnVersionAfterSuffix + 1
  
   @sandbox
   Scenario: Add suffix to the existing array of suffixes and then remove the same 
