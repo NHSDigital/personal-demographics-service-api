@@ -160,6 +160,7 @@ Scenario: Healthcare worker can update communication language-interpreter detail
   * def familyName = "ToRemove"
   * def givenName = ["#(faker.givenName())", "#(faker.givenName())"]
   * def prefix = ["#(utils.randomPrefix())"]
+  * def suffix = ["PhD"]
   * def gender = utils.randomGender()
   * def telecomValue = faker.mobileNumber()
   * def telecomUse = "mobile"
@@ -218,6 +219,7 @@ Scenario: Send empty field on the update - interpreterRequired url is empty
   * def gender = utils.randomGender()
   * def telecomValue = faker.mobileNumber()
   * def telecomUse = "mobile"
+  * def suffix = ["PhD"]
   * def address = generateBothAddresses(birthDate)
   * def createPatientWithMaximalResponse = call read('classpath:patients/common/createPatient.feature@createPatientWithMaximalData') { expectedStatus: 201 } 
   * def nhsNumber = createPatientWithMaximalResponse.response.id
