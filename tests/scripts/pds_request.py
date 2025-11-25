@@ -22,7 +22,6 @@ class PdsRecord:
             except JSONDecodeError as e:
                 print(f'UNEXPECTED RESPONSE: {response.text}. \n Error: {e}')
                 self.response = {}
-                # raise Exception(f'UNEXPECTED RESPONSE: {response.text}. \n Error: {e}')
 
         # if the response is a list of entries i.e. a response from a search
         if 'entry' in self.response:
