@@ -239,7 +239,7 @@ function docker-get-image-version-and-pull() {
   status=$?
   echo "${name}:${version}"
 
-  return $?
+  return $status
 }
 
 # ==============================================================================
