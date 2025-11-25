@@ -1,4 +1,4 @@
-@no-oas 
+@no-oas
 Feature: Get a patient - nhs record sharing consent
 
 Background:
@@ -20,10 +20,8 @@ Scenario: Get a patient details- record has express consent value(1)
     * def expressConsentNhsNumber = "9733163767"
     * def accessToken = consentSharingToken()
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
-    * configure headers = requestHeaders  
-    * path 'Patient', expressConsentNhsNumber
-    * method get
-    * status 200
+    * configure headers = requestHeaders
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(expressConsentNhsNumber)", expectedStatus: 200 }
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].code == "4"
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].display == "ncrs"
     * match response.extension[0].extension[0].url == "consentType"
@@ -37,10 +35,8 @@ Scenario: Get a patient details- record has express dissent value(2)
     * def expressDissentNhsNumber = "9733163759"
     * def accessToken = consentSharingToken()
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
-    * configure headers = requestHeaders  
-    * path 'Patient', expressDissentNhsNumber
-    * method get
-    * status 200
+    * configure headers = requestHeaders
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(expressDissentNhsNumber)", expectedStatus: 200 }
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].code == "4"
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].display == "ncrs"
     * match response.extension[0].extension[0].url == "consentType"
@@ -54,10 +50,8 @@ Scenario: Get a patient details- record has unknown ConsentValue(3)
     * def nhsNumber = "9733163775"
     * def accessToken = consentSharingToken()
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
-    * configure headers = requestHeaders  
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
+    * configure headers = requestHeaders
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
     * def hasConsentType = karate.filter(response.extension, x => x.url == 'consentType')
     * match hasConsentType == []
 
@@ -65,10 +59,8 @@ Scenario: Get a patient details- record has call centre callback ConsentValue(5)
     * def nhsNumber = "9733163740"
     * def accessToken = consentSharingToken()
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
-    * configure headers = requestHeaders  
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
+    * configure headers = requestHeaders
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
     * def hasConsentType = karate.filter(response.extension, x => x.url == 'consentType')
     * match hasConsentType == []  
   
@@ -79,9 +71,7 @@ Scenario: Response should not include consent sharing extension when default tes
     * def customAttributeHeader = {'Nhse-Pds-Custom-Attributes': '{"return-nhs-record-sharing-consent":"true"}'}
     * def mergeHeaders = karate.merge(requestHeaders, customAttributeHeader)
     * configure headers = mergeHeaders  
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
     * def hasConsentType = karate.filter(response.extension, x => x.url == 'consentType')
     * match hasConsentType == [] 
     * match responseHeaders['Nhse-Pds-Custom-Attributes'] == '#notpresent' 
@@ -91,9 +81,7 @@ Scenario: Get a patient details- App has multiple custom attributes(return-empty
     * def accessToken = consentSharingToken()
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders  
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
     # consent sharing validations
     * match response.extension[1].extension[0].valueCodeableConcept.coding[0].code == "4"
     * match response.extension[1].extension[0].valueCodeableConcept.coding[0].display == "ncrs"

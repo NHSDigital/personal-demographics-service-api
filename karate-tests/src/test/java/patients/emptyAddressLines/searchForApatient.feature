@@ -10,11 +10,11 @@ Scenario:Search for a patient using parameters
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {clientID: karate.get('emptyAddressLinesClientID'), clientSecret:karate.get('emptyAddressLinesClientSecret')}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders 
-    * path "Patient"
-    * params  { family: "Jones", gender: "male", birthdate: "ge1992-01-01", _max-results: "6" }
-    * method get
-    * status 200
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+    * def searchParams =
+        """
+        { family: "Jones", gender: "male", birthdate: "ge1992-01-01", _max-results: "6"}
+        """
+    * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
     * match response.entry[0].resource.id == "5900035697"
     * def addresses = response.entry[0].resource.address
     * match utils.checkNullsHaveExtensions(addresses) == true
@@ -27,11 +27,11 @@ Scenario: Add empty address lines custom attribute for default test app - respon
     * def customAttributeHeader = {'Nhse-Pds-Custom-Attributes': '{"return-empty-address-lines":"true"}'}
     * def mergeHeaders = karate.merge(requestHeaders, customAttributeHeader)
     * configure headers = mergeHeaders 
-    * path "Patient"
-    * params  { family: "Jones", gender: "male", birthdate: "ge1992-01-01", _max-results: "6" }
-    * method get
-    * status 200
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+    * def searchParams =
+        """
+        { family: "Jones", gender: "male", birthdate: "ge1992-01-01", _max-results: "6"}
+        """
+    * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
     * match response.entry[0].resource.id == "5900035697"
     * def addresses = response.entry[0].resource.address
     * match utils.checkNullsHaveExtensions(addresses) == false
@@ -41,12 +41,12 @@ Scenario: Add empty address lines custom attribute for default test app - respon
 Scenario:Search for a patient using parameters and validate empty address lines(INT smoke test)
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {clientID: karate.get('emptyAddressLinesClientID'), clientSecret:karate.get('emptyAddressLinesClientSecret')}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
-    * configure headers = requestHeaders  
-    * path "Patient"
-    * params  { family: "Capon", gender: "male", birthdate: "eq1953-05-29" }
-    * method get
-    * status 200
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+    * configure headers = requestHeaders 
+    * def searchParams =
+        """
+        { family: "Capon", gender: "male", birthdate: "eq1953-05-29" }
+        """
+    * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
     * match response.entry[0].resource.id == "9693632117" 
     * def addresses = response.entry[0].resource.address
     * match utils.checkNullsHaveExtensions(addresses) == true

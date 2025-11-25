@@ -23,12 +23,7 @@ Scenario:  Post patient and check response shows all
   * def randomAddress = utils.randomAddress(birthDate)
   * def address = randomAddress
   
-  * path "Patient"
-  * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
-  * configure retry = { count: 5, interval: 5000 }
-  * retry until responseStatus != 429 && responseStatus != 503
-  * method post
-  * status 201
+  * call read('classpath:patients/common/createPatient.feature@createPatient') { expectedStatus: 201 }
   * def nhsNumber = response.id
   * def addresses = response.address
   * match utils.checkNullsHaveExtensions(addresses) == true

@@ -8,16 +8,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * header Content-Type = "application/json"
-    * header If-Match = 'W/"4"'
     * def periodEndDate = utils.randomDateWithInYears(4)
-    * path "Coverage"
-    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * retry until responseStatus != 503 && responseStatus != 502  
-    * method post
-    * status 403
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+    * def requestBody = read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
+    * call read('classpath:patients/common/updateCoverage.feature@updateCoverageDetails'){ nhsNumber:"#(nhsNumber)", requestBody:"#(requestBody)", originalEtag:'W/"4"',expectedStatus: 403 }
     * def display = 'Patient cannot perform this action'
     * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
     * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
@@ -33,16 +26,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * requestHeaders.authorization = headerValue
     * configure headers = requestHeaders
-    * header Content-Type = "application/json"
-    * header If-Match = 'W/"4"'
     * def periodEndDate = utils.randomDateWithInYears(4)
-    * path "Coverage"
-    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * retry until responseStatus != 503 && responseStatus != 502  
-    * method post
-    * status 401
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders) 
+    * def requestBody = read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
+    * call read('classpath:patients/common/updateCoverage.feature@updateCoverageDetails'){ nhsNumber:"#(nhsNumber)", requestBody:"#(requestBody)", originalEtag:'W/"4"',expectedStatus: 401 }
     * def display = 'Access Denied - Unauthorised'
     * def expectedResponse = read(`classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json`)
     * match response == expectedResponse
@@ -60,16 +46,9 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * requestHeaders['x-request-id'] = headerValue
     * configure headers = requestHeaders
-    * header Content-Type = "application/json"
-    * header If-Match = 'W/"4"'
     * def periodEndDate = utils.randomDateWithInYears(4)
-    * path "Coverage"
-    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * retry until responseStatus != 503 && responseStatus != 502  
-    * method post
-    * status 400
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders) 
+    * def requestBody = read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
+    * call read('classpath:patients/common/updateCoverage.feature@updateCoverageDetails'){ nhsNumber:"#(nhsNumber)", requestBody:"#(requestBody)", originalEtag:'W/"4"',expectedStatus: 400 }
     * def expectedResponse = read(`classpath:mocks/stubs/errorResponses/${errorResponse}.json`)
     * match response == expectedResponse
     
@@ -84,23 +63,15 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * path 'Coverage'
-    * param subscriber:identifier = nhsNumber
-    * method get
-    * status 200
+    * call read('classpath:patients/common/getCoverage.feature@getCoverageDetails'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
     * def originalVersion = parseInt(response.meta.versionId)
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * header Content-Type = "application/json"
     * def incorrectResourceVersion = originalVersion - 1
-    * header If-Match = 'W/"' + incorrectResourceVersion + '"'
+    * def IfMatch = 'W/"' + incorrectResourceVersion + '"'
     * def periodEndDate = utils.randomDateWithInYears(4)
-    * path "Coverage"
-    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * retry until responseStatus != 503 && responseStatus != 502  
-    * method post
-    * status 409
+    * def requestBody = read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
+    * call read('classpath:patients/common/updateCoverage.feature@updateCoverageDetails'){ nhsNumber:"#(nhsNumber)", requestBody:"#(requestBody)", originalEtag:"#(IfMatch)",expectedStatus: 409 }
     * match response == read('classpath:mocks/stubs/errorResponses/RESOURCE_VERSION_MISMATCH.json') 
   
   @sandbox   
@@ -109,7 +80,6 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * header Content-Type = "application/json"
     * def periodEndDate = utils.randomDateWithInYears(4)
     * path "Coverage"
     * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
@@ -127,47 +97,27 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * path 'Coverage'
-    * param subscriber:identifier = nhsNumber
-    * method get
-    * status 200
-    * def originalEtag = karate.response.header('etag')
+    * call read('classpath:patients/common/getCoverage.feature@getCoverageDetails'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * header Content-Type = "application/json"
-    * header If-Match = originalEtag
     * def periodEndDate = utils.randomDateWithInYears(4)
-    * path "Coverage"
-    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request-missing-beneficiary-identifier-value.json')
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * retry until responseStatus != 503 && responseStatus != 502  
-    * method post
-    * status 400
+    * def requestBody = read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request-missing-beneficiary-identifier-value.json')
+    * call read('classpath:patients/common/updateCoverage.feature@updateCoverageDetails'){ requestBody:"#(requestBody)", originalEtag:"#(originalEtag)",expectedStatus: 400 }
     * def diagnostics = `Missing value - 'beneficiary/identifier/value'`
     * match response == read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')   
 
-  @sandbox  
+  @sandbox
   Scenario: Missing Identification number of the institution in the request body
     * def nhsNumber = karate.env.includes('sandbox') ? '9000000009' : '9733162892'
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * path 'Coverage'
-    * param subscriber:identifier = nhsNumber
-    * method get
-    * status 200
-    * def originalEtag = karate.response.header('etag')
+    * call read('classpath:patients/common/getCoverage.feature@getCoverageDetails'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * header Content-Type = "application/json"
-    * header If-Match = originalEtag
     * def periodEndDate = utils.randomDateWithInYears(4)
-    * path "Coverage"
-    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request-missing-cardnumber.json')
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * retry until responseStatus != 503 && responseStatus != 502  
-    * method post
-    * status 400
+    * def requestBody = read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request-missing-cardnumber.json')
+    * call read('classpath:patients/common/updateCoverage.feature@updateCoverageDetails'){ requestBody:"#(requestBody)", originalEtag:"#(originalEtag)",expectedStatus: 400 }
     * def diagnostics = `Missing value - 'identifier/0/value'`
     * match response == read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')    
 
@@ -176,22 +126,12 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * path 'Coverage'
-    * param subscriber:identifier = nhsNumber
-    * method get
-    * status 200
-    * def originalEtag = karate.response.header('etag')
+    * call read('classpath:patients/common/getCoverage.feature@getCoverageDetails'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * header Content-Type = "application/json"
-    * header If-Match = originalEtag
     * def periodEndDate = '1860-12-15'
-    * path "Coverage"
-    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * retry until responseStatus != 503 && responseStatus != 502  
-    * method post
-    * status 400
+    * def requestBody = read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
+    * call read('classpath:patients/common/updateCoverage.feature@updateCoverageDetails'){ requestBody:"#(requestBody)", originalEtag:"#(originalEtag)",expectedStatus: 400 }
     * def diagnostics = `Invalid value - '1860-12-15' in field 'period/end'`
     * def expectedResponse = read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')
   
@@ -200,22 +140,13 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * path 'Coverage'
-    * param subscriber:identifier = nhsNumber
-    * method get
-    * status 200
-    * def originalEtag = karate.response.header('etag')
+    * call read('classpath:patients/common/getCoverage.feature@getCoverageDetails'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
+    
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * header Content-Type = "application/json"
-    * header If-Match = originalEtag
     * def periodEndDate = utils.randomDateWithInYears(4)
-    * path "Coverage"
-    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-reques-empty-value-institution-id.json')
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * retry until responseStatus != 503 && responseStatus != 502  
-    * method post
-    * status 400
+    * def requestBody = read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-reques-empty-value-institution-id.json')
+    * call read('classpath:patients/common/updateCoverage.feature@updateCoverageDetails'){ requestBody:"#(requestBody)", originalEtag:"#(originalEtag)",expectedStatus: 400 }
     * def diagnostics = `Invalid value - '' in field 'payor/0/identifier/value'`
     * def expectedResponse = read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')  
 
@@ -225,15 +156,11 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
     * header Content-Type = "application/json"
-    * header If-Match = 'W/"4"'
+    * def IfMatch = 'W/"4"'
     * def periodEndDate = utils.randomDateWithInYears(4)
     * def nhsNumber = p9WithoutPatientObject
-    * path "Coverage"
-    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * retry until responseStatus != 503 && responseStatus != 502  
-    * method post
-    * status 404
+    * def requestBody = read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
+    * call read('classpath:patients/common/updateCoverage.feature@updateCoverageDetails'){ requestBody:"#(requestBody)", originalEtag:"#(IfMatch)",expectedStatus: 404 }
     * match response == read('classpath:mocks/stubs/errorResponses/RESOURCE_NOT_FOUND.json')   
 
   Scenario: Send an update for superseded NHS number(authenticate and send update with superseded NHS number)
@@ -241,23 +168,13 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: mergedP9number, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * path 'Coverage'
-    * param subscriber:identifier = mergedP9number
-    * method get
-    * status 200
-    * def originalEtag = karate.response.header('etag')
+    * call read('classpath:patients/common/getCoverage.feature@getCoverageDetails'){ nhsNumber:"#(mergedP9number)", expectedStatus: 200 }
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * header Content-Type = "application/json"
-    * header If-Match = originalEtag
     * def nhsNumber = mergedP9number
     * def periodEndDate = utils.randomDateWithInYears(4)
-    * path "Coverage"
-    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * retry until responseStatus != 503 && responseStatus != 502  
-    * method post
-    * status 403
+    * def requestBody = read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
+    * call read('classpath:patients/common/updateCoverage.feature@updateCoverageDetails'){ requestBody:"#(requestBody)", originalEtag:"#(originalEtag)",expectedStatus: 403 }
     * def diagnostics = `Forbidden update with error - Update Failed - NHS No. supplied has been superseded in a merge`
     * def expectedResponse = read('classpath:mocks/stubs/errorResponses/FORBIDDEN_UPDATE.json')
     * match response == expectedResponse
@@ -268,25 +185,15 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: mergedP9number, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * path 'Coverage'
-    * param subscriber:identifier = mergedP9number
-    * method get
-    * status 200
-    * def originalEtag = karate.response.header('etag')
+    * call read('classpath:patients/common/getCoverage.feature@getCoverageDetails'){ nhsNumber:"#(mergedP9number)", expectedStatus: 200 }
 
     # sending updates with retained record
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
-    * configure headers = requestHeaders
-    * header Content-Type = "application/json"
-    * header If-Match = originalEtag  
+    * configure headers = requestHeaders 
     * def nhsNumber = retainedRecord
     * def periodEndDate = utils.randomDateWithInYears(4)
-    * path "Coverage"
-    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * retry until responseStatus != 503 && responseStatus != 502  
-    * method post
-    * status 403
+    * def requestBody = read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
+    * call read('classpath:patients/common/updateCoverage.feature@updateCoverageDetails'){ requestBody:"#(requestBody)", originalEtag:"#(originalEtag)",expectedStatus: 403 }
     * def display = 'Patient cannot perform this action'
     * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
     * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
@@ -296,21 +203,12 @@ Feature: Patient Access (Update Coverage details) - error scenarios
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * path 'Coverage'
-    * param subscriber:identifier = nhsNumber
-    * method get
-    * status 200
-    * def originalEtag = karate.response.header('etag')
+    * call read('classpath:patients/common/getCoverage.feature@getCoverageDetails'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
+
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * header Content-Type = "application/json"
-    * header If-Match = originalEtag
     * def periodEndDate = utils.randomDateWithInYears(4)
-    * path "Coverage"
-    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request-too-many-payors.json')
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * retry until responseStatus != 503 && responseStatus != 502  
-    * method post
-    * status 400
+    * def requestBody = read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request-too-many-payors.json')
+    * call read('classpath:patients/common/updateCoverage.feature@updateCoverageDetails'){ requestBody:"#(requestBody)", originalEtag:"#(originalEtag)",expectedStatus: 400 }
     * def diagnostics = `Too many values submitted - [{'identifier': {'value': 'DE98765'}}, {'identifier': {'value': 'FR98765'}}] in field 'payor'`
     * match response == read('classpath:mocks/stubs/errorResponses/TOO_MANY_VALUES_SUBMITTED.json') 

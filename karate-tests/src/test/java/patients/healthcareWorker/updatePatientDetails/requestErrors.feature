@@ -10,54 +10,36 @@ Feature: Patch patient errors - Healthcare worker access mode
  
     * url baseURL
     * def nhsNumber = '5900059073'
-    * path 'Patient', nhsNumber
-    * retry until responseStatus != 503 && responseStatus != 502   
-    * method get
-    * status 200
+    * def patientDetails = call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
     
-    * def patientObject = response
-    * def etag = karate.response.header('etag')
+    * def patientObject = patientDetails.response
+    * def originalEtag = patientDetails.responseHeaders['Etag'] ? patientDetails.responseHeaders['Etag'][0] : patientDetails.responseHeaders['etag'][0]
 
   Scenario: No patch operations
-    * header Content-Type = "application/json-patch+json"
-    * header If-Match = etag
-
     * def diagnostics = "Invalid update with error - No patches found"
     * def expectedBody = read('classpath:mocks/stubs/errorResponses/INVALID_UPDATE.json')
 
-    * path 'Patient', nhsNumber
-    * request {}
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * retry until responseStatus != 503 && responseStatus != 502   
-    * method patch
-    * status 400
+    * def requestBody = {}
+    * call read('classpath:patients/common/updatePatient.feature@updatePatientDetails'){ nhsNumber:"#(nhsNumber)", requestBody:"#(requestBody)", originalEtag:"#(originalEtag)",expectedStatus: 400}
     * match response == expectedBody
 
   Scenario: Incorrect resource version
-    * def originalVersion = response.meta.versionId
+    * def originalVersion = patientDetails.response.meta.versionId
     
-    * header Content-Type = "application/json-patch+json"
     * def incorrectResourceVersion = originalVersion + 1
-    * header If-Match = 'W/"' + incorrectResourceVersion + '"'
+    * def IfMatch = 'W/"' + incorrectResourceVersion + '"'
         
-    * path 'Patient', nhsNumber
-    * request 
+    * def requestBody = 
     """
     {"patches":[
       {"op":"test","path":"/name/0/id", "value": "#(response.name[0].id)"},
       {"op":"remove","path":"/name/0/suffix/0"}
     ]}
     """
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * retry until responseStatus != 503 && responseStatus != 502   
-    * method patch
-    * status 409
+    * call read('classpath:patients/common/updatePatient.feature@updatePatientDetails'){ nhsNumber:"#(nhsNumber)", requestBody:"#(requestBody)", originalEtag:"#(IfMatch)",expectedStatus: 409}
     * match response == read('classpath:mocks/stubs/errorResponses/RESOURCE_VERSION_MISMATCH.json')
 
   Scenario: Invalid x-request-id header
-    * header Content-Type = "application/json-patch+json"
-    * header If-Match = etag
-
     * def invalidUUID = "12345"
     * def diagnostics = "Invalid value - '" + invalidUUID + "' in header 'X-Request-ID'"
     * def expectedBody = read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')
@@ -66,12 +48,8 @@ Feature: Patch patient errors - Healthcare worker access mode
     * badHeaders["x-request-id"] = invalidUUID
     * configure headers = badHeaders
     
-    * path 'Patient', nhsNumber
-    * request {"patches":[{"op":"remove","path":"/name/0/suffix/0"}]}
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * retry until responseStatus != 503 && responseStatus != 502   
-    * method patch
-    * status 400
+    * def requestBody = {"patches":[{"op":"remove","path":"/name/0/suffix/0"}]}
+    * call read('classpath:patients/common/updatePatient.feature@updatePatientDetails'){ nhsNumber:"#(nhsNumber)", requestBody:"#(requestBody)", originalEtag:"#(originalEtag)",expectedStatus: 400}
     * match response == expectedBody
     
   Scenario: Missing If-Match header
@@ -96,7 +74,7 @@ Feature: Patch patient errors - Healthcare worker access mode
     
   Scenario: Invalid content-type header
     * header Content-Type = "application/bananas"
-    * header If-Match = etag
+    * header If-Match = originalEtag
 
     * def expectedBody = read('classpath:mocks/stubs/errorResponses/UNSUPPORTED_SERVICE.json')
 
@@ -109,64 +87,42 @@ Feature: Patch patient errors - Healthcare worker access mode
     * match response == expectedBody
 
   Scenario: Invalid patch
-    * header Content-Type = "application/json-patch+json"
-    * header If-Match = etag
-
     * def diagnostics = "Invalid value - 'bad_value' in field '0/op'"
     * def expectedBody = read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')
 
-    * path 'Patient', nhsNumber
-    * request {"patches":[{"op":"bad_value","path":"not a path"}]}
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * retry until responseStatus != 503 && responseStatus != 502   
-    * method patch
-    * status 400
+    * def requestBody = {"patches":[{"op":"bad_value","path":"not a path"}]}
+    * call read('classpath:patients/common/updatePatient.feature@updatePatientDetails'){ nhsNumber:"#(nhsNumber)", requestBody:"#(requestBody)", originalEtag:"#(originalEtag)",expectedStatus: 400}
     * match response == expectedBody
     
   Scenario: Invalid NHS Number
-    * header Content-Type = "application/json-patch+json"
-    * header If-Match = etag
-
+    * def nhsNumber = '9000000000'
     * def expectedBody = read('classpath:mocks/stubs/errorResponses/INVALID_RESOURCE_ID.json')
 
-    * path 'Patient', '9000000000'
-    * request
+    * def requestBody = 
       """
       {"patches":[
         {"op":"test","path":"/name/0/id", "value": "#(response.name[0].id)"},
         {"op":"remove","path":"/name/0/suffix/0"}
       ]}
       """
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * retry until responseStatus != 503 && responseStatus != 502     
-    * method patch
-    * status 400
+    * call read('classpath:patients/common/updatePatient.feature@updatePatientDetails'){ nhsNumber:"#(nhsNumber)", requestBody:"#(requestBody)", originalEtag:"#(originalEtag)",expectedStatus: 400}
     * match response == expectedBody
 
   Scenario: Patient not found
-    * header Content-Type = "application/json-patch+json"
-    * header If-Match = etag
-
+    * def nhsNumber = '9111231130'
     * def expectedBody = read('classpath:mocks/stubs/errorResponses/RESOURCE_NOT_FOUND.json')
 
-    * path 'Patient', '9111231130'
-    * request 
+    * def requestBody = 
       """
       {"patches":[
         {"op":"test","path":"/name/0/id", "value": "#(response.name[0].id)"},
         {"op":"remove","path":"/name/0/suffix/0"}
       ]}
       """
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * retry until responseStatus != 503 && responseStatus != 502     
-    * method patch
-    * status 404
+    * call read('classpath:patients/common/updatePatient.feature@updatePatientDetails'){ nhsNumber:"#(nhsNumber)", requestBody:"#(requestBody)", originalEtag:"#(originalEtag)",expectedStatus: 404}
     * match response == expectedBody
 
   Scenario: Missing x-request-id header
-    * header Content-Type = "application/json-patch+json"
-    * header If-Match = etag
-
     * def diagnostics = "Invalid request with error - X-Request-ID header must be supplied to access this resource"
     * def expectedBody = read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')
     
@@ -174,10 +130,6 @@ Feature: Patch patient errors - Healthcare worker access mode
     * remove badHeaders.x-request-id
     * configure headers = badHeaders
     
-    * path 'Patient', nhsNumber
-    * request {"patches":[{"op":"remove","path":"/name/0/suffix/0"}]}
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * retry until responseStatus != 503 && responseStatus != 502   
-    * method patch
-    * status 400
+    * def requestBody = {"patches":[{"op":"remove","path":"/name/0/suffix/0"}]}
+    * call read('classpath:patients/common/updatePatient.feature@updatePatientDetails'){ nhsNumber:"#(nhsNumber)", requestBody:"#(requestBody)", originalEtag:"#(originalEtag)",expectedStatus: 400}
     * match response == expectedBody

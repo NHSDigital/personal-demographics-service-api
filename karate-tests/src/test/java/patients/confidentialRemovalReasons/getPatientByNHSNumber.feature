@@ -20,10 +20,8 @@ Background:
 Scenario: Get a patient details- RemovalReasonExitCode should be Armed Forces (notified by Armed Forces) AFN
     * def accessToken = confidentialRemovalReasonsToken()
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
-    * configure headers = requestHeaders  
-    * path 'Patient', removedArmedForcesNhsNumber
-    * method get
-    * status 200
+    * configure headers = requestHeaders
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(removedArmedForcesNhsNumber)", expectedStatus: 200 }
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].code == "AFN"
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].display == "Armed Forces (notified by Armed Forces)"
     * match response.extension[0].url == removalURL
@@ -33,9 +31,7 @@ Scenario: Get a patient details- RemovalReasonExitCode should be Services depend
     * def accessToken = confidentialRemovalReasonsToken()
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders  
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].code == "SDN"
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].display == "Services dependant (notified by SMO)"
     * match response.extension[0].url == removalURL
@@ -44,9 +40,7 @@ Scenario: Get a patient details- RemovalReasonExitCode should be SCT - Transferr
     * def accessToken = confidentialRemovalReasonsToken()
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders  
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].code == "SCT"
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].display == "Transferred to Scotland"
     * match response.extension[0].url == removalURL    
@@ -55,9 +49,7 @@ Scenario: Get a patient details- RemovalReasonExitCode should be converted from 
     * def accessToken = confidentialRemovalReasonsToken()
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders  
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].code == "ORR"
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].display == "Other Reason"
     * match response.extension[0].url == removalURL 
@@ -66,9 +58,7 @@ Scenario: Get a patient details- RemovalReasonExitCode should be converted from 
     * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders  
-    * path 'Patient', removedArmedForcesNhsNumber
-    * method get
-    * status 200
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(removedArmedForcesNhsNumber)", expectedStatus: 200 }
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].code == "ORR"
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].display == "Other Reason"
     * match response.extension[0].url == removalURL 
@@ -79,9 +69,7 @@ Scenario: Response should not include confidential reasons when default test app
     * def customAttributeHeader = {'Nhse-Pds-Custom-Attributes': '{"return-confidential-reason-for-removal":"true"}'}
     * def mergeHeaders = karate.merge(requestHeaders, customAttributeHeader)
     * configure headers = mergeHeaders  
-    * path 'Patient', removedArmedForcesNhsNumber
-    * method get
-    * status 200
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(removedArmedForcesNhsNumber)", expectedStatus: 200 }
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].code == "ORR"
     * match response.extension[0].extension[0].valueCodeableConcept.coding[0].display == "Other Reason"
     * match response.extension[0].url == removalURL  

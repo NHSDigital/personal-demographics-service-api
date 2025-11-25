@@ -19,10 +19,7 @@ Background:
   * configure headers = requestHeaders 
 Scenario: Patient has one related person
   * def nhsNumber = '9733162213'
-  * path 'Patient', nhsNumber, 'RelatedPerson'
-  * method get
-  * status 200
-  * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+  * call read('classpath:patients/common/getPatientsRelatedPerson.feature@getRelatedPersonDetails') { nhsNumber: "#(nhsNumber)",expectedStatus:200 }
   * match response == RelatedPersonSearchBundle
   * def addresses = response.entry[0].resource.address
   * match utils.checkNullsHaveExtensions(addresses) == true

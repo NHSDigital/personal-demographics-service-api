@@ -13,23 +13,13 @@ Feature: Patient Access (Update Coverage details)
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * path 'Coverage'
-    * param subscriber:identifier = nhsNumber
-    * method get
-    * status 200
+    * call read('classpath:patients/common/getCoverage.feature@getCoverageDetails'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
     * def originalVersion = parseInt(response.meta.versionId)
-    * def originalEtag = karate.response.header('etag')
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * header Content-Type = "application/json"
-    * header If-Match = originalEtag
     * def periodEndDate = utils.randomDateWithInYears(4)
-    * path "Coverage"
-    * request read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
-    # Added retry logic to handle "sync-wrap failed to connect to Spine" errors
-    * retry until responseStatus != 503 && responseStatus != 502  
-    * method post
-    * status 201
+    * def requestBody = read('classpath:patients/patientAccess/updateCoverageRequests/update-patient-coverage-request.json')
+    * call read('classpath:patients/common/updateCoverage.feature@updateCoverageDetails'){ requestBody:"#(requestBody)", originalEtag:"#(originalEtag)",expectedStatus: 201}
     * match parseInt(response.meta.versionId) == originalVersion + 1
     * match response == coverageBundle
     * match response.entry[0].resource.status == 'active'

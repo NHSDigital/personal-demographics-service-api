@@ -26,10 +26,7 @@ Feature: Patient Access (Retrieve)
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * path 'Patient', p9number
-    * method get
-    * status 200
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(p9number)", expectedStatus: 200 }
     * match response.id == p9number
     * match response == Patient
 
@@ -37,10 +34,7 @@ Feature: Patient Access (Retrieve)
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * path 'Patient', nhsNumber
-    * method get
-    * status 403
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 403 }
     * def display = 'Patient cannot perform this action'
     * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
     * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
@@ -56,23 +50,21 @@ Feature: Patient Access (Retrieve)
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * path 'Patient', p5number
-    * method get
-    * status 403
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(p5number)", expectedStatus: 403 }
     * def display = 'Patient cannot perform this action'
     * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
     * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
-
+   
   Scenario: P9 Patient can't search for a patient (including searching for their own record)
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: p9number, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * path 'Patient'
-    * params { family: 'Bobins', gender: 'male', birthDate: "eq2008-06-03" }
-    * method get
-    * status 403
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+    * karate.set('expectedResponseStatus',403)
+    * def searchParams =
+    """
+    { family: 'Bobins', gender: 'male', birthDate: "eq2008-06-03"}
+    """
+    * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
     * def display = 'Patient cannot perform this action'
     * def diagnostics = 'Your access token has insufficient permissions. See documentation regarding Patient access restrictions https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-fhir'
     * match response == read('classpath:mocks/stubs/errorResponses/ACCESS_DENIED.json')
@@ -81,10 +73,7 @@ Feature: Patient Access (Retrieve)
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: nhsNumber, scope: 'nhs-login'}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders
-    * path 'Patient', nhsNumber
-    * method get
-    * status 200
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
     * match response.id == nhsNumber
     * match response == Patient
 
