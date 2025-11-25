@@ -306,11 +306,13 @@ def loop_dict_and_clean_mapping(obj, allowed_empty_fields, new_obj):
         else:
             new_obj[key] = sub_value
 
+
 def loop_list_and_clean_sequence(obj, new_obj):
     for value in obj:
         sub_value = remove_empty_elements(value)
         if sub_value or sub_value == "":
             new_obj.append(sub_value)
+
 
 def remove_empty_elements(obj):
     """
