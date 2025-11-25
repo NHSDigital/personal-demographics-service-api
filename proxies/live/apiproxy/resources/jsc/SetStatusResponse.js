@@ -1,18 +1,18 @@
-var apiproxy_revision = context.getVariable('apiproxy.revision');
+const apiproxy_revision = context.getVariable('apiproxy.revision');
 
-var spine_response_code = context.getVariable('spineHealthcheckResponse.status.code');
-var spine_response = context.getVariable('spineHealthcheckResponse.content');
-var spine_request_url = context.getVariable('spineHealthcheckRequest.url');
+const spine_response_code = context.getVariable('spineHealthcheckResponse.status.code');
+const spine_response = context.getVariable('spineHealthcheckResponse.content');
+const spine_request_url = context.getVariable('spineHealthcheckRequest.url');
 
-var spine_request_has_failed = context.getVariable("servicecallout.ServiceCallout.CallSpineHealthcheck.failed");
+const spine_request_has_failed = context.getVariable("servicecallout.ServiceCallout.CallSpineHealthcheck.failed");
 
-var spine_status = "fail";
+let spine_status = "fail";
 
 if(spine_response_code/ 100 == 2){
     spine_status = "pass";
 }
 
-timeout = "false";
+let timeout = "false";
 
 if(spine_response_code === null && spine_request_has_failed){
     timeout = "true";
@@ -20,7 +20,7 @@ if(spine_response_code === null && spine_request_has_failed){
 
 
 
-var spine_service = {
+const spine_service = {
 "spine:status" : [
     {
     "status": spine_status, 
@@ -31,7 +31,7 @@ var spine_service = {
    }]
 };
 
-var apigee_status = "pass";
+let apigee_status = "pass";
 
 if(spine_status != "pass"){
     apigee_status = "fail";
@@ -39,7 +39,7 @@ if(spine_status != "pass"){
 
 
 
-var response = {  
+const response = {  
 "status" : apigee_status,
 "version" : "{{ DEPLOYED_VERSION }}" ,
 "revision" : apiproxy_revision, 
