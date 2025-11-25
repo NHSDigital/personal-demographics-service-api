@@ -5,4 +5,4 @@ variables:
   product_display_name: Personal Demographics Service
   product_description: " "
   spec_file: personal-demographics.json
-  python_version: 3.10
+  python_version: 3.9
