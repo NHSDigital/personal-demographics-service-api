@@ -24,11 +24,6 @@ function setupEmptyContext() {
     globalThis.context.setVariable = jest.fn()
 }
 
-function expectMethodIsRestricted(value){
-    expect(globalThis.context.setVariable.mock.calls[0][0]).toBe('apigee.method_is_restricted')
-    expect(globalThis.context.setVariable.mock.calls[0][1]).toBe(value)
-}
-
 beforeEach(() => {
     setupEmptyContext();
 })
@@ -44,11 +39,15 @@ test("Polling requests are not restricted", () => {
     expectMethodIsRestricted(false)
 })
 
+function expectMethodIsRestricted(value){
+    expect(globalThis.context.setVariable.mock.calls[0][0]).toBe('apigee.method_is_restricted')
+    expect(globalThis.context.setVariable.mock.calls[0][1]).toBe(value)
+}
+
 function setupContextOverrides(nhsNumber, vectorOfTrust, searchPathSuffix, getVerb = undefined, differentNHSNumber = undefined, coverageFullURL = undefined){
     jestWhen.when(globalThis.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.vot").mockReturnValue(vectorOfTrust);
     jestWhen.when(globalThis.context.getVariable).calledWith("proxy.pathsuffix").mockReturnValue(searchPathSuffix);
     jestWhen.when(globalThis.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.nhs_number").mockReturnValue(differentNHSNumber === undefined ? nhsNumber : differentNHSNumber);
-
 
     if(getVerb !== undefined){
         jestWhen.when(globalThis.context.getVariable).calledWith("request.verb").mockReturnValue(getVerb);
