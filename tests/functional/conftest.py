@@ -37,6 +37,7 @@ FILE_DIR = os.path.dirname(__file__)
 RESPONSES_DIR = os.path.join(FILE_DIR, 'data', 'responses')
 CALLBACK_URL = "https://example.org/callback"
 
+
 @pytest.fixture()
 def developer_email() -> str:
     return "apm-testing-internal-dev@nhs.net"
