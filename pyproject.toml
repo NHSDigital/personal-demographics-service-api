@@ -34,7 +34,7 @@ locust = "^1.2"
 polling2 = "^0.4.7"
 python = "^3.9"
 python-dateutil = "^2.8.1"
-pyyaml = "^5.2"
+pyyaml = "^6.0.3"
 requests = "^2.32.4"
 semver = "^2.10.2"
 
