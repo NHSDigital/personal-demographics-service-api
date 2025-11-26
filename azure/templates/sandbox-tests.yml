@@ -58,9 +58,9 @@ steps:
       artifactName: PostmanTestReport
 
   - task: UsePythonVersion@0
-    displayName: "Use Python ${{ parameters.python_version }}"
+    displayName: "Use Python 3.9"
     inputs:
-      versionSpec: ${{ parameters.python_version }}
+      versionSpec: 3.9
 
   - bash: |
       export CLIENT_ID="$(CLIENT_ID)"
