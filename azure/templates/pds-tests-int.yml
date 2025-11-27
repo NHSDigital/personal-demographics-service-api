@@ -19,6 +19,11 @@ steps:
         - ptl/azure-devops/personal-demographics/int/CLIENT_SECRET_INT
         - ptl/azure-devops/personal-demographics/int/EMPTY_ADDRESS_LINES_CLIENT_SECRET_INT
 
+  - task: UsePythonVersion@0
+    displayName: "Use Python ${{ parameters.python_version }}"
+    inputs:
+      versionSpec: ${{ parameters.python_version }}
+
   - bash: |
       export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY_INT)"
       export APPLICATION_RESTRICTED_API_KEY="$(JWT_TESTING_API_KEY_INT)"

@@ -57,6 +57,11 @@ steps:
       pathToPublish: $(ARTIFACT_PATH)/postman/newman-test-report.xml
       artifactName: PostmanTestReport
 
+  - task: UsePythonVersion@0
+    displayName: "Use Python ${{ parameters.python_version }}"
+    inputs:
+      versionSpec: ${{ parameters.python_version }}
+
   - bash: |
       export CLIENT_ID="$(CLIENT_ID)"
       mvn clean test -Dtest=TestMockParallel

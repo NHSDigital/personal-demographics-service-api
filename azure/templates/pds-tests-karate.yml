@@ -7,6 +7,11 @@ steps:
 
   - template: "expose-pds-variables-and-commands.yml"
 
+  - task: UsePythonVersion@0
+    displayName: "Use Python ${{ parameters.python_version }}"
+    inputs:
+      versionSpec: ${{ parameters.python_version }}
+
   # Run the tests against veit07
   - bash: |
       export OAUTH_BASE_URI="https://$(ENVIRONMENT).api.service.nhs.uk"
