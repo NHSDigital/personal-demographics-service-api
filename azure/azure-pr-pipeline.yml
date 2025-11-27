@@ -64,6 +64,8 @@ extends:
           - template: templates/install-jdk.yml
         post_deploy:
           - template: templates/sandbox-tests.yml
+            parameters:
+              python_version: ${{ variables.python_version }}
           
       - environment: internal-dev
         service_name: ${{ variables.service_name }}-int
