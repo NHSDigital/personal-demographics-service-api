@@ -2,9 +2,9 @@ steps:
   - template: "expose-pds-variables-and-commands.yml"
 
   - task: UsePythonVersion@0
-    displayName: "Use Python 3.9"
+    displayName: "Use Python ${{ parameters.python_version }}"
     inputs:
-      versionSpec: 3.9
+      versionSpec: ${{ parameters.python_version }}
 
   - bash: poetry install
     workingDirectory: $(ARTIFACT_PATH)

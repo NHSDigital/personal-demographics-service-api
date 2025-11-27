@@ -22,9 +22,9 @@ steps:
         - ptl/app-credentials/jwt_testing/non-prod/PRIVILEGED_ACCESS_API_KEY
 
   - task: UsePythonVersion@0
-    displayName: "Use Python 3.9"
+    displayName: "Use Python ${{ parameters.python_version }}"
     inputs:
-      versionSpec: 3.9
+      versionSpec: ${{ parameters.python_version }}
        
   - bash: |
       export APPLICATION_RESTRICTED_SIGNING_KEY_PATH="$(Pipeline.Workspace)/secrets/$(JWT_TESTING_PRIVATE_KEY)"
