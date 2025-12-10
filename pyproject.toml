@@ -1,13 +1,7 @@
-[project]
-python = "^3.9"
-name = "personal-demographics-service-api"
-
-
 [tool.poetry]
 name = "sandbox"
 version = "0.0.1-alpha"
 description = "PDS API Sandbox"
-package-mode = false
 
 license = "MIT"
 
@@ -32,9 +26,9 @@ flask = "^2.2.5"
 jsonpath-rw = "^1.4.0"
 locust = "^1.2"
 polling2 = "^0.4.7"
-python = "^3.9"
+python = "^3.13"
 python-dateutil = "^2.8.1"
-pyyaml = "^5.2"
+pyyaml = "^6.0.3"
 requests = "^2.32.4"
 semver = "^2.10.2"
 
