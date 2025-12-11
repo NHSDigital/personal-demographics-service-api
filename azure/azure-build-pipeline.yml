@@ -39,6 +39,18 @@ extends:
     variables:
       PIP_CACHE_DIR: ".poetry"
     test_steps:
+      - bash: |
+          set -eux
+          sudo apt-get update
+          sudo apt-get install -y ca-certificates curl gnupg software-properties-common
+          sudo add-apt-repository ppa:deadsnakes/ppa -y
+          sudo apt-get update
+          sudo apt-get install -y python3.13 python3.13-venv python3.13-dev
+          python3.13 --version
+          # ensure Poetry uses 3.13
+          poetry config keyring.enabled false
+          poetry env use python3.13
+        displayName: Install Python 3.13 for CI
       - template: templates/install-jdk.yml
 
       - bash: "make sandbox &"
