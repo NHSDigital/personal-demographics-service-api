@@ -12,9 +12,16 @@ install-node:
 install-hooks:
 	cp scripts/pre-commit .git/hooks/pre-commit
 
+BIN_DIR := bin
+FHIR_VALIDATOR := $(BIN_DIR)/org.hl7.fhir.validator.jar
+# Java 17+ compatible (use if you switch CI to JDK 17/21)
+# FHIR_VALIDATOR_URL := https://github.com/hapifhir/org.hl7.fhir.core/releases/download/5.6.104/org.hl7.fhir.validator.jar
+# If you must stay on Java 11, pin an older version instead, e.g.:
+FHIR_VALIDATOR_URL := https://github.com/hapifhir/org.hl7.fhir.core/releases/download/5.2.36/validator_cli.jar
+
 install-fhir-validator:
-	mkdir -p bin
-	test -f bin/org.hl7.fhir.validator.jar || curl -L https://github.com/hapifhir/org.hl7.fhir.core/releases/latest/download/validator_cli.jar > bin/org.hl7.fhir.validator.jar
+	mkdir -p $(BIN_DIR)
+	test -f $(FHIR_VALIDATOR) || curl -L "$(FHIR_VALIDATOR_URL)" > $(FHIR_VALIDATOR)
 
 karate:
 	cd karate-tests && mvn clean test -Dtest=TestParallel
@@ -24,10 +31,6 @@ lint:
 	npm run lint-karate-js
 	find . -name '*.py' | xargs poetry run flake8
 	find . -name '*.sh' | grep -v node_modules | xargs shellcheck
-
-BIN_DIR := bin
-FHIR_VALIDATOR := $(BIN_DIR)/org.hl7.fhir.validator.jar
-FHIR_VALIDATOR_URL := https://github.com/hapifhir/org.hl7.fhir.core/releases/download/5.6.104/org.hl7.fhir.validator.jar
 
 .PHONY: validator-jar
 validator-jar:
