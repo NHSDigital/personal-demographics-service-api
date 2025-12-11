@@ -8,7 +8,7 @@ resources:
     - repository: common
       type: github
       name: NHSDigital/api-management-utils
-      ref: refs/heads/edge
+      ref: refs/heads/APIM-6679-Python-Update
       endpoint: NHSDigital
   pipelines:
   - pipeline: build_pipeline
@@ -45,11 +45,15 @@ extends:
           - template: templates/install-jdk.yml
         post_deploy:
           - template: templates/pds-tests-karate.yml
+            parameters:
+              python_version: ${{ variables.python_version }}
 
       - environment: internal-dev
         stage_name: pytest_bdd_tests
         post_deploy:
           - template: templates/pds-tests.yml
+            parameters:
+              python_version: ${{ variables.python_version }}
         depends_on:
           - karate_tests
       
@@ -60,7 +64,9 @@ extends:
           - template: templates/install-jdk.yml
         post_deploy:
           - template: templates/sandbox-tests.yml
-          
+            parameters:
+              python_version: ${{ variables.python_version }}
+
       - environment: internal-dev
         service_name: ${{ variables.service_name }}-int
         short_service_name: ${{ variables.short_service_name }}-int
@@ -70,6 +76,8 @@ extends:
           - template: templates/install-jdk.yml
         post_deploy:
            - template: templates/pds-tests-dev-int.yml  
+             parameters:
+               python_version: ${{ variables.python_version }}
         jinja_templates:
           PDS_TARGET_SERVER: spine-demographics-int
           REQUIRE_ASID: false
