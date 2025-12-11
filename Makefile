@@ -28,14 +28,15 @@ lint:
 
 install-fhir-validator:
 	mkdir -p $(BIN_DIR)
-	test -f $(FHIR_VALIDATOR) || curl -L "$(FHIR_VALIDATOR_URL)" > $(FHIR_VALIDATOR)
-
-.PHONY: validator-jar
-validator-jar:
-	@mkdir -p $(BIN_DIR)
+	# download and fail on HTTP errors
+	if [ ! -s "$(FHIR_VALIDATOR)" ]; then \
+		echo "Downloading FHIR validator: $(FHIR_VALIDATOR_URL)"; \
+		curl -fSL "$(FHIR_VALIDATOR_URL)" -o "$(FHIR_VALIDATOR)"; \
+	fi
+	# ensure non-empty file
 	@test -s "$(FHIR_VALIDATOR)" || (echo "Validator jar missing or empty"; exit 1)
 
-validate: validator-jar
+validate: install-fhir-validator
 	@echo "Validating examples..."
 	java -jar "$(FHIR_VALIDATOR)" build/examples/**/*application_fhir+json*.json -version 4.0.1 -tx n/a -extension any | tee /tmp/validation.txt
 
