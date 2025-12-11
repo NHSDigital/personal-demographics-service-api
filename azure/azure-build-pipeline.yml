@@ -38,7 +38,7 @@ extends:
     python_version: ${{ variables.python_version }}
     variables:
       PIP_CACHE_DIR: ".poetry"
-    test_steps:
+    pre_steps:
       - bash: |
           set -eux
           sudo apt-get update
@@ -47,16 +47,11 @@ extends:
           sudo apt-get update
           sudo apt-get install -y python3.13 python3.13-venv python3.13-dev
           python3.13 --version
-          # ensure Poetry uses 3.13
+          echo "Configuring Poetry to use 3.13"
           poetry config keyring.enabled false
           poetry env use python3.13
-        displayName: Install Python 3.13 for CI
-      - template: templates/install-jdk.yml
-
-      - bash: "make sandbox &"
-        displayName: Start Sandbox Server
-        workingDirectory: "${{ variables.service_name }}"
-
+        displayName: Install Python 3.13 (pre-setup)
+    test_steps:
       - bash: |
           java -version
           make validate
