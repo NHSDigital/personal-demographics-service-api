@@ -17,10 +17,6 @@ BIN_DIR := bin
 FHIR_VALIDATOR := $(BIN_DIR)/validator_cli.jar
 FHIR_VALIDATOR_URL := https://github.com/hapifhir/org.hl7.fhir.core/releases/download/5.2.36/validator_cli.jar
 
-install-fhir-validator:
-	mkdir -p $(BIN_DIR)
-	test -f $(FHIR_VALIDATOR) || curl -L "$(FHIR_VALIDATOR_URL)" > $(FHIR_VALIDATOR)
-
 karate:
 	cd karate-tests && mvn clean test -Dtest=TestParallel
 
@@ -30,17 +26,18 @@ lint:
 	find . -name '*.py' | xargs poetry run flake8
 	find . -name '*.sh' | grep -v node_modules | xargs shellcheck
 
+install-fhir-validator:
+	mkdir -p $(BIN_DIR)
+	test -f $(FHIR_VALIDATOR) || curl -L "$(FHIR_VALIDATOR_URL)" > $(FHIR_VALIDATOR)
+
 .PHONY: validator-jar
 validator-jar:
 	@mkdir -p $(BIN_DIR)
-	@if [ ! -s "$(FHIR_VALIDATOR)" ]; then \
-		echo "Downloading FHIR validator jar..."; \
-		curl -L -o "$(FHIR_VALIDATOR)" "$(FHIR_VALIDATOR_URL)"; \
-	fi
+	@test -s "$(FHIR_VALIDATOR)" || (echo "Validator jar missing or empty"; exit 1)
 
 validate: validator-jar
 	@echo "Validating examples..."
-	java -jar $(FHIR_VALIDATOR) build/examples/**/*application_fhir+json*.json -version 4.0.1 -tx n/a -extension any | tee /tmp/validation.txt
+	java -jar "$(FHIR_VALIDATOR)" build/examples/**/*application_fhir+json*.json -version 4.0.1 -tx n/a -extension any | tee /tmp/validation.txt
 
 prism: publish
 	prism proxy build/personal-demographics.json ${OAUTH_BASE_URI}/${PDS_BASE_PATH} --errors --validate-request false
