@@ -14,6 +14,7 @@ venv
 .env
 *.code-workspace
 .tool-versions
+.venv
 
 __pycache__/
 .envrc
