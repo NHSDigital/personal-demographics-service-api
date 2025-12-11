@@ -25,7 +25,7 @@ resources:
     - repository: common
       type: github
       name: NHSDigital/api-management-utils
-      ref: refs/heads/APIM-6679-Python-Update
+      ref: refs/heads/edge
       endpoint: NHSDigital
 
 variables:
