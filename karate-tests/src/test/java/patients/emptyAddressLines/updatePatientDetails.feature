@@ -22,6 +22,7 @@ Background:
     * def familyName = "ToRemove"
     * def givenName = ["#(faker.givenName())", "#(faker.givenName())"]
     * def prefix = ["#(utils.randomPrefix())"]
+    * def suffix = ["PhD"]
     * def gender = utils.randomGender()
     * def telecomValue = faker.mobileNumber()
     * def telecomUse = "mobile"
