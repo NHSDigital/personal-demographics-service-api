@@ -40,6 +40,10 @@ extends:
       PIP_CACHE_DIR: ".poetry"
     test_steps:
       - bash: |
+          set -eux
+          ls -la bin || true
+          make install-fhir-validator
+          ls -lh bin || true
           java -version
           make validate
         displayName: Validate FHIR
