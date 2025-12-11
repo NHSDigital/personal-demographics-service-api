@@ -13,10 +13,8 @@ install-hooks:
 	cp scripts/pre-commit .git/hooks/pre-commit
 
 BIN_DIR := bin
-FHIR_VALIDATOR := $(BIN_DIR)/org.hl7.fhir.validator.jar
-# Java 17+ compatible (use if you switch CI to JDK 17/21)
-# FHIR_VALIDATOR_URL := https://github.com/hapifhir/org.hl7.fhir.core/releases/download/5.6.104/org.hl7.fhir.validator.jar
-# If you must stay on Java 11, pin an older version instead, e.g.:
+# Java 11–compatible validator
+FHIR_VALIDATOR := $(BIN_DIR)/validator_cli.jar
 FHIR_VALIDATOR_URL := https://github.com/hapifhir/org.hl7.fhir.core/releases/download/5.2.36/validator_cli.jar
 
 install-fhir-validator:
