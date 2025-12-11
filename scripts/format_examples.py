@@ -3,6 +3,9 @@
 Example Formatting.
 """
 from copy import deepcopy
+from typing import Any, Dict, List, Sequence
+
+ALLOWED_EMPTY_FIELDS = ['patient']
 
 
 def _return_value(resource, key):
@@ -296,34 +299,51 @@ def _remove_list_id(resource):
     return resource
 
 
-def loop_dict_and_clean_mapping(obj, allowed_empty_fields, new_obj):
-    for key, value in obj.items():
+def _clean_mapping(mapping: Dict[str, Any], allowed_empty_fields: Sequence[str]) -> Dict[str, Any]:
+    """
+    Return a cleaned dict: recursively remove empty containers ({} or [])
+    and None/'' unless explicitly allowed. Keep False explicitly.
+    """
+    cleaned: Dict[str, Any] = {}
+    for key, value in mapping.items():
         if key in allowed_empty_fields:
+            # preserve allowed-empty fields as-is
+            cleaned[key] = value
             continue
-        sub_value = remove_empty_elements(value)
-        if not sub_value and sub_value is not False:
-            del new_obj[key]
-        else:
-            new_obj[key] = sub_value
+
+        v = remove_empty_elements(value, allowed_empty_fields)
+        # keep the value if it is truthy OR explicitly False
+        if v or v is False:
+            cleaned[key] = v
+    return cleaned
 
 
-def loop_list_and_clean_sequence(obj, new_obj):
-    for value in obj:
-        sub_value = remove_empty_elements(value)
-        if sub_value or sub_value == "":
-            new_obj.append(sub_value)
-
-
-def remove_empty_elements(obj):
+def _clean_sequence(seq: Sequence[Any], allowed_empty_fields: Sequence[str]) -> List[Any]:
     """
-    Recursively traverse the dictionary removing any empty elements (eg. [] or {}).
+    Return a cleaned list: recursively process elements and drop empty containers
+    and None, but keep empty string "" and False where appropriate.
     """
-    allowed_empty_fields = ['patient']
-    new_obj = deepcopy(obj)
+    cleaned: List[Any] = []
+    for value in seq:
+        v = remove_empty_elements(value, allowed_empty_fields)
+        # keep value when truthy, empty string (explicitly allowed), or False
+        if v or v == "" or v is False:
+            cleaned.append(v)
+    return cleaned
+
+
+def remove_empty_elements(obj: Any, allowed_empty_fields: Sequence[str] = ALLOWED_EMPTY_FIELDS) -> Any:
+    """
+    Recursively remove empty containers ({} or []) and None/"" unless explicitly allowed.
+    False is retained.
+
+    - If obj is a dict -> returns a new dict (cleaned)
+    - If obj is a list -> returns a new list (cleaned)
+    - Otherwise returns obj unchanged
+    """
     if isinstance(obj, dict):
-        loop_dict_and_clean_mapping(obj, allowed_empty_fields, new_obj)
-    elif isinstance(obj, list):
-        new_obj = []
-        loop_list_and_clean_sequence(obj, new_obj)
-
-    return new_obj
+        # Work on a deepcopy to avoid mutating caller's object.
+        return _clean_mapping(deepcopy(obj), allowed_empty_fields)
+    if isinstance(obj, list):
+        return _clean_sequence(obj, allowed_empty_fields)
+    return obj
