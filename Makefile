@@ -25,8 +25,21 @@ lint:
 	find . -name '*.py' | xargs poetry run flake8
 	find . -name '*.sh' | grep -v node_modules | xargs shellcheck
 
-validate: generate-examples
-	java -jar bin/org.hl7.fhir.validator.jar build/examples/**/*application_fhir+json*.json -version 4.0.1 -tx n/a -extension any | tee /tmp/validation.txt
+BIN_DIR := bin
+FHIR_VALIDATOR := $(BIN_DIR)/org.hl7.fhir.validator.jar
+FHIR_VALIDATOR_URL := https://github.com/hapifhir/org.hl7.fhir.core/releases/download/5.6.104/org.hl7.fhir.validator.jar
+
+.PHONY: validator-jar
+validator-jar:
+	@mkdir -p $(BIN_DIR)
+	@if [ ! -s "$(FHIR_VALIDATOR)" ]; then \
+		echo "Downloading FHIR validator jar..."; \
+		curl -L -o "$(FHIR_VALIDATOR)" "$(FHIR_VALIDATOR_URL)"; \
+	fi
+
+validate: validator-jar
+	@echo "Validating examples..."
+	java -jar $(FHIR_VALIDATOR) build/examples/**/*application_fhir+json*.json -version 4.0.1 -tx n/a -extension any | tee /tmp/validation.txt
 
 prism: publish
 	prism proxy build/personal-demographics.json ${OAUTH_BASE_URI}/${PDS_BASE_PATH} --errors --validate-request false
