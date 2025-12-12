@@ -35,14 +35,13 @@ semver = "^2.10.2"
 # dev only dependencies (testing, linting etc.)
 [tool.poetry.group.dev.dependencies]
 flake8 = "^7.1.1"
+black = "^24.10.0"
 aiohttp = "^3.11"
 authlib = "^1.3"
-black = "^24.10.0"
-
+pip-licenses = "^4.5.0"
 gitpython = "^3.1.41"
 glob2 = "^0.7"
 jinja2 = "^3.1.6"
-pip-licenses = "^3.5.3"
 pytest = "^8.2.0"
 pytest-asyncio = "^0.14.0"
 pytest-bdd = "^8.1.0"
