@@ -36,9 +36,10 @@ extends:
     service_name: ${{ variables.service_name }}
     short_service_name: ${{ variables.short_service_name }}
     python_version: ${{ variables.python_version }}
-    jdk_version: ${{ variables.jdk_version }}
     variables:
       PIP_CACHE_DIR: ".poetry"
+    pre_steps:
+      - template: templates/install-jdk.yml
     test_steps:
       - bash: |
           set -eux
