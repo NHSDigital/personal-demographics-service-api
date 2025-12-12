@@ -15,7 +15,7 @@ install-hooks:
 BIN_DIR := bin
 # Java 11–compatible validator
 FHIR_VALIDATOR := $(BIN_DIR)/validator_cli.jar
-FHIR_VALIDATOR_URL := https://github.com/hapifhir/org.hl7.fhir.core/releases/download/5.2.36/validator_cli.jar
+FHIR_VALIDATOR_URL := https://github.com/hapifhir/org.hl7.fhir.core/releases/download/6.7.9/validator_cli.jar
 
 karate:
 	cd karate-tests && mvn clean test -Dtest=TestParallel

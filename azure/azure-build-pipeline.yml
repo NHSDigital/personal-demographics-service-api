@@ -48,3 +48,4 @@ extends:
           make validate
         displayName: Validate FHIR
         workingDirectory: "${{ variables.service_name }}"
+    jdk_version: ${{ variables.jdk_version }}
