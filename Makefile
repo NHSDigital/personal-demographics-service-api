@@ -13,7 +13,6 @@ install-hooks:
 	cp scripts/pre-commit .git/hooks/pre-commit
 
 BIN_DIR := bin
-# Java 11–compatible validator
 FHIR_VALIDATOR := $(BIN_DIR)/validator_cli.jar
 FHIR_VALIDATOR_URL := https://github.com/hapifhir/org.hl7.fhir.core/releases/download/6.7.9/validator_cli.jar
 
