@@ -70,6 +70,9 @@ jobs:
       - name: Run custom attribute reporter pytests
         run: make test-custom-attribute-reporter
 
+      - name: Generate examples
+        run: make generate-examples
+
       - name: Check resources are valid FHIR 4.0.1
         run: make validate
 
