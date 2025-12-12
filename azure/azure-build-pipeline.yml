@@ -38,9 +38,8 @@ extends:
     python_version: ${{ variables.python_version }}
     variables:
       PIP_CACHE_DIR: ".poetry"
-    pre_steps:
-      - template: templates/install-jdk.yml
     test_steps:
+      - template: templates/install-jdk.yml
       - bash: |
           set -eux
           ls -la bin || true
