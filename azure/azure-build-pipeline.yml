@@ -36,6 +36,7 @@ extends:
     service_name: ${{ variables.service_name }}
     short_service_name: ${{ variables.short_service_name }}
     python_version: ${{ variables.python_version }}
+    jdk_version: ${{ variables.jdk_version }}
     variables:
       PIP_CACHE_DIR: ".poetry"
     test_steps:
@@ -48,4 +49,3 @@ extends:
           make validate
         displayName: Validate FHIR
         workingDirectory: "${{ variables.service_name }}"
-    jdk_version: ${{ variables.jdk_version }}
