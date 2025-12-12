@@ -14,8 +14,8 @@ install-hooks:
 
 BIN_DIR := bin
 # Java 11–compatible validator
-FHIR_VALIDATOR := $(BIN_DIR)/validator_cli.jar
-FHIR_VALIDATOR_URL := https://github.com/hapifhir/org.hl7.fhir.core/releases/download/6.7.9/validator_cli.jar
+FHIR_VALIDATOR := $(BIN_DIR)/org.hl7.fhir.validator.jar
+FHIR_VALIDATOR_URL := https://github.com/hapifhir/org.hl7.fhir.core/releases/download/6.7.9/org.hl7.fhir.validator.jar
 
 karate:
 	cd karate-tests && mvn clean test -Dtest=TestParallel
@@ -27,13 +27,11 @@ lint:
 	find . -name '*.sh' | grep -v node_modules | xargs shellcheck
 
 install-fhir-validator:
-	mkdir -p $(BIN_DIR)
-	# download and fail on HTTP errors
-	if [ ! -s "$(FHIR_VALIDATOR)" ]; then \
+	@mkdir -p $(BIN_DIR)
+	@if [ ! -s "$(FHIR_VALIDATOR)" ]; then \
 		echo "Downloading FHIR validator: $(FHIR_VALIDATOR_URL)"; \
 		curl -fSL "$(FHIR_VALIDATOR_URL)" -o "$(FHIR_VALIDATOR)"; \
 	fi
-	# ensure non-empty file
 	@test -s "$(FHIR_VALIDATOR)" || (echo "Validator jar missing or empty"; exit 1)
 
 validate: install-fhir-validator

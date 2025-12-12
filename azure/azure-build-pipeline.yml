@@ -42,9 +42,12 @@ extends:
       - template: templates/install-jdk.yml
       - bash: |
           set -eux
-          ls -la bin || true
+          # Build spec and examples
+          make publish
+          make generate-examples
+          # Fetch validator and validate
           make install-fhir-validator
-          ls -lh bin || true
+          ls -lh bin build build/examples || true
           java -version
           make validate
         displayName: Validate FHIR
