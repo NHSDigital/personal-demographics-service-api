@@ -64,8 +64,12 @@ Scenario:
     const fiveDaysAgo = new Date(today)
     fiveDaysAgo.setDate(today.getDate() - 5)
     
+    // Calculate yesterday (exclude today)
+    const yesterday = new Date(today)
+    yesterday.setDate(today.getDate() - 1)
+    
     const min = fiveDaysAgo.getTime()
-    const max = today.getTime()
+    const max = yesterday.getTime()
     const randomValue = Math.random() * (max - min) + min
     const randomDate = new Date(randomValue)
     return randomDate.toISOString().split('T')[0]
