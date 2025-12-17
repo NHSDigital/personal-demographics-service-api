@@ -12,10 +12,10 @@ jobs:
         with:
           fetch-depth: 0  # This causes all history to be fetched, which is required for calculate-version to function
 
-      - name: Install Python 3.9
+      - name: Install Python 3.13
         uses: actions/setup-python@v1
         with:
-          python-version: 3.9
+          python-version: 3.13
 
       - name: Update apt repositories
         run: sudo apt update
@@ -69,6 +69,9 @@ jobs:
 
       - name: Run custom attribute reporter pytests
         run: make test-custom-attribute-reporter
+
+      - name: Generate examples
+        run: make generate-examples
 
       - name: Check resources are valid FHIR 4.0.1
         run: make validate
