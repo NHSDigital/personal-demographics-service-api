@@ -6,13 +6,13 @@ const spine_request_url = context.getVariable('spineHealthcheckRequest.url');
 
 const spine_request_has_failed = context.getVariable("servicecallout.ServiceCallout.CallSpineHealthcheck.failed");
 
-let spine_status = "fail";
+var spine_status = "fail";
 
 if(spine_response_code/ 100 == 2){
     spine_status = "pass";
 }
 
-let timeout = "false";
+var timeout = "false";
 
 if(spine_response_code === null && spine_request_has_failed){
     timeout = "true";
@@ -31,7 +31,7 @@ const spine_service = {
    }]
 };
 
-let apigee_status = "pass";
+var apigee_status = "pass";
 
 if(spine_status != "pass"){
     apigee_status = "fail";
