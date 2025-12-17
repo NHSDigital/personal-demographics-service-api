@@ -18,7 +18,8 @@ Feature: Create a new PDS record at birth
   @createRecordAtBirth  
   Scenario: create PDS record at birth
     * path "Patient/$process-birth-details"
-    * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
+    * if (typeof ignoreDuplicatesValue !== 'undefined') karate.set('params', { ignoreDuplicates: ignoreDuplicatesValue })
+    * request read('classpath:patients/healthcareWorker/createNewPdsRecordAtBirth/create-pds-record-at-birth.json')
     * configure retry = { count: 5, interval: 5000 }
     * retry until responseStatus != 429 && responseStatus != 503
     * method post
