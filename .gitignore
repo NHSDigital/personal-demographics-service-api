@@ -28,6 +28,10 @@ tests/docker.env
 tests/*.key
 tests/.pytest_cache
 
+
+keys.zip
+ssocli-bundle.zip
+
 scripts/custom_attribute_reporter/output/
 
 ID_TOKEN_NHS_LOGIN_PRIVATE_KEY
@@ -41,3 +45,7 @@ karate.jar
 
 newman-test-report.xml
 git
+keys.zip:Zone.Identifier
+tests/scripts/get_token
+tests/scripts/acurl
+tests/scripts/install
