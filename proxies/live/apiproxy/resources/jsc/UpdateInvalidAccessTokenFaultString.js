@@ -3,7 +3,7 @@
  */
 
 const auth = context.getVariable("request.header.authorization");
-let faultstring = context.getVariable("faultstring");
+var faultstring = context.getVariable("faultstring");
 if (auth === null){
   faultstring = "Missing Authorization header";
 }
