@@ -40,5 +40,5 @@ function is_request_restricted() {
     return false
 }
 
-let method_is_restricted = is_request_restricted();
+var method_is_restricted = is_request_restricted();
 context.setVariable('apigee.method_is_restricted', method_is_restricted);
