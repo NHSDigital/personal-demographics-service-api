@@ -1,8 +1,11 @@
+/* eslint-disable no-var, vars-on-top */
+// Apigee JavaScript runtime doesn't support ES6 features (let/const)
+// Must use 'var' instead of 'const'/'let' for variable declarations
 /*
  * For APM-1616: Explain invalid access tokens more clearly.
  */
 
-const auth = context.getVariable("request.header.authorization");
+var auth = context.getVariable("request.header.authorization");
 var faultstring = context.getVariable("faultstring");
 if (auth === null){
   faultstring = "Missing Authorization header";
@@ -11,7 +14,7 @@ else if (auth === ""){
   faultstring = "Empty Authorization header";
 }
 else {
-  const authWords = auth.split(" ");
+  var authWords = auth.split(" ");
   if (authWords.length === 0){
     faultstring = "Invalid Authorization header";
   }
