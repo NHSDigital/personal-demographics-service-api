@@ -1,3 +1,6 @@
+/* eslint-disable no-var, vars-on-top */
+// Apigee JavaScript runtime doesn't support ES6 features (let/const)
+// Must use 'var' instead of 'const'/'let' for variable declarations
 function is_request_restricted() {
     var splitPathsuffix = context.getVariable('proxy.pathsuffix').split("/");
     var fullUrl = context.getVariable('proxy.url')
@@ -11,12 +14,13 @@ function is_request_restricted() {
     // Ensure correct vector of trust
     var allowed_vots = ["P9.Cp.Cd","P9.Cm","P9.Cp.Ck"];
     var vot_on_request = context.getVariable('jwt.DecodeJWT.DecodeIdToken.claim.vot');
-    if (allowed_vots.indexOf(vot_on_request) == -1) {
+    // eslint-disable-next-line unicorn/prefer-includes <<< can be removed when Apigee supports ES2020
+    if (allowed_vots.indexOf(vot_on_request) === -1) {
         return true
     }
 
     var id_token_nhs_number = context.getVariable('jwt.DecodeJWT.DecodeIdToken.claim.nhs_number');
-    var coverageRegex = new RegExp(/Coverage\?subscriber%3Aidentifier=[0-9]{10}$/)
+    var coverageRegex = new RegExp(/Coverage\?subscriber%3Aidentifier=\d{10}$/)
     if (splitPathsuffix[1] == "Coverage"){
         var httpVerb = context.getVariable('request.verb');
         if (httpVerb === "POST") {
