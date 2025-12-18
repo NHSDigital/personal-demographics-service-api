@@ -1,12 +1,12 @@
 /* eslint-disable no-var, vars-on-top */
 // Apigee JavaScript runtime doesn't support ES6 features (let/const)
 // Must use 'var' instead of 'const'/'let' for variable declarations
-const apiproxy_revision = context.getVariable('apiproxy.revision');
+var apiproxy_revision = context.getVariable('apiproxy.revision');
 
-const sandbox_response_code = context.getVariable('sandboxHealthcheckResponse.status.code');
-const sandbox_request_url = context.getVariable('sandboxHealthcheckRequest.url');
+var sandbox_response_code = context.getVariable('sandboxHealthcheckResponse.status.code');
+var sandbox_request_url = context.getVariable('sandboxHealthcheckRequest.url');
 
-const sandbox_request_has_failed = context.getVariable("servicecallout.ServiceCallout.CallSandboxHealthcheck.failed");
+var sandbox_request_has_failed = context.getVariable("servicecallout.ServiceCallout.CallSandboxHealthcheck.failed");
 
 var sandbox_status = "fail";
 
@@ -29,9 +29,9 @@ function json_tryparse(raw) {
   }
 }
 
-const sanbox_response = json_tryparse(context.getVariable('sandboxHealthcheckResponse.content'));
+var sanbox_response = json_tryparse(context.getVariable('sandboxHealthcheckResponse.content'));
 
-const sandbox_service = {
+var sandbox_service = {
   "sandbox:status": [{
     "status": sandbox_status,
     "timeout": timeout,
@@ -49,7 +49,7 @@ if (sandbox_status != "pass") {
 
 
 
-const response = {
+var response = {
   "status": apigee_status,
   "version": "{{ DEPLOYED_VERSION }}",
   "revision": apiproxy_revision,
