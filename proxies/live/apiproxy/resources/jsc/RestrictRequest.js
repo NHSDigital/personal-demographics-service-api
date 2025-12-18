@@ -14,7 +14,8 @@ function is_request_restricted() {
     // Ensure correct vector of trust
     var allowed_vots = ["P9.Cp.Cd","P9.Cm","P9.Cp.Ck"];
     var vot_on_request = context.getVariable('jwt.DecodeJWT.DecodeIdToken.claim.vot');
-    if (!allowed_vots.includes(vot_on_request)) {
+    // eslint-disable-next-line unicorn/prefer-includes <<< can be removed when Apigee supports ES2020
+    if (allowed_vots.indexOf(vot_on_request) === -1) {
         return true
     }
 

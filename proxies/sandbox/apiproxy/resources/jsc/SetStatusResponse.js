@@ -1,3 +1,6 @@
+/* eslint-disable no-var, vars-on-top */
+// Apigee JavaScript runtime doesn't support ES6 features (let/const)
+// Must use 'var' instead of 'const'/'let' for variable declarations
 const apiproxy_revision = context.getVariable('apiproxy.revision');
 
 const sandbox_response_code = context.getVariable('sandboxHealthcheckResponse.status.code');
@@ -5,13 +8,13 @@ const sandbox_request_url = context.getVariable('sandboxHealthcheckRequest.url')
 
 const sandbox_request_has_failed = context.getVariable("servicecallout.ServiceCallout.CallSandboxHealthcheck.failed");
 
-let sandbox_status = "fail";
+var sandbox_status = "fail";
 
 if (sandbox_response_code / 100 == 2) {
   sandbox_status = "pass";
 }
 
-let timeout = "false";
+var timeout = "false";
 
 if (sandbox_response_code === null && sandbox_request_has_failed) {
   timeout = "true";
@@ -38,7 +41,7 @@ const sandbox_service = {
   }]
 };
 
-let apigee_status = "pass";
+var apigee_status = "pass";
 
 if (sandbox_status != "pass") {
   apigee_status = "fail";
