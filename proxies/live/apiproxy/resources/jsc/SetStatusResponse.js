@@ -1,10 +1,13 @@
-const apiproxy_revision = context.getVariable('apiproxy.revision');
+/* eslint-disable no-var, vars-on-top */
+// Apigee JavaScript runtime doesn't support ES6 features (let/const)
+// Must use 'var' instead of 'const'/'let' for variable declarations
+var apiproxy_revision = context.getVariable('apiproxy.revision');
 
-const spine_response_code = context.getVariable('spineHealthcheckResponse.status.code');
-const spine_response = context.getVariable('spineHealthcheckResponse.content');
-const spine_request_url = context.getVariable('spineHealthcheckRequest.url');
+var spine_response_code = context.getVariable('spineHealthcheckResponse.status.code');
+var spine_response = context.getVariable('spineHealthcheckResponse.content');
+var spine_request_url = context.getVariable('spineHealthcheckRequest.url');
 
-const spine_request_has_failed = context.getVariable("servicecallout.ServiceCallout.CallSpineHealthcheck.failed");
+var spine_request_has_failed = context.getVariable("servicecallout.ServiceCallout.CallSpineHealthcheck.failed");
 
 var spine_status = "fail";
 
@@ -20,7 +23,7 @@ if(spine_response_code === null && spine_request_has_failed){
 
 
 
-const spine_service = {
+var spine_service = {
 "spine:status" : [
     {
     "status": spine_status, 
@@ -39,7 +42,7 @@ if(spine_status != "pass"){
 
 
 
-const response = {  
+var response = {  
 "status" : apigee_status,
 "version" : "{{ DEPLOYED_VERSION }}" ,
 "revision" : apiproxy_revision, 
