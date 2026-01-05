@@ -59,6 +59,7 @@ Feature: Get Patient - Reusable feature to be used when we need to search for pa
     * if (searchParams['email'] != null) queryParams['email'] = searchParams['email']
     * if (searchParams['phone'] != null) queryParams['phone'] = searchParams['phone']
     * path 'Patient'
+    * retry until responseStatus != 429 && responseStatus != 503 && responseStatus != 502
     * params queryParams
     * method get
     * match responseStatus ==  karate.get('expectedResponseStatus', 200)
