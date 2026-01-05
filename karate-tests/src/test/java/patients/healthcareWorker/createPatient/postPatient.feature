@@ -50,7 +50,7 @@ Scenario: Post patient - new patient
   * match response.address[0].line[1].toUpperCase() == address.line[3].toUpperCase()
   * match response.address[0].postalCode == address.postalCode
 
-@sandbox 
+@sandbox
 Scenario: Fail to create a record for a new patient, single demographics match found
   # we rely on data that's already in the database for our existing record
   * def nhsNumber = "5900054586"
@@ -80,7 +80,7 @@ Scenario: Fail to create a record for a new patient, single demographics match f
   * call read('classpath:patients/common/createPatient.feature@createPatient') { expectedStatus: 200 }
   * match response == read('classpath:mocks/stubs/postPatientResponses/SINGLE_MATCH_FOUND.json')
 
-@sandbox 
+@sandbox
 Scenario: Fail to create a record for a new patient, multiple demographics matches found
   # we rely on data that's already in the database for our existing records
   * def givenName = ["Leandro", "Gerry"]
@@ -93,7 +93,7 @@ Scenario: Fail to create a record for a new patient, multiple demographics match
       "period": { "start": "2024-03-19"},
       "use": "home",
       "postalCode": "DN19 7UD",
-      "line": ["1 Jasmine Court"]
+      "line": ["","1 Jasmine Court","","DONCASTER"]
     }
     """
   # we get two matches in the database for these demographics

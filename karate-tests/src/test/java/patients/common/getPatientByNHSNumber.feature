@@ -35,6 +35,7 @@ Feature:Get a patient By NHS number - Reusable feature to be used when we need t
   @getPatientByNhsNumber
   Scenario: Retrieve patient details
     * path 'Patient', nhsNumber
+    * retry until responseStatus != 429 && responseStatus != 503 && responseStatus != 502
     * method get
     * match responseStatus == expectedStatus
     * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)  
