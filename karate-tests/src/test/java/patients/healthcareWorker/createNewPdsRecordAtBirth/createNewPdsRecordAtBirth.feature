@@ -21,6 +21,7 @@ Feature: Create a new PDS record at birth
   * def motherNhsNumber = response.id 
   * url baseURL  
  
+  @sandbox
   Scenario: create  PDS record at birth - successful
     * def babyGender = utils.randomGender()
     * def babyBirthDate = utils.randomNewbornDateLast5Days()
