@@ -355,12 +355,12 @@ const matchCases = [
     action: () => timestampBody(DEATHDATE_SEARCHSET)
   },
   {
-    condition: (params) => params.family === 'McMatch-Single' && params.postalCode === 'BAP 4WG' && (extractBirthDate(params)) === '1954-10-26' &&
+    condition: (params) => params.family === 'McMatch-Single' && params.postalCode === 'BAP 4WG'  &&
      params.gender === 'male',
     action: () => timestampBody(MOCK_SINGLE_SEARCHSET)
   },
   {
-    condition: (params) => params.family === 'McMatch-Multiple' && params.postalCode === 'DN19 7UD' && (extractBirthDate(params)) === '1997-08-20',
+    condition: (params) => params.family === 'McMatch-Multiple' && params.postalCode === 'DN19 7UD',
     action: () => timestampBody(MOCK_MULTIPLE_SEARCHSET)
   },
   {
