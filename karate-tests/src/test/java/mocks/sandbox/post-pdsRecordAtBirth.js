@@ -12,6 +12,7 @@
 
 function generateObjectId () {
   // generates a random ID for the name and address objects, e.g. 8F1A21BC
+  // NOSONAR - Math.random() is safe here; this is mock/test data, not security-sensitive
   return Math.random().toString(16).slice(2, 8).toUpperCase()
 }
 
