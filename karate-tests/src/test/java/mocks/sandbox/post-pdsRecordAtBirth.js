@@ -4,6 +4,8 @@
 /* functions defined in supporting-functions.js */
 /* global basicResponseHeaders,validateHeaders */
 
+/* global Java */
+
 /*
  * Generating valid NHS numbers on the fly isn't so easy, so we just have an array of valid numbers
  * to pick from when we need to create a new patient. When the array is exhausted, the mock server
@@ -12,8 +14,18 @@
 
 function generateObjectId () {
   // generates a random ID for the name and address objects, e.g. 8F1A21BC
-  // NOSONAR - Math.random() is safe here; this is mock/test data, not security-sensitive
-  return Math.random().toString(16).slice(2, 8).toUpperCase()
+  // Using Java's SecureRandom instead of Math.random() to satisfy security requirements
+  const secureRandom = Java.type('java.security.SecureRandom')
+  const random = new secureRandom()
+  const bytes = Java.type('byte[]')(4)
+  random.nextBytes(bytes)
+  
+  let hex = ''
+  for (let i = 0; i < bytes.length; i++) {
+    const byte = bytes[i] & 0xFF
+    hex += byte.toString(16).padStart(2, '0')
+  }
+  return hex.substring(0, 8).toUpperCase()
 }
 
 const NEW_PATIENT_AT_BIRTH = context.read('classpath:mocks/stubs/postPdsRecordAtBirthResponses/new_pds_record_at_birth.json')
