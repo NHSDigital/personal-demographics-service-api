@@ -15,11 +15,11 @@
 function generateObjectId () {
   // generates a random ID for the name and address objects, e.g. 8F1A21BC
   // Using Java's SecureRandom instead of Math.random() to satisfy security requirements
-  const secureRandom = Java.type('java.security.SecureRandom')
-  const random = new secureRandom()
+  const SecureRandom = Java.type('java.security.SecureRandom')
+  const random = new SecureRandom()
   const bytes = Java.type('byte[]')(4)
   random.nextBytes(bytes)
-  
+
   let hex = ''
   for (let i = 0; i < bytes.length; i++) {
     const byte = bytes[i] & 0xFF
@@ -39,14 +39,14 @@ function requestMatchesErrorScenario (request) {
   // data is sent in the request.
 
   // Find the baby patient (the one without an NHS number identifier)
-  const patientEntry = request.body?.entry?.find(entry => 
-    entry.resource?.resourceType === 'Patient' && 
+  const patientEntry = request.body?.entry?.find(entry =>
+    entry.resource?.resourceType === 'Patient' &&
     !entry.resource?.identifier?.some(id => id.system === 'https://fhir.nhs.uk/Id/nhs-number')
   )
   const patient = patientEntry?.resource
-  
+
   if (!patient) return false
-  
+
   const family = patient.name[0].family
   const postalCode = patient.address[0].postalCode
 
@@ -78,14 +78,14 @@ function postPatientRequestIsValid (request) {
     missing: 'classpath:mocks/stubs/errorResponses/MISSING_VALUE.json',
     invalid: 'classpath:mocks/stubs/errorResponses/INVALID_VALUE.json'
   }
-  
+
   // Find the baby patient resource (the one without an NHS number identifier)
-  const patientEntry = request.body?.entry?.find(entry => 
-    entry.resource?.resourceType === 'Patient' && 
+  const patientEntry = request.body?.entry?.find(entry =>
+    entry.resource?.resourceType === 'Patient' &&
     !entry.resource?.identifier?.some(id => id.system === 'https://fhir.nhs.uk/Id/nhs-number')
   )
   const patient = patientEntry?.resource
-  
+
   if (!patient) {
     const body = context.read(diagnosticsMap.missing)
     body.issue[0].diagnostics = 'Missing baby Patient resource in entry array'
@@ -93,7 +93,7 @@ function postPatientRequestIsValid (request) {
     response.status = 400
     return false
   }
-  
+
   const validations = [
     {
       condition: !patient.name,
@@ -164,12 +164,12 @@ function postPatientRequestIsValid (request) {
 
 function initializePatientData (request) {
   // Find the baby patient resource (the one without an NHS number identifier)
-  const patientEntry = request.body?.entry?.find(entry => 
-    entry.resource?.resourceType === 'Patient' && 
+  const patientEntry = request.body?.entry?.find(entry =>
+    entry.resource?.resourceType === 'Patient' &&
     !entry.resource?.identifier?.some(id => id.system === 'https://fhir.nhs.uk/Id/nhs-number')
   )
   const requestPatient = patientEntry?.resource
-  
+
   const patient = JSON.parse(JSON.stringify(NEW_PATIENT_AT_BIRTH))
 
   // set a new NHS number for the patient

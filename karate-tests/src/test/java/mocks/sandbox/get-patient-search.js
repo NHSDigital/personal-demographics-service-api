@@ -355,7 +355,7 @@ const matchCases = [
     action: () => timestampBody(DEATHDATE_SEARCHSET)
   },
   {
-    condition: (params) => params.family === 'McMatch-Single' && params.postalCode === 'BAP 4WG'  &&
+    condition: (params) => params.family === 'McMatch-Single' && params.postalCode === 'BAP 4WG' &&
      params.gender === 'male',
     action: () => timestampBody(MOCK_SINGLE_SEARCHSET)
   },
