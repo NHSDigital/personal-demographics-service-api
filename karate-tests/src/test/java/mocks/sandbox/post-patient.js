@@ -32,7 +32,7 @@ function requestMatchesErrorScenario (request) {
     {
       condition: family === 'McMatch-Single' && postalCode === 'BAP 4WG',
       responseBody: () => {
-        const body = structuredClone(SINGLE_MATCH)
+        const body = JSON.parse(JSON.stringify(SINGLE_MATCH))
         body.issue[0].diagnostics = 'Unable to create new patient. NHS number 5900054586 found for supplied demographic data.'
         return body
       }
