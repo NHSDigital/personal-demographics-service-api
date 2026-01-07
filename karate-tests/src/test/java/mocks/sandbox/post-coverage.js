@@ -129,7 +129,7 @@ function handlePatientCoverageRequest (request) {
   const isRequestHeadersValid = validatePostCoverageHeaders(request) && validateHeaders(request)
   if (isRequestHeadersValid) {
     if (postCoverageRequestIsValid(request)) {
-      const originalPatient = structuredClone(PATIENT_WITH_COVERAGE)
+      const originalPatient = JSON.parse(JSON.stringify(PATIENT_WITH_COVERAGE))
       if (request.header('if-match') !== `W/"${originalPatient.meta.versionId}"`) {
         return setResourceVersionMismatchError(request)
       }
