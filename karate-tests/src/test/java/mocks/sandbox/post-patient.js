@@ -125,7 +125,7 @@ function postPatientRequestIsValid (request) {
 }
 
 function initializePatientData (request) {
-  const patient = structuredClone(NEW_PATIENT)
+  const patient = JSON.parse(JSON.stringify(PATIENT_WITH_COVERAGE))
 
   // set a new NHS number for the patient
 
