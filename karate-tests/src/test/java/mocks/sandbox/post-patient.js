@@ -125,7 +125,7 @@ function postPatientRequestIsValid (request) {
 }
 
 function initializePatientData (request) {
-  const patient = JSON.parse(JSON.stringify(PATIENT_WITH_COVERAGE))
+  const patient = JSON.parse(JSON.stringify(NEW_PATIENT))
 
   // set a new NHS number for the patient
 
