@@ -57,7 +57,7 @@ function patchPatient (originalPatient, request) {
     return setInvalidValueError(`Invalid value - '${patches[0].op}' in field '0/op'`)
   }
 
-  const updatedPatient = structuredClone(originalPatient)
+  const updatedPatient = JSON.parse(JSON.stringify(originalPatient))
 
   for (const patch of patches) {
     applyPatch(patch, updatedPatient, originalPatient, updateErrors, request)
