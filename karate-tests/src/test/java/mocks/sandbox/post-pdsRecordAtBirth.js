@@ -17,13 +17,11 @@ function generateObjectId () {
   // Using Java's SecureRandom instead of Math.random() to satisfy security requirements
   const SecureRandom = Java.type('java.security.SecureRandom')
   const random = new SecureRandom()
-  const bytes = Java.type('byte[]')(4)
-  random.nextBytes(bytes)
 
   let hex = ''
-  for (let i = 0; i < bytes.length; i++) {
-    const byte = bytes[i] & 0xFF
-    hex += byte.toString(16).padStart(2, '0')
+  for (let i = 0; i < 4; i++) { // NOSONAR - traditional loop needed for Java random generation
+    const randomByte = random.nextInt(256)
+    hex += randomByte.toString(16).padStart(2, '0')
   }
   return hex.substring(0, 8).toUpperCase()
 }
@@ -54,7 +52,7 @@ function requestMatchesErrorScenario (request) {
     {
       condition: family === 'McMatch-Single' && postalCode === 'BAP 4WG',
       responseBody: () => {
-        const body = JSON.parse(JSON.stringify(SINGLE_MATCH_AT_BIRTH))
+        const body = JSON.parse(JSON.stringify(SINGLE_MATCH_AT_BIRTH)) // NOSONAR - structuredClone not available in Karate
         body.issue[0].diagnostics = 'Unable to create new patient. NHS number 5900004899 found for supplied demographic data.'
         return body
       }
@@ -118,8 +116,8 @@ function postPatientRequestIsValid (request) {
     {
       condition: Array.isArray(patient.address?.[0]),
       diagnostics: `Invalid value - '${JSON.stringify(request.body?.address?.[0] || {})
-  .replace(/"/g, "'")
-  .replace(/','/g, "', '")}' in field 'address/0'`,
+  .replaceAll('"', "'")
+  .replaceAll("','", "', '")}' in field 'address/0'`,
       type: 'invalid'
     },
     {
@@ -170,7 +168,7 @@ function initializePatientData (request) {
   )
   const requestPatient = patientEntry?.resource
 
-  const patient = JSON.parse(JSON.stringify(NEW_PATIENT_AT_BIRTH))
+  const patient = JSON.parse(JSON.stringify(NEW_PATIENT_AT_BIRTH)) // NOSONAR - structuredClone not available in Karate
 
   // set a new NHS number for the patient
 

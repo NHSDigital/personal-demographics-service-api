@@ -23,6 +23,6 @@ Feature: Create a new PDS record at birth
     * path "Patient/$process-birth-details"
     * request read('classpath:patients/healthcareWorker/createNewPdsRecordAtBirth/create-pds-record-at-birth.json')
     * configure retry = { count: 5, interval: 5000 }
-    * retry until responseStatus != 429 && responseStatus != 503
+    * retry until responseStatus != 429 && responseStatus != 503 && responseStatus != 502
     * method post
     * match responseStatus == expectedStatus

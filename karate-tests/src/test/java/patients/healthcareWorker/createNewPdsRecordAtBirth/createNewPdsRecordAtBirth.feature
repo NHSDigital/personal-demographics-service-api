@@ -120,7 +120,7 @@ Feature: Create a new PDS record at birth
     * call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth ') { expectedStatus: 200 }
     * match response == read('classpath:mocks/stubs/postPatientResponses/MULTIPLE_MATCHES_FOUND.json') 
 
- @sandbox-only    
+ @sandbox-only
   Scenario: Fail to create a record for a new patient, single demographics match found
     # we rely on data that's already in the database for our existing record
     * def nhsNumber = "5900004899"
@@ -151,7 +151,7 @@ Feature: Create a new PDS record at birth
     * call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth') { expectedStatus: 200 }
     * match response == read('classpath:mocks/stubs/postPatientResponses/SINGLE_MATCH_FOUND.json')
 
-  @sandbox-only   
+  @sandbox-only
   Scenario: Fail to create a record for a new patient, multiple demographics matches found
     # we rely on data that's already in the database for our existing record
     * def familyName = "McMatch-Multiple"
