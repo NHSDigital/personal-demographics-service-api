@@ -24,7 +24,7 @@ def calculate_check_digit(nhs_number: str) -> int:
         raise ValueError("Expecting nine digits")
 
     # https://www.datadictionary.nhs.uk/data_dictionary/attributes/n/nhs/nhs_number_de.asp?shownav=1
-    digits_weighted = [int(v) for v in list(nhs_number)]
+    digits_weighted = [int(v) for v in nhs_number]
     for i in range(9):
         digits_weighted[i] = digits_weighted[i] * (10 - i)
     check_digit = 11 - (sum(digits_weighted) % 11)
