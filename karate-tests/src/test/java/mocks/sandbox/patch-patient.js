@@ -138,7 +138,7 @@ function applyPatch (patch, updatedPatient, originalPatient, updateErrors, reque
   if (handler) {
     handler()
   } else if (op === 'replace' && path.startsWith('/address/0/') &&
-             !Object.hasOwn(originalPatient, 'address')) {
+             !Object.prototype.hasOwnProperty.call(originalPatient, 'address')) {
     updateErrors.push("Invalid update with error - Invalid patch - index '0' is out of bounds")
   }
 }
