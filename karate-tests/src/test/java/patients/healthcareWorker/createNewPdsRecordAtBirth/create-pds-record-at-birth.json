@@ -31,7 +31,7 @@
           ]
         },
         "address": ["#(address)"],
-        "multipleBirthInteger": 1,
+        "multipleBirthInteger": "#(babyBirthOrder)",
         "extension": [
           {
             "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RegisteringAuthority",
@@ -177,7 +177,7 @@
           ]
         },
         "valueQuantity": {
-          "value": 34,
+          "value": 38,
           "unit": "weeks",
           "system": "http://unitsofmeasure.org",
           "code": "wk"

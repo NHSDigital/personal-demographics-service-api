@@ -17,10 +17,12 @@ Feature: Create a new PDS record at birth
 
   @createRecordAtBirth  
   Scenario: create PDS record at birth
+    * def queryParams = {}
+    * if (typeof ignoreDuplicatesValue !== 'undefined' && ignoreDuplicatesValue != null) queryParams['ignore_potential_matches'] = ignoreDuplicatesValue
+    * params queryParams
     * path "Patient/$process-birth-details"
-    * if (typeof ignoreDuplicatesValue !== 'undefined') karate.set('params', { ignoreDuplicates: ignoreDuplicatesValue })
     * request read('classpath:patients/healthcareWorker/createNewPdsRecordAtBirth/create-pds-record-at-birth.json')
     * configure retry = { count: 5, interval: 5000 }
-    * retry until responseStatus != 429 && responseStatus != 503
+    * retry until responseStatus != 429 && responseStatus != 503 && responseStatus != 502
     * method post
     * match responseStatus == expectedStatus

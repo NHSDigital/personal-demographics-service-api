@@ -117,7 +117,7 @@ We have a Dockerfile set up for the sandbox. You can build the image from this D
     ```
 1. If you run the container you'll see the Karate mockserver logs
     ```bash
-    docker run --name karate-sandbox -p 9000:9000 nhs/pds-sandbox
+    docker run --name karate-sandbox -p 9001:9000 nhs/pds-sandbox
     ```
 1. Inspect the running container to discover its IP address:
     ```bash
