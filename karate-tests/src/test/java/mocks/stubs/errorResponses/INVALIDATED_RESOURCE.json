@@ -7,7 +7,7 @@
                     {
                         "code": "INVALIDATED_RESOURCE",
                         "display": "Resource that has been marked as invalid was requested - invalid resources cannot be retrieved",
-                        "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+                        "system": "https://fhir.hl7.org.uk/CodeSystem/Spine-ErrorOrWarningCode",
                         "version": "1"
                     }
                 ]

@@ -43,7 +43,7 @@
           {
             "coding": [
               {
-                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-AdditionalRelatedPersonRole",
+                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-AdditionalRelatedPersonRole",
                 "code": "Guardian",
                 "display": "Guardian of patient"
               }
@@ -52,11 +52,11 @@
         ],
         "extension": [
           {
-            "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-CopyCorrespondenceIndicator",
+            "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-CopyCorrespondenceIndicator",
             "valueBoolean": true
           },
           {
-            "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactRank",
+            "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-ContactRank",
             "valuePositiveInt": 1
           },
           {

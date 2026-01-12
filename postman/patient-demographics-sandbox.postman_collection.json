@@ -2435,7 +2435,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n    \"patches\": [\n      { \n        \"op\": \"add\",\n        \"path\": \"/extension/-\",\n        \"value\": {\n    \"url\": \"https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication\",\n    \"extension\": [{\n            \"url\": \"language\",\n            \"valueCodeableConcept\": {\n                \"coding\": [{\n                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage\",\n                        \"version\": \"1.0.0\",\n                        \"code\": \"q4\",\n                        \"display\": \"British Sign Language\"\n                    }\n                ]\n            }\n        }, {\n            \"url\": \"interpreterRequired\",\n            \"valueBoolean\": true\n        }\n    ]\n}\n      }\n  ]\n}"
+													"raw": "{\n    \"patches\": [\n      { \n        \"op\": \"add\",\n        \"path\": \"/extension/-\",\n        \"value\": {\n    \"url\": \"https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication\",\n    \"extension\": [{\n            \"url\": \"language\",\n            \"valueCodeableConcept\": {\n                \"coding\": [{\n                        \"system\": \"https://fhir.hl7.org.uk/CodeSystem/UKCore-HumanLanguage\",\n                        \"version\": \"1.0.0\",\n                        \"code\": \"q4\",\n                        \"display\": \"British Sign Language\"\n                    }\n                ]\n            }\n        }, {\n            \"url\": \"interpreterRequired\",\n            \"valueBoolean\": true\n        }\n    ]\n}\n      }\n  ]\n}"
 												},
 												"url": {
 													"raw": "{{base_url}}/Patient/9000000033",
@@ -2547,7 +2547,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n    \"patches\": [\n      { \n        \"op\": \"replace\",\n        \"path\": \"/extension/4\",\n        \"value\": {\n    \"url\": \"https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication\",\n    \"extension\": [{\n            \"url\": \"language\",\n            \"valueCodeableConcept\": {\n                \"coding\": [{\n                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage\",\n                        \"version\": \"1.0.0\",\n                        \"code\": \"q3\",\n                        \"display\": \"Australian Sign Language\"\n                    }\n                ]\n            }\n        }, {\n            \"url\": \"interpreterRequired\",\n            \"valueBoolean\": false\n        }\n    ]\n}\n      }\n  ]\n}"
+													"raw": "{\n    \"patches\": [\n      { \n        \"op\": \"replace\",\n        \"path\": \"/extension/4\",\n        \"value\": {\n    \"url\": \"https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication\",\n    \"extension\": [{\n            \"url\": \"language\",\n            \"valueCodeableConcept\": {\n                \"coding\": [{\n                        \"system\": \"https://fhir.hl7.org.uk/CodeSystem/UKCore-HumanLanguage\",\n                        \"version\": \"1.0.0\",\n                        \"code\": \"q3\",\n                        \"display\": \"Australian Sign Language\"\n                    }\n                ]\n            }\n        }, {\n            \"url\": \"interpreterRequired\",\n            \"valueBoolean\": false\n        }\n    ]\n}\n      }\n  ]\n}"
 												},
 												"url": {
 													"raw": "{{base_url}}/Patient/9000000009",
@@ -2659,7 +2659,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n    \"patches\": [\n      { \n        \"op\": \"replace\",\n        \"path\": \"/extension/4/extension/0\",\n        \"value\": {\n            \"url\": \"language\",\n            \"valueCodeableConcept\": {\n                \"coding\": [{\n                        \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage\",\n                        \"version\": \"1.0.0\",\n                        \"code\": \"q3\",\n                        \"display\": \"Australian Sign Language\"\n                    }\n                ]\n            }\n        }\n      }\n  ]\n}"
+													"raw": "{\n    \"patches\": [\n      { \n        \"op\": \"replace\",\n        \"path\": \"/extension/4/extension/0\",\n        \"value\": {\n            \"url\": \"language\",\n            \"valueCodeableConcept\": {\n                \"coding\": [{\n                        \"system\": \"https://fhir.hl7.org.uk/CodeSystem/UKCore-HumanLanguage\",\n                        \"version\": \"1.0.0\",\n                        \"code\": \"q3\",\n                        \"display\": \"Australian Sign Language\"\n                    }\n                ]\n            }\n        }\n      }\n  ]\n}"
 												},
 												"url": {
 													"raw": "{{base_url}}/Patient/9000000009",
@@ -2771,7 +2771,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n    \"patches\": [\n      { \n        \"op\": \"test\",\n        \"path\": \"/extension/4/url\",\n        \"value\": \"https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication\"\n      },\n      { \n        \"op\": \"remove\",\n        \"path\": \"/extension/4\"\n      }\n    ]\n}"
+													"raw": "{\n    \"patches\": [\n      { \n        \"op\": \"test\",\n        \"path\": \"/extension/4/url\",\n        \"value\": \"https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication\"\n      },\n      { \n        \"op\": \"remove\",\n        \"path\": \"/extension/4\"\n      }\n    ]\n}"
 												},
 												"url": {
 													"raw": "{{base_url}}/Patient/9000000009",
@@ -2830,7 +2830,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"patches\": [\n    {\n      \"op\": \"add\",\n      \"path\": \"/extension/-\",\n      \"value\":  {\n          \"url\": \"https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference\",\n          \"extension\": [{\n            \"url\": \"PreferredContactMethod\",\n            \"valueCodeableConcept\": {\n                \"coding\": [{\n                        \"code\": \"3\",\n                        \"display\": \"Telephone\",\n                        \"system\": \"https://fhir.nhs.uk/R4/ValueSet/UKCore-PreferredContactMethod\"\n                    }\n                ]\n            }\n        },\n        {\"url\": \"PreferredContactTimes\",\n                \"valueString\": \"anytime after 6pm\"\n        },\n        {\n            \"url\": \"PreferredWrittenCommunicationFormat\",\n            \"valueCodeableConcept\": {\n              \"coding\": [\n                {\n                  \"code\": \"11\",\n                  \"display\": \"Large Print\",\n                  \"system\": \"https://fhir.nhs.uk/R4/CodeSystem/UKCore-PreferredWrittenCommunicationFormat\"\n                }\n              ]\n            }\n          }\n        ]\n      }\n    }\n  ]\n}"
+													"raw": "{\n  \"patches\": [\n    {\n      \"op\": \"add\",\n      \"path\": \"/extension/-\",\n      \"value\":  {\n          \"url\": \"https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-ContactPreference\",\n          \"extension\": [{\n            \"url\": \"PreferredContactMethod\",\n            \"valueCodeableConcept\": {\n                \"coding\": [{\n                        \"code\": \"3\",\n                        \"display\": \"Telephone\",\n                        \"system\": \"https://fhir.hl7.org.uk/ValueSet/UKCore-PreferredContactMethod\"\n                    }\n                ]\n            }\n        },\n        {\"url\": \"PreferredContactTimes\",\n                \"valueString\": \"anytime after 6pm\"\n        },\n        {\n            \"url\": \"PreferredWrittenCommunicationFormat\",\n            \"valueCodeableConcept\": {\n              \"coding\": [\n                {\n                  \"code\": \"11\",\n                  \"display\": \"Large Print\",\n                  \"system\": \"https://fhir.hl7.org.uk/CodeSystem/UKCore-PreferredWrittenCommunicationFormat\"\n                }\n              ]\n            }\n          }\n        ]\n      }\n    }\n  ]\n}"
 												},
 												"url": {
 													"raw": "{{base_url}}/Patient/9000000033",
@@ -2884,7 +2884,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"patches\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"/extension/5/extension/1\",\n      \"value\":  {\n            \"url\": \"PreferredContactMethod\",\n            \"valueCodeableConcept\": {\n                \"coding\": [{\n                        \"code\": \"3\",\n                        \"display\": \"Telephone\",\n                        \"system\": \"https://fhir.nhs.uk/R4/ValueSet/UKCore-PreferredContactMethod\"\n                    }\n                ]\n            }\n          }\n    }\n\n  ]\n}"
+													"raw": "{\n  \"patches\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"/extension/5/extension/1\",\n      \"value\":  {\n            \"url\": \"PreferredContactMethod\",\n            \"valueCodeableConcept\": {\n                \"coding\": [{\n                        \"code\": \"3\",\n                        \"display\": \"Telephone\",\n                        \"system\": \"https://fhir.hl7.org.uk/ValueSet/UKCore-PreferredContactMethod\"\n                    }\n                ]\n            }\n          }\n    }\n\n  ]\n}"
 												},
 												"url": {
 													"raw": "{{base_url}}/Patient/9000000009",
@@ -2938,7 +2938,7 @@
 												],
 												"body": {
 													"mode": "raw",
-													"raw": "{\n  \"patches\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"/extension/5\",\n      \"value\":  {\n          \"url\": \"https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference\",\n          \"extension\": [\n          {\n            \"url\": \"PreferredContactMethod\",\n            \"valueCodeableConcept\": {\n                \"coding\": [{\n                        \"code\": \"7\",\n                        \"display\": \"Sign language\",\n                        \"system\": \"https://fhir.nhs.uk/R4/ValueSet/UKCore-PreferredContactMethod\"\n                    }\n                ]\n            }\n          },\n          {\n            \"url\": \"PreferredContactTimes\",\n            \"valueString\": \"13:00\"\n          }\n        ]\n      }\n    }\n\n  ]\n}"
+													"raw": "{\n  \"patches\": [\n    {\n      \"op\": \"replace\",\n      \"path\": \"/extension/5\",\n      \"value\":  {\n          \"url\": \"https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-ContactPreference\",\n          \"extension\": [\n          {\n            \"url\": \"PreferredContactMethod\",\n            \"valueCodeableConcept\": {\n                \"coding\": [{\n                        \"code\": \"7\",\n                        \"display\": \"Sign language\",\n                        \"system\": \"https://fhir.hl7.org.uk/ValueSet/UKCore-PreferredContactMethod\"\n                    }\n                ]\n            }\n          },\n          {\n            \"url\": \"PreferredContactTimes\",\n            \"valueString\": \"13:00\"\n          }\n        ]\n      }\n    }\n\n  ]\n}"
 												},
 												"url": {
 													"raw": "{{base_url}}/Patient/9000000009",
