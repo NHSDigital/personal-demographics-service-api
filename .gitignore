@@ -14,6 +14,7 @@ venv
 .env
 *.code-workspace
 .tool-versions
+.venv
 
 __pycache__/
 .envrc
@@ -26,6 +27,10 @@ tests/functional-test-report.xml
 tests/docker.env
 tests/*.key
 tests/.pytest_cache
+
+
+keys.zip
+ssocli-bundle.zip
 
 scripts/custom_attribute_reporter/output/
 
@@ -40,3 +45,7 @@ karate.jar
 
 newman-test-report.xml
 git
+keys.zip:Zone.Identifier
+tests/scripts/get_token
+tests/scripts/acurl
+tests/scripts/install
