@@ -11,6 +11,23 @@
                 "country": "##string",
                 "district": "##string"
             }
+        },
+        {
+            "extension": [
+                {
+                    "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-EthnicCategory",
+                    "valueCodeableConcept": {
+                        "coding": [
+                            {
+                                "code": "##string",
+                                "display": "##string",
+                                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-EthnicCategoryEngland"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-EthnicCategory"
         }
     ],
     "identifier": [

@@ -60,7 +60,7 @@ Feature: Create a new PDS record at birth
     * configure headers = requestHeaders 
     * call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth') { expectedStatus: 200, ignoreDuplicatesValue: true }
     * match response == read('classpath:mocks/stubs/postPatientResponses/SINGLE_MATCH_FOUND.json')
-    
+   
   Scenario: Fail to create a record for a new patient, multiple demographics match found
        ##    1. Send a Create-Patient-at-Birth request with demographic details
              2. Wait until PDS record is created
