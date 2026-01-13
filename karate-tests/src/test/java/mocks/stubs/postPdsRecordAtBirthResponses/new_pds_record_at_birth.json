@@ -1,15 +1,26 @@
 {
-    "address": "##[] addressSchema",
-    "birthDate": "##? utils.isValidDateString(_)",
-    "gender": "##regex(male|female|other|unknown)",
-    "id": "#(nhsNumber)",
+    "address": [
+        {
+            "id": "9ECA68A0",
+            "line": [
+                "24 Park End St",
+                "BROCKLEY"
+            ],
+            "period": {
+                "start": "1990-02-28"
+            },
+            "postalCode": "BS19 5PZ",
+            "use": "home"
+        }
+    ],
+    "birthDate": "2026-01-02",
     "extension": [
         {
             "url": "http://hl7.org/fhir/StructureDefinition/patient-birthPlace",
             "valueAddress": {
-                "city": "##string",
-                "country": "##string",
-                "district": "##string"
+                "city": "Manchester",
+                "country": "1",
+                "district": "Greater Manchester"
             }
         },
         {
@@ -19,8 +30,8 @@
                     "valueCodeableConcept": {
                         "coding": [
                             {
-                                "code": "##string",
-                                "display": "##string",
+                                "code": "A",
+                                "display": "British, Mixed British",
                                 "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-EthnicCategoryEngland"
                             }
                         ]
@@ -30,6 +41,8 @@
             "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-EthnicCategory"
         }
     ],
+    "gender": "male",
+    "id": "5900016374",
     "identifier": [
         {
             "extension": [
@@ -48,7 +61,7 @@
                 }
             ],
             "system": "https://fhir.nhs.uk/Id/nhs-number",
-            "value": "#(nhsNumber)"
+            "value": "5900016374"
         }
     ],
     "meta": {
@@ -61,16 +74,17 @@
         ],
         "versionId": "1"
     },
-    "multipleBirthInteger": "#(babyBirthOrder)",
+    "multipleBirthInteger": 1,
     "name": [
         {
-            "id": "#string",
-            "family": "#(familyName)",
-            "given": "#(babyGivenName)",
-            "prefix": "##[] #string",
-            "suffix": "##[] #string",
+            "family": "ToRemove",
+            "given": [
+                "Earnestine",
+                "Kerstin"
+            ],
+            "id": "42ABB4D1",
             "period": {
-                "start": "##? utils.isValidDateString(_)"
+                "start": "2026-01-02"
             },
             "use": "usual"
         }

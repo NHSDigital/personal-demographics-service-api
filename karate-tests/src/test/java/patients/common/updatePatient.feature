@@ -11,7 +11,7 @@ Feature: Update patient details - Reusable feature to be used when we need to up
     * header If-Match = originalEtag
     * path 'Patient', nhsNumber
     * configure retry = { count: 5, interval: 4000 }
-    * retry until responseStatus != 429 && responseStatus != 503
+    * retry until responseStatus != 429 && responseStatus != 503 && responseStatus != 502
     * request requestBody
     * method patch
     * match responseStatus == expectedStatus
