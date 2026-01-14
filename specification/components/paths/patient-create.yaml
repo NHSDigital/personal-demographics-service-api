@@ -90,7 +90,7 @@ responses:
               code: structure
               details:
                 coding:
-                  - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                  - system: 'https://fhir.hl7.org.uk/CodeSystem/Spine-ErrorOrWarningCode'
                     version: '1'
                     code: MULTIPLE_MATCHES
                     display: Multiple matches found
@@ -131,7 +131,7 @@ responses:
               code: structure
               details:
                 coding:
-                  - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                  - system: 'https://fhir.hl7.org.uk/CodeSystem/Spine-ErrorOrWarningCode'
                     version: '1'
                     code: INVALID_UPDATE
                     display: Update is invalid
@@ -156,7 +156,7 @@ responses:
               code: timeout
               details:
                 coding:
-                  - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                  - system: 'https://fhir.hl7.org.uk/CodeSystem/Spine-ErrorOrWarningCode'
                     version: '1'
                     code: SERVICE_UNAVAILABLE
                     display: Service unavailable
