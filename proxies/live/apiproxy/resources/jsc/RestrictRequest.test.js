@@ -1,4 +1,4 @@
-var jestWhen = require('jest-when');
+const jestWhen = require('jest-when');
 
 const restrictRequestjs = './RestrictRequest.js'
 
@@ -8,20 +8,20 @@ const restrictRequest = () => {
 }
 
 function setupEmptyContext() {
-    fields = [
+    const fields = [
         "proxy.pathsuffix",
         "request.header.x-sync-wrapped",
         "jwt.DecodeJWT.DecodeIdToken.claim.vot",
         "jwt.DecodeJWT.DecodeIdToken.claim.nhs_number",
         "request.verb"
     ]
-    global.context = {};
-    global.context.getVariable = jest.fn()
+    globalThis.context = {};
+    globalThis.context.getVariable = jest.fn()
     for (const field of fields){
-        jestWhen.when(global.context.getVariable).calledWith(field).mockReturnValue("")
+        jestWhen.when(globalThis.context.getVariable).calledWith(field).mockReturnValue("")
     }
 
-    global.context.setVariable = jest.fn()
+    globalThis.context.setVariable = jest.fn()
 }
 
 beforeEach(() => {
@@ -30,162 +30,130 @@ beforeEach(() => {
 
 test("Polling requests are not restricted", () => {
     const pollPath = "/_poll/123456789"
-    jestWhen.when(global.context.getVariable).calledWith("proxy.pathsuffix").mockReturnValue(pollPath)
+    jestWhen.when(globalThis.context.getVariable).calledWith("proxy.pathsuffix").mockReturnValue(pollPath)
 
     const isSyncWrapped = "true"
-    jestWhen.when(global.context.getVariable).calledWith("request.header.x-sync-wrapped").mockReturnValue(isSyncWrapped)
+    jestWhen.when(globalThis.context.getVariable).calledWith("request.header.x-sync-wrapped").mockReturnValue(isSyncWrapped)
 
     restrictRequest()
-    expect(global.context.setVariable.mock.calls[0][0]).toBe('apigee.method_is_restricted')
-    expect(global.context.setVariable.mock.calls[0][1]).toBe(false)
+    expectMethodIsRestricted(false)
 })
 
-test("P9.Cp.Cd is an allowed vector of trust", () => {
-    const p9cpcdVetorOfTrust = "P9.Cp.Cd"
-    jestWhen.when(global.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.vot").mockReturnValue(p9cpcdVetorOfTrust)
-    
-    const nhsNumber = "1234567890"
-    const patientPath = "/Patient/" + nhsNumber
-    jestWhen.when(global.context.getVariable).calledWith("proxy.pathsuffix").mockReturnValue(patientPath)
-    jestWhen.when(global.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.nhs_number").mockReturnValue(nhsNumber)
+function expectMethodIsRestricted(value){
+    expect(globalThis.context.setVariable.mock.calls[0][0]).toBe('apigee.method_is_restricted')
+    expect(globalThis.context.setVariable.mock.calls[0][1]).toBe(value)
+}
 
-    restrictRequest()
-    expect(global.context.setVariable.mock.calls[0][0]).toBe('apigee.method_is_restricted')
-    expect(global.context.setVariable.mock.calls[0][1]).toBe(false)
-})
+function setupContextOverrides(nhsNumber, vectorOfTrust, searchPathSuffix, getVerb = undefined, differentNHSNumber = undefined, coverageFullURL = undefined){
+    jestWhen.when(globalThis.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.vot").mockReturnValue(vectorOfTrust);
+    jestWhen.when(globalThis.context.getVariable).calledWith("proxy.pathsuffix").mockReturnValue(searchPathSuffix);
+    jestWhen.when(globalThis.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.nhs_number").mockReturnValue(differentNHSNumber === undefined ? nhsNumber : differentNHSNumber);
 
-test("P9.Cm is an allowed vector of trust", () => {
-    const p9cmVetorOfTrust = "P9.Cm"
-    jestWhen.when(global.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.vot").mockReturnValue(p9cmVetorOfTrust)
-    
-    const nhsNumber = "1234567890"
-    const patientPath = "/Patient/" + nhsNumber
-    jestWhen.when(global.context.getVariable).calledWith("proxy.pathsuffix").mockReturnValue(patientPath)
-    jestWhen.when(global.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.nhs_number").mockReturnValue(nhsNumber)
+    if(getVerb !== undefined){
+        jestWhen.when(globalThis.context.getVariable).calledWith("request.verb").mockReturnValue(getVerb);
+    }
 
-    restrictRequest()
-    expect(global.context.setVariable.mock.calls[0][0]).toBe('apigee.method_is_restricted')
-    expect(global.context.setVariable.mock.calls[0][1]).toBe(false)
-})
+    if(coverageFullURL !== undefined){
+        jestWhen.when(globalThis.context.getVariable).calledWith("proxy.url").mockReturnValue(coverageFullURL);
+    }
+}
 
-test("P9.Cp.Ck is an allowed vector of trust", () => {
-    const p9cpckVetorOfTrust = "P9.Cp.Ck"
-    jestWhen.when(global.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.vot").mockReturnValue(p9cpckVetorOfTrust)
-    
-    const nhsNumber = "1234567890"
-    const patientPath = "/Patient/" + nhsNumber
-    jestWhen.when(global.context.getVariable).calledWith("proxy.pathsuffix").mockReturnValue(patientPath)
-    jestWhen.when(global.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.nhs_number").mockReturnValue(nhsNumber)
+describe("P* vectors of trust", () => {
+    let searchPathSuffix = "/Coverage";
+    let nhsNumber = "1234567890";
+    let vectorOfTrust = "P9.Cm"; // default for tests in this describe block
+    let getVerb = "GET"; // default for tests in this describe block
+    let differentNHSNumber = "0987654321";
+    let coverageFullURL = "https://internal-dev.api.service.nhs.uk/personal-demographics/FHIR/R4/Coverage?subscriber%3Aidentifier=";
 
-    restrictRequest()
-    expect(global.context.setVariable.mock.calls[0][0]).toBe('apigee.method_is_restricted')
-    expect(global.context.setVariable.mock.calls[0][1]).toBe(false)
-})
+    beforeEach(() => {
+        searchPathSuffix = "/Coverage";
+        nhsNumber = "1234567890";
+        vectorOfTrust = "P9.Cm";
+        getVerb = "GET";
+        differentNHSNumber = "0987654321";
+        coverageFullURL = "https://internal-dev.api.service.nhs.uk/personal-demographics/FHIR/R4/Coverage?subscriber%3Aidentifier=";
+    });
 
-test("P5.Cp.Ck is not an allowed vector of trust", () => {
-    const p5cpckVetorOfTrust = "P5.Cp.Ck"
-    jestWhen.when(global.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.vot").mockReturnValue(p5cpckVetorOfTrust)
-    
-    restrictRequest()
-    expect(global.context.setVariable.mock.calls[0][0]).toBe('apigee.method_is_restricted')
-    expect(global.context.setVariable.mock.calls[0][1]).toBe(true)
-})
+    test("P9.Cm is an allowed vector of trust", () => {
+        searchPathSuffix = "/Patient/" + nhsNumber;
+        setupContextOverrides(nhsNumber, vectorOfTrust, searchPathSuffix);
 
-test("Searching for Coverage using a different NHS number to NHS-Login token is not accepted", () => {
-    const p9cmVetorOfTrust = "P9.Cm"
-    jestWhen.when(global.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.vot").mockReturnValue(p9cmVetorOfTrust)
+        restrictRequest();
+        expectMethodIsRestricted(false);
+    });
 
-    const getVerb = "GET"
-    jestWhen.when(global.context.getVariable).calledWith("request.verb").mockReturnValue(getVerb)
+    test("Searching for Coverage using a different NHS number to NHS-Login token is not accepted", () => {       
+        coverageFullURL = coverageFullURL + differentNHSNumber;
+        setupContextOverrides(nhsNumber, vectorOfTrust, searchPathSuffix, getVerb, undefined, coverageFullURL);
 
-    const covergeSearchPathSuffix = "/Coverage"
-    jestWhen.when(global.context.getVariable).calledWith("proxy.pathsuffix").mockReturnValue(covergeSearchPathSuffix)
+        restrictRequest();
+        expectMethodIsRestricted(true);
+    });
 
-    const nhsNumber = "1234567890"
-    jestWhen.when(global.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.nhs_number").mockReturnValue(nhsNumber)
+    test("Searching for Coverage using a malformed NHS number is not accepted", () => {
+        const malformedNHSNumber = nhsNumber + 'X';
+        coverageFullURL = coverageFullURL + malformedNHSNumber;
+        setupContextOverrides(nhsNumber, vectorOfTrust, searchPathSuffix, getVerb, coverageFullURL);
+        
+        restrictRequest();
+        expect(globalThis.context.setVariable.mock.calls[0][0]).toBe('apigee.invalid_coverage_search');
+        expect(globalThis.context.setVariable.mock.calls[0][1]).toBe(true);
+        expect(globalThis.context.setVariable.mock.calls[1][0]).toBe('apigee.method_is_restricted');
+        expect(globalThis.context.setVariable.mock.calls[1][1]).toBe(true);
+    });
 
-    const differentNHSNumber = "0987654321"
-    const coverageFullURL = "https://internal-dev.api.service.nhs.uk/personal-demographics/FHIR/R4/Coverage?subscriber%3Aidentifier=" + differentNHSNumber
-    jestWhen.when(global.context.getVariable).calledWith("proxy.url").mockReturnValue(coverageFullURL)
+    test("Patient searching for their own Coverage is allowed", () => {
+        let coverageFullURLWithNHSNumber = coverageFullURL + nhsNumber;
 
+        setupContextOverrides(nhsNumber, vectorOfTrust, searchPathSuffix, getVerb, undefined ,coverageFullURLWithNHSNumber);
 
-    restrictRequest()
-    expect(global.context.setVariable.mock.calls[0][0]).toBe('apigee.method_is_restricted')
-    expect(global.context.setVariable.mock.calls[0][1]).toBe(true)
-})
+        restrictRequest();
+        expectMethodIsRestricted(false);
+    });
 
-test("Searching for Coverage using a malformed NHS number is not accepted", () => {
-    const p9cmVetorOfTrust = "P9.Cm"
-    jestWhen.when(global.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.vot").mockReturnValue(p9cmVetorOfTrust)
+    test("NHS numbers for POST Coverage is not validated/restricted here", () => {
+        getVerb = "POST";
+        setupContextOverrides(nhsNumber, vectorOfTrust, searchPathSuffix, getVerb);
 
-    const getVerb = "GET"
-    jestWhen.when(global.context.getVariable).calledWith("request.verb").mockReturnValue(getVerb)
+        restrictRequest();
+        expectMethodIsRestricted(false);
+    });
 
-    const covergeSearchPathSuffix = "/Coverage"
-    jestWhen.when(global.context.getVariable).calledWith("proxy.pathsuffix").mockReturnValue(covergeSearchPathSuffix)
+    test("P9.Cp.Ck is an allowed vector of trust", () => {
+        vectorOfTrust = "P9.Cp.Ck";
+        searchPathSuffix = "/Patient/" + nhsNumber;
+        setupContextOverrides(nhsNumber, vectorOfTrust, searchPathSuffix);
 
-    const nhsNumber = "1234567890"
-    jestWhen.when(global.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.nhs_number").mockReturnValue(nhsNumber)
+        restrictRequest();
+        expectMethodIsRestricted(false);
+    });
 
-    const malformedNHSNumber = nhsNumber + 'X'
-    const coverageFullURL = "https://internal-dev.api.service.nhs.uk/personal-demographics/FHIR/R4/Coverage?subscriber%3Aidentifier=" + malformedNHSNumber
-    jestWhen.when(global.context.getVariable).calledWith("proxy.url").mockReturnValue(coverageFullURL)
+    test("P5.Cp.Ck is not an allowed vector of trust", () => {
+        vectorOfTrust = "P5.Cp.Ck";
+        setupContextOverrides(nhsNumber, vectorOfTrust, searchPathSuffix);
+        
+        restrictRequest();
+        expectMethodIsRestricted(true);
+    });
 
-    restrictRequest()
-    expect(global.context.setVariable.mock.calls[0][0]).toBe('apigee.invalid_coverage_search')
-    expect(global.context.setVariable.mock.calls[0][1]).toBe(true)
-    expect(global.context.setVariable.mock.calls[1][0]).toBe('apigee.method_is_restricted')
-    expect(global.context.setVariable.mock.calls[1][1]).toBe(true)
-})
+    test("P9.Cp.Cd is an allowed vector of trust", () => {
+        vectorOfTrust = "P9.Cp.Cd";
+        searchPathSuffix = "/Patient/" + nhsNumber;
+        setupContextOverrides(nhsNumber, vectorOfTrust, searchPathSuffix, getVerb);
 
-test("Patient searching for their own Coverage is allowed", () => {
-    const p9cmVetorOfTrust = "P9.Cm"
-    jestWhen.when(global.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.vot").mockReturnValue(p9cmVetorOfTrust)
+        restrictRequest();
+        expectMethodIsRestricted(false);
+    });
 
-    const getVerb = "GET"
-    jestWhen.when(global.context.getVariable).calledWith("request.verb").mockReturnValue(getVerb)
+    test("Patient attempting to retrieve another patients record is rejected", () => {
+        vectorOfTrust = "P9.Cp.Cd";
+        searchPathSuffix = "/Patient/" + nhsNumber;
+        getVerb = undefined;
+        differentNHSNumber = "9876543210";
+        setupContextOverrides(nhsNumber, vectorOfTrust, searchPathSuffix, getVerb, differentNHSNumber);
 
-    const covergeSearchPathSuffix = "/Coverage"
-    jestWhen.when(global.context.getVariable).calledWith("proxy.pathsuffix").mockReturnValue(covergeSearchPathSuffix)
-
-    const nhsNumber = "1234567890"
-    jestWhen.when(global.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.nhs_number").mockReturnValue(nhsNumber)
-
-    const coverageFullURL = "https://internal-dev.api.service.nhs.uk/personal-demographics/FHIR/R4/Coverage?subscriber%3Aidentifier=" + nhsNumber
-    jestWhen.when(global.context.getVariable).calledWith("proxy.url").mockReturnValue(coverageFullURL)
-    
-    restrictRequest()
-    expect(global.context.setVariable.mock.calls[0][0]).toBe('apigee.method_is_restricted')
-    expect(global.context.setVariable.mock.calls[0][1]).toBe(false)
-})
-
-test("NHS numbers for POST Coverage is not validated/restricted here", () => {
-    const p9cmVetorOfTrust = "P9.Cm"
-    jestWhen.when(global.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.vot").mockReturnValue(p9cmVetorOfTrust)
-
-    const getVerb = "POST"
-    jestWhen.when(global.context.getVariable).calledWith("request.verb").mockReturnValue(getVerb)
-
-    const covergeSearchPathSuffix = "/Coverage"
-    jestWhen.when(global.context.getVariable).calledWith("proxy.pathsuffix").mockReturnValue(covergeSearchPathSuffix)
-
-    restrictRequest()
-    expect(global.context.setVariable.mock.calls[0][0]).toBe('apigee.method_is_restricted')
-    expect(global.context.setVariable.mock.calls[0][1]).toBe(false)
-})
-
-test("Patient attempting to retrieve another patients record is rejected", () => {
-    const p9cpcdVetorOfTrust = "P9.Cp.Cd"
-    jestWhen.when(global.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.vot").mockReturnValue(p9cpcdVetorOfTrust)
-    
-    const nhsNumber = "1234567890"
-    const patientPath = "/Patient/" + nhsNumber
-    jestWhen.when(global.context.getVariable).calledWith("proxy.pathsuffix").mockReturnValue(patientPath)
-
-    const differentNHSNumber = "9876543210"
-    jestWhen.when(global.context.getVariable).calledWith("jwt.DecodeJWT.DecodeIdToken.claim.nhs_number").mockReturnValue(differentNHSNumber)
-
-    restrictRequest()
-    expect(global.context.setVariable.mock.calls[0][0]).toBe('apigee.method_is_restricted')
-    expect(global.context.setVariable.mock.calls[0][1]).toBe(true)
-})
+        restrictRequest();
+        expectMethodIsRestricted(true);
+    });
+});

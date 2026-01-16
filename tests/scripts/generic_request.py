@@ -107,7 +107,7 @@ class GenericRequest:
             response (requests.Response): HTTP response.
 
         """
-        if not isinstance(response, requests.Response):
+        if type(response) is not requests.models.Response:
             raise TypeError("Expected response type object for response argument")
 
     @staticmethod
@@ -146,7 +146,7 @@ class GenericRequest:
         Args:
             status_code (Union[int, str]): HTTP valid status code.
         """
-        if not isinstance(status_code, int):
+        if type(status_code) is not int:
             try:
                 int(status_code)
             except ValueError:
@@ -167,7 +167,7 @@ class GenericRequest:
         try:
             return self.session.get(url, **kwargs)
         except requests.ConnectionError as e:
-            raise e
+            raise (e)
 
     def post(self, url: str, **kwargs) -> requests.Response:
         """Sends a post request and returns the response.
@@ -180,7 +180,7 @@ class GenericRequest:
         try:
             return self.session.post(url, **kwargs)
         except requests.ConnectionError as e:
-            raise e
+            raise (e)
 
     def put(self, url: str, **kwargs) -> requests.Response:
         """Sends a put request and returns the response.
@@ -193,7 +193,7 @@ class GenericRequest:
         try:
             return self.session.put(url, **kwargs)
         except requests.ConnectionError as e:
-            raise e
+            raise (e)
 
     def patch(self, url: str, **kwargs) -> requests.Response:
         """Sends a patch request and returns the response.
@@ -206,7 +206,7 @@ class GenericRequest:
         try:
             return self.session.patch(url, **kwargs)
         except requests.ConnectionError as e:
-            raise e
+            raise (e)
 
     def verify_response_keys(self, response: requests.Response, expected_status_code: int,
                              expected_keys: list) -> bool:
