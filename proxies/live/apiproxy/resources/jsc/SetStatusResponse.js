@@ -1,3 +1,6 @@
+/* eslint-disable no-var, vars-on-top */
+// Apigee JavaScript runtime doesn't support ES6 features (let/const)
+// Must use 'var' instead of 'const'/'let' for variable declarations
 var apiproxy_revision = context.getVariable('apiproxy.revision');
 
 var spine_response_code = context.getVariable('spineHealthcheckResponse.status.code');
@@ -12,7 +15,7 @@ if(spine_response_code/ 100 == 2){
     spine_status = "pass";
 }
 
-timeout = "false";
+var timeout = "false";
 
 if(spine_response_code === null && spine_request_has_failed){
     timeout = "true";
