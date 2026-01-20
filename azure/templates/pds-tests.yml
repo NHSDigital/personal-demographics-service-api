@@ -22,6 +22,13 @@ steps:
       testResultsFiles: $(ARTIFACT_PATH)/tests/functional-test-report.xml
       failTaskOnFailedTests: true
 
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish application restricted test results as an artifact'
+    condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
+    inputs:
+      targetPath: $(ARTIFACT_PATH)/tests/functional-test-report.xml
+      artifact: pytestFunctionalTestReport    
+
   - bash: |
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
@@ -38,6 +45,13 @@ steps:
       testResultsFiles: $(ARTIFACT_PATH)/tests/proxy-behaviour-test-report.xml
       failTaskOnFailedTests: true
 
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish proxy behaviour test results as an artifact'
+    condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
+    inputs:
+      targetPath: $(ARTIFACT_PATH)/tests/proxy-behaviour-test-report.xml
+      artifact: proxyBehaviourTestReport       
+
   - bash: |
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
       export APIGEE_ACCESS_TOKEN="$(secret.AccessToken)"
@@ -53,6 +67,12 @@ steps:
     inputs:
       testResultsFiles: $(ARTIFACT_PATH)/tests/sync-wrap-test-report.xml
       failTaskOnFailedTests: true
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish sync wrap test results as an artifact'
+    condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
+    inputs:
+      targetPath: $(ARTIFACT_PATH)/tests/sync-wrap-test-report.xml
+      artifact: syncwrapTestReport      
 
   - bash: |
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
@@ -71,6 +91,13 @@ steps:
     inputs:
       testResultsFiles: $(ARTIFACT_PATH)/tests/patient-create-test-report.xml
       failTaskOnFailedTests: true
+   
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish post patient test results as an artifact'
+    condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
+    inputs:
+      targetPath: $(ARTIFACT_PATH)/tests/patient-create-test-report.xml
+      artifact: postPatientTestReport     
 
   - bash: |
       export APIGEE_API_TOKEN="$(secret.AccessToken)"
@@ -89,3 +116,10 @@ steps:
     inputs:
       testResultsFiles: $(ARTIFACT_PATH)/tests/patient-access-test-report.xml
       failTaskOnFailedTests: true
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish patient access test results as an artifact'
+    condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues', 'Failed')
+    inputs:
+      targetPath: $(ARTIFACT_PATH)/tests/patient-access-test-report.xml
+      artifact: patientAccessTestReport     

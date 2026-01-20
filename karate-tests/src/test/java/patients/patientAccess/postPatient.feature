@@ -19,12 +19,6 @@ Scenario: A patient cannot allocate an NHS number
     * def randomAddress = utils.randomAddress(birthDate)
     * def address = randomAddress
     
-    * path "Patient"
-    * request read('classpath:patients/healthcareWorker/createPatient/post-patient-request.json')
-    * configure retry = { count: 5, interval: 5000 }
-    * retry until responseStatus != 429 && responseStatus != 503
-    * method post
-    * status 403
-    * assert utils.validateResponseHeaders(requestHeaders, responseHeaders)
+    * call read('classpath:patients/common/createPatient.feature@createPatient') { expectedStatus: 403 }
     * def display = 'Cannot create resource with patient-access access token'
     * match response == read('classpath:mocks/stubs/errorResponses/INVALID_METHOD.json')

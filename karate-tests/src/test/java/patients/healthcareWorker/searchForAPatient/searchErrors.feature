@@ -2,8 +2,10 @@
 Feature: Search errors
 
 Background:
+  * def utils = call read('classpath:helpers/utils.feature')
   * def accessToken = karate.callSingle('classpath:auth/auth-redirect.feature').accessToken
-  * configure headers = call read('classpath:auth/auth-headers.js')
+  * def requestHeaders = call read('classpath:auth/auth-headers.js')
+  * configure headers = requestHeaders 
   * url baseURL
 
 
@@ -19,7 +21,7 @@ Scenario: All invalid params
   * assert diagnostics.includes("manufacturer")
   * assert diagnostics.includes("year")
   * assert diagnostics.endsWith("were unexpected)")
-  * match response == read('classpath:mocks/stubs/errorResponses/ADDITIONAL_PROPERTIES.json')
+  * match response == read('classpath:mocks/stubs/errorResponses/ADDITIONAL_PROPERTIES.json')  
 
 Scenario: One invalid param
   * path 'Patient'
@@ -38,26 +40,32 @@ Scenario: Valid/invalid search criteria
   * match response == read('classpath:mocks/stubs/errorResponses/ADDITIONAL_PROPERTIES.json')
 
 Scenario: Unsuccessful search on email/phone only
-  * path 'Patient'
-  * params { email: "j.smith@example.com", phone: "0163" }
-  * method get
-  * status 400
+  * karate.set('expectedResponseStatus',400)
+  * def searchParams =
+    """
+    { email: "j.smith@example.com", phone: "0163"}
+    """
+  * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * def diagnostics = "Missing value - 'birth_date/birth_date_range_start/birth_date_range_end'"
   * match response == read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')
 
 Scenario: Invalid date format (birthdate)
-  * path 'Patient'  
-  * params { family: "Smith", given: "jane", gender: "female", birthdate: "20101022" } 
-  * method get
-  * status 400
+  * karate.set('expectedResponseStatus',400)
+  * def searchParams =
+    """
+    { family: "Smith", given: "jane", gender: "female", birthdate: "20101022"}
+    """
+  * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * def diagnostics = "Invalid value - '20101022' in field 'birthdate'"
   * match response == read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')
 
 Scenario: Invalid date format (death-date)
-  * path 'Patient'  
-  * params { family: "Smith", given: "jane", gender: "female", death-date: "20101022" } 
-  * method get
-  * status 400
+  * karate.set('expectedResponseStatus',400)
+  * def searchParams =
+    """
+    { family: "Smith", given: "jane", gender: "female", death-date: "20101022"}
+    """
+  * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * def diagnostics = "Invalid value - '20101022' in field 'death-date'"
   * match response == read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')
 
@@ -70,17 +78,21 @@ Scenario: Too few search params - No params
 
 
 Scenario: Too few search params - Missing params other than birthdate
-  * path 'Patient'    
-  * params { birthdate: "eq2010-10-22" }
-  * method get
-  * status 400
+  * karate.set('expectedResponseStatus',400)
+  * def searchParams =
+    """
+    { birthdate: "eq2010-10-22"}
+    """
+  * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * def diagnostics = "Invalid search data provided - 'No searches were performed as the search criteria did not meet the minimum requirements'"
   * match response == read('classpath:mocks/stubs/errorResponses/INVALID_SEARCH_DATA.json')
 
 Scenario: Too few search params - but system only flags birthdate!
-  * path 'Patient'    
-  * params { gender: 'female' }
-  * method get
-  * status 400
+  * karate.set('expectedResponseStatus',400)
+  * def searchParams =
+    """
+    { gender: "female"}
+    """
+  * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
   * def diagnostics = "Missing value - 'birth_date/birth_date_range_start/birth_date_range_end'"
   * match response == read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')

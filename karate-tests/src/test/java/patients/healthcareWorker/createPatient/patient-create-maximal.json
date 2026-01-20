@@ -1,0 +1,69 @@
+{
+   "name": [
+    {
+      "given": "#(givenName)",
+      "family": "#(familyName)",
+      "use": "usual",
+      "period": {"start": "#(birthDate)"},
+      "prefix": "#(prefix)",
+      "suffix": "#(suffix)"
+    }
+  ], 
+  "address": "#(address)",
+  "birthDate": "#(birthDate)",
+  "gender": "#(gender)",
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "#(telecomValue)",
+      "use": "#(telecomUse)",
+      "period": {
+        "start": "#(birthDate)"
+      }
+    }
+  ],
+  "extension": [
+    {
+      "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RegisteringAuthority",
+      "extension": [
+        {
+          "url": "registeringAuthorityType",
+          "valueCodeableConcept": {
+            "coding": [
+              {
+                "system": "https://fhir.nhs.uk/CodeSystem/UKCore-RegisteringAuthorityType",
+                "code": "x",
+                "display": "This is not going to be an NHAIS code"
+              }
+            ]
+          }
+        },
+        {
+          "url": "organisationIdentifier",
+          "valueString": "RGS"
+        }
+      ]
+    },
+    {
+      "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication",
+      "extension": [
+        {
+          "url": "language",
+          "valueCodeableConcept":
+            {
+              "coding": [
+                {
+                  "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-HumanLanguage",
+                  "code": "vi"
+                }
+              ]
+            }
+        },
+        {
+          "url": "interpreterRequired",
+          "valueBoolean": true
+        }
+      ]
+    }
+  ]
+}

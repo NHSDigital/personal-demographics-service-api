@@ -17,6 +17,11 @@ public class FakerWrapper {
         return faker.phoneNumber().phoneNumber();
     }
 
+    public static String mobileNumber() {
+        // returns a UK mobile number starting with 07
+        return faker.phoneNumber().cellPhone();
+    }
+
     public static String givenName() {
         // returns e.g. "John"
         return faker.name().firstName();

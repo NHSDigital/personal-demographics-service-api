@@ -32,6 +32,49 @@ Scenario:
     }
     """
 
+  * def randomBirthDateBetween16And40 = 
+  """
+  function() {
+    const today = new Date()
+    const minAge = 16
+    const maxAge = 40
+    
+    // Calculate date 40 years ago (oldest birth date)
+    const minDate = new Date(today)
+    minDate.setFullYear(today.getFullYear() - maxAge)
+    
+    // Calculate date 16 years ago (youngest birth date)
+    const maxDate = new Date(today)
+    maxDate.setFullYear(today.getFullYear() - minAge)
+    
+    const min = minDate.getTime()
+    const max = maxDate.getTime()
+    const randomValue = Math.random() * (max - min) + min
+    const randomDate = new Date(randomValue)
+    return randomDate.toISOString().split('T')[0]
+  }
+  """  
+
+  * def randomNewbornDateLast5Days = 
+  """
+  function() {
+    const today = new Date()
+    
+    // Calculate date 5 days ago
+    const fiveDaysAgo = new Date(today)
+    fiveDaysAgo.setDate(today.getDate() - 5)
+    
+    // Calculate yesterday (exclude today)
+    const yesterday = new Date(today)
+    yesterday.setDate(today.getDate() - 1)
+    
+    const min = fiveDaysAgo.getTime()
+    const max = yesterday.getTime()
+    const randomValue = Math.random() * (max - min) + min
+    const randomDate = new Date(randomValue)
+    return randomDate.toISOString().split('T')[0]
+  }
+  """
   * def randomDate = 
     """
     function(earliest) {
@@ -347,3 +390,21 @@ Scenario:
     };
     }
     """
+
+  * def randomTime = 
+  """
+  function() {
+    const hours = String(Math.floor(Math.random() * 24)).padStart(2, '0')
+    const minutes = String(Math.floor(Math.random() * 60)).padStart(2, '0')
+    const seconds = String(Math.floor(Math.random() * 60)).padStart(2, '0')
+    return `T${hours}:${minutes}:${seconds}+00:00`
+  }
+  """ 
+  * def randomBirthWeight = 
+  """
+  function() {
+    const min = 2000
+    const max = 4000
+    return Math.floor(Math.random() * (max - min + 1)) + min
+  }
+  """
