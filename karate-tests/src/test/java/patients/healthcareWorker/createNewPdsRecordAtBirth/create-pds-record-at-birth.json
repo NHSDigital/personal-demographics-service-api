@@ -66,26 +66,9 @@
             }
           },
           {
-            "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus",
-            "extension": [
-              {
-                "url": "deathNotificationStatus",
-                "valueCodeableConcept": {
-                  "coding": [
-                    {
-                      "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-DeathNotificationStatus",
-                      "code": "U",
-                      "display": "Removed"
-                    }
-                  ]
-                }
-              }
-            ]
-          },
-          {
             "url": "http://hl7.org/fhir/StructureDefinition/patient-birthPlace",
             "valueAddress": {
-              "text": "St Mary's Hospital, Oxford Road, Manchester",
+              "text": "St Mary's Hospital",
               "city": "Manchester",
               "district": "Greater Manchester",
               "country": "1"
@@ -312,8 +295,8 @@
         "resourceType": "Organization",
         "identifier": [
           {
-            "system": "urn:oid:2.16.840.1.113883.2.1.4.3",
-            "value": "ABC123"
+            "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+            "value": "A00002"
           }
         ],
         "name": "GP Practice"
