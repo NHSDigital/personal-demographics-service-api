@@ -180,3 +180,181 @@ Feature: Create a new PDS record at birth
     * configure headers = requestHeaders
     * call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth') { expectedStatus: 200 }
     * match response == read('classpath:mocks/stubs/postPatientResponses/MULTIPLE_MATCHES_FOUND.json')  
+
+  Scenario Outline: Negative path: missing value in request body - missing <missingValue>
+    * def babyGender = utils.randomGender()
+    * def babyBirthDate = utils.randomNewbornDateLast5Days()
+    * def babyBirthTime = babyBirthDate + utils.randomTime()
+    * def babyBirthOrder = 1
+    * def babyBirthWeight = utils.randomBirthWeight()
+    * def babyGivenName = ["#(faker.givenName())", "#(faker.givenName())"]
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders 
+    * def createRecordAtBirthPayload = call read (payload)
+    * call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth ') { createRecordAtBirthPayload: "#(createRecordAtBirthPayload)", expectedStatus: 400 }
+  
+    * def diagnostics = `Missing value - '${missingValue}'`
+    * match response == read('classpath:mocks/stubs/errorResponses/MISSING_VALUE.json')
+
+  Examples:
+    | payload                                                                                                                                      | missingValue                |
+    | classpath:patients/healthcareWorker/createNewPdsRecordAtBirth/MissingValuesPayload/create-pds-record-at-birth-missing-name-use.json          | entry/0/resource/name/0/use | 
+    | classpath:patients/healthcareWorker/createNewPdsRecordAtBirth/MissingValuesPayload/create-pds-record-at-birth-missing-birthdate.json         |entry/0/resource/birthDate|
+    | classpath:patients/healthcareWorker/createNewPdsRecordAtBirth/MissingValuesPayload/create-pds-record-at-birth-missing-gender.json            |entry/0/resource/gender|
+    | classpath:patients/healthcareWorker/createNewPdsRecordAtBirth/MissingValuesPayload/create-pds-record-at-birth-missing-address.json           |entry/0/resource/address|
+    | classpath:patients/healthcareWorker/createNewPdsRecordAtBirth/MissingValuesPayload/create-pds-record-at-birth-missing-birthweight-value.json |entry/1/resource/valueQuantity/value|
+    | classpath:patients/healthcareWorker/createNewPdsRecordAtBirth/MissingValuesPayload/create-pds-record-at-birth-missing-mother-nhs-number.json |entry/7/resource/identifier/0/value|    
+
+  Scenario Outline: Negative path: invalid value in request body - <property>
+    * def validBabyGender = utils.randomGender()
+    * def validBabyBirthDate = utils.randomNewbornDateLast5Days()
+    * def babyBirthTime = validBabyBirthDate + utils.randomTime()
+    * def validBabyBirthOrder = 1
+    * def validBabyBirthWeight = utils.randomBirthWeight()
+    * def validBabyGivenName = ["#(faker.givenName())", "#(faker.givenName())"]
+
+    * json jsonValue = invalidValue
+
+    * def babyGender = property == "gender" ? jsonValue : validBabyGender
+    * def babyBirthDate = property == "birthDate" ? jsonValue : validBabyBirthDate
+    * def babyBirthOrder = property == "birthOrder" ? jsonValue : validBabyBirthOrder
+    * def babyBirthWeight = property == "birthWeight" ? jsonValue : validBabyBirthWeight
+    * def address = property == "address" ? jsonValue : address
+    * def babyGivenName = property == "givenName" ? jsonValue : validBabyGivenName
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders 
+    * call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth') { expectedStatus: 400 }
+
+    * match response == read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')
+  
+    Examples:
+      | property            | invalidValue                | diagnostics                                                 |
+      | givenName           | not an array                | Invalid value - 'not an array' in field 'entry/0/resource/name/0/given'      |
+      | address             | "another"                   | Invalid value - 'another' in field 'entry/0/resource/address/0' |
+      | gender              | other                       | Invalid value - 'other' in field 'gender'                   |
+      | birthDate           | not-a-date                  | Invalid value - 'not-a-date' in field 'birthDate'           |
+      | givenName           | 'O`Brien'                   | Invalid value - 'O`Brien' in field 'entry/0/resource/name/0/given'                  |
+      | birthOrder          | 100                         | Invalid value - '100' in field 'entry/0/resource/multipleBirthInteger'|
+      | birthWeight         | 35552                       | Invalid value - '35552' in field 'entry/1/resource/valueQuantity/value'      |
+    
+  Scenario: Negative path: invalid "line" array defined as part of address
+    * def babyGender = utils.randomGender()
+    * def babyBirthDate = utils.randomNewbornDateLast5Days()
+    * def babyBirthTime = babyBirthDate + utils.randomTime()
+    * def babyBirthOrder = 1
+    * def babyBirthWeight = utils.randomBirthWeight()
+    * def babyGivenName = ["#(faker.givenName())", "#(faker.givenName())"]
+    * def validAddress = utils.randomAddress(babyBirthDate)
+  
+    # our "validAddress" has a valid array for the "line" property. let's change that.
+    # we only want one item in the array
+    * def invalidLine = validAddress.line[1]
+    * copy invalidAddress = validAddress
+    * set invalidAddress.line = [invalidLine]
+    * def address = invalidAddress
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders 
+    
+    # you can't create a new patient if the line property doesn't match the spec
+    * call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth') { expectedStatus: 400 }
+    * def diagnostics = "Invalid patient create data provided - 'address lines 1 and 4 or 2 and 4 must be completed as a minimum'"
+    * match response == read('classpath:mocks/stubs/errorResponses/INVALID_CREATE.json')
+
+  Scenario: Negative path: Mandatory resource or observation missing from request body
+    * def babyGender = utils.randomGender()
+    * def babyBirthDate = utils.randomNewbornDateLast5Days()
+    * def babyBirthTime = babyBirthDate + utils.randomTime()
+    * def babyBirthOrder = 1
+    * def babyBirthWeight = utils.randomBirthWeight()
+    * def babyGivenName = ["#(faker.givenName())", "#(faker.givenName())"]
+    
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders 
+    * def createRecordAtBirthPayload = call read ('classpath:patients/healthcareWorker/createNewPdsRecordAtBirth/MissingValuesPayload/create-pds-record-at-birth-missing-delivery-location-resource.json')
+    * call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth ') { createRecordAtBirthPayload: "#(createRecordAtBirthPayload)", expectedStatus: 400 }
+    
+    # you can't create a new patient if the mandatory resource/observation is missing
+    * call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth') { expectedStatus: 400 }
+    * def diagnostics = "Too few values submitted - <json too long to display> in field 'entry'"
+    * match response == read('classpath:mocks/stubs/errorResponses/TOO_FEW_VALUES_SUBMITTED.json')    
+
+  Scenario: Negative path: Mandatory extension missing from patient resource
+    * def babyGender = utils.randomGender()
+    * def babyBirthDate = utils.randomNewbornDateLast5Days()
+    * def babyBirthTime = babyBirthDate + utils.randomTime()
+    * def babyBirthOrder = 1
+    * def babyBirthWeight = utils.randomBirthWeight()
+    * def babyGivenName = ["#(faker.givenName())", "#(faker.givenName())"]
+    
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders 
+    * def createRecordAtBirthPayload = call read ('classpath:patients/healthcareWorker/createNewPdsRecordAtBirth/MissingValuesPayload/create-pds-record-at-birth-missing-ethnicity-extension.json')
+    * call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth ') { createRecordAtBirthPayload: "#(createRecordAtBirthPayload)", expectedStatus: 400 }
+    
+    # you can't create a new patient if the mandatory resource/observation is missing
+    * call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth') { expectedStatus: 400 }
+    * match response.issue[0].diagnostics contains "in field 'entry/0/resource/extension'"   
+
+  Scenario: Fail to create a record for a new patient when usual name has end date
+    * def babyGender = utils.randomGender()
+    * def babyBirthDate = utils.randomNewbornDateLast5Days()
+    * def babyBirthTime = babyBirthDate + utils.randomTime()
+    * def babyBirthOrder = 1
+    * def babyBirthWeight = utils.randomBirthWeight()
+    * def babyGivenName = ["#(faker.givenName())", "#(faker.givenName())"]
+    * def address = randomAddress
+    * def createRecordAtBirthPayload = read('classpath:patients/healthcareWorker/createNewPdsRecordAtBirth/create-pds-record-at-birth.json')
+    * def nameWithEndDate = 
+    """
+      {
+          "family": "Rosey",
+          "given": ["One"],
+          "prefix": ["Mr"],
+          "suffix": ["MBE"],
+          "use": "usual",
+          "period": {"start": "2020-01-01", "end": "#(babyBirthDate)"}
+      }
+
+    """
+    * createRecordAtBirthPayload.entry[0].resource.name[0] = nameWithEndDate
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders 
+    * call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth ') { createRecordAtBirthPayload: "#(createRecordAtBirthPayload)", expectedStatus: 400 }
+    * def diagnostics = "Invalid patient create data provided - 'An end date can not be provided on usual name'"
+    * match response == read('classpath:mocks/stubs/errorResponses/INVALID_CREATE.json')    
+
+  Scenario: create a still birth PDS record at birth - successful
+    * def babyGender = utils.randomGender()
+    * def babyBirthDate = utils.randomNewbornDateLast5Days()
+    * def babyBirthTime = babyBirthDate + utils.randomTime()
+    * def babyBirthOrder = 1
+    * def babyBirthWeight = utils.randomBirthWeight()
+    * def babyGivenName = ["#(faker.givenName())", "#(faker.givenName())"]
+    * def address = randomAddress
+    * def createRecordAtBirthPayload = read('classpath:patients/healthcareWorker/createNewPdsRecordAtBirth/create-pds-record-at-birth.json')
+    * def deathNotificationExtension = 
+    """
+      {
+            "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus",
+            "extension": [
+              {
+                "url": "deathNotificationStatus",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-DeathNotificationStatus",
+                      "code": "2"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+
+    """
+    * set createRecordAtBirthPayload.entry[0].resource.deceasedDateTime = babyBirthTime
+    * set createRecordAtBirthPayload.entry[0].resource.extension = createRecordAtBirthPayload.entry[0].resource.extension.concat(deathNotificationExtension)
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders 
+    * call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth ') { createRecordAtBirthPayload: "#(createRecordAtBirthPayload)", expectedStatus: 201 }
+    * match response.extension[0].extension[0].valueCodeableConcept.coding[0].code == '2'
