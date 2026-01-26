@@ -60,7 +60,7 @@ Feature: Create a new PDS record at birth
     * configure headers = requestHeaders 
     * call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth') { expectedStatus: 200, ignoreDuplicatesValue: true }
     * match response == read('classpath:mocks/stubs/postPatientResponses/SINGLE_MATCH_FOUND.json')
-   
+  
   Scenario: Fail to create a record for a new patient, multiple demographics match found
        ##    1. Send a Create-Patient-at-Birth request with demographic details
              2. Wait until PDS record is created
@@ -82,7 +82,7 @@ Feature: Create a new PDS record at birth
     * call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth') { expectedStatus: 201 }
     * def nhsNumber = response.id
      
-    # different mothers NHS and different motherDOB - creating new mother nhs number 
+    # different mothers NHS and different motherDOB - creating new mother nhs number and overriding global motherNhsNumber variables
 
     * def givenName = ["#(faker.givenName())", "#(faker.givenName())"]
     * def prefix = ["#(utils.randomPrefix())"]
@@ -95,11 +95,12 @@ Feature: Create a new PDS record at birth
   
     * call read('classpath:patients/common/createPatient.feature@createPatient') { patientPayload:"#(patientPayload)", expectedStatus: 201 }
     * def motherNhsNumber = response.id 
-
+    * def createRecordAtBirthPayload = read('classpath:patients/healthcareWorker/createNewPdsRecordAtBirth/create-pds-record-at-birth.json')   
+     # second create at birth with different mother nhs number, mother dob and ignore_potential_matches=true
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders 
-      # second create at birth with different mother nhs number, mother dob
-    * def createBabyResponse = call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth') { expectedStatus: 201, ignoreDuplicatesValue: true  }
+      # second create at birth with different mother nhs number, mother dob - reating new mother nhs number and overriding global motherNhsNumber variables
+    * def createBabyResponse = call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth') { createRecordAtBirthPayload: "#(createRecordAtBirthPayload)", expectedStatus: 201, ignoreDuplicatesValue: true  }
     * def nhsNumber2 = createBabyResponse.id
  
     * def givenName = ["#(faker.givenName())", "#(faker.givenName())"]
@@ -114,10 +115,12 @@ Feature: Create a new PDS record at birth
   
     * call read('classpath:patients/common/createPatient.feature@createPatient') { patientPayload:"#(patientPayload)", expectedStatus: 201 }
     * def motherNhsNumber = response.id 
+    * def createRecordAtBirthPayload = read('classpath:patients/healthcareWorker/createNewPdsRecordAtBirth/create-pds-record-at-birth.json')
+ 
       # third create at birth with different mother nhs number, mother dob
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders 
-    * call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth ') { expectedStatus: 200 }
+    * call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth ') { createRecordAtBirthPayload: "#(createRecordAtBirthPayload)", expectedStatus: 200 }
     * match response == read('classpath:mocks/stubs/postPatientResponses/MULTIPLE_MATCHES_FOUND.json') 
 
  @sandbox-only
