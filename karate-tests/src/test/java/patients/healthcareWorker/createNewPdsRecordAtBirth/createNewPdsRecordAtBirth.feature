@@ -99,7 +99,7 @@ Feature: Create a new PDS record at birth
      # second create at birth with different mother nhs number, mother dob and ignore_potential_matches=true
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders 
-      # second create at birth with different mother nhs number, mother dob - reating new mother nhs number and overriding global motherNhsNumber variables
+      # second create at birth with different mother nhs number, mother dob - creating new mother nhs number and overriding global motherNhsNumber variables
     * def createBabyResponse = call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth') { createRecordAtBirthPayload: "#(createRecordAtBirthPayload)", expectedStatus: 201, ignoreDuplicatesValue: true  }
     * def nhsNumber2 = createBabyResponse.id
  
