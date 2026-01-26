@@ -181,6 +181,7 @@ Feature: Create a new PDS record at birth
     * call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth') { expectedStatus: 200 }
     * match response == read('classpath:mocks/stubs/postPatientResponses/MULTIPLE_MATCHES_FOUND.json')  
 
+  @sandbox  
   Scenario Outline: Negative path: missing value in request body - missing <missingValue>
     * def babyGender = utils.randomGender()
     * def babyBirthDate = utils.randomNewbornDateLast5Days()
@@ -205,6 +206,7 @@ Feature: Create a new PDS record at birth
     | classpath:patients/healthcareWorker/createNewPdsRecordAtBirth/MissingValuesPayload/create-pds-record-at-birth-missing-birthweight-value.json |entry/1/resource/valueQuantity/value|
     | classpath:patients/healthcareWorker/createNewPdsRecordAtBirth/MissingValuesPayload/create-pds-record-at-birth-missing-mother-nhs-number.json |entry/7/resource/identifier/0/value|    
 
+  @sandbox  
   Scenario Outline: Negative path: invalid value in request body - <property>
     * def validBabyGender = utils.randomGender()
     * def validBabyBirthDate = utils.randomNewbornDateLast5Days()
@@ -228,14 +230,14 @@ Feature: Create a new PDS record at birth
     * match response == read('classpath:mocks/stubs/errorResponses/INVALID_VALUE.json')
   
     Examples:
-      | property            | invalidValue                | diagnostics                                                 |
-      | givenName           | not an array                | Invalid value - 'not an array' in field 'entry/0/resource/name/0/given'      |
-      | address             | "another"                   | Invalid value - 'another' in field 'entry/0/resource/address/0' |
-      | gender              | other                       | Invalid value - 'other' in field 'gender'                   |
-      | birthDate           | not-a-date                  | Invalid value - 'not-a-date' in field 'birthDate'           |
-      | givenName           | 'O`Brien'                   | Invalid value - 'O`Brien' in field 'entry/0/resource/name/0/given'                  |
-      | birthOrder          | 100                         | Invalid value - '100' in field 'entry/0/resource/multipleBirthInteger'|
-      | birthWeight         | 35552                       | Invalid value - '35552' in field 'entry/1/resource/valueQuantity/value'      |
+      | property            | invalidValue                | diagnostics                                                            |
+      | givenName           | not an array                | Invalid value - 'not an array' in field 'entry/0/resource/name/0/given'|
+      | address             | "another"                   | Invalid value - 'another' in field 'entry/0/resource/address/0'        |
+      | gender              | other                       | Invalid value - 'other' in field 'gender'                              |
+      | birthDate           | not-a-date                  | Invalid value - 'not-a-date' in field 'birthDate'                      |
+      | givenName           | 'O`Brien'                   | Invalid value - 'O`Brien' in field 'entry/0/resource/name/0/given'     |
+      | birthOrder          | 100                         | Invalid value - '100' in field 'entry/0/resource/multipleBirthInteger' |
+      | birthWeight         | 35552                       | Invalid value - '35552' in field 'entry/1/resource/valueQuantity/value'|
     
   Scenario: Negative path: invalid "line" array defined as part of address
     * def babyGender = utils.randomGender()
