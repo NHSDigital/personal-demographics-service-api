@@ -99,7 +99,6 @@
           ]
         },
         "valueQuantity": {
-          "value": "#(babyBirthWeight)",
           "unit": "grams",
           "system": "http://unitsofmeasure.org",
           "code": "g"

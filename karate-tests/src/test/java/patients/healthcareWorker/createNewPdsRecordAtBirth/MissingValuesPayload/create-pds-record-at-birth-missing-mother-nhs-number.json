@@ -262,8 +262,7 @@
         "resourceType": "Patient",
         "identifier": [
           {
-            "system": "https://fhir.nhs.uk/Id/nhs-number",
-            "value": "#(motherNhsNumber)"
+            "system": "https://fhir.nhs.uk/Id/nhs-number"
           }
         ],
         "name": [

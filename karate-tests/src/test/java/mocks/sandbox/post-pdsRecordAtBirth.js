@@ -94,30 +94,33 @@ function postPatientRequestIsValid (request) {
 
   const validations = [
     {
-      condition: !patient.name,
-      diagnostics: 'Missing value - \'name\'',
+      condition: !patient.name?.[0]?.use,
+      diagnostics: 'Missing value - \'entry/0/resource/name/0/use\'',
       type: 'missing'
     },
     {
       condition: !patient.address,
-      diagnostics: 'Missing value - \'address\'',
+      diagnostics: 'Missing value - \'entry/0/resource/address\'',
       type: 'missing'
     },
     {
       condition: !patient.gender,
-      diagnostics: 'Missing value - \'gender\'',
+      diagnostics: 'Missing value - \'entry/0/resource/gender\'',
       type: 'missing'
     },
     {
       condition: !patient.birthDate,
-      diagnostics: 'Missing value - \'birthDate\'',
+      diagnostics: 'Missing value - \'entry/0/resource/birthDate\'',
       type: 'missing'
     },
     {
-      condition: Array.isArray(patient.address?.[0]),
-      diagnostics: `Invalid value - '${JSON.stringify(request.body?.address?.[0] || {})
-  .replaceAll('"', "'")
-  .replaceAll("','", "', '")}' in field 'address/0'`,
+      condition: !request.body?.entry?.[1]?.resource?.valueQuantity?.value,
+      diagnostics: 'Missing value - \'entry/1/resource/valueQuantity/value\'',
+      type: 'missing'
+    },
+    {
+      condition: typeof patient.address?.[0] !== 'object' || Array.isArray(patient.address?.[0]),
+      diagnostics: `Invalid value - '${patient.address?.[0]}' in field 'entry/0/resource/address/0'`,
       type: 'invalid'
     },
     {
@@ -127,12 +130,12 @@ function postPatientRequestIsValid (request) {
     },
     {
       condition: !Array.isArray(patient.name?.[0]?.given) || ['O`Brien'].includes(patient.name?.[0]?.given),
-      diagnostics: `Invalid value - '${patient.name?.[0]?.given}' in field 'name/0/given'`,
+      diagnostics: `Invalid value - '${patient.name?.[0]?.given}' in field 'entry/0/resource/name/0/given'`,
       type: 'invalid'
     },
     {
       condition: typeof patient.address?.[0] !== 'object' || Array.isArray(patient.address?.[0]),
-      diagnostics: `Invalid value - '${patient.address?.[0]}' in field 'address/0'`,
+      diagnostics: `Invalid value - '${patient.address?.[0]}' in field 'entry/0/resource/address/0'`,
       type: 'invalid'
     },
     {
@@ -143,6 +146,26 @@ function postPatientRequestIsValid (request) {
     {
       condition: !patient.birthDate?.match(/^\d{4}-\d{2}-\d{2}$/),
       diagnostics: 'Invalid value - \'not-a-date\' in field \'birthDate\'',
+      type: 'invalid'
+    },
+    {
+      condition: !request.body?.entry?.[7]?.resource?.identifier?.[0]?.value,
+      diagnostics: 'Missing value - \'entry/7/resource/identifier/0/value\'',
+      type: 'missing'
+    },
+    {
+      condition: !request.body?.entry?.[1]?.resource?.valueQuantity?.value,
+      diagnostics: 'Missing value - \'entry/1/resource/valueQuantity/value\'',
+      type: 'missing'
+    },
+    {
+      condition: !(request.body?.entry?.[1]?.resource?.valueQuantity?.value >= 1000 && request.body?.entry?.[1]?.resource?.valueQuantity?.value <= 9999),
+      diagnostics: `Invalid value - '${request.body?.entry?.[1]?.resource?.valueQuantity?.value}' in field 'entry/1/resource/valueQuantity/value'`,
+      type: 'invalid'
+    },
+    {
+      condition: !(patient.multipleBirthInteger >= 1 && patient.multipleBirthInteger <= 9),
+      diagnostics: `Invalid value - '${patient.multipleBirthInteger}' in field 'entry/0/resource/multipleBirthInteger'`,
       type: 'invalid'
     }
   ]
