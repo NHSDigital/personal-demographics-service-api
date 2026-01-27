@@ -14,7 +14,6 @@
           {
             "given": "#(babyGivenName)",
             "family": "#(familyName)",
-            "use": "usual",
             "period": {
               "start": "#(babyBirthDate)"
             }

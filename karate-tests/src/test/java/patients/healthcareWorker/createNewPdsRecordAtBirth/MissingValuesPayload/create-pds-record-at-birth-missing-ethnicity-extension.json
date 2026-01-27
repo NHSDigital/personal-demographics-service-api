@@ -54,18 +54,6 @@
             ]
           },
           {
-            "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-EthnicCategory",
-            "valueCodeableConcept": {
-              "coding": [
-                {
-                  "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-EthnicCategoryEngland",
-                  "code": "A",
-				  "display":"White - British"
-                }
-              ]
-            }
-          },
-          {
             "url": "http://hl7.org/fhir/StructureDefinition/patient-birthPlace",
             "valueAddress": {
               "text": "St Mary's Hospital",
