@@ -72,7 +72,7 @@ function patchPatient (originalPatient, request) {
   }
 
   updatedPatient.meta.versionId = (
-    parseInt(originalPatient.meta.versionId) + 1
+    Number.parseInt(originalPatient.meta.versionId) + 1
   ).toString()
 
   return updatedPatient
@@ -89,8 +89,8 @@ function validateAddressPatches (patches, updateErrors) {
 }
 
 function validatePatchOperations (patches) {
-  const validOperations = ['add', 'replace', 'remove', 'test']
-  return patches.every(patch => validOperations.includes(patch.op))
+  const validOperations = new Set(['add', 'replace', 'remove', 'test'])
+  return patches.every(patch => validOperations.has(patch.op))
 }
 
 function applyPatch (patch, updatedPatient, originalPatient, updateErrors, request) {
@@ -138,7 +138,7 @@ function applyPatch (patch, updatedPatient, originalPatient, updateErrors, reque
   if (handler) {
     handler()
   } else if (op === 'replace' && path.startsWith('/address/0/') &&
-             !Object.hasOwn(originalPatient, 'address')) {
+             !Object.prototype.hasOwnProperty.call(originalPatient, 'address')) {
     updateErrors.push("Invalid update with error - Invalid patch - index '0' is out of bounds")
   }
 }

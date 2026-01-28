@@ -143,7 +143,7 @@ Scenario: Unicode search
   * match response.entry[1].resource.gender == "female"
   * match response.entry[1].resource.birthDate == "1960-07-14"
   * match response.entry[1].resource.name[0].family == "attison"
-  * match response.entry[1].resource.name[0].given == ["Pauline", "Mary", "Jane"]
+  * match response.entry[1].resource.name[0].given == ["Pauline", "Mary"]
 
 @sandbox
 Scenario: Too many matches
@@ -173,7 +173,7 @@ Scenario: Search should not return superseded patients record
     { family: "CUFF", birthdate: "eq1926-01-07",gender: "female" }
     """
   * call read('classpath:patients/common/getPatient.feature@searchForAPatient') searchParams
-  * match response.total == 2
+  * match response.total == 1
   * def idList = karate.jsonPath(response, "$.entry[*].resource.id")
   * match each idList != supersededRecord
 

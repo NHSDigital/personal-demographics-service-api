@@ -1,0 +1,76 @@
+{
+    "address": [
+        {
+            "id": "9ECA68A0",
+            "line": [
+                "24 Park End St",
+                "BROCKLEY"
+            ],
+            "period": {
+                "start": "1990-02-28"
+            },
+            "postalCode": "BS19 5PZ",
+            "use": "home"
+        }
+    ],
+    "birthDate": "2026-01-02",
+    "extension": [
+        {
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-birthPlace",
+            "valueAddress": {
+                "city": "Manchester",
+                "country": "1",
+                "district": "Greater Manchester"
+            }
+        }
+    ],
+    "gender": "male",
+    "id": "5900016374",
+    "identifier": [
+        {
+            "extension": [
+                {
+                    "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSNumberVerificationStatus",
+                    "valueCodeableConcept": {
+                        "coding": [
+                            {
+                                "code": "01",
+                                "display": "Number present and verified",
+                                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-NHSNumberVerificationStatus",
+                                "version": "1.0.0"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "system": "https://fhir.nhs.uk/Id/nhs-number",
+            "value": "5900016374"
+        }
+    ],
+    "meta": {
+        "security": [
+            {
+                "code": "U",
+                "display": "unrestricted",
+                "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+            }
+        ],
+        "versionId": "1"
+    },
+    "multipleBirthInteger": 1,
+    "name": [
+        {
+            "family": "ToRemove",
+            "given": [
+                "Earnestine",
+                "Kerstin"
+            ],
+            "id": "42ABB4D1",
+            "period": {
+                "start": "2026-01-02"
+            },
+            "use": "usual"
+        }
+    ],
+    "resourceType": "Patient"
+}
