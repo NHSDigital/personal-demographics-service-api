@@ -30,7 +30,6 @@
             }
           ]
         },
-        "address": ["#(address)"],
         "multipleBirthInteger": "#(babyBirthOrder)",
         "extension": [
           {

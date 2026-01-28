@@ -303,35 +303,6 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:7b66aaee-1681-4117-9830-4eddafc72333",
-      "request": {
-        "method": "POST",
-        "url": "Location"
-      },
-      "resource": {
-        "resourceType": "Location",
-        "status": "active",
-        "identifier": [
-          {
-            "system": "https://fhir.nhs.uk/Id/ods-site-code",
-            "value": "RR8G5"
-          }
-        ],
-        "name": "NEONATAL MEDICINE LGI",
-        "type": [
-          {
-            "coding": [
-              {
-                "system": "urn:oid:2.16.840.1.113883.2.1.3.2.4.17.173",
-                "code": "0",
-                "display": "In NHS hospital - delivery facilities associated with midwife ward"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
       "fullUrl": "urn:uuid:1d5f80af-ec9d-4ff0-aec6-bbbf665c5e7e",
       "request": {
         "method": "POST",

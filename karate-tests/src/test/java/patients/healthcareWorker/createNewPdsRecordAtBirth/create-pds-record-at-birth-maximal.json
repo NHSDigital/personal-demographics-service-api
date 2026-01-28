@@ -32,6 +32,16 @@
         },
         "address": ["#(address)"],
         "multipleBirthInteger": "#(babyBirthOrder)",
+        "telecom": [
+        {
+          "system": "phone",
+          "value": "#(telecomValue)",
+          "use": "#(telecomUse)",
+          "period": {
+            "start": "#(birthDate)"
+          }
+        }
+      ],
         "extension": [
           {
             "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-RegisteringAuthority",

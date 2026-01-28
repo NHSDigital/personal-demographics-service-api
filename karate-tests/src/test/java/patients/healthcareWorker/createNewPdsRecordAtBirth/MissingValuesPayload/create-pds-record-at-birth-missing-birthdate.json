@@ -21,7 +21,6 @@
           }
         ],
         "gender": "#(babyGender)",
-        "birthDate": "#(babyBirthDate)",
         "_birthDate": {
           "extension": [
             {
