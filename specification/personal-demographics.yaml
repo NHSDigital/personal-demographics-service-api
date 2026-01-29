@@ -83,7 +83,7 @@ info:
 
     The end user must be: 
     * a healthcare worker 
-    * strongly authenticated, using [NHS Care Identity Service 2 (NHS CIS2)](https://digital.nhs.uk/services/care-identity-service/applications-and-services/cis2-authentication)
+    * strongly authenticated, CIS2 Authentication, to [authenticator assurance level AAL2](https://digital.nhs.uk/services/care-identity-service/applications-and-services/cis2-authentication/authenticators#authenticator-levels)
     * authorised, using [national role-based access control (RBAC)](https://digital.nhs.uk/developer/guides-and-documentation/security-and-authorisation/national-rbac-for-developers)
 
     To use this access mode, use one of the following security patterns:
