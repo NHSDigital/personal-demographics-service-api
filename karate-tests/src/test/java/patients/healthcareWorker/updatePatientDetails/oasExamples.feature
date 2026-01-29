@@ -109,12 +109,12 @@ Scenario:  Healthcare worker can add communication extension
     * def extensionVal = 
     """
         {
-            "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication",
+            "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication",
             "extension": [{
                     "url": "language",
                     "valueCodeableConcept": {
                         "coding": [{
-                                "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage",
+                                "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-HumanLanguage",
                                 "version": "1.0.0",
                                 "code": "q4",
                                 "display": "British Sign Language"
@@ -146,12 +146,12 @@ Scenario:  Healthcare worker can update communication extension
     * def extensionVal = 
     """
         {
-    "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication",
+    "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication",
     "extension": [{
             "url": "language",
             "valueCodeableConcept": {
                 "coding": [{
-                        "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage",
+                        "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-HumanLanguage",
                         "version": "1.0.0",
                         "code": "q3",
                         "display": "Australian Sign Language"
@@ -186,7 +186,7 @@ Scenario:  Healthcare worker can update communication single itesm
             "url": "language",
             "valueCodeableConcept": {
                 "coding": [{
-                        "system": "https://fhir.nhs.uk/R4/CodeSystem/UKCore-HumanLanguage",
+                        "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-HumanLanguage",
                         "version": "1.0.0",
                         "code": "q3",
                         "display": "Australian Sign Language"
@@ -210,7 +210,7 @@ Scenario:  Healthcare worker can update communication single itesm
   
 Scenario:  Healthcare worker can remove Remove Communication
     * def nhsNumber = '9000000009'
-    * def extensionURL = "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-NHSCommunication"
+    * def extensionURL = "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-NHSCommunication"
     * path 'Patient', nhsNumber
     * request 
      """ 
@@ -242,7 +242,7 @@ Scenario:  Healthcare worker can replace a Single Contact Preference
                 "coding": [{
                         "code": "3",
                         "display": "Telephone",
-                        "system": "https://fhir.nhs.uk/R4/ValueSet/UKCore-PreferredContactMethod"
+                        "system": "https://fhir.hl7.org.uk/ValueSet/UKCore-PreferredContactMethod"
                     }
                 ]
             }
@@ -271,7 +271,7 @@ Scenario:  Healthcare worker can replace and remove Contact Preference
     * def extensionVal = 
     """
         {
-          "url": "https://fhir.nhs.uk/R4/StructureDefinition/Extension-UKCore-ContactPreference",
+          "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-ContactPreference",
           "extension": [
           {
             "url": "PreferredContactMethod",
@@ -279,7 +279,7 @@ Scenario:  Healthcare worker can replace and remove Contact Preference
                 "coding": [{
                         "code": "7",
                         "display": "Sign language",
-                        "system": "https://fhir.nhs.uk/R4/ValueSet/UKCore-PreferredContactMethod"
+                        "system": "https://fhir.hl7.org.uk/ValueSet/UKCore-PreferredContactMethod"
                     }
                 ]
             }

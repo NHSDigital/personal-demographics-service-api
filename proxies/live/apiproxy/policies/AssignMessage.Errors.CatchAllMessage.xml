@@ -11,7 +11,7 @@
                 "details": {
                   "coding": [
                     {
-                      "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+                      "system": "https://fhir.hl7.org.uk/CodeSystem/Spine-ErrorOrWarningCode",
                       "version": "1",
                       "code": "{pds.error.coding.code}",
                       "display": "{pds.error.coding.display}"
