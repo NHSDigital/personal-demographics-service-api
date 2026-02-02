@@ -328,7 +328,7 @@ Feature: Create a new PDS record at birth
     * def diagnostics = "Invalid patient create data provided - 'An end date can not be provided on usual name'"
     * match response == read('classpath:mocks/stubs/errorResponses/INVALID_CREATE.json')    
 
-  Scenario: create a still birth PDS record at birth - successful
+  Scenario: create a still birth PDS record at birth - formal death should have consistent still born indicatore equals 2,3 or 4
     * def babyGender = utils.randomGender()
     * def babyBirthDate = utils.randomNewbornDateLast5Days()
     * def babyBirthTime = babyBirthDate + utils.randomTime()
@@ -361,5 +361,51 @@ Feature: Create a new PDS record at birth
     * set createRecordAtBirthPayload.entry[0].resource.extension = createRecordAtBirthPayload.entry[0].resource.extension.concat(deathNotificationExtension)
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders 
+    * call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth ') { createRecordAtBirthPayload: "#(createRecordAtBirthPayload)", expectedStatus: 400 }
+    * match response == read('classpath:mocks/stubs/errorResponses/INSERT_BIRTH_DEATH_STATUS_INCONSISTENT.json')  
+
+    Scenario: create a still birth PDS record at birth - Successful
+    * def babyGender = utils.randomGender() 
+    * def babyBirthDate = utils.randomNewbornDateLast5Days()
+    * def babyBirthTime = babyBirthDate + utils.randomTime()
+    * def babyBirthOrder = 1
+    * def babyBirthWeight = utils.randomBirthWeight()
+    * def babyGivenName = ["#(faker.givenName())", "#(faker.givenName())"]
+    * def address = randomAddress
+    * def stillbornCode = "2"  
+    # 2=Antepartum, 3=Intrapartum, 4=Postpartum
+    * def stillbornDisplay = "Antepartum"
+    * def createRecordAtBirthPayload = read('classpath:patients/healthcareWorker/createNewPdsRecordAtBirth/create-pds-record-at-birth.json')
+    * def deathNotificationExtension = 
+    """
+      {
+            "url": "https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus",
+            "extension": [
+              {
+                "url": "deathNotificationStatus",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "https://fhir.hl7.org.uk/CodeSystem/UKCore-DeathNotificationStatus",
+                      "code": "2"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+
+    """
+    * set createRecordAtBirthPayload.entry[0].resource.deceasedDateTime = babyBirthTime
+    * set createRecordAtBirthPayload.entry[0].resource.extension = createRecordAtBirthPayload.entry[0].resource.extension.concat(deathNotificationExtension) 
+    * set createRecordAtBirthPayload.entry[2].resource.valueCodeableConcept.coding[0].code = stillbornCode
+    * set createRecordAtBirthPayload.entry[2].resource.valueCodeableConcept.coding[0].display = stillbornDisplay
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders 
     * call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth ') { createRecordAtBirthPayload: "#(createRecordAtBirthPayload)", expectedStatus: 201 }
-    * match response.extension[0].extension[0].valueCodeableConcept.coding[0].code == '2'
+    * def nhsNumber = response.id
+    * match nhsNumber == '#notnull'
+    * match response.gender == babyGender
+    * match response.birthDate == babyBirthDate
+    * def deathNotification = karate.jsonPath(response, "$.extension[?(@.url=='https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus')]")[0]
+    * match deathNotification.extension[0].valueCodeableConcept.coding[0].code == stillbornCode
