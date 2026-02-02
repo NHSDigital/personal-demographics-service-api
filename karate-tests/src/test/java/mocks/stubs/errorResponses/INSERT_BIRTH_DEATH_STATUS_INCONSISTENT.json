@@ -1,0 +1,20 @@
+{
+    "issue": [
+        {
+            "code": "processing",
+            "details": {
+                "coding": [
+                    {
+                        "code": "INSERT_BIRTH_DEATH_STATUS_INCONSISTENT",
+                        "display": "INSERT_BIRTH_DEATH_STATUS_INCONSISTENT",
+                        "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+                        "version": "1"
+                    }
+                ]
+            },
+            "diagnostics": "Insert Birth - Death Status Inconsistent",
+            "severity": "error"
+        }
+    ],
+    "resourceType": "OperationOutcome"
+}
