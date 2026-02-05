@@ -36,6 +36,7 @@ Feature: Create a new PDS record at birth
     * def expectedResponse = read('classpath:patients/healthcareWorker/createNewPdsRecordAtBirth/create_record_at_birth_response_template.json')
     * match response == expectedResponse
     * match response.address[0].line[0] == address.line[1]
+    * match responseHeaders['notification-id'] == '#present'
 
   Scenario: Fail to create a record for a new patient, single demographics match found
     * def babyGender = utils.randomGender()
