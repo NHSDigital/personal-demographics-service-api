@@ -19,6 +19,8 @@ Background:
 
   # auth
   * def aal2_user_ID = '656005750109'
+  * def intNhsNumber = '9693632109'
+  * def sandboxNhsNumber = '9000000009'
 
   * url baseURL
 
@@ -27,7 +29,7 @@ Scenario: Get an "unrestricted" patient
   * def accessToken = karate.call('classpath:auth/auth-redirect.feature').accessToken
   * def requestHeaders = call read('classpath:auth/auth-headers.js')
   * configure headers = requestHeaders 
-  * def nhsNumber = karate.env.includes('sandbox') ? '9000000009' : '9693632109'
+  * def nhsNumber = karate.env.includes('sandbox') ? sandboxNhsNumber : intNhsNumber
   * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
   * match response.id == nhsNumber
   * match response == Patient
@@ -72,7 +74,7 @@ Scenario: Allow Healthcare Worker Access with AAL2
     * def accessToken = karate.call('classpath:auth/auth-redirect.feature', {userID: aal2_user_ID}).accessToken
     * def requestHeaders = call read('classpath:auth/auth-headers.js')
     * configure headers = requestHeaders 
-    * def nhsNumber = karate.env.includes('sandbox') ? '9000000009' : '9693632109'
+    * def nhsNumber = karate.env.includes('sandbox') ? sandboxNhsNumber : intNhsNumber
     * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ nhsNumber:"#(nhsNumber)", expectedStatus: 200 }
     * match response.id == nhsNumber
     * match response == Patient
