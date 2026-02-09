@@ -50,10 +50,9 @@ def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
         data={
             'username': '656005750107',
             'login': 'Sign in'
-        },
-        allow_redirects=False
+        }
     )
-    login_location = login_request.headers['Location']
+    login_location = login_request.history[-1].headers['Location']
 
     code = re.findall('.*code=(.*)&', login_location)[0]
 
