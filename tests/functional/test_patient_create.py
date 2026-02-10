@@ -55,10 +55,17 @@ def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
         },
         allow_redirects=False,
     )
+    assert login_request.status_code in (301, 302, 303, 307, 308), (
+        f"Expected redirect from login POST, got status {login_request.status_code}. "
+        f"Body starts with: {login_request.text[:300]!r}"
+    )
 
-    login_location = login_request.headers["Location"]
+    login_location = login_request.headers.get("Location")
+    assert login_location, "Login redirect response did not include a Location header"
     parsed_query = parse_qs(urlparse(login_location).query)
-    code = parsed_query["code"][0]
+    code_values = parsed_query.get("code")
+    assert code_values and code_values[0], f"No auth code in login redirect URL: {login_location}"
+    code = code_values[0]
 
     token_request = session.post(
         url=f"{identity_service_base_url}/token",
