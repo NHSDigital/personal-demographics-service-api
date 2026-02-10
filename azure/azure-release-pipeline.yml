@@ -18,7 +18,6 @@ resources:
           include:
             - refs/tags/v*
             - master
-            - refs/heads/fix/patient-create-auth-no-callback-redirect
 
 pool:
   name: "AWS-ECS"
@@ -45,7 +44,7 @@ extends:
         pre_deploy:
           - template: templates/install-jdk.yml
         post_deploy:
-          - template: templates/pds-tests-dev-diagnostics.yml
+          - template: templates/pds-tests-dev.yml
       # only deploy to other environments if the build was NOT a daily overnight build
       - ${{ if ne(variables['resources.pipeline.build_pipeline.triggerReason'], 'Schedule') }}:
           - environment: internal-qa-sandbox
