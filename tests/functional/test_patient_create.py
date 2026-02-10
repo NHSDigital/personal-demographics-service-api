@@ -4,6 +4,7 @@ import ssl
 import sys
 import re
 import uuid
+from urllib.parse import parse_qs, urlparse
 
 import aiohttp
 import asyncio
@@ -36,11 +37,12 @@ def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
     session = requests.session()
     diagnostics = {}
 
-    def _attempt_auth_flow(callback_url: str, follow_redirects: bool, label: str) -> dict:
+    def _attempt_auth_flow(callback_url: str, follow_redirects: bool, label: str, robust_code_parse: bool = False) -> dict:
         result = {
             "label": label,
             "callback_url": callback_url,
             "follow_redirects": follow_redirects,
+            "robust_code_parse": robust_code_parse,
         }
         print(f"[callback-hypothesis] START {json.dumps(result)}")
         try:
@@ -96,13 +98,23 @@ def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
             print(f"[callback-hypothesis] RESULT {json.dumps(result, default=str)}")
             return result
 
-        code_matches = re.findall(r".*code=(.*)&", login_location)
-        if not code_matches:
-            result["error_stage"] = "auth_code_parse"
-            result["error"] = "No auth code found in login redirect URL"
-            print(f"[callback-hypothesis] RESULT {json.dumps(result, default=str)}")
-            return result
-        code = code_matches[0]
+        if robust_code_parse:
+            parsed_query = parse_qs(urlparse(login_location).query)
+            code_list = parsed_query.get("code", [])
+            if not code_list:
+                result["error_stage"] = "auth_code_parse"
+                result["error"] = "No auth code found with robust parser"
+                print(f"[callback-hypothesis] RESULT {json.dumps(result, default=str)}")
+                return result
+            code = code_list[0]
+        else:
+            code_matches = re.findall(r".*code=(.*)&", login_location)
+            if not code_matches:
+                result["error_stage"] = "auth_code_parse"
+                result["error"] = "No auth code found in login redirect URL"
+                print(f"[callback-hypothesis] RESULT {json.dumps(result, default=str)}")
+                return result
+            code = code_matches[0]
 
         try:
             token_request = session.post(
@@ -144,6 +156,14 @@ def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
     # Redirect-handling hypothesis: same callbacks without following redirects.
     callback_results.append(
         _attempt_auth_flow("https://example.org/callback", False, "example_no_redirect_follow")
+    )
+    callback_results.append(
+        _attempt_auth_flow(
+            "https://example.org/callback",
+            False,
+            "example_no_redirect_follow_robust_code_parse",
+            robust_code_parse=True
+        )
     )
     callback_results.append(
         _attempt_auth_flow("http://localhost/callback", False, "local_http_no_redirect_follow")
