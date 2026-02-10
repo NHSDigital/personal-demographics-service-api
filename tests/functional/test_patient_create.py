@@ -1,14 +1,18 @@
 import datetime
 import json
+import ssl
+import sys
 import re
 import uuid
 
 import aiohttp
 import asyncio
+import certifi
 import requests
 import pytest
 import pytest_bdd
 
+from importlib import metadata
 from dateutil import parser
 from functools import partial
 from lxml import html
@@ -30,6 +34,7 @@ def test_post_patient_rate_limit():
 def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
     """Runs callback hypotheses and always fails with a diagnostics summary."""
     session = requests.session()
+    diagnostics = {}
 
     def _attempt_auth_flow(callback_url: str, follow_redirects: bool, label: str) -> dict:
         result = {
@@ -147,7 +152,77 @@ def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
         _attempt_auth_flow("https://localhost/callback", False, "local_https_no_redirect_follow")
     )
 
+    def _add_certificate_hypotheses() -> dict:
+        cert_hypotheses = {
+            "python_version": sys.version,
+            "ssl_default_verify_paths": str(ssl.get_default_verify_paths()),
+            "requests_bundle": requests.certs.where(),
+            "certifi_bundle": certifi.where(),
+            "certifi_version": metadata.version("certifi"),
+            "requests_version": metadata.version("requests"),
+            "urllib3_version": metadata.version("urllib3"),
+        }
+
+        probe_url = "https://example.org/callback"
+        probes = []
+
+        def run_probe(label: str, verify_value):
+            probe_result = {"label": label}
+            try:
+                resp = requests.get(probe_url, timeout=10, verify=verify_value)
+                probe_result["status_code"] = resp.status_code
+                probe_result["ok"] = True
+            except Exception as exc:
+                probe_result["ok"] = False
+                probe_result["error_type"] = type(exc).__name__
+                probe_result["error"] = str(exc)
+            probes.append(probe_result)
+
+        # Default trust used by requests (typically certifi).
+        run_probe("requests_default_verify", True)
+        # Explicit certifi bundle path.
+        run_probe("requests_certifi_bundle", certifi.where())
+
+        # System CA file from OpenSSL defaults, if available.
+        default_paths = ssl.get_default_verify_paths()
+        if default_paths.cafile:
+            run_probe("requests_system_cafile", default_paths.cafile)
+        else:
+            probes.append({
+                "label": "requests_system_cafile",
+                "ok": False,
+                "error": "No system cafile found in ssl.get_default_verify_paths()",
+            })
+
+        # System CA directory from OpenSSL defaults, if available.
+        if default_paths.capath:
+            run_probe("requests_system_capath", default_paths.capath)
+        else:
+            probes.append({
+                "label": "requests_system_capath",
+                "ok": False,
+                "error": "No system capath found in ssl.get_default_verify_paths()",
+            })
+
+        cert_hypotheses["certificate_probes"] = probes
+
+        # Check if certifi has a newer release available.
+        try:
+            pypi_resp = requests.get("https://pypi.org/pypi/certifi/json", timeout=10)
+            pypi_resp.raise_for_status()
+            latest_certifi = pypi_resp.json()["info"]["version"]
+            cert_hypotheses["certifi_latest_on_pypi"] = latest_certifi
+            cert_hypotheses["certifi_update_available"] = latest_certifi != cert_hypotheses["certifi_version"]
+        except Exception as exc:
+            cert_hypotheses["certifi_latest_on_pypi_error"] = f"{type(exc).__name__}: {exc}"
+
+        return cert_hypotheses
+
+    diagnostics["callback_hypotheses"] = callback_results
+    diagnostics["certificate_hypotheses"] = _add_certificate_hypotheses()
+
     print(f"[callback-hypothesis] SUMMARY {json.dumps(callback_results, default=str)}")
+    print(f"[certificate-hypothesis] SUMMARY {json.dumps(diagnostics['certificate_hypotheses'], default=str)}")
     pytest.fail("Intentional diagnostics failure after testing all callback hypotheses")
 
 
