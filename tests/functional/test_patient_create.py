@@ -15,7 +15,6 @@ from lxml import html
 from pytest_bdd import when, then
 
 from tests.functional.configuration.config import (CLIENT_ID, CLIENT_SECRET)
-from tests.functional.utils.helpers import get_role_id_from_user_info_endpoint
 
 
 scenario = partial(pytest_bdd.scenario, './features/post_patient.feature')
@@ -29,56 +28,127 @@ def test_post_patient_rate_limit():
 # FIXTURES------------------------------------------------------------------------------------------------------
 @pytest.fixture(scope='function')
 def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
-    """Authenticates as a healthcare worker and returns valid request headers"""
+    """Runs callback hypotheses and always fails with a diagnostics summary."""
     session = requests.session()
 
-    form_request = session.get(
-        url=f"{identity_service_base_url}/authorize",
-        params={
-            "response_type": "code",
-            "client_id": CLIENT_ID,
-            "state": uuid.uuid4(),
-            "redirect_uri": "https://example.org/callback"
+    def _attempt_auth_flow(callback_url: str, follow_redirects: bool, label: str) -> dict:
+        result = {
+            "label": label,
+            "callback_url": callback_url,
+            "follow_redirects": follow_redirects,
         }
+        print(f"[callback-hypothesis] START {json.dumps(result)}")
+        try:
+            form_request = session.get(
+                url=f"{identity_service_base_url}/authorize",
+                params={
+                    "response_type": "code",
+                    "client_id": CLIENT_ID,
+                    "state": uuid.uuid4(),
+                    "redirect_uri": callback_url
+                }
+            )
+            result["authorize_status_code"] = form_request.status_code
+        except Exception as exc:
+            result["error_stage"] = "authorize"
+            result["error"] = f"{type(exc).__name__}: {exc}"
+            print(f"[callback-hypothesis] RESULT {json.dumps(result, default=str)}")
+            return result
+
+        tree = html.fromstring(form_request.text)
+        if not tree.forms:
+            result["error_stage"] = "authorize_form_parse"
+            result["error"] = "No authorization form found in response"
+            print(f"[callback-hypothesis] RESULT {json.dumps(result, default=str)}")
+            return result
+        form = tree.forms[0]
+
+        try:
+            login_request = session.post(
+                url=form.action,
+                data={
+                    'username': '656005750107',
+                    'login': 'Sign in'
+                },
+                allow_redirects=follow_redirects
+            )
+            result["login_status_code"] = login_request.status_code
+        except Exception as exc:
+            result["error_stage"] = "login"
+            result["error"] = f"{type(exc).__name__}: {exc}"
+            print(f"[callback-hypothesis] RESULT {json.dumps(result, default=str)}")
+            return result
+
+        try:
+            if follow_redirects:
+                login_location = login_request.history[-1].headers["Location"]
+            else:
+                login_location = login_request.headers["Location"]
+            result["login_location"] = login_location
+        except Exception as exc:
+            result["error_stage"] = "redirect_parse"
+            result["error"] = f"{type(exc).__name__}: {exc}"
+            print(f"[callback-hypothesis] RESULT {json.dumps(result, default=str)}")
+            return result
+
+        code_matches = re.findall(r".*code=(.*)&", login_location)
+        if not code_matches:
+            result["error_stage"] = "auth_code_parse"
+            result["error"] = "No auth code found in login redirect URL"
+            print(f"[callback-hypothesis] RESULT {json.dumps(result, default=str)}")
+            return result
+        code = code_matches[0]
+
+        try:
+            token_request = session.post(
+                url=f"{identity_service_base_url}/token",
+                data={
+                    'grant_type': 'authorization_code',
+                    'code': code,
+                    'redirect_uri': callback_url,
+                    'client_id': CLIENT_ID,
+                    'client_secret': CLIENT_SECRET
+                }
+            )
+            result["token_status_code"] = token_request.status_code
+        except Exception as exc:
+            result["error_stage"] = "token"
+            result["error"] = f"{type(exc).__name__}: {exc}"
+            print(f"[callback-hypothesis] RESULT {json.dumps(result, default=str)}")
+            return result
+
+        result["token_result"] = "success" if token_request.status_code == 200 else "failed"
+        print(f"[callback-hypothesis] RESULT {json.dumps(result, default=str)}")
+        return result
+
+    callback_results = []
+
+    # Original code path hypothesis: follow redirects with example callback.
+    callback_results.append(
+        _attempt_auth_flow("https://example.org/callback", True, "original_follow_redirects")
     )
 
-    tree = html.fromstring(form_request.text)
-    form = tree.forms[0]
-
-    login_request = session.post(
-        url=form.action,
-        data={
-            'username': '656005750107',
-            'login': 'Sign in'
-        }
+    # Original code with local callback URLs.
+    callback_results.append(
+        _attempt_auth_flow("http://localhost/callback", True, "local_http_follow_redirects")
     )
-    login_location = login_request.history[-1].headers['Location']
-
-    code = re.findall('.*code=(.*)&', login_location)[0]
-
-    token_request = session.post(
-        url=f"{identity_service_base_url}/token",
-        data={
-            'grant_type': 'authorization_code',
-            'code': code,
-            'redirect_uri': "https://example.org/callback",
-            'client_id': CLIENT_ID,
-            'client_secret': CLIENT_SECRET
-        }
+    callback_results.append(
+        _attempt_auth_flow("https://localhost/callback", True, "local_https_follow_redirects")
     )
-    assert token_request.status_code == 200
-    access_token = token_request.json()["access_token"]
 
-    headers = {
-        "X-Request-ID": str(uuid.uuid4()),
-        "X-Correlation-ID": str(uuid.uuid4()),
-        "Authorization": f'Bearer {access_token}'
-    }
+    # Redirect-handling hypothesis: same callbacks without following redirects.
+    callback_results.append(
+        _attempt_auth_flow("https://example.org/callback", False, "example_no_redirect_follow")
+    )
+    callback_results.append(
+        _attempt_auth_flow("http://localhost/callback", False, "local_http_no_redirect_follow")
+    )
+    callback_results.append(
+        _attempt_auth_flow("https://localhost/callback", False, "local_https_no_redirect_follow")
+    )
 
-    role_id = get_role_id_from_user_info_endpoint(access_token, identity_service_base_url)
-    headers.update({"NHSD-Session-URID": role_id})
-
-    return headers
+    print(f"[callback-hypothesis] SUMMARY {json.dumps(callback_results, default=str)}")
+    pytest.fail("Intentional diagnostics failure after testing all callback hypotheses")
 
 
 # SUPPORTING FUNCTIONS-------------------------------------------------------------------------------------------
