@@ -1,25 +1,21 @@
 import datetime
 import json
-import ssl
-import sys
-import re
 import uuid
 from urllib.parse import parse_qs, urlparse
 
 import aiohttp
 import asyncio
-import certifi
 import requests
 import pytest
 import pytest_bdd
 
-from importlib import metadata
 from dateutil import parser
 from functools import partial
 from lxml import html
 from pytest_bdd import when, then
 
 from tests.functional.configuration.config import (CLIENT_ID, CLIENT_SECRET)
+from tests.functional.utils.helpers import get_role_id_from_user_info_endpoint
 
 
 scenario = partial(pytest_bdd.scenario, './features/post_patient.feature')
@@ -33,217 +29,60 @@ def test_post_patient_rate_limit():
 # FIXTURES------------------------------------------------------------------------------------------------------
 @pytest.fixture(scope='function')
 def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
-    """Runs callback hypotheses and always fails with a diagnostics summary."""
+    """Authenticates as a healthcare worker and returns valid request headers"""
     session = requests.session()
-    diagnostics = {}
 
-    def _attempt_auth_flow(callback_url: str, follow_redirects: bool, label: str, robust_code_parse: bool = False) -> dict:
-        result = {
-            "label": label,
-            "callback_url": callback_url,
-            "follow_redirects": follow_redirects,
-            "robust_code_parse": robust_code_parse,
-        }
-        print(f"[callback-hypothesis] START {json.dumps(result)}")
-        try:
-            form_request = session.get(
-                url=f"{identity_service_base_url}/authorize",
-                params={
-                    "response_type": "code",
-                    "client_id": CLIENT_ID,
-                    "state": uuid.uuid4(),
-                    "redirect_uri": callback_url
-                }
-            )
-            result["authorize_status_code"] = form_request.status_code
-        except Exception as exc:
-            result["error_stage"] = "authorize"
-            result["error"] = f"{type(exc).__name__}: {exc}"
-            print(f"[callback-hypothesis] RESULT {json.dumps(result, default=str)}")
-            return result
-
-        tree = html.fromstring(form_request.text)
-        if not tree.forms:
-            result["error_stage"] = "authorize_form_parse"
-            result["error"] = "No authorization form found in response"
-            print(f"[callback-hypothesis] RESULT {json.dumps(result, default=str)}")
-            return result
-        form = tree.forms[0]
-
-        try:
-            login_request = session.post(
-                url=form.action,
-                data={
-                    'username': '656005750107',
-                    'login': 'Sign in'
-                },
-                allow_redirects=follow_redirects
-            )
-            result["login_status_code"] = login_request.status_code
-        except Exception as exc:
-            result["error_stage"] = "login"
-            result["error"] = f"{type(exc).__name__}: {exc}"
-            print(f"[callback-hypothesis] RESULT {json.dumps(result, default=str)}")
-            return result
-
-        try:
-            if follow_redirects:
-                login_location = login_request.history[-1].headers["Location"]
-            else:
-                login_location = login_request.headers["Location"]
-            result["login_location"] = login_location
-        except Exception as exc:
-            result["error_stage"] = "redirect_parse"
-            result["error"] = f"{type(exc).__name__}: {exc}"
-            print(f"[callback-hypothesis] RESULT {json.dumps(result, default=str)}")
-            return result
-
-        if robust_code_parse:
-            parsed_query = parse_qs(urlparse(login_location).query)
-            code_list = parsed_query.get("code", [])
-            if not code_list:
-                result["error_stage"] = "auth_code_parse"
-                result["error"] = "No auth code found with robust parser"
-                print(f"[callback-hypothesis] RESULT {json.dumps(result, default=str)}")
-                return result
-            code = code_list[0]
-        else:
-            code_matches = re.findall(r".*code=(.*)&", login_location)
-            if not code_matches:
-                result["error_stage"] = "auth_code_parse"
-                result["error"] = "No auth code found in login redirect URL"
-                print(f"[callback-hypothesis] RESULT {json.dumps(result, default=str)}")
-                return result
-            code = code_matches[0]
-
-        try:
-            token_request = session.post(
-                url=f"{identity_service_base_url}/token",
-                data={
-                    'grant_type': 'authorization_code',
-                    'code': code,
-                    'redirect_uri': callback_url,
-                    'client_id': CLIENT_ID,
-                    'client_secret': CLIENT_SECRET
-                }
-            )
-            result["token_status_code"] = token_request.status_code
-        except Exception as exc:
-            result["error_stage"] = "token"
-            result["error"] = f"{type(exc).__name__}: {exc}"
-            print(f"[callback-hypothesis] RESULT {json.dumps(result, default=str)}")
-            return result
-
-        result["token_result"] = "success" if token_request.status_code == 200 else "failed"
-        print(f"[callback-hypothesis] RESULT {json.dumps(result, default=str)}")
-        return result
-
-    callback_results = []
-
-    # Original code path hypothesis: follow redirects with example callback.
-    callback_results.append(
-        _attempt_auth_flow("https://example.org/callback", True, "original_follow_redirects")
+    callback_url = "https://example.org/callback"
+    form_request = session.get(
+        url=f"{identity_service_base_url}/authorize",
+        params={
+            "response_type": "code",
+            "client_id": CLIENT_ID,
+            "state": uuid.uuid4(),
+            "redirect_uri": callback_url,
+        },
     )
 
-    # Original code with local callback URLs.
-    callback_results.append(
-        _attempt_auth_flow("http://localhost/callback", True, "local_http_follow_redirects")
-    )
-    callback_results.append(
-        _attempt_auth_flow("https://localhost/callback", True, "local_https_follow_redirects")
-    )
+    tree = html.fromstring(form_request.text)
+    form = tree.forms[0]
 
-    # Redirect-handling hypothesis: same callbacks without following redirects.
-    callback_results.append(
-        _attempt_auth_flow("https://example.org/callback", False, "example_no_redirect_follow")
-    )
-    callback_results.append(
-        _attempt_auth_flow(
-            "https://example.org/callback",
-            False,
-            "example_no_redirect_follow_robust_code_parse",
-            robust_code_parse=True
-        )
-    )
-    callback_results.append(
-        _attempt_auth_flow("http://localhost/callback", False, "local_http_no_redirect_follow")
-    )
-    callback_results.append(
-        _attempt_auth_flow("https://localhost/callback", False, "local_https_no_redirect_follow")
+    # Do not follow the external callback redirect.
+    login_request = session.post(
+        url=form.action,
+        data={
+            "username": "656005750107",
+            "login": "Sign in",
+        },
+        allow_redirects=False,
     )
 
-    def _add_certificate_hypotheses() -> dict:
-        cert_hypotheses = {
-            "python_version": sys.version,
-            "ssl_default_verify_paths": str(ssl.get_default_verify_paths()),
-            "requests_bundle": requests.certs.where(),
-            "certifi_bundle": certifi.where(),
-            "certifi_version": metadata.version("certifi"),
-            "requests_version": metadata.version("requests"),
-            "urllib3_version": metadata.version("urllib3"),
-        }
+    login_location = login_request.headers["Location"]
+    parsed_query = parse_qs(urlparse(login_location).query)
+    code = parsed_query["code"][0]
 
-        probe_url = "https://example.org/callback"
-        probes = []
+    token_request = session.post(
+        url=f"{identity_service_base_url}/token",
+        data={
+            "grant_type": "authorization_code",
+            "code": code,
+            "redirect_uri": callback_url,
+            "client_id": CLIENT_ID,
+            "client_secret": CLIENT_SECRET,
+        },
+    )
+    assert token_request.status_code == 200
+    access_token = token_request.json()["access_token"]
 
-        def run_probe(label: str, verify_value):
-            probe_result = {"label": label}
-            try:
-                resp = requests.get(probe_url, timeout=10, verify=verify_value)
-                probe_result["status_code"] = resp.status_code
-                probe_result["ok"] = True
-            except Exception as exc:
-                probe_result["ok"] = False
-                probe_result["error_type"] = type(exc).__name__
-                probe_result["error"] = str(exc)
-            probes.append(probe_result)
+    headers = {
+        "X-Request-ID": str(uuid.uuid4()),
+        "X-Correlation-ID": str(uuid.uuid4()),
+        "Authorization": f"Bearer {access_token}",
+    }
 
-        # Default trust used by requests (typically certifi).
-        run_probe("requests_default_verify", True)
-        # Explicit certifi bundle path.
-        run_probe("requests_certifi_bundle", certifi.where())
+    role_id = get_role_id_from_user_info_endpoint(access_token, identity_service_base_url)
+    headers.update({"NHSD-Session-URID": role_id})
 
-        # System CA file from OpenSSL defaults, if available.
-        default_paths = ssl.get_default_verify_paths()
-        if default_paths.cafile:
-            run_probe("requests_system_cafile", default_paths.cafile)
-        else:
-            probes.append({
-                "label": "requests_system_cafile",
-                "ok": False,
-                "error": "No system cafile found in ssl.get_default_verify_paths()",
-            })
-
-        # System CA directory from OpenSSL defaults, if available.
-        if default_paths.capath:
-            run_probe("requests_system_capath", default_paths.capath)
-        else:
-            probes.append({
-                "label": "requests_system_capath",
-                "ok": False,
-                "error": "No system capath found in ssl.get_default_verify_paths()",
-            })
-
-        cert_hypotheses["certificate_probes"] = probes
-
-        # Check if certifi has a newer release available.
-        try:
-            pypi_resp = requests.get("https://pypi.org/pypi/certifi/json", timeout=10)
-            pypi_resp.raise_for_status()
-            latest_certifi = pypi_resp.json()["info"]["version"]
-            cert_hypotheses["certifi_latest_on_pypi"] = latest_certifi
-            cert_hypotheses["certifi_update_available"] = latest_certifi != cert_hypotheses["certifi_version"]
-        except Exception as exc:
-            cert_hypotheses["certifi_latest_on_pypi_error"] = f"{type(exc).__name__}: {exc}"
-
-        return cert_hypotheses
-
-    diagnostics["callback_hypotheses"] = callback_results
-    diagnostics["certificate_hypotheses"] = _add_certificate_hypotheses()
-
-    print(f"[callback-hypothesis] SUMMARY {json.dumps(callback_results, default=str)}")
-    print(f"[certificate-hypothesis] SUMMARY {json.dumps(diagnostics['certificate_hypotheses'], default=str)}")
-    pytest.fail("Intentional diagnostics failure after testing all callback hypotheses")
+    return headers
 
 
 # SUPPORTING FUNCTIONS-------------------------------------------------------------------------------------------
