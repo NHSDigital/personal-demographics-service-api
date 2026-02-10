@@ -48,8 +48,8 @@ def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
     login_request = session.post(
         url=form.action,
         data={
-            "username": "656005750107",
-            "login": "Sign in"
+            'username': '656005750107',
+            'login': 'Sign in'
         },
         allow_redirects=False,
     )
