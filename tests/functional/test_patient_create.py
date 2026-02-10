@@ -1,7 +1,7 @@
 import datetime
 import json
 import uuid
-from urllib.parse import parse_qs, urljoin, urlparse
+from urllib.parse import parse_qs, urlparse
 
 import aiohttp
 import asyncio
@@ -32,83 +32,59 @@ def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
     """Authenticates as a healthcare worker and returns valid request headers"""
     session = requests.session()
 
-    callback_url = "https://example.org/callback"
-    callback_host = urlparse(callback_url).netloc
     form_request = session.get(
         url=f"{identity_service_base_url}/authorize",
         params={
             "response_type": "code",
             "client_id": CLIENT_ID,
             "state": uuid.uuid4(),
-            "redirect_uri": callback_url,
-        },
+            "redirect_uri": "https://example.org/callback"
+        }
     )
 
     tree = html.fromstring(form_request.text)
     form = tree.forms[0]
 
-    # Do not follow the external callback redirect.
     login_request = session.post(
         url=form.action,
         data={
             "username": "656005750107",
-            "login": "Sign in",
+            "login": "Sign in"
         },
         allow_redirects=False,
     )
-    assert login_request.status_code in (301, 302, 303, 307, 308), (
-        f"Expected redirect from login POST, got status {login_request.status_code}. "
-        f"Body starts with: {login_request.text[:300]!r}"
-    )
+    assert login_request.status_code in (301, 302, 303, 307, 308)
 
-    login_location = login_request.headers.get("Location")
-    assert login_location, "Login redirect response did not include a Location header"
-
-    # Follow only internal redirects and stop before requesting the external callback host.
-    final_location = login_location
+    final_location = login_request.headers["Location"]
     for _ in range(10):
-        parsed = urlparse(final_location)
-        if parsed.netloc == callback_host:
+        if final_location.startswith("https://example.org/"):
             break
-
         next_response = session.get(final_location, allow_redirects=False)
-        assert next_response.status_code in (301, 302, 303, 307, 308), (
-            f"Expected redirect while walking auth flow, got status {next_response.status_code}. "
-            f"URL={final_location} Body starts with: {next_response.text[:300]!r}"
-        )
-        next_location = next_response.headers.get("Location")
-        assert next_location, f"Missing Location header while walking auth flow. URL={final_location}"
-        final_location = urljoin(final_location, next_location)
+        assert next_response.status_code in (301, 302, 303, 307, 308)
+        final_location = next_response.headers["Location"]
 
     parsed_query = parse_qs(urlparse(final_location).query)
     code_values = parsed_query.get("code")
-    assert code_values and code_values[0], f"No auth code in final redirect URL: {final_location}"
+    assert code_values and code_values[0]
     code = code_values[0]
 
     token_request = session.post(
         url=f"{identity_service_base_url}/token",
         data={
-            "grant_type": "authorization_code",
-            "code": code,
-            "redirect_uri": callback_url,
-            "client_id": CLIENT_ID,
-            "client_secret": CLIENT_SECRET,
-        },
+            'grant_type': 'authorization_code',
+            'code': code,
+            'redirect_uri': "https://example.org/callback",
+            'client_id': CLIENT_ID,
+            'client_secret': CLIENT_SECRET
+        }
     )
-    assert token_request.status_code == 200, (
-        "Token request failed. "
-        f"status={token_request.status_code} "
-        f"client_id={CLIENT_ID} "
-        f"redirect_uri={callback_url} "
-        f"final_location={final_location} "
-        f"body={token_request.text[:500]!r}"
-    )
+    assert token_request.status_code == 200
     access_token = token_request.json()["access_token"]
 
     headers = {
         "X-Request-ID": str(uuid.uuid4()),
         "X-Correlation-ID": str(uuid.uuid4()),
-        "Authorization": f"Bearer {access_token}",
+        "Authorization": f'Bearer {access_token}'
     }
 
     role_id = get_role_id_from_user_info_endpoint(access_token, identity_service_base_url)
