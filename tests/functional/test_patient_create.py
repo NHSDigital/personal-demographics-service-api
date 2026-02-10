@@ -1,7 +1,7 @@
 import datetime
 import json
 import uuid
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, urljoin, urlparse
 
 import aiohttp
 import asyncio
@@ -33,6 +33,7 @@ def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
     session = requests.session()
 
     callback_url = "https://example.org/callback"
+    callback_host = urlparse(callback_url).netloc
     form_request = session.get(
         url=f"{identity_service_base_url}/authorize",
         params={
@@ -62,9 +63,26 @@ def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
 
     login_location = login_request.headers.get("Location")
     assert login_location, "Login redirect response did not include a Location header"
-    parsed_query = parse_qs(urlparse(login_location).query)
+
+    # Follow only internal redirects and stop before requesting the external callback host.
+    final_location = login_location
+    for _ in range(10):
+        parsed = urlparse(final_location)
+        if parsed.netloc == callback_host:
+            break
+
+        next_response = session.get(final_location, allow_redirects=False)
+        assert next_response.status_code in (301, 302, 303, 307, 308), (
+            f"Expected redirect while walking auth flow, got status {next_response.status_code}. "
+            f"URL={final_location} Body starts with: {next_response.text[:300]!r}"
+        )
+        next_location = next_response.headers.get("Location")
+        assert next_location, f"Missing Location header while walking auth flow. URL={final_location}"
+        final_location = urljoin(final_location, next_location)
+
+    parsed_query = parse_qs(urlparse(final_location).query)
     code_values = parsed_query.get("code")
-    assert code_values and code_values[0], f"No auth code in login redirect URL: {login_location}"
+    assert code_values and code_values[0], f"No auth code in final redirect URL: {final_location}"
     code = code_values[0]
 
     token_request = session.post(
@@ -77,7 +95,14 @@ def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
             "client_secret": CLIENT_SECRET,
         },
     )
-    assert token_request.status_code == 200
+    assert token_request.status_code == 200, (
+        "Token request failed. "
+        f"status={token_request.status_code} "
+        f"client_id={CLIENT_ID} "
+        f"redirect_uri={callback_url} "
+        f"final_location={final_location} "
+        f"body={token_request.text[:500]!r}"
+    )
     access_token = token_request.json()["access_token"]
 
     headers = {
