@@ -1,5 +1,6 @@
 import datetime
 import json
+import os
 import uuid
 from urllib.parse import parse_qs, urlparse
 
@@ -31,6 +32,10 @@ def test_post_patient_rate_limit():
 def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
     """Authenticates as a healthcare worker and returns valid request headers"""
     session = requests.session()
+    callback_url = "https://example.org/callback"
+    follow_external_callback_redirects = os.getenv(
+        "PDS_FOLLOW_EXTERNAL_CALLBACK_REDIRECTS", "false"
+    ).lower() == "true"
 
     form_request = session.get(
         url=f"{identity_service_base_url}/authorize",
@@ -38,30 +43,40 @@ def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
             "response_type": "code",
             "client_id": CLIENT_ID,
             "state": uuid.uuid4(),
-            "redirect_uri": "https://example.org/callback"
+            "redirect_uri": callback_url
         }
     )
 
     tree = html.fromstring(form_request.text)
     form = tree.forms[0]
 
-    login_request = session.post(
-        url=form.action,
-        data={
-            'username': '656005750107',
-            'login': 'Sign in'
-        },
-        allow_redirects=False,
-    )
-    assert login_request.status_code in (301, 302, 303, 307, 308)
+    if follow_external_callback_redirects:
+        login_request = session.post(
+            url=form.action,
+            data={
+                'username': '656005750107',
+                'login': 'Sign in'
+            }
+        )
+        final_location = login_request.history[-1].headers["Location"]
+    else:
+        login_request = session.post(
+            url=form.action,
+            data={
+                'username': '656005750107',
+                'login': 'Sign in'
+            },
+            allow_redirects=False,
+        )
+        assert login_request.status_code in (301, 302, 303, 307, 308)
 
-    final_location = login_request.headers["Location"]
-    for _ in range(10):
-        if final_location.startswith("https://example.org/"):
-            break
-        next_response = session.get(final_location, allow_redirects=False)
-        assert next_response.status_code in (301, 302, 303, 307, 308)
-        final_location = next_response.headers["Location"]
+        final_location = login_request.headers["Location"]
+        for _ in range(10):
+            if final_location.startswith(callback_url):
+                break
+            next_response = session.get(final_location, allow_redirects=False)
+            assert next_response.status_code in (301, 302, 303, 307, 308)
+            final_location = next_response.headers["Location"]
 
     parsed_query = parse_qs(urlparse(final_location).query)
     code_values = parsed_query.get("code")
@@ -73,7 +88,7 @@ def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
         data={
             'grant_type': 'authorization_code',
             'code': code,
-            'redirect_uri': "https://example.org/callback",
+            'redirect_uri': callback_url,
             'client_id': CLIENT_ID,
             'client_secret': CLIENT_SECRET
         }
