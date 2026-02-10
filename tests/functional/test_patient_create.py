@@ -1,7 +1,7 @@
 import datetime
 import json
-import re
 import uuid
+from urllib.parse import parse_qs, urlparse
 
 import aiohttp
 import asyncio
@@ -31,6 +31,7 @@ def test_post_patient_rate_limit():
 def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
     """Authenticates as a healthcare worker and returns valid request headers"""
     session = requests.session()
+    follow_external_callback_redirects = False
 
     form_request = session.get(
         url=f"{identity_service_base_url}/authorize",
@@ -50,11 +51,24 @@ def healthcare_worker_auth_headers(identity_service_base_url: str) -> dict:
         data={
             'username': '656005750107',
             'login': 'Sign in'
-        }
+        },
+        allow_redirects=follow_external_callback_redirects,
     )
-    login_location = login_request.history[-1].headers['Location']
 
-    code = re.findall('.*code=(.*)&', login_location)[0]
+    if follow_external_callback_redirects:
+        login_location = login_request.history[-1].headers['Location']
+    else:
+        assert login_request.status_code in (301, 302, 303, 307, 308)
+
+        login_location = login_request.headers['Location']
+        for _ in range(10):
+            if login_location.startswith("https://example.org/callback"):
+                break
+            next_response = session.get(login_location, allow_redirects=False)
+            assert next_response.status_code in (301, 302, 303, 307, 308)
+            login_location = next_response.headers['Location']
+
+    code = parse_qs(urlparse(login_location).query)["code"][0]
 
     token_request = session.post(
         url=f"{identity_service_base_url}/token",
