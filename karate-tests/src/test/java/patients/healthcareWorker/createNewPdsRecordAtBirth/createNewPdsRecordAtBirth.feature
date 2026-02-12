@@ -329,8 +329,6 @@ Feature: Create a new PDS record at birth
     * def diagnostics = "Invalid patient create data provided - 'An end date can not be provided on usual name'"
     * match response == read('classpath:mocks/stubs/errorResponses/INVALID_CREATE.json')    
 
-  # remove @ignore flag when 6709 changes merge into develop
-  @ignore
   Scenario: create a still birth PDS record at birth - formal death should have consistent still born indicatore equals 2,3 or 4
     * def babyGender = utils.randomGender()
     * def babyBirthDate = utils.randomNewbornDateLast5Days()
