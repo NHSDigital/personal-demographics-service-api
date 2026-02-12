@@ -217,7 +217,9 @@ function initializePatientData (request) {
 }
 
 function handlePatientCreationRequest (request) {
-  response.headers = basicResponseHeaders(request)
+  const headers = basicResponseHeaders(request)
+  headers['notification-id'] = '2AE84248-5180-42B6-8BB7-C93C0991B863'
+  response.headers = headers
   response.contentType = 'application/fhir+json'
   const isRequestHeadersValid = validateHeaders(request)
   if (isRequestHeadersValid) {
