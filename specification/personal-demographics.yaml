@@ -275,7 +275,7 @@ info:
     Use [PDS Notifications - FHIR API](https://digital.nhs.uk/developer/api-catalogue/personal-demographics-service-notifications-fhir) to subscribe to be notified of a set of patient record changes, including any record update, birth, death, change of address and change of GP.
     
     ### Organisation Data Service FHIR API  
-    Use [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) to get full details for the organisations related to the patient, such as their registered GP or nominated pharmacy.
+    Use [Organisation Data Service FHIR API](https://digital.nhs.uk/developer/api-catalogue/organisation-data-service-fhir) to get full details for the organisations related to the patient, such as their registered GP or nominated pharmacy.
     
     ### Ordnance Survey (OS Places) API  
     Use [Ordnance Survey (OS Places) API](https://digital.nhs.uk/developer/api-catalogue/ordnance-survey-places-api) to identify, look up and verify addresses prior to a PDS update.
