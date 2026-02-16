@@ -7,7 +7,7 @@
           {
             "code": "RESOURCE_VERSION_MISMATCH",
             "display": "Resource version supplied does not match actual version",
-            "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+            "system": "https://fhir.hl7.org.uk/CodeSystem/Spine-ErrorOrWarningCode",
             "version": "1"
           }
         ]

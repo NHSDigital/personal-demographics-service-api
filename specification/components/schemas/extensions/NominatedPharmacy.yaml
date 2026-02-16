@@ -28,6 +28,6 @@ properties:
             default: https://fhir.nhs.uk/Id/ods-organization-code
           value:
             type: string
-            description: Organisation code for the nominated pharmacy, as held in the [Organisation Data Service](https://developer.nhs.uk/apis/ods/).
+            description: Organisation code for the nominated pharmacy, as held in the [Organisation Data Service](https://digital.nhs.uk/developer/api-catalogue/organisation-data-service-fhir).
             pattern: '^[A-Za-z0-9]{3,10}$'
             example: Y12345

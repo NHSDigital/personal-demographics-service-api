@@ -7,7 +7,7 @@
       "details": {
         "coding": [
           {
-            "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+            "system": "https://fhir.hl7.org.uk/CodeSystem/Spine-ErrorOrWarningCode",
             "version": "1",
             "code": "PRECONDITION_FAILED",
             "display": "Required condition was not fulfilled"

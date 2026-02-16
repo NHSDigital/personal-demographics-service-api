@@ -18,7 +18,7 @@ properties:
         type: string
         example: 'https://fhir.nhs.uk/Id/ods-organization-code'
       value:
-        description: Organisation code for the registered general practice, as held in the [Organisation Data Service](https://developer.nhs.uk/apis/ods/).
+        description: Organisation code for the registered general practice, as held in the [Organisation Data Service](https://digital.nhs.uk/developer/api-catalogue/organisation-data-service-fhir).
         type: string
         pattern: ^[0-9A-Z]+$
         example: Y12345

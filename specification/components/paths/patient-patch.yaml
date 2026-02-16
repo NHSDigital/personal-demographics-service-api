@@ -648,7 +648,7 @@ description: |
   * `/generalPractitioner/-` when adding a new general practice.
 
   There are a number of business rules that should be taken into account:
-  * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes.
+  * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://digital.nhs.uk/developer/api-catalogue/organisation-data-service-fhir) for more details on valid codes.
   * do not provide a period `end` date.
   * the general practice should only be updated by primary care systems, [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
   * removal of a general practice can only be done by [NHAIS](https://digital.nhs.uk/services/nhais) or by the National Back Office.
@@ -661,7 +661,7 @@ description: |
   In a JSON Patch request the path should be `/managingOrganization`.
 
   The following business rules should be observed:
-  * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes.
+  * only valid GP Practice codes may be used, see [Organisation Data Service FHIR API](https://digital.nhs.uk/developer/api-catalogue/organisation-data-service-fhir) for more details on valid codes.
   * only a single general practice is supported; emergency, temporary and additional practices must be maintained in the local system only.
 
   ### Multiple birth order
@@ -730,7 +730,7 @@ description: |
   There are a number of business rules that should be taken into account:
   * multiple pharmacies are allowed, however only one of each type
   * there are no effective date periods, only a single current instance of each type is supported
-  * only valid National Pharmacy codes may be used for the pharmacy identifier, see [Organisation Data Service FHIR API](https://developer.nhs.uk/apis/ods/) for more details on valid codes
+  * only valid National Pharmacy codes may be used for the pharmacy identifier, see [Organisation Data Service FHIR API](https://digital.nhs.uk/developer/api-catalogue/organisation-data-service-fhir) for more details on valid codes
 
   ### Place of birth
 
@@ -955,7 +955,7 @@ responses:
               code: structure
               details:
                 coding:
-                  - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                  - system: 'https://fhir.hl7.org.uk/CodeSystem/Spine-ErrorOrWarningCode'
                     version: '1'
                     code: INVALID_UPDATE
                     display: Update is invalid
@@ -979,7 +979,7 @@ responses:
               code: timeout
               details:
                 coding:
-                  - system: 'https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode'
+                  - system: 'https://fhir.hl7.org.uk/CodeSystem/Spine-ErrorOrWarningCode'
                     version: '1'
                     code: SERVICE_UNAVAILABLE
                     display: Service unavailable
