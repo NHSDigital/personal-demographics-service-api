@@ -19,7 +19,7 @@ Feature: Create a new PDS record at birth
   
   * call read('classpath:patients/common/createPatient.feature@createPatient') { expectedStatus: 201 }
   * def motherNhsNumber = response.id 
-  * url baseURL  
+  * url baseURL 
  
   @sandbox
   Scenario: create  PDS record at birth - successful
@@ -36,6 +36,7 @@ Feature: Create a new PDS record at birth
     * def expectedResponse = read('classpath:patients/healthcareWorker/createNewPdsRecordAtBirth/create_record_at_birth_response_template.json')
     * match response == expectedResponse
     * match response.address[0].line[0] == address.line[1]
+    * match responseHeaders['notification-id'] == '#present'
 
   Scenario: Fail to create a record for a new patient, single demographics match found
     * def babyGender = utils.randomGender()
@@ -409,3 +410,32 @@ Feature: Create a new PDS record at birth
     * match response.birthDate == babyBirthDate
     * def deathNotification = karate.jsonPath(response, "$.extension[?(@.url=='https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-DeathNotificationStatus')]")[0]
     * match deathNotification.extension[0].valueCodeableConcept.coding[0].code == stillbornCode
+
+   Scenario: create PDS record at birth and check the response includes the ethnicity extension when the feature is enabled for the endpoint
+    * def babyGender = utils.randomGender()
+    * def babyBirthDate = utils.randomNewbornDateLast5Days()
+    * def babyBirthTime = babyBirthDate + utils.randomTime()
+    * def babyBirthOrder = 1
+    * def babyBirthWeight = utils.randomBirthWeight()
+    * def babyGivenName = ["#(faker.givenName())", "#(faker.givenName())"]
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * configure headers = requestHeaders 
+    * call read('classpath:patients/common/createNewPdsRecordAtBirth.feature@createRecordAtBirth ') { expectedStatus: 201 }
+    * def nhsNumber = response.id
+    * def expectedResponse = read('classpath:patients/healthcareWorker/createNewPdsRecordAtBirth/create_record_at_birth_response_template.json')
+    * match response == expectedResponse
+    * match responseHeaders['notification-id'] == '#present'
+    * def newlyAllocatedNhsNumber = response.id
+
+    * def requestHeaders = call read('classpath:auth/auth-headers.js')
+    * def odsCodeHeader = {'NHSD-End-User-Organisation-ODS': 'A20047'}
+    * def mergedHeaders = karate.merge(requestHeaders, odsCodeHeader)
+    * configure headers = mergedHeaders
+    * call read('classpath:patients/common/getPatientByNHSNumber.feature@getPatientByNhsNumber'){ expectedStatus: 200, nhsNumber:"#(newlyAllocatedNhsNumber)"}
+    
+    # ethnicity extension is enabled for asid:ODScode - 200000001215:A20047 
+    * def ethnicityExtension = karate.jsonPath(response, "$.extension[?(@.url==  'https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-EthnicCategory' )]")[0]
+    * match ethnicityExtension != null
+    * match ethnicityExtension.extension[0].url == '#present'
+    * match ethnicityExtension.extension[0].url ==  'https://fhir.hl7.org.uk/StructureDefinition/Extension-UKCore-EthnicCategory' 
+  
