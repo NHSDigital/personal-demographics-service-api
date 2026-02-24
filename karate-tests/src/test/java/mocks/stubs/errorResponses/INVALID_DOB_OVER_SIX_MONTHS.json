@@ -1,0 +1,20 @@
+{
+    "issue": [
+        {
+            "code": "processing",
+            "details": {
+                "coding": [
+                    {
+                        "code": "INVALID_DOB_OVER_SIX_MONTHS",
+                        "display": "INVALID_DOB_OVER_SIX_MONTHS",
+                        "system": "https://fhir.nhs.uk/R4/CodeSystem/Spine-ErrorOrWarningCode",
+                        "version": "1"
+                    }
+                ]
+            },
+            "diagnostics": "You are trying to create a birth notification for a child over the age of 6 months. Please allocate an NHS Number instead",
+            "severity": "error"
+        }
+    ],
+    "resourceType": "OperationOutcome"
+}
