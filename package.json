@@ -41,13 +41,22 @@
     },
     "js-yaml@^4.0.0": "4.1.1",
     "@jest/reporters": {
-      "glob": "10.5.0"
+      "glob": {
+        ".": "10.5.0",
+        "minimatch": "9.0.9"
+      }
     },
     "jest-config": {
-      "glob": "10.5.0"
+      "glob": {
+        ".": "10.5.0",
+        "minimatch": "9.0.9"
+      }
     },
     "jest-runtime": {
-      "glob": "10.5.0"
+      "glob": {
+        ".": "10.5.0",
+        "minimatch": "9.0.9"
+      }
     }
   },
   "type": "module"
