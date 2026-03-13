@@ -47,3 +47,10 @@ regexTarget = "line"
 regexes = [
     '''example:*'''
 ]
+
+[[allowlists]]
+description = "URN OID identifiers are non-sensitive"
+regexTarget = "line"
+regexes = [
+    '''urn:oid:[0-9.]+'''
+]
