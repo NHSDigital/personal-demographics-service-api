@@ -92,7 +92,7 @@
         "code": {
           "coding": [
             {
-              "system": "http://snomed.info/sct",
+              "system": "urn:oid:2.16.840.1.113883.2.1.3.2.4.15",
               "code": "364589006",
               "display": "Birth weight"
             }
@@ -121,7 +121,7 @@
         "code": {
           "coding": [
             {
-              "system": "http://snomed.info/sct",
+              "system": "urn:oid:2.16.840.1.113883.2.1.3.2.4.15",
               "code": "237364002",
               "display": "Stillbirth"
             }
@@ -153,7 +153,7 @@
         "code": {
           "coding": [
             {
-              "system": "http://snomed.info/sct",
+              "system": "urn:oid:2.16.840.1.113883.2.1.3.2.4.15",
               "code": "268477000",
               "display": "Fetal gestation at delivery"
             }
@@ -182,7 +182,7 @@
         "code": {
           "coding": [
             {
-              "system": "http://snomed.info/sct",
+              "system": "urn:oid:2.16.840.1.113883.2.1.3.2.4.15",
               "code": "246435002",
               "display": "Number of foetuses"
             }
@@ -206,7 +206,7 @@
         "code": {
           "coding": [
             {
-              "system": "http://snomed.info/sct",
+              "system": "urn:oid:2.16.840.1.113883.2.1.3.2.4.15",
               "code": "66091009",
               "display": "Suspected congenital abnormality"
             }
@@ -295,7 +295,7 @@
         "resourceType": "Organization",
         "identifier": [
           {
-            "system": "https://fhir.nhs.uk/Id/ods-organization-code",
+            "system": "urn:oid:2.16.840.1.113883.2.1.4.3",
             "value": "A00002"
           }
         ],
@@ -320,7 +320,7 @@
               {
                 "coding": [
                   {
-                    "system": "http://snomed.info/sct",
+                    "system": "urn:oid:2.16.840.1.113883.2.1.3.2.4.15",
                     "code": "788127005",
                     "display": "Child health service"
                   }
@@ -331,27 +331,7 @@
             "member": {
               "identifier": {
                 "system": "https://fhir.nhs.uk/Id/ods-organization-code",
-                "value": "XYZ123"
-              }
-            }
-          },
-          {
-            "role": [
-              {
-                "coding": [
-                  {
-                    "system": "http://snomed.info/sct",
-                    "code": "788127005",
-                    "display": "Child health service"
-                  }
-                ],
-                "text": "Responsible child health"
-              }
-            ],
-            "member": {
-              "identifier": {
-                "system": "https://fhir.nhs.uk/Id/ods-organization-code",
-                "value": "Y98765"
+                "value": "RCB55"
               }
             }
           }
